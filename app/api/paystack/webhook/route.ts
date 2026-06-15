@@ -1,62 +1,67 @@
-import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
 
-export async function POST(req: Request) {
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+const supabase = createClient(supabaseUrl, supabaseServiceRole);
+
+export async function POST(req: NextRequest) {
   try {
-    const body = await req.json().catch(() => null);
-    if (!body) {
-      return NextResponse.json({ ok: true });
+    const body = await req.text();
+    const signature = req.headers.get('x-paystack-signature') || '';
+    const secret = process.env.PAYSTACK_SECRET_KEY || '';
+    
+    const hash = crypto
+      .createHmac('sha512', secret)
+      .update(body)
+      .digest('hex');
+    
+    if (hash !== signature) {
+      console.log('Signature failed');
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
     }
 
-    if (body.event === 'charge.success') {
-      const jobId = body.data?.reference;
+    const event = JSON.parse(body);
+    console.log('Webhook event:', event.event);
+    
+    if (event.event === 'charge.success') {
+      const reference = event.data?.reference;
+      console.log('Updating job:', reference);
       
-      if (jobId) {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-
-        if (!supabaseUrl || !supabaseServiceKey) {
-          console.error('Supabase credentials missing in Paystack webhook');
-          return NextResponse.json({ ok: true });
-        }
-
-        const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-        const { data: job, error } = await supabase
-          .from('jobs')
-          .update({ status: 'active' })
-          .eq('id', jobId)
-          .select()
-          .single();
-
-        if (error) {
-          console.error('Failed to update job status in Supabase:', error);
-          return NextResponse.json({ ok: true });
-        }
-
-        if (job && job.source === 'telegram' && job.chat_id) {
-          const botToken = process.env.TELEGRAM_BOT_TOKEN;
-          if (botToken) {
-            await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                chat_id: job.chat_id,
-                text: `✅ Payment confirmed! Job '${job.title}' in ${job.location} is now live. Artisans will contact you soon.`
-              }),
-            }).catch((err) => {
-              console.error('Failed to send Telegram confirmation message:', err);
-            });
-          } else {
-            console.warn('TELEGRAM_BOT_TOKEN not configured in Paystack webhook');
-          }
+      const { error } = await supabase
+        .from('jobs')
+        .update({ status: 'active' })
+        .eq('id', reference);
+      
+      if (error) {
+        console.log('Supabase error:', error);
+      }
+      
+      const chatId = event.data?.metadata?.chat_id;
+      if (chatId) {
+        const botToken = process.env.TELEGRAM_BOT_TOKEN;
+        if (botToken) {
+          await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: chatId,
+              text: `✅ Payment confirmed! Your job is now live.`
+            })
+          }).catch((err) => {
+            console.error('Failed to send message via Telegram Bot:', err);
+          });
+        } else {
+          console.log('TELEGRAM_BOT_TOKEN is missing');
         }
       }
     }
-
-    return NextResponse.json({ ok: true });
-  } catch (error) {
-    console.error('Error handling Paystack webhook:', error);
-    return NextResponse.json({ ok: true });
+    
+    return NextResponse.json({ received: true });
+  } catch (err) {
+    console.error('Error in Paystack webhook handler:', err);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
