@@ -1,0 +1,6 @@
+{
+  "name": "BukieBrainJobs",
+  "description": "Next.js 14 PWA with Telegram + WhatsApp bots",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
