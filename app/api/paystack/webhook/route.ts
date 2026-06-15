@@ -27,7 +27,10 @@ export async function POST(req: NextRequest) {
     
     const { error } = await supabase
       .from('jobs')
-      .update({ status: 'active' }) // UPDATE, NOT INSERT
+      .update({ 
+        status: 'active',
+        paystack_ref: event.data.reference 
+      })
       .eq('id', reference)
     
     if (error) {
