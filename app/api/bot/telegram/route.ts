@@ -63,6 +63,9 @@ export async function POST(req: Request) {
       let paymentLink = '';
 
       try {
+        const botUsername = process.env.TELEGRAM_BOT_USERNAME || 'YOUR_BOT_USERNAME';
+        const callbackUrl = `https://t.me/${botUsername}`;
+
         const initRes = await fetch('https://api.paystack.co/transaction/initialize', {
           method: 'POST',
           headers: {
@@ -73,23 +76,23 @@ export async function POST(req: Request) {
             amount: 50000,
             email: `${chatId}@telegram.bukiejobs.com`,
             reference: jobId,
+            callback_url: callbackUrl,
             metadata: { chat_id: chatId, source: 'telegram' },
           }),
         });
 
-        if (initRes.ok) {
-          const initData = await initRes.json();
-          paymentLink = initData?.data?.authorization_url || '';
-        } else {
-          const errorText = await initRes.text();
-          console.error('Paystack API non-ok response:', initRes.status, errorText);
+        if (!initRes.ok) {
+          throw new Error(`Paystack init failed: ${initRes.status}`);
         }
+
+        const initData = await initRes.json();
+        paymentLink = initData?.data?.authorization_url || '';
       } catch (paystackError) {
         console.error('Failed to initialize Paystack transaction:', paystackError);
       }
 
       if (!paymentLink) {
-        // Fallback to the standard reference payment link if Paystack API initialization fails
+        // Fallback reference URL only in case of complete API failure
         paymentLink = `https://paystack.com/pay/bukiejobs?amount=50000&reference=${jobId}`;
       }
 
