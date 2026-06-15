@@ -60,7 +60,39 @@ export async function POST(req: Request) {
       }
 
       const jobId = job?.id;
-      const paymentLink = `https://paystack.com/pay/bukiejobs?amount=50000&reference=${jobId}`;
+      let paymentLink = '';
+
+      try {
+        const initRes = await fetch('https://api.paystack.co/transaction/initialize', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: 50000,
+            email: `${chatId}@telegram.bukiejobs.com`,
+            reference: jobId,
+            metadata: { chat_id: chatId, source: 'telegram' },
+          }),
+        });
+
+        if (initRes.ok) {
+          const initData = await initRes.json();
+          paymentLink = initData?.data?.authorization_url || '';
+        } else {
+          const errorText = await initRes.text();
+          console.error('Paystack API non-ok response:', initRes.status, errorText);
+        }
+      } catch (paystackError) {
+        console.error('Failed to initialize Paystack transaction:', paystackError);
+      }
+
+      if (!paymentLink) {
+        // Fallback to the standard reference payment link if Paystack API initialization fails
+        paymentLink = `https://paystack.com/pay/bukiejobs?amount=50000&reference=${jobId}`;
+      }
+
       const replyText = `Job created: ${title}. Pay ₦500 to publish: ${paymentLink}`;
 
       const botToken = process.env.TELEGRAM_BOT_TOKEN;
