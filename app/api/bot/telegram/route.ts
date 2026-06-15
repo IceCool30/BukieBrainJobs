@@ -63,8 +63,7 @@ export async function POST(req: Request) {
       let paymentLink = '';
 
       try {
-        const botUsername = process.env.TELEGRAM_BOT_USERNAME || 'YOUR_BOT_USERNAME';
-        const callbackUrl = `https://t.me/${botUsername}`;
+        const callbackUrl = 'https://t.me/BukieBrainJobsbot?start=payment_success';
 
         const initRes = await fetch('https://api.paystack.co/transaction/initialize', {
           method: 'POST',
