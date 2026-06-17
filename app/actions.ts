@@ -2,6 +2,7 @@
 
 import { createServerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { sendTelegramNotification } from '@/lib/telegram';
 
 export interface PostJobInput {
   title: string;
@@ -235,9 +236,83 @@ export async function postJobAction(input: PostJobInput, paymentRef?: string) {
       return { success: false, error: error.message };
     }
 
+    // Call sendTelegramNotification if the job is urgent
+    if (input.is_urgent) {
+      try {
+        const textPayload = `🔥 NEW URGENT JOB!\n\n${input.title}\n💰 Budget: ₦${Number(input.budget).toLocaleString()}\n📍 Location: ${input.location_state}\n\nApply Now`;
+        await sendTelegramNotification(textPayload);
+      } catch (telegramErr) {
+        console.error('Failed to dispatch urgent job telegram announcement:', telegramErr);
+      }
+    }
+
     return { success: true, job: data };
   } catch (err: any) {
     console.error('postJobAction Server Error:', err);
     return { success: false, error: err?.message || 'Unexpected server failure.' };
   }
 }
+
+/**
+ * sendMessageAction: Inserts a chat message into public.messages table securely from the server
+ */
+export async function sendMessageAction(input: { jobId: string; content: string; senderId: string }) {
+  try {
+    const cookieStore = cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll().map((cookie) => ({
+              name: cookie.name,
+              value: cookie.value,
+            }));
+          },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options)
+              );
+            } catch (err) {
+              // Ignore cookie update errors
+            }
+          },
+        },
+      }
+    );
+
+    // Verify authenticated user session
+    const { data: { session }, error: authErr } = await supabase.auth.getSession();
+    if (authErr || !session) {
+      return { success: false, error: 'Unauthorized credentials.' };
+    }
+
+    // Assign server verified user ID as sender_id to deter spoofing
+    const senderId = session.user.id;
+
+    const { data, error } = await supabase
+      .from('messages')
+      .insert([
+        {
+          job_id: input.jobId,
+          content: input.content,
+          sender_id: senderId
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Failed to create message record:', error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, message: data };
+  } catch (err: any) {
+    console.error('sendMessageAction Server Error:', err);
+    return { success: false, error: err?.message || 'Unexpected server failure.' };
+  }
+}
+
