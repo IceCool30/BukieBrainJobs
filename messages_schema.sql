@@ -48,5 +48,6 @@ CREATE POLICY "Employers and selected workers can read job messages"
   );
 
 -- Enable Realtime replication for the messages table if not already added
--- We check if publication exists or handle gracefully
-alter publication supabase_realtime add table messages;
+-- NOTE: If you receive an error saying "messages is already member of publication", 
+-- it means real-time replication is already fully active and you can safely ignore it!
+-- ALTER PUBLICATION supabase_realtime ADD TABLE messages;
