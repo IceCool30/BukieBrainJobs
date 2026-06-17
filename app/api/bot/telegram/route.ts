@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 
 export async function POST(req: Request) {
   try {
@@ -9,111 +8,38 @@ export async function POST(req: Request) {
     }
 
     const { message } = body;
-    const text = message.text || '';
+    const text = (message.text || '').trim();
     const chatId = message.chat?.id;
 
     if (chatId === undefined) {
       return NextResponse.json({ ok: true });
     }
 
-    if (text.startsWith('/postjob')) {
-      // Split target text after "/postjob" by "|"
-      const content = text.substring('/postjob'.length).trim();
-      const parts = content.split('|').map((part: string) => part.trim());
+    // Since the platform is Web & PWA first, and Telegram/WhatsApp are used purely for alerts/confirmations:
+    let replyText = '';
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://bukiebrain-waitlist.vercel.app';
 
-      const title = parts[0] || 'Untitled Job';
-      const location = parts[1] || 'Remote';
-      const amountVal = parts[2] ? parseInt(parts[2]) : 0;
-      const urgency = parts[3] || 'standard';
+    if (text === '/start' || text.startsWith('/start payment_success')) {
+      replyText = `👋 *Welcome to BukieBrainJobs!*\n\nThis bot is your personal assistant for instant job notifications, real-time alerts, and secure Paystack payment confirmations.\n\n🚀 *Post, Browse, & Verify on Web & PWA:*\nTo post professional services, review bids, or build your verified *BukiePassport*, join us directly on our main platform:\n👉 ${appUrl}\n\n⚡ *Instant Alert Hub:* We will notify you here as soon as a local employer posts an urgent task in your community!`;
+    } else {
+      replyText = `📢 *BukieBrainJobs Notification Hub*\n\nTo list local jobs, search for verified artisans, or view candidate profiles, please use our main Web App / PWA website:\n👉 ${appUrl}\n\nThis Telegram support channel is dedicated to sending you *instant alerts, secure payment confirmations, and system updates*.`;
+    }
 
-      // Create Supabase client lazily using keys from environment
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-      
-      if (!supabaseUrl || !supabaseServiceKey) {
-        console.error('Supabase keys are missing');
-        return NextResponse.json({ ok: true });
-      }
-
-      const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-      // Insert job into Supabase database
-      const { data: job, error } = await supabase
-        .from('jobs')
-        .insert([
-          {
-            title,
-            location,
-            amount: amountVal,
-            urgency,
-            source: 'telegram',
-            chat_id: String(chatId),
-            status: 'pending_payment',
-          },
-        ])
-        .select('id')
-        .single();
-
-      if (error) {
-        console.error('Failed to insert job into Supabase:', error);
-        return NextResponse.json({ ok: true });
-      }
-
-      const jobId = job?.id;
-      let paymentLink = '';
-
-      try {
-        const callbackUrl = 'https://t.me/BukieBrainJobsbot?start=payment_success';
-
-        const initRes = await fetch('https://api.paystack.co/transaction/initialize', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            amount: 50000,
-            email: `${chatId}@telegram.bukiejobs.com`,
-            reference: jobId,
-            callback_url: callbackUrl,
-            metadata: { chat_id: chatId, source: 'telegram' },
-          }),
-        });
-
-        if (!initRes.ok) {
-          throw new Error(`Paystack init failed: ${initRes.status}`);
-        }
-
-        const initData = await initRes.json();
-        paymentLink = initData?.data?.authorization_url || '';
-      } catch (paystackError) {
-        console.error('Failed to initialize Paystack transaction:', paystackError);
-      }
-
-      if (!paymentLink) {
-        // Fallback reference URL only in case of complete API failure
-        paymentLink = `https://paystack.com/pay/bukiejobs?amount=50000&reference=${jobId}`;
-      }
-
-      const replyText = `Job created: ${title}. Pay ₦500 to publish: ${paymentLink}`;
-
-      const botToken = process.env.TELEGRAM_BOT_TOKEN;
-      if (botToken) {
-        await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            chat_id: chatId,
-            text: replyText,
-          }),
-        }).catch((err) => {
-          console.error('Failed to send Telegram sendMessage:', err);
-        });
-      } else {
-        console.warn('TELEGRAM_BOT_TOKEN not configured');
-      }
+    const botToken = process.env.TELEGRAM_BOT_TOKEN;
+    if (botToken) {
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: replyText,
+          parse_mode: 'Markdown',
+        }),
+      }).catch((err) => {
+        console.error('Failed to send Telegram message:', err);
+      });
     }
 
     return NextResponse.json({ ok: true });
@@ -124,6 +50,5 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-  return NextResponse.json({ ok: true, service: 'Telegram Webhook' });
+  return NextResponse.json({ ok: true, service: 'Telegram Alert Webhook Ready' });
 }
-
