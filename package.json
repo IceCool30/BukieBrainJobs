@@ -13,12 +13,17 @@
     "@ducanh2912/next-pwa": "^10.2.9",
     "@supabase/auth-helpers-nextjs": "^0.15.0",
     "@supabase/supabase-js": "^2.39.0",
+    "@tailwindcss/postcss": "^4.3.1",
+    "autoprefixer": "^10.5.0",
     "clsx": "^2.1.1",
     "lucide-react": "^1.20.0",
+    "motion": "^12.40.0",
     "next": "14.2.3",
+    "postcss": "^8.5.15",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tailwind-merge": "^3.6.0"
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.1"
   },
   "devDependencies": {
     "@types/node": "^20",

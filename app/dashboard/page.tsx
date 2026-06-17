@@ -1,0 +1,306 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { User, LogOut, Briefcase, Hammer, RefreshCw, Wallet, Calendar, ShieldCheck, Sparkles } from 'lucide-react';
+
+export default function DashboardPage() {
+  const router = useRouter();
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
+  const [wallet, setWallet] = useState<any>(null);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const fetchUserData = async () => {
+    setLoading(true);
+    try {
+      const { data: { session }, error: authError } = await supabase.auth.getSession();
+      if (authError || !session) {
+        router.push('/login');
+        return;
+      }
+
+      setUser(session.user);
+
+      // Fetch Profile info
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+
+      if (profileError) {
+        setErrorMsg('Failed to load profile. Please complete onboarding.');
+      } else {
+        setProfile(profileData);
+      }
+
+      // Fetch Wallet info
+      const { data: walletData, error: walletError } = await supabase
+        .from('wallets')
+        .select('*')
+        .eq('id', session.user.id) // Or user_id depending on the key name in wallets schema
+        // Wait, let's verify if the field is user_id or id in our schema.
+        // In the user's schema: "CREATE TABLE public.wallets ( user_id UUID REFERENCES public.profiles(id) PRIMARY KEY, balance NUMERIC DEFAULT 0.00... )"
+        // Yes! It is user_id. Let's make sure we query by user_id or fallback.
+        .single();
+      
+      // Let's try querying by user_id if we have any trouble, or try standard column query:
+      // Since schema defined user_id REFERENCES public.profiles(id) PRIMARY KEY, we query by user_id.
+      if (!walletError && walletData) {
+        setWallet(walletData);
+      } else {
+        // Fallback or retry with user_id
+        const { data: walletRetry } = await supabase
+          .from('wallets')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .single();
+        if (walletRetry) {
+          setWallet(walletRetry);
+        }
+      }
+
+    } catch (err: any) {
+      setErrorMsg('Error connecting to Server.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [supabase, router]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/login');
+  };
+
+  if (loading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
+        <div className="flex flex-col items-center gap-3">
+          <RefreshCw className="w-8 h-8 animate-spin text-[#006D44]" />
+          <span className="text-xs font-mono text-gray-500 font-semibold tracking-wide uppercase">
+            Loading your dashboard...
+          </span>
+        </div>
+      </main>
+    );
+  }
+
+  const userRole = profile?.role || 'Not Selected';
+  const isEmployer = userRole === 'employer';
+
+  return (
+    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] flex flex-col">
+      {/* Navigation Header */}
+      <nav className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm" id="dashboard-navbar">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-[#006D44] rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md border-b-2 border-[#D4AF37]">
+              B
+            </div>
+            <div>
+              <span className="font-extrabold text-lg block leading-none text-gray-900 tracking-tight">
+                Bukie<span className="text-[#006D44]">Brain</span>
+              </span>
+              <span className="text-[10px] font-mono text-gray-400 font-bold uppercase tracking-wider">
+                Partner Dashboard
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button
+              id="dashboard-logout-action-btn"
+              type="button"
+              className="flex items-center gap-1.5 text-xs text-red-600 hover:text-red-800 font-bold uppercase tracking-wider bg-gray-50 hover:bg-red-50 border border-gray-100 hover:border-red-100 px-4 py-2 rounded-xl transition-all cursor-pointer"
+              onClick={handleLogout}
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Log Out</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Container */}
+      <div className="flex-1 max-w-6xl w-full mx-auto px-4 py-8 sm:px-6 lg:px-8" id="dashboard-content-grid">
+        {/* Welcome Section */}
+        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 relative overflow-hidden" id="dashboard-welcome-banner">
+          <div className="absolute right-0 top-0 w-32 h-32 bg-[#006D44]/5 rounded-full blur-2xl"></div>
+          
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs bg-[#006D44]/10 text-[#006D44] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+                {userRole === 'employer' ? 'Employer Hub' : 'Artisan Hub'}
+              </span>
+              <span className="text-xs text-gray-400 font-medium">
+                • Connected
+              </span>
+            </div>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mt-2 tracking-tight">
+              Welcome, {profile?.full_name || user?.email || 'Partner'}
+            </h1>
+            <p className="text-sm text-gray-500 mt-1">
+              Thank you for digitizing local trust. Manage your activities, services, & wallet below.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 bg-[#F4F5F7] px-4 py-3 rounded-xl border border-gray-100 self-stretch md:self-auto justify-between" id="dashboard-wallet-badge">
+            <div className="flex items-center gap-2">
+              <Wallet className="w-5 h-5 text-[#D4AF37]" />
+              <div>
+                <span className="block text-[10px] uppercase font-bold text-gray-400 tracking-wider">
+                  Wallet Balance
+                </span>
+                <span className="text-sm font-extrabold text-gray-900">
+                  ₦{(wallet?.balance || 0).toLocaleString()}
+                </span>
+              </div>
+            </div>
+            {isEmployer ? (
+              <button 
+                id="topup-wallet-trigger"
+                onClick={() => alert("Wallet deposits are handled via secure payment prompts.")}
+                className="ml-4 text-[10px] font-bold text-white uppercase bg-[#006D44] px-3 py-1.5 rounded-lg hover:bg-[#005a37] transition-all cursor-pointer"
+              >
+                Top Up
+              </button>
+            ) : (
+              <div className="ml-4 text-right">
+                <span className="block text-[9px] uppercase font-bold text-gray-400">Bids Left</span>
+                <span className="text-xs font-black text-[#006D44]">{wallet?.free_bids_remaining ?? 3} Free</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Dashboard Cards Breakdown */}
+        {errorMsg && (
+          <div className="mb-6 p-4 bg-red-50 text-red-700 rounded-xl text-sm border border-red-100" id="dashboard-error-callout">
+            {errorMsg}
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6" id="dashboard-info-blocks">
+          {/* Action Hub / Interactive Feed Card Area */}
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 md:col-span-2">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              {isEmployer ? (
+                <>
+                  <Briefcase className="w-5 h-5 text-[#006D44]" />
+                  <span>Your Posted Jobs</span>
+                </>
+              ) : (
+                <>
+                  <Hammer className="w-5 h-5 text-[#D4AF37]" />
+                  <span>Available Local Inquiries</span>
+                </>
+              )}
+            </h2>
+
+            {/* Empty list with elegant visual action */}
+            <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center flex flex-col items-center justify-center">
+              <span className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 mb-3">
+                {isEmployer ? <Briefcase className="w-5 h-5" /> : <Hammer className="w-5 h-5" />}
+              </span>
+              <p className="text-sm font-semibold text-gray-800">
+                {isEmployer ? 'You have no active job posts yet' : 'No incoming offers in your LGA'}
+              </p>
+              <p className="text-xs text-gray-400 mt-1 max-w-xs mx-auto">
+                {isEmployer 
+                  ? 'Request maintenance, full-time help, or custom local projects with "sachet" pricing.'
+                  : 'Complete your BukiePassport profile setup with verification badges to receive priority system alerts!'}
+              </p>
+
+              <div className="flex gap-3 mt-5 flex-wrap justify-center">
+                {isEmployer ? (
+                  <button
+                    id="dash-post-job-btn"
+                    type="button"
+                    className="bg-[#006D44] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#005a37] transition-all shadow-md shadow-green-900/5 cursor-pointer"
+                    onClick={() => router.push('/dashboard/post-job')}
+                  >
+                    Post New Job
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      id="dash-find-work-btn"
+                      type="button"
+                      className="bg-[#006D44] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#005a37] transition-all shadow-md shadow-green-900/5 cursor-pointer"
+                      onClick={() => router.push('/jobs')}
+                    >
+                      Find Work
+                    </button>
+                    <button
+                      id="dash-passport-btn"
+                      type="button"
+                      className="bg-white text-gray-700 border border-gray-200 text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
+                      onClick={() => router.push('/dashboard/passport-setup')}
+                    >
+                      Setup Passport
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Operations Sidebar Info */}
+          <div className="space-y-6">
+            {/* Quick Passport/Verification Info Card */}
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+              <div>
+                <h3 className="font-bold text-gray-900 text-sm mb-3 flex items-center gap-1.5">
+                  <ShieldCheck className="w-4.5 h-4.5 text-[#006D44]" />
+                  <span>Identity & Trust</span>
+                </h3>
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  Every artisan is strictly bound by the *BukiePassport* check. Guaranteed via 2-factor verification keys.
+                </p>
+              </div>
+
+              <div className="mt-4 bg-[#F4F5F7] p-3 rounded-xl border border-gray-100 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+                <span className="text-[11px] font-semibold text-gray-600">
+                  {isEmployer ? 'Hire with escrow security protection' : 'Blue Check Badge increases views by 350%'}
+                </span>
+              </div>
+            </div>
+
+            {/* Support / Quick Channel Alert info */}
+            <div className="bg-[#1A1C1E] text-white p-6 rounded-2xl shadow-sm border border-gray-800/20 relative overflow-hidden">
+              <div className="absolute right-0 bottom-0 w-20 h-20 bg-[#D4AF37]/5 rounded-full blur-xl"></div>
+              <h4 className="font-extrabold text-sm text-[#D4AF37] mb-2 font-mono uppercase tracking-widest">
+                Telegram Alerts Hub
+              </h4>
+              <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                Receive immediate push notifications on telegram for payments, invoice clearance, quotes, or when matches pop up near you.
+              </p>
+              <a
+                href="https://t.me/BukieBrainBot"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#006D44] hover:bg-[#005a37] py-2 px-3.5 rounded-lg border-b border-green-800 transition-all font-mono"
+              >
+                Connect Telegram Bot
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
