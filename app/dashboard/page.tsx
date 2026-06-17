@@ -157,7 +157,11 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 bg-[#F4F5F7] px-4 py-3 rounded-xl border border-gray-100 self-stretch md:self-auto justify-between" id="dashboard-wallet-badge">
+          <div 
+            className="flex items-center gap-3 bg-[#F4F5F7] px-4 py-3 rounded-xl border border-gray-100 self-stretch md:self-auto justify-between cursor-pointer hover:bg-gray-100/60 transition-all" 
+            id="dashboard-wallet-badge"
+            onClick={() => router.push('/dashboard/wallet')}
+          >
             <div className="flex items-center gap-2">
               <Wallet className="w-5 h-5 text-[#D4AF37]" />
               <div>
@@ -172,15 +176,19 @@ export default function DashboardPage() {
             {isEmployer ? (
               <button 
                 id="topup-wallet-trigger"
-                onClick={() => alert("Wallet deposits are handled via secure payment prompts.")}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push('/dashboard/wallet');
+                }}
                 className="ml-4 text-[10px] font-bold text-white uppercase bg-[#006D44] px-3 py-1.5 rounded-lg hover:bg-[#005a37] transition-all cursor-pointer"
               >
                 Top Up
               </button>
             ) : (
-              <div className="ml-4 text-right">
-                <span className="block text-[9px] uppercase font-bold text-gray-400">Bids Left</span>
-                <span className="text-xs font-black text-[#006D44]">{wallet?.free_bids_remaining ?? 3} Free</span>
+              <div className="ml-4 text-right flex flex-col items-end">
+                <span className="block text-[8px] uppercase font-bold text-gray-400">Bids Left</span>
+                <span className="text-xs font-black text-[#006D44] leading-none">{wallet?.free_bids_remaining ?? 3} Free</span>
+                <span className="text-[9px] font-extrabold text-[#D4AF37] underline mt-0.5 pointer-events-none">Top Up Bids</span>
               </div>
             )}
           </div>

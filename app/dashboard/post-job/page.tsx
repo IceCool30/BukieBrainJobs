@@ -11,10 +11,23 @@ import {
   Loader2, 
   CheckCircle,
   HelpCircle,
-  Zap
+  Zap,
+  X,
+  ShieldCheck,
+  CreditCard
 } from 'lucide-react';
-import { createJob } from './actions';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { postJobAction } from '@/app/actions';
+import dynamic from 'next/dynamic';
+
+const PaystackButton = dynamic(() => import('@/components/PaystackButton'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-12 bg-gray-100 rounded-xl animate-pulse flex items-center justify-center text-xs font-mono text-gray-400 uppercase font-extrabold">
+      Loading checkout...
+    </div>
+  ),
+});
 
 // Structured Nigerian states and LGAs for dropdown pairing
 const locationData: Record<string, string[]> = {
@@ -34,6 +47,8 @@ export default function PostJobPage() {
   const [authChecking, setAuthChecking] = useState(true);
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userId, setUserId] = useState('');
 
   // Form states
   const [title, setTitle] = useState('');
@@ -44,6 +59,9 @@ export default function PostJobPage() {
   const [selectedLga, setSelectedLga] = useState('Ikeja');
   const [jobType, setJobType] = useState<'task' | 'contract' | 'full_time'>('task');
   const [isUrgent, setIsUrgent] = useState(false);
+
+  // Paystack Urgent payment modal trigger
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // When State changes, reset LGA to the first available in that state
   useEffect(() => {
@@ -60,11 +78,46 @@ export default function PostJobPage() {
       if (!session) {
         router.push('/login');
       } else {
+        setUserEmail(session.user.email || '');
+        setUserId(session.user.id || '');
         setAuthChecking(false);
       }
     }
     checkUser();
   }, [supabase, router]);
+
+  // Unified submission caller
+  const handleJobPostSubmit = async (paymentRef?: string) => {
+    setLoading(true);
+    setErrorMsg('');
+    try {
+      const budgetNum = parseFloat(budget);
+      const result = await postJobAction({
+        title,
+        description,
+        budget: budgetNum,
+        category,
+        location_state: selectedState,
+        location_lga: selectedLga,
+        job_type: jobType,
+        is_urgent: isUrgent
+      }, paymentRef);
+
+      if (result.success) {
+        setSuccess(true);
+        setShowPaymentModal(false);
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 2200);
+      } else {
+        setErrorMsg(result.error || 'Failed to submit the job. Try again.');
+      }
+    } catch (err: any) {
+      setErrorMsg(err?.message || 'An unexpected error occurred.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,34 +132,18 @@ export default function PostJobPage() {
       return;
     }
 
-    setLoading(true);
-    setErrorMsg('');
-
-    try {
-      const response = await createJob({
-        title,
-        description,
-        budget: budgetNum,
-        category,
-        location_state: selectedState,
-        location_lga: selectedLga,
-        job_type: jobType,
-        is_urgent: isUrgent
-      });
-
-      if (response.success) {
-        setSuccess(true);
-        setTimeout(() => {
-          router.push('/dashboard');
-        }, 2200);
-      } else {
-        setErrorMsg(response.error || 'Failed to submit the job. Try again.');
-      }
-    } catch (err: any) {
-      setErrorMsg(err?.message || 'An unexpected error occurred.');
-    } finally {
-      setLoading(false);
+    if (isUrgent) {
+      // Prevent immediate submission and present payment gateway
+      setShowPaymentModal(true);
+      return;
     }
+
+    // Standard free/organic post submission
+    await handleJobPostSubmit();
+  };
+
+  const handlePaystackSuccess = async (response: { reference: string; status: string }) => {
+    await handleJobPostSubmit(response.reference);
   };
 
   const showInspectionWarning = category === 'Plumbing' || category === 'Electrical';
@@ -125,7 +162,7 @@ export default function PostJobPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-8 px-4 flex flex-col justify-center items-center">
+    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-8 px-4 flex flex-col justify-center items-center relative">
       <div className="w-full max-w-2xl" id="post-job-container">
         
         {/* Back Link */}
@@ -262,7 +299,7 @@ export default function PostJobPage() {
                   >
                     <option value="Plumbing">Plumbing</option>
                     <option value="Electrical">Electrical</option>
-                    <option value="Driver">Driver</option>
+                    <option value="Driver">Driver Task</option>
                     <option value="Other">Other Category</option>
                   </select>
                 </div>
@@ -424,6 +461,103 @@ export default function PostJobPage() {
         )}
 
       </div>
+
+      {/* Paystack Urgent Checkout Slide-Up Drawer Modal */}
+      <AnimatePresence>
+        {showPaymentModal && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowPaymentModal(false)}
+              className="fixed inset-0 bg-black z-50 pointer-events-auto"
+            />
+            
+            {/* Payment Modal Container */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+              className="fixed inset-x-4 bottom-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl z-50 space-y-6"
+              id="payment-gateway-modal"
+            >
+              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
+                <div className="flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-amber-500 fill-amber-500" />
+                  <span className="font-extrabold text-sm text-gray-900 uppercase tracking-wide">
+                    Urgent Boost Upgrade
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPaymentModal(false)}
+                  className="p-1 rounded-lg hover:bg-gray-100 text-gray-400 transition-colors cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div className="bg-amber-50/50 rounded-2xl p-4 border border-amber-100 flex gap-3 text-amber-900">
+                  <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5 text-amber-500" />
+                  <div className="text-xs text-amber-800 leading-normal">
+                    You have toggled the <strong>Urgent Category Upgrade</strong>. Before this task can go live on the premium broadcast list and notify artisan groups, a promotion slot fee is due.
+                  </div>
+                </div>
+
+                <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 flex justify-between items-center">
+                  <div>
+                    <span className="text-xs font-extrabold text-gray-900 block">
+                      Promotion slot upgrade fee
+                    </span>
+                    <span className="text-[10px] text-gray-400 font-mono">
+                      Includes custom telegram webhooks
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-lg font-black text-[#006D44] font-mono">
+                      ₦1,000
+                    </span>
+                  </div>
+                </div>
+
+                <div className="text-[10px] text-gray-400 leading-relaxed text-center">
+                  By completing payment, your job goes live on the marketplace as <span className="text-amber-600 font-extrabold uppercase">Urgent</span> with priority ranking.
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowPaymentModal(false)}
+                  className="text-xs text-gray-500 hover:text-gray-900 font-bold uppercase tracking-wider py-3 px-4 rounded-xl transition-all cursor-pointer bg-gray-100 hover:bg-gray-200 text-center"
+                >
+                  Edit Job
+                </button>
+                <PaystackButton
+                  amount={1000}
+                  email={userEmail}
+                  metadata={{
+                    type: 'urgent_boost',
+                    user_id: userId
+                  }}
+                  text="Confirm & Pay ₦1,000"
+                  onSuccess={handlePaystackSuccess}
+                />
+              </div>
+
+              <div className="flex items-center justify-center gap-1.5 text-[9px] text-gray-400 font-bold uppercase tracking-widest pt-2">
+                <ShieldCheck className="w-4.5 h-4.5 text-emerald-600" />
+                <span>Paystack Network Secured</span>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
     </main>
   );
 }
