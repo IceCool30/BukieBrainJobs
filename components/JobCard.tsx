@@ -95,6 +95,14 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
           </div>
 
           <div className="flex items-center gap-1">
+            {job.title?.toUpperCase().includes('[TEST]') && (
+              <span 
+                className="bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-0.5"
+                id={`qa-test-badge-${job.id}`}
+              >
+                <span>🧪 QA Sandbox</span>
+              </span>
+            )}
             {job.is_urgent && (
               <span 
                 className="bg-amber-100 text-amber-800 border border-amber-200 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-0.5"
