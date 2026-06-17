@@ -41,6 +41,12 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
   const [newMessage, setNewMessage] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Real-time typing indicator states
+  const [typingUser, setTypingUser] = useState<string | null>(null);
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const channelRef = useRef<any>(null);
+  const lastTypingSentRef = useRef<number>(0);
+
   // Active user and partner profiles to map names to sender blocks
   const [profiles, setProfiles] = useState<Record<string, string>>({});
 
@@ -139,12 +145,56 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
           });
         }
       )
+      .on('broadcast', { event: 'typing' }, (payload) => {
+        const { userId, isTyping } = payload.payload;
+        if (userId !== currentUserId) {
+          if (isTyping) {
+            setTypingUser(userId);
+            if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+            typingTimeoutRef.current = setTimeout(() => {
+              setTypingUser(null);
+            }, 3500);
+          } else {
+            setTypingUser(null);
+          }
+        }
+      })
       .subscribe();
 
+    channelRef.current = channel;
+
     return () => {
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
       supabase.removeChannel(channel);
     };
-  }, [supabase, jobId, profiles]);
+  }, [supabase, jobId, profiles, currentUserId]);
+
+  // Helper to send outbound typing status to other participants
+  const handleTypingIndicator = (isTyping: boolean) => {
+    if (!channelRef.current) return;
+    
+    const now = Date.now();
+    // If stopped typing or input is cleared, dispatch inactive indicator immediately
+    if (!isTyping) {
+      channelRef.current.send({
+        type: 'broadcast',
+        event: 'typing',
+        payload: { userId: currentUserId, isTyping: false }
+      });
+      lastTypingSentRef.current = 0;
+      return;
+    }
+
+    // Otherwise, throttle status broadcast to twice every 5 seconds to minimize resource usage
+    if (now - lastTypingSentRef.current > 2500) {
+      lastTypingSentRef.current = now;
+      channelRef.current.send({
+        type: 'broadcast',
+        event: 'typing',
+        payload: { userId: currentUserId, isTyping: true }
+      });
+    }
+  };
 
   // Message Render Anti-Bypass Filter
   const renderMessageContent = (text: string) => {
@@ -203,6 +253,9 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
     setSendLoading(true);
 
     try {
+      // Clear typing indicator state for other participants instantly upon sending
+      handleTypingIndicator(false);
+
       const res = await sendMessageAction({
         jobId,
         content: textToSend,
@@ -333,6 +386,19 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
             );
           })
         )}
+        
+        {/* Real-time typing indicators */}
+        {typingUser && (
+          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 animate-pulse px-2 py-1" id="chat-typing-indicator">
+            <span className="w-1.5 h-1.5 bg-[#006D44] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+            <span className="w-1.5 h-1.5 bg-[#006D44] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+            <span className="w-1.5 h-1.5 bg-[#006D44] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            <span className="ml-1 font-medium italic text-gray-400">
+              {profiles[typingUser] || 'Participant'} is typing...
+            </span>
+          </div>
+        )}
+
         <div ref={messagesEndRef} />
       </div>
 
@@ -353,7 +419,11 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
           type="text"
           placeholder="Compose text message..."
           value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            setNewMessage(val);
+            handleTypingIndicator(val.length > 0);
+          }}
           className="flex-1 bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-xs px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium shadow-inner"
           id="chat-message-input"
         />
