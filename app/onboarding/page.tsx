@@ -1,6 +1,7 @@
 'use client';
 
 import { LogoBase64 } from '@/lib/logo';
+import { LogoLink } from '@/components/LogoLink';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -116,10 +117,9 @@ export default function OnboardingPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit animate-pulse">
-            <Image src={LogoBase64} alt="Loading..." width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
-            <span className="font-black text-[16px] tracking-tight text-[#0A192F] hidden sm:block pr-2 whitespace-nowrap">BukieBrainJobs</span>
-          </div>
+          <LogoLink
+            className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit animate-pulse cursor-pointer hover:opacity-80 transition-opacity"
+          />
           <span className="text-sm font-medium text-gray-500 font-mono">Verifying authentication...</span>
         </div>
       </main>
@@ -131,10 +131,13 @@ export default function OnboardingPage() {
       {/* Top Bar with user info and Logout */}
       <header className="w-full max-w-6xl mx-auto flex justify-between items-center py-4 mb-16" id="onboarding-header">
         <div className="flex items-center gap-2">
-          <div className="bg-white flex items-center gap-2 w-fit">
-            <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-lg shadow-sm border border-gray-200 p-[2px]" />
-            <span className="font-extrabold text-lg tracking-tight text-[#0A192F] hidden sm:block">BukieBrainJobs</span>
-          </div>
+          <LogoLink
+            className="bg-white flex items-center gap-2 w-fit cursor-pointer hover:opacity-80 transition-opacity"
+            imageClassName="rounded-lg shadow-sm border border-gray-200 p-[2px]"
+            width={32}
+            height={32}
+            showText={true}
+          />
         </div>
         <div className="flex items-center gap-4">
           <div className="hidden sm:flex items-center gap-2 text-sm text-[#0A192F] font-bold">
@@ -162,7 +165,7 @@ export default function OnboardingPage() {
             transition={{ duration: 0.3 }}
             className="text-4xl md:text-5xl font-extrabold text-[#0A192F] tracking-tight mb-4"
           >
-            Welcome to BukieBrain.
+            Welcome to BukieBrainJobs.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -202,7 +205,7 @@ export default function OnboardingPage() {
           >
             <h3 className="text-xl font-bold text-[#0A192F] mb-2">I want to hire an expert</h3>
             <p className="text-sm text-[#0A192F]/70 font-medium leading-relaxed">
-              Post your tasks for free, browse verified local professionals, and fund your projects securely using our escrow protection.
+              Post your tasks for free, browse verified local professionals, and fund your projects securely using our payment protection.
             </p>
           </motion.div>
 

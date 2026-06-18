@@ -1,6 +1,7 @@
 'use client';
 
 import { LogoBase64 } from '@/lib/logo';
+import { LogoLink } from '@/components/LogoLink';
 import Image from 'next/image';
 
 import React, { useState } from 'react';
@@ -120,7 +121,13 @@ export default function LoginPage() {
 
       {/* Brand logo at the top */}
       <div className="flex items-center gap-3 mb-8">
-        <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-[12px] shadow-sm border border-gray-200 bg-white p-[2px]" />
+        <LogoLink
+          className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer focus:outline-none"
+          imageClassName="rounded-[12px] shadow-sm border border-gray-200 bg-white p-[2px]"
+          width={40}
+          height={40}
+          showText={false}
+        />
         <h1 className="text-3xl font-bold text-[#0A192F] font-sans tracking-tight">
           BukieBrainJobs
         </h1>

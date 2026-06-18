@@ -8,6 +8,8 @@ import { FadeUp } from '@/components/FadeUp';
 import { SmoothCollapse } from '@/components/SmoothCollapse';
 import { nigeriaLocations, nigerianStates } from '@/lib/nigeria-locations';
 
+import { LogoLink } from '@/components/LogoLink';
+
 export default function Home() {
   const router = useRouter();
   const [showEmployerBanner, setShowEmployerBanner] = useState(true);
@@ -26,12 +28,7 @@ export default function Home() {
     <div className="min-h-screen bg-white text-[#0A192F] font-sans">
       {/* Navigation Bar */}
       <header className="flex justify-between items-center px-4 py-3 border-b border-gray-100">
-        <div className="flex items-center gap-2 cursor-pointer active:scale-[0.98] transition-transform" onClick={() => router.push('/')}>
-          <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit hover:border-gray-200 hover:shadow-md transition-all">
-            <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
-            <span className="font-black text-[16px] tracking-tight text-[#0A192F] pr-2 whitespace-nowrap">BukieBrainJobs</span>
-          </div>
-        </div>
+        <LogoLink />
         <div className="flex items-center gap-2 sm:gap-4">
           <button 
             onClick={() => router.push('/login')}

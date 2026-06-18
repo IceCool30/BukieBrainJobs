@@ -1,5 +1,6 @@
 'use client';
 import { LogoBase64 } from '@/lib/logo';
+import { LogoLink } from '@/components/LogoLink';
 
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
@@ -153,10 +154,9 @@ export default function CEOAdminPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit mb-3 animate-pulse">
-            <Image src={LogoBase64} alt="Loading..." width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
-            <span className="font-black text-[16px] tracking-tight text-[#0A192F] hidden sm:block pr-2 whitespace-nowrap">BukieBrainJobs</span>
-          </div>
+          <LogoLink
+            className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit mb-3 animate-pulse cursor-pointer hover:opacity-80 transition-opacity"
+          />
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Authorizing security clearance...
           </span>

@@ -1,5 +1,6 @@
 'use client';
 import { LogoBase64 } from '@/lib/logo';
+import { LogoLink } from '@/components/LogoLink';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -163,10 +164,7 @@ export default function WalletPage() {
               <span>Back</span>
             </button>
             <div className="h-4 w-[1px] bg-gray-200"></div>
-            <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit cursor-pointer">
-              <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
-              <span className="font-black text-[16px] tracking-tight text-[#0A192F] hidden sm:block pr-2 whitespace-nowrap">BukieBrainJobs</span>
-            </div>
+            <LogoLink />
             <div>
               <span className="text-[9px] font-mono text-gray-500 font-bold uppercase tracking-wider block mt-1">
                 Authorized Artisan Ledgers
