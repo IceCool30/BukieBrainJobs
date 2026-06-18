@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { LogIn, UserPlus, ShieldAlert, Sparkles } from 'lucide-react';
 
@@ -88,11 +89,9 @@ export default function LoginPage() {
 
           <div className="flex justify-center items-center gap-2 mb-2">
             {/* Logo structure: 3D "B" representation utilizing inline design */}
-            <div className="w-10 h-10 bg-[#006D44] rounded-xl flex items-center justify-center text-white font-extrabold text-2xl shadow-md border-b-2 border-[#D4AF37]">
-              B
-            </div>
-            <span className="text-2xl font-black text-white tracking-tight">
-              Bukie<span className="text-[#006D44]">Brain</span><span className="text-[#D4AF37]">Jobs</span>
+            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#D4AF37]" />
+            <span className="text-2xl font-black text-[#006D44] tracking-tight">
+              BukieBrainJobs
             </span>
           </div>
           <p className="text-gray-400 text-xs tracking-wide uppercase font-semibold">

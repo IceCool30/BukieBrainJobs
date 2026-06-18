@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, 
@@ -280,12 +281,10 @@ export default function JobsPage() {
               <span className="hidden sm:inline">Dashboard</span>
             </button>
             <div className="h-4 w-[1px] bg-gray-200 hidden sm:block"></div>
+            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow-md border-b-2 border-[#D4AF37]" />
             <div>
-              <span className="font-extrabold text-base block leading-none text-gray-900 tracking-tight">
-                Bukie<span className="text-[#006D44]">Brain</span> Marketplace
-              </span>
-              <span className="text-[9px] font-mono text-gray-400 font-bold uppercase tracking-wider">
-                Nigeria&apos;s Trust Network
+              <span className="text-[9px] font-mono text-gray-500 font-bold uppercase tracking-wider block mt-1">
+                Marketplace • Trust Network
               </span>
             </div>
           </div>

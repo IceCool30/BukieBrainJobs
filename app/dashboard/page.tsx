@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { User, LogOut, Briefcase, Hammer, RefreshCw, Wallet, Calendar, ShieldCheck, Sparkles } from 'lucide-react';
 
@@ -107,14 +108,9 @@ export default function DashboardPage() {
       <nav className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm" id="dashboard-navbar">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#006D44] rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md border-b-2 border-[#D4AF37]">
-              B
-            </div>
+            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#D4AF37]" />
             <div>
-              <span className="font-extrabold text-lg block leading-none text-gray-900 tracking-tight">
-                Bukie<span className="text-[#006D44]">Brain</span>
-              </span>
-              <span className="text-[10px] font-mono text-gray-400 font-bold uppercase tracking-wider">
+              <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wider block mt-1">
                 Partner Dashboard
               </span>
             </div>

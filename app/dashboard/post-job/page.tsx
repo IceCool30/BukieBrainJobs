@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   ArrowLeft, 
@@ -152,7 +153,7 @@ export default function PostJobPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-[#006D44]" />
+          <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3" />
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Checking permission...
           </span>
@@ -212,9 +213,7 @@ export default function PostJobPage() {
             <div className="bg-[#1A1C1E] text-white p-6 md:p-8 relative overflow-hidden">
               <div className="absolute right-0 top-0 w-32 h-32 bg-[#D4AF37]/5 rounded-full blur-2xl"></div>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#006D44] rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md border border-[#D4AF37]/50">
-                  B
-                </div>
+                <Image src="/logo.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border border-[#D4AF37]/50" />
                 <div>
                   <h1 className="text-xl md:text-2xl font-extrabold tracking-tight">
                     Post a New Job

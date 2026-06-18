@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { motion } from 'motion/react';
 import { 
   Briefcase, 
@@ -65,11 +66,9 @@ export default function Home() {
             className="flex items-center gap-2 cursor-pointer group"
             id="nav-logo-btn"
           >
-            <div className="w-9 h-9 bg-[#006D44] rounded-xl flex items-center justify-center text-white font-extrabold text-xl shadow-md border-b-2 border-[#D4AF37] transition-transform group-hover:scale-105 duration-200">
-              B
-            </div>
-            <span className="text-xl font-black text-[#1A1C1E] tracking-tight">
-              Bukie<span className="text-[#006D44]">Brain</span><span className="text-[#D4AF37]">Jobs</span>
+            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={36} height={36} className="rounded-xl shadow-md border-b-2 border-[#D4AF37] transition-transform group-hover:scale-105 duration-200" />
+            <span className="text-xl font-black text-[#006D44] tracking-tight">
+              BukieBrainJobs
             </span>
           </div>
 
@@ -357,11 +356,9 @@ export default function Home() {
           
           <div className="space-y-2 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2">
-              <div className="w-8 h-8 bg-[#006D44] rounded-xl flex items-center justify-center text-white font-extrabold text-sm border border-[#D4AF37]">
-                B
-              </div>
-              <span className="text-lg font-black tracking-tight text-white">
-                Bukie<span className="text-[#006D44]">Brain</span><span className="text-[#D4AF37]">Jobs</span>
+              <Image src="/logo.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow-md border border-[#D4AF37]" />
+              <span className="text-lg font-black tracking-tight text-[#006D44]">
+                BukieBrainJobs
               </span>
             </div>
             <p className="text-[11px] text-gray-400 font-medium">

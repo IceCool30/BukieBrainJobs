@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -279,7 +280,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center p-12 min-h-[400px]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#006D44] mb-3" />
+        <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3" />
         <span className="text-xs font-mono text-gray-400 uppercase tracking-widest font-bold">
           Binding Secure Channel...
         </span>

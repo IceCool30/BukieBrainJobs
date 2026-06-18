@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
@@ -150,7 +151,7 @@ export default function CEOAdminPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-[#006D44]" />
+          <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3" />
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Authorizing security clearance...
           </span>

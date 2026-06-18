@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { motion } from 'motion/react';
 import { Briefcase, Hammer, LogOut, ArrowRight, User, Loader2 } from 'lucide-react';
@@ -105,7 +106,7 @@ export default function OnboardingPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-10 h-10 animate-spin text-[#006D44]" />
+          <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl" />
           <span className="text-sm font-medium text-gray-500 font-mono">Verifying authentication...</span>
         </div>
       </main>
@@ -117,12 +118,7 @@ export default function OnboardingPage() {
       {/* Top Bar with user info and Logout */}
       <header className="w-full max-w-6xl mx-auto flex justify-between items-center py-4 border-b border-gray-200/60 mb-8" id="onboarding-header">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#006D44] rounded-lg flex items-center justify-center text-white font-extrabold text-lg shadow">
-            B
-          </div>
-          <span className="text-lg font-bold tracking-tight">
-            Bukie<span className="text-[#006D44]">Brain</span>
-          </span>
+          <Image src="/logo.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-lg shadow border-b-2 border-[#D4AF37]" />
         </div>
         <div className="flex items-center gap-4">
           <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-500 font-medium bg-white px-3 py-1.5 rounded-full border border-gray-100">

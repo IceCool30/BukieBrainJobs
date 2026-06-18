@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { motion } from 'motion/react';
 import { 
   ArrowLeft, 
@@ -159,11 +160,9 @@ export default function WalletPage() {
               <span>Back</span>
             </button>
             <div className="h-4 w-[1px] bg-gray-200"></div>
+            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow border-b-2 border-[#D4AF37]" />
             <div>
-              <span className="font-extrabold text-base block leading-none text-gray-900 tracking-tight">
-                Bukie<span className="text-[#006D44]">Fintech</span> Wallet
-              </span>
-              <span className="text-[9px] font-mono text-gray-400 font-bold uppercase tracking-wider">
+              <span className="text-[9px] font-mono text-gray-500 font-bold uppercase tracking-wider block mt-1">
                 Authorized Artisan Ledgers
               </span>
             </div>
