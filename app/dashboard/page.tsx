@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { User, LogOut, Briefcase, Hammer, RefreshCw, Wallet, Calendar, ShieldCheck, Sparkles } from 'lucide-react';
 import { FadeUp } from '@/components/FadeUp';
-
+import { FeedbackButton } from '@/components/FeedbackButton';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -311,6 +311,7 @@ export default function DashboardPage() {
           </FadeUp>
         </div>
       </div>
+      <FeedbackButton />
     </main>
   );
 }

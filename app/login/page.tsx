@@ -109,10 +109,10 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-4 pt-12 sm:pt-24 bg-white text-[#0A192F] relative">
+    <main className="flex min-h-screen flex-col items-center p-4 pt-20 sm:pt-28 pb-12 bg-white text-[#0A192F] relative">
       <button 
         onClick={() => router.back()} 
-        className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-gray-500 hover:text-[#0A192F] transition-colors font-medium text-sm sm:text-base"
+        className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-gray-500 hover:text-[#0A192F] transition-colors font-medium text-sm sm:text-base z-10"
       >
         <ArrowLeft className="w-5 h-5" />
         Back
@@ -126,7 +126,7 @@ export default function LoginPage() {
         </h1>
       </div>
 
-      <FadeUp delay={0.1} className="w-full max-w-md bg-white rounded-3xl border border-gray-200 overflow-hidden" id="login-wizard-card">
+      <FadeUp delay={0.1} className="w-full max-w-md bg-white rounded-3xl border border-gray-200 overflow-hidden flex-shrink-0" id="login-wizard-card">
         {step === 'identity_gateway' && (
           <div className="p-6 sm:p-8 space-y-6">
             <div>
@@ -269,6 +269,18 @@ export default function LoginPage() {
           </div>
         )}
       </FadeUp>
+
+      {/* Footer */}
+      <div className="mt-auto pt-16 text-center text-sm text-gray-500 font-medium">
+        <p className="mb-2">© {new Date().getFullYear()} BukieBrainJobs</p>
+        <div className="flex items-center justify-center gap-4 text-xs sm:text-sm">
+          <button className="hover:text-[#0A192F] transition-colors">About us</button>
+          <span className="text-gray-300">•</span>
+          <button className="hover:text-[#0A192F] transition-colors">Privacy Center</button>
+          <span className="text-gray-300">•</span>
+          <button className="hover:text-[#0A192F] transition-colors">Terms</button>
+        </div>
+      </div>
     </main>
   );
 }
