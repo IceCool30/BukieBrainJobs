@@ -130,9 +130,9 @@ export default function PublicPassportPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
+      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3" />
+          <Image src="/logo-primary.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Reading BukiePassport...
           </span>
@@ -143,7 +143,7 @@ export default function PublicPassportPage() {
 
   if (errorMsg) {
     return (
-      <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-12 px-4 flex flex-col items-center justify-center">
+      <main className="min-h-screen bg-white text-[#0A192F] py-12 px-4 flex flex-col items-center justify-center">
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -160,7 +160,7 @@ export default function PublicPassportPage() {
           <div className="mt-6">
             <button
               onClick={() => router.push('/dashboard')}
-              className="w-full bg-[#1A1C1E] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+              className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Marketplace</span>
@@ -178,7 +178,7 @@ export default function PublicPassportPage() {
   const hourlyRateDisplay = passport?.hourly_rate ? `₦${passport.hourly_rate.toLocaleString()}/hr` : 'Negotiable';
 
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-12 px-4 flex flex-col items-center justify-center relative">
+    <main className="min-h-screen bg-white text-[#0A192F] py-12 px-4 flex flex-col items-center justify-center relative">
       
       {/* Container wrapper mimicking physical card style */}
       <div className="w-full max-w-md" id="public-passport-wrapper">
@@ -213,15 +213,15 @@ export default function PublicPassportPage() {
           id="identity-passport-card"
         >
           {/* Top Banner accent */}
-          <div className="bg-[#1A1C1E] h-24 relative overflow-hidden flex items-center justify-between px-6">
-            <div className="absolute right-0 top-0 w-32 h-32 bg-[#D4AF37]/10 rounded-full blur-2xl"></div>
+          <div className="bg-[#0A192F] h-24 relative overflow-hidden flex items-center justify-between px-6">
+            <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/10 rounded-full blur-2xl"></div>
             <div className="text-white z-10 flex flex-col">
-              <span className="text-[10px] font-black uppercase font-mono tracking-widest text-[#D4AF37]">
+              <span className="text-[10px] font-black uppercase font-mono tracking-widest text-[#004D2C]">
                 BukieBrain Identity
               </span>
               <span className="text-xs text-gray-400 font-medium">Verified Local Artisan System</span>
             </div>
-            <div className="w-8 h-8 rounded-lg bg-[#006D44] border border-[#D4AF37]/50 flex items-center justify-center font-black text-white text-sm">
+            <div className="w-8 h-8 rounded-lg bg-[#0A192F] border border-[#004D2C]/50 flex items-center justify-center font-black text-white text-sm">
               B
             </div>
           </div>
@@ -230,7 +230,7 @@ export default function PublicPassportPage() {
             {/* Avatar Header block */}
             <div className="relative">
               {/* Profile Avatar Pill */}
-              <div id="worker-avatar" className="w-24 h-24 rounded-[24px] border-4 border-white bg-slate-100 shadow-md flex items-center justify-center text-[#006D44] text-4xl font-extrabold select-none">
+              <div id="worker-avatar" className="w-24 h-24 rounded-[24px] border-4 border-white bg-slate-100 shadow-md flex items-center justify-center text-[#0A192F] text-4xl font-extrabold select-none">
                 {workerName.charAt(0).toUpperCase()}
               </div>
 
@@ -257,7 +257,7 @@ export default function PublicPassportPage() {
                 )}
               </div>
               
-              <span className="block text-[11px] font-bold text-[#D4AF37] uppercase tracking-widest font-mono">
+              <span className="block text-[11px] font-bold text-[#004D2C] uppercase tracking-widest font-mono">
                 Artisan Specialist
               </span>
 
@@ -274,7 +274,7 @@ export default function PublicPassportPage() {
             <div className="w-full grid grid-cols-2 gap-4 text-center bg-gray-50 rounded-2xl p-4 border border-gray-100/80 mb-6">
               <div>
                 <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Baseline Rate</span>
-                <span className="text-lg font-black text-[#006D44] font-mono">{hourlyRateDisplay}</span>
+                <span className="text-lg font-black text-[#0A192F] font-mono">{hourlyRateDisplay}</span>
               </div>
               <div>
                 <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Active Status</span>
@@ -298,7 +298,7 @@ export default function PublicPassportPage() {
                   {skillsArray.map((skill: string, index: number) => (
                     <span 
                       key={index}
-                      className="text-xs text-[#006D44] bg-[#006D44]/5 border border-[#006D44]/10 font-bold px-3 py-1 rounded-xl uppercase tracking-wide"
+                      className="text-xs text-[#0A192F] bg-[#0A192F]/5 border border-[#0A192F]/10 font-bold px-3 py-1 rounded-xl uppercase tracking-wide"
                     >
                       {skill}
                     </span>
@@ -320,7 +320,7 @@ export default function PublicPassportPage() {
                   </div>
                   <button
                     onClick={() => router.push('/dashboard/passport')}
-                    className="w-full bg-[#1A1C1E] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+                    className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
                   >
                     <span>Edit Identity Profile</span>
                   </button>
@@ -349,7 +349,7 @@ export default function PublicPassportPage() {
                   {/* Reveal Trigger */}
                   <button
                     onClick={() => setShowRevealModal(true)}
-                    className="w-full bg-[#006D44] hover:bg-[#005a37] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer inline-flex items-center justify-center gap-1.5"
+                    className="w-full bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer inline-flex items-center justify-center gap-1.5"
                     id="reveal-contact-btn"
                   >
                     <Coins className="w-4 h-4 text-yellow-300" />
@@ -432,7 +432,7 @@ export default function PublicPassportPage() {
                 <button
                   type="button"
                   onClick={() => setShowRevealModal(false)}
-                  className="w-full bg-[#0s06D44] bg-[#006D44] hover:bg-[#005a37] text-white text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl transition-all cursor-pointer text-center"
+                  className="w-full bg-[#0s06D44] bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl transition-all cursor-pointer text-center"
                 >
                   Acknowledge
                 </button>

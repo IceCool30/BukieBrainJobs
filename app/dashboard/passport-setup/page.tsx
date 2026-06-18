@@ -95,9 +95,9 @@ export default function PassportSetupPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
+      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-2">
-          <Hammer className="w-8 h-8 animate-spin text-[#D4AF37]" />
+          <Hammer className="w-8 h-8 animate-spin text-[#004D2C]" />
           <span className="text-xs font-mono text-gray-500 font-semibold uppercase">Loading BukiePassport Builder...</span>
         </div>
       </main>
@@ -105,7 +105,7 @@ export default function PassportSetupPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] flex flex-col">
+    <main className="min-h-screen bg-white text-[#0A192F] flex flex-col">
       {/* Navbar header */}
       <nav className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm" id="passport-navbar">
         <div className="max-w-4xl mx-auto px-4 flex justify-between items-center h-16">
@@ -119,8 +119,8 @@ export default function PassportSetupPage() {
             <span>Dashboard</span>
           </button>
           
-          <div className="flex items-center gap-1.5 text-xs font-bold font-mono text-[#D4AF37] uppercase bg-amber-50 border border-amber-100 px-3 py-1 rounded-full">
-            <Star className="w-3.5 h-3.5 fill-[#D4AF37]" />
+          <div className="flex items-center gap-1.5 text-xs font-bold font-mono text-[#004D2C] uppercase bg-amber-50 border border-amber-100 px-3 py-1 rounded-full">
+            <Star className="w-3.5 h-3.5 fill-[#004D2C]" />
             <span>Score: 5.0</span>
           </div>
         </div>
@@ -129,9 +129,9 @@ export default function PassportSetupPage() {
       <div className="flex-1 max-w-2xl w-full mx-auto px-4 py-8" id="passport-content">
         {/* Header summary */}
         <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 mb-6 text-center relative overflow-hidden" id="passport-intro">
-          <div className="absolute right-0 top-0 w-24 h-24 bg-[#D4AF37]/5 rounded-full blur-xl"></div>
+          <div className="absolute right-0 top-0 w-24 h-24 bg-[#004D2C]/5 rounded-full blur-xl"></div>
           
-          <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-[#D4AF37] mx-auto mb-4 border border-amber-100">
+          <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-[#004D2C] mx-auto mb-4 border border-amber-100">
             <Hammer className="w-8 h-8" />
           </div>
           
@@ -155,7 +155,7 @@ export default function PassportSetupPage() {
                 required
                 rows={3}
                 placeholder="e.g. Experienced general plumber with 4 years serving the Surulere and Ikeja communities. Specialist in burst pipes, toilet maintenance, and water heater installations."
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#006D44] focus:border-transparent text-sm resize-none"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm resize-none"
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
               />
@@ -172,17 +172,17 @@ export default function PassportSetupPage() {
                 type="text"
                 required
                 placeholder="Plumbing, Leak Repair, Pipe Fitting, Water Installation"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#006D44] focus:border-transparent text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm"
                 value={skills}
                 onChange={(e) => setSkills(e.target.value)}
               />
             </div>
 
             {/* Blue check prompt placeholder */}
-            <div className="bg-[#1A1C1E] text-white p-4 rounded-xl border border-gray-800 flex items-center gap-3" id="blue-check-badge-ad">
-              <ShieldCheck className="w-10 h-10 text-[#D4AF37] shrink-0" />
+            <div className="bg-[#0A192F] text-white p-4 rounded-xl border border-gray-800 flex items-center gap-3" id="blue-check-badge-ad">
+              <ShieldCheck className="w-10 h-10 text-[#004D2C] shrink-0" />
               <div>
-                <span className="block text-xs font-extrabold text-[#D4AF37] uppercase tracking-wider font-mono">Blue Check Passport Verify</span>
+                <span className="block text-xs font-extrabold text-[#004D2C] uppercase tracking-wider font-mono">Blue Check Passport Verify</span>
                 <span className="block text-[10px] text-gray-400 leading-normal mt-0.5">
                   Unlock the Blue Check trusted badge for ₦1,500/year to rank list first for urgent alerts and land gigs 3.5x faster.
                 </span>
@@ -198,8 +198,8 @@ export default function PassportSetupPage() {
             )}
 
             {message && (
-              <div className="flex items-start gap-2 bg-green-50 text-[#006D44] p-3 rounded-xl text-xs border border-green-100" id="passport-message">
-                <Sparkles className="w-4 h-4 text-[#D4AF37] shrink-0 animate-pulse" />
+              <div className="flex items-start gap-2 bg-green-50 text-[#0A192F] p-3 rounded-xl text-xs border border-green-100" id="passport-message">
+                <Sparkles className="w-4 h-4 text-[#004D2C] shrink-0 animate-pulse" />
                 <span>{message}</span>
               </div>
             )}
@@ -209,7 +209,7 @@ export default function PassportSetupPage() {
               id="passport-save-btn"
               type="submit"
               disabled={saving}
-              className="w-full bg-[#006D44] text-white py-3 px-4 rounded-xl font-bold uppercase tracking-wider text-xs shadow-md hover:bg-[#005a37] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="w-full bg-[#0A192F] text-white py-3 px-4 rounded-xl font-bold uppercase tracking-wider text-xs shadow-md hover:bg-[#112a4f] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               {saving ? (
                 <span>Saving details...</span>

@@ -127,8 +127,10 @@ export default function JobsPage() {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div className="h-5 w-[1px] bg-gray-300 hidden sm:block"></div>
-            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow-sm border border-gray-200" />
-            <span className="font-extrabold text-xl tracking-tight text-[#0A192F] hidden sm:block">BukieBrainJobs</span>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center gap-2 p-1.5 shrink-0">
+              <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow-sm border border-gray-200 bg-white p-[2px]" />
+              <span className="font-extrabold text-xl tracking-tight text-[#0A192F] hidden sm:block pr-2">BukieBrainJobs</span>
+            </div>
           </div>
           <div>
             <button
@@ -343,7 +345,7 @@ export default function JobsPage() {
               // Empty state when nothing is selected
               <div className="hidden md:flex flex-col items-center justify-center h-full p-12 text-center">
                 <div className="w-32 h-32 mb-6">
-                  <Image src="/logo.png" alt="Select Job" width={128} height={128} className="opacity-10 grayscale" />
+                  <Image src="/logo-primary.png" alt="Select Job" width={128} height={128} className="opacity-10 grayscale bg-white p-[2px]" />
                 </div>
                 <h2 className="text-[#0A192F] font-bold text-xl mb-2">Select a job to view details</h2>
                 <p className="text-gray-500 max-w-sm">Click on any job card from the list on the left to see the full description, requirements, and apply.</p>

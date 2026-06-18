@@ -148,9 +148,9 @@ export default function PassportEditorPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
+      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3" />
+          <Image src="/logo-primary.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Retrieving BukiePassport state...
           </span>
@@ -162,7 +162,7 @@ export default function PassportEditorPage() {
   // Role Gate UI: If not a worker
   if (profile && profile.role !== 'worker') {
     return (
-      <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-12 px-4 flex flex-col items-center justify-center">
+      <main className="min-h-screen bg-white text-[#0A192F] py-12 px-4 flex flex-col items-center justify-center">
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -179,7 +179,7 @@ export default function PassportEditorPage() {
           <div className="mt-6">
             <button
               onClick={() => router.push('/dashboard')}
-              className="w-full bg-[#1A1C1E] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+              className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Dashboard</span>
@@ -191,7 +191,7 @@ export default function PassportEditorPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-8 px-4 flex flex-col items-center justify-center relative">
+    <main className="min-h-screen bg-white text-[#0A192F] py-8 px-4 flex flex-col items-center justify-center relative">
       <div className="w-full max-w-2xl" id="passport-editor-container">
         
         {/* Back Link */}
@@ -222,7 +222,7 @@ export default function PassportEditorPage() {
               <p className="text-sm text-gray-500 mt-2 max-w-sm">
                 Your credentials and identity are now securely synchronized across local guilds and Telegram notifications.
               </p>
-              <div className="mt-4 flex items-center gap-2 text-xs font-mono font-semibold uppercase text-[#006D44] bg-[#006D44]/5 px-3 py-1.5 rounded-lg">
+              <div className="mt-4 flex items-center gap-2 text-xs font-mono font-semibold uppercase text-[#0A192F] bg-[#0A192F]/5 px-3 py-1.5 rounded-lg">
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 <span>Saving identity updates...</span>
               </div>
@@ -238,15 +238,15 @@ export default function PassportEditorPage() {
             id="passport-editor-card"
           >
             {/* Header branding */}
-            <div className="bg-[#1A1C1E] text-white p-6 md:p-8 relative overflow-hidden">
-              <div className="absolute right-0 top-0 w-32 h-32 bg-[#D4AF37]/10 rounded-full blur-2xl"></div>
+            <div className="bg-[#0A192F] text-white p-6 md:p-8 relative overflow-hidden">
+              <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/10 rounded-full blur-2xl"></div>
               <div className="flex items-center gap-3">
-                <Image src="/logo.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border border-[#D4AF37]/50" />
+                <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border border-[#004D2C]/50 bg-white p-[2px]" />
                 <div>
                   <h1 className="text-xl md:text-2xl font-extrabold tracking-tight">
                     Edit BukiePassport
                   </h1>
-                  <span className="text-[10px] uppercase font-mono tracking-widest text-[#D4AF37] font-semibold flex items-center gap-1.5">
+                  <span className="text-[10px] uppercase font-mono tracking-widest text-[#004D2C] font-semibold flex items-center gap-1.5">
                     <Sparkles className="w-3 h-3 fill-amber-500 stroke-none animate-pulse" />
                     Professional Worker ID
                   </span>
@@ -267,7 +267,7 @@ export default function PassportEditorPage() {
               
               {/* Profile Details Header Block */}
               <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 flex items-center gap-3">
-                <div className="w-12 h-12 bg-[#006D44]/10 rounded-xl flex items-center justify-center text-[#006D44] font-black text-lg">
+                <div className="w-12 h-12 bg-[#0A192F]/10 rounded-xl flex items-center justify-center text-[#0A192F] font-black text-lg">
                   {profile?.full_name?.charAt(0).toUpperCase() || 'W'}
                 </div>
                 <div>
@@ -288,7 +288,7 @@ export default function PassportEditorPage() {
                   placeholder="e.g. Professional certified electrician with 5+ years of practical experience in industrial cabling, generator servicing, and domestic safety systems."
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium resize-none shadow-sm"
+                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium resize-none shadow-sm"
                 />
                 <span className="text-[10px] text-gray-400 mt-1 block">Describe your specialties, general location served, and specific skills to win jobs easily.</span>
               </div>
@@ -305,7 +305,7 @@ export default function PassportEditorPage() {
                   placeholder="e.g. Wiring, Generator repair, AC installation, Plumbing"
                   value={skills}
                   onChange={(e) => setSkills(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium shadow-sm"
+                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium shadow-sm"
                 />
                 <span className="text-[10px] text-gray-400 mt-1 block">List distinct skill sets workers can search on. Separate multiple entries with commas.</span>
               </div>
@@ -327,7 +327,7 @@ export default function PassportEditorPage() {
                     placeholder="e.g. 2500"
                     value={hourlyRate}
                     onChange={(e) => setHourlyRate(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-sm pl-9 pr-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-mono font-semibold shadow-sm"
+                    className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm pl-9 pr-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-mono font-semibold shadow-sm"
                   />
                 </div>
                 <span className="text-[10px] text-gray-400 mt-1 block">Your baseline pricing per hour of onsite artisanal work.</span>
@@ -348,7 +348,7 @@ export default function PassportEditorPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="w-full sm:w-auto min-w-[180px] flex items-center justify-center gap-2 bg-[#006D44] hover:bg-[#005a37] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer disabled:opacity-50"
+                  className="w-full sm:w-auto min-w-[180px] flex items-center justify-center gap-2 bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer disabled:opacity-50"
                   id="save-passport-btn"
                 >
                   {saving ? (

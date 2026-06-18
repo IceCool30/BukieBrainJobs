@@ -79,20 +79,20 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-[#F4F5F7] text-[#1A1C1E]">
+    <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-white text-[#0A192F]">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden" id="login-card">
         {/* Brand Header */}
-        <div className="bg-[#1A1C1E] p-8 text-center relative overflow-hidden" id="login-brand-header">
+        <div className="bg-[#0A192F] p-8 text-center relative overflow-hidden" id="login-brand-header">
           {/* Decorative Pattern */}
-          <div className="absolute top-0 right-0 w-24 h-24 bg-[#006D44] opacity-20 rounded-full blur-xl"></div>
-          <div className="absolute bottom-0 left-0 w-16 h-16 bg-[#D4AF37] opacity-20 rounded-full blur-lg"></div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-[#0A192F] opacity-20 rounded-full blur-xl"></div>
+          <div className="absolute bottom-0 left-0 w-16 h-16 bg-[#004D2C] opacity-20 rounded-full blur-lg"></div>
 
           <div className="flex justify-center items-center gap-2 mb-2">
             {/* Logo structure: 3D "B" representation utilizing inline design */}
-            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#D4AF37]" />
-            <span className="text-2xl font-black text-[#006D44] tracking-tight">
-              BukieBrainJobs
-            </span>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center gap-2 p-1.5 w-fit">
+              <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#004D2C] bg-white p-[2px]" />
+              <span className="text-2xl font-black text-[#0A192F] tracking-tight">BukieBrainJobs</span>
+            </div>
           </div>
           <p className="text-gray-400 text-xs tracking-wide uppercase font-semibold">
             Nigeria&apos;s &quot;Sachet&quot; Job Marketplace
@@ -107,7 +107,7 @@ export default function LoginPage() {
               type="button"
               className={`flex-1 pb-3 text-center text-sm font-semibold border-b-2 transition-all ${
                 !isSignUp
-                  ? 'border-[#006D44] text-[#006D44]'
+                  ? 'border-[#0A192F] text-[#0A192F]'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => {
@@ -123,7 +123,7 @@ export default function LoginPage() {
               type="button"
               className={`flex-1 pb-3 text-center text-sm font-semibold border-b-2 transition-all ${
                 isSignUp
-                  ? 'border-[#006D44] text-[#006D44]'
+                  ? 'border-[#0A192F] text-[#0A192F]'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => {
@@ -148,7 +148,7 @@ export default function LoginPage() {
                   type="text"
                   required
                   placeholder="e.g. Kola Adesina"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#006D44] focus:border-transparent text-sm"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                 />
@@ -165,7 +165,7 @@ export default function LoginPage() {
                 type="email"
                 required
                 placeholder="you@example.com"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#006D44] focus:border-transparent text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -181,7 +181,7 @@ export default function LoginPage() {
                 type="password"
                 required
                 placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#006D44] focus:border-transparent text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -196,8 +196,8 @@ export default function LoginPage() {
             )}
 
             {message && (
-              <div className="flex items-start gap-2 bg-green-50 text-[#006D44] p-3 rounded-xl text-xs border border-green-100" id="login-message">
-                <Sparkles className="w-4 h-4 shrink-0 text-[#D4AF37]" />
+              <div className="flex items-start gap-2 bg-green-50 text-[#0A192F] p-3 rounded-xl text-xs border border-green-100" id="login-message">
+                <Sparkles className="w-4 h-4 shrink-0 text-[#004D2C]" />
                 <span>{message}</span>
               </div>
             )}
@@ -207,7 +207,7 @@ export default function LoginPage() {
               id="get-started-submit-btn"
               type="submit"
               disabled={loading}
-              className="w-full bg-[#006D44] text-white py-3 px-4 rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-green-900/10 hover:bg-[#005a37] transition-all duration-150 disabled:opacity-50 flex items-center justify-center gap-2 mt-4 cursor-pointer"
+              className="w-full bg-[#0A192F] text-white py-3 px-4 rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-green-900/10 hover:bg-[#112a4f] transition-all duration-150 disabled:opacity-50 flex items-center justify-center gap-2 mt-4 cursor-pointer"
             >
               {loading ? (
                 <span>Loading...</span>

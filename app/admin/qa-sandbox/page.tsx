@@ -202,9 +202,9 @@ export default function QASandboxPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
+      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3" />
+          <Image src="/logo-primary.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Accessing sandbox terminal...
           </span>
@@ -215,7 +215,7 @@ export default function QASandboxPage() {
 
   if (!authorized) {
     return (
-      <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-12 px-4 flex flex-col items-center justify-center">
+      <main className="min-h-screen bg-white text-[#0A192F] py-12 px-4 flex flex-col items-center justify-center">
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -237,7 +237,7 @@ export default function QASandboxPage() {
           <div className="mt-6">
             <button
               onClick={() => router.push('/dashboard')}
-              className="w-full bg-[#1A1C1E] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+              className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to safety</span>
@@ -249,7 +249,7 @@ export default function QASandboxPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-8 px-4 flex flex-col font-sans">
+    <main className="min-h-screen bg-white text-[#0A192F] py-8 px-4 flex flex-col font-sans">
       <div className="max-w-4xl w-full mx-auto space-y-6" id="qa-sandbox-panel-container">
         
         {/* Navigation Action */}
@@ -262,7 +262,7 @@ export default function QASandboxPage() {
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             <span>Admin Control Panel</span>
           </button>
-          <span className="text-[10px] uppercase font-mono tracking-widest text-[#006D44] font-black flex items-center gap-1.5 bg-green-50 px-3 py-1.5 rounded-lg border border-green-200">
+          <span className="text-[10px] uppercase font-mono tracking-widest text-[#0A192F] font-black flex items-center gap-1.5 bg-green-50 px-3 py-1.5 rounded-lg border border-green-200">
             <ShieldCheck className="w-4 h-4" />
             <span>CEO Mode Authorized</span>
           </span>
@@ -307,7 +307,7 @@ export default function QASandboxPage() {
           <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between" id="sandbox-db-probe-card">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="p-2.5 bg-green-50 text-[#006D44] border border-green-100 rounded-xl">
+                <div className="p-2.5 bg-green-50 text-[#0A192F] border border-green-100 rounded-xl">
                   <Database className="w-5 h-5" />
                 </div>
                 <div>
@@ -322,7 +322,7 @@ export default function QASandboxPage() {
 
             <div className="space-y-4">
               {dbTestLogs.length > 0 && (
-                <div className="bg-[#1A1C1E] p-3 rounded-xl border border-gray-800 text-[10px] text-gray-400 font-mono space-y-1.5 h-36 overflow-y-auto block leading-normal">
+                <div className="bg-[#0A192F] p-3 rounded-xl border border-gray-800 text-[10px] text-gray-400 font-mono space-y-1.5 h-36 overflow-y-auto block leading-normal">
                   <div className="text-gray-500 uppercase font-bold border-b border-gray-800 pb-1 flex justify-between items-center">
                     <span>Terminal console logs:</span>
                     <Terminal className="w-3.5 h-3.5" />
@@ -336,7 +336,7 @@ export default function QASandboxPage() {
               <button
                 onClick={runLiveDatabaseConnectivityTest}
                 disabled={dbTesting}
-                className="w-full bg-[#006D44] hover:bg-[#005233] disabled:bg-gray-200 text-white text-xs font-bold uppercase tracking-wider py-3.5 px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+                className="w-full bg-[#0A192F] hover:bg-[#112a4f] disabled:bg-gray-200 text-white text-xs font-bold uppercase tracking-wider py-3.5 px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm"
                 id="sandbox-db-trigger"
               >
                 {dbTesting ? (
@@ -412,7 +412,7 @@ export default function QASandboxPage() {
               <button
                 onClick={testActiveEnvironmentVariables}
                 disabled={envLoading}
-                className="w-full bg-[#1A1C1E] hover:bg-[#333537] disabled:bg-gray-200 text-white text-xs font-bold uppercase tracking-wider py-3.5 px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+                className="w-full bg-[#0A192F] hover:bg-[#333537] disabled:bg-gray-200 text-white text-xs font-bold uppercase tracking-wider py-3.5 px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm"
                 id="sandbox-env-trigger"
               >
                 {envLoading ? (

@@ -151,9 +151,9 @@ export default function PostJobPage() {
 
   if (authChecking) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
+      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3" />
+          <Image src="/logo-primary.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Checking permission...
           </span>
@@ -163,7 +163,7 @@ export default function PostJobPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-8 px-4 flex flex-col justify-center items-center relative">
+    <main className="min-h-screen bg-white text-[#0A192F] py-8 px-4 flex flex-col justify-center items-center relative">
       <div className="w-full max-w-2xl" id="post-job-container">
         
         {/* Back Link */}
@@ -194,7 +194,7 @@ export default function PostJobPage() {
               <p className="text-sm text-gray-500 mt-2 max-w-sm">
                 Your job description is now online. Workers in {selectedLga}, {selectedState} have been notified.
               </p>
-              <div className="mt-4 flex items-center gap-2 text-xs font-mono font-semibold uppercase text-[#006D44] bg-[#006D44]/5 px-3 py-1.5 rounded-lg">
+              <div className="mt-4 flex items-center gap-2 text-xs font-mono font-semibold uppercase text-[#0A192F] bg-[#0A192F]/5 px-3 py-1.5 rounded-lg">
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 <span>Redirecting back...</span>
               </div>
@@ -210,15 +210,15 @@ export default function PostJobPage() {
             id="post-job-form-card"
           >
             {/* Header branding */}
-            <div className="bg-[#1A1C1E] text-white p-6 md:p-8 relative overflow-hidden">
-              <div className="absolute right-0 top-0 w-32 h-32 bg-[#D4AF37]/5 rounded-full blur-2xl"></div>
+            <div className="bg-[#0A192F] text-white p-6 md:p-8 relative overflow-hidden">
+              <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/5 rounded-full blur-2xl"></div>
               <div className="flex items-center gap-3">
-                <Image src="/logo.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border border-[#D4AF37]/50" />
+                <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border border-[#004D2C]/50 bg-white p-[2px]" />
                 <div>
                   <h1 className="text-xl md:text-2xl font-extrabold tracking-tight">
                     Post a New Job
                   </h1>
-                  <span className="text-[10px] uppercase font-mono tracking-widest text-[#D4AF37] font-semibold">
+                  <span className="text-[10px] uppercase font-mono tracking-widest text-[#004D2C] font-semibold">
                     BukieBrain Marketplace
                   </span>
                 </div>
@@ -246,7 +246,7 @@ export default function PostJobPage() {
                   placeholder="e.g. Broken Pipes in Kitchen / Academic Lesson Teacher"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium"
+                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium"
                 />
               </div>
 
@@ -261,7 +261,7 @@ export default function PostJobPage() {
                   placeholder="Describe the nature of the work, expected results, specific tools if any, or general instructions..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium resize-none"
+                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium resize-none"
                 />
               </div>
 
@@ -282,7 +282,7 @@ export default function PostJobPage() {
                       placeholder="e.g. 15000"
                       value={budget}
                       onChange={(e) => setBudget(e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-sm pl-9 pr-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-mono font-semibold"
+                      className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm pl-9 pr-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-mono font-semibold"
                     />
                   </div>
                 </div>
@@ -294,7 +294,7 @@ export default function PostJobPage() {
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
+                    className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
                   >
                     <option value="Plumbing">Plumbing</option>
                     <option value="Electrical">Electrical</option>
@@ -338,7 +338,7 @@ export default function PostJobPage() {
                   <select
                     value={selectedState}
                     onChange={(e) => setSelectedState(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
+                    className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
                   >
                     {Object.keys(locationData).map((state) => (
                       <option key={state} value={state}>{state}</option>
@@ -353,7 +353,7 @@ export default function PostJobPage() {
                   <select
                     value={selectedLga}
                     onChange={(e) => setSelectedLga(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
+                    className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
                   >
                     {(locationData[selectedState] || []).map((lga) => (
                       <option key={lga} value={lga}>{lga}</option>
@@ -370,7 +370,7 @@ export default function PostJobPage() {
                 <select
                   value={jobType}
                   onChange={(e) => setJobType(e.target.value as any)}
-                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
+                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
                 >
                   <option value="task">Task (One-time)</option>
                   <option value="contract">Contract (Freelance)</option>
@@ -438,7 +438,7 @@ export default function PostJobPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full sm:w-auto min-w-[180px] flex items-center justify-center gap-2 bg-[#006D44] hover:bg-[#005a37] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full sm:w-auto min-w-[180px] flex items-center justify-center gap-2 bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   id="submit-job-post-btn"
                 >
                   {loading ? (
@@ -517,7 +517,7 @@ export default function PostJobPage() {
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="text-lg font-black text-[#006D44] font-mono">
+                    <span className="text-lg font-black text-[#0A192F] font-mono">
                       ₦1,000
                     </span>
                   </div>

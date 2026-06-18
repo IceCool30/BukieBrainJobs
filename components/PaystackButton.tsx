@@ -66,7 +66,7 @@ export default function PaystackButton({
       type="button"
       id={id || `paystack-trigger-btn`}
       onClick={handlePay}
-      className={`w-full bg-[#D4AF37] hover:bg-[#c29f2f] text-gray-950 text-xs font-extrabold uppercase tracking-widest py-3 px-6 rounded-xl transition-all shadow-md shadow-amber-950/20 cursor-pointer flex items-center justify-center gap-2 ${className}`}
+      className={`w-full bg-[#004D2C] hover:bg-[#003a21] text-gray-950 text-xs font-extrabold uppercase tracking-widest py-3 px-6 rounded-xl transition-all shadow-md shadow-amber-950/20 cursor-pointer flex items-center justify-center gap-2 ${className}`}
     >
       <CreditCard className="w-4 h-4 shrink-0 stroke-2" />
       <span>{text}</span>

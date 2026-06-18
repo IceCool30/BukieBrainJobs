@@ -54,7 +54,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] flex flex-col font-sans selection:bg-[#006D44] selection:text-white overflow-x-hidden">
+    <main className="min-h-screen bg-white text-[#0A192F] flex flex-col font-sans selection:bg-[#0A192F] selection:text-white overflow-x-hidden">
       
       {/* 1. TOP NAV BAR */}
       <header className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-gray-100 px-4 py-3.5 transition-all">
@@ -66,10 +66,10 @@ export default function Home() {
             className="flex items-center gap-2 cursor-pointer group"
             id="nav-logo-btn"
           >
-            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={36} height={36} className="rounded-xl shadow-md border-b-2 border-[#D4AF37] transition-transform group-hover:scale-105 duration-200" />
-            <span className="text-xl font-black text-[#006D44] tracking-tight">
-              BukieBrainJobs
-            </span>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center gap-2 p-1.5 w-fit">
+              <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={36} height={36} className="rounded-xl shadow-md border-b-2 border-[#004D2C] transition-transform group-hover:scale-105 duration-200 bg-white p-[2px]" />
+              <span className="text-xl font-black text-[#0A192F] tracking-tight">BukieBrainJobs</span>
+            </div>
           </div>
 
           {/* Quick Action links */}
@@ -88,7 +88,7 @@ export default function Home() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleNavigation('/dashboard')}
-                  className="bg-[#006D44] hover:bg-[#005a37] text-white text-[11px] font-bold uppercase tracking-wider py-2 px-4 rounded-xl shadow-sm transition-all cursor-pointer flex items-center gap-1.5"
+                  className="bg-[#0A192F] hover:bg-[#112a4f] text-white text-[11px] font-bold uppercase tracking-wider py-2 px-4 rounded-xl shadow-sm transition-all cursor-pointer flex items-center gap-1.5"
                   id="nav-dashboard-user"
                 >
                   <UserCheck className="w-3.5 h-3.5" />
@@ -97,10 +97,10 @@ export default function Home() {
                 {sessionUser.email?.toLowerCase() === 'solomonogarbukie@gmail.com' && (
                   <button
                     onClick={() => handleNavigation('/admin/qa-sandbox')}
-                    className="bg-[#1A1C1E] hover:bg-gray-800 text-white text-[10px] font-mono tracking-wider py-2 px-3 rounded-xl transition-all cursor-pointer hidden sm:inline-flex items-center gap-1"
+                    className="bg-[#0A192F] hover:bg-gray-800 text-white text-[10px] font-mono tracking-wider py-2 px-3 rounded-xl transition-all cursor-pointer hidden sm:inline-flex items-center gap-1"
                     id="nav-sandbox-direct"
                   >
-                    <Lock className="w-3 h-3 text-[#D4AF37]" />
+                    <Lock className="w-3 h-3 text-[#004D2C]" />
                     <span>QA Sandbox</span>
                   </button>
                 )}
@@ -108,7 +108,7 @@ export default function Home() {
             ) : (
               <button
                 onClick={() => handleNavigation('/login')}
-                className="bg-[#1A1C1E] hover:bg-gray-800 text-white text-[11px] font-bold uppercase tracking-wider py-2 px-4.5 rounded-xl shadow-sm transition-all cursor-pointer"
+                className="bg-[#0A192F] hover:bg-gray-800 text-white text-[11px] font-bold uppercase tracking-wider py-2 px-4.5 rounded-xl shadow-sm transition-all cursor-pointer"
                 id="nav-login-btn"
               >
                 Sign In
@@ -122,8 +122,8 @@ export default function Home() {
       {/* 2. HERO SPLASH STAGE */}
       <section className="relative py-16 px-4 bg-gradient-to-b from-white to-[#F4F5F7] border-b border-gray-100 overflow-hidden" id="hero-section">
         {/* Dynamic Abstract Background Elements */}
-        <div className="absolute top-20 right-[-10%] w-[450px] h-[450px] bg-[#006D44]/5 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-10 left-[-10%] w-[350px] h-[350px] bg-[#D4AF37]/5 rounded-full blur-[80px] pointer-events-none" />
+        <div className="absolute top-20 right-[-10%] w-[450px] h-[450px] bg-[#0A192F]/5 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-10 left-[-10%] w-[350px] h-[350px] bg-[#004D2C]/5 rounded-full blur-[80px] pointer-events-none" />
 
         <div className="max-w-5xl mx-auto text-center relative z-10 space-y-6">
           
@@ -132,10 +132,10 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-1.5 bg-green-50 border border-green-200 text-[#006D44] text-[10.5px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-xs"
+            className="inline-flex items-center gap-1.5 bg-green-50 border border-green-200 text-[#0A192F] text-[10.5px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-xs"
             id="badge-pwa-telegram"
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#D4AF37] fill-[#D4AF37]" />
+            <Sparkles className="w-3.5 h-3.5 text-[#004D2C] fill-[#004D2C]" />
             <span>Dual Bot Integration • Telegram &amp; WhatsApp Live PWA</span>
           </motion.div>
 
@@ -148,7 +148,7 @@ export default function Home() {
             id="hero-title"
           >
             Nigeria&apos;s Premium <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#006D44] via-[#005233] to-[#D4AF37]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0A192F] via-[#112a4f] to-[#004D2C]">
               &quot;Sachet&quot; Job Marketplace
             </span>
           </motion.h1>
@@ -174,7 +174,7 @@ export default function Home() {
           >
             <button
               onClick={() => handleNavigation('/jobs')}
-              className="w-full sm:w-auto bg-[#006D44] hover:bg-[#005233] text-white text-xs font-extrabold uppercase tracking-widest py-4 px-8 rounded-xl transition-all shadow-md shadow-green-900/10 flex items-center justify-center gap-2 cursor-pointer group"
+              className="w-full sm:w-auto bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-widest py-4 px-8 rounded-xl transition-all shadow-md shadow-green-900/10 flex items-center justify-center gap-2 cursor-pointer group"
               id="primary-explore-btn"
             >
               <span>Explore Marketplace</span>
@@ -183,10 +183,10 @@ export default function Home() {
 
             <button
               onClick={() => handleNavigation('/dashboard')}
-              className="w-full sm:w-auto bg-white hover:bg-gray-50 text-[#1A1C1E] border border-gray-200 text-xs font-extrabold uppercase tracking-widest py-4 px-8 rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full sm:w-auto bg-white hover:bg-gray-50 text-[#0A192F] border border-gray-200 text-xs font-extrabold uppercase tracking-widest py-4 px-8 rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
               id="primary-post-btn"
             >
-              <Briefcase className="w-4 h-4 text-[#006D44]" />
+              <Briefcase className="w-4 h-4 text-[#0A192F]" />
               <span>Post A &quot;Sachet&quot; Job</span>
             </button>
           </motion.div>
@@ -197,7 +197,7 @@ export default function Home() {
       {/* 3. CORE VALUE CHANNELS - INTERACTIVE MATRIX */}
       <section className="py-16 px-4 max-w-7xl mx-auto space-y-12" id="marketplace-value-grid">
         <div className="text-center space-y-2">
-          <span className="text-[10px] font-bold text-[#006D44] uppercase tracking-widest">Architectural Advantage</span>
+          <span className="text-[10px] font-bold text-[#0A192F] uppercase tracking-widest">Architectural Advantage</span>
           <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">Elegantly Packaged Performance</h2>
         </div>
 
@@ -206,7 +206,7 @@ export default function Home() {
           {/* Card 1: Sachet Micro-tasking */}
           <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between" id="value-sachet-card">
             <div className="space-y-3">
-              <div className="w-10 h-10 bg-green-50 text-[#006D44] rounded-xl flex items-center justify-center border border-green-100 shadow-xs">
+              <div className="w-10 h-10 bg-green-50 text-[#0A192F] rounded-xl flex items-center justify-center border border-green-100 shadow-xs">
                 <Zap className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-bold uppercase text-gray-950 tracking-tight">The &quot;Sachet&quot; Model</h3>
@@ -222,7 +222,7 @@ export default function Home() {
           {/* Card 2: Interactive Real-time Bots */}
           <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between" id="value-bots-card">
             <div className="space-y-3">
-              <div className="w-10 h-10 bg-amber-50 text-[#D4AF37] rounded-xl flex items-center justify-center border border-amber-100 shadow-xs">
+              <div className="w-10 h-10 bg-amber-50 text-[#004D2C] rounded-xl flex items-center justify-center border border-amber-100 shadow-xs">
                 <Send className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-bold uppercase text-gray-950 tracking-tight">Full-Duplex Bot Routing</h3>
@@ -260,7 +260,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           
           <div className="space-y-5">
-            <div className="inline-block bg-[#006D44]/10 text-[#006D44] font-black font-mono text-[9px] uppercase tracking-widest px-3 py-1 rounded">
+            <div className="inline-block bg-[#0A192F]/10 text-[#0A192F] font-black font-mono text-[9px] uppercase tracking-widest px-3 py-1 rounded">
               Omnichannel Broadcasting
             </div>
             <h2 className="text-3xl font-black text-gray-900 tracking-tight">
@@ -280,7 +280,7 @@ export default function Home() {
           </div>
 
           {/* Interactive Telegram Simulator Mockup */}
-          <div className="bg-[#1A1C1E] text-white p-5 rounded-3xl shadow-xl border border-gray-800 relative" id="flyer-mockup-wrapper">
+          <div className="bg-[#0A192F] text-white p-5 rounded-3xl shadow-xl border border-gray-800 relative" id="flyer-mockup-wrapper">
             <div className="absolute top-3 right-3 flex gap-1.5">
               <span className="w-2.5 h-2.5 bg-red-500 rounded-full" />
               <span className="w-2.5 h-2.5 bg-yellow-500 rounded-full" />
@@ -293,7 +293,7 @@ export default function Home() {
               </div>
               <div>
                 <div className="text-xs font-bold">BukieBrainJobs Bot</div>
-                <div className="text-[9px] text-[#006D44] font-bold uppercase tracking-wider">● Broadcasting Live</div>
+                <div className="text-[9px] text-[#0A192F] font-bold uppercase tracking-wider">● Broadcasting Live</div>
               </div>
             </div>
 
@@ -323,27 +323,27 @@ export default function Home() {
       </section>
 
       {/* 5. ACTIVE MARKET STATS AND DIRECT STEPS */}
-      <section className="py-16 px-4 bg-[#F4F5F7] max-w-7xl mx-auto space-y-12" id="instructions-section">
+      <section className="py-16 px-4 bg-white max-w-7xl mx-auto space-y-12" id="instructions-section">
         <div className="text-center space-y-1 max-w-lg mx-auto">
-          <span className="text-[10px] font-bold text-[#006D44] uppercase tracking-widest font-mono">Operations Layout</span>
+          <span className="text-[10px] font-bold text-[#0A192F] uppercase tracking-widest font-mono">Operations Layout</span>
           <h2 className="text-xl font-bold tracking-tight">How It Works in 3 Quick Steps</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
           <div className="space-y-2 bg-white p-6 rounded-2xl border border-gray-100">
-            <div className="w-7 h-7 bg-[#1A1C1E] text-[#D4AF37] rounded-full flex items-center justify-center font-bold text-xs mx-auto">1</div>
+            <div className="w-7 h-7 bg-[#0A192F] text-[#004D2C] rounded-full flex items-center justify-center font-bold text-xs mx-auto">1</div>
             <h3 className="text-xs font-black uppercase tracking-wider text-gray-900">Post A Micro-task</h3>
             <p className="text-xs text-gray-400 leading-relaxed">Define what you need repaired or done, specify the LGA location, and pay the low scale inspection deposit.</p>
           </div>
 
           <div className="space-y-2 bg-white p-6 rounded-2xl border border-gray-100">
-            <div className="w-7 h-7 bg-[#1A1C1E] text-[#D4AF37] rounded-full flex items-center justify-center font-bold text-xs mx-auto">2</div>
+            <div className="w-7 h-7 bg-[#0A192F] text-[#004D2C] rounded-full flex items-center justify-center font-bold text-xs mx-auto">2</div>
             <h3 className="text-xs font-black uppercase tracking-wider text-gray-900">Immediate Bot Push</h3>
             <p className="text-xs text-gray-400 leading-relaxed">The system formats digital flyer parameters, then broadcasts them directly to WhatsApp groups and Telegram.</p>
           </div>
 
           <div className="space-y-2 bg-white p-6 rounded-2xl border border-gray-100">
-            <div className="w-7 h-7 bg-[#1A1C1E] text-[#D4AF37] rounded-full flex items-center justify-center font-bold text-xs mx-auto">3</div>
+            <div className="w-7 h-7 bg-[#0A192F] text-[#004D2C] rounded-full flex items-center justify-center font-bold text-xs mx-auto">3</div>
             <h3 className="text-xs font-black uppercase tracking-wider text-gray-900">Approve &amp; Close</h3>
             <p className="text-xs text-gray-400 leading-relaxed">Review incoming candidates, complete instant messaging matches, audit progress, and release the escrow funds.</p>
           </div>
@@ -351,15 +351,15 @@ export default function Home() {
       </section>
 
       {/* 6. SYSTEM FOOTER */}
-      <footer className="mt-auto bg-[#1A1C1E] text-white py-12 px-4 border-t border-gray-800" id="landing-footer">
+      <footer className="mt-auto bg-[#0A192F] text-white py-12 px-4 border-t border-gray-800" id="landing-footer">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           
           <div className="space-y-2 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2">
-              <Image src="/logo.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow-md border border-[#D4AF37]" />
-              <span className="text-lg font-black tracking-tight text-[#006D44]">
-                BukieBrainJobs
-              </span>
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center gap-2 p-1.5 w-fit">
+              <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow-md border border-[#004D2C] bg-white p-[2px]" />
+              <span className="text-lg font-black tracking-tight text-[#0A192F]">BukieBrainJobs</span>
+            </div>
             </div>
             <p className="text-[11px] text-gray-400 font-medium">
               Nigeria&apos;s Sachet Job Platform • Integrated with Telegram &amp; WhatsApp Webhook Web Engine

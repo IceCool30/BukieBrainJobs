@@ -149,9 +149,9 @@ export default function CEOAdminPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
+      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3" />
+          <Image src="/logo-primary.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Authorizing security clearance...
           </span>
@@ -163,7 +163,7 @@ export default function CEOAdminPage() {
   // Gates non-CEO email accounts
   if (!authorized) {
     return (
-      <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-12 px-4 flex flex-col items-center justify-center">
+      <main className="min-h-screen bg-white text-[#0A192F] py-12 px-4 flex flex-col items-center justify-center">
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -184,7 +184,7 @@ export default function CEOAdminPage() {
           <div className="mt-6">
             <button
               onClick={() => router.push('/dashboard')}
-              className="w-full bg-[#1A1C1E] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+              className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Dashboard</span>
@@ -205,7 +205,7 @@ export default function CEOAdminPage() {
   });
 
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-8 px-4 flex flex-col">
+    <main className="min-h-screen bg-white text-[#0A192F] py-8 px-4 flex flex-col">
       <div className="max-w-6xl w-full mx-auto space-y-6" id="admin-panel-container">
         
         {/* Navigation Action */}
@@ -218,17 +218,17 @@ export default function CEOAdminPage() {
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             <span>Dashboard</span>
           </button>
-          <span className="text-[10px] uppercase font-mono tracking-widest text-[#D4AF37] font-semibold flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
+          <span className="text-[10px] uppercase font-mono tracking-widest text-[#004D2C] font-semibold flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
             <Sparkles className="w-3.5 h-3.5 fill-amber-500 stroke-none animate-spin" />
             <span>CEO Control Central</span>
           </span>
         </div>
 
         {/* Brand Banner */}
-        <div className="bg-[#1A1C1E] text-white rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-md">
-          <div className="absolute right-0 top-0 w-48 h-48 bg-[#D4AF37]/10 rounded-full blur-3xl"></div>
+        <div className="bg-[#0A192F] text-white rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-md">
+          <div className="absolute right-0 top-0 w-48 h-48 bg-[#004D2C]/10 rounded-full blur-3xl"></div>
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-[#006D44] border-2 border-[#D4AF37] rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg">
+            <div className="w-14 h-14 bg-[#0A192F] border-2 border-[#004D2C] rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg">
               CEO
             </div>
             <div>
@@ -272,7 +272,7 @@ export default function CEOAdminPage() {
                 placeholder="Search by candidate name or role..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-xs px-4 py-2.5 pl-10 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium"
+                className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-xs px-4 py-2.5 pl-10 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium"
               />
             </div>
           </div>
@@ -306,7 +306,7 @@ export default function CEOAdminPage() {
                         {/* Detail */}
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 bg-[#1A1C1E]/5 rounded-xl flex items-center justify-center text-gray-800 font-black">
+                            <div className="w-9 h-9 bg-[#0A192F]/5 rounded-xl flex items-center justify-center text-gray-800 font-black">
                               {member.full_name?.charAt(0).toUpperCase() || 'P'}
                             </div>
                             <div>
@@ -324,7 +324,7 @@ export default function CEOAdminPage() {
                         <td className="px-6 py-4">
                           <span className={`inline-block px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${
                             member.role === 'worker' 
-                              ? 'bg-[#006D44]/5 text-[#006D44] border border-[#006D44]/15' 
+                              ? 'bg-[#0A192F]/5 text-[#0A192F] border border-[#0A192F]/15' 
                               : 'bg-blue-50 text-blue-700 border border-blue-100'
                           }`}>
                             {member.role || 'Unspecified'}
@@ -376,7 +376,7 @@ export default function CEOAdminPage() {
                         <td className="px-6 py-4 text-center">
                           <div className="flex justify-center">
                             {actionLoadingId === member.id ? (
-                              <Loader2 className="w-5 h-5 animate-spin text-[#006D44]" />
+                              <Loader2 className="w-5 h-5 animate-spin text-[#0A192F]" />
                             ) : (
                               <button
                                 type="button"
@@ -384,7 +384,7 @@ export default function CEOAdminPage() {
                                 className={`text-[10px] font-extrabold uppercase tracking-widest px-4 py-2 rounded-xl transition-all shadow-sm cursor-pointer border ${
                                   isVerified 
                                     ? 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100' 
-                                    : 'bg-[#006D44] text-white border-transparent hover:bg-[#005a37]'
+                                    : 'bg-[#0A192F] text-white border-transparent hover:bg-[#112a4f]'
                                 }`}
                               >
                                 {isVerified ? 'Unverify User' : 'Verify User'}

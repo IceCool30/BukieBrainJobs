@@ -280,7 +280,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center p-12 min-h-[400px]">
-        <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3" />
+        <Image src="/logo-primary.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
         <span className="text-xs font-mono text-gray-400 uppercase tracking-widest font-bold">
           Binding Secure Channel...
         </span>
@@ -340,7 +340,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
       >
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center text-center h-full py-12 space-y-2">
-            <div className="w-12 h-12 bg-[#006D44]/5 text-[#006D44] rounded-full flex items-center justify-center border border-[#006D44]/10">
+            <div className="w-12 h-12 bg-[#0A192F]/5 text-[#0A192F] rounded-full flex items-center justify-center border border-[#0A192F]/10">
               <HelpCircle className="w-6 h-6" />
             </div>
             <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Empty Conversation</p>
@@ -372,7 +372,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
                 <div 
                   className={`p-3.5 rounded-2xl text-xs font-semibold leading-relaxed ${
                     isMe 
-                      ? 'bg-[#006D44] text-white rounded-tr-none shadow-md shadow-emerald-900/5' 
+                      ? 'bg-[#0A192F] text-white rounded-tr-none shadow-md shadow-emerald-900/5' 
                       : 'bg-white text-gray-900 border border-gray-150 rounded-tl-none shadow-sm'
                   }`}
                 >
@@ -391,9 +391,9 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
         {/* Real-time typing indicators */}
         {typingUser && (
           <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 animate-pulse px-2 py-1" id="chat-typing-indicator">
-            <span className="w-1.5 h-1.5 bg-[#006D44] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-            <span className="w-1.5 h-1.5 bg-[#006D44] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-            <span className="w-1.5 h-1.5 bg-[#006D44] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            <span className="w-1.5 h-1.5 bg-[#0A192F] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+            <span className="w-1.5 h-1.5 bg-[#0A192F] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+            <span className="w-1.5 h-1.5 bg-[#0A192F] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
             <span className="ml-1 font-medium italic text-gray-400">
               {profiles[typingUser] || 'Participant'} is typing...
             </span>
@@ -425,13 +425,13 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
             setNewMessage(val);
             handleTypingIndicator(val.length > 0);
           }}
-          className="flex-1 bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-xs px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium shadow-inner"
+          className="flex-1 bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-xs px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium shadow-inner"
           id="chat-message-input"
         />
         <button
           type="submit"
           disabled={sendLoading || !newMessage.trim()}
-          className="bg-[#006D44] hover:bg-[#005a37] text-white p-3 rounded-xl transition-all shadow-md shadow-green-900/10 hover:shadow-green-900/20 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer shrink-0"
+          className="bg-[#0A192F] hover:bg-[#112a4f] text-white p-3 rounded-xl transition-all shadow-md shadow-green-900/10 hover:shadow-green-900/20 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer shrink-0"
           id="chat-send-submit-btn"
         >
           {sendLoading ? (

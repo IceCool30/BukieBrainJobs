@@ -78,9 +78,9 @@ export default function ChatPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
+      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3" />
+          <Image src="/logo-primary.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Entering Secure Chatroom...
           </span>
@@ -91,7 +91,7 @@ export default function ChatPage() {
 
   if (errorMsg || !job || !user) {
     return (
-      <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-12 px-4 flex flex-col items-center justify-center">
+      <main className="min-h-screen bg-white text-[#0A192F] py-12 px-4 flex flex-col items-center justify-center">
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -108,7 +108,7 @@ export default function ChatPage() {
           <div className="mt-6">
             <button
               onClick={() => router.push('/dashboard')}
-              className="w-full bg-[#1A1C1E] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+              className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Dashboard</span>
@@ -120,7 +120,7 @@ export default function ChatPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] py-8 px-4 md:px-8">
+    <main className="min-h-screen bg-white text-[#0A192F] py-8 px-4 md:px-8">
       <div className="max-w-4xl mx-auto space-y-6" id="chat-workspace-page">
         
         {/* Navigation Breadcrumb */}
@@ -135,7 +135,7 @@ export default function ChatPage() {
           </button>
           
           <div className="flex items-center gap-1.5 text-xs font-bold text-slate-500 bg-white px-4 py-2.5 rounded-xl border border-gray-100 shadow-sm">
-            <MessageSquare className="w-4 h-4 text-[#006D44]" />
+            <MessageSquare className="w-4 h-4 text-[#0A192F]" />
             <span>Active Guild Discussion</span>
           </div>
         </div>
@@ -144,7 +144,7 @@ export default function ChatPage() {
         <div className="bg-white rounded-3xl p-5 md:p-6 border border-gray-100 shadow-sm">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="space-y-1.5">
-              <span className="text-[10px] uppercase tracking-widest font-bold text-[#D4AF37] font-mono block">
+              <span className="text-[10px] uppercase tracking-widest font-bold text-[#004D2C] font-mono block">
                 Discussing Project
               </span>
               <h1 className="text-lg md:text-xl font-black text-gray-900 tracking-tight">
@@ -167,11 +167,11 @@ export default function ChatPage() {
             </div>
 
             {/* Pricing bubble card */}
-            <div className="bg-[#006D44]/5 border border-[#006D44]/15 px-4 py-3 rounded-2xl shrink-0 text-right md:w-auto w-full flex justify-between md:flex-col items-center md:items-end">
+            <div className="bg-[#0A192F]/5 border border-[#0A192F]/15 px-4 py-3 rounded-2xl shrink-0 text-right md:w-auto w-full flex justify-between md:flex-col items-center md:items-end">
               <span className="text-[9px] uppercase font-bold text-gray-400 tracking-wider">
                 Total Budget
               </span>
-              <span className="text-base font-black text-[#006D44] font-mono">
+              <span className="text-base font-black text-[#0A192F] font-mono">
                 ₦{job.budget?.toLocaleString()}
               </span>
             </div>

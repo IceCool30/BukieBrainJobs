@@ -88,9 +88,9 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
+      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <RefreshCw className="w-8 h-8 animate-spin text-[#006D44]" />
+          <RefreshCw className="w-8 h-8 animate-spin text-[#0A192F]" />
           <span className="text-xs font-mono text-gray-500 font-semibold tracking-wide uppercase">
             Loading your dashboard...
           </span>
@@ -103,12 +103,12 @@ export default function DashboardPage() {
   const isEmployer = userRole === 'employer';
 
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] flex flex-col">
+    <main className="min-h-screen bg-white text-[#0A192F] flex flex-col">
       {/* Navigation Header */}
       <nav className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm" id="dashboard-navbar">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
           <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#D4AF37]" />
+            <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#004D2C] bg-white p-[2px]" />
             <div>
               <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wider block mt-1">
                 Partner Dashboard
@@ -134,11 +134,11 @@ export default function DashboardPage() {
       <div className="flex-1 max-w-6xl w-full mx-auto px-4 py-8 sm:px-6 lg:px-8" id="dashboard-content-grid">
         {/* Welcome Section */}
         <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 relative overflow-hidden" id="dashboard-welcome-banner">
-          <div className="absolute right-0 top-0 w-32 h-32 bg-[#006D44]/5 rounded-full blur-2xl"></div>
+          <div className="absolute right-0 top-0 w-32 h-32 bg-[#0A192F]/5 rounded-full blur-2xl"></div>
           
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs bg-[#006D44]/10 text-[#006D44] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+              <span className="text-xs bg-[#0A192F]/10 text-[#0A192F] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
                 {userRole === 'employer' ? 'Employer Hub' : 'Artisan Hub'}
               </span>
               <span className="text-xs text-gray-400 font-medium">
@@ -154,12 +154,12 @@ export default function DashboardPage() {
           </div>
 
           <div 
-            className="flex items-center gap-3 bg-[#F4F5F7] px-4 py-3 rounded-xl border border-gray-100 self-stretch md:self-auto justify-between cursor-pointer hover:bg-gray-100/60 transition-all" 
+            className="flex items-center gap-3 bg-white px-4 py-3 rounded-xl border border-gray-100 self-stretch md:self-auto justify-between cursor-pointer hover:bg-gray-100/60 transition-all" 
             id="dashboard-wallet-badge"
             onClick={() => router.push('/dashboard/wallet')}
           >
             <div className="flex items-center gap-2">
-              <Wallet className="w-5 h-5 text-[#D4AF37]" />
+              <Wallet className="w-5 h-5 text-[#004D2C]" />
               <div>
                 <span className="block text-[10px] uppercase font-bold text-gray-400 tracking-wider">
                   Wallet Balance
@@ -176,15 +176,15 @@ export default function DashboardPage() {
                   e.stopPropagation();
                   router.push('/dashboard/wallet');
                 }}
-                className="ml-4 text-[10px] font-bold text-white uppercase bg-[#006D44] px-3 py-1.5 rounded-lg hover:bg-[#005a37] transition-all cursor-pointer"
+                className="ml-4 text-[10px] font-bold text-white uppercase bg-[#0A192F] px-3 py-1.5 rounded-lg hover:bg-[#112a4f] transition-all cursor-pointer"
               >
                 Top Up
               </button>
             ) : (
               <div className="ml-4 text-right flex flex-col items-end">
                 <span className="block text-[8px] uppercase font-bold text-gray-400">Bids Left</span>
-                <span className="text-xs font-black text-[#006D44] leading-none">{wallet?.free_bids_remaining ?? 3} Free</span>
-                <span className="text-[9px] font-extrabold text-[#D4AF37] underline mt-0.5 pointer-events-none">Top Up Bids</span>
+                <span className="text-xs font-black text-[#0A192F] leading-none">{wallet?.free_bids_remaining ?? 3} Free</span>
+                <span className="text-[9px] font-extrabold text-[#004D2C] underline mt-0.5 pointer-events-none">Top Up Bids</span>
               </div>
             )}
           </div>
@@ -203,12 +203,12 @@ export default function DashboardPage() {
             <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
               {isEmployer ? (
                 <>
-                  <Briefcase className="w-5 h-5 text-[#006D44]" />
+                  <Briefcase className="w-5 h-5 text-[#0A192F]" />
                   <span>Your Posted Jobs</span>
                 </>
               ) : (
                 <>
-                  <Hammer className="w-5 h-5 text-[#D4AF37]" />
+                  <Hammer className="w-5 h-5 text-[#004D2C]" />
                   <span>Available Local Inquiries</span>
                 </>
               )}
@@ -233,7 +233,7 @@ export default function DashboardPage() {
                   <button
                     id="dash-post-job-btn"
                     type="button"
-                    className="bg-[#006D44] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#005a37] transition-all shadow-md shadow-green-900/5 cursor-pointer"
+                    className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-green-900/5 cursor-pointer"
                     onClick={() => router.push('/dashboard/post-job')}
                   >
                     Post New Job
@@ -243,7 +243,7 @@ export default function DashboardPage() {
                     <button
                       id="dash-find-work-btn"
                       type="button"
-                      className="bg-[#006D44] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#005a37] transition-all shadow-md shadow-green-900/5 cursor-pointer"
+                      className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-green-900/5 cursor-pointer"
                       onClick={() => router.push('/jobs')}
                     >
                       Find Work
@@ -268,7 +268,7 @@ export default function DashboardPage() {
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
               <div>
                 <h3 className="font-bold text-gray-900 text-sm mb-3 flex items-center gap-1.5">
-                  <ShieldCheck className="w-4.5 h-4.5 text-[#006D44]" />
+                  <ShieldCheck className="w-4.5 h-4.5 text-[#0A192F]" />
                   <span>Identity & Trust</span>
                 </h3>
                 <p className="text-xs text-gray-500 leading-relaxed">
@@ -276,8 +276,8 @@ export default function DashboardPage() {
                 </p>
               </div>
 
-              <div className="mt-4 bg-[#F4F5F7] p-3 rounded-xl border border-gray-100 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+              <div className="mt-4 bg-white p-3 rounded-xl border border-gray-100 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[#004D2C]" />
                 <span className="text-[11px] font-semibold text-gray-600">
                   {isEmployer ? 'Hire with escrow security protection' : 'Blue Check Badge increases views by 350%'}
                 </span>
@@ -285,9 +285,9 @@ export default function DashboardPage() {
             </div>
 
             {/* Support / Quick Channel Alert info */}
-            <div className="bg-[#1A1C1E] text-white p-6 rounded-2xl shadow-sm border border-gray-800/20 relative overflow-hidden">
-              <div className="absolute right-0 bottom-0 w-20 h-20 bg-[#D4AF37]/5 rounded-full blur-xl"></div>
-              <h4 className="font-extrabold text-sm text-[#D4AF37] mb-2 font-mono uppercase tracking-widest">
+            <div className="bg-[#0A192F] text-white p-6 rounded-2xl shadow-sm border border-gray-800/20 relative overflow-hidden">
+              <div className="absolute right-0 bottom-0 w-20 h-20 bg-[#004D2C]/5 rounded-full blur-xl"></div>
+              <h4 className="font-extrabold text-sm text-[#004D2C] mb-2 font-mono uppercase tracking-widest">
                 Telegram Alerts Hub
               </h4>
               <p className="text-xs text-gray-400 leading-relaxed mb-4">
@@ -297,7 +297,7 @@ export default function DashboardPage() {
                 href="https://t.me/BukieBrainBot"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#006D44] hover:bg-[#005a37] py-2 px-3.5 rounded-lg border-b border-green-800 transition-all font-mono"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#0A192F] hover:bg-[#112a4f] py-2 px-3.5 rounded-lg border-b border-green-800 transition-all font-mono"
               >
                 Connect Telegram Bot
               </a>

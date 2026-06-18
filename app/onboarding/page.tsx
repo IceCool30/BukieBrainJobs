@@ -104,9 +104,9 @@ export default function OnboardingPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
+      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/logo.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl" />
+          <Image src="/logo-primary.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl bg-white p-[2px]" />
           <span className="text-sm font-medium text-gray-500 font-mono">Verifying authentication...</span>
         </div>
       </main>
@@ -114,15 +114,15 @@ export default function OnboardingPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col bg-[#F4F5F7] text-[#1A1C1E] p-4 md:p-8">
+    <main className="flex min-h-screen flex-col bg-white text-[#0A192F] p-4 md:p-8">
       {/* Top Bar with user info and Logout */}
       <header className="w-full max-w-6xl mx-auto flex justify-between items-center py-4 border-b border-gray-200/60 mb-8" id="onboarding-header">
         <div className="flex items-center gap-2">
-          <Image src="/logo.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-lg shadow border-b-2 border-[#D4AF37]" />
+          <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-lg shadow border-b-2 border-[#004D2C] bg-white p-[2px]" />
         </div>
         <div className="flex items-center gap-4">
           <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-500 font-medium bg-white px-3 py-1.5 rounded-full border border-gray-100">
-            <User className="w-3.5 h-3.5 text-[#006D44]" />
+            <User className="w-3.5 h-3.5 text-[#0A192F]" />
             <span>Hi, {userName}</span>
           </div>
           <button
@@ -173,13 +173,13 @@ export default function OnboardingPage() {
             whileTap={{ scale: 0.99 }}
             className={`bg-white p-8 rounded-2xl shadow-md border-2 transition-all cursor-pointer flex flex-col justify-between h-72 ${
               selected === 'employer'
-                ? 'border-[#006D44] ring-2 ring-[#006D44]/10 bg-green-50/10'
+                ? 'border-[#0A192F] ring-2 ring-[#0A192F]/10 bg-green-50/10'
                 : 'border-transparent hover:border-gray-200'
             }`}
             onClick={() => handleRoleSelection('employer')}
           >
             <div>
-              <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-[#006D44] mb-5 border border-green-100">
+              <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-[#0A192F] mb-5 border border-green-100">
                 <Briefcase className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900">I want to Hire</h3>
@@ -187,7 +187,7 @@ export default function OnboardingPage() {
                 Post local jobs with &quot;sachet&quot; options, inspect bids, and connect with trusted verified artisans in your LGA.
               </p>
             </div>
-            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#006D44] mt-4">
+            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#0A192F] mt-4">
               <span>Select Employer</span>
               <ArrowRight className="w-4 h-4" />
             </div>
@@ -200,13 +200,13 @@ export default function OnboardingPage() {
             whileTap={{ scale: 0.99 }}
             className={`bg-white p-8 rounded-2xl shadow-md border-2 transition-all cursor-pointer flex flex-col justify-between h-72 ${
               selected === 'worker'
-                ? 'border-[#006D44] ring-2 ring-[#006D44]/10 bg-green-50/10'
+                ? 'border-[#0A192F] ring-2 ring-[#0A192F]/10 bg-green-50/10'
                 : 'border-transparent hover:border-gray-200'
             }`}
             onClick={() => handleRoleSelection('worker')}
           >
             <div>
-              <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-[#D4AF37] mb-5 border border-amber-100">
+              <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-[#004D2C] mb-5 border border-amber-100">
                 <Hammer className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900">I am an Artisan</h3>
@@ -214,7 +214,7 @@ export default function OnboardingPage() {
                 Find local work, submit bid packages, and build your digital *BukiePassport* to win client trust.
               </p>
             </div>
-            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#D4AF37] mt-4">
+            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#004D2C] mt-4">
               <span>Select Artisan</span>
               <ArrowRight className="w-4 h-4" />
             </div>
@@ -223,9 +223,9 @@ export default function OnboardingPage() {
 
         {/* Loading Overlay */}
         {saving && (
-          <div className="fixed inset-0 bg-[#1A1C1E]/40 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-[#0A192F]/40 backdrop-blur-sm flex items-center justify-center z-50">
             <div className="bg-white px-6 py-4 rounded-xl flex items-center gap-3 shadow-xl border border-gray-100">
-              <Loader2 className="w-5 h-5 animate-spin text-[#006D44]" />
+              <Loader2 className="w-5 h-5 animate-spin text-[#0A192F]" />
               <span className="text-sm font-semibold text-gray-700">Updating your profile...</span>
             </div>
           </div>

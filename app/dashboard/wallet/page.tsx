@@ -132,9 +132,9 @@ export default function WalletPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F4F5F7] text-[#1A1C1E]">
+      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <RefreshCw className="w-8 h-8 animate-spin text-[#006D44]" />
+          <RefreshCw className="w-8 h-8 animate-spin text-[#0A192F]" />
           <span className="text-xs font-mono text-gray-500 font-semibold tracking-wide uppercase">
             Opening your fintech portal...
           </span>
@@ -146,7 +146,7 @@ export default function WalletPage() {
   const freeBids = wallet?.free_bids_remaining ?? 3;
 
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] flex flex-col">
+    <main className="min-h-screen bg-white text-[#0A192F] flex flex-col">
       {/* Navbar area */}
       <nav className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm" id="wallet-navbar">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
@@ -160,7 +160,7 @@ export default function WalletPage() {
               <span>Back</span>
             </button>
             <div className="h-4 w-[1px] bg-gray-200"></div>
-            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow border-b-2 border-[#D4AF37]" />
+            <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow border-b-2 border-[#004D2C] bg-white p-[2px]" />
             <div>
               <span className="text-[9px] font-mono text-gray-500 font-bold uppercase tracking-wider block mt-1">
                 Authorized Artisan Ledgers
@@ -198,11 +198,11 @@ export default function WalletPage() {
         {/* Hero Section containing Balance and Counter */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6" id="wallet-financials-hud">
           {/* Funds display card */}
-          <div className="bg-[#1A1C1E] text-white rounded-3xl p-6 relative overflow-hidden shadow-sm flex flex-col justify-between h-48 border border-white/5">
-            <div className="absolute right-0 top-0 w-32 h-32 bg-[#D4AF37]/5 rounded-full blur-2xl"></div>
+          <div className="bg-[#0A192F] text-white rounded-3xl p-6 relative overflow-hidden shadow-sm flex flex-col justify-between h-48 border border-white/5">
+            <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/5 rounded-full blur-2xl"></div>
             
             <div className="flex justify-between items-center">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#D4AF37]">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#004D2C]">
                 Live Balance
               </span>
               <Wallet className="w-5 h-5 text-gray-400" />
@@ -220,13 +220,13 @@ export default function WalletPage() {
 
           {/* Bids display card */}
           <div className="bg-white rounded-3xl p-6 relative overflow-hidden shadow-sm flex flex-col justify-between h-48 border border-gray-100">
-            <div className="absolute right-0 top-0 w-32 h-32 bg-[#006D44]/5 rounded-full blur-2xl"></div>
+            <div className="absolute right-0 top-0 w-32 h-32 bg-[#0A192F]/5 rounded-full blur-2xl"></div>
             
             <div className="flex justify-between items-center">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#006D44]">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0A192F]">
                 Bid Capacity
               </span>
-              <Coins className="w-5 h-5 text-[#006D44]" />
+              <Coins className="w-5 h-5 text-[#0A192F]" />
             </div>
 
             <div>
@@ -243,7 +243,7 @@ export default function WalletPage() {
         {/* Buy Bids CTA */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm" id="bid-bundle-actions">
           <div className="max-w-md mx-auto text-center space-y-6">
-            <div className="inline-flex p-3 bg-amber-50 rounded-full border border-amber-100 text-[#D4AF37] mb-2 leading-none">
+            <div className="inline-flex p-3 bg-amber-50 rounded-full border border-amber-100 text-[#004D2C] mb-2 leading-none">
               <Sparkles className="w-6 h-6 stroke-2" />
             </div>
             
@@ -268,7 +268,7 @@ export default function WalletPage() {
                   </p>
                 </div>
                 <div className="text-right">
-                  <span className="text-lg font-black text-[#006D44] font-mono">
+                  <span className="text-lg font-black text-[#0A192F] font-mono">
                     ₦500
                   </span>
                   <span className="block text-[8px] text-gray-400 uppercase font-black">

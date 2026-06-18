@@ -3,8 +3,8 @@
 /* Standard baseline CSS custom layers and standard adjustments */
 @layer base {
   body {
-    background-color: #F4F5F7;
-    color: #1A1C1E;
+    background-color: #ffffff;
+    color: #0A192F;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 }

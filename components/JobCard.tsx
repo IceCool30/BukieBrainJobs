@@ -68,13 +68,13 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
       id={`job-card-${job.id}`}
       className={`bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border-2 overflow-hidden flex flex-col justify-between ${
         job.is_urgent 
-          ? 'border-[#D4AF37] relative' 
+          ? 'border-[#004D2C] relative' 
           : 'border-transparent hover:border-gray-100'
       }`}
     >
       {/* Golden Highlight border or background accent if urgent */}
       {job.is_urgent && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#D4AF37] via-amber-300 to-[#D4AF37]"></div>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#004D2C] via-amber-300 to-[#004D2C]"></div>
       )}
 
       <div className="p-5 md:p-6 flex-1 flex flex-col justify-between">
@@ -83,7 +83,7 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
         <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
           <div className="flex flex-wrap items-center gap-1.5">
             {job.category && (
-              <span className="text-[10px] uppercase tracking-wider font-extrabold bg-[#006D44]/5 text-[#006D44] px-2 py-0.5 rounded-md flex items-center gap-1">
+              <span className="text-[10px] uppercase tracking-wider font-extrabold bg-[#0A192F]/5 text-[#0A192F] px-2 py-0.5 rounded-md flex items-center gap-1">
                 <Tag className="w-2.5 h-2.5" />
                 <span>{job.category}</span>
               </span>
@@ -116,10 +116,10 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
 
         {/* Title and Budget */}
         <div className="mb-2 flex justify-between items-start gap-4">
-          <h3 className="text-base font-extrabold text-gray-900 tracking-tight leading-snug hover:text-[#006D44] transition-colors flex-1">
+          <h3 className="text-base font-extrabold text-gray-900 tracking-tight leading-snug hover:text-[#0A192F] transition-colors flex-1">
             {job.title}
           </h3>
-          <span className="text-base font-black text-[#006D44] tracking-tight shrink-0 font-mono" id={`budget-display-${job.id}`}>
+          <span className="text-base font-black text-[#0A192F] tracking-tight shrink-0 font-mono" id={`budget-display-${job.id}`}>
             ₦{job.budget?.toLocaleString()}
           </span>
         </div>
@@ -184,8 +184,8 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
           }}
           className={`text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
             job.is_urgent 
-              ? 'bg-[#D4AF37] border-[#D4AF37] hover:bg-[#D4AF37]/90 text-white shadow-sm'
-              : 'bg-[#006D44] border-[#006D44] hover:bg-[#005a37] text-white shadow-sm'
+              ? 'bg-[#004D2C] border-[#004D2C] hover:bg-[#004D2C]/90 text-white shadow-sm'
+              : 'bg-[#0A192F] border-[#0A192F] hover:bg-[#112a4f] text-white shadow-sm'
           }`}
         >
           Send Quote
