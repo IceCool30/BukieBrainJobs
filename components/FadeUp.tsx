@@ -20,6 +20,7 @@ export function FadeUp({ children, delay = 0, direction = 'up', className = '', 
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       className={className}
+      layout
       {...props}
     >
       {children}

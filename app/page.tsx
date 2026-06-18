@@ -5,11 +5,16 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Menu, Search, MapPin, X, ChevronDown, ChevronRight, ArrowRight } from 'lucide-react';
 import { FadeUp } from '@/components/FadeUp';
+import { SmoothCollapse } from '@/components/SmoothCollapse';
+import { nigeriaLocations, nigerianStates } from '@/lib/nigeria-locations';
 
 export default function Home() {
   const router = useRouter();
   const [showEmployerBanner, setShowEmployerBanner] = useState(true);
   
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedLga, setSelectedLga] = useState('');
+
   // Accordion states
   const [openTrending, setOpenTrending] = useState(true);
   const [openArtisans, setOpenArtisans] = useState(false);
@@ -47,23 +52,46 @@ export default function Home() {
 
       <main className="px-4 py-6 max-w-2xl mx-auto w-full">
         {/* Search Container */}
-        <FadeUp delay={0.1} className="flex items-center w-full bg-white border border-gray-300 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.04)] px-4 py-3.5 mb-10 focus-within:ring-2 focus-within:ring-[#0A192F] focus-within:border-transparent transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
-          <div className="flex items-center flex-1 min-w-0">
+        <FadeUp delay={0.1} className="flex flex-col sm:flex-row items-center w-full bg-white border border-gray-300 rounded-2xl sm:rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.04)] px-4 py-3 sm:py-2 mb-10 focus-within:ring-2 focus-within:ring-[#0A192F] focus-within:border-transparent transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] gap-2 sm:gap-0">
+          <div className="flex items-center flex-1 w-full min-w-0">
             <Search className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0 font-bold" />
             <input 
               type="text" 
               placeholder="Search tasks" 
-              className="w-full bg-transparent focus:outline-none text-base text-[#0A192F] placeholder-gray-500 font-medium truncate"
+              className="w-full bg-transparent focus:outline-none text-base text-[#0A192F] placeholder-gray-500 font-medium truncate py-1.5"
             />
           </div>
-          <div className="w-[1px] h-6 bg-gray-300 mx-3 flex-shrink-0"></div>
-          <div className="flex items-center flex-1 min-w-0">
-            <MapPin className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0 font-bold" />
-            <input 
-              type="text" 
-              placeholder="City or LGA" 
-              className="w-full bg-transparent focus:outline-none text-base text-[#0A192F] placeholder-gray-500 font-medium truncate"
-            />
+          <div className="hidden sm:block w-[1px] h-6 bg-gray-300 mx-3 flex-shrink-0"></div>
+          <div className="flex items-center flex-1 w-full min-w-0 gap-2 border-t border-gray-100 pt-2 sm:border-0 sm:pt-0">
+            <MapPin className="w-5 h-5 text-gray-600 flex-shrink-0 font-bold hidden sm:block" />
+            
+            <div className="flex-1 min-w-0 flex items-center gap-2">
+              <select
+                value={selectedState}
+                onChange={(e) => {
+                  setSelectedState(e.target.value);
+                  setSelectedLga('');
+                }}
+                className="w-1/2 bg-transparent focus:outline-none text-base text-[#0A192F] font-medium truncate cursor-pointer appearance-none"
+              >
+                <option value="">State...</option>
+                {nigerianStates.map(state => (
+                  <option key={state} value={state}>{state}</option>
+                ))}
+              </select>
+              <span className="text-gray-300">/</span>
+              <select
+                value={selectedLga}
+                onChange={(e) => setSelectedLga(e.target.value)}
+                disabled={!selectedState}
+                className="w-1/2 bg-transparent focus:outline-none text-base text-[#0A192F] font-medium truncate cursor-pointer appearance-none disabled:opacity-50"
+              >
+                <option value="">LGA...</option>
+                {(selectedState ? nigeriaLocations[selectedState] : []).map(lga => (
+                  <option key={lga} value={lga}>{lga}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </FadeUp>
 
@@ -126,8 +154,8 @@ export default function Home() {
             <p className="text-[#595959] mt-2 text-[15px] px-2">
               See what&apos;s happening to further your job search.
             </p>
-            {openTrending && (
-              <div className="mt-6 space-y-2 px-2">
+            <SmoothCollapse isOpen={openTrending}>
+              <div className="mt-6 space-y-2 px-2 pb-2">
                 <div tabIndex={0} className="flex justify-between items-center cursor-pointer hover:bg-gray-100 active:bg-gray-200 active:scale-[0.99] transition-all px-3 py-2.5 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F]">
                   <span className="font-medium text-[#0A192F] text-[15px]">Trending Searches</span>
                   <ChevronDown className="w-[22px] h-[22px] text-[#0A192F]" />
@@ -141,7 +169,7 @@ export default function Home() {
                   <ChevronDown className="w-[22px] h-[22px] text-[#0A192F]" />
                 </div>
               </div>
-            )}
+            </SmoothCollapse>
           </div>
 
           {/* Item 2 */}
@@ -164,13 +192,13 @@ export default function Home() {
               <span className="font-black text-[#0A192F] text-[18px] group-hover:text-black transition-colors">Artisans & Freelancers</span>
               <ChevronDown className={`w-6 h-6 text-[#0A192F] transition-transform ${openArtisans ? 'rotate-180' : ''}`} />
             </button>
-            {openArtisans && (
-              <div className="mt-4 flex flex-col space-y-1 text-[#595959] px-2">
+            <SmoothCollapse isOpen={openArtisans}>
+              <div className="mt-4 flex flex-col space-y-1 text-[#595959] px-2 pb-2">
                 <span tabIndex={0} className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]">Help</span>
                 <span tabIndex={0} className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]">Browse categories</span>
                 <span tabIndex={0} className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]">Browse jobs</span>
               </div>
-            )}
+            </SmoothCollapse>
           </div>
 
           {/* Item 4 */}
@@ -182,12 +210,12 @@ export default function Home() {
               <span className="font-black text-[#0A192F] text-[18px] group-hover:text-black transition-colors">Employers</span>
               <ChevronDown className={`w-6 h-6 text-[#0A192F] transition-transform ${openEmployers ? 'rotate-180' : ''}`} />
             </button>
-            {openEmployers && (
-              <div className="mt-4 flex flex-col space-y-1 text-[#595959] px-2">
+            <SmoothCollapse isOpen={openEmployers}>
+              <div className="mt-4 flex flex-col space-y-1 text-[#595959] px-2 pb-2">
                 <span tabIndex={0} className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]">Post a task</span>
                 <span tabIndex={0} className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]">Help Center</span>
               </div>
-            )}
+            </SmoothCollapse>
           </div>
 
           {/* Item 5 */}
@@ -199,12 +227,12 @@ export default function Home() {
               <span className="font-black text-[#0A192F] text-[18px] group-hover:text-black transition-colors">About</span>
               <ChevronDown className={`w-6 h-6 text-[#0A192F] transition-transform ${openAbout ? 'rotate-180' : ''}`} />
             </button>
-            {openAbout && (
-              <div className="mt-4 flex flex-col space-y-1 text-[#595959] px-2">
+            <SmoothCollapse isOpen={openAbout}>
+              <div className="mt-4 flex flex-col space-y-1 text-[#595959] px-2 pb-2">
                 <span tabIndex={0} className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]">About us</span>
                 <span tabIndex={0} className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]">Trust & Safety</span>
               </div>
-            )}
+            </SmoothCollapse>
           </div>
         </FadeUp>
 

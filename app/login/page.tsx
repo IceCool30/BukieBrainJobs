@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { LogIn, UserPlus, ShieldAlert, Sparkles } from 'lucide-react';
 import { FadeUp } from '@/components/FadeUp';
+import { SmoothCollapse } from '@/components/SmoothCollapse';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -140,22 +141,22 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4" id="login-form">
             {/* Full Name (Sign Up Only) */}
-            {isSignUp && (
-              <div id="field-fullname">
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+            <SmoothCollapse isOpen={isSignUp}>
+              <div id="field-fullname" className="pb-1">
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 mt-1">
                   Full Name
                 </label>
                 <input
                   id="fullname-input"
                   type="text"
-                  required
+                  required={isSignUp}
                   placeholder="e.g. Kola Adesina"
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                 />
               </div>
-            )}
+            </SmoothCollapse>
 
             {/* Email */}
             <div id="field-email">
@@ -190,19 +191,19 @@ export default function LoginPage() {
             </div>
 
             {/* Notification / Alert messages */}
-            {errorMsg && (
+            <SmoothCollapse isOpen={!!errorMsg}>
               <div className="flex items-start gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-xs border border-red-100" id="login-error">
                 <ShieldAlert className="w-4 h-4 shrink-0 text-red-600" />
                 <span>{errorMsg}</span>
               </div>
-            )}
+            </SmoothCollapse>
 
-            {message && (
+            <SmoothCollapse isOpen={!!message}>
               <div className="flex items-start gap-2 bg-green-50 text-[#0A192F] p-3 rounded-xl text-xs border border-green-100" id="login-message">
                 <Sparkles className="w-4 h-4 shrink-0 text-[#004D2C]" />
                 <span>{message}</span>
               </div>
-            )}
+            </SmoothCollapse>
 
             {/* Submit Button */}
             <button

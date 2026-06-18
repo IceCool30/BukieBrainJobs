@@ -21,7 +21,8 @@ import {
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { postJobAction } from '@/app/actions';
 import dynamic from 'next/dynamic';
-
+import { SmoothCollapse } from '@/components/SmoothCollapse';
+import { LocationSelector } from '@/components/LocationSelector';
 
 const PaystackButton = dynamic(() => import('@/components/PaystackButton'), {
   ssr: false,
@@ -31,13 +32,6 @@ const PaystackButton = dynamic(() => import('@/components/PaystackButton'), {
     </div>
   ),
 });
-
-// Structured Nigerian states and LGAs for dropdown pairing
-const locationData: Record<string, string[]> = {
-  'Lagos': ['Ikeja', 'Alimosho', 'Lagos Island', 'Surulere', 'Lekki', 'Yaba', 'Mushin'],
-  'Abuja (FCT)': ['Wuse', 'Garki', 'Maitama', 'Asokoro', 'Gwagwalada', 'Bwari'],
-  'Rivers': ['Port Harcourt', 'Obio-Akpor', 'Eleme', 'Bonny', 'Oyigbo', 'Okrika']
-};
 
 export default function PostJobPage() {
   const router = useRouter();
@@ -65,14 +59,6 @@ export default function PostJobPage() {
 
   // Paystack Urgent payment modal trigger
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-
-  // When State changes, reset LGA to the first available in that state
-  useEffect(() => {
-    const lgas = locationData[selectedState];
-    if (lgas && lgas.length > 0) {
-      setSelectedLga(lgas[0]);
-    }
-  }, [selectedState]);
 
   // Auth check on mount
   useEffect(() => {
@@ -234,11 +220,11 @@ export default function PostJobPage() {
             </div>
 
             {/* Error Message */}
-            {errorMsg && (
-              <div className="m-6 md:m-8 mb-0 p-4 bg-red-50 border border-red-100 text-red-700 text-sm rounded-xl font-medium" id="post-job-error">
+            <SmoothCollapse isOpen={!!errorMsg}>
+              <div className="m-6 md:mx-8 mb-0 p-4 bg-red-50 border border-red-100 text-red-700 text-sm rounded-xl font-medium" id="post-job-error">
                 {errorMsg}
               </div>
-            )}
+            </SmoothCollapse>
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
@@ -338,36 +324,16 @@ export default function PostJobPage() {
               </AnimatePresence>
 
               {/* Grid 2: State and LGA */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
-                    State (Nigeria)
-                  </label>
-                  <select
-                    value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
-                  >
-                    {Object.keys(locationData).map((state) => (
-                      <option key={state} value={state}>{state}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
-                    Local Government Area (LGA)
-                  </label>
-                  <select
-                    value={selectedLga}
-                    onChange={(e) => setSelectedLga(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
-                  >
-                    {(locationData[selectedState] || []).map((lga) => (
-                      <option key={lga} value={lga}>{lga}</option>
-                    ))}
-                  </select>
-                </div>
+              <div className="w-full">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                  Location (State & LGA) *
+                </label>
+                <LocationSelector
+                  selectedState={selectedState}
+                  selectedLga={selectedLga}
+                  onStateChange={setSelectedState}
+                  onLgaChange={setSelectedLga}
+                />
               </div>
 
               {/* Job Type Dropdown matching DB enum values */}
