@@ -1,4 +1,5 @@
 'use client';
+import { LogoBase64 } from '@/lib/logo';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -19,6 +20,7 @@ import {
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { buyBidsAction } from '@/app/actions';
 import dynamic from 'next/dynamic';
+
 
 const PaystackButton = dynamic(() => import('@/components/PaystackButton'), {
   ssr: false,
@@ -160,7 +162,7 @@ export default function WalletPage() {
               <span>Back</span>
             </button>
             <div className="h-4 w-[1px] bg-gray-200"></div>
-            <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow border-b-2 border-[#004D2C] bg-white p-[2px]" />
+            <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow border-b-2 border-[#004D2C] bg-white p-[2px]" />
             <div>
               <span className="text-[9px] font-mono text-gray-500 font-bold uppercase tracking-wider block mt-1">
                 Authorized Artisan Ledgers

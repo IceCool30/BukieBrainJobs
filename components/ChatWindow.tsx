@@ -1,4 +1,5 @@
 'use client';
+import { LogoBase64 } from '@/lib/logo';
 
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
@@ -14,6 +15,7 @@ import {
 } from 'lucide-react';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { sendMessageAction } from '@/app/actions';
+
 
 interface Message {
   id: string;
@@ -280,7 +282,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center p-12 min-h-[400px]">
-        <Image src="/logo-primary.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
+        <Image src={LogoBase64} alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
         <span className="text-xs font-mono text-gray-400 uppercase tracking-widest font-bold">
           Binding Secure Channel...
         </span>

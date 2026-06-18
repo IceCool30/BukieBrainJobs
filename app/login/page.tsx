@@ -1,10 +1,12 @@
 'use client';
+import { LogoBase64 } from '@/lib/logo';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { LogIn, UserPlus, ShieldAlert, Sparkles } from 'lucide-react';
+
 
 export default function LoginPage() {
   const router = useRouter();
@@ -90,7 +92,7 @@ export default function LoginPage() {
           <div className="flex justify-center items-center gap-2 mb-2">
             {/* Logo structure: 3D "B" representation utilizing inline design */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center gap-2 p-1.5 w-fit">
-              <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#004D2C] bg-white p-[2px]" />
+              <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#004D2C] bg-white p-[2px]" />
               <span className="text-2xl font-black text-[#0A192F] tracking-tight">BukieBrainJobs</span>
             </div>
           </div>

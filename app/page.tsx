@@ -1,4 +1,5 @@
 'use client';
+import { LogoBase64 } from '@/lib/logo';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -21,6 +22,7 @@ import {
   UserCheck
 } from 'lucide-react';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+
 
 export default function Home() {
   const router = useRouter();
@@ -67,7 +69,7 @@ export default function Home() {
             id="nav-logo-btn"
           >
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center gap-2 p-1.5 w-fit">
-              <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={36} height={36} className="rounded-xl shadow-md border-b-2 border-[#004D2C] transition-transform group-hover:scale-105 duration-200 bg-white p-[2px]" />
+              <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={36} height={36} className="rounded-xl shadow-md border-b-2 border-[#004D2C] transition-transform group-hover:scale-105 duration-200 bg-white p-[2px]" />
               <span className="text-xl font-black text-[#0A192F] tracking-tight">BukieBrainJobs</span>
             </div>
           </div>
@@ -357,7 +359,7 @@ export default function Home() {
           <div className="space-y-2 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2">
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center gap-2 p-1.5 w-fit">
-              <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow-md border border-[#004D2C] bg-white p-[2px]" />
+              <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow-md border border-[#004D2C] bg-white p-[2px]" />
               <span className="text-lg font-black tracking-tight text-[#0A192F]">BukieBrainJobs</span>
             </div>
             </div>

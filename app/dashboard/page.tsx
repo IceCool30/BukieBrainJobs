@@ -1,10 +1,12 @@
 'use client';
+import { LogoBase64 } from '@/lib/logo';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { User, LogOut, Briefcase, Hammer, RefreshCw, Wallet, Calendar, ShieldCheck, Sparkles } from 'lucide-react';
+
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -108,7 +110,7 @@ export default function DashboardPage() {
       <nav className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm" id="dashboard-navbar">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
           <div className="flex items-center gap-3">
-            <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#004D2C] bg-white p-[2px]" />
+            <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#004D2C] bg-white p-[2px]" />
             <div>
               <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wider block mt-1">
                 Partner Dashboard

@@ -1,4 +1,5 @@
 'use client';
+import { LogoBase64 } from '@/lib/logo';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -20,6 +21,7 @@ import {
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { postJobAction } from '@/app/actions';
 import dynamic from 'next/dynamic';
+
 
 const PaystackButton = dynamic(() => import('@/components/PaystackButton'), {
   ssr: false,
@@ -153,7 +155,7 @@ export default function PostJobPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/logo-primary.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
+          <Image src={LogoBase64} alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Checking permission...
           </span>
@@ -213,7 +215,7 @@ export default function PostJobPage() {
             <div className="bg-[#0A192F] text-white p-6 md:p-8 relative overflow-hidden">
               <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/5 rounded-full blur-2xl"></div>
               <div className="flex items-center gap-3">
-                <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border border-[#004D2C]/50 bg-white p-[2px]" />
+                <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border border-[#004D2C]/50 bg-white p-[2px]" />
                 <div>
                   <h1 className="text-xl md:text-2xl font-extrabold tracking-tight">
                     Post a New Job

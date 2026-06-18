@@ -1,4 +1,5 @@
 'use client';
+import { LogoBase64 } from '@/lib/logo';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -6,6 +7,7 @@ import Image from 'next/image';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { motion } from 'motion/react';
 import { Briefcase, Hammer, LogOut, ArrowRight, User, Loader2 } from 'lucide-react';
+
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -106,7 +108,7 @@ export default function OnboardingPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/logo-primary.png" alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl bg-white p-[2px]" />
+          <Image src={LogoBase64} alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl bg-white p-[2px]" />
           <span className="text-sm font-medium text-gray-500 font-mono">Verifying authentication...</span>
         </div>
       </main>
@@ -118,7 +120,7 @@ export default function OnboardingPage() {
       {/* Top Bar with user info and Logout */}
       <header className="w-full max-w-6xl mx-auto flex justify-between items-center py-4 border-b border-gray-200/60 mb-8" id="onboarding-header">
         <div className="flex items-center gap-2">
-          <Image src="/logo-primary.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-lg shadow border-b-2 border-[#004D2C] bg-white p-[2px]" />
+          <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-lg shadow border-b-2 border-[#004D2C] bg-white p-[2px]" />
         </div>
         <div className="flex items-center gap-4">
           <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-500 font-medium bg-white px-3 py-1.5 rounded-full border border-gray-100">
