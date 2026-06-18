@@ -228,7 +228,7 @@ export default function DashboardPage() {
               </p>
               <p className="text-xs text-gray-400 mt-1 max-w-xs mx-auto">
                 {isEmployer 
-                  ? 'Request maintenance, full-time help, or custom local projects with "sachet" pricing.'
+                  ? 'Request maintenance, full-time help, or custom local projects with Pay-As-You-Go pricing.'
                   : 'Complete your BukiePassport profile setup with verification badges to receive priority system alerts!'}
               </p>
 
@@ -283,7 +283,7 @@ export default function DashboardPage() {
               <div className="mt-4 bg-white p-3 rounded-xl border border-gray-100 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-[#004D2C]" />
                 <span className="text-[11px] font-semibold text-gray-600">
-                  {isEmployer ? 'Hire with escrow security protection' : 'Blue Check Badge increases views by 350%'}
+                  {isEmployer ? 'Hire with Protected Funds security' : 'Blue Check Badge increases views by 350%'}
                 </span>
               </div>
             </div>

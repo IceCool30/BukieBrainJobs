@@ -205,7 +205,7 @@ export default function OnboardingPage() {
           >
             <h3 className="text-xl font-bold text-[#0A192F] mb-2">I want to hire an expert</h3>
             <p className="text-sm text-[#0A192F]/70 font-medium leading-relaxed">
-              Post your tasks for free, browse verified local professionals, and fund your projects securely using our payment protection.
+              Post your tasks for free, browse verified local professionals, and fund your projects securely using our Protected Funds system.
             </p>
           </motion.div>
 

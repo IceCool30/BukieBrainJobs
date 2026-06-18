@@ -23,10 +23,13 @@ import {
   Loader2,
   Hammer,
   CreditCard,
-  UserCheck
+  UserCheck,
+  Menu
 } from 'lucide-react';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { QRCodeSVG } from 'qrcode.react';
+import { SiteFooter } from '@/components/SiteFooter';
+import { Sidebar } from '@/components/Sidebar';
 
 
 export default function PublicPassportPage() {
@@ -51,6 +54,7 @@ export default function PublicPassportPage() {
 
   // Phase 6 Contact Reveal Modal state
   const [showRevealModal, setShowRevealModal] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -183,7 +187,20 @@ export default function PublicPassportPage() {
   const hourlyRateDisplay = passport?.hourly_rate ? `₦${passport.hourly_rate.toLocaleString()}/hr` : 'Negotiable';
 
   return (
-    <main className="min-h-screen bg-white text-[#0A192F] py-12 px-4 flex flex-col items-center justify-center relative">
+    <div className="min-h-screen bg-white text-[#0A192F] flex flex-col relative">
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      
+      {/* Header with Logo and Hamburger */}
+      <header className="flex justify-between items-center px-4 py-3 border-b border-gray-100 shrink-0">
+        <LogoLink />
+        <button 
+          onClick={() => setIsSidebarOpen(true)}
+          className="text-[#0A192F] ml-1 p-1 hover:bg-gray-100 rounded-full active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F]">
+          <Menu className="w-6 h-6" />
+        </button>
+      </header>
+
+      <main className="flex-1 py-12 px-4 flex flex-col items-center justify-center">
       
       {/* Container wrapper mimicking physical card style */}
       <div className="w-full max-w-md" id="public-passport-wrapper">
@@ -447,6 +464,8 @@ export default function PublicPassportPage() {
         )}
       </AnimatePresence>
 
-    </main>
+      </main>
+      <SiteFooter />
+    </div>
   );
 }
