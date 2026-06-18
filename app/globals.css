@@ -7,4 +7,10 @@
     color: #0A192F;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button, a {
+    touch-action: manipulation;
+  }
 }

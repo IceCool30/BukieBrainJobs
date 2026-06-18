@@ -155,7 +155,10 @@ export default function PostJobPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src={LogoBase64} alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
+          <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit mb-3 animate-pulse">
+            <Image src={LogoBase64} alt="Loading..." width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
+            <span className="font-black text-[16px] tracking-tight text-[#0A192F] hidden sm:block pr-2 whitespace-nowrap">BukieBrainJobs</span>
+          </div>
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Checking permission...
           </span>
@@ -196,7 +199,7 @@ export default function PostJobPage() {
               <p className="text-sm text-gray-500 mt-2 max-w-sm">
                 Your job description is now online. Workers in {selectedLga}, {selectedState} have been notified.
               </p>
-              <div className="mt-4 flex items-center gap-2 text-xs font-mono font-semibold uppercase text-[#0A192F] bg-[#0A192F]/5 px-3 py-1.5 rounded-lg">
+              <div className="mt-4 flex items-center gap-2 text-xs font-mono font-semibold uppercase text-[#0A192F] bg-[#0A192F]/5 px-3 py-1.5 rounded-lg active:scale-95 transition-all">
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 <span>Redirecting back...</span>
               </div>
@@ -215,7 +218,10 @@ export default function PostJobPage() {
             <div className="bg-[#0A192F] text-white p-6 md:p-8 relative overflow-hidden">
               <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/5 rounded-full blur-2xl"></div>
               <div className="flex items-center gap-3">
-                <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border border-[#004D2C]/50 bg-white p-[2px]" />
+                <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit cursor-pointer">
+              <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
+              <span className="font-black text-[16px] tracking-tight text-[#0A192F] hidden sm:block pr-2 whitespace-nowrap">BukieBrainJobs</span>
+            </div>
                 <div>
                   <h1 className="text-xl md:text-2xl font-extrabold tracking-tight">
                     Post a New Job
@@ -440,7 +446,7 @@ export default function PostJobPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full sm:w-auto min-w-[180px] flex items-center justify-center gap-2 bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full sm:w-auto min-w-[180px] flex items-center justify-center gap-2 bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] transition-all"
                   id="submit-job-post-btn"
                 >
                   {loading ? (

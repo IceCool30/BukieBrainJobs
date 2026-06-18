@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { User, LogOut, Briefcase, Hammer, RefreshCw, Wallet, Calendar, ShieldCheck, Sparkles } from 'lucide-react';
+import { FadeUp } from '@/components/FadeUp';
 
 
 export default function DashboardPage() {
@@ -110,7 +111,10 @@ export default function DashboardPage() {
       <nav className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm" id="dashboard-navbar">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
           <div className="flex items-center gap-3">
-            <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#004D2C] bg-white p-[2px]" />
+            <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit cursor-pointer">
+              <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
+              <span className="font-black text-[16px] tracking-tight text-[#0A192F] hidden sm:block pr-2 whitespace-nowrap">BukieBrainJobs</span>
+            </div>
             <div>
               <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wider block mt-1">
                 Partner Dashboard
@@ -135,12 +139,12 @@ export default function DashboardPage() {
       {/* Main Container */}
       <div className="flex-1 max-w-6xl w-full mx-auto px-4 py-8 sm:px-6 lg:px-8" id="dashboard-content-grid">
         {/* Welcome Section */}
-        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 relative overflow-hidden" id="dashboard-welcome-banner">
+        <FadeUp delay={0.1} className="bg-white rounded-2xl p-6 md:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 relative overflow-hidden transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)]" id="dashboard-welcome-banner">
           <div className="absolute right-0 top-0 w-32 h-32 bg-[#0A192F]/5 rounded-full blur-2xl"></div>
           
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs bg-[#0A192F]/10 text-[#0A192F] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+              <span className="text-xs bg-[#0A192F]/10 text-[#0A192F] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider active:scale-95 transition-all">
                 {userRole === 'employer' ? 'Employer Hub' : 'Artisan Hub'}
               </span>
               <span className="text-xs text-gray-400 font-medium">
@@ -178,7 +182,7 @@ export default function DashboardPage() {
                   e.stopPropagation();
                   router.push('/dashboard/wallet');
                 }}
-                className="ml-4 text-[10px] font-bold text-white uppercase bg-[#0A192F] px-3 py-1.5 rounded-lg hover:bg-[#112a4f] transition-all cursor-pointer"
+                className="ml-4 text-[10px] font-bold text-white uppercase bg-[#0A192F] px-3 py-1.5 rounded-lg hover:bg-[#112a4f] transition-all cursor-pointer active:scale-95 transition-all"
               >
                 Top Up
               </button>
@@ -190,7 +194,7 @@ export default function DashboardPage() {
               </div>
             )}
           </div>
-        </div>
+        </FadeUp>
 
         {/* Dashboard Cards Breakdown */}
         {errorMsg && (
@@ -201,7 +205,7 @@ export default function DashboardPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6" id="dashboard-info-blocks">
           {/* Action Hub / Interactive Feed Card Area */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 md:col-span-2">
+          <FadeUp delay={0.2} className="bg-white p-6 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-gray-100 md:col-span-2 transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)]">
             <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
               {isEmployer ? (
                 <>
@@ -235,7 +239,7 @@ export default function DashboardPage() {
                   <button
                     id="dash-post-job-btn"
                     type="button"
-                    className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-green-900/5 cursor-pointer"
+                    className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-green-900/5 cursor-pointer active:scale-95 transition-all"
                     onClick={() => router.push('/dashboard/post-job')}
                   >
                     Post New Job
@@ -245,7 +249,7 @@ export default function DashboardPage() {
                     <button
                       id="dash-find-work-btn"
                       type="button"
-                      className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-green-900/5 cursor-pointer"
+                      className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-green-900/5 cursor-pointer active:scale-95 transition-all"
                       onClick={() => router.push('/jobs')}
                     >
                       Find Work
@@ -262,10 +266,10 @@ export default function DashboardPage() {
                 )}
               </div>
             </div>
-          </div>
+          </FadeUp>
 
           {/* Quick Operations Sidebar Info */}
-          <div className="space-y-6">
+          <FadeUp delay={0.3} className="space-y-6">
             {/* Quick Passport/Verification Info Card */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
               <div>
@@ -299,12 +303,12 @@ export default function DashboardPage() {
                 href="https://t.me/BukieBrainBot"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#0A192F] hover:bg-[#112a4f] py-2 px-3.5 rounded-lg border-b border-green-800 transition-all font-mono"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#0A192F] hover:bg-[#112a4f] py-2 px-3.5 rounded-lg border-b border-green-800 transition-all font-mono active:scale-95 transition-all"
               >
                 Connect Telegram Bot
               </a>
             </div>
-          </div>
+          </FadeUp>
         </div>
       </div>
     </main>

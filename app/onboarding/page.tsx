@@ -108,7 +108,10 @@ export default function OnboardingPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src={LogoBase64} alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl bg-white p-[2px]" />
+          <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit animate-pulse">
+            <Image src={LogoBase64} alt="Loading..." width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
+            <span className="font-black text-[16px] tracking-tight text-[#0A192F] hidden sm:block pr-2 whitespace-nowrap">BukieBrainJobs</span>
+          </div>
           <span className="text-sm font-medium text-gray-500 font-mono">Verifying authentication...</span>
         </div>
       </main>
@@ -120,7 +123,10 @@ export default function OnboardingPage() {
       {/* Top Bar with user info and Logout */}
       <header className="w-full max-w-6xl mx-auto flex justify-between items-center py-4 border-b border-gray-200/60 mb-8" id="onboarding-header">
         <div className="flex items-center gap-2">
-          <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-lg shadow border-b-2 border-[#004D2C] bg-white p-[2px]" />
+          <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit">
+            <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
+            <span className="font-extrabold text-[16px] tracking-tight text-[#0A192F] hidden sm:block pr-2">BukieBrainJobs</span>
+          </div>
         </div>
         <div className="flex items-center gap-4">
           <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-500 font-medium bg-white px-3 py-1.5 rounded-full border border-gray-100">

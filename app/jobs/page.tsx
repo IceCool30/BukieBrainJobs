@@ -14,6 +14,7 @@ import {
   Flame,
   AlertCircle
 } from 'lucide-react';
+import { FadeUp } from '@/components/FadeUp';
 
 function getRelativeTime(dateString: string): string {
   try {
@@ -128,9 +129,9 @@ export default function JobsPage() {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div className="h-5 w-[1px] bg-gray-300 hidden sm:block"></div>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center gap-2 p-1.5 shrink-0">
-              <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow-sm border border-gray-200 bg-white p-[2px]" />
-              <span className="font-extrabold text-xl tracking-tight text-[#0A192F] hidden sm:block pr-2">BukieBrainJobs</span>
+            <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit cursor-pointer">
+              <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
+              <span className="font-black text-[16px] tracking-tight text-[#0A192F] hidden sm:block pr-2 whitespace-nowrap">BukieBrainJobs</span>
             </div>
           </div>
           <div>
@@ -195,22 +196,35 @@ export default function JobsPage() {
           <div className={`md:col-span-5 flex flex-col gap-4 ${selectedJob ? 'hidden md:flex' : 'flex'}`}>
             
             {loading ? (
-              <div className="text-center py-12">
-                <span className="text-gray-500 font-medium">Loading jobs...</span>
-              </div>
+              Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="bg-white rounded-xl border border-gray-100 p-5 animate-pulse">
+                  <div className="h-6 bg-gray-200 rounded-md w-3/4 mb-4"></div>
+                  <div className="flex gap-2 mb-4">
+                     <div className="h-6 bg-gray-200 rounded-md w-20"></div>
+                     <div className="h-6 bg-gray-200 rounded-md w-24"></div>
+                  </div>
+                  <div className="space-y-2 mb-4">
+                     <div className="h-4 bg-gray-100 rounded-md w-1/2"></div>
+                     <div className="h-4 bg-gray-100 rounded-md w-1/3"></div>
+                  </div>
+                  <div className="h-4 bg-gray-100 rounded-md w-full mb-2"></div>
+                  <div className="h-4 bg-gray-100 rounded-md w-full"></div>
+                </div>
+              ))
             ) : filteredJobs.length === 0 ? (
               <div className="text-center py-12 bg-gray-50 rounded-2xl border border-gray-200">
                 <h3 className="text-[#0A192F] font-bold text-lg">No jobs found matching your criteria.</h3>
                 <p className="text-gray-500 mt-2 text-sm">Try broadening your search.</p>
               </div>
             ) : (
-              filteredJobs.map((job) => (
-                <div 
+              filteredJobs.map((job, index) => (
+                <FadeUp 
                   key={job.id} 
+                  delay={index * 0.05}
                   onClick={() => setSelectedJob(job)}
-                  className={`bg-white rounded-xl border p-5 cursor-pointer transition-all ${
+                  className={`bg-white rounded-xl border p-5 cursor-pointer transition-all duration-300 ease-in-out active:scale-[0.98] ${
                     selectedJob?.id === job.id 
-                      ? 'border-[#0A192F] shadow-sm ring-1 ring-[#0A192F]' 
+                      ? 'border-[#0A192F] shadow-md ring-2 ring-[#0A192F]/20' 
                       : 'border-gray-200 hover:shadow-md hover:border-gray-300'
                   }`}
                 >
@@ -261,13 +275,13 @@ export default function JobsPage() {
                       <span className="text-[#0A192F] font-bold">View details &rarr;</span>
                     )}
                   </div>
-                </div>
+                </FadeUp>
               ))
             )}
           </div>
 
           {/* RIGHT COLUMN: Detail View Sticky Pane */}
-          <div className={`md:col-span-7 bg-white rounded-2xl border border-gray-200 shadow-sm md:sticky md:top-28 md:max-h-[calc(100vh-8rem)] overflow-y-auto ${selectedJob ? 'block' : 'hidden md:block md:invisible'}`}>
+          <FadeUp delay={0.1} direction="down" className={`md:col-span-7 bg-white rounded-2xl border border-gray-200 shadow-sm md:sticky md:top-28 md:max-h-[calc(100vh-8rem)] overflow-y-auto ${selectedJob ? 'block' : 'hidden md:block md:invisible'}`}>
             {selectedJob ? (
               <div className="p-6 md:p-8">
                 {/* Mobile back button */}
@@ -330,7 +344,7 @@ export default function JobsPage() {
                   <div className="pt-8 pb-4">
                     <button 
                       onClick={() => router.push(`/p/${selectedJob.id}`)}
-                      className="w-full sm:w-auto bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold text-base px-10 py-4 rounded-xl transition-colors shadow-md cursor-pointer"
+                      className="w-full sm:w-auto bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold text-base px-10 py-4 rounded-xl transition-colors shadow-md cursor-pointer active:scale-[0.98] transition-all"
                     >
                       Apply Now
                     </button>
@@ -352,7 +366,7 @@ export default function JobsPage() {
                 <p className="text-gray-500 max-w-sm">Click on any job card from the list on the left to see the full description, requirements, and apply.</p>
               </div>
             )}
-          </div>
+          </FadeUp>
 
         </div>
       </div>

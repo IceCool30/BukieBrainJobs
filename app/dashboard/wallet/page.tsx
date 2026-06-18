@@ -20,6 +20,7 @@ import {
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { buyBidsAction } from '@/app/actions';
 import dynamic from 'next/dynamic';
+import { FadeUp } from '@/components/FadeUp';
 
 
 const PaystackButton = dynamic(() => import('@/components/PaystackButton'), {
@@ -162,7 +163,10 @@ export default function WalletPage() {
               <span>Back</span>
             </button>
             <div className="h-4 w-[1px] bg-gray-200"></div>
-            <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow border-b-2 border-[#004D2C] bg-white p-[2px]" />
+            <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit cursor-pointer">
+              <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
+              <span className="font-black text-[16px] tracking-tight text-[#0A192F] hidden sm:block pr-2 whitespace-nowrap">BukieBrainJobs</span>
+            </div>
             <div>
               <span className="text-[9px] font-mono text-gray-500 font-bold uppercase tracking-wider block mt-1">
                 Authorized Artisan Ledgers
@@ -198,7 +202,7 @@ export default function WalletPage() {
         )}
 
         {/* Hero Section containing Balance and Counter */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6" id="wallet-financials-hud">
+        <FadeUp delay={0.1} className="grid grid-cols-1 md:grid-cols-2 gap-6" id="wallet-financials-hud">
           {/* Funds display card */}
           <div className="bg-[#0A192F] text-white rounded-3xl p-6 relative overflow-hidden shadow-sm flex flex-col justify-between h-48 border border-white/5">
             <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/5 rounded-full blur-2xl"></div>
@@ -240,10 +244,10 @@ export default function WalletPage() {
               </span>
             </div>
           </div>
-        </div>
+        </FadeUp>
 
         {/* Buy Bids CTA */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm" id="bid-bundle-actions">
+        <FadeUp delay={0.2} className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-shadow" id="bid-bundle-actions">
           <div className="max-w-md mx-auto text-center space-y-6">
             <div className="inline-flex p-3 bg-amber-50 rounded-full border border-amber-100 text-[#004D2C] mb-2 leading-none">
               <Sparkles className="w-6 h-6 stroke-2" />
@@ -292,20 +296,20 @@ export default function WalletPage() {
               />
             </div>
           </div>
-        </div>
+        </FadeUp>
 
         {/* Secure Warning badge */}
-        <div className="bg-emerald-50 border border-emerald-100/60 p-4 rounded-2xl flex items-center justify-between gap-4">
+        <FadeUp delay={0.3} className="bg-emerald-50 border border-emerald-100/60 p-4 rounded-2xl flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
             <div className="text-xs text-emerald-800 leading-normal">
               System uses secure CBN-regulated payment routing through Paystack, keeping credentials safe.
             </div>
           </div>
-        </div>
+        </FadeUp>
 
         {/* Transactions ledger history table */}
-        <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm" id="bid-bundle-ledger">
+        <FadeUp delay={0.4} className="bg-white rounded-3xl p-6 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-shadow" id="bid-bundle-ledger">
           <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">
             Recent Transactions
           </h3>
@@ -339,7 +343,7 @@ export default function WalletPage() {
               ))}
             </div>
           )}
-        </div>
+        </FadeUp>
 
       </div>
     </main>

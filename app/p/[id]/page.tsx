@@ -134,7 +134,10 @@ export default function PublicPassportPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-3">
-          <Image src={LogoBase64} alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
+          <div className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit mb-3 animate-pulse">
+            <Image src={LogoBase64} alt="Loading..." width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
+            <span className="font-black text-[16px] tracking-tight text-[#0A192F] hidden sm:block pr-2 whitespace-nowrap">BukieBrainJobs</span>
+          </div>
           <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
             Reading BukiePassport...
           </span>
@@ -162,7 +165,7 @@ export default function PublicPassportPage() {
           <div className="mt-6">
             <button
               onClick={() => router.push('/dashboard')}
-              className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+              className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Marketplace</span>
@@ -215,7 +218,7 @@ export default function PublicPassportPage() {
           id="identity-passport-card"
         >
           {/* Top Banner accent */}
-          <div className="bg-[#0A192F] h-24 relative overflow-hidden flex items-center justify-between px-6">
+          <div className="bg-[#0A192F] h-24 relative overflow-hidden flex items-center justify-between px-6 active:scale-95 transition-all">
             <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/10 rounded-full blur-2xl"></div>
             <div className="text-white z-10 flex flex-col">
               <span className="text-[10px] font-black uppercase font-mono tracking-widest text-[#004D2C]">
@@ -300,7 +303,7 @@ export default function PublicPassportPage() {
                   {skillsArray.map((skill: string, index: number) => (
                     <span 
                       key={index}
-                      className="text-xs text-[#0A192F] bg-[#0A192F]/5 border border-[#0A192F]/10 font-bold px-3 py-1 rounded-xl uppercase tracking-wide"
+                      className="text-xs text-[#0A192F] bg-[#0A192F]/5 border border-[#0A192F]/10 font-bold px-3 py-1 rounded-xl uppercase tracking-wide active:scale-95 transition-all"
                     >
                       {skill}
                     </span>
@@ -322,7 +325,7 @@ export default function PublicPassportPage() {
                   </div>
                   <button
                     onClick={() => router.push('/dashboard/passport')}
-                    className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+                    className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
                   >
                     <span>Edit Identity Profile</span>
                   </button>
@@ -338,7 +341,7 @@ export default function PublicPassportPage() {
                   <div className="flex items-center justify-between bg-white px-4 py-3 border border-gray-100 rounded-xl">
                     <div className="flex items-center gap-2">
                       <Phone className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm font-bold tracking-wide text-gray-500 font-mono blur-sm select-none">
+                      <span className="text-sm font-bold tracking-wide text-gray-500 font-mono blur-sm select-none active:scale-95 transition-all">
                         +234 812 000 0000
                       </span>
                     </div>
@@ -351,7 +354,7 @@ export default function PublicPassportPage() {
                   {/* Reveal Trigger */}
                   <button
                     onClick={() => setShowRevealModal(true)}
-                    className="w-full bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer inline-flex items-center justify-center gap-1.5"
+                    className="w-full bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer inline-flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all"
                     id="reveal-contact-btn"
                   >
                     <Coins className="w-4 h-4 text-yellow-300" />
@@ -434,7 +437,7 @@ export default function PublicPassportPage() {
                 <button
                   type="button"
                   onClick={() => setShowRevealModal(false)}
-                  className="w-full bg-[#0s06D44] bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl transition-all cursor-pointer text-center"
+                  className="w-full bg-[#0s06D44] bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl transition-all cursor-pointer text-center active:scale-[0.98] transition-all"
                 >
                   Acknowledge
                 </button>

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { LogIn, UserPlus, ShieldAlert, Sparkles } from 'lucide-react';
-
+import { FadeUp } from '@/components/FadeUp';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -82,7 +82,7 @@ export default function LoginPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-white text-[#0A192F]">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden" id="login-card">
+      <FadeUp delay={0.1} className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)]" id="login-card">
         {/* Brand Header */}
         <div className="bg-[#0A192F] p-8 text-center relative overflow-hidden" id="login-brand-header">
           {/* Decorative Pattern */}
@@ -91,9 +91,9 @@ export default function LoginPage() {
 
           <div className="flex justify-center items-center gap-2 mb-2">
             {/* Logo structure: 3D "B" representation utilizing inline design */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center gap-2 p-1.5 w-fit">
-              <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-xl shadow-md border-b-2 border-[#004D2C] bg-white p-[2px]" />
-              <span className="text-2xl font-black text-[#0A192F] tracking-tight">BukieBrainJobs</span>
+            <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit">
+              <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={28} height={28} className="rounded-[10px] shadow-sm border border-gray-200 bg-white p-[2px]" />
+              <span className="font-black text-[16px] tracking-tight text-[#0A192F] pr-2 whitespace-nowrap">BukieBrainJobs</span>
             </div>
           </div>
           <p className="text-gray-400 text-xs tracking-wide uppercase font-semibold">
@@ -209,7 +209,7 @@ export default function LoginPage() {
               id="get-started-submit-btn"
               type="submit"
               disabled={loading}
-              className="w-full bg-[#0A192F] text-white py-3 px-4 rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-green-900/10 hover:bg-[#112a4f] transition-all duration-150 disabled:opacity-50 flex items-center justify-center gap-2 mt-4 cursor-pointer"
+              className="w-full bg-[#0A192F] text-white py-3 px-4 rounded-xl font-bold uppercase tracking-wider text-xs shadow-md shadow-green-900/10 hover:bg-[#112a4f] transition-all duration-150 disabled:opacity-50 flex items-center justify-center gap-2 mt-4 cursor-pointer active:scale-[0.98] transition-all"
             >
               {loading ? (
                 <span>Loading...</span>
@@ -234,7 +234,7 @@ export default function LoginPage() {
             </span>
           </div>
         </div>
-      </div>
+      </FadeUp>
     </main>
   );
 }
