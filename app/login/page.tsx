@@ -1,5 +1,8 @@
 'use client';
 
+import { LogoBase64 } from '@/lib/logo';
+import Image from 'next/image';
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
@@ -106,11 +109,22 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-4 pt-12 sm:pt-24 bg-white text-[#0A192F]">
+    <main className="flex min-h-screen flex-col items-center p-4 pt-12 sm:pt-24 bg-white text-[#0A192F] relative">
+      <button 
+        onClick={() => router.back()} 
+        className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-gray-500 hover:text-[#0A192F] transition-colors font-medium text-sm sm:text-base"
+      >
+        <ArrowLeft className="w-5 h-5" />
+        Back
+      </button>
+
       {/* Brand logo at the top */}
-      <h1 className="text-3xl font-bold text-[#0A192F] mb-8 font-sans tracking-tight">
-        BukieBrainJobs
-      </h1>
+      <div className="flex items-center gap-3 mb-8">
+        <Image src={LogoBase64} alt="BukieBrainJobs Logo" width={40} height={40} className="rounded-[12px] shadow-sm border border-gray-200 bg-white p-[2px]" />
+        <h1 className="text-3xl font-bold text-[#0A192F] font-sans tracking-tight">
+          BukieBrainJobs
+        </h1>
+      </div>
 
       <FadeUp delay={0.1} className="w-full max-w-md bg-white rounded-3xl border border-gray-200 overflow-hidden" id="login-wizard-card">
         {step === 'identity_gateway' && (
