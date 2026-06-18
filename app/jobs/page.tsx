@@ -3,30 +3,39 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'motion/react';
+import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { 
   Search, 
-  Filter, 
-  X, 
   MapPin, 
   Briefcase, 
   Tag, 
-  ChevronRight, 
   ArrowLeft,
-  RefreshCw,
-  SlidersHorizontal,
-  PlusSquare,
+  Flame,
   AlertCircle
 } from 'lucide-react';
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
-import JobCard from '@/components/JobCard';
 
-// State and LGA mapping for robust filtering
-const locationData: Record<string, string[]> = {
-  'Lagos': ['Ikeja', 'Alimosho', 'Lagos Island', 'Surulere', 'Lekki', 'Yaba', 'Mushin'],
-  'Abuja (FCT)': ['Wuse', 'Garki', 'Maitama', 'Asokoro', 'Gwagwalada', 'Bwari'],
-  'Rivers': ['Port Harcourt', 'Obio-Akpor', 'Eleme', 'Bonny', 'Oyigbo', 'Okrika']
-};
+function getRelativeTime(dateString: string): string {
+  try {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMs = now.getTime() - date.getTime();
+    if (diffInMs < 0) return 'Just now'; 
+    
+    const diffInSecs = Math.floor(diffInMs / 1000);
+    const diffInMins = Math.floor(diffInSecs / 60);
+    const diffInHours = Math.floor(diffInMins / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInSecs < 60) return 'Just now';
+    if (diffInMins < 60) return `${diffInMins}m ago`;
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    if (diffInDays < 30) return `${diffInDays}d ago`;
+    
+    return date.toLocaleDateString('en-XG', { month: 'short', day: 'numeric' });
+  } catch (err) {
+    return 'Recently';
+  }
+}
 
 export default function JobsPage() {
   const router = useRouter();
@@ -38,20 +47,15 @@ export default function JobsPage() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
-  const [expandedJobId, setExpandedJobId] = useState<string | null>(null);
+  
+  // Selection state for Indeed-style layout
+  const [selectedJob, setSelectedJob] = useState<any | null>(null);
 
-  // Filter & Search states
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedState, setSelectedState] = useState<string>('all');
-  const [selectedLga, setSelectedLga] = useState<string>('all');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedJobType, setSelectedJobType] = useState<string>('all');
-  const [minBudget, setMinBudget] = useState<string>('');
+  // Search states
+  const [whatQuery, setWhatQuery] = useState('');
+  const [whereQuery, setWhereQuery] = useState('');
 
-  // Mobile sidebar filter modal state
-  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-
-  // Fetch jobs from Supabase sorted: is_urgent DESC, created_at DESC
+  // Fetch jobs
   const fetchJobs = async () => {
     setLoading(true);
     try {
@@ -63,9 +67,11 @@ export default function JobsPage() {
 
       if (error) {
         console.error('Error fetching jobs:', error);
-        setErrorMsg('Failed to fetch available tasks. Please refresh.');
+        setErrorMsg('Failed to fetch jobs. Please try again.');
       } else {
         setJobs(data || []);
+        // Optional: auto-select first job on desktop load
+        // if (data && data.length > 0 && window.innerWidth >= 768) setSelectedJob(data[0]);
       }
     } catch (err: any) {
       setErrorMsg('Network error. Check your connection.');
@@ -79,397 +85,275 @@ export default function JobsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [supabase]);
 
-  // When selected state changes, reset selected LGA to 'all'
-  useEffect(() => {
-    setSelectedLga('all');
-  }, [selectedState]);
-
-  // Client-side Instant Filter logic
+  // Filter logic based on What & Where
   const filteredJobs = jobs.filter((job) => {
-    // 1. Keyword search (Title, Description, Category)
-    if (searchQuery.trim() !== '') {
-      const query = searchQuery.toLowerCase();
-      const matchTitle = job.title?.toLowerCase().includes(query);
-      const matchDesc = job.description?.toLowerCase().includes(query);
-      const matchCategory = job.category?.toLowerCase().includes(query);
-      if (!matchTitle && !matchDesc && !matchCategory) {
-        return false;
-      }
+    if (whatQuery.trim() !== '') {
+      const q = whatQuery.toLowerCase();
+      const matchTitle = job.title?.toLowerCase().includes(q);
+      const matchDesc = job.description?.toLowerCase().includes(q);
+      const matchCat = job.category?.toLowerCase().includes(q);
+      if (!matchTitle && !matchDesc && !matchCat) return false;
     }
-
-    // 2. State Filter
-    if (selectedState !== 'all' && job.location_state !== selectedState) {
-      return false;
+    if (whereQuery.trim() !== '') {
+      const q = whereQuery.toLowerCase();
+      const matchState = job.location_state?.toLowerCase().includes(q);
+      const matchLga = job.location_lga?.toLowerCase().includes(q);
+      if (!matchState && !matchLga) return false;
     }
-
-    // 3. LGA Filter
-    if (selectedLga !== 'all' && job.location_lga !== selectedLga) {
-      return false;
-    }
-
-    // 4. Category Filter
-    if (selectedCategory !== 'all' && job.category !== selectedCategory) {
-      return false;
-    }
-
-    // 5. Job Type Filter
-    if (selectedJobType !== 'all' && job.job_type !== selectedJobType) {
-      return false;
-    }
-
-    // 6. Minimum Budget
-    if (minBudget !== '') {
-      const minVal = parseFloat(minBudget);
-      if (!isNaN(minVal) && job.budget < minVal) {
-        return false;
-      }
-    }
-
     return true;
   });
 
-  const clearAllFilters = () => {
-    setSearchQuery('');
-    setSelectedState('all');
-    setSelectedLga('all');
-    setSelectedCategory('all');
-    setSelectedJobType('all');
-    setMinBudget('');
-  };
-
-  const toggleExpand = (jobId: string) => {
-    if (expandedJobId === jobId) {
-      setExpandedJobId(null);
-    } else {
-      setExpandedJobId(jobId);
+  const displayJobType = (job_type: string) => {
+    switch (job_type) {
+      case 'task': return 'One-time Task';
+      case 'contract': return 'Freelance/Contract';
+      case 'full_time': return 'Full-time Help';
+      default: return 'Quick Task';
     }
   };
 
-  // Build the Filter Side Panel content (to avoid duplication on desktop / mobile)
-  const renderFilterPanel = () => {
-    const listLgas = selectedState !== 'all' ? locationData[selectedState] : [];
-
-    return (
-      <div className="space-y-6">
-        <div>
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">
-              Filters & Criteria
-            </h3>
-            <button
-              onClick={clearAllFilters}
-              className="text-[10px] font-black text-[#006D44] hover:underline uppercase tracking-wide cursor-pointer"
-            >
-              Clear All
-            </button>
-          </div>
-        </div>
-
-        {/* State Dropdown */}
-        <div>
-          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">
-            State
-          </label>
-          <select
-            value={selectedState}
-            onChange={(e) => setSelectedState(e.target.value)}
-            className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-xs px-3 py-2.5 rounded-xl outline-none text-gray-900 font-semibold cursor-pointer"
-          >
-            <option value="all">Any State</option>
-            {Object.keys(locationData).map((state) => (
-              <option key={state} value={state}>{state}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* LGA Dropdown */}
-        {selectedState !== 'all' && (
-          <div className="animate-fadeIn">
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">
-              Local Government (LGA)
-            </label>
-            <select
-              value={selectedLga}
-              onChange={(e) => setSelectedLga(e.target.value)}
-              className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-xs px-3 py-2.5 rounded-xl outline-none text-gray-900 font-semibold cursor-pointer"
-            >
-              <option value="all">Any LGA in {selectedState}</option>
-              {listLgas.map((lga) => (
-                <option key={lga} value={lga}>{lga}</option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {/* Category Dropdown */}
-        <div>
-          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">
-            Job Category
-          </label>
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-xs px-3 py-2.5 rounded-xl outline-none text-gray-900 font-semibold cursor-pointer"
-          >
-            <option value="all">All Categories</option>
-            <option value="Plumbing">Plumbing</option>
-            <option value="Electrical">Electrical</option>
-            <option value="Driver">Driver Task</option>
-            <option value="Other">Other Category</option>
-          </select>
-        </div>
-
-        {/* Job Type Dropdown */}
-        <div>
-          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">
-            Job Arrangement
-          </label>
-          <select
-            value={selectedJobType}
-            onChange={(e) => setSelectedJobType(e.target.value)}
-            className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-xs px-3 py-2.5 rounded-xl outline-none text-gray-900 font-semibold cursor-pointer"
-          >
-            <option value="all">Any Agreement</option>
-            <option value="task">One-time Task</option>
-            <option value="contract">Freelance Contract</option>
-            <option value="full_time">Full-time Employee</option>
-          </select>
-        </div>
-
-        {/* Minimum Budget */}
-        <div>
-          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">
-            Min Budget (₦ Naira)
-          </label>
-          <input
-            type="number"
-            placeholder="e.g. 5000"
-            value={minBudget}
-            onChange={(e) => setMinBudget(e.target.value)}
-            className="w-full bg-gray-50 border border-gray-200 focus:border-[#006D44] focus:bg-white text-xs px-3 py-2.5 rounded-xl outline-none text-gray-900 font-mono font-semibold"
-          />
-        </div>
-
-        <div className="border-t border-gray-100 my-4"></div>
-
-        {/* Quick Tips Box */}
-        <div className="bg-[#006D44]/5 p-4 rounded-2xl border border-[#006D44]/10">
-          <h4 className="text-[10px] uppercase tracking-wider font-extrabold text-[#006D44] mb-1">
-            Artisan Notice
-          </h4>
-          <p className="text-[11px] text-gray-500 leading-normal">
-            Toggle notifications inside the dashboard to receive direct Telegram webhook blasts for new local opportunities instant-access.
-          </p>
-        </div>
-      </div>
-    );
-  };
-
   return (
-    <main className="min-h-screen bg-[#F4F5F7] text-[#1A1C1E] flex flex-col">
+    <main className="min-h-screen bg-white text-[#0A192F] flex flex-col font-sans">
       
-      {/* Search & Back Header */}
-      <nav className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm" id="jobs-navbar">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+      {/* Top Navbar & Search Header */}
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-40" id="jobs-navbar">
+        {/* Brand & Navigation */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between border-b border-gray-100">
           <div className="flex items-center gap-4">
             <button
               onClick={() => router.push('/dashboard')}
-              className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-900 font-bold uppercase tracking-wider bg-gray-50 hover:bg-gray-100 px-3 py-2 rounded-xl transition-all cursor-pointer"
-              id="jobs-back-btn"
+              className="flex items-center gap-1.5 text-sm text-[#0A192F] hover:bg-gray-50 font-bold px-3 py-2 rounded-lg transition-colors cursor-pointer"
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span className="hidden sm:inline">Dashboard</span>
+              <ArrowLeft className="w-5 h-5" />
             </button>
-            <div className="h-4 w-[1px] bg-gray-200 hidden sm:block"></div>
-            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow-md border-b-2 border-[#D4AF37]" />
-            <div>
-              <span className="text-[9px] font-mono text-gray-500 font-bold uppercase tracking-wider block mt-1">
-                Marketplace • Trust Network
-              </span>
-            </div>
+            <div className="h-5 w-[1px] bg-gray-300 hidden sm:block"></div>
+            <Image src="/logo.png" alt="BukieBrainJobs Logo" width={32} height={32} className="rounded-xl shadow-sm border border-gray-200" />
+            <span className="font-extrabold text-xl tracking-tight text-[#0A192F] hidden sm:block">BukieBrainJobs</span>
           </div>
-
-          <div className="flex items-center gap-3">
+          <div>
             <button
               onClick={() => router.push('/dashboard/post-job')}
-              className="flex items-center gap-1.5 text-xs bg-[#006D44] hover:bg-[#005a37] text-white font-extrabold uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-md shadow-green-900/5 transition-all cursor-pointer"
-              id="jobs-post-trigger"
+              className="text-sm font-semibold text-[#0A192F] hover:underline"
             >
-              <PlusSquare className="w-4 h-4" />
-              <span>Post a Job</span>
+              Employers: Post a Job
+            </button>
+          </div>
+        </div>
+
+        {/* What & Where Sticky Search Banner */}
+        <div className="max-w-5xl mx-auto px-4 py-4 sm:py-6">
+          <div className="flex flex-col md:flex-row gap-0 rounded-2xl border-2 border-[#0A192F] bg-white shadow-sm overflow-hidden focus-within:ring-4 focus-within:ring-[#0A192F]/10 transition-shadow">
+            
+            <div className="flex-1 flex items-center px-4 py-3 md:py-4 border-b md:border-b-0 md:border-r border-gray-200">
+              <span className="text-[#0A192F] font-bold mr-3 whitespace-nowrap text-sm">What</span>
+              <input 
+                type="text" 
+                placeholder="Job title, keywords, or category" 
+                value={whatQuery}
+                onChange={(e) => setWhatQuery(e.target.value)}
+                className="w-full bg-transparent outline-none text-[#0A192F] placeholder-gray-500 font-medium text-base"
+              />
+              <Search className="w-5 h-5 text-gray-500 ml-2 shrink-0" />
+            </div>
+
+            <div className="flex-1 flex items-center px-4 py-3 md:py-4">
+              <span className="text-[#0A192F] font-bold mr-3 whitespace-nowrap text-sm">Where</span>
+              <input 
+                type="text" 
+                placeholder="City, state, or LGA" 
+                value={whereQuery}
+                onChange={(e) => setWhereQuery(e.target.value)}
+                className="w-full bg-transparent outline-none text-[#0A192F] placeholder-gray-500 font-medium text-base"
+              />
+              <MapPin className="w-5 h-5 text-gray-500 ml-2 shrink-0" />
+            </div>
+
+            <button 
+              className="bg-[#0A192F] hover:bg-[#112a4f] text-white px-8 py-3 md:py-0 font-bold text-lg md:w-auto w-full transition-colors cursor-pointer"
+            >
+              Search
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Main Container */}
-      <div className="flex-1 max-w-7xl w-full mx-auto px-4 py-8 sm:px-6 lg:px-8 flex flex-col gap-8" id="jobs-feed-container">
-        
-        {/* Banner header title */}
-        <div className="relative bg-[#1A1C1E] text-white p-6 md:p-8 rounded-3xl overflow-hidden shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div className="absolute right-0 top-0 w-32 h-32 bg-[#D4AF37]/5 rounded-full blur-2xl"></div>
-          <div>
-            <h1 className="text-xl md:text-2xl font-black text-white tracking-tight">
-              Looking for work?
-            </h1>
-            <p className="text-xs text-gray-400 mt-1">
-              Browse available tasks from vetted employers, customize filters nearby, and propose quotes.
-            </p>
-          </div>
-
-          <div className="bg-white/5 border border-white/10 px-4 py-1.5 rounded-full flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#D4AF37]">
-              {jobs.length} Job Inquiries Live
-            </span>
-          </div>
-        </div>
-
-        {/* Global Error Banner */}
+      <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col">
         {errorMsg && (
-          <div className="p-4 bg-red-50 text-red-700 border border-red-100 rounded-xl flex gap-3 text-sm font-medium" id="jobs-error-banner">
+          <div className="mb-6 p-4 bg-red-50 text-red-700 border border-red-200 rounded-xl flex gap-3 text-sm font-medium">
             <AlertCircle className="w-5 h-5" />
             <span>{errorMsg}</span>
           </div>
         )}
 
-        {/* Search Input Bar Area */}
-        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center w-full" id="search-filter-controls">
-          <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search by keywords (e.g., pipe leak, driver, teacher)..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white border border-gray-200 focus:border-[#006D44] text-sm pl-11 pr-4 py-3 rounded-2xl transition-all outline-none text-gray-900 placeholder-gray-400 font-semibold shadow-sm"
-            />
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            {/* Mobile Filter Toggle Button */}
-            <button
-              onClick={() => setIsMobileFilterOpen(true)}
-              className="md:hidden flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 text-xs font-bold uppercase tracking-wider py-3 px-5 rounded-2xl shadow-sm transition-all cursor-pointer"
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              <span>Filters</span>
-            </button>
-
-            <button
-              onClick={fetchJobs}
-              disabled={loading}
-              className="bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 p-3 rounded-2xl shadow-sm transition-all cursor-pointer disabled:opacity-50"
-              title="Refresh job feed"
-              id="refresh-jobs-action"
-            >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-[#006D44]' : ''}`} />
-            </button>
-          </div>
-        </div>
-
-        {/* Content Layout Grid (Sidebar + List) */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8" id="jobs-layout-grid">
+        {/* Master Detail Split View */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start flex-1" id="indeed-split-layout">
           
-          {/* Desktop Filters Side Panel (Visible only on desktop screens) */}
-          <aside className="hidden md:block bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-fit sticky top-24" id="desktop-filters-panel">
-            {renderFilterPanel()}
-          </aside>
-
-          {/* Core Jobs Feed Card List */}
-          <section className="md:col-span-3 space-y-6" id="jobs-list-element">
+          {/* LEFT COLUMN: Job List */}
+          <div className={`md:col-span-5 flex flex-col gap-4 ${selectedJob ? 'hidden md:flex' : 'flex'}`}>
             
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                <RefreshCw className="w-8 h-8 animate-spin text-[#006D44] mb-3" />
-                <span className="text-xs font-mono text-gray-400 uppercase font-bold tracking-widest">
-                  Fetching marketplace feed...
-                </span>
+              <div className="text-center py-12">
+                <span className="text-gray-500 font-medium">Loading jobs...</span>
               </div>
             ) : filteredJobs.length === 0 ? (
-              <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-200 p-8 flex flex-col items-center justify-center shadow-sm">
-                <span className="w-14 h-14 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 mb-4 border border-gray-100 shadow-sm">
-                  <Search className="w-6 h-6" />
-                </span>
-                <h3 className="text-base font-black text-gray-900 tracking-tight">
-                  No match found
-                </h3>
-                <p className="text-xs text-gray-400 mt-1 max-w-sm leading-relaxed">
-                  We couldn&apos;t find any listings matching &quot;{searchQuery}&quot; or chosen filters. Adjust your criteria or clear selections.
-                </p>
-                <button
-                  onClick={clearAllFilters}
-                  className="mt-5 bg-gray-950 text-white text-[10px] font-black uppercase tracking-widest py-2.5 px-6 rounded-xl hover:bg-gray-800 transition-all cursor-pointer shadow-sm"
-                >
-                  Reset All Filters
-                </button>
+              <div className="text-center py-12 bg-gray-50 rounded-2xl border border-gray-200">
+                <h3 className="text-[#0A192F] font-bold text-lg">No jobs found matching your criteria.</h3>
+                <p className="text-gray-500 mt-2 text-sm">Try broadening your search.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-6">
-                {filteredJobs.map((job) => (
-                  <JobCard
-                    key={job.id}
-                    job={job}
-                    onClickToggle={() => toggleExpand(job.id)}
-                    isExpanded={expandedJobId === job.id}
-                  />
-                ))}
+              filteredJobs.map((job) => (
+                <div 
+                  key={job.id} 
+                  onClick={() => setSelectedJob(job)}
+                  className={`bg-white rounded-xl border p-5 cursor-pointer transition-all ${
+                    selectedJob?.id === job.id 
+                      ? 'border-[#0A192F] shadow-sm ring-1 ring-[#0A192F]' 
+                      : 'border-gray-200 hover:shadow-md hover:border-gray-300'
+                  }`}
+                >
+                  {job.is_urgent && (
+                    <div className="mb-3">
+                      <span className="bg-[#004D2C] text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-md inline-flex items-center gap-1">
+                        <Flame className="w-3 h-3 fill-amber-400 text-amber-400" />
+                        Urgent Spotlight
+                      </span>
+                    </div>
+                  )}
+                  <h2 className="text-lg font-extrabold text-[#0A192F] leading-tight mb-2">
+                    {job.title}
+                  </h2>
+                  
+                  <div className="flex flex-wrap items-center gap-2 mb-3">
+                    <span className="bg-[#004D2C]/10 text-[#004D2C] font-bold text-xs px-2.5 py-1 rounded-md">
+                      ₦{job.budget?.toLocaleString()}
+                    </span>
+                    {job.category && (
+                      <span className="text-xs text-gray-600 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-md flex items-center gap-1">
+                        <Tag className="w-3 h-3" />
+                        {job.category}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="space-y-1.5 mb-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                      <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
+                      <span>{job.location_lga}, {job.location_state}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                      <Briefcase className="w-4 h-4 text-gray-400 shrink-0" />
+                      <span>{displayJobType(job.job_type)}</span>
+                    </div>
+                  </div>
+
+                  {job.description && (
+                    <div className="text-sm text-gray-600 line-clamp-2 leading-relaxed bg-gray-50 border border-gray-100 p-3 rounded-lg">
+                      {job.description}
+                    </div>
+                  )}
+
+                  <div className="mt-4 pt-3 flex items-center justify-between text-xs text-gray-500 font-medium">
+                    <span>{getRelativeTime(job.created_at)}</span>
+                    {selectedJob?.id !== job.id && (
+                      <span className="text-[#0A192F] font-bold">View details &rarr;</span>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* RIGHT COLUMN: Detail View Sticky Pane */}
+          <div className={`md:col-span-7 bg-white rounded-2xl border border-gray-200 shadow-sm md:sticky md:top-28 md:max-h-[calc(100vh-8rem)] overflow-y-auto ${selectedJob ? 'block' : 'hidden md:block md:invisible'}`}>
+            {selectedJob ? (
+              <div className="p-6 md:p-8">
+                {/* Mobile back button */}
+                <button 
+                  onClick={() => setSelectedJob(null)}
+                  className="md:hidden flex items-center gap-2 text-[#0A192F] font-bold text-sm mb-6 border border-gray-200 px-4 py-2 rounded-lg"
+                >
+                  <ArrowLeft className="w-4 h-4" /> Back to jobs
+                </button>
+
+                <div className="space-y-6">
+                  <div>
+                    {selectedJob.is_urgent && (
+                      <span className="bg-[#004D2C] text-white text-xs uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-md inline-flex items-center gap-1.5 mb-4">
+                        <Flame className="w-4 h-4 fill-amber-400 text-amber-400" />
+                        Urgent Spotlight
+                      </span>
+                    )}
+                    <h1 className="text-2xl md:text-3xl font-black text-[#0A192F] tracking-tight leading-tight mb-4">
+                      {selectedJob.title}
+                    </h1>
+                    
+                    <div className="flex flex-wrap gap-3 mb-6">
+                      {selectedJob.category && (
+                        <div className="bg-gray-100 text-[#0A192F] font-semibold text-sm px-3 py-1.5 rounded-lg border border-gray-200 flex items-center gap-1.5">
+                          <Tag className="w-4 h-4" />
+                          {selectedJob.category}
+                        </div>
+                      )}
+                      <div className="bg-[#004D2C]/10 border border-[#004D2C]/20 text-[#004D2C] font-bold text-sm px-3 py-1.5 rounded-lg">
+                        ₦{selectedJob.budget?.toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-y border-gray-200 py-6">
+                    <div className="space-y-1">
+                      <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Location</span>
+                      <div className="flex items-center gap-2 text-[#0A192F] font-medium text-sm">
+                        <MapPin className="w-5 h-5 text-gray-400 shrink-0" />
+                        {selectedJob.location_lga}, {selectedJob.location_state}
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Job Type</span>
+                      <div className="flex items-center gap-2 text-[#0A192F] font-medium text-sm">
+                        <Briefcase className="w-5 h-5 text-gray-400 shrink-0" />
+                        {displayJobType(selectedJob.job_type)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-2">
+                    <h3 className="text-lg font-extrabold text-[#0A192F] mb-4">Full Job Description</h3>
+                    <div className="bg-white text-gray-700 text-base leading-relaxed whitespace-pre-wrap whitespace-normal">
+                      {selectedJob.description || "No full description provided. The title contains the primary requirements."}
+                    </div>
+                  </div>
+
+                  <div className="pt-8 pb-4">
+                    <button 
+                      onClick={() => router.push(`/p/${selectedJob.id}`)}
+                      className="w-full sm:w-auto bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold text-base px-10 py-4 rounded-xl transition-colors shadow-md cursor-pointer"
+                    >
+                      Apply Now
+                    </button>
+                  </div>
+                  
+                  <div className="text-xs text-gray-400 font-medium pt-4 border-t border-gray-100 flex justify-between">
+                    <span>Posted: {getRelativeTime(selectedJob.created_at)}</span>
+                    <span className="uppercase tracking-widest font-mono">ID: {selectedJob.id.split('-')[0]}</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              // Empty state when nothing is selected
+              <div className="hidden md:flex flex-col items-center justify-center h-full p-12 text-center">
+                <div className="w-32 h-32 mb-6">
+                  <Image src="/logo.png" alt="Select Job" width={128} height={128} className="opacity-10 grayscale" />
+                </div>
+                <h2 className="text-[#0A192F] font-bold text-xl mb-2">Select a job to view details</h2>
+                <p className="text-gray-500 max-w-sm">Click on any job card from the list on the left to see the full description, requirements, and apply.</p>
               </div>
             )}
-
-          </section>
+          </div>
 
         </div>
-
       </div>
-
-      {/* Slide-In Mobile Filters Sidebar Modal Overlay */}
-      <AnimatePresence>
-        {isMobileFilterOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileFilterOpen(false)}
-              className="fixed inset-0 bg-black z-50 pointer-events-auto"
-            />
-            
-            {/* Drawer Sheet */}
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="fixed right-0 top-0 bottom-0 max-w-xs w-full bg-white p-6 shadow-2xl z-50 overflow-y-auto"
-              id="mobile-filters-drawer"
-            >
-              <div className="flex justify-between items-center mb-6">
-                <span className="font-extrabold text-sm tracking-tight text-gray-900">
-                  Refine Search
-                </span>
-                <button
-                  onClick={() => setIsMobileFilterOpen(false)}
-                  className="p-1 rounded-lg hover:bg-gray-100 text-gray-400 transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {renderFilterPanel()}
-
-              <button
-                onClick={() => setIsMobileFilterOpen(false)}
-                className="mt-8 w-full bg-[#006D44] hover:bg-[#005a37] text-white text-[10px] font-extrabold uppercase tracking-widest py-3 rounded-xl transition-all cursor-pointer shadow-md shadow-green-900/10 text-center"
-              >
-                Apply Filters
-              </button>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
     </main>
   );
 }
+
