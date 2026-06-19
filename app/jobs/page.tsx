@@ -104,7 +104,8 @@ export default function JobsPage() {
       const q = whereQuery.toLowerCase();
       const matchState = job.location_state?.toLowerCase().includes(q);
       const matchLga = job.location_lga?.toLowerCase().includes(q);
-      if (!matchState && !matchLga) return false;
+      const matchWorkMode = job.work_mode?.toLowerCase().includes(q);
+      if (!matchState && !matchLga && !matchWorkMode) return false;
     }
     return true;
   }).sort((a, b) => {
@@ -122,10 +123,10 @@ export default function JobsPage() {
 
   const displayJobType = (job_type: string) => {
     switch (job_type) {
-      case 'task': return 'One-time Task';
-      case 'contract': return 'Freelance/Contract';
-      case 'full_time': return 'Full-time Help';
-      default: return 'Quick Task';
+      case 'task': return 'One-time task';
+      case 'contract': return 'Project / Contract';
+      case 'full_time': return 'Ongoing work';
+      default: return 'Quick task';
     }
   };
 
@@ -195,7 +196,7 @@ export default function JobsPage() {
               <span className="text-[#0A192F] font-bold mr-3 whitespace-nowrap text-sm">Where</span>
               <input 
                 type="text" 
-                placeholder="City, state, or LGA" 
+                placeholder="City, state, LGA, or Remote" 
                 value={whereQuery}
                 onChange={(e) => setWhereQuery(e.target.value)}
                 className="w-full bg-transparent outline-none text-[#0A192F] placeholder-gray-500 font-medium text-base"
@@ -302,7 +303,10 @@ export default function JobsPage() {
                   <div className="space-y-1.5 mb-4">
                     <div className="flex items-center gap-2 text-sm text-gray-700">
                       <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
-                      <span>{job.location_lga}, {job.location_state}</span>
+                      <span>
+                        {job.work_mode === 'remote' ? 'Remote' : `${job.location_lga}, ${job.location_state}`}
+                        {job.work_mode === 'hybrid' ? ' (Hybrid)' : ''}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-700">
                       <Briefcase className="w-4 h-4 text-gray-400 shrink-0" />
@@ -369,7 +373,8 @@ export default function JobsPage() {
                       <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Location</span>
                       <div className="flex items-center gap-2 text-[#0A192F] font-medium text-sm">
                         <MapPin className="w-5 h-5 text-gray-400 shrink-0" />
-                        {selectedJob.location_lga}, {selectedJob.location_state}
+                        {selectedJob.work_mode === 'remote' ? 'Remote' : `${selectedJob.location_lga}, ${selectedJob.location_state}`}
+                        {selectedJob.work_mode === 'hybrid' ? ' (Hybrid)' : ''}
                       </div>
                     </div>
                     <div className="space-y-1">

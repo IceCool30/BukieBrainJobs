@@ -57,6 +57,7 @@ export default function PostJobPage() {
   const [selectedLga, setSelectedLga] = useState('Ikeja');
   const [jobType, setJobType] = useState<'task' | 'contract' | 'full_time'>('task');
   const [isUrgent, setIsUrgent] = useState(false);
+  const [workMode, setWorkMode] = useState<'on-site' | 'remote' | 'hybrid'>('on-site');
 
   // Paystack Urgent payment modal trigger
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -87,10 +88,11 @@ export default function PostJobPage() {
         description,
         budget: budgetNum,
         category,
-        location_state: selectedState,
-        location_lga: selectedLga,
+        location_state: workMode === 'remote' ? 'Remote' : selectedState,
+        location_lga: workMode === 'remote' ? 'Remote' : selectedLga,
         job_type: jobType,
-        is_urgent: isUrgent
+        is_urgent: isUrgent,
+        work_mode: workMode
       }, paymentRef);
 
       if (result.success) {
@@ -113,6 +115,11 @@ export default function PostJobPage() {
     e.preventDefault();
     if (!title.trim() || !description.trim() || !budget.trim()) {
       setErrorMsg('Please fill in all required fields.');
+      return;
+    }
+
+    if (workMode !== 'remote' && (!selectedState || !selectedLga)) {
+      setErrorMsg('Please select a valid location for on-site or hybrid work.');
       return;
     }
 
@@ -287,10 +294,76 @@ export default function PostJobPage() {
                     onChange={(e) => setCategory(e.target.value)}
                     className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
                   >
-                    <option value="Plumbing">Plumbing</option>
-                    <option value="Electrical">Electrical</option>
-                    <option value="Driver">Driver Task</option>
-                    <option value="Other">Other Category</option>
+                    <optgroup label="Trade & Physical Work">
+                      <option value="Plumbing">Plumbing</option>
+                      <option value="Electrical">Electrical</option>
+                      <option value="Carpentry">Carpentry</option>
+                      <option value="Painting">Painting</option>
+                      <option value="Masonry">Masonry / Bricklaying</option>
+                      <option value="Welding">Welding</option>
+                      <option value="HVAC">HVAC / Air Conditioning</option>
+                      <option value="Roofing">Roofing</option>
+                      <option value="Tiling">Tiling / Flooring</option>
+                      <option value="Handyman">General Maintenance / Handyman</option>
+                      <option value="Cleaning">Cleaning Services</option>
+                      <option value="Driving">Driving / Chauffeur</option>
+                      <option value="Security">Security Guard</option>
+                      <option value="Catering">Catering / Cooking</option>
+                      <option value="Tailoring">Tailoring / Fashion Design</option>
+                      <option value="Beauty">Hair & Beauty Services</option>
+                      <option value="Gardening">Gardening / Landscaping</option>
+                      <option value="Moving">Moving / Haulage</option>
+                      <option value="Laundry">Laundry / Dry Cleaning</option>
+                      <option value="PestControl">Pest Control</option>
+                    </optgroup>
+                    <optgroup label="Digital & Remote Work">
+                      <option value="WebDev">Web Development</option>
+                      <option value="AppDev">Mobile App Development</option>
+                      <option value="SoftwareDev">Software Development</option>
+                      <option value="UIDesign">UI/UX Design</option>
+                      <option value="GraphicDesign">Graphic Design</option>
+                      <option value="BrandIdentity">Brand Identity / Logo Design</option>
+                      <option value="VideoEditing">Video Editing</option>
+                      <option value="Animation">Animation / Motion Graphics</option>
+                      <option value="Photography">Photography</option>
+                      <option value="ContentWriting">Content Writing</option>
+                      <option value="Copywriting">Copywriting</option>
+                      <option value="BlogWriting">Blog Writing</option>
+                      <option value="TechWriting">Technical Writing</option>
+                      <option value="Translation">Translation</option>
+                      <option value="Transcription">Transcription</option>
+                      <option value="VirtualAssistant">Virtual Assistant</option>
+                      <option value="DataEntry">Data Entry</option>
+                      <option value="CustomerSupport">Customer Support</option>
+                      <option value="SocialMedia">Social Media Management</option>
+                      <option value="DigitalMarketing">Digital Marketing</option>
+                      <option value="SEO">SEO Services</option>
+                      <option value="EmailMarketing">Email Marketing</option>
+                      <option value="Accounting">Accounting / Bookkeeping</option>
+                      <option value="FinancialConsulting">Financial Consulting</option>
+                      <option value="LegalConsulting">Legal Consulting</option>
+                      <option value="BusinessConsulting">Business Consulting</option>
+                      <option value="ProjectManagement">Project Management</option>
+                      <option value="Tutoring">Tutoring / Teaching</option>
+                      <option value="VoiceOver">Voice Over</option>
+                      <option value="MusicProduction">Music Production</option>
+                      <option value="3DModeling">3D Modeling / CAD</option>
+                      <option value="DataAnalysis">Data Analysis</option>
+                      <option value="Cybersecurity">Cybersecurity Consulting</option>
+                      <option value="NetworkAdmin">Network Administration</option>
+                      <option value="ITSupport">IT Support</option>
+                      <option value="CloudDevOps">Cloud Services / DevOps</option>
+                    </optgroup>
+                    <optgroup label="Hybrid & Event Work">
+                      <option value="EventPlanning">Event Planning</option>
+                      <option value="EventPhotography">Event Photography</option>
+                      <option value="EventVideography">Event Videography</option>
+                      <option value="RealEstate">Real Estate Agent Services</option>
+                      <option value="PersonalTraining">Personal Training / Fitness</option>
+                      <option value="InteriorDesign">Interior Design</option>
+                      <option value="Architecture">Architecture Services</option>
+                      <option value="Surveying">Surveying</option>
+                    </optgroup>
                   </select>
                 </div>
               </div>
@@ -321,32 +394,84 @@ export default function PostJobPage() {
               </AnimatePresence>
 
               {/* Grid 2: State and LGA */}
-              <div className="w-full">
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
-                  Location (State & LGA) *
-                </label>
-                <LocationSelector
-                  selectedState={selectedState}
-                  selectedLga={selectedLga}
-                  onStateChange={setSelectedState}
-                  onLgaChange={setSelectedLga}
-                />
-              </div>
+              {workMode !== 'remote' && (
+                <div className="w-full">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                    Location (State & LGA) *
+                  </label>
+                  <LocationSelector
+                    selectedState={selectedState}
+                    selectedLga={selectedLga}
+                    onStateChange={setSelectedState}
+                    onLgaChange={setSelectedLga}
+                  />
+                </div>
+              )}
 
               {/* Job Type Dropdown matching DB enum values */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   Job Type / Arrangement
                 </label>
-                <select
-                  value={jobType}
-                  onChange={(e) => setJobType(e.target.value as any)}
-                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
-                >
-                  <option value="task">Task (One-time)</option>
-                  <option value="contract">Contract (Freelance)</option>
-                  <option value="full_time">Full-time Employee</option>
-                </select>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {(['task', 'contract', 'full_time'] as const).map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => setJobType(type)}
+                      className={`p-3 text-left rounded-xl border-2 transition-all ${
+                        jobType === type
+                          ? 'border-[#0A192F] bg-[#0A192F]/5'
+                          : 'border-gray-200 bg-white hover:border-gray-300'
+                      }`}
+                    >
+                      <span className={`block text-sm font-semibold ${jobType === type ? 'text-[#0A192F]' : 'text-gray-500'}`}>
+                        {type === 'task' ? 'One-time task' : type === 'contract' ? 'Project / Contract' : 'Ongoing work'}
+                      </span>
+                      <span className="block text-[10px] font-normal leading-relaxed text-gray-400 mt-1.5">
+                        {type === 'task'
+                          ? 'This is a one-off single task that will be completed and signed out.'
+                          : type === 'contract'
+                          ? 'The work is packaged in a scope with specific deliverables, time-range or phases.'
+                          : 'This position is for a recurring or indefinite ongoing business engagement.'}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                  Work Mode
+                </label>
+                <div className="grid grid-cols-3 gap-3">
+                  {(['on-site', 'remote', 'hybrid'] as const).map((mode) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => {
+                        setWorkMode(mode);
+                        // When remote is selected, location can be cleared
+                        if (mode === 'remote') {
+                          setSelectedState('');
+                          setSelectedLga('');
+                        }
+                      }}
+                      className={`p-3 rounded-xl border-2 text-sm text-left font-semibold transition-all ${
+                        workMode === mode
+                          ? 'border-[#0A192F] bg-[#0A192F]/5 text-[#0A192F]'
+                          : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
+                      }`}
+                    >
+                      <span className="block text-sm">
+                        {mode === 'on-site' ? 'On-site' : mode === 'remote' ? 'Remote' : 'Hybrid'}
+                      </span>
+                      <span className="block text-[10px] font-normal text-gray-400 mt-0.5 leading-tight gap-0">
+                        {mode === 'on-site' ? 'Worker must be there' : mode === 'remote' ? 'Work from anywhere' : 'Mix of both'}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div className="border-t border-gray-100 my-6"></div>

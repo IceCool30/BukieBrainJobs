@@ -13,6 +13,7 @@ export interface PostJobInput {
   location_lga: string;
   job_type: 'task' | 'contract' | 'full_time';
   is_urgent: boolean;
+  work_mode?: 'on-site' | 'remote' | 'hybrid';
 }
 
 /**
@@ -227,10 +228,11 @@ export async function postJobAction(input: PostJobInput, paymentRef?: string) {
           description: input.description,
           budget: input.budget,
           category: input.category,
-          location_state: input.location_state,
-          location_lga: input.location_lga,
+          location_state: input.work_mode === 'remote' ? 'Remote' : input.location_state,
+          location_lga: input.work_mode === 'remote' ? 'Anywhere' : input.location_lga,
           job_type: input.job_type,
           is_urgent: input.is_urgent,
+          work_mode: input.work_mode || 'on-site',
           stage: input.is_urgent ? 'active' : 'open', // Urgent items are promoted active
           inspection_fee_paid: false,
         }
