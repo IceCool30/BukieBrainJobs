@@ -17,7 +17,8 @@ import {
   Zap,
   X,
   ShieldCheck,
-  CreditCard
+  CreditCard,
+  TrendingUp
 } from 'lucide-react';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { postJobAction } from '@/app/actions';
@@ -33,6 +34,48 @@ const PaystackButton = dynamic(() => import('@/components/PaystackButton'), {
     </div>
   ),
 });
+
+interface MarketRate {
+  min: number;
+  max: number;
+  label: string;
+}
+
+function getMarketRateRange(cat: string, type: 'task' | 'contract' | 'full_time'): MarketRate {
+  const isTradeSpecial = ['HVAC', 'Roofing', 'Welding', 'Masonry', 'Electrical', 'Plumbing', 'Carpentry'].includes(cat);
+  const isTradeSimple = ['Handyman', 'Cleaning', 'Laundry', 'Gardening', 'Moving', 'PestControl'].includes(cat);
+  const isDigitalHigh = ['WebDev', 'AppDev', 'SoftwareDev', 'Cybersecurity', 'CloudDevOps'].includes(cat);
+  const isDigitalMid = ['UIDesign', 'GraphicDesign', 'BrandIdentity', 'VideoEditing', 'Animation', 'Translation', 'Accounting', 'FinancialConsulting', 'LegalConsulting', 'BusinessConsulting', 'ProjectManagement', 'DataAnalysis', 'NetworkAdmin', 'ITSupport', 'MusicProduction', '3DModeling'].includes(cat);
+  const isDigitalSimple = ['VirtualAssistant', 'DataEntry', 'CustomerSupport', 'Transcription', 'Tutoring', 'VoiceOver', 'ContentWriting', 'Copywriting', 'BlogWriting', 'TechWriting'].includes(cat);
+  const isEventHigh = ['EventPlanning', 'EventPhotography', 'EventVideography', 'Architecture', 'InteriorDesign', 'Surveying', 'RealEstate'].includes(cat);
+  
+  if (type === 'task') {
+    if (isDigitalHigh) return { min: 25000, max: 70000, label: 'per task' };
+    if (isDigitalMid) return { min: 15000, max: 40000, label: 'per milestone' };
+    if (isDigitalSimple) return { min: 5000, max: 15000, label: 'per task/job' };
+    if (isTradeSpecial) return { min: 10000, max: 25000, label: 'per visit' };
+    if (isTradeSimple) return { min: 3000, max: 10000, label: 'per clean/visit' };
+    if (isEventHigh) return { min: 15000, max: 45000, label: 'per session' };
+    return { min: 5000, max: 15000, label: 'per task' };
+  } else if (type === 'contract') {
+    if (isDigitalHigh) return { min: 150000, max: 450000, label: 'project fee' };
+    if (isDigitalMid) return { min: 60000, max: 180000, label: 'project fee' };
+    if (isDigitalSimple) return { min: 25005, max: 80000, label: 'project fee' };
+    if (isTradeSpecial) return { min: 40000, max: 120000, label: 'contract sum' };
+    if (isTradeSimple) return { min: 15000, max: 45000, label: 'contract sum' };
+    if (isEventHigh) return { min: 80000, max: 250000, label: 'project fee' };
+    return { min: 30000, max: 100000, label: 'contract sum' };
+  } else {
+    // full_time/ongoing
+    if (isDigitalHigh) return { min: 250000, max: 600000, label: 'per month' };
+    if (isDigitalMid) return { min: 140000, max: 320000, label: 'per month' };
+    if (isDigitalSimple) return { min: 80000, max: 160000, label: 'per month' };
+    if (isTradeSpecial) return { min: 100000, max: 220000, label: 'per month' };
+    if (isTradeSimple) return { min: 45000, max: 85000, label: 'per month' };
+    if (isEventHigh) return { min: 150000, max: 350000, label: 'per month' };
+    return { min: 75000, max: 180000, label: 'per month' };
+  }
+}
 
 export default function PostJobPage() {
   const router = useRouter();
@@ -58,6 +101,7 @@ export default function PostJobPage() {
   const [jobType, setJobType] = useState<'task' | 'contract' | 'full_time'>('task');
   const [isUrgent, setIsUrgent] = useState(false);
   const [workMode, setWorkMode] = useState<'on-site' | 'remote' | 'hybrid'>('on-site');
+  const [customCategory, setCustomCategory] = useState('');
 
   // Paystack Urgent payment modal trigger
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -87,7 +131,7 @@ export default function PostJobPage() {
         title,
         description,
         budget: budgetNum,
-        category,
+        category: category.startsWith('Other') ? customCategory : category,
         location_state: workMode === 'remote' ? 'Remote' : selectedState,
         location_lga: workMode === 'remote' ? 'Remote' : selectedLga,
         job_type: jobType,
@@ -115,6 +159,11 @@ export default function PostJobPage() {
     e.preventDefault();
     if (!title.trim() || !description.trim() || !budget.trim()) {
       setErrorMsg('Please fill in all required fields.');
+      return;
+    }
+
+    if (category.startsWith('Other') && !customCategory.trim()) {
+      setErrorMsg('Please describe the type of work you need.');
       return;
     }
 
@@ -283,6 +332,44 @@ export default function PostJobPage() {
                       className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm pl-9 pr-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-mono font-semibold"
                     />
                   </div>
+                  
+                  {/* Dynamic Market Rate Suggestion Widget */}
+                  {(() => {
+                    const rate = getMarketRateRange(category, jobType);
+                    const median = Math.round((rate.min + rate.max) / 2);
+                    const isCustom = category.startsWith('Other');
+                    return (
+                      <div className="mt-2 bg-[#004D2C]/5 border border-[#004D2C]/10 rounded-xl p-2.5 transition-all text-xs text-gray-700">
+                        <div className="flex flex-wrap items-center justify-between gap-1.5">
+                          <div className="flex items-center gap-1.5 font-semibold text-gray-800">
+                            <TrendingUp className="w-3.5 h-3.5 text-[#004D2C]" />
+                            <span>Competitive Market Rate:</span>
+                            <span className="text-[#004D2C] font-extrabold text-sm font-mono">
+                              ₦{rate.min.toLocaleString()} - ₦{rate.max.toLocaleString()}
+                            </span>
+                            <span className="text-[10px] font-normal text-gray-400 lowercase">
+                              {rate.label}
+                            </span>
+                          </div>
+                          
+                          <button
+                            type="button"
+                            onClick={() => setBudget(median.toString())}
+                            className="text-[10px] bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold px-2.5 py-1 rounded-lg transition-transform active:scale-[0.96] shadow-sm cursor-pointer whitespace-nowrap inline-flex items-center gap-1"
+                            title="Auto-fill with recommended median rate"
+                          >
+                            <Sparkles className="w-3 h-3 text-[#004D2C]" />
+                            Apply Suggested (₦{median.toLocaleString()})
+                          </button>
+                        </div>
+                        {isCustom && (
+                          <p className="text-[9px] text-gray-400 mt-1">
+                            * Custom category rate suggestion is estimated. Adjust according to your specific task scope.
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 <div>
@@ -315,6 +402,7 @@ export default function PostJobPage() {
                       <option value="Moving">Moving / Haulage</option>
                       <option value="Laundry">Laundry / Dry Cleaning</option>
                       <option value="PestControl">Pest Control</option>
+                      <option value="OtherTrade">Other (Trade & Physical)</option>
                     </optgroup>
                     <optgroup label="Digital & Remote Work">
                       <option value="WebDev">Web Development</option>
@@ -353,6 +441,7 @@ export default function PostJobPage() {
                       <option value="NetworkAdmin">Network Administration</option>
                       <option value="ITSupport">IT Support</option>
                       <option value="CloudDevOps">Cloud Services / DevOps</option>
+                      <option value="OtherDigital">Other (Digital & Remote)</option>
                     </optgroup>
                     <optgroup label="Hybrid & Event Work">
                       <option value="EventPlanning">Event Planning</option>
@@ -363,8 +452,22 @@ export default function PostJobPage() {
                       <option value="InteriorDesign">Interior Design</option>
                       <option value="Architecture">Architecture Services</option>
                       <option value="Surveying">Surveying</option>
+                      <option value="OtherHybrid">Other (Hybrid & Event)</option>
                     </optgroup>
                   </select>
+                  {category.startsWith('Other') && (
+                    <div className="mt-3">
+                      <input
+                        type="text"
+                        required
+                        placeholder="What kind of work?"
+                        value={customCategory}
+                        onChange={(e) => setCustomCategory(e.target.value)}
+                        className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium"
+                      />
+                      <p className="text-[10px] text-gray-400 mt-1">Be specific so the right workers find you.</p>
+                    </div>
+                  )}
                 </div>
               </div>
 

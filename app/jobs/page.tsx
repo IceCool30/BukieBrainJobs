@@ -98,7 +98,8 @@ export default function JobsPage() {
       const matchTitle = job.title?.toLowerCase().includes(q);
       const matchDesc = job.description?.toLowerCase().includes(q);
       const matchCat = job.category?.toLowerCase().includes(q);
-      if (!matchTitle && !matchDesc && !matchCat) return false;
+      const matchWorkMode = job.work_mode?.toLowerCase().includes(q);
+      if (!matchTitle && !matchDesc && !matchCat && !matchWorkMode) return false;
     }
     if (whereQuery.trim() !== '') {
       const q = whereQuery.toLowerCase();
@@ -298,6 +299,15 @@ export default function JobsPage() {
                         {job.category}
                       </span>
                     )}
+                    {job.work_mode && job.work_mode !== 'on-site' && (
+                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md inline-flex items-center gap-1 ${
+                        job.work_mode === 'remote' 
+                          ? 'bg-purple-50 text-purple-700 border border-purple-200' 
+                          : 'bg-blue-50 text-blue-700 border border-blue-200'
+                      }`}>
+                        {job.work_mode === 'remote' ? '🌐 Remote' : '🔄 Hybrid'}
+                      </span>
+                    )}
                   </div>
 
                   <div className="space-y-1.5 mb-4">
@@ -384,6 +394,22 @@ export default function JobsPage() {
                         {displayJobType(selectedJob.job_type)}
                       </div>
                     </div>
+                    {selectedJob.work_mode && (
+                      <div className="space-y-1">
+                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Work Mode</span>
+                        <div className="flex items-center gap-2 text-[#0A192F] font-medium text-sm">
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-bold ${
+                            selectedJob.work_mode === 'on-site' 
+                              ? 'bg-gray-100 text-gray-700' 
+                              : selectedJob.work_mode === 'remote' 
+                                ? 'bg-purple-50 text-purple-700' 
+                                : 'bg-blue-50 text-blue-700'
+                          }`}>
+                            {selectedJob.work_mode === 'on-site' ? 'On-site' : selectedJob.work_mode === 'remote' ? 'Remote' : 'Hybrid'}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div className="pt-2">
