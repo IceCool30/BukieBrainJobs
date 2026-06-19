@@ -13,7 +13,8 @@ import {
   Tag, 
   ArrowLeft,
   Flame,
-  AlertCircle
+  AlertCircle,
+  Share2
 } from 'lucide-react';
 import { FadeUp } from '@/components/FadeUp';
 
@@ -53,10 +54,12 @@ export default function JobsPage() {
   
   // Selection state for Indeed-style layout
   const [selectedJob, setSelectedJob] = useState<any | null>(null);
+  const [appliedJobs, setAppliedJobs] = useState<Set<string>>(new Set());
 
-  // Search states
+  // Search & Sort states
   const [whatQuery, setWhatQuery] = useState('');
   const [whereQuery, setWhereQuery] = useState('');
+  const [sortBy, setSortBy] = useState('urgency');
 
   // Fetch jobs
   const fetchJobs = async () => {
@@ -88,8 +91,8 @@ export default function JobsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [supabase]);
 
-  // Filter logic based on What & Where
-  const filteredJobs = jobs.filter((job) => {
+  // Filter & Sort logic based on What & Where
+  const filteredJobs = [...jobs].filter((job) => {
     if (whatQuery.trim() !== '') {
       const q = whatQuery.toLowerCase();
       const matchTitle = job.title?.toLowerCase().includes(q);
@@ -104,6 +107,17 @@ export default function JobsPage() {
       if (!matchState && !matchLga) return false;
     }
     return true;
+  }).sort((a, b) => {
+    if (sortBy === 'date') {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    }
+    if (sortBy === 'budget') {
+      return (b.budget || 0) - (a.budget || 0);
+    }
+    // urgency (default)
+    if (a.is_urgent && !b.is_urgent) return -1;
+    if (!a.is_urgent && b.is_urgent) return 1;
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });
 
   const displayJobType = (job_type: string) => {
@@ -112,6 +126,25 @@ export default function JobsPage() {
       case 'contract': return 'Freelance/Contract';
       case 'full_time': return 'Full-time Help';
       default: return 'Quick Task';
+    }
+  };
+
+  const handleShare = async (jobId: string) => {
+    const url = `${window.location.origin}/p/${jobId}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Job from BukieBrainJobs',
+          text: 'Check out this job posting',
+          url: url,
+        });
+      } catch (err) {
+        console.error('Share failed:', err);
+      }
+    } else {
+      navigator.clipboard.writeText(url)
+        .then(() => alert('Link copied to clipboard!'))
+        .catch(err => console.error('Failed to copy', err));
     }
   };
 
@@ -124,7 +157,7 @@ export default function JobsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between border-b border-gray-100">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => router.push('/dashboard')}
+              onClick={() => router.push('/')}
               className="flex items-center gap-1.5 text-sm text-[#0A192F] hover:bg-gray-50 font-bold px-3 py-2 rounded-lg transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-5 h-5" />
@@ -192,6 +225,22 @@ export default function JobsPage() {
           
           {/* LEFT COLUMN: Job List */}
           <div className={`md:col-span-5 flex flex-col gap-4 ${selectedJob ? 'hidden md:flex' : 'flex'}`}>
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-gray-600 font-medium text-sm">{filteredJobs.length} {filteredJobs.length === 1 ? 'job' : 'jobs'} found</span>
+              <div className="flex items-center gap-2">
+                <label htmlFor="sort-by" className="text-sm font-medium text-gray-500">Sort by:</label>
+                <select 
+                  id="sort-by"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="bg-gray-50 border border-gray-200 text-[#0A192F] text-sm rounded-lg focus:ring-[#0A192F] focus:border-[#0A192F] block p-2 outline-none font-medium"
+                >
+                  <option value="urgency">Urgency</option>
+                  <option value="date">Date Posted</option>
+                  <option value="budget">Budget</option>
+                </select>
+              </div>
+            </div>
             
             {loading ? (
               Array.from({ length: 4 }).map((_, i) => (
@@ -339,12 +388,28 @@ export default function JobsPage() {
                     </div>
                   </div>
 
-                  <div className="pt-8 pb-4">
+                  <div className="pt-8 pb-4 flex gap-3">
                     <button 
-                      onClick={() => router.push(`/p/${selectedJob.id}`)}
-                      className="w-full sm:w-auto bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold text-base px-10 py-4 rounded-xl transition-colors shadow-md cursor-pointer active:scale-[0.98] transition-all"
+                      onClick={() => {
+                        const newSet = new Set(appliedJobs);
+                        newSet.add(selectedJob.id);
+                        setAppliedJobs(newSet);
+                      }}
+                      disabled={appliedJobs.has(selectedJob.id)}
+                      className={`flex-1 sm:flex-none sm:w-auto font-bold text-base px-10 py-4 rounded-xl transition-colors shadow-md cursor-pointer active:scale-[0.98] ${
+                        appliedJobs.has(selectedJob.id)
+                          ? 'bg-gray-100 text-[#004D2C] cursor-not-allowed shadow-none'
+                          : 'bg-[#0A192F] hover:bg-[#112a4f] text-white'
+                      }`}
                     >
-                      Apply Now
+                      {appliedJobs.has(selectedJob.id) ? 'Application Sent' : 'Apply Now'}
+                    </button>
+                    <button
+                      onClick={() => handleShare(selectedJob.id)}
+                      className="flex-shrink-0 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-[#0A192F] border border-gray-200 w-[56px] h-[56px] rounded-xl transition-colors cursor-pointer active:scale-[0.98]"
+                      aria-label="Share Job"
+                    >
+                      <Share2 className="w-5 h-5" />
                     </button>
                   </div>
                   

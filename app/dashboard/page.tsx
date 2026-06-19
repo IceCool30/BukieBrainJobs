@@ -153,7 +153,9 @@ export default function DashboardPage() {
               Welcome, {profile?.full_name || user?.email || 'Partner'}
             </h1>
             <p className="text-sm text-gray-500 mt-1">
-              Thank you for digitizing local trust. Manage your activities, services, & wallet below.
+              {isEmployer 
+                ? 'Post jobs, chat with applicants, and hire with confidence.' 
+                : 'Browse jobs near you, apply, and get paid directly to your wallet.'}
             </p>
           </div>
 
@@ -224,11 +226,11 @@ export default function DashboardPage() {
                 {isEmployer ? <Briefcase className="w-5 h-5" /> : <Hammer className="w-5 h-5" />}
               </span>
               <p className="text-sm font-semibold text-gray-800">
-                {isEmployer ? 'You have no active job posts yet' : 'No incoming offers in your LGA'}
+                {isEmployer ? 'Nothing posted yet. Need help around the house or office?' : 'No job alerts yet. Complete your profile so employers can find you.'}
               </p>
               <p className="text-xs text-gray-400 mt-1 max-w-xs mx-auto">
                 {isEmployer 
-                  ? 'Request maintenance, full-time help, or custom local projects with Pay-As-You-Go pricing.'
+                  ? 'Post a task now. Plumbers, electricians, drivers, and more are ready in your area.'
                   : 'Complete your BukiePassport profile setup with verification badges to receive priority system alerts!'}
               </p>
 
@@ -276,14 +278,14 @@ export default function DashboardPage() {
                   <span>Identity & Trust</span>
                 </h3>
                 <p className="text-xs text-gray-500 leading-relaxed">
-                  Every artisan is strictly bound by the *BukiePassport* check. Guaranteed via 2-factor verification keys.
+                  Every worker on BukieBrainJobs is verified. You know who you are hiring, and your money is protected until the work is done.
                 </p>
               </div>
 
               <div className="mt-4 bg-white p-3 rounded-xl border border-gray-100 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-[#004D2C]" />
                 <span className="text-[11px] font-semibold text-gray-600">
-                  {isEmployer ? 'Hire with Protected Funds security' : 'Blue Check Badge increases views by 350%'}
+                  {isEmployer ? 'Hire knowing your money is safe until you confirm the job is done.' : 'A verified badge helps employers trust you faster.'}
                 </span>
               </div>
             </div>

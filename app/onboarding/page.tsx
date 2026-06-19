@@ -165,7 +165,7 @@ export default function OnboardingPage() {
             transition={{ duration: 0.3 }}
             className="text-4xl md:text-5xl font-extrabold text-[#0A192F] tracking-tight mb-4"
           >
-            Welcome to BukieBrainJobs.
+            Welcome. Let us get you set up.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -173,7 +173,7 @@ export default function OnboardingPage() {
             transition={{ delay: 0.1, duration: 0.3 }}
             className="text-base text-gray-500"
           >
-            How would you like to use the platform today?
+            Are you here to hire or here to work? Pick one and we will take it from there.
           </motion.p>
         </div>
 
@@ -203,9 +203,9 @@ export default function OnboardingPage() {
               }
             }}
           >
-            <h3 className="text-xl font-bold text-[#0A192F] mb-2">I want to hire an expert</h3>
+            <h3 className="text-xl font-bold text-[#0A192F] mb-2">I want to hire someone</h3>
             <p className="text-sm text-[#0A192F]/70 font-medium leading-relaxed">
-              Post your tasks for free, browse verified local professionals, and fund your projects securely using our Protected Funds system.
+              Post a task, chat with applicants, and pay only when the work is done. Your money stays safe until you confirm everything is good.
             </p>
           </motion.div>
 
@@ -229,7 +229,7 @@ export default function OnboardingPage() {
           >
             <h3 className="text-xl font-bold text-[#0A192F] mb-2">I want to find work</h3>
             <p className="text-sm text-[#0A192F]/70 font-medium leading-relaxed">
-              Discover active jobs in your area, submit instant bids, and build your official digital BukiePassport to win client trust.
+              Browse jobs near you, apply in one tap, and build your reputation. A verified profile helps employers trust you faster.
             </p>
           </motion.div>
         </div>
@@ -241,7 +241,7 @@ export default function OnboardingPage() {
           className="w-full bg-[#0A192F] text-white py-4 px-6 rounded-xl font-bold text-lg hover:bg-[#112a4f] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-3 shadow-lg shadow-blue-900/10 active:scale-[0.98]"
         >
           {saving && <Loader2 className="w-5 h-5 animate-spin" />}
-          Continue to my Dashboard
+          That is me. Continue.
         </button>
 
         {/* Loading Overlay (Optional extra feedback if desired, keeping minimal here) */}

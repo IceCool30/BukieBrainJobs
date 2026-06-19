@@ -112,7 +112,7 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen flex-col items-center p-4 pt-20 sm:pt-28 pb-12 bg-white text-[#0A192F] relative">
       <button 
-        onClick={() => router.back()} 
+        onClick={() => router.push('/')} 
         className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-gray-500 hover:text-[#0A192F] transition-colors font-medium text-sm sm:text-base z-10"
       >
         <ArrowLeft className="w-5 h-5" />

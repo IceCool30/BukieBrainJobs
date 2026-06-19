@@ -27,31 +27,42 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         
-        <div className="space-y-8 text-gray-700 leading-relaxed text-lg">
+        <div className="space-y-8 text-gray-700 leading-relaxed text-lg font-medium">
           <p>
-            Your privacy is our priority. This policy outlines how we handle your data in compliance with Nigerian data protection standards.
+            Your privacy matters to us. Here is exactly what we do and do not do with your information.
           </p>
 
           <section>
-            <h2 className="text-2xl font-bold text-[#0A192F] mb-4">Information Collection</h2>
-            <p>
-              We collect phone numbers, email addresses, and location data (State and LGA) to accurately match you with local jobs.
-            </p>
+            <h2 className="text-2xl font-bold text-[#0A192F] mb-4">What we collect:</h2>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Your name, email, and phone number when you sign up.</li>
+              <li>Your location (state and LGA) so we can match you with jobs or workers near you.</li>
+              <li>Your skills and work history if you are a worker.</li>
+              <li>Payment information processed securely through Paystack. We do not store your full card or bank details.</li>
+            </ul>
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-[#0A192F] mb-4">Data Usage</h2>
-            <p>
-              Your contact information is strictly masked from the public. It is only revealed to authorized employers who have paid the required contact unlock fee.
-            </p>
+            <h2 className="text-2xl font-bold text-[#0A192F] mb-4">What we do with it:</h2>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Show your profile to employers or workers so they can connect with you.</li>
+              <li>Process payments safely.</li>
+              <li>Send you important updates about your jobs, payments, and account.</li>
+            </ul>
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-[#0A192F] mb-4">Third Parties</h2>
-            <p>
-              We do not sell your data. Payment processing is handled securely by Paystack, and we do not store your raw credit card or bank PIN details on our servers.
-            </p>
+            <h2 className="text-2xl font-bold text-[#0A192F] mb-4">What we never do:</h2>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Sell your data. Ever.</li>
+              <li>Share your contact details with anyone outside a job you have applied for or posted.</li>
+              <li>Keep your information longer than we need to.</li>
+            </ul>
           </section>
+          
+          <p className="pt-4">
+            If you have questions, reach us through the platform.
+          </p>
         </div>
       </main>
       

@@ -232,7 +232,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
           className="text-red-600 font-bold bg-red-50 border border-red-200 px-1.5 py-0.5 rounded text-[11px] inline-flex items-center gap-0.5 mx-0.5 shadow-sm"
           title="Payment Required to Reveal Contact details"
         >
-          [🔒 HIDDEN - Pay to Reveal]
+          [🔒 Hidden for your safety]
         </span>
       );
 
@@ -306,20 +306,20 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
             )}
           </div>
           <div>
-            <span className="block text-xs font-extrabold uppercase tracking-wider text-gray-700">
-              Communication Security Check
+            <span className="block text-xs font-extrabold text-gray-700">
+              Chat safely. Contact details are hidden until the employer pays the inspection fee.
             </span>
-            <span className="block text-[10px] text-gray-400 font-medium">
+            <span className="block text-[10px] text-gray-400 font-medium mt-0.5">
               {isInspectionPaid 
                 ? 'Standard contact data bypass validation approved' 
-                : 'Anti-bypass filters enabled: Phone numbers/Usernames redacted.'}
+                : 'Phone numbers and contact info hidden for your protection.'}
             </span>
           </div>
         </div>
 
         {!isInspectionPaid && (
           <div className="text-[10px] bg-amber-50 border border-amber-200 text-amber-800 font-extrabold px-3 py-1.5 rounded-xl uppercase tracking-wider flex items-center gap-1">
-            <span>Bypass Guard</span>
+            <span>Contact info locked</span>
           </div>
         )}
       </div>
@@ -329,7 +329,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
         <div className="p-3.5 bg-yellow-50/50 border-b border-yellow-100 text-[11px] text-amber-800 font-semibold leading-relaxed flex items-start gap-2.5">
           <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
           <div>
-            To prevent platform bypass, the main phone number, email handles, and @telegram aliases will remain scrambled until the employer covers the <strong>₦300 Inspection/Matching Fee</strong>.
+            Phone numbers and usernames are hidden until the employer pays the <strong>₦300 verification fee</strong>. This protects you from people trying to take the conversation off the platform.
           </div>
         </div>
       )}

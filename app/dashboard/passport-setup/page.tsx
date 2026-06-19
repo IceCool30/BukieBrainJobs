@@ -135,9 +135,9 @@ export default function PassportSetupPage() {
             <Hammer className="w-8 h-8" />
           </div>
           
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight">Your Verified BukiePassport</h1>
+          <h1 className="text-2xl font-black text-gray-900 tracking-tight">Build your profile. Get noticed.</h1>
           <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto leading-relaxed">
-            Every professional worker in Nigeria is identified by their QR BukiePassport. Complete details below.
+            Employers want to know who they are hiring. A complete profile with your skills and experience helps you stand out and get hired faster.
           </p>
         </div>
 
@@ -148,13 +148,13 @@ export default function PassportSetupPage() {
             {/* Bio info */}
             <div id="field-bio">
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Professional Bio / Pitch
+                Tell employers about yourself
               </label>
               <textarea
                 id="bio-textarea"
                 required
                 rows={3}
-                placeholder="e.g. Experienced general plumber with 4 years serving the Surulere and Ikeja communities. Specialist in burst pipes, toilet maintenance, and water heater installations."
+                placeholder="e.g. I am a plumber with 4 years of experience in Surulere and Ikeja. I fix burst pipes, install toilets, and repair water heaters. I am reliable and available on short notice."
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm resize-none"
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
@@ -164,7 +164,7 @@ export default function PassportSetupPage() {
             {/* Skills array input */}
             <div id="field-skills">
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 flex items-center justify-between">
-                <span>Core Artisanal Skills</span>
+                <span>What can you do?</span>
                 <span className="text-[10px] text-gray-400 capitalize normal-case font-medium">comma-separated</span>
               </label>
               <input
@@ -182,9 +182,9 @@ export default function PassportSetupPage() {
             <div className="bg-[#0A192F] text-white p-4 rounded-xl border border-gray-800 flex items-center gap-3" id="blue-check-badge-ad">
               <ShieldCheck className="w-10 h-10 text-[#004D2C] shrink-0" />
               <div>
-                <span className="block text-xs font-extrabold text-[#004D2C] uppercase tracking-wider font-mono">Blue Check Passport Verify</span>
+                <span className="block text-xs font-extrabold text-[#004D2C] uppercase tracking-wider font-mono">Get verified. Earn the badge.</span>
                 <span className="block text-[10px] text-gray-400 leading-normal mt-0.5">
-                  Unlock the Blue Check trusted badge for ₦1,500/year to rank list first for urgent alerts and land gigs 3.5x faster.
+                  Verified workers appear higher in search results and get more job offers. It costs ₦1,500 per year, and you can do it right after setting up your profile.
                 </span>
               </div>
             </div>
@@ -216,7 +216,7 @@ export default function PassportSetupPage() {
               ) : (
                 <>
                   <Save className="w-4 h-4" />
-                  <span>Update BukiePassport</span>
+                  <span>Save my profile</span>
                 </>
               )}
             </button>

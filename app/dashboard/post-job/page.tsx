@@ -458,7 +458,7 @@ export default function PostJobPage() {
                 <div className="flex items-center gap-2">
                   <Zap className="w-5 h-5 text-amber-500 fill-amber-500" />
                   <span className="font-extrabold text-sm text-gray-900 uppercase tracking-wide">
-                    Urgent Boost Upgrade
+                    Want your job seen faster?
                   </span>
                 </div>
                 <button
@@ -474,17 +474,17 @@ export default function PostJobPage() {
                 <div className="bg-amber-50/50 rounded-2xl p-4 border border-amber-100 flex gap-3 text-amber-900">
                   <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5 text-amber-500" />
                   <div className="text-xs text-amber-800 leading-normal">
-                    You have toggled the <strong>Urgent Category Upgrade</strong>. Before this task can go live on the premium broadcast list and notify artisan groups, a promotion slot fee is due.
+                    Urgent jobs get sent directly to workers in your area via Telegram. More eyes, faster responses.
                   </div>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 flex justify-between items-center">
                   <div>
                     <span className="text-xs font-extrabold text-gray-900 block">
-                      Promotion slot upgrade fee
+                      Urgent listing fee
                     </span>
                     <span className="text-[10px] text-gray-400 font-mono">
-                      Includes custom telegram webhooks
+                      Your job will be sent to workers near you instantly.
                     </span>
                   </div>
                   <div className="text-right">
@@ -495,7 +495,7 @@ export default function PostJobPage() {
                 </div>
 
                 <div className="text-[10px] text-gray-400 leading-relaxed text-center">
-                  By completing payment, your job goes live on the marketplace as <span className="text-amber-600 font-extrabold uppercase">Urgent</span> with priority ranking.
+                  After payment, your job goes live immediately and is shared with verified workers in your location.
                 </div>
               </div>
 
@@ -505,7 +505,7 @@ export default function PostJobPage() {
                   onClick={() => setShowPaymentModal(false)}
                   className="text-xs text-gray-500 hover:text-gray-900 font-bold uppercase tracking-wider py-3 px-4 rounded-xl transition-all cursor-pointer bg-gray-100 hover:bg-gray-200 text-center"
                 >
-                  Edit Job
+                  Go back
                 </button>
                 <PaystackButton
                   amount={1000}
