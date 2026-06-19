@@ -47,6 +47,8 @@ export default function PublicPassportPage() {
   const [passport, setPassport] = useState<any>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
+  const [completedJobsCount, setCompletedJobsCount] = useState<number | null>(null);
+  const [avgRating, setAvgRating] = useState<number | null>(null);
   
   // Shared & URL handling
   const [currentUrl, setCurrentUrl] = useState('');
@@ -112,6 +114,45 @@ export default function PublicPassportPage() {
             is_verified: false,
             hourly_rate: null
           });
+        }
+
+        // 3. Count jobs where this worker was selected as selected_worker_id
+        const { count, error: countErr } = await supabase
+          .from('jobs')
+          .select('*', { count: 'exact', head: true })
+          .eq('selected_worker_id', workerId);
+
+        if (!countErr && count !== null) {
+          setCompletedJobsCount(count);
+
+          if (count > 0) {
+            const { data: jobList, error: listErr } = await supabase
+              .from('jobs')
+              .select('*')
+              .eq('selected_worker_id', workerId);
+
+            if (!listErr && jobList && jobList.length > 0) {
+              const jobsWithRatings = jobList.filter(
+                (j) => j.rating !== undefined && j.rating !== null
+              );
+              if (jobsWithRatings.length > 0) {
+                const sum = jobsWithRatings.reduce(
+                  (acc, curr) => acc + Number(curr.rating),
+                  0
+                );
+                setAvgRating(sum / jobsWithRatings.length);
+              } else {
+                setAvgRating(5.0); // Dynamic 5.0 baseline for completed tasks
+              }
+            } else {
+              setAvgRating(5.0);
+            }
+          } else {
+            setAvgRating(null);
+          }
+        } else {
+          setCompletedJobsCount(0);
+          setAvgRating(null);
         }
 
       } catch (err: any) {
@@ -252,8 +293,16 @@ export default function PublicPassportPage() {
             {/* Avatar Header block */}
             <div className="relative">
               {/* Profile Avatar Pill */}
-              <div id="worker-avatar" className="w-24 h-24 rounded-[24px] border-4 border-white bg-slate-100 shadow-md flex items-center justify-center text-[#0A192F] text-4xl font-extrabold select-none">
-                {workerName.charAt(0).toUpperCase()}
+              <div id="worker-avatar" className="relative w-24 h-24 rounded-[24px] border-4 border-white bg-slate-100 shadow-md flex items-center justify-center text-[#0A192F] text-4xl font-extrabold select-none overflow-hidden">
+                {profile?.avatar_url || passport?.avatar_url ? (
+                  <img
+                    src={profile?.avatar_url || passport?.avatar_url}
+                    alt={workerName}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  workerName.charAt(0).toUpperCase()
+                )}
               </div>
 
               {/* Verified badge status indicator overlay */}
@@ -285,8 +334,24 @@ export default function PublicPassportPage() {
 
               {/* Trust Score block */}
               <div className="pt-2 flex items-center justify-center gap-2 text-xs font-bold text-gray-500" id="trust-rating-score">
-                <span>⭐⭐⭐⭐⭐</span>
-                <span className="text-gray-900 px-1.5 py-0.5 bg-yellow-50 rounded-lg text-[11px] font-extrabold border border-yellow-200">5.0 Badge</span>
+                {completedJobsCount === 0 || completedJobsCount === null ? (
+                  <span className="text-gray-500 font-bold bg-gray-50 border border-gray-150 px-2.5 py-1 rounded-full text-[11px] uppercase tracking-wide">
+                    New Worker (No Ratings Yet)
+                  </span>
+                ) : (
+                  <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-100 px-3 py-1 rounded-full text-[11px] font-extrabold text-amber-800 uppercase tracking-wider">
+                    <span>
+                      {Array.from({ length: 5 }).map((_, idx) => (
+                        <span key={idx} className="text-amber-500 text-sm">
+                          {idx < Math.round(avgRating || 5) ? '★' : '☆'}
+                        </span>
+                      ))}
+                    </span>
+                    <span className="bg-white/80 px-1.5 py-0.5 rounded-md border border-amber-200 text-amber-800 font-mono">
+                      {(avgRating || 5.0).toFixed(1)} Score
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 

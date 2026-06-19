@@ -21,6 +21,7 @@ export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [wallet, setWallet] = useState<any>(null);
+  const [passport, setPassport] = useState<any>(null);
   const [errorMsg, setErrorMsg] = useState('');
 
   const fetchUserData = async () => {
@@ -46,6 +47,15 @@ export default function DashboardPage() {
       } else {
         setProfile(profileData);
       }
+
+      // Fetch Passport info
+      const { data: passportData } = await supabase
+        .from('bukie_passports')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .maybeSingle();
+
+      setPassport(passportData);
 
       // Fetch Wallet info
       const { data: walletData, error: walletError } = await supabase
@@ -121,6 +131,50 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex items-center gap-4">
+            {!isEmployer && (
+              <button
+                type="button"
+                id="header-verification-status-btn"
+                onClick={() => router.push('/dashboard/passport-setup')}
+                className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider font-mono px-3 py-1.5 rounded-xl transition-all cursor-pointer border shadow-sm hover:scale-[1.02] active:scale-95 ${
+                  passport?.is_verified === true 
+                    ? 'text-emerald-800 bg-emerald-50/60 border-emerald-200 hover:bg-emerald-50' 
+                    : passport?.id_card_url 
+                      ? 'text-amber-800 bg-amber-50/70 border-amber-200 hover:bg-amber-50 animate-pulse' 
+                      : 'text-rose-800 bg-rose-50/60 border-rose-200 hover:bg-rose-50'
+                }`}
+                title={
+                  passport?.is_verified === true 
+                    ? 'Identity Verified - All features unlocked' 
+                    : passport?.id_card_url 
+                      ? 'Identity Review in progress - Click to check status' 
+                      : 'Identity Setup Required - Click to complete passport verification'
+                }
+              >
+                {passport?.is_verified === true ? (
+                  <>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_#10b981]" />
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    <span className="hidden sm:inline">Verified Partner</span>
+                    <span className="inline sm:hidden">Verified</span>
+                  </>
+                ) : passport?.id_card_url ? (
+                  <>
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_6px_#f59e0b]" />
+                    <RefreshCw className="w-3 h-3 text-amber-600 animate-spin" style={{ animationDuration: '4s' }} />
+                    <span className="hidden sm:inline">Pending Review</span>
+                    <span className="inline sm:hidden">Pending</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_6px_#f43f5e] animate-ping" />
+                    <span className="hidden sm:inline">Setup Required</span>
+                    <span className="inline sm:hidden">Setup</span>
+                  </>
+                )}
+              </button>
+            )}
+
             <button
               id="dashboard-logout-action-btn"
               type="button"
