@@ -136,12 +136,12 @@ export default function DashboardPage() {
                 type="button"
                 id="header-verification-status-btn"
                 onClick={() => router.push('/dashboard/passport-setup')}
-                className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider font-mono px-3 py-1.5 rounded-xl transition-all cursor-pointer border shadow-sm hover:scale-[1.02] active:scale-95 ${
+                className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider font-mono px-3 py-1.5 rounded-xl transition-all cursor-pointer border shadow-md hover:scale-[1.02] active:scale-95 ${
                   passport?.is_verified === true 
-                    ? 'text-emerald-800 bg-emerald-50/60 border-emerald-200 hover:bg-emerald-50' 
+                    ? 'text-white bg-emerald-600 border-emerald-700 hover:bg-emerald-700 shadow-emerald-650/10' 
                     : passport?.id_card_url 
-                      ? 'text-amber-800 bg-amber-50/70 border-amber-200 hover:bg-amber-50 animate-pulse' 
-                      : 'text-rose-800 bg-rose-50/60 border-rose-200 hover:bg-rose-50'
+                      ? 'text-white bg-amber-500 border-amber-600 hover:bg-amber-600 shadow-amber-500/10 animate-pulse' 
+                      : 'text-white bg-rose-600 border-rose-700 hover:bg-rose-700 shadow-rose-650/10'
                 }`}
                 title={
                   passport?.is_verified === true 
@@ -153,21 +153,21 @@ export default function DashboardPage() {
               >
                 {passport?.is_verified === true ? (
                   <>
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_#10b981]" />
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_6px_#ffffff]" />
+                    <ShieldCheck className="w-3.5 h-3.5 text-white" />
                     <span className="hidden sm:inline">Verified Partner</span>
                     <span className="inline sm:hidden">Verified</span>
                   </>
                 ) : passport?.id_card_url ? (
                   <>
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_6px_#f59e0b]" />
-                    <RefreshCw className="w-3 h-3 text-amber-600 animate-spin" style={{ animationDuration: '4s' }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_6px_#ffffff]" />
+                    <RefreshCw className="w-3 h-3 text-white animate-spin" style={{ animationDuration: '4s' }} />
                     <span className="hidden sm:inline">Pending Review</span>
                     <span className="inline sm:hidden">Pending</span>
                   </>
                 ) : (
                   <>
-                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_6px_#f43f5e] animate-ping" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_6px_#ffffff] animate-ping" />
                     <span className="hidden sm:inline">Setup Required</span>
                     <span className="inline sm:hidden">Setup</span>
                   </>

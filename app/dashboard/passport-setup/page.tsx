@@ -3,7 +3,77 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
-import { ArrowLeft, Hammer, ShieldCheck, Sparkles, Star, User, Save, ListTodo, BadgeAlert, AlertCircle, Camera, UploadCloud, X, RefreshCw, CheckCircle, FileText, ShieldAlert } from 'lucide-react';
+import { ArrowLeft, Hammer, ShieldCheck, Sparkles, Star, User, Save, ListTodo, BadgeAlert, AlertCircle, Camera, UploadCloud, X, RefreshCw, CheckCircle, FileText, ShieldAlert, HelpCircle } from 'lucide-react';
+
+const SKILL_OPTIONS = [
+  // Trade & Physical
+  { value: 'Plumbing', label: 'Plumbing', group: 'Trade & Physical Work' },
+  { value: 'Electrical', label: 'Electrical', group: 'Trade & Physical Work' },
+  { value: 'Carpentry', label: 'Carpentry', group: 'Trade & Physical Work' },
+  { value: 'Painting', label: 'Painting', group: 'Trade & Physical Work' },
+  { value: 'Masonry', label: 'Masonry / Bricklaying', group: 'Trade & Physical Work' },
+  { value: 'Welding', label: 'Welding', group: 'Trade & Physical Work' },
+  { value: 'HVAC', label: 'HVAC / Air Conditioning', group: 'Trade & Physical Work' },
+  { value: 'Roofing', label: 'Roofing', group: 'Trade & Physical Work' },
+  { value: 'Tiling', label: 'Tiling / Flooring', group: 'Trade & Physical Work' },
+  { value: 'Handyman', label: 'General Maintenance / Handyman', group: 'Trade & Physical Work' },
+  { value: 'Cleaning', label: 'Cleaning Services', group: 'Trade & Physical Work' },
+  { value: 'Driving', label: 'Driving / Chauffeur', group: 'Trade & Physical Work' },
+  { value: 'Security', label: 'Security Guard', group: 'Trade & Physical Work' },
+  { value: 'Catering', label: 'Catering / Cooking', group: 'Trade & Physical Work' },
+  { value: 'Tailoring', label: 'Tailoring / Fashion Design', group: 'Trade & Physical Work' },
+  { value: 'Beauty', label: 'Hair & Beauty Services', group: 'Trade & Physical Work' },
+  { value: 'Gardening', label: 'Gardening / Landscaping', group: 'Trade & Physical Work' },
+  { value: 'Moving', label: 'Moving / Haulage', group: 'Trade & Physical Work' },
+  { value: 'Laundry', label: 'Laundry / Dry Cleaning', group: 'Trade & Physical Work' },
+  { value: 'PestControl', label: 'Pest Control', group: 'Trade & Physical Work' },
+  // Digital & Remote
+  { value: 'WebDev', label: 'Web Development', group: 'Digital & Remote Work' },
+  { value: 'AppDev', label: 'Mobile App Development', group: 'Digital & Remote Work' },
+  { value: 'SoftwareDev', label: 'Software Development', group: 'Digital & Remote Work' },
+  { value: 'UIDesign', label: 'UI/UX Design', group: 'Digital & Remote Work' },
+  { value: 'GraphicDesign', label: 'Graphic Design', group: 'Digital & Remote Work' },
+  { value: 'BrandIdentity', label: 'Brand Identity / Logo Design', group: 'Digital & Remote Work' },
+  { value: 'VideoEditing', label: 'Video Editing', group: 'Digital & Remote Work' },
+  { value: 'Animation', label: 'Animation / Motion Graphics', group: 'Digital & Remote Work' },
+  { value: 'Photography', label: 'Photography', group: 'Digital & Remote Work' },
+  { value: 'ContentWriting', label: 'Content Writing', group: 'Digital & Remote Work' },
+  { value: 'Copywriting', label: 'Copywriting', group: 'Digital & Remote Work' },
+  { value: 'BlogWriting', label: 'Blog Writing', group: 'Digital & Remote Work' },
+  { value: 'TechWriting', label: 'Technical Writing', group: 'Digital & Remote Work' },
+  { value: 'Translation', label: 'Translation', group: 'Digital & Remote Work' },
+  { value: 'Transcription', label: 'Transcription', group: 'Digital & Remote Work' },
+  { value: 'VirtualAssistant', label: 'Virtual Assistant', group: 'Digital & Remote Work' },
+  { value: 'DataEntry', label: 'Data Entry', group: 'Digital & Remote Work' },
+  { value: 'CustomerSupport', label: 'Customer Support', group: 'Digital & Remote Work' },
+  { value: 'SocialMedia', label: 'Social Media Management', group: 'Digital & Remote Work' },
+  { value: 'DigitalMarketing', label: 'Digital Marketing', group: 'Digital & Remote Work' },
+  { value: 'SEO', label: 'SEO Services', group: 'Digital & Remote Work' },
+  { value: 'EmailMarketing', label: 'Email Marketing', group: 'Digital & Remote Work' },
+  { value: 'Accounting', label: 'Accounting / Bookkeeping', group: 'Digital & Remote Work' },
+  { value: 'FinancialConsulting', label: 'Financial Consulting', group: 'Digital & Remote Work' },
+  { value: 'LegalConsulting', label: 'Legal Consulting', group: 'Digital & Remote Work' },
+  { value: 'BusinessConsulting', label: 'Business Consulting', group: 'Digital & Remote Work' },
+  { value: 'ProjectManagement', label: 'Project Management', group: 'Digital & Remote Work' },
+  { value: 'Tutoring', label: 'Tutoring / Teaching', group: 'Digital & Remote Work' },
+  { value: 'VoiceOver', label: 'Voice Over', group: 'Digital & Remote Work' },
+  { value: 'MusicProduction', label: 'Music Production', group: 'Digital & Remote Work' },
+  { value: '3DModeling', label: '3D Modeling / CAD', group: 'Digital & Remote Work' },
+  { value: 'DataAnalysis', label: 'Data Analysis', group: 'Digital & Remote Work' },
+  { value: 'Cybersecurity', label: 'Cybersecurity Consulting', group: 'Digital & Remote Work' },
+  { value: 'NetworkAdmin', label: 'Network Administration', group: 'Digital & Remote Work' },
+  { value: 'ITSupport', label: 'IT Support', group: 'Digital & Remote Work' },
+  { value: 'CloudDevOps', label: 'Cloud Services / DevOps', group: 'Digital & Remote Work' },
+  // Hybrid & Event
+  { value: 'EventPlanning', label: 'Event Planning', group: 'Hybrid & Event Work' },
+  { value: 'EventPhotography', label: 'Event Photography', group: 'Hybrid & Event Work' },
+  { value: 'EventVideography', label: 'Event Videography', group: 'Hybrid & Event Work' },
+  { value: 'RealEstate', label: 'Real Estate Agent Services', group: 'Hybrid & Event Work' },
+  { value: 'PersonalTraining', label: 'Personal Training / Fitness', group: 'Hybrid & Event Work' },
+  { value: 'InteriorDesign', label: 'Interior Design', group: 'Hybrid & Event Work' },
+  { value: 'Architecture', label: 'Architecture Services', group: 'Hybrid & Event Work' },
+  { value: 'Surveying', label: 'Surveying', group: 'Hybrid & Event Work' },
+];
 
 export default function PassportSetupPage() {
   const router = useRouter();
@@ -19,7 +89,10 @@ export default function PassportSetupPage() {
   
   // Passport states
   const [bio, setBio] = useState('');
-  const [skills, setSkills] = useState<string>('');
+  // skills state removed - using selectedSkills and customSkill now
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [customSkill, setCustomSkill] = useState('');
+  const [showSkillDropdown, setShowSkillDropdown] = useState(false);
   const [message, setMessage] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [completedJobsCount, setCompletedJobsCount] = useState<number | null>(null);
@@ -34,6 +107,15 @@ export default function PassportSetupPage() {
   const [idCardUrl, setIdCardUrl] = useState<string>('');
   const [idCardDragActive, setIdCardDragActive] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
+
+  // Help info popover states
+  const [showBioHelp, setShowBioHelp] = useState(false);
+  const [showSkillsHelp, setShowSkillsHelp] = useState(false);
+
+  // ID Verification checklist states
+  const [chkLegible, setChkLegible] = useState(false);
+  const [chkOriented, setChkOriented] = useState(false);
+  const [chkValid, setChkValid] = useState(false);
 
   const compressImage = (dataUrl: string, maxDim = 800): Promise<string> => {
     return new Promise((resolve) => {
@@ -95,12 +177,15 @@ export default function PassportSetupPage() {
 
         if (!error && passport) {
           setBio(passport.bio || '');
-          setSkills(passport.skills ? passport.skills.join(', ') : '');
+          setSelectedSkills(passport.skills || []);
           if (passport.avatar_url) {
             setPhotoUrl(passport.avatar_url);
           }
           if (passport.id_card_url) {
             setIdCardUrl(passport.id_card_url);
+            setChkLegible(true);
+            setChkOriented(true);
+            setChkValid(true);
           }
           setIsVerified(passport.is_verified === true);
         }
@@ -278,6 +363,11 @@ export default function PassportSetupPage() {
       return;
     }
 
+    // Reset verification checklist parameters for new upload
+    setChkLegible(false);
+    setChkOriented(false);
+    setChkValid(false);
+
     const reader = new FileReader();
     reader.onload = async (e) => {
       if (e.target?.result) {
@@ -322,10 +412,7 @@ export default function PassportSetupPage() {
     setErrorMsg('');
 
     try {
-      const skillsArray = skills
-        .split(',')
-        .map((s) => s.trim())
-        .filter((s) => s.length > 0);
+      const skillsArray = selectedSkills;
 
       const { error } = await authSupabase
         .from('bukie_passports')
@@ -368,7 +455,7 @@ export default function PassportSetupPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
         <div className="flex flex-col items-center gap-2">
-          <Hammer className="w-8 h-8 animate-spin text-[#004D2C]" />
+          <Hammer className="w-8 h-8 animate-spin text-amber-500" />
           <span className="text-xs font-mono text-gray-500 font-semibold uppercase">Loading BukiePassport Builder...</span>
         </div>
       </main>
@@ -392,25 +479,25 @@ export default function PassportSetupPage() {
           
           <div className="flex items-center gap-2">
             {isVerified ? (
-              <div className="flex items-center gap-1 bg-emerald-50 border border-emerald-150 px-2.5 py-1 rounded-full text-[10px] font-bold text-emerald-800 uppercase tracking-wider font-mono shadow-sm">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 fill-emerald-100" />
+              <div className="flex items-center gap-1 bg-emerald-600 border border-emerald-700 px-3 py-1.5 rounded-full text-[10px] font-black text-white uppercase tracking-wider font-mono shadow-md">
+                <ShieldCheck className="w-3.5 h-3.5 text-white" />
                 <span>Verified</span>
               </div>
             ) : idCardUrl ? (
-              <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-150 px-2.5 py-1 rounded-full text-[10px] font-bold text-amber-800 uppercase tracking-wider font-mono shadow-sm animate-pulse">
-                <RefreshCw className="w-3 h-3 text-amber-650 animate-spin" style={{ animationDuration: '3s' }} />
+              <div className="flex items-center gap-1.5 bg-amber-500 border border-amber-600 px-3 py-1.5 rounded-full text-[10px] font-black text-white uppercase tracking-wider font-mono shadow-md animate-pulse">
+                <RefreshCw className="w-3 h-3 text-white animate-spin animate-none" style={{ animationDuration: '4s' }} />
                 <span>Pending Verification</span>
               </div>
             ) : null}
 
             {completedJobsCount === 0 || completedJobsCount === null ? (
-              <div className="flex items-center gap-1.5 text-xs font-bold font-mono text-gray-500 uppercase bg-gray-50 border border-gray-150 px-3 py-1 rounded-full">
+              <div className="flex items-center gap-1.5 text-xs font-black font-mono text-gray-500 uppercase bg-gray-50 border border-gray-150 px-3 py-1 rounded-full">
                 <Star className="w-3.5 h-3.5 text-gray-400" />
                 <span>No Ratings Yet (New)</span>
               </div>
             ) : (
-              <div className="flex items-center gap-1.5 text-xs font-bold font-mono text-[#004D2C] uppercase bg-amber-50 border border-amber-100 px-3 py-1 rounded-full">
-                <Star className="w-3.5 h-3.5 fill-[#004D2C] text-[#004D2C]" />
+              <div className="flex items-center gap-1.5 text-xs font-black font-mono text-amber-900 uppercase bg-amber-100 border border-amber-200 px-3 py-1 rounded-full">
+                <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                 <span>Score: {avgRating !== null ? avgRating.toFixed(1) : '5.0'}</span>
               </div>
             )}
@@ -421,9 +508,9 @@ export default function PassportSetupPage() {
       <div className="flex-1 max-w-2xl w-full mx-auto px-4 py-8" id="passport-content">
         {/* Header summary */}
         <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 mb-6 text-center relative overflow-hidden" id="passport-intro">
-          <div className="absolute right-0 top-0 w-24 h-24 bg-[#004D2C]/5 rounded-full blur-xl"></div>
+          <div className="absolute right-0 top-0 w-24 h-24 bg-emerald-505/10 rounded-full blur-xl"></div>
           
-          <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-[#004D2C] mx-auto mb-4 border border-amber-100">
+          <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mx-auto mb-4 border border-amber-200">
             <Hammer className="w-8 h-8" />
           </div>
           
@@ -500,7 +587,7 @@ export default function PassportSetupPage() {
                         <X className="w-3 h-3" />
                       </button>
                     </div>
-                    <span className="text-xs text-emerald-600 font-bold flex items-center gap-1">
+                    <span className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-250 text-emerald-800 text-xs font-black uppercase px-3 py-1.5 rounded-xl shadow-sm">
                       ✓ Profile image loaded successfully
                     </span>
                   </div>
@@ -601,13 +688,13 @@ export default function PassportSetupPage() {
                   </span>
                 </div>
                 {idCardUrl && !isVerified && (
-                  <span className="inline-flex items-center gap-1 bg-amber-50 border border-amber-200 text-[#004D2C] text-[10px] font-black uppercase px-2 py-0.5 rounded-md animate-pulse">
-                    <RefreshCw className="w-3 h-3 text-[#004D2C] animate-spin" style={{ animationDuration: '4s' }} />
+                  <span className="inline-flex items-center gap-1.5 bg-amber-500 border border-amber-600 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-md animate-pulse shadow-sm">
+                    <RefreshCw className="w-3 h-3 text-white animate-spin" style={{ animationDuration: '4s' }} />
                     Pending Verification
                   </span>
                 )}
                 {isVerified && (
-                  <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-black uppercase px-2 py-0.5 rounded-md">
+                  <span className="inline-flex items-center gap-1 bg-emerald-600 border border-emerald-700 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-md shadow-sm">
                     ✓ Identity Verified
                   </span>
                 )}
@@ -630,6 +717,9 @@ export default function PassportSetupPage() {
                         type="button"
                         onClick={() => {
                           setIdCardUrl('');
+                          setChkLegible(false);
+                          setChkOriented(false);
+                          setChkValid(false);
                         }}
                         className="absolute top-2 right-2 bg-red-650 text-white p-1.5 rounded-full hover:bg-red-750 transition-all shadow-md cursor-pointer flex items-center justify-center"
                         title="Remove ID document"
@@ -640,7 +730,7 @@ export default function PassportSetupPage() {
                     </div>
                     
                     <div className="text-center">
-                      <span className="text-xs text-emerald-700 font-extrabold flex items-center justify-center gap-1">
+                      <span className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-250 text-emerald-800 text-xs font-black uppercase px-3 py-1.5 rounded-xl shadow-sm">
                         ✓ ID document loaded successfully
                       </span>
                       <span className="text-[10px] text-gray-400 block mt-0.5">
@@ -683,36 +773,235 @@ export default function PassportSetupPage() {
             </div>
 
             {/* Bio info */}
-            <div id="field-bio">
-              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Tell employers about yourself
-              </label>
+            <div id="field-bio" className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  Tell employers about yourself
+                </label>
+                <button
+                  type="button"
+                  id="bio-help-btn"
+                  onClick={() => setShowBioHelp(!showBioHelp)}
+                  className="inline-flex items-center gap-1 text-[10px] font-black text-amber-900 bg-amber-100 hover:bg-amber-200 border border-amber-200 px-2 py-1 rounded-lg transition-all cursor-pointer shadow-sm"
+                  title="Show description suggestions for more job offers"
+                >
+                  <HelpCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <span>Bio suggestions</span>
+                </button>
+              </div>
+
+              {showBioHelp && (
+                <div id="bio-help-card" className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 text-slate-850 p-4 rounded-xl text-xs space-y-2.5 shadow-sm relative animate-fadeIn">
+                  <button
+                    type="button"
+                    onClick={() => setShowBioHelp(false)}
+                    className="absolute top-2.5 right-2.5 text-amber-800 hover:text-amber-955 p-1 cursor-pointer"
+                    aria-label="Close"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                  
+                  <div className="flex items-center gap-1.5 font-black text-amber-950 border-b border-amber-200/60 pb-1.5 uppercase tracking-wider text-[10px]">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+                    <span>How to write a high-converting Bio</span>
+                  </div>
+                  
+                  <p className="text-gray-600 leading-relaxed font-medium">
+                    A great bio connects with clients instantly and earns 3x more responses. Use this simple blueprint:
+                  </p>
+                  
+                  <ul className="space-y-2 text-gray-700 pl-4 list-disc list-outside">
+                    <li>
+                      <strong className="text-amber-950">Start with a Clear Hook:</strong> Say exactly what you do, for how long, and where (e.g., <span className="italic text-gray-500">&ldquo;Expert Plumber with 5+ years servicing residential buildings in Surulere&rdquo;</span>).
+                    </li>
+                    <li>
+                      <strong className="text-amber-950">List Your Specific Services:</strong> List exact, searchable specialties (e.g., <span className="italic text-gray-500">&ldquo;leak repair, copper pipe threading, bathroom installations&rdquo;</span>) so clients find you.
+                    </li>
+                    <li>
+                      <strong className="text-amber-950">Mention Your Availability:</strong> Highlight if you can support emergencies or offer same-day replies (e.g., <span className="italic text-gray-500">&ldquo;Highly responsive and available for urgent weekend calls&rdquo;</span>).
+                    </li>
+                    <li>
+                      <strong className="text-amber-950">Add a Trust Statement:</strong> Assure they receive premium results (e.g., <span className="italic text-gray-500">&ldquo;I charge fairly, respect deadlines, and keep the work area spotless&rdquo;</span>).
+                    </li>
+                  </ul>
+                  
+                  <div className="bg-white/70 p-2 rounded-lg border border-amber-100 text-[11px] text-amber-950 flex items-center gap-1.5 font-medium shadow-2xs">
+                    <span className="font-extrabold text-amber-700">Pro-Tip:</span> Profiles with bios longer than 150 characters acquire significantly more interview callbacks from local employers.
+                  </div>
+                </div>
+              )}
+
               <textarea
                 id="bio-textarea"
                 required
                 rows={3}
                 placeholder="e.g. I am a plumber with 4 years of experience in Surulere and Ikeja. I fix burst pipes, install toilets, and repair water heaters. I am reliable and available on short notice."
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm resize-none"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm resize-none bg-white"
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
               />
             </div>
 
             {/* Skills array input */}
-            <div id="field-skills">
-              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 flex items-center justify-between">
-                <span>What can you do?</span>
-                <span className="text-[10px] text-gray-400 capitalize normal-case font-medium">comma-separated</span>
-              </label>
-              <input
-                id="skills-input"
-                type="text"
-                required
-                placeholder="Plumbing, Leak Repair, Pipe Fitting, Water Installation"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm"
-                value={skills}
-                onChange={(e) => setSkills(e.target.value)}
-              />
+            <div id="field-skills" className="space-y-4">
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  What can you do?
+                </label>
+                <button
+                  type="button"
+                  id="skills-help-btn"
+                  onClick={() => setShowSkillsHelp(!showSkillsHelp)}
+                  className="inline-flex items-center gap-1 text-[10px] font-black text-amber-900 bg-amber-100 hover:bg-amber-200 border border-amber-200 px-2 py-1 rounded-lg transition-all cursor-pointer shadow-sm"
+                  title="Show advice for high-converting Skills"
+                >
+                  <HelpCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <span>Skills suggestions</span>
+                </button>
+              </div>
+
+              {showSkillsHelp && (
+                <div id="skills-help-card" className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 text-slate-855 p-4 rounded-xl text-xs space-y-2.5 shadow-sm relative animate-fadeIn">
+                  <button
+                    type="button"
+                    onClick={() => setShowSkillsHelp(false)}
+                    className="absolute top-2.5 right-2.5 text-amber-800 hover:text-amber-955 p-1 cursor-pointer"
+                    aria-label="Close"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                  
+                  <div className="flex items-center gap-1.5 font-black text-amber-950 border-b border-amber-200/60 pb-1.5 uppercase tracking-wider text-[10px]">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+                    <span>How to select high-converting Skills</span>
+                  </div>
+                  
+                  <p className="text-gray-600 leading-relaxed font-medium">
+                    Adding precise keywords ensures you rank matching search results when clients seek a professional.
+                  </p>
+                  
+                  <ul className="space-y-2 text-gray-750 pl-4 list-disc list-outside">
+                    <li>
+                      <strong className="text-amber-950">Avoid Hyper-Generic Terms:</strong> Instead of listing just <span className="italic text-gray-500">&ldquo;Plumbing&rdquo;</span>, add specific crafts like <span className="italic text-gray-500">&ldquo;Leak Detection, Drain Clog Repair, Copper Pipe Fitting&rdquo;</span>.
+                    </li>
+                    <li>
+                      <strong className="text-amber-950">Feature Industry Equipment & Certifications:</strong> Let clients know you can handle brand fixtures or unique repair apparatus.
+                    </li>
+                  </ul>
+                  
+                  <div className="bg-white/70 p-2 rounded-lg border border-amber-100 text-[11px] text-amber-950 flex items-center gap-1.5 font-medium shadow-2xs">
+                    <span className="font-extrabold text-amber-700 font-mono text-[10px] uppercase">Suggestions:</span> Select relevant options from the list below or type custom entries.
+                  </div>
+                </div>
+              )}
+
+              {/* Selected skills as tags */}
+              <div className="flex flex-wrap gap-2 mb-3 min-h-[36px]">
+                {selectedSkills.map((skill) => {
+                  const option = SKILL_OPTIONS.find((o) => o.value === skill || o.label === skill);
+                  return (
+                    <span
+                      key={skill}
+                      className="inline-flex items-center gap-1 bg-[#0A192F]/5 text-[#0A192F] text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-[#0A192F]/10"
+                    >
+                      {option?.label || skill}
+                      <button
+                        type="button"
+                        onClick={() => setSelectedSkills((prev) => prev.filter((s) => s !== skill))}
+                        className="text-gray-400 hover:text-red-500 transition-colors ml-0.5 cursor-pointer font-bold text-sm"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  );
+                })}
+                {selectedSkills.length === 0 && (
+                  <span className="text-xs text-gray-400 italic py-1.5">Pick from the list or write your own below</span>
+                )}
+              </div>
+
+              {/* Dropdown toggle button */}
+              <button
+                type="button"
+                onClick={() => setShowSkillDropdown(!showSkillDropdown)}
+                className="w-full bg-gray-50 border border-gray-200 text-sm text-left px-4 py-3 rounded-xl transition-all outline-none text-gray-700 font-medium flex justify-between items-center hover:border-gray-300 cursor-pointer"
+              >
+                <span>{showSkillDropdown ? 'Close list' : 'Choose from list...'}</span>
+                <span className={`transition-transform ${showSkillDropdown ? 'rotate-180' : ''}`}>▼</span>
+              </button>
+
+              {/* Dropdown list */}
+              {showSkillDropdown && (
+                <div className="mt-1 border border-gray-200 rounded-xl bg-white shadow-lg max-h-64 overflow-y-auto divide-y divide-gray-100">
+                  {/* Group each section */}
+                  {['Trade & Physical Work', 'Digital & Remote Work', 'Hybrid & Event Work'].map((group) => (
+                    <div key={group} className="p-2">
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 px-2 py-1">
+                        {group}
+                      </span>
+                      <div className="grid grid-cols-2 gap-1">
+                        {SKILL_OPTIONS.filter((o) => o.group === group).map((option) => {
+                          const isSelected = selectedSkills.includes(option.value) || selectedSkills.includes(option.label);
+                          return (
+                            <button
+                              key={option.value}
+                              type="button"
+                              onClick={() => {
+                                if (isSelected) {
+                                  setSelectedSkills((prev) => prev.filter((s) => s !== option.value && s !== option.label));
+                                } else {
+                                  setSelectedSkills((prev) => [...prev, option.label]);
+                                }
+                              }}
+                              className={`text-left text-xs px-2.5 py-1.5 rounded-lg transition-all cursor-pointer ${
+                                isSelected
+                                  ? 'bg-[#0A192F] text-white font-semibold shadow-xs'
+                                  : 'hover:bg-gray-100 text-gray-600 font-medium'
+                              }`}
+                            >
+                              {isSelected && '✓ '}{option.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Custom skill input */}
+              <div className="mt-3 flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Write a skill not listed above..."
+                  value={customSkill}
+                  onChange={(e) => setCustomSkill(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && customSkill.trim()) {
+                      e.preventDefault();
+                      const newSkill = customSkill.trim();
+                      if (!selectedSkills.includes(newSkill)) {
+                        setSelectedSkills((prev) => [...prev, newSkill]);
+                      }
+                      setCustomSkill('');
+                    }
+                  }}
+                  className="flex-1 bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-xs px-4 py-2.5 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (customSkill.trim() && !selectedSkills.includes(customSkill.trim())) {
+                      setSelectedSkills((prev) => [...prev, customSkill.trim()]);
+                      setCustomSkill('');
+                    }
+                  }}
+                  disabled={!customSkill.trim()}
+                  className="bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all disabled:opacity-40 active:scale-95 cursor-pointer"
+                >
+                  Add
+                </button>
+              </div>
             </div>
 
             {/* Blue check prompt placeholder */}
@@ -726,6 +1015,164 @@ export default function PassportSetupPage() {
               </div>
             </div>
 
+            {/* Verification Checklist */}
+            <div 
+              id="verification-checklist-block" 
+              className={`p-5 rounded-2xl border transition-all ${
+                isVerified 
+                  ? 'bg-emerald-50/60 border-emerald-200 shadow-xs' 
+                  : idCardUrl 
+                    ? (chkLegible && chkOriented && chkValid)
+                      ? 'bg-emerald-50/40 border-emerald-300 shadow-md ring-1 ring-emerald-350/20' 
+                      : 'bg-amber-50/30 border-amber-300 shadow-sm'
+                    : 'bg-gray-50 border-gray-200 shadow-xs'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200/60">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className={`w-5 h-5 ${isVerified || (idCardUrl && chkLegible && chkOriented && chkValid) ? 'text-emerald-600' : 'text-amber-500'}`} />
+                  <span className="text-xs font-black uppercase font-mono tracking-wider text-slate-900">
+                    Verification Checklist
+                  </span>
+                </div>
+                <div>
+                  {isVerified ? (
+                    <span className="bg-emerald-650 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider">
+                      Verified
+                    </span>
+                  ) : idCardUrl ? (
+                    (chkLegible && chkOriented && chkValid) ? (
+                      <span className="bg-emerald-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider animate-pulse">
+                        Ready
+                      </span>
+                    ) : (
+                      <span className="bg-amber-500 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider">
+                        In Progress
+                      </span>
+                    )
+                  ) : (
+                    <span className="bg-gray-400 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider">
+                      Awaiting ID
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {isVerified ? (
+                <div className="text-xs text-emerald-950 space-y-1 font-medium">
+                  <p className="font-bold flex items-center gap-1">
+                    <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                    Passport status verified by BukiePassport Moderation!
+                  </p>
+                  <p className="text-[11px] text-emerald-800 leading-relaxed font-normal pl-5">
+                    Your verification identity documents are current and active. You are cleared to save any updates.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {/* Item 1: ID Card Upload State */}
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5">
+                      {idCardUrl ? (
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-850 border border-emerald-350">
+                          <CheckCircle className="w-3.5 h-3.5 text-emerald-700" />
+                        </span>
+                      ) : (
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-50 text-amber-850 border border-amber-300">
+                          <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex-1 text-xs">
+                      <span className={`block font-black uppercase tracking-wider text-[10px] ${idCardUrl ? 'text-emerald-850' : 'text-amber-800'}`}>
+                        {idCardUrl ? '✓ Government ID Loaded' : '⚠ Government ID Required'}
+                      </span>
+                      <span className="block text-[11px] text-gray-500 leading-relaxed font-medium mt-0.5">
+                        {idCardUrl 
+                          ? 'We automatically scanned the geometry. Image successfully detected.' 
+                          : 'Please scroll up to "Government ID Document" and upload a JPG or PNG.'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Item 2: Legibility Attestation */}
+                  <label 
+                    className={`flex items-start gap-3 cursor-pointer select-none rounded-xl p-2 -mx-2 transition-all hover:bg-gray-100 ${!idCardUrl ? 'opacity-50 pointer-events-none' : ''}`}
+                    onClick={() => idCardUrl && setChkLegible(!chkLegible)}
+                  >
+                    <input 
+                      type="checkbox"
+                      id="checkbox-legible"
+                      checked={chkLegible}
+                      disabled={!idCardUrl}
+                      onChange={() => {}} // handled by click container
+                      className="mt-1 h-4 w-4 rounded border-gray-300 text-[#0A192F] focus:ring-[#0A192F] cursor-pointer"
+                    />
+                    <div className="flex-1 text-xs">
+                      <span className="block font-bold text-gray-800">
+                        Is the ID clearly legible?
+                      </span>
+                      <span className="block text-[11px] text-gray-400 leading-relaxed font-medium mt-0.5">
+                        All texts, identification numbers, and your portrait are sharp, clearly visible, and not blurred.
+                      </span>
+                    </div>
+                  </label>
+
+                  {/* Item 3: Orientation Attestation */}
+                  <label 
+                    className={`flex items-start gap-3 cursor-pointer select-none rounded-xl p-2 -mx-2 transition-all hover:bg-gray-100 ${!idCardUrl ? 'opacity-50 pointer-events-none' : ''}`}
+                    onClick={() => idCardUrl && setChkOriented(!chkOriented)}
+                  >
+                    <input 
+                      type="checkbox"
+                      id="checkbox-oriented"
+                      checked={chkOriented}
+                      disabled={!idCardUrl}
+                      onChange={() => {}}
+                      className="mt-1 h-4 w-4 rounded border-gray-300 text-[#0A192F] focus:ring-[#0A192F] cursor-pointer"
+                    />
+                    <div className="flex-1 text-xs">
+                      <span className="block font-bold text-gray-800">
+                        Is the document properly oriented?
+                      </span>
+                      <span className="block text-[11px] text-gray-400 leading-relaxed font-medium mt-0.5">
+                        The document is upright, not rotated sideways, and not cropped or cut off at the edges.
+                      </span>
+                    </div>
+                  </label>
+
+                  {/* Item 4: Validity Attestation */}
+                  <label 
+                    className={`flex items-start gap-3 cursor-pointer select-none rounded-xl p-2 -mx-2 transition-all hover:bg-gray-100 ${!idCardUrl ? 'opacity-50 pointer-events-none' : ''}`}
+                    onClick={() => idCardUrl && setChkValid(!chkValid)}
+                  >
+                    <input 
+                      type="checkbox"
+                      id="checkbox-valid"
+                      checked={chkValid}
+                      disabled={!idCardUrl}
+                      onChange={() => {}}
+                      className="mt-1 h-4 w-4 rounded border-gray-300 text-[#0A192F] focus:ring-[#0A192F] cursor-pointer"
+                    />
+                    <div className="flex-1 text-xs">
+                      <span className="block font-bold text-gray-800">
+                        Is this a valid, active government ID?
+                      </span>
+                      <span className="block text-[11px] text-gray-400 leading-relaxed font-medium mt-0.5">
+                        This is an official national ID, voter&apos;s card, driver&apos;s license or passport and is currently not expired.
+                      </span>
+                    </div>
+                  </label>
+
+                  {idCardUrl && (!chkLegible || !chkOriented || !chkValid) && (
+                    <div className="text-[10px] text-amber-800 bg-amber-50/50 p-2.5 rounded-lg border border-amber-200 font-medium tracking-tight">
+                      Note: You must confirm all standard checklist criteria above to unlock passport update capabilities.
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
             {/* Alert notices */}
             {errorMsg && (
               <div className="flex items-start gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-xs border border-red-100" id="passport-error">
@@ -735,9 +1182,9 @@ export default function PassportSetupPage() {
             )}
 
             {message && (
-              <div className="flex items-start gap-2 bg-green-50 text-[#0A192F] p-3 rounded-xl text-xs border border-green-100" id="passport-message">
-                <Sparkles className="w-4 h-4 text-[#004D2C] shrink-0 animate-pulse" />
-                <span>{message}</span>
+              <div className="flex items-start gap-2 bg-emerald-50 text-emerald-950 p-3.5 rounded-xl text-xs border border-emerald-200 shadow-sm" id="passport-message">
+                <Sparkles className="w-4 h-4 text-emerald-600 shrink-0 animate-pulse" />
+                <span className="font-medium">{message}</span>
               </div>
             )}
 
@@ -745,8 +1192,8 @@ export default function PassportSetupPage() {
             <button
               id="passport-save-btn"
               type="submit"
-              disabled={saving}
-              className="w-full bg-[#0A192F] text-white py-3 px-4 rounded-xl font-bold uppercase tracking-wider text-xs shadow-md hover:bg-[#112a4f] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 active:scale-[0.98] transition-all"
+              disabled={saving || (!isVerified && (!idCardUrl || !chkLegible || !chkOriented || !chkValid))}
+              className="w-full bg-[#0A192F] text-white py-3.5 px-4 rounded-xl font-bold uppercase tracking-wider text-xs shadow-md hover:bg-[#112a4f] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-40 disabled:bg-gray-400/80 disabled:cursor-not-allowed disabled:shadow-none active:scale-[0.98]"
             >
               {saving ? (
                 <span>Saving details...</span>

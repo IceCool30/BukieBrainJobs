@@ -277,14 +277,14 @@ export default function PublicPassportPage() {
         >
           {/* Top Banner accent */}
           <div className="bg-[#0A192F] h-24 relative overflow-hidden flex items-center justify-between px-6 active:scale-95 transition-all">
-            <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/10 rounded-full blur-2xl"></div>
+            <div className="absolute right-0 top-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
             <div className="text-white z-10 flex flex-col">
-              <span className="text-[10px] font-black uppercase font-mono tracking-widest text-[#004D2C]">
+              <span className="text-[10px] font-black uppercase font-mono tracking-widest text-emerald-400">
                 BukieBrain Identity
               </span>
               <span className="text-xs text-gray-400 font-medium">Verified Local Artisan System</span>
             </div>
-            <div className="w-8 h-8 rounded-lg bg-[#0A192F] border border-[#004D2C]/50 flex items-center justify-center font-black text-white text-sm">
+            <div className="w-8 h-8 rounded-lg bg-[#0A192F] border border-emerald-400/50 flex items-center justify-center font-black text-white text-sm">
               B
             </div>
           </div>
@@ -328,7 +328,7 @@ export default function PublicPassportPage() {
                 )}
               </div>
               
-              <span className="block text-[11px] font-bold text-[#004D2C] uppercase tracking-widest font-mono">
+              <span className="block text-[11px] font-black text-emerald-700 uppercase tracking-widest font-mono">
                 Artisan Specialist
               </span>
 
@@ -365,7 +365,7 @@ export default function PublicPassportPage() {
               </div>
               <div>
                 <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Active Status</span>
-                <span className="text-lg font-black text-emerald-600 font-mono">Available</span>
+                <span className="inline-flex mt-1 text-xs font-black text-emerald-800 bg-emerald-100/80 px-2.5 py-1 rounded-lg border border-emerald-200 uppercase font-mono tracking-wider">Available</span>
               </div>
             </div>
 
