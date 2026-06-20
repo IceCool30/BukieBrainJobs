@@ -20,7 +20,11 @@ export default function Home() {
   const [selectedState, setSelectedState] = useState('');
   const [selectedLga, setSelectedLga] = useState('');
   const [whatQuery, setWhatQuery] = useState('');
-  const [listedTitlesAndCats, setListedTitlesAndCats] = useState<string[]>([]);
+  
+  // High-quality defaults available instantly on focus
+  const [listedTitlesAndCats, setListedTitlesAndCats] = useState<string[]>([
+    "Plumbing", "Electrical", "Carpentry", "Painting", "Screeding", "Welding", "HVAC / Air Conditioning", "Tiling", "Catering", "Tailoring", "Hair & Beauty Services", "Cleaning Services", "Driving", "Gardening", "Laundry", "Web Development", "Mobile App Development", "Graphic Design", "Accounting", "Tutoring / Teaching", "Photography", "Video Editing", "Content Writing", "Social Media Management", "Kitchen plumbing pipe repair", "House wall screeding and painting", "Electrical wiring installation", "Traditional native wear sewing", "Custom responsive Next.js website dev", "E-commerce mobile app development", "High precision metal welding", "Traditional catering service for weddings"
+  ]);
 
   useEffect(() => {
     async function fetchLandingSuggestions() {
@@ -31,8 +35,12 @@ export default function Home() {
           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
         );
         const { data } = await supabase.from('jobs').select('title, category').limit(100);
+        
+        const suggestionsSet = new Set<string>([
+          "Plumbing", "Electrical", "Carpentry", "Painting", "Screeding", "Welding", "HVAC / Air Conditioning", "Tiling", "Catering", "Tailoring", "Hair & Beauty Services", "Cleaning Services", "Driving", "Gardening", "Laundry", "Web Development", "Mobile App Development", "Graphic Design", "Accounting", "Tutoring / Teaching", "Photography", "Video Editing", "Content Writing", "Social Media Management", "Kitchen plumbing pipe repair", "House wall screeding and painting", "Electrical wiring installation", "Traditional native wear sewing", "Custom responsive Next.js website dev", "E-commerce mobile app development", "High precision metal welding", "Traditional catering service for weddings"
+        ]);
+
         if (data) {
-          const suggestionsSet = new Set<string>();
           data.forEach((j: any) => {
             if (j.title) {
               const t = j.title.replace('[TEST]', '').replace('[test]', '').trim();
@@ -43,12 +51,9 @@ export default function Home() {
               if (c) suggestionsSet.add(c);
             }
           });
-          
-          // Add default backups
-          ["Plumbing", "Electrical", "Carpentry", "Painting", "Web Development", "Accounting", "Private Tutor", "Catering"].forEach(x => suggestionsSet.add(x));
-          
-          setListedTitlesAndCats(Array.from(suggestionsSet));
         }
+        
+        setListedTitlesAndCats(Array.from(suggestionsSet));
       } catch (err) {
         console.error('Failed to pre-fetch landing page search queries:', err);
       }

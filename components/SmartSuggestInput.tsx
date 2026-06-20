@@ -62,8 +62,8 @@ export function SmartSuggestInput({
     return item.toLowerCase().includes(search.toLowerCase());
   });
 
-  // Highlight suggestions limit to 12 items max for speed and cleanliness
-  const visibleSuggestions = filteredSuggestions.slice(0, 15);
+  // Render all matching suggestions to allow infinite scrolling to the end of the list
+  const visibleSuggestions = filteredSuggestions;
 
   const handleSelect = (item: string) => {
     onChange(item);
@@ -176,7 +176,7 @@ export function SmartSuggestInput({
 
       {/* Floating suggestion panel */}
       {isOpen && !disabled && (
-        <div className="absolute z-50 w-full mt-1.5 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto py-1 scrollbar-thin scrollbar-thumb-gray-200 animate-in fade-in slide-in-from-top-1 duration-150">
+        <div className="absolute z-50 w-full mt-1.5 bg-white border border-gray-200 rounded-xl shadow-lg max-h-72 overflow-y-auto py-1 scrollbar-thin scrollbar-thumb-gray-200 animate-in fade-in slide-in-from-top-1 duration-150">
           {visibleSuggestions.length === 0 ? (
             <div className="px-4 py-3 text-xs text-gray-500 font-medium">
               No matching suggestions. You can keep typing to input your custom entry.
@@ -211,11 +211,6 @@ export function SmartSuggestInput({
                   </button>
                 );
               })}
-              {filteredSuggestions.length > visibleSuggestions.length && (
-                <div className="px-4 py-2 text-[10px] text-gray-400 text-center border-t border-gray-100 bg-gray-50/30">
-                  + {filteredSuggestions.length - visibleSuggestions.length} more suggestions. Type to narrow search.
-                </div>
-              )}
             </>
           )}
         </div>

@@ -105,17 +105,26 @@ export default function JobsPage() {
   }, [supabase]);
 
   // Interactive suggestions collections
-  const [listedTitlesAndCats, setListedTitlesAndCats] = useState<string[]>([]);
-  const [listedLocations, setListedLocations] = useState<string[]>([]);
+  const [listedTitlesAndCats, setListedTitlesAndCats] = useState<string[]>([
+    "Plumbing", "Electrical", "Carpentry", "Painting", "Screeding", "Welding", "HVAC / Air Conditioning", "Tiling", "Catering", "Tailoring", "Hair & Beauty Services", "Cleaning Services", "Driving", "Gardening", "Laundry", "Web Development", "Mobile App Development", "Graphic Design", "Accounting", "Tutoring / Teaching", "Photography", "Video Editing", "Content Writing", "Social Media Management", "Kitchen plumbing pipe repair", "House wall screeding and painting", "Electrical wiring installation", "Traditional native wear sewing", "Custom responsive Next.js website dev", "E-commerce mobile app development", "High precision metal welding", "Traditional catering service for weddings"
+  ]);
+  const [listedLocations, setListedLocations] = useState<string[]>([
+    "Lagos", "Ikeja", "Lekki", "Victoria Island", "Surulere", "Yaba", "Abuja", "Gwarinpa", "Wuse", "Port Harcourt", "Remote", "Kano", "Ipadan", "Enugu", "Benin City", "Kaduna"
+  ]);
 
   useEffect(() => {
     async function fetchSearchSuggestions() {
       try {
         const { data } = await supabase.from('jobs').select('title, category, location_state, location_lga').limit(200);
+        
+        const firstSet = new Set<string>([
+          "Plumbing", "Electrical", "Carpentry", "Painting", "Screeding", "Welding", "HVAC / Air Conditioning", "Tiling", "Catering", "Tailoring", "Hair & Beauty Services", "Cleaning Services", "Driving", "Gardening", "Laundry", "Web Development", "Mobile App Development", "Graphic Design", "Accounting", "Tutoring / Teaching", "Photography", "Video Editing", "Content Writing", "Social Media Management", "Kitchen plumbing pipe repair", "House wall screeding and painting", "Electrical wiring installation", "Traditional native wear sewing", "Custom responsive Next.js website dev", "E-commerce mobile app development", "High precision metal welding", "Traditional catering service for weddings"
+        ]);
+        const spotSet = new Set<string>([
+          "Lagos", "Ikeja", "Lekki", "Victoria Island", "Surulere", "Yaba", "Abuja", "Gwarinpa", "Wuse", "Port Harcourt", "Remote", "Kano", "Ipadan", "Enugu", "Benin City", "Kaduna"
+        ]);
+
         if (data) {
-          const firstSet = new Set<string>();
-          const spotSet = new Set<string>();
-          
           data.forEach((j: any) => {
             if (j.title) {
               const t = j.title.replace('[TEST]', '').replace('[test]', '').trim();
@@ -134,14 +143,10 @@ export default function JobsPage() {
               if (l) spotSet.add(l);
             }
           });
-
-          // Fallbacks in case table has sparse values
-          ["Plumbing", "Electrical", "Carpentry", "Painting", "Web Development", "Accounting", "Private Tutor", "Catering"].forEach(x => firstSet.add(x));
-          ["Lagos", "Ikeja", "Abuja", "Port Harcourt", "Remote", "Kano", "Ibadan"].forEach(y => spotSet.add(y));
-
-          setListedTitlesAndCats(Array.from(firstSet));
-          setListedLocations(Array.from(spotSet));
         }
+
+        setListedTitlesAndCats(Array.from(firstSet));
+        setListedLocations(Array.from(spotSet));
       } catch (err) {
         console.error('Failed to pre-fetch search autocomplete list:', err);
       }
