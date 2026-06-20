@@ -257,56 +257,98 @@ export default function DashboardPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6" id="dashboard-info-blocks">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6" id="dashboard-info-blocks">
           {/* Action Hub / Interactive Feed Card Area */}
-          <FadeUp delay={0.2} className="bg-white p-6 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-gray-100 md:col-span-2 transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)]">
-            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              {isEmployer ? (
-                <>
-                  <Briefcase className="w-5 h-5 text-[#0A192F]" />
-                  <span>Your Posted Jobs</span>
-                </>
-              ) : (
-                <>
-                  <Hammer className="w-5 h-5 text-blue-600" />
-                  <span>Available Local Inquiries</span>
-                </>
+          <FadeUp delay={0.2} className="bg-white p-6 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-gray-100 lg:col-span-2 transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)]">
+            
+            {/* Indeed-style Section Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-gray-100">
+              <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                {isEmployer ? (
+                  <>
+                    <Briefcase className="w-5 h-5 text-[#0A192F]" />
+                    <span>Your Active Postings</span>
+                  </>
+                ) : (
+                  <>
+                    <Hammer className="w-5 h-5 text-blue-600" />
+                    <span>Inquiries and Work Hub</span>
+                  </>
+                )}
+              </h2>
+              
+              {/* Quick Profile/Onboarding Progress Indicator */}
+              {!isEmployer && (
+                <div className="flex items-center gap-2 bg-slate-50 border border-slate-150 px-3 py-1.5 rounded-lg w-full md:w-auto">
+                  <div className="flex-1 md:w-24">
+                    <div className="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">
+                      <span>Profile Strength</span>
+                      <span className="text-[#0A192F]">
+                        {(() => {
+                          let score = 30;
+                          if (profile?.full_name) score += 15;
+                          if (profile?.phone) score += 15;
+                          if (passport?.bio) score += 15;
+                          if (passport?.skills?.length > 0) score += 15;
+                          if (passport?.is_verified) score += 10;
+                          return score;
+                        })()}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
+                      <div 
+                        className="bg-blue-600 h-full rounded-full transition-all duration-500" 
+                        style={{ 
+                          width: `${(() => {
+                            let score = 30;
+                            if (profile?.full_name) score += 15;
+                            if (profile?.phone) score += 15;
+                            if (passport?.bio) score += 15;
+                            if (passport?.skills?.length > 0) score += 15;
+                            if (passport?.is_verified) score += 10;
+                            return score;
+                          })()}%` 
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
               )}
-            </h2>
+            </div>
 
             {/* Empty list with elegant visual action */}
             <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center flex flex-col items-center justify-center">
               <span className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 mb-3">
                 {isEmployer ? <Briefcase className="w-5 h-5" /> : <Hammer className="w-5 h-5" />}
               </span>
-              <p className="text-sm font-semibold text-gray-800">
-                {isEmployer ? 'Nothing posted yet. Need help around the house or office?' : 'No job alerts yet. Complete your profile so employers can find you.'}
+              <p className="text-sm font-bold text-gray-800">
+                {isEmployer ? "You haven't posted any jobs yet. Let's list your first opening!" : "Your job inquiry feed is currently clear."}
               </p>
-              <p className="text-xs text-gray-400 mt-1 max-w-xs mx-auto">
+              <p className="text-xs text-gray-400 mt-1 max-w-sm mx-auto leading-relaxed">
                 {isEmployer 
-                  ? 'Post a task now. Plumbers, electricians, drivers, and more are ready in your area.'
-                  : 'Complete your BukiePassport profile setup with verification badges to receive priority system alerts!'}
+                  ? "Post a task now. Plumbers, electricians, painters, and tech artisans are active and ready in your LGA."
+                  : "Complete your BukiePassport profile setup with verified skill tags and credentials to start receiving customized job recommendations!"}
               </p>
 
-              <div className="flex gap-3 mt-5 flex-wrap justify-center">
+              <div className="flex gap-3 mt-6 flex-wrap justify-center">
                 {isEmployer ? (
                   <button
                     id="dash-post-job-btn"
                     type="button"
-                    className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-blue-950/5 cursor-pointer active:scale-95 transition-all"
+                    className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md cursor-pointer active:scale-95"
                     onClick={() => router.push('/dashboard/post-job')}
                   >
-                    Post New Job
+                    Post a new job opening
                   </button>
                 ) : (
                   <>
                     <button
                       id="dash-find-work-btn"
                       type="button"
-                      className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-blue-950/5 cursor-pointer active:scale-95 transition-all"
+                      className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md cursor-pointer active:scale-95 animate-bounce"
                       onClick={() => router.push('/jobs')}
                     >
-                      Find Work
+                      Browse job listings
                     </button>
                     <button
                       id="dash-passport-btn"
@@ -314,7 +356,7 @@ export default function DashboardPage() {
                       className="bg-white text-gray-700 border border-gray-200 text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
                       onClick={() => router.push('/dashboard/passport-setup')}
                     >
-                      Setup Passport
+                      Update BukiePassport
                     </button>
                   </>
                 )}
@@ -329,17 +371,19 @@ export default function DashboardPage() {
               <div>
                 <h3 className="font-bold text-gray-900 text-sm mb-3 flex items-center gap-1.5">
                   <ShieldCheck className="w-4.5 h-4.5 text-[#0A192F]" />
-                  <span>Identity & Trust</span>
+                  <span>Trust and Escalation Protection</span>
                 </h3>
                 <p className="text-xs text-gray-500 leading-relaxed">
-                  Every worker on BukieBrainJobs is verified. You know who you are hiring, and your money is protected until the work is done.
+                  Every artisan and client on BukieBrainJobs is verified. You know exactly who you are working with, and payments are protected inside secure escrows until completion is confirmed.
                 </p>
               </div>
 
-              <div className="mt-4 bg-white p-3 rounded-xl border border-gray-100 flex items-center gap-2">
+              <div className="mt-4 bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-[#0A192F]" />
-                <span className="text-[11px] font-semibold text-gray-600">
-                  {isEmployer ? 'Hire knowing your money is safe until you confirm the job is done.' : 'A verified badge helps employers trust you faster.'}
+                <span className="text-[11px] font-bold text-gray-600">
+                  {isEmployer 
+                    ? "Hire with confidence knowing your resources are held securely until the contractor delivers." 
+                    : "Having a verified BukiePassport badge dramatically increases your hiring response rate."}
                 </span>
               </div>
             </div>
@@ -351,13 +395,13 @@ export default function DashboardPage() {
                 Telegram Alerts Hub
               </h4>
               <p className="text-xs text-gray-400 leading-relaxed mb-4">
-                Receive immediate push notifications on telegram for payments, invoice clearance, quotes, or when matches pop up near you.
+                Receive immediate push notifications on Telegram for payments, invoice clearance, quotes, or when matches pop up near you.
               </p>
               <a
                 href="https://t.me/BukieBrainBot"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#0A192F] hover:bg-[#112a4f] py-2 px-3.5 rounded-lg border-b border-[#112a4f] transition-all font-mono active:scale-95 transition-all"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#0A192F] hover:bg-[#112a4f] py-2 px-3.5 rounded-lg border-b border-[#112a4f] transition-all font-mono active:scale-95"
               >
                 Connect Telegram Bot
               </a>

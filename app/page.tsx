@@ -1,12 +1,13 @@
 'use client';
 import { LogoBase64 } from '@/lib/logo';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Menu, Search, MapPin, X, ChevronDown, ChevronRight, ArrowRight, Briefcase, Hammer } from 'lucide-react';
 import { FadeUp } from '@/components/FadeUp';
 import { SmoothCollapse } from '@/components/SmoothCollapse';
 import { nigeriaLocations, nigerianStates } from '@/lib/nigeria-locations';
+import { SmartSuggestInput } from '@/components/SmartSuggestInput';
 
 import { SiteFooter } from '@/components/SiteFooter';
 import { Sidebar } from '@/components/Sidebar';
@@ -18,6 +19,42 @@ export default function Home() {
   
   const [selectedState, setSelectedState] = useState('');
   const [selectedLga, setSelectedLga] = useState('');
+  const [whatQuery, setWhatQuery] = useState('');
+  const [listedTitlesAndCats, setListedTitlesAndCats] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchLandingSuggestions() {
+      try {
+        const { createBrowserClient } = await import('@supabase/auth-helpers-nextjs');
+        const supabase = createBrowserClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        );
+        const { data } = await supabase.from('jobs').select('title, category').limit(100);
+        if (data) {
+          const suggestionsSet = new Set<string>();
+          data.forEach((j: any) => {
+            if (j.title) {
+              const t = j.title.replace('[TEST]', '').replace('[test]', '').trim();
+              if (t) suggestionsSet.add(t);
+            }
+            if (j.category) {
+              const c = j.category.trim();
+              if (c) suggestionsSet.add(c);
+            }
+          });
+          
+          // Add default backups
+          ["Plumbing", "Electrical", "Carpentry", "Painting", "Web Development", "Accounting", "Private Tutor", "Catering"].forEach(x => suggestionsSet.add(x));
+          
+          setListedTitlesAndCats(Array.from(suggestionsSet));
+        }
+      } catch (err) {
+        console.error('Failed to pre-fetch landing page search queries:', err);
+      }
+    }
+    fetchLandingSuggestions();
+  }, []);
 
   // Accordion states
   const [openTrending, setOpenTrending] = useState(true);
@@ -56,47 +93,68 @@ export default function Home() {
 
       <main className="px-4 py-6 max-w-2xl mx-auto w-full">
         {/* Search Container */}
-        <FadeUp delay={0.1} className="flex flex-col sm:flex-row items-center w-full bg-white border border-gray-300 rounded-2xl sm:rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.04)] px-4 py-3 sm:py-2 mb-10 focus-within:ring-2 focus-within:ring-[#0A192F]/60 focus-within:border-[#0A192F] focus-within:shadow-[0_0_15px_rgba(10,25,47,0.2)] transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] gap-2 sm:gap-0 relative z-10">
-          <div className="flex items-center flex-1 w-full min-w-0">
-            <Search className="w-5 h-5 text-gray-600 mr-3 flex-shrink-0 font-bold" />
-            <input 
-              type="text" 
-              placeholder="Search tasks" 
-              className="w-full bg-transparent focus:outline-none text-base text-[#0A192F] placeholder-gray-500 font-medium truncate py-1.5"
-            />
-          </div>
-          <div className="hidden sm:block w-[1px] h-6 bg-gray-300 mx-3 flex-shrink-0"></div>
-          <div className="flex items-center flex-1 w-full min-w-0 gap-2 border-t border-gray-100 pt-2 sm:border-0 sm:pt-0">
-            <MapPin className="w-5 h-5 text-gray-600 flex-shrink-0 font-bold hidden sm:block" />
-            
-            <div className="flex-1 min-w-0 flex items-center gap-2">
-              <select
-                value={selectedState}
-                onChange={(e) => {
-                  setSelectedState(e.target.value);
-                  setSelectedLga('');
-                }}
-                className="w-1/2 bg-transparent focus:outline-none text-base text-[#0A192F] font-medium truncate cursor-pointer appearance-none"
-              >
-                <option value="">State...</option>
-                {nigerianStates.map(state => (
-                  <option key={state} value={state}>{state}</option>
-                ))}
-              </select>
-              <span className="text-gray-300">/</span>
-              <select
-                value={selectedLga}
-                onChange={(e) => setSelectedLga(e.target.value)}
-                disabled={!selectedState}
-                className="w-1/2 bg-transparent focus:outline-none text-base text-[#0A192F] font-medium truncate cursor-pointer appearance-none disabled:opacity-50"
-              >
-                <option value="">LGA...</option>
-                {(selectedState ? nigeriaLocations[selectedState] : []).map(lga => (
-                  <option key={lga} value={lga}>{lga}</option>
-                ))}
-              </select>
+        <FadeUp delay={0.1} className="relative z-25 mb-10">
+          <form 
+            onSubmit={(e) => {
+              e.preventDefault();
+              let whereParam = '';
+              if (selectedState && selectedLga) {
+                whereParam = `${selectedLga}, ${selectedState}`;
+              } else {
+                whereParam = selectedState || selectedLga || '';
+              }
+              router.push(`/jobs?what=${encodeURIComponent(whatQuery)}&where=${encodeURIComponent(whereParam)}`);
+            }}
+            className="flex flex-col sm:flex-row items-center w-full bg-white border border-gray-300 rounded-2xl sm:rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.04)] px-4 py-3 sm:py-2 focus-within:ring-2 focus-within:ring-[#0A192F]/60 focus-within:border-[#0A192F] focus-within:shadow-[0_0_15px_rgba(10,25,47,0.2)] transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] gap-2 sm:gap-0"
+          >
+            <div className="flex items-center flex-1 w-full min-w-0">
+              <Search className="w-5 h-5 text-gray-500 mr-2 flex-shrink-0 font-bold" />
+              <SmartSuggestInput
+                value={whatQuery}
+                onChange={setWhatQuery}
+                placeholder="Search tasks, categories, keyword..."
+                suggestions={listedTitlesAndCats}
+                flat
+                className="w-full font-medium"
+              />
             </div>
-          </div>
+            
+            <div className="hidden sm:block w-[1px] h-6 bg-gray-300 mx-3 flex-shrink-0"></div>
+            
+            <div className="flex items-center flex-1 w-full min-w-0 gap-2 border-t border-gray-100 pt-2 sm:border-0 sm:pt-0">
+              <MapPin className="w-5 h-5 text-gray-500 flex-shrink-0 font-bold hidden sm:block" />
+              <div className="flex-1 min-w-0 flex items-center gap-1.5">
+                <SmartSuggestInput
+                  value={selectedState}
+                  onChange={(val) => {
+                    setSelectedState(val);
+                    setSelectedLga('');
+                  }}
+                  placeholder="State..."
+                  suggestions={nigerianStates}
+                  flat
+                  className="w-1/2"
+                />
+                <span className="text-gray-300">/</span>
+                <SmartSuggestInput
+                  value={selectedLga}
+                  onChange={setSelectedLga}
+                  placeholder={selectedState ? "LGA..." : "Pick State"}
+                  suggestions={selectedState ? (nigeriaLocations[selectedState] || []) : []}
+                  disabled={!selectedState}
+                  flat
+                  className="w-1/2"
+                />
+              </div>
+            </div>
+
+            <button 
+              type="submit"
+              className="bg-[#0A192F] hover:bg-[#112a4f] text-white text-sm font-bold px-5 py-2.5 sm:py-2.5 rounded-full whitespace-nowrap active:scale-95 transition-all outline-none md:ml-2 sm:w-auto w-full transition-all cursor-pointer"
+            >
+              Search
+            </button>
+          </form>
         </FadeUp>
 
         {/* Hero Area - Dual Audience */}

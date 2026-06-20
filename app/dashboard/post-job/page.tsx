@@ -25,6 +25,7 @@ import { postJobAction } from '@/app/actions';
 import dynamic from 'next/dynamic';
 import { SmoothCollapse } from '@/components/SmoothCollapse';
 import { LocationSelector } from '@/components/LocationSelector';
+import { SmartSuggestInput } from '@/components/SmartSuggestInput';
 
 const PaystackButton = dynamic(() => import('@/components/PaystackButton'), {
   ssr: false,
@@ -35,6 +36,94 @@ const PaystackButton = dynamic(() => import('@/components/PaystackButton'), {
   ),
 });
 
+const AVAILABLE_CATEGORIES = [
+  { value: 'Plumbing', label: 'Plumbing' },
+  { value: 'Electrical', label: 'Electrical' },
+  { value: 'Carpentry', label: 'Carpentry' },
+  { value: 'Painting', label: 'Painting' },
+  { value: 'Masonry', label: 'Masonry / Bricklaying' },
+  { value: 'Welding', label: 'Welding' },
+  { value: 'HVAC', label: 'HVAC / Air Conditioning' },
+  { value: 'Roofing', label: 'Roofing' },
+  { value: 'Tiling', label: 'Tiling / Flooring' },
+  { value: 'Handyman', label: 'General Maintenance / Handyman' },
+  { value: 'Cleaning', label: 'Cleaning Services' },
+  { value: 'Driving', label: 'Driving / Chauffeur' },
+  { value: 'Security', label: 'Security Guard' },
+  { value: 'Catering', label: 'Catering / Cooking' },
+  { value: 'Tailoring', label: 'Tailoring / Fashion Design' },
+  { value: 'Beauty', label: 'Hair & Beauty Services' },
+  { value: 'Gardening', label: 'Gardening / Landscaping' },
+  { value: 'Moving', label: 'Moving / Haulage' },
+  { value: 'Laundry', label: 'Laundry / Dry Cleaning' },
+  { value: 'PestControl', label: 'Pest Control' },
+  { value: 'WebDev', label: 'Web Development' },
+  { value: 'AppDev', label: 'Mobile App Development' },
+  { value: 'SoftwareDev', label: 'Software Development' },
+  { value: 'UIDesign', label: 'UI/UX Design' },
+  { value: 'GraphicDesign', label: 'Graphic Design' },
+  { value: 'BrandIdentity', label: 'Brand Identity / Logo Design' },
+  { value: 'VideoEditing', label: 'Video Editing' },
+  { value: 'Animation', label: 'Animation / Motion Graphics' },
+  { value: 'Photography', label: 'Photography' },
+  { value: 'ContentWriting', label: 'Content Writing' },
+  { value: 'Copywriting', label: 'Copywriting' },
+  { value: 'BlogWriting', label: 'Blog Writing' },
+  { value: 'TechWriting', label: 'Technical Writing' },
+  { value: 'Translation', label: 'Translation' },
+  { value: 'Transcription', label: 'Transcription' },
+  { value: 'VirtualAssistant', label: 'Virtual Assistant' },
+  { value: 'DataEntry', label: 'Data Entry' },
+  { value: 'CustomerSupport', label: 'Customer Support' },
+  { value: 'SocialMedia', label: 'Social Media Management' },
+  { value: 'DigitalMarketing', label: 'Digital Marketing' },
+  { value: 'SEO', label: 'SEO Services' },
+  { value: 'EmailMarketing', label: 'Email Marketing' },
+  { value: 'Accounting', label: 'Accounting / Bookkeeping' },
+  { value: 'FinancialConsulting', label: 'Financial Consulting' },
+  { value: 'LegalConsulting', label: 'Legal Consulting' },
+  { value: 'BusinessConsulting', label: 'Business Consulting' },
+  { value: 'ProjectManagement', label: 'Project Management' },
+  { value: 'Tutoring', label: 'Tutoring / Teaching' },
+  { value: 'VoiceOver', label: 'Voice Over' },
+  { value: 'MusicProduction', label: 'Music Production' },
+  { value: '3DModeling', label: '3D Modeling / CAD' },
+  { value: 'DataAnalysis', label: 'Data Analysis' },
+  { value: 'Cybersecurity', label: 'Cybersecurity Consulting' },
+  { value: 'NetworkAdmin', text: 'Network Admin', label: 'Network Administration' },
+  { value: 'ITSupport', label: 'IT Support' },
+  { value: 'CloudDevOps', label: 'Cloud Services / DevOps' },
+  { value: 'EventPlanning', label: 'Event Planning' },
+  { value: 'EventPhotography', label: 'Event Photography' },
+  { value: 'EventVideography', label: 'Event Videography' },
+  { value: 'RealEstate', label: 'Real Estate Agent Services' },
+  { value: 'PersonalTraining', label: 'Personal Training / Fitness' },
+  { value: 'InteriorDesign', label: 'Interior Design' },
+  { value: 'Architecture', label: 'Architecture Services' },
+  { value: 'Surveying', label: 'Surveying' }
+];
+
+const SUGGESTED_JOB_TITLES = [
+  "Kitchen plumbing pipe repair",
+  "House wall screeding and painting",
+  "Electrical wiring installation",
+  "Traditional native wear sewing",
+  "Custom responsive Next.js website dev",
+  "E-commerce mobile app development",
+  "High precision metal welding",
+  "Traditional catering service for weddings",
+  "AC servicing and split unit installation",
+  "Bilingual book translation from French",
+  "Commercial shop CCTV camera setup",
+  "Deep house cleaning & post-construction wash",
+  "Custom company logo & branding",
+  "Social media design & content management",
+  "Academic private lesson mathematics tutor",
+  "Professional event video editing",
+  "Real Estate agent property listing",
+  "Personal fitness coach body workout sessions"
+];
+
 interface MarketRate {
   min: number;
   max: number;
@@ -42,12 +131,18 @@ interface MarketRate {
 }
 
 function getMarketRateRange(cat: string, type: 'task' | 'contract' | 'full_time'): MarketRate {
-  const isTradeSpecial = ['HVAC', 'Roofing', 'Welding', 'Masonry', 'Electrical', 'Plumbing', 'Carpentry'].includes(cat);
-  const isTradeSimple = ['Handyman', 'Cleaning', 'Laundry', 'Gardening', 'Moving', 'PestControl'].includes(cat);
-  const isDigitalHigh = ['WebDev', 'AppDev', 'SoftwareDev', 'Cybersecurity', 'CloudDevOps'].includes(cat);
-  const isDigitalMid = ['UIDesign', 'GraphicDesign', 'BrandIdentity', 'VideoEditing', 'Animation', 'Translation', 'Accounting', 'FinancialConsulting', 'LegalConsulting', 'BusinessConsulting', 'ProjectManagement', 'DataAnalysis', 'NetworkAdmin', 'ITSupport', 'MusicProduction', '3DModeling'].includes(cat);
-  const isDigitalSimple = ['VirtualAssistant', 'DataEntry', 'CustomerSupport', 'Transcription', 'Tutoring', 'VoiceOver', 'ContentWriting', 'Copywriting', 'BlogWriting', 'TechWriting'].includes(cat);
-  const isEventHigh = ['EventPlanning', 'EventPhotography', 'EventVideography', 'Architecture', 'InteriorDesign', 'Surveying', 'RealEstate'].includes(cat);
+  // Map friendly typed category labels to standard database keys for rate calculation
+  const mappedObj = AVAILABLE_CATEGORIES.find(
+    c => c.label.toLowerCase() === cat.toLowerCase() || c.value.toLowerCase() === cat.toLowerCase()
+  );
+  const code = mappedObj ? mappedObj.value : cat;
+
+  const isTradeSpecial = ['HVAC', 'Roofing', 'Welding', 'Masonry', 'Electrical', 'Plumbing', 'Carpentry'].includes(code);
+  const isTradeSimple = ['Handyman', 'Cleaning', 'Laundry', 'Gardening', 'Moving', 'PestControl'].includes(code);
+  const isDigitalHigh = ['WebDev', 'AppDev', 'SoftwareDev', 'Cybersecurity', 'CloudDevOps'].includes(code);
+  const isDigitalMid = ['UIDesign', 'GraphicDesign', 'BrandIdentity', 'VideoEditing', 'Animation', 'Translation', 'Accounting', 'FinancialConsulting', 'LegalConsulting', 'BusinessConsulting', 'ProjectManagement', 'DataAnalysis', 'NetworkAdmin', 'ITSupport', 'MusicProduction', '3DModeling'].includes(code);
+  const isDigitalSimple = ['VirtualAssistant', 'DataEntry', 'CustomerSupport', 'Transcription', 'Tutoring', 'VoiceOver', 'ContentWriting', 'Copywriting', 'BlogWriting', 'TechWriting'].includes(code);
+  const isEventHigh = ['EventPlanning', 'EventPhotography', 'EventVideography', 'Architecture', 'InteriorDesign', 'Surveying', 'RealEstate'].includes(code);
   
   if (type === 'task') {
     if (isDigitalHigh) return { min: 25000, max: 70000, label: 'per task' };
@@ -91,6 +186,10 @@ export default function PostJobPage() {
   const [userEmail, setUserEmail] = useState('');
   const [userId, setUserId] = useState('');
 
+  // Suggestions dynamic states
+  const [listedTitles, setListedTitles] = useState<string[]>([]);
+  const [listedCategories, setListedCategories] = useState<string[]>([]);
+
   // Form states
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -121,6 +220,49 @@ export default function PostJobPage() {
     checkUser();
   }, [supabase, router]);
 
+  // Fetch dynamic listed job titles & categories from active data for smart recommendations
+  useEffect(() => {
+    async function fetchDatabaseSuggestions() {
+      try {
+        const { data } = await supabase
+          .from('jobs')
+          .select('title, category')
+          .limit(150);
+          
+        if (data) {
+          const titlesSet = new Set<string>();
+          const catsSet = new Set<string>();
+          data.forEach((j: any) => {
+            if (j.title) {
+              const t = j.title.replace('[TEST]', '').replace('[test]', '').trim();
+              if (t) titlesSet.add(t);
+            }
+            if (j.category) {
+              const c = j.category.trim();
+              if (c) catsSet.add(c);
+            }
+          });
+          setListedTitles(Array.from(titlesSet));
+          setListedCategories(Array.from(catsSet));
+        }
+      } catch (e) {
+        console.error('Error prefetching dynamic user choices:', e);
+      }
+    }
+    fetchDatabaseSuggestions();
+  }, [supabase]);
+
+  // Merge default presets + dynamic listed databases
+  const jobTitleSuggestions = Array.from(new Set([
+    ...SUGGESTED_JOB_TITLES,
+    ...listedTitles
+  ]));
+
+  const categorySuggestions = Array.from(new Set([
+    ...AVAILABLE_CATEGORIES.map(c => c.label),
+    ...listedCategories
+  ]));
+
   // Unified submission caller
   const handleJobPostSubmit = async (paymentRef?: string) => {
     setLoading(true);
@@ -131,7 +273,7 @@ export default function PostJobPage() {
         title,
         description,
         budget: budgetNum,
-        category: category.startsWith('Other') ? customCategory : category,
+        category: category,
         location_state: workMode === 'remote' ? 'Remote' : selectedState,
         location_lga: workMode === 'remote' ? 'Remote' : selectedLga,
         job_type: jobType,
@@ -162,8 +304,8 @@ export default function PostJobPage() {
       return;
     }
 
-    if (category.startsWith('Other') && !customCategory.trim()) {
-      setErrorMsg('Please describe the type of work you need.');
+    if (!category.trim()) {
+      setErrorMsg('Please specify or pick a category.');
       return;
     }
 
@@ -287,13 +429,12 @@ export default function PostJobPage() {
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                   Job Title *
                 </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Broken Pipes in Kitchen / Academic Lesson Teacher"
+                <SmartSuggestInput
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium"
+                  onChange={setTitle}
+                  placeholder="e.g. Broken Pipes in Kitchen / Academic Private Tutor"
+                  suggestions={jobTitleSuggestions}
+                  required
                 />
               </div>
 
@@ -376,98 +517,13 @@ export default function PostJobPage() {
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
                     Category *
                   </label>
-                  <select
+                  <SmartSuggestInput
                     value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 font-medium cursor-pointer"
-                  >
-                    <optgroup label="Trade & Physical Work">
-                      <option value="Plumbing">Plumbing</option>
-                      <option value="Electrical">Electrical</option>
-                      <option value="Carpentry">Carpentry</option>
-                      <option value="Painting">Painting</option>
-                      <option value="Masonry">Masonry / Bricklaying</option>
-                      <option value="Welding">Welding</option>
-                      <option value="HVAC">HVAC / Air Conditioning</option>
-                      <option value="Roofing">Roofing</option>
-                      <option value="Tiling">Tiling / Flooring</option>
-                      <option value="Handyman">General Maintenance / Handyman</option>
-                      <option value="Cleaning">Cleaning Services</option>
-                      <option value="Driving">Driving / Chauffeur</option>
-                      <option value="Security">Security Guard</option>
-                      <option value="Catering">Catering / Cooking</option>
-                      <option value="Tailoring">Tailoring / Fashion Design</option>
-                      <option value="Beauty">Hair & Beauty Services</option>
-                      <option value="Gardening">Gardening / Landscaping</option>
-                      <option value="Moving">Moving / Haulage</option>
-                      <option value="Laundry">Laundry / Dry Cleaning</option>
-                      <option value="PestControl">Pest Control</option>
-                      <option value="OtherTrade">Other (Trade & Physical)</option>
-                    </optgroup>
-                    <optgroup label="Digital & Remote Work">
-                      <option value="WebDev">Web Development</option>
-                      <option value="AppDev">Mobile App Development</option>
-                      <option value="SoftwareDev">Software Development</option>
-                      <option value="UIDesign">UI/UX Design</option>
-                      <option value="GraphicDesign">Graphic Design</option>
-                      <option value="BrandIdentity">Brand Identity / Logo Design</option>
-                      <option value="VideoEditing">Video Editing</option>
-                      <option value="Animation">Animation / Motion Graphics</option>
-                      <option value="Photography">Photography</option>
-                      <option value="ContentWriting">Content Writing</option>
-                      <option value="Copywriting">Copywriting</option>
-                      <option value="BlogWriting">Blog Writing</option>
-                      <option value="TechWriting">Technical Writing</option>
-                      <option value="Translation">Translation</option>
-                      <option value="Transcription">Transcription</option>
-                      <option value="VirtualAssistant">Virtual Assistant</option>
-                      <option value="DataEntry">Data Entry</option>
-                      <option value="CustomerSupport">Customer Support</option>
-                      <option value="SocialMedia">Social Media Management</option>
-                      <option value="DigitalMarketing">Digital Marketing</option>
-                      <option value="SEO">SEO Services</option>
-                      <option value="EmailMarketing">Email Marketing</option>
-                      <option value="Accounting">Accounting / Bookkeeping</option>
-                      <option value="FinancialConsulting">Financial Consulting</option>
-                      <option value="LegalConsulting">Legal Consulting</option>
-                      <option value="BusinessConsulting">Business Consulting</option>
-                      <option value="ProjectManagement">Project Management</option>
-                      <option value="Tutoring">Tutoring / Teaching</option>
-                      <option value="VoiceOver">Voice Over</option>
-                      <option value="MusicProduction">Music Production</option>
-                      <option value="3DModeling">3D Modeling / CAD</option>
-                      <option value="DataAnalysis">Data Analysis</option>
-                      <option value="Cybersecurity">Cybersecurity Consulting</option>
-                      <option value="NetworkAdmin">Network Administration</option>
-                      <option value="ITSupport">IT Support</option>
-                      <option value="CloudDevOps">Cloud Services / DevOps</option>
-                      <option value="OtherDigital">Other (Digital & Remote)</option>
-                    </optgroup>
-                    <optgroup label="Hybrid & Event Work">
-                      <option value="EventPlanning">Event Planning</option>
-                      <option value="EventPhotography">Event Photography</option>
-                      <option value="EventVideography">Event Videography</option>
-                      <option value="RealEstate">Real Estate Agent Services</option>
-                      <option value="PersonalTraining">Personal Training / Fitness</option>
-                      <option value="InteriorDesign">Interior Design</option>
-                      <option value="Architecture">Architecture Services</option>
-                      <option value="Surveying">Surveying</option>
-                      <option value="OtherHybrid">Other (Hybrid & Event)</option>
-                    </optgroup>
-                  </select>
-                  {category.startsWith('Other') && (
-                    <div className="mt-3">
-                      <input
-                        type="text"
-                        required
-                        placeholder="What kind of work?"
-                        value={customCategory}
-                        onChange={(e) => setCustomCategory(e.target.value)}
-                        className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-sm px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium"
-                      />
-                      <p className="text-[10px] text-gray-400 mt-1">Be specific so the right workers find you.</p>
-                    </div>
-                  )}
+                    onChange={setCategory}
+                    placeholder="Type or select category"
+                    suggestions={categorySuggestions}
+                    required
+                  />
                 </div>
               </div>
 
