@@ -129,8 +129,8 @@ export default function Home() {
 
           {/* Worker Card */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:border-gray-300 transition-all">
-            <div className="w-12 h-12 rounded-2xl bg-[#004D2C]/10 flex items-center justify-center mb-4">
-              <Hammer className="w-6 h-6 text-[#004D2C]" />
+            <div className="w-12 h-12 rounded-2xl bg-[#0A192F]/10 flex items-center justify-center mb-4">
+              <Hammer className="w-6 h-6 text-[#0A192F]" />
             </div>
             <h3 className="text-lg font-black text-[#0A192F] mb-2">I need work</h3>
             <p className="text-sm text-gray-500 leading-relaxed mb-5">
@@ -138,7 +138,7 @@ export default function Home() {
             </p>
             <button
               onClick={() => router.push('/jobs')}
-              className="w-full bg-[#004D2C] hover:bg-[#00663a] text-white font-bold text-sm py-3 rounded-xl transition-all active:scale-[0.98]"
+              className="w-full bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold text-sm py-3 rounded-xl transition-all active:scale-[0.98]"
             >
               Browse Jobs
             </button>

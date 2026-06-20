@@ -149,7 +149,7 @@ export default function ChatPage() {
         <div className="bg-white rounded-3xl p-5 md:p-6 border border-gray-100 shadow-sm">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="space-y-1.5">
-              <span className="text-[10px] uppercase tracking-widest font-bold text-[#004D2C] font-mono block">
+              <span className="text-[10px] uppercase tracking-widest font-bold text-blue-600 font-mono block">
                 Discussing Project
               </span>
               <h1 className="text-lg md:text-xl font-black text-gray-900 tracking-tight">

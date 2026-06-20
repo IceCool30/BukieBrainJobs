@@ -83,7 +83,7 @@ export default function AboutPage() {
               {/* Workers */}
               <div className="bg-gray-50 border border-gray-100 rounded-2xl p-8 hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:border-gray-200 transition-all">
                 <h3 className="text-xl font-bold text-[#0A192F] mb-6 flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-full bg-[#004D2C] text-white flex items-center justify-center text-sm">2</span>
+                  <span className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm">2</span>
                   Workers
                 </h3>
                 <ol className="space-y-6">

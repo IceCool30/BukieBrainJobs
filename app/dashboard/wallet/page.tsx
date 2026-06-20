@@ -186,8 +186,8 @@ export default function WalletPage() {
         )}
 
         {successMsg && (
-          <div className="p-4 bg-emerald-50 text-emerald-800 border border-emerald-100 rounded-xl flex gap-3 text-sm font-medium animate-fadeIn">
-            <ShieldCheck className="w-5 h-5 shrink-0 text-emerald-600" />
+          <div className="p-4 bg-blue-50 text-blue-800 border border-blue-100 rounded-xl flex gap-3 text-sm font-medium animate-fadeIn">
+            <ShieldCheck className="w-5 h-5 shrink-0 text-blue-600" />
             <span>{successMsg}</span>
           </div>
         )}
@@ -203,10 +203,10 @@ export default function WalletPage() {
         <FadeUp delay={0.1} className="grid grid-cols-1 md:grid-cols-2 gap-6" id="wallet-financials-hud">
           {/* Funds display card */}
           <div className="bg-[#0A192F] text-white rounded-3xl p-6 relative overflow-hidden shadow-sm flex flex-col justify-between h-48 border border-white/5">
-            <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/5 rounded-full blur-2xl"></div>
+            <div className="absolute right-0 top-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
             
             <div className="flex justify-between items-center">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#004D2C]">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-blue-400">
                 Live Balance
               </span>
               <Wallet className="w-5 h-5 text-gray-400" />
@@ -247,7 +247,7 @@ export default function WalletPage() {
         {/* Buy Bids CTA */}
         <FadeUp delay={0.2} className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-shadow" id="bid-bundle-actions">
           <div className="max-w-md mx-auto text-center space-y-6">
-            <div className="inline-flex p-3 bg-amber-50 rounded-full border border-amber-100 text-[#004D2C] mb-2 leading-none">
+            <div className="inline-flex p-3 bg-amber-50 rounded-full border border-amber-100 text-amber-600 mb-2 leading-none">
               <Sparkles className="w-6 h-6 stroke-2" />
             </div>
             
@@ -297,10 +297,10 @@ export default function WalletPage() {
         </FadeUp>
 
         {/* Secure Warning badge */}
-        <FadeUp delay={0.3} className="bg-emerald-50 border border-emerald-100/60 p-4 rounded-2xl flex items-center justify-between gap-4">
+        <FadeUp delay={0.3} className="bg-blue-50 border border-blue-105 p-4 rounded-2xl flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
-            <div className="text-xs text-emerald-800 leading-normal">
+            <ShieldCheck className="w-5 h-5 text-blue-600 shrink-0" />
+            <div className="text-xs text-blue-800 leading-normal">
               System uses secure CBN-regulated payment routing through Paystack, keeping credentials safe.
             </div>
           </div>
@@ -333,7 +333,7 @@ export default function WalletPage() {
                     <span className="font-extrabold font-mono text-gray-900">
                       ₦{tx.amount?.toLocaleString()}
                     </span>
-                    <span className="text-[9px] font-bold text-emerald-600 uppercase">
+                    <span className="text-[9px] font-bold text-blue-600 uppercase">
                       ● Complete
                     </span>
                   </div>

@@ -297,7 +297,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
       <div className="p-4 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${
-            isInspectionPaid ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white animate-pulse'
+            isInspectionPaid ? 'bg-blue-600 text-white' : 'bg-red-500 text-white animate-pulse'
           }`}>
             {isInspectionPaid ? (
               <ShieldCheck className="w-2.5 h-2.5" />
@@ -374,7 +374,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
                 <div 
                   className={`p-3.5 rounded-2xl text-xs font-semibold leading-relaxed ${
                     isMe 
-                      ? 'bg-[#0A192F] text-white rounded-tr-none shadow-md shadow-emerald-900/5' 
+                      ? 'bg-[#0A192F] text-white rounded-tr-none shadow-md shadow-blue-900/5' 
                       : 'bg-white text-gray-900 border border-gray-150 rounded-tl-none shadow-sm'
                   }`}
                 >
@@ -433,7 +433,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
         <button
           type="submit"
           disabled={sendLoading || !newMessage.trim()}
-          className="bg-[#0A192F] hover:bg-[#112a4f] text-white p-3 rounded-xl transition-all shadow-md shadow-green-900/10 hover:shadow-green-900/20 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer shrink-0"
+          className="bg-[#0A192F] hover:bg-[#112a4f] text-white p-3 rounded-xl transition-all shadow-md shadow-blue-950/10 hover:shadow-blue-950/20 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer shrink-0"
           id="chat-send-submit-btn"
         >
           {sendLoading ? (

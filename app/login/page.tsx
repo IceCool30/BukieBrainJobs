@@ -246,8 +246,8 @@ export default function LoginPage() {
               </SmoothCollapse>
 
               <SmoothCollapse isOpen={!!message}>
-                <div className="flex items-start gap-2 bg-green-50 text-[#0A192F] p-3 rounded-xl text-sm border border-green-100" id="password-message">
-                  <Sparkles className="w-4 h-4 shrink-0 text-[#004D2C] mt-0.5" />
+                <div className="flex items-start gap-2 bg-blue-50 text-[#0A192F] p-3 rounded-xl text-sm border border-blue-100" id="password-message">
+                  <Sparkles className="w-4 h-4 shrink-0 text-blue-650 mt-0.5" />
                   <span>{message}</span>
                 </div>
               </SmoothCollapse>

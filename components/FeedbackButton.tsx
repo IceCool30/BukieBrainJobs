@@ -32,7 +32,7 @@ export function FeedbackButton() {
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 bg-[#004D2C] text-white p-3.5 rounded-full shadow-lg hover:bg-[#003820] hover:shadow-xl hover:-translate-y-1 transition-all z-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#004D2C] ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}
+        className={`fixed bottom-6 right-6 bg-[#0A192F] text-white p-3.5 rounded-full shadow-lg hover:bg-[#112a4f] hover:shadow-xl hover:-translate-y-1 transition-all z-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0A192F] ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}
         aria-label="Give feedback"
       >
         <MessageSquarePlus className="w-6 h-6" />
@@ -54,7 +54,7 @@ export function FeedbackButton() {
 
         <form onSubmit={handleSubmit} className="p-4 flex flex-col gap-4">
           <SmoothCollapse isOpen={status === 'success'}>
-            <div className="bg-green-50 text-[#004D2C] p-3 rounded-xl text-sm font-medium border border-green-100 text-center">
+            <div className="bg-blue-50 text-blue-800 p-3 rounded-xl text-sm font-medium border border-blue-100 text-center">
               Thanks for helping us improve!
             </div>
           </SmoothCollapse>

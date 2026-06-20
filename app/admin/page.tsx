@@ -223,7 +223,7 @@ export default function CEOAdminPage() {
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             <span>Dashboard</span>
           </button>
-          <span className="text-[10px] uppercase font-mono tracking-widest text-[#004D2C] font-semibold flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
+          <span className="text-[10px] uppercase font-mono tracking-widest text-amber-800 font-semibold flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
             <Sparkles className="w-3.5 h-3.5 fill-amber-500 stroke-none animate-spin" />
             <span>CEO Control Central</span>
           </span>
@@ -231,9 +231,9 @@ export default function CEOAdminPage() {
 
         {/* Brand Banner */}
         <div className="bg-[#0A192F] text-white rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-md">
-          <div className="absolute right-0 top-0 w-48 h-48 bg-[#004D2C]/10 rounded-full blur-3xl"></div>
+          <div className="absolute right-0 top-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"></div>
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-[#0A192F] border-2 border-[#004D2C] rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg">
+            <div className="w-14 h-14 bg-[#0A192F] border-2 border-blue-500 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg">
               CEO
             </div>
             <div>
@@ -249,8 +249,8 @@ export default function CEOAdminPage() {
 
         {/* Database notification updates bar */}
         {statusMessage && (
-          <div className="bg-emerald-50 border border-emerald-100/80 text-emerald-800 text-xs px-4 py-3 rounded-xl font-bold flex items-center gap-2" id="flash-status">
-            <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+          <div className="bg-blue-50 border border-blue-100/80 text-blue-800 text-xs px-4 py-3 rounded-xl font-bold flex items-center gap-2" id="flash-status">
+            <Check className="w-4 h-4 text-blue-600 shrink-0" />
             <span>{statusMessage}</span>
           </div>
         )}

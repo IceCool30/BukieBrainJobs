@@ -479,7 +479,7 @@ export default function PassportSetupPage() {
           
           <div className="flex items-center gap-2">
             {isVerified ? (
-              <div className="flex items-center gap-1 bg-emerald-600 border border-emerald-700 px-3 py-1.5 rounded-full text-[10px] font-black text-white uppercase tracking-wider font-mono shadow-md">
+              <div className="flex items-center gap-1 bg-[#0A192F] border border-[#112a4f] px-3 py-1.5 rounded-full text-[10px] font-black text-white uppercase tracking-wider font-mono shadow-md">
                 <ShieldCheck className="w-3.5 h-3.5 text-white" />
                 <span>Verified</span>
               </div>
@@ -508,7 +508,7 @@ export default function PassportSetupPage() {
       <div className="flex-1 max-w-2xl w-full mx-auto px-4 py-8" id="passport-content">
         {/* Header summary */}
         <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 mb-6 text-center relative overflow-hidden" id="passport-intro">
-          <div className="absolute right-0 top-0 w-24 h-24 bg-emerald-505/10 rounded-full blur-xl"></div>
+          <div className="absolute right-0 top-0 w-24 h-24 bg-[#0A192F]/5 rounded-full blur-xl"></div>
           
           <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mx-auto mb-4 border border-amber-200">
             <Hammer className="w-8 h-8" />
@@ -587,7 +587,7 @@ export default function PassportSetupPage() {
                         <X className="w-3 h-3" />
                       </button>
                     </div>
-                    <span className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-250 text-emerald-800 text-xs font-black uppercase px-3 py-1.5 rounded-xl shadow-sm">
+                    <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-800 text-xs font-black uppercase px-3 py-1.5 rounded-xl shadow-sm">
                       ✓ Profile image loaded successfully
                     </span>
                   </div>
@@ -618,7 +618,7 @@ export default function PassportSetupPage() {
                       <button
                         type="button"
                         onClick={handleCapture}
-                        className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider px-4 py-2 rounded-xl transition-all shadow-md cursor-pointer flex items-center gap-1.5"
+                        className="bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold text-xs uppercase tracking-wider px-4 py-2 rounded-xl transition-all shadow-md cursor-pointer flex items-center gap-1.5"
                         id="capture-live-snap-btn"
                       >
                         <Camera className="w-3.5 h-3.5" />
@@ -694,7 +694,7 @@ export default function PassportSetupPage() {
                   </span>
                 )}
                 {isVerified && (
-                  <span className="inline-flex items-center gap-1 bg-emerald-600 border border-emerald-700 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-md shadow-sm">
+                  <span className="inline-flex items-center gap-1 bg-[#0A192F] border border-[#112a4f] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-md shadow-sm">
                     ✓ Identity Verified
                   </span>
                 )}
@@ -730,7 +730,7 @@ export default function PassportSetupPage() {
                     </div>
                     
                     <div className="text-center">
-                      <span className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-250 text-emerald-800 text-xs font-black uppercase px-3 py-1.5 rounded-xl shadow-sm">
+                      <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-805 text-xs font-black uppercase px-3 py-1.5 rounded-xl shadow-sm">
                         ✓ ID document loaded successfully
                       </span>
                       <span className="text-[10px] text-gray-400 block mt-0.5">
@@ -1006,9 +1006,9 @@ export default function PassportSetupPage() {
 
             {/* Blue check prompt placeholder */}
             <div className="bg-[#0A192F] text-white p-4 rounded-xl border border-gray-800 flex items-center gap-3" id="blue-check-badge-ad">
-              <ShieldCheck className="w-10 h-10 text-[#4ADE80] shrink-0" />
+              <ShieldCheck className="w-10 h-10 text-blue-400 shrink-0" />
               <div>
-                <span className="block text-xs font-extrabold text-[#4ADE80] uppercase tracking-wider font-mono">Get verified. Earn the badge.</span>
+                <span className="block text-xs font-extrabold text-blue-400 uppercase tracking-wider font-mono">Get verified. Earn the badge.</span>
                 <span className="block text-[10px] text-gray-400 leading-normal mt-0.5">
                   Verified workers appear higher in search results and get more job offers. It costs ₦1,500 per year, and you can do it right after setting up your profile.
                 </span>
@@ -1020,29 +1020,29 @@ export default function PassportSetupPage() {
               id="verification-checklist-block" 
               className={`p-5 rounded-2xl border transition-all ${
                 isVerified 
-                  ? 'bg-emerald-50/60 border-emerald-200 shadow-xs' 
+                  ? 'bg-blue-50/60 border-blue-200 shadow-xs' 
                   : idCardUrl 
                     ? (chkLegible && chkOriented && chkValid)
-                      ? 'bg-emerald-50/40 border-emerald-300 shadow-md ring-1 ring-emerald-350/20' 
+                      ? 'bg-blue-50/40 border-blue-300 shadow-md ring-1 ring-blue-350/20' 
                       : 'bg-amber-50/30 border-amber-300 shadow-sm'
                     : 'bg-gray-50 border-gray-200 shadow-xs'
               }`}
             >
               <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200/60">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className={`w-5 h-5 ${isVerified || (idCardUrl && chkLegible && chkOriented && chkValid) ? 'text-emerald-600' : 'text-amber-500'}`} />
+                  <ShieldCheck className={`w-5 h-5 ${isVerified || (idCardUrl && chkLegible && chkOriented && chkValid) ? 'text-blue-600' : 'text-amber-500'}`} />
                   <span className="text-xs font-black uppercase font-mono tracking-wider text-slate-900">
                     Verification Checklist
                   </span>
                 </div>
                 <div>
                   {isVerified ? (
-                    <span className="bg-emerald-650 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider">
+                    <span className="bg-[#0A192F] text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider">
                       Verified
                     </span>
                   ) : idCardUrl ? (
                     (chkLegible && chkOriented && chkValid) ? (
-                      <span className="bg-emerald-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider animate-pulse">
+                      <span className="bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider animate-pulse">
                         Ready
                       </span>
                     ) : (
@@ -1059,12 +1059,12 @@ export default function PassportSetupPage() {
               </div>
 
               {isVerified ? (
-                <div className="text-xs text-emerald-950 space-y-1 font-medium">
+                <div className="text-xs text-blue-950 space-y-1 font-medium">
                   <p className="font-bold flex items-center gap-1">
-                    <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-blue-600 shrink-0" />
                     Passport status verified by BukiePassport Moderation!
                   </p>
-                  <p className="text-[11px] text-emerald-800 leading-relaxed font-normal pl-5">
+                  <p className="text-[11px] text-blue-800 leading-relaxed font-normal pl-5">
                     Your verification identity documents are current and active. You are cleared to save any updates.
                   </p>
                 </div>
@@ -1074,8 +1074,8 @@ export default function PassportSetupPage() {
                   <div className="flex items-start gap-3">
                     <div className="mt-0.5">
                       {idCardUrl ? (
-                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-850 border border-emerald-350">
-                          <CheckCircle className="w-3.5 h-3.5 text-emerald-700" />
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-850 border border-blue-300">
+                          <CheckCircle className="w-3.5 h-3.5 text-blue-700" />
                         </span>
                       ) : (
                         <span className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-50 text-amber-850 border border-amber-300">
@@ -1084,7 +1084,7 @@ export default function PassportSetupPage() {
                       )}
                     </div>
                     <div className="flex-1 text-xs">
-                      <span className={`block font-black uppercase tracking-wider text-[10px] ${idCardUrl ? 'text-emerald-850' : 'text-amber-800'}`}>
+                      <span className={`block font-black uppercase tracking-wider text-[10px] ${idCardUrl ? 'text-blue-850' : 'text-amber-800'}`}>
                         {idCardUrl ? '✓ Government ID Loaded' : '⚠ Government ID Required'}
                       </span>
                       <span className="block text-[11px] text-gray-500 leading-relaxed font-medium mt-0.5">
@@ -1182,8 +1182,8 @@ export default function PassportSetupPage() {
             )}
 
             {message && (
-              <div className="flex items-start gap-2 bg-emerald-50 text-emerald-950 p-3.5 rounded-xl text-xs border border-emerald-200 shadow-sm" id="passport-message">
-                <Sparkles className="w-4 h-4 text-emerald-600 shrink-0 animate-pulse" />
+              <div className="flex items-start gap-2 bg-blue-50 text-blue-950 p-3.5 rounded-xl text-xs border border-blue-200 shadow-sm" id="passport-message">
+                <Sparkles className="w-4 h-4 text-blue-600 shrink-0 animate-pulse" />
                 <span className="font-medium">{message}</span>
               </div>
             )}

@@ -68,13 +68,13 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
       id={`job-card-${job.id}`}
       className={`bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border-2 overflow-hidden flex flex-col justify-between ${
         job.is_urgent 
-          ? 'border-[#004D2C] relative' 
+          ? 'border-blue-600 relative' 
           : 'border-transparent hover:border-gray-100'
       }`}
     >
       {/* Golden Highlight border or background accent if urgent */}
       {job.is_urgent && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#004D2C] via-amber-300 to-[#004D2C]"></div>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-amber-300 to-blue-600"></div>
       )}
 
       <div className="p-5 md:p-6 flex-1 flex flex-col justify-between">
@@ -184,7 +184,7 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
           }}
           className={`text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
             job.is_urgent 
-              ? 'bg-[#004D2C] border-[#004D2C] hover:bg-[#004D2C]/90 text-white shadow-sm'
+              ? 'bg-blue-600 border-blue-600 hover:bg-blue-700 text-white shadow-sm'
               : 'bg-[#0A192F] border-[#0A192F] hover:bg-[#112a4f] text-white shadow-sm'
           }`}
         >

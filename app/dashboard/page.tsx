@@ -138,7 +138,7 @@ export default function DashboardPage() {
                 onClick={() => router.push('/dashboard/passport-setup')}
                 className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider font-mono px-3 py-1.5 rounded-xl transition-all cursor-pointer border shadow-md hover:scale-[1.02] active:scale-95 ${
                   passport?.is_verified === true 
-                    ? 'text-white bg-emerald-600 border-emerald-700 hover:bg-emerald-700 shadow-emerald-650/10' 
+                    ? 'text-white bg-blue-600 border border-blue-700 hover:bg-blue-700 shadow-blue-650/10' 
                     : passport?.id_card_url 
                       ? 'text-white bg-amber-500 border-amber-600 hover:bg-amber-600 shadow-amber-500/10 animate-pulse' 
                       : 'text-white bg-rose-600 border-rose-700 hover:bg-rose-700 shadow-rose-650/10'
@@ -219,7 +219,7 @@ export default function DashboardPage() {
             onClick={() => router.push('/dashboard/wallet')}
           >
             <div className="flex items-center gap-2">
-              <Wallet className="w-5 h-5 text-[#004D2C]" />
+              <Wallet className="w-5 h-5 text-blue-600" />
               <div>
                 <span className="block text-[10px] uppercase font-bold text-gray-400 tracking-wider">
                   Wallet Balance
@@ -244,7 +244,7 @@ export default function DashboardPage() {
               <div className="ml-4 text-right flex flex-col items-end">
                 <span className="block text-[8px] uppercase font-bold text-gray-400">Bids Left</span>
                 <span className="text-xs font-black text-[#0A192F] leading-none">{wallet?.free_bids_remaining ?? 3} Free</span>
-                <span className="text-[9px] font-extrabold text-[#004D2C] underline mt-0.5 pointer-events-none">Top Up Bids</span>
+                <span className="text-[9px] font-extrabold text-blue-600 underline mt-0.5 pointer-events-none">Top Up Bids</span>
               </div>
             )}
           </div>
@@ -268,7 +268,7 @@ export default function DashboardPage() {
                 </>
               ) : (
                 <>
-                  <Hammer className="w-5 h-5 text-[#004D2C]" />
+                  <Hammer className="w-5 h-5 text-blue-600" />
                   <span>Available Local Inquiries</span>
                 </>
               )}
@@ -293,7 +293,7 @@ export default function DashboardPage() {
                   <button
                     id="dash-post-job-btn"
                     type="button"
-                    className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-green-900/5 cursor-pointer active:scale-95 transition-all"
+                    className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-blue-950/5 cursor-pointer active:scale-95 transition-all"
                     onClick={() => router.push('/dashboard/post-job')}
                   >
                     Post New Job
@@ -303,7 +303,7 @@ export default function DashboardPage() {
                     <button
                       id="dash-find-work-btn"
                       type="button"
-                      className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-green-900/5 cursor-pointer active:scale-95 transition-all"
+                      className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md shadow-blue-950/5 cursor-pointer active:scale-95 transition-all"
                       onClick={() => router.push('/jobs')}
                     >
                       Find Work
@@ -337,7 +337,7 @@ export default function DashboardPage() {
               </div>
 
               <div className="mt-4 bg-white p-3 rounded-xl border border-gray-100 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#004D2C]" />
+                <Sparkles className="w-4 h-4 text-[#0A192F]" />
                 <span className="text-[11px] font-semibold text-gray-600">
                   {isEmployer ? 'Hire knowing your money is safe until you confirm the job is done.' : 'A verified badge helps employers trust you faster.'}
                 </span>
@@ -345,9 +345,9 @@ export default function DashboardPage() {
             </div>
 
             {/* Support / Quick Channel Alert info */}
-            <div className="bg-[#0A192F] text-white p-6 rounded-2xl shadow-sm border border-gray-800/20 relative overflow-hidden">
-              <div className="absolute right-0 bottom-0 w-20 h-20 bg-[#004D2C]/5 rounded-full blur-xl"></div>
-              <h4 className="font-extrabold text-sm text-[#004D2C] mb-2 font-mono uppercase tracking-widest">
+            <div className="bg-[#0A192F] text-white p-6 rounded-2xl shadow-sm border border-gray-805/20 relative overflow-hidden">
+              <div className="absolute right-0 bottom-0 w-20 h-20 bg-blue-500/10 rounded-full blur-xl"></div>
+              <h4 className="font-extrabold text-sm text-blue-400 mb-2 font-mono uppercase tracking-widest">
                 Telegram Alerts Hub
               </h4>
               <p className="text-xs text-gray-400 leading-relaxed mb-4">
@@ -357,7 +357,7 @@ export default function DashboardPage() {
                 href="https://t.me/BukieBrainBot"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#0A192F] hover:bg-[#112a4f] py-2 px-3.5 rounded-lg border-b border-green-800 transition-all font-mono active:scale-95 transition-all"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#0A192F] hover:bg-[#112a4f] py-2 px-3.5 rounded-lg border-b border-[#112a4f] transition-all font-mono active:scale-95 transition-all"
               >
                 Connect Telegram Bot
               </a>

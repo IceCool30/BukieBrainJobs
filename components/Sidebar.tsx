@@ -67,25 +67,25 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             <nav className="flex-1 px-6 py-8 flex flex-col gap-6">
               <button
                 onClick={() => handleNavigation('/')}
-                className="text-left text-2xl font-extrabold text-[#0A192F] tracking-tight hover:text-[#004D2C] transition-colors"
+                className="text-left text-2xl font-extrabold text-[#0A192F] tracking-tight hover:text-blue-600 transition-colors"
               >
                 Home
               </button>
               <button
                 onClick={() => handleNavigation('/about')}
-                className="text-left text-2xl font-extrabold text-[#0A192F] tracking-tight hover:text-[#004D2C] transition-colors"
+                className="text-left text-2xl font-extrabold text-[#0A192F] tracking-tight hover:text-blue-600 transition-colors"
               >
                 About Us
               </button>
               <button
                 onClick={() => handleNavigation('/login')}
-                className="text-left text-2xl font-extrabold text-[#0A192F] tracking-tight hover:text-[#004D2C] transition-colors"
+                className="text-left text-2xl font-extrabold text-[#0A192F] tracking-tight hover:text-blue-600 transition-colors"
               >
                 Sign In
               </button>
               <button
                 onClick={() => handleNavigation('/dashboard/post-job')}
-                className="text-left text-2xl font-extrabold text-[#0A192F] tracking-tight hover:text-[#004D2C] transition-colors"
+                className="text-left text-2xl font-extrabold text-[#0A192F] tracking-tight hover:text-blue-600 transition-colors"
               >
                 Post a Task
               </button>

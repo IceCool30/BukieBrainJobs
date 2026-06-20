@@ -216,11 +216,11 @@ export default function PassportEditorPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-2xl p-8 shadow-xl border border-green-100 text-center mb-8 flex flex-col items-center justify-center relative overflow-hidden"
+              className="bg-white rounded-2xl p-8 shadow-xl border border-blue-100 text-center mb-8 flex flex-col items-center justify-center relative overflow-hidden"
               id="passport-success-state"
             >
-              <div className="absolute right-0 top-0 w-24 h-24 bg-green-500/5 rounded-full blur-xl animate-pulse"></div>
-              <CheckCircle className="w-16 h-16 text-emerald-600 mb-4 animate-bounce" />
+              <div className="absolute right-0 top-0 w-24 h-24 bg-blue-500/5 rounded-full blur-xl animate-pulse"></div>
+              <CheckCircle className="w-16 h-16 text-blue-600 mb-4 animate-bounce" />
               <h2 className="text-2xl font-black text-gray-900 tracking-tight">
                 Passport Updated!
               </h2>
@@ -244,14 +244,14 @@ export default function PassportEditorPage() {
           >
             {/* Header branding */}
             <div className="bg-[#0A192F] text-white p-6 md:p-8 relative overflow-hidden">
-              <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/10 rounded-full blur-2xl"></div>
+              <div className="absolute right-0 top-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
               <div className="flex items-center gap-3">
                 <LogoLink />
                 <div>
                   <h1 className="text-xl md:text-2xl font-extrabold tracking-tight">
                     Edit BukiePassport
                   </h1>
-                  <span className="text-[10px] uppercase font-mono tracking-widest text-[#004D2C] font-semibold flex items-center gap-1.5">
+                  <span className="text-[10px] uppercase font-mono tracking-widest text-blue-400 font-semibold flex items-center gap-1.5">
                     <Sparkles className="w-3 h-3 fill-amber-500 stroke-none animate-pulse" />
                     Professional Worker ID
                   </span>
@@ -353,7 +353,7 @@ export default function PassportEditorPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="w-full sm:w-auto min-w-[180px] flex items-center justify-center gap-2 bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer disabled:opacity-50 active:scale-[0.98] transition-all"
+                  className="w-full sm:w-auto min-w-[180px] flex items-center justify-center gap-2 bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-blue-950/10 cursor-pointer disabled:opacity-50 active:scale-[0.98] transition-all"
                   id="save-passport-btn"
                 >
                   {saving ? (

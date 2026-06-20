@@ -192,7 +192,7 @@ export function LocationSelector({
             type="button"
             onClick={handleDetectLocation}
             disabled={isDetecting}
-            className="flex items-center gap-1.5 text-xs font-bold text-[#0A192F] hover:text-[#004D2C] transition-colors disabled:opacity-50 px-1 py-1"
+            className="flex items-center gap-1.5 text-xs font-bold text-[#0A192F] hover:text-blue-600 transition-colors disabled:opacity-50 px-1 py-1"
           >
             {isDetecting ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />

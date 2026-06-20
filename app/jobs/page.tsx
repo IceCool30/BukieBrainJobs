@@ -279,7 +279,7 @@ export default function JobsPage() {
                 >
                   {job.is_urgent && (
                     <div className="mb-3">
-                      <span className="bg-[#004D2C] text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-md inline-flex items-center gap-1">
+                      <span className="bg-blue-600 text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-md inline-flex items-center gap-1">
                         <Flame className="w-3 h-3 fill-amber-400 text-amber-400" />
                         Urgent Spotlight
                       </span>
@@ -290,7 +290,7 @@ export default function JobsPage() {
                   </h2>
                   
                   <div className="flex flex-wrap items-center gap-2 mb-3">
-                    <span className="bg-[#004D2C]/10 text-[#004D2C] font-bold text-xs px-2.5 py-1 rounded-md">
+                    <span className="bg-blue-50 border border-blue-105 text-blue-700 font-bold text-xs px-2.5 py-1 rounded-md">
                       ₦{job.budget?.toLocaleString()}
                     </span>
                     {job.category && (
@@ -356,7 +356,7 @@ export default function JobsPage() {
                 <div className="space-y-6">
                   <div>
                     {selectedJob.is_urgent && (
-                      <span className="bg-[#004D2C] text-white text-xs uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-md inline-flex items-center gap-1.5 mb-4">
+                      <span className="bg-blue-600 text-white text-xs uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-md inline-flex items-center gap-1.5 mb-4">
                         <Flame className="w-4 h-4 fill-amber-400 text-amber-400" />
                         Urgent Spotlight
                       </span>
@@ -372,7 +372,7 @@ export default function JobsPage() {
                           {selectedJob.category}
                         </div>
                       )}
-                      <div className="bg-[#004D2C]/10 border border-[#004D2C]/20 text-[#004D2C] font-bold text-sm px-3 py-1.5 rounded-lg">
+                      <div className="bg-blue-50 border border-blue-105 text-blue-700 font-bold text-sm px-3 py-1.5 rounded-lg">
                         ₦{selectedJob.budget?.toLocaleString()}
                       </div>
                     </div>
@@ -429,7 +429,7 @@ export default function JobsPage() {
                       disabled={appliedJobs.has(selectedJob.id)}
                       className={`flex-1 sm:flex-none sm:w-auto font-bold text-base px-10 py-4 rounded-xl transition-colors shadow-md cursor-pointer active:scale-[0.98] ${
                         appliedJobs.has(selectedJob.id)
-                          ? 'bg-gray-100 text-[#004D2C] cursor-not-allowed shadow-none'
+                          ? 'bg-gray-100 text-blue-700 cursor-not-allowed shadow-none'
                           : 'bg-[#0A192F] hover:bg-[#112a4f] text-white'
                       }`}
                     >

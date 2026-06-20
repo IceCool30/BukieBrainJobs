@@ -213,9 +213,9 @@ export default function OnboardingPage() {
           <motion.div
             id="worker-role-card"
             whileHover={{ y: -2 }}
-            className={`p-6 rounded-2xl transition-all cursor-pointer border-2 flex flex-col outline-none focus-visible:ring-2 focus-visible:ring-[#004D2C] focus-visible:border-transparent ${
+            className={`p-6 rounded-2xl transition-all cursor-pointer border-2 flex flex-col outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] focus-visible:border-transparent ${
               selectedRole === 'artisan'
-                ? 'border-[#004D2C] bg-green-50 shadow-md'
+                ? 'border-[#0A192F] bg-blue-50 shadow-md'
                 : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
             }`}
             onClick={() => setSelectedRole('artisan')}

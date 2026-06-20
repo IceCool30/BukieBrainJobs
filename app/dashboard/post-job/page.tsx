@@ -230,11 +230,11 @@ export default function PostJobPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-2xl p-8 shadow-xl border border-green-100 text-center mb-8 flex flex-col items-center justify-center relative overflow-hidden"
+              className="bg-white rounded-2xl p-8 shadow-xl border border-blue-100 text-center mb-8 flex flex-col items-center justify-center relative overflow-hidden"
               id="submit-success-state"
             >
-              <div className="absolute right-0 top-0 w-24 h-24 bg-green-500/5 rounded-full blur-xl"></div>
-              <CheckCircle className="w-16 h-16 text-emerald-600 mb-4 animate-bounce" />
+              <div className="absolute right-0 top-0 w-24 h-24 bg-blue-500/5 rounded-full blur-xl"></div>
+              <CheckCircle className="w-16 h-16 text-blue-600 mb-4 animate-bounce" />
               <h2 className="text-2xl font-black text-gray-900 tracking-tight">
                 Job Posted Successfully!
               </h2>
@@ -258,14 +258,14 @@ export default function PostJobPage() {
           >
             {/* Header branding */}
             <div className="bg-[#0A192F] text-white p-6 md:p-8 relative overflow-hidden">
-              <div className="absolute right-0 top-0 w-32 h-32 bg-[#004D2C]/5 rounded-full blur-2xl"></div>
+              <div className="absolute right-0 top-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
               <div className="flex items-center gap-3">
                 <LogoLink />
                 <div>
                   <h1 className="text-xl md:text-2xl font-extrabold tracking-tight">
                     Post a New Job
                   </h1>
-                  <span className="text-[10px] uppercase font-mono tracking-widest text-[#004D2C] font-semibold">
+                  <span className="text-[10px] uppercase font-mono tracking-widest text-blue-400 font-semibold">
                     BukieBrain Marketplace
                   </span>
                 </div>
@@ -339,12 +339,12 @@ export default function PostJobPage() {
                     const median = Math.round((rate.min + rate.max) / 2);
                     const isCustom = category.startsWith('Other');
                     return (
-                      <div className="mt-2 bg-[#004D2C]/5 border border-[#004D2C]/10 rounded-xl p-2.5 transition-all text-xs text-gray-700">
+                      <div className="mt-2 bg-blue-50 border border-blue-100 rounded-xl p-2.5 transition-all text-xs text-gray-700">
                         <div className="flex flex-wrap items-center justify-between gap-1.5">
                           <div className="flex items-center gap-1.5 font-semibold text-gray-800">
-                            <TrendingUp className="w-3.5 h-3.5 text-[#004D2C]" />
+                            <TrendingUp className="w-3.5 h-3.5 text-blue-600" />
                             <span>Competitive Market Rate:</span>
-                            <span className="text-[#004D2C] font-extrabold text-sm font-mono">
+                            <span className="text-blue-600 font-extrabold text-sm font-mono">
                               ₦{rate.min.toLocaleString()} - ₦{rate.max.toLocaleString()}
                             </span>
                             <span className="text-[10px] font-normal text-gray-400 lowercase">
@@ -358,7 +358,7 @@ export default function PostJobPage() {
                             className="text-[10px] bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold px-2.5 py-1 rounded-lg transition-transform active:scale-[0.96] shadow-sm cursor-pointer whitespace-nowrap inline-flex items-center gap-1"
                             title="Auto-fill with recommended median rate"
                           >
-                            <Sparkles className="w-3 h-3 text-[#004D2C]" />
+                            <Sparkles className="w-3 h-3 text-amber-400 fill-amber-400" />
                             Apply Suggested (₦{median.toLocaleString()})
                           </button>
                         </div>
@@ -637,7 +637,7 @@ export default function PostJobPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full sm:w-auto min-w-[180px] flex items-center justify-center gap-2 bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-green-900/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] transition-all"
+                  className="w-full sm:w-auto min-w-[180px] flex items-center justify-center gap-2 bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-blue-950/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] transition-all"
                   id="submit-job-post-btn"
                 >
                   {loading ? (
@@ -748,7 +748,7 @@ export default function PostJobPage() {
               </div>
 
               <div className="flex items-center justify-center gap-1.5 text-[9px] text-gray-400 font-bold uppercase tracking-widest pt-2">
-                <ShieldCheck className="w-4.5 h-4.5 text-emerald-600" />
+                <ShieldCheck className="w-4.5 h-4.5 text-blue-600" />
                 <span>Paystack Network Secured</span>
               </div>
             </motion.div>

@@ -266,7 +266,7 @@ export default function QASandboxPage() {
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             <span>Admin Control Panel</span>
           </button>
-          <span className="text-[10px] uppercase font-mono tracking-widest text-[#0A192F] font-black flex items-center gap-1.5 bg-green-50 px-3 py-1.5 rounded-lg border border-green-200">
+          <span className="text-[10px] uppercase font-mono tracking-widest text-[#0A192F] font-black flex items-center gap-1.5 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200">
             <ShieldCheck className="w-4 h-4" />
             <span>CEO Mode Authorized</span>
           </span>
@@ -274,7 +274,7 @@ export default function QASandboxPage() {
 
         {/* Header Hero */}
         <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm relative overflow-hidden" id="sandbox-header-card">
-          <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-green-50/30 to-transparent pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-blue-50/20 to-transparent pointer-events-none" />
           <h1 className="text-3xl font-black text-gray-900 tracking-tight leading-none mb-2">
             Isomorphic QA Sandbox Terminal
           </h1>
@@ -290,14 +290,14 @@ export default function QASandboxPage() {
                 exit={{ opacity: 0, height: 0 }}
                 className={`mt-4 p-3.5 rounded-xl text-xs font-semibold border flex items-center gap-2 ${
                   statusType === 'success' 
-                    ? 'bg-green-50 text-green-800 border-green-200' 
+                    ? 'bg-blue-50 text-blue-800 border-blue-200' 
                     : statusType === 'err' 
                       ? 'bg-red-50 text-red-800 border-red-200' 
                       : 'bg-blue-50 text-blue-800 border-blue-200'
                 }`}
                 id="sandbox-toast"
               >
-                {statusType === 'success' ? <CheckCircle className="w-4 h-4 text-green-600" /> : <XCircle className="w-4 h-4 text-red-600" />}
+                {statusType === 'success' ? <CheckCircle className="w-4 h-4 text-blue-600" /> : <XCircle className="w-4 h-4 text-red-600" />}
                 <span>{statusMessage}</span>
               </motion.div>
             )}
@@ -311,7 +311,7 @@ export default function QASandboxPage() {
           <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between" id="sandbox-db-probe-card">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div className="p-2.5 bg-green-50 text-[#0A192F] border border-green-100 rounded-xl">
+                <div className="p-2.5 bg-blue-50 text-[#0A192F] border border-blue-105 rounded-xl">
                   <Database className="w-5 h-5" />
                 </div>
                 <div>
@@ -381,7 +381,7 @@ export default function QASandboxPage() {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-500 font-semibold">PAYSTACK_SECRET_KEY</span>
                     {envStates.PAYSTACK_SECRET_KEY ? (
-                      <span className="bg-green-100 text-green-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">LOADED</span>
+                      <span className="bg-blue-100 text-blue-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">LOADED</span>
                     ) : (
                       <span className="bg-red-100 text-red-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">MISSING</span>
                     )}
@@ -389,7 +389,7 @@ export default function QASandboxPage() {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-500 font-semibold">TELEGRAM_BOT_TOKEN</span>
                     {envStates.TELEGRAM_BOT_TOKEN ? (
-                      <span className="bg-green-100 text-green-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">LOADED</span>
+                      <span className="bg-blue-100 text-blue-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">LOADED</span>
                     ) : (
                       <span className="bg-red-100 text-red-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">MISSING</span>
                     )}
@@ -397,7 +397,7 @@ export default function QASandboxPage() {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-500 font-semibold">TELEGRAM_CHANNEL_ID</span>
                     {envStates.TELEGRAM_CHANNEL_ID ? (
-                      <span className="bg-green-100 text-green-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">LOADED</span>
+                      <span className="bg-blue-100 text-blue-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">LOADED</span>
                     ) : (
                       <span className="bg-red-100 text-red-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">MISSING</span>
                     )}
@@ -405,7 +405,7 @@ export default function QASandboxPage() {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-500 font-semibold">PAYSTACK_PUBLIC_KEY</span>
                     {envStates.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY ? (
-                      <span className="bg-green-100 text-green-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">LOADED</span>
+                      <span className="bg-blue-100 text-blue-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">LOADED</span>
                     ) : (
                       <span className="bg-red-100 text-red-800 text-[9px] uppercase px-1.5 py-0.5 rounded font-black">MISSING</span>
                     )}
@@ -446,7 +446,7 @@ export default function QASandboxPage() {
               Purges all jobs and linked messaging logs that contain the string <strong className="text-gray-700 font-extrabold">[TEST]</strong> in their title or content message fields. This allows risk-free end-to-end sandbox evaluations during environment staging.
             </p>
             {cleanupResult && (
-              <p className="text-[10px] font-mono text-green-700 font-medium pt-1">
+              <p className="text-[10px] font-mono text-blue-700 font-medium pt-1">
                 Last purging result: {cleanupResult.jobsPruned} jobs and {cleanupResult.messagesPruned} messages successfully flushed.
               </p>
             )}
