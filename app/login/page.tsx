@@ -142,7 +142,7 @@ export default function LoginPage() {
             </div>
 
             <div className="text-[13px] text-gray-500 leading-relaxed font-medium">
-              By creating an account or logging in, you understand and agree to the BukieBrainJobs Terms. You also acknowledge our Cookie and Privacy policies. You will receive updates regarding community tasks.
+              By creating an account or logging in, you understand and agree to the BukieBrainJobs Terms. You also acknowledge our Cookie and Privacy policies. You will receive updates regarding community jobs.
             </div>
 
             <SmoothCollapse isOpen={!!errorMsg}>

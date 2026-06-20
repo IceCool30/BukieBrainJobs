@@ -36,7 +36,7 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-[#0A192F] mb-4">What we collect:</h2>
             <ul className="list-disc pl-5 space-y-2">
               <li>Your name, email, and phone number when you sign up.</li>
-              <li>Your location (state and LGA) so we can match you with jobs or workers near you.</li>
+              <li>Your location (state and Area) so we can match you with jobs or workers near you.</li>
               <li>Your skills and work history if you are a worker.</li>
               <li>Payment information processed securely through Paystack. We do not store your full card or bank details.</li>
             </ul>

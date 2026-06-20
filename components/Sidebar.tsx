@@ -87,7 +87,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 onClick={() => handleNavigation('/dashboard/post-job')}
                 className="text-left text-2xl font-extrabold text-[#0A192F] tracking-tight hover:text-blue-600 transition-colors"
               >
-                Post a Task
+                Post a Job
               </button>
             </nav>
 

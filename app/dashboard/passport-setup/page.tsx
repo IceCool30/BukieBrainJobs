@@ -545,7 +545,7 @@ export default function PassportSetupPage() {
                         ))}
                       </div>
                       <span className="text-[10px] text-amber-700 font-semibold font-mono mt-0.5">
-                        based on {completedJobsCount} completed {completedJobsCount === 1 ? 'task' : 'tasks'}
+                        based on {completedJobsCount} completed {completedJobsCount === 1 ? 'job' : 'jobs'}
                       </span>
                     </div>
                   </div>

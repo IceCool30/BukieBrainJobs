@@ -205,7 +205,7 @@ export default function OnboardingPage() {
           >
             <h3 className="text-xl font-bold text-[#0A192F] mb-2">I want to hire someone</h3>
             <p className="text-sm text-[#0A192F]/70 font-medium leading-relaxed">
-              Post a task, chat with applicants, and pay only when the work is done. Your money stays safe until you confirm everything is good.
+              Post a job, chat with applicants, and pay only when the work is done. Your money stays safe until you confirm everything is good.
             </p>
           </motion.div>
 

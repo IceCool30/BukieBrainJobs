@@ -53,13 +53,13 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
   const displayJobType = () => {
     switch (job.job_type) {
       case 'task':
-        return 'One-time Task';
+        return 'One-time Job';
       case 'contract':
         return 'Freelance/Contract';
       case 'full_time':
         return 'Full-time Help';
       default:
-        return 'Quick Task';
+        return 'Quick Job';
     }
   };
 

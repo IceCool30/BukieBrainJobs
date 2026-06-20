@@ -142,7 +142,7 @@ export default function PublicPassportPage() {
                 );
                 setAvgRating(sum / jobsWithRatings.length);
               } else {
-                setAvgRating(5.0); // Dynamic 5.0 baseline for completed tasks
+                setAvgRating(5.0); // Dynamic 5.0 baseline for completed jobs
               }
             } else {
               setAvgRating(5.0);

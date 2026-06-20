@@ -227,10 +227,10 @@ export default function JobsPage() {
 
   const displayJobType = (job_type: string) => {
     switch (job_type) {
-      case 'task': return 'One-time task';
+      case 'task': return 'One-time job';
       case 'contract': return 'Project / Contract';
       case 'full_time': return 'Ongoing work';
-      default: return 'Quick task';
+      default: return 'Quick job';
     }
   };
 
@@ -307,7 +307,7 @@ export default function JobsPage() {
               <SmartSuggestInput
                 value={whereQuery}
                 onChange={setWhereQuery}
-                placeholder="City, state, LGA, or Remote"
+                placeholder="City, state, Area, or Remote"
                 suggestions={listedLocations}
                 flat
                 className="w-full"
@@ -644,7 +644,7 @@ export default function JobsPage() {
                           </div>
                         ) : (
                           <p className="text-xs text-gray-500 leading-normal font-medium">
-                            You are logged in with an <strong className="text-[#0A192F]">Employer profile</strong>. Switch to a Provider/Worker account to submit bids and apply for this task.
+                            You are logged in with an <strong className="text-[#0A192F]">Employer profile</strong>. Switch to a Provider/Worker account to submit bids and apply for this job.
                           </p>
                         )}
                       </div>
@@ -680,7 +680,7 @@ export default function JobsPage() {
                   <div className="space-y-4">
                     <h3 className="text-base font-extrabold text-[#0A192F] border-b border-gray-100 pb-2">Full Job Description</h3>
                     <div className="bg-white text-gray-700 text-sm md:text-base leading-relaxed whitespace-pre-wrap whitespace-normal space-y-3 font-medium">
-                      {selectedJob.description || "No specific detailed description was entered by the poster. The requirements are captured within the title, LGA location, and selected work specialty category."}
+                      {selectedJob.description || "No specific detailed description was entered by the poster. The requirements are captured within the title, Area, and selected work specialty category."}
                     </div>
                   </div>
 

@@ -145,13 +145,13 @@ function getMarketRateRange(cat: string, type: 'task' | 'contract' | 'full_time'
   const isEventHigh = ['EventPlanning', 'EventPhotography', 'EventVideography', 'Architecture', 'InteriorDesign', 'Surveying', 'RealEstate'].includes(code);
   
   if (type === 'task') {
-    if (isDigitalHigh) return { min: 25000, max: 70000, label: 'per task' };
+    if (isDigitalHigh) return { min: 25000, max: 70000, label: 'per job' };
     if (isDigitalMid) return { min: 15000, max: 40000, label: 'per milestone' };
-    if (isDigitalSimple) return { min: 5000, max: 15000, label: 'per task/job' };
+    if (isDigitalSimple) return { min: 5000, max: 15000, label: 'per job' };
     if (isTradeSpecial) return { min: 10000, max: 25000, label: 'per visit' };
     if (isTradeSimple) return { min: 3000, max: 10000, label: 'per clean/visit' };
     if (isEventHigh) return { min: 15000, max: 45000, label: 'per session' };
-    return { min: 5000, max: 15000, label: 'per task' };
+    return { min: 5000, max: 15000, label: 'per job' };
   } else if (type === 'contract') {
     if (isDigitalHigh) return { min: 150000, max: 450000, label: 'project fee' };
     if (isDigitalMid) return { min: 60000, max: 180000, label: 'project fee' };
@@ -196,7 +196,7 @@ export default function PostJobPage() {
   const [budget, setBudget] = useState('');
   const [category, setCategory] = useState('Plumbing');
   const [selectedState, setSelectedState] = useState('Lagos');
-  const [selectedLga, setSelectedLga] = useState('Ikeja');
+  const [selectedArea, setSelectedArea] = useState('Ikeja');
   const [jobType, setJobType] = useState<'task' | 'contract' | 'full_time'>('task');
   const [isUrgent, setIsUrgent] = useState(false);
   const [workMode, setWorkMode] = useState<'on-site' | 'remote' | 'hybrid'>('on-site');
@@ -275,7 +275,7 @@ export default function PostJobPage() {
         budget: budgetNum,
         category: category,
         location_state: workMode === 'remote' ? 'Remote' : selectedState,
-        location_lga: workMode === 'remote' ? 'Remote' : selectedLga,
+        location_lga: workMode === 'remote' ? 'Remote' : selectedArea,
         job_type: jobType,
         is_urgent: isUrgent,
         work_mode: workMode
@@ -309,7 +309,7 @@ export default function PostJobPage() {
       return;
     }
 
-    if (workMode !== 'remote' && (!selectedState || !selectedLga)) {
+    if (workMode !== 'remote' && (!selectedState || !selectedArea)) {
       setErrorMsg('Please select a valid location for on-site or hybrid work.');
       return;
     }
@@ -381,7 +381,7 @@ export default function PostJobPage() {
                 Job Posted Successfully!
               </h2>
               <p className="text-sm text-gray-500 mt-2 max-w-sm">
-                Your job description is now online. Workers in {selectedLga}, {selectedState} have been notified.
+                Your job description is now online. Workers in {selectedArea}, {selectedState} have been notified.
               </p>
               <div className="mt-4 flex items-center gap-2 text-xs font-mono font-semibold uppercase text-[#0A192F] bg-[#0A192F]/5 px-3 py-1.5 rounded-lg active:scale-95 transition-all">
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -505,7 +505,7 @@ export default function PostJobPage() {
                         </div>
                         {isCustom && (
                           <p className="text-[9px] text-gray-400 mt-1">
-                            * Custom category rate suggestion is estimated. Adjust according to your specific task scope.
+                            * Custom category rate suggestion is estimated. Adjust according to your specific job scope.
                           </p>
                         )}
                       </div>
@@ -552,17 +552,17 @@ export default function PostJobPage() {
                 )}
               </AnimatePresence>
 
-              {/* Grid 2: State and LGA */}
+              {/* Grid 2: State and Area */}
               {workMode !== 'remote' && (
                 <div className="w-full">
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
-                    Location (State & LGA) *
+                    Location (State & Area) *
                   </label>
                   <LocationSelector
                     selectedState={selectedState}
-                    selectedLga={selectedLga}
+                    selectedArea={selectedArea}
                     onStateChange={setSelectedState}
-                    onLgaChange={setSelectedLga}
+                    onAreaChange={setSelectedArea}
                   />
                 </div>
               )}
@@ -585,11 +585,11 @@ export default function PostJobPage() {
                       }`}
                     >
                       <span className={`block text-sm font-semibold ${jobType === type ? 'text-[#0A192F]' : 'text-gray-500'}`}>
-                        {type === 'task' ? 'One-time task' : type === 'contract' ? 'Project / Contract' : 'Ongoing work'}
+                        {type === 'task' ? 'One-time job' : type === 'contract' ? 'Project / Contract' : 'Ongoing work'}
                       </span>
                       <span className="block text-[10px] font-normal leading-relaxed text-gray-400 mt-1.5">
                         {type === 'task'
-                          ? 'This is a one-off single task that will be completed and signed out.'
+                          ? 'This is a one-off single job that will be completed and signed out.'
                           : type === 'contract'
                           ? 'The work is packaged in a scope with specific deliverables, time-range or phases.'
                           : 'This position is for a recurring or indefinite ongoing business engagement.'}
@@ -613,7 +613,7 @@ export default function PostJobPage() {
                         // When remote is selected, location can be cleared
                         if (mode === 'remote') {
                           setSelectedState('');
-                          setSelectedLga('');
+                          setSelectedArea('');
                         }
                       }}
                       className={`p-3 rounded-xl border-2 text-sm text-left font-semibold transition-all ${

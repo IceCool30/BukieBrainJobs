@@ -18,7 +18,7 @@ export default function Home() {
   const [showEmployerBanner, setShowEmployerBanner] = useState(true);
   
   const [selectedState, setSelectedState] = useState('');
-  const [selectedLga, setSelectedLga] = useState('');
+  const [selectedArea, setSelectedArea] = useState('');
   const [whatQuery, setWhatQuery] = useState('');
   
   // High-quality defaults available instantly on focus
@@ -86,7 +86,7 @@ export default function Home() {
             onClick={() => router.push('/dashboard/post-job')}
             className="bg-[#0A192F] hover:bg-[#112a4f] text-white text-[13px] font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full whitespace-nowrap active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] focus-visible:ring-offset-2" 
           >
-            Post a Task
+            Post a Job
           </button>
           <button 
             onClick={() => setIsSidebarOpen(true)}
@@ -103,10 +103,10 @@ export default function Home() {
             onSubmit={(e) => {
               e.preventDefault();
               let whereParam = '';
-              if (selectedState && selectedLga) {
-                whereParam = `${selectedLga}, ${selectedState}`;
+              if (selectedState && selectedArea) {
+                whereParam = `${selectedArea}, ${selectedState}`;
               } else {
-                whereParam = selectedState || selectedLga || '';
+                whereParam = selectedState || selectedArea || '';
               }
               router.push(`/jobs?what=${encodeURIComponent(whatQuery)}&where=${encodeURIComponent(whereParam)}`);
             }}
@@ -117,7 +117,7 @@ export default function Home() {
               <SmartSuggestInput
                 value={whatQuery}
                 onChange={setWhatQuery}
-                placeholder="Search tasks, categories, keyword..."
+                placeholder="Search jobs, categories, keyword..."
                 suggestions={listedTitlesAndCats}
                 flat
                 className="w-full font-medium"
@@ -133,7 +133,7 @@ export default function Home() {
                   value={selectedState}
                   onChange={(val) => {
                     setSelectedState(val);
-                    setSelectedLga('');
+                    setSelectedArea('');
                   }}
                   placeholder="State..."
                   suggestions={nigerianStates}
@@ -142,9 +142,9 @@ export default function Home() {
                 />
                 <span className="text-gray-300">/</span>
                 <SmartSuggestInput
-                  value={selectedLga}
-                  onChange={setSelectedLga}
-                  placeholder={selectedState ? "LGA..." : "Pick State"}
+                  value={selectedArea}
+                  onChange={setSelectedArea}
+                  placeholder={selectedState ? "Area..." : "Pick State"}
                   suggestions={selectedState ? (nigeriaLocations[selectedState] || []) : []}
                   disabled={!selectedState}
                   flat
@@ -180,13 +180,13 @@ export default function Home() {
             </div>
             <h3 className="text-lg font-black text-[#0A192F] mb-2">I need a worker</h3>
             <p className="text-sm text-gray-500 leading-relaxed mb-5">
-              Post a task. Get matched with verified workers in your area. Pay only when the job is done.
+              Post a job. Get matched with verified workers in your area. Pay only when the job is done.
             </p>
             <button
               onClick={() => router.push('/dashboard/post-job')}
               className="w-full bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold text-sm py-3 rounded-xl transition-all active:scale-[0.98]"
             >
-              Post a Task
+              Post a Job
             </button>
           </div>
 
@@ -197,7 +197,7 @@ export default function Home() {
             </div>
             <h3 className="text-lg font-black text-[#0A192F] mb-2">I need work</h3>
             <p className="text-sm text-gray-500 leading-relaxed mb-5">
-              Browse tasks in your LGA. Apply, get hired, and get paid straight to your wallet.
+              Browse jobs in your area. Apply, get hired, and get paid straight to your wallet.
             </p>
             <button
               onClick={() => router.push('/jobs')}
@@ -321,7 +321,7 @@ export default function Home() {
                   onClick={() => router.push('/dashboard/post-job')}
                   className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]"
                 >
-                  Post a task
+                  Post a job
                 </span>
                 <span 
                   tabIndex={0} 

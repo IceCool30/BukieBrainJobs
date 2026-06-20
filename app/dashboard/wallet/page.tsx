@@ -256,7 +256,7 @@ export default function WalletPage() {
                 Top Up Bids
               </h2>
               <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-                Connect with local employers and secure tasks today. Buy premium bid bundles to propose tailored rates directly on incoming job requests.
+                Connect with local employers and secure jobs today. Buy premium bid bundles to propose tailored rates directly on incoming job requests.
               </p>
             </div>
 

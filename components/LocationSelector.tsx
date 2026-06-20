@@ -7,41 +7,41 @@ import { SmartSuggestInput } from './SmartSuggestInput';
 
 interface LocationSelectorProps {
   selectedState: string;
-  selectedLga: string;
+  selectedArea: string;
   onStateChange: (state: string) => void;
-  onLgaChange: (lga: string) => void;
+  onAreaChange: (area: string) => void;
   statePlaceholder?: string;
-  lgaPlaceholder?: string;
+  areaPlaceholder?: string;
   className?: string;
   showDetectLocation?: boolean;
 }
 
 export function LocationSelector({
   selectedState,
-  selectedLga,
+  selectedArea,
   onStateChange,
-  onLgaChange,
+  onAreaChange,
   statePlaceholder = 'Type or Select State',
-  lgaPlaceholder = 'Type or Select LGA/City',
+  areaPlaceholder = 'Type or Select Area/City',
   className = '',
   showDetectLocation = true,
 }: LocationSelectorProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [isDetecting, setIsDetecting] = useState(false);
-  const [listedLocations, setListedLocations] = useState<{state: string; lga: string}[]>([]);
+  const [listedLocations, setListedLocations] = useState<{state: string; area: string}[]>([]);
 
   useEffect(() => {
     setIsMounted(true);
     const savedState = localStorage.getItem('bukieBrain_lastState');
-    const savedLga = localStorage.getItem('bukieBrain_lastLga');
+    const savedArea = localStorage.getItem('bukieBrain_lastArea');
     
     // Only set from local storage initially if we don't already have values
     if (!selectedState && savedState) {
       onStateChange(savedState);
     }
-    if (!selectedLga && savedLga && savedState) {
-      // Validate that the saved LGA belongs to the saved State or can be custom
-      onLgaChange(savedLga);
+    if (!selectedArea && savedArea && savedState) {
+      // Validate that the saved Area belongs to the saved State or can be custom
+      onAreaChange(savedArea);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -61,7 +61,7 @@ export function LocationSelector({
           .limit(150);
           
         if (data) {
-          const unique: {state: string; lga: string}[] = [];
+          const unique: {state: string; area: string}[] = [];
           const seen = new Set<string>();
           data.forEach((item: any) => {
             if (item.location_state) {
@@ -71,7 +71,7 @@ export function LocationSelector({
                 const key = `${sClean.toLowerCase()}-${lClean.toLowerCase()}`;
                 if (!seen.has(key)) {
                   seen.add(key);
-                  unique.push({ state: sClean, lga: lClean });
+                  unique.push({ state: sClean, area: lClean });
                 }
               }
             }
@@ -93,13 +93,13 @@ export function LocationSelector({
         localStorage.removeItem('bukieBrain_lastState');
       }
       
-      if (selectedLga) {
-        localStorage.setItem('bukieBrain_lastLga', selectedLga);
+      if (selectedArea) {
+        localStorage.setItem('bukieBrain_lastArea', selectedArea);
       } else {
-        localStorage.removeItem('bukieBrain_lastLga');
+        localStorage.removeItem('bukieBrain_lastArea');
       }
     }
-  }, [selectedState, selectedLga, isMounted]);
+  }, [selectedState, selectedArea, isMounted]);
 
   const handleDetectLocation = () => {
     if (!navigator.geolocation) {
@@ -123,22 +123,22 @@ export function LocationSelector({
             if (stateMatch) {
               onStateChange(stateMatch);
               
-              const validLgas = nigeriaLocations[stateMatch] || [];
+              const validAreas = nigeriaLocations[stateMatch] || [];
               const detectedCity = data.city || data.locality || '';
-              const lgaMatch = validLgas.find(lga => lga.toLowerCase() === detectedCity.toLowerCase());
+              const areaMatch = validAreas.find(area => area.toLowerCase() === detectedCity.toLowerCase());
               
-              if (lgaMatch) {
-                onLgaChange(lgaMatch);
+              if (areaMatch) {
+                onAreaChange(areaMatch);
               } else if (detectedCity) {
-                onLgaChange(detectedCity); // Support custom typed city if found or detected
+                onAreaChange(detectedCity); // Support custom typed city if found or detected
               } else {
-                onLgaChange('');
+                onAreaChange('');
               }
             } else {
               // Try setting raw custom if we can't find direct match
               onStateChange(detectedStateName);
               if (data.city || data.locality) {
-                onLgaChange(data.city || data.locality);
+                onAreaChange(data.city || data.locality);
               }
             }
           }
@@ -182,8 +182,8 @@ export function LocationSelector({
     return list;
   };
 
-  // Compile smart list of suggestions for LGA
-  const getLgaSuggestions = () => {
+  // Compile smart list of suggestions for Area
+  const getAreaSuggestions = () => {
     const list: string[] = [];
     
     // 1. If "Remote" state, suggest "Anywhere" or similar
@@ -191,23 +191,23 @@ export function LocationSelector({
       return ['Anywhere', 'Remote'];
     }
 
-    // 2. Add listed LGAs in database matching current state first
+    // 2. Add listed Areas in database matching current state first
     listedLocations.forEach((loc) => {
       if (
         selectedState && 
         loc.state.toLowerCase() === selectedState.toLowerCase() && 
-        loc.lga && 
-        !list.includes(loc.lga)
+        loc.area && 
+        !list.includes(loc.area)
       ) {
-        list.push(loc.lga);
+        list.push(loc.area);
       }
     });
 
-    // 3. Add standard Nigerian LGAs for this state
-    const stdLgas = selectedState ? nigeriaLocations[selectedState] || [] : [];
-    stdLgas.forEach((lga) => {
-      if (!list.includes(lga)) {
-        list.push(lga);
+    // 3. Add standard Nigerian Areas for this state
+    const stdAreas = selectedState ? nigeriaLocations[selectedState] || [] : [];
+    stdAreas.forEach((area) => {
+      if (!list.includes(area)) {
+        list.push(area);
       }
     });
 
@@ -223,7 +223,7 @@ export function LocationSelector({
             value={selectedState}
             onChange={(stateVal) => {
               onStateChange(stateVal);
-              onLgaChange(''); // Reset LGA default on State change
+              onAreaChange(''); // Reset Area default on State change
             }}
             placeholder={statePlaceholder}
             suggestions={getStateSuggestions()}
@@ -240,13 +240,13 @@ export function LocationSelector({
           </div>
         </div>
 
-        {/* LGA/City Autocomplete Selector */}
+        {/* Area/City Autocomplete Selector */}
         <div className="relative w-full">
           <SmartSuggestInput
-            value={selectedLga}
-            onChange={onLgaChange}
-            placeholder={lgaPlaceholder}
-            suggestions={getLgaSuggestions()}
+            value={selectedArea}
+            onChange={onAreaChange}
+            placeholder={areaPlaceholder}
+            suggestions={getAreaSuggestions()}
             icon={<MapPin className="w-4 h-4 text-gray-400" />}
           />
           
@@ -254,7 +254,7 @@ export function LocationSelector({
           <div className="absolute inset-y-0 right-10 flex items-center pr-1 group">
             <Info className="w-3.5 h-3.5 text-gray-400 hover:text-[#0A192F] cursor-help" />
             <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-gray-900 text-white text-[10px] rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 shadow-lg hidden sm:block font-sans">
-              Type custom LGA or select from list. Encourages absolute geographical flexibility.
+              Type custom area or select from list. Encourages absolute geographical flexibility.
               <div className="absolute top-full right-4 w-0 h-0 border-l-[6px] border-l-transparent border-t-[6px] border-t-gray-900 border-r-[6px] border-r-transparent"></div>
             </div>
           </div>

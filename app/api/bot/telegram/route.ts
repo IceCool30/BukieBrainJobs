@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://bukiebrain-waitlist.vercel.app';
 
     if (text === '/start' || text.startsWith('/start payment_success')) {
-      replyText = `👋 *Welcome to BukieBrainJobs!*\n\nThis bot is your personal assistant for instant job notifications, real-time alerts, and secure Paystack payment confirmations.\n\n🚀 *Post, Browse, & Verify on Web & PWA:*\nTo post professional services, review bids, or build your verified *BukiePassport*, join us directly on our main platform:\n👉 ${appUrl}\n\n⚡ *Instant Alert Hub:* We will notify you here as soon as a local employer posts an urgent task in your community!`;
+      replyText = `👋 *Welcome to BukieBrainJobs!*\n\nThis bot is your personal assistant for instant job notifications, real-time alerts, and secure Paystack payment confirmations.\n\n🚀 *Post, Browse, & Verify on Web & PWA:*\nTo post professional services, review bids, or build your verified *BukiePassport*, join us directly on our main platform:\n👉 ${appUrl}\n\n⚡ *Instant Alert Hub:* We will notify you here as soon as a local employer posts an urgent job in your community!`;
     } else {
       replyText = `📢 *BukieBrainJobs Notification Hub*\n\nTo list local jobs, search for verified artisans, or view candidate profiles, please use our main Web App / PWA website:\n👉 ${appUrl}\n\nThis Telegram support channel is dedicated to sending you *instant alerts, secure payment confirmations, and system updates*.`;
     }

@@ -326,7 +326,7 @@ export default function DashboardPage() {
               </p>
               <p className="text-xs text-gray-400 mt-1 max-w-sm mx-auto leading-relaxed">
                 {isEmployer 
-                  ? "Post a task now. Plumbers, electricians, painters, and tech artisans are active and ready in your LGA."
+                  ? "Post a job now. Plumbers, electricians, painters, and tech artisans are active and ready in your area."
                   : "Complete your BukiePassport profile setup with verified skill tags and credentials to start receiving customized job recommendations!"}
               </p>
 

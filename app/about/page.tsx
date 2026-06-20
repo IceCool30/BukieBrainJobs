@@ -59,7 +59,7 @@ export default function AboutPage() {
                   <li className="flex gap-4">
                     <span className="font-bold text-[#0A192F] mt-1 shrink-0">1.</span>
                     <p className="text-gray-700 font-medium leading-relaxed">
-                      <strong className="text-[#0A192F] block mb-1">Post your task</strong>
+                      <strong className="text-[#0A192F] block mb-1">Post your job</strong>
                       Tell us what you need, your budget, and your location.
                     </p>
                   </li>
@@ -98,7 +98,7 @@ export default function AboutPage() {
                     <span className="font-bold text-[#0A192F] mt-1 shrink-0">2.</span>
                     <p className="text-gray-700 font-medium leading-relaxed">
                       <strong className="text-[#0A192F] block mb-1">Browse jobs near you</strong>
-                      See tasks posted by employers in your LGA.
+                      See jobs posted by employers in your area.
                     </p>
                   </li>
                   <li className="flex gap-4">
