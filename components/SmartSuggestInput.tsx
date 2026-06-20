@@ -183,9 +183,6 @@ export function SmartSuggestInput({
             </div>
           ) : (
             <>
-              <div className="px-4 py-1.5 bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-wider sticky top-0 border-b border-gray-100">
-                Easy picks & dynamic listings
-              </div>
               {visibleSuggestions.map((item, index) => {
                 const isSelected = item.toLowerCase() === value.toLowerCase();
                 const isHighlighted = index === highlightedIndex;
@@ -194,7 +191,7 @@ export function SmartSuggestInput({
                     key={`${item}-${index}`}
                     type="button"
                     onClick={() => handleSelect(item)}
-                    className={`w-full text-left px-4 py-2 text-sm font-medium transition-colors duration-100 flex items-center justify-between ${
+                    className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors duration-100 flex items-center justify-between ${
                       isSelected 
                         ? 'bg-[#0A192F]/5 text-[#0A192F]' 
                         : isHighlighted 
