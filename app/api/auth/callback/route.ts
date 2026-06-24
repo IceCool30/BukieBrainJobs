@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   const next = requestUrl.searchParams.get('next') || '/';
 
   if (!code) {
-    return NextResponse.redirect(new URL('/?error=missing_code', request.url));
+    return NextResponse.redirect(new URL('/login?error=missing_code', request.url));
   }
 
   const cookieStore = cookies();
@@ -33,12 +33,20 @@ export async function GET(request: NextRequest) {
         setAll(cookiesToSet: any[]) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
+              cookieStore.set(name, value, {
+                ...options,
+                sameSite: 'none',
+                secure: true,
+              })
             );
           } catch (err) {
             // Ignore for Server Components
           }
         },
+      },
+      cookieOptions: {
+        sameSite: 'none',
+        secure: true,
       },
     }
   );
@@ -48,7 +56,7 @@ export async function GET(request: NextRequest) {
   
   if (authError || !authData.user) {
     console.error('Auth exchange failed:', authError);
-    return NextResponse.redirect(new URL('/?error=auth_failed', request.url));
+    return NextResponse.redirect(new URL('/login?error=auth_failed', request.url));
   }
 
   const userId = authData.user.id;

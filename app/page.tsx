@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Menu, Search, MapPin, X, ChevronDown, ChevronRight, ArrowRight, Briefcase, Hammer } from 'lucide-react';
+import { Menu, Search, MapPin, X, ChevronDown, ChevronRight, ArrowRight, Briefcase, Hammer, AlertCircle } from 'lucide-react';
 import { FadeUp } from '@/components/FadeUp';
 import { SmoothCollapse } from '@/components/SmoothCollapse';
 import { nigeriaLocations, nigerianStates } from '@/lib/nigeria-locations';
@@ -17,6 +17,7 @@ import { LogoLink } from '@/components/LogoLink';
 export default function Home() {
   const router = useRouter();
   const [showEmployerBanner, setShowEmployerBanner] = useState(true);
+  const [oauthError, setOauthError] = useState<{ code: string; message: string } | null>(null);
   
   const [selectedState, setSelectedState] = useState('');
   const [selectedArea, setSelectedArea] = useState('');
@@ -28,6 +29,45 @@ export default function Home() {
   ]);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash;
+      const search = window.location.search;
+      
+      const searchParams = new URLSearchParams(search);
+      const queryError = searchParams.get('error');
+      const queryErrorDesc = searchParams.get('error_description') || searchParams.get('error_msg');
+      
+      let hashError = '';
+      let hashErrorDesc = '';
+      if (hash && hash.startsWith('#')) {
+        const hashParams = new URLSearchParams(hash.substring(1));
+        hashError = hashParams.get('error') || '';
+        hashErrorDesc = hashParams.get('error_description') || hashParams.get('error_msg') || '';
+      }
+      
+      const activeError = hashError || queryError;
+      const activeDesc = hashErrorDesc || queryErrorDesc;
+      
+      if (activeError) {
+        let userMessage = activeDesc || 'An authentication error occurred.';
+        if (activeError === 'unsupported_provider') {
+          userMessage = 'Google OAuth login provider is not enabled or fully configured in your Supabase project settings. Please make sure Google is enabled under Authentication -> Providers -> Google inside your Supabase Dashboard.';
+        } else if (activeError === 'redirect_uri_mismatch' || activeError === 'invalid_redirect_uri') {
+          userMessage = 'The redirect URI does not match the registered redirect URIs in your Supabase project settings. Please make sure to add your production URL (including "/api/auth/callback") to your allowed Redirect URLs inside your Supabase Dashboard (under Authentication -> URL Configuration).';
+        } else if (activeError === 'auth_failed') {
+          userMessage = 'Google authentication failed or was cancelled. Please check your credentials and try again.';
+        }
+        
+        setOauthError({
+          code: activeError,
+          message: userMessage
+        });
+        
+        // Clean URL so the error isn't sticky on page refreshes
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    }
+
     async function fetchLandingSuggestions() {
       if (!isSupabaseConfigured()) {
         console.warn('Supabase is not configured yet. Landing page is running with high-quality default suggestions.');
@@ -98,6 +138,25 @@ export default function Home() {
       </header>
 
       <main className="px-4 py-6 max-w-2xl mx-auto w-full">
+        {oauthError && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl flex gap-3 text-sm text-red-800 relative shadow-sm" id="landing-oauth-error">
+            <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="font-bold text-red-900 mb-1">Google Sign-In Configuration Required</h3>
+              <p className="leading-relaxed">{oauthError.message}</p>
+              <div className="mt-2 text-xs text-red-600 font-medium font-mono">
+                Error: {oauthError.code}
+              </div>
+            </div>
+            <button 
+              onClick={() => setOauthError(null)} 
+              className="absolute top-3 right-3 text-red-400 hover:text-red-700 p-1 rounded-full transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
         {/* Search Container */}
         <FadeUp delay={0.1} className="relative z-25 mb-10">
           <form 

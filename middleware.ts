@@ -22,7 +22,12 @@ export async function middleware(req: NextRequest) {
         },
         setAll(cookiesToSet: any[]) {
           cookiesToSet.forEach(({ name, value, options }) =>
-            req.cookies.set(name, value)
+            req.cookies.set(name, {
+              value,
+              ...options,
+              sameSite: 'none',
+              secure: true,
+            })
           );
           res = NextResponse.next({
             request: {
@@ -30,9 +35,17 @@ export async function middleware(req: NextRequest) {
             },
           });
           cookiesToSet.forEach(({ name, value, options }) =>
-            res.cookies.set(name, value, options)
+            res.cookies.set(name, value, {
+              ...options,
+              sameSite: 'none',
+              secure: true,
+            })
           );
         },
+      },
+      cookieOptions: {
+        sameSite: 'none',
+        secure: true,
       },
     }
   );

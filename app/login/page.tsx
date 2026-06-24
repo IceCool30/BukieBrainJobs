@@ -28,6 +28,18 @@ export default function LoginPage() {
   // Internal toggle for unified sign in/sign up processing
   const [isSignUp, setIsSignUp] = useState(false);
 
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const error = params.get('error');
+      if (error === 'auth_failed') {
+        setErrorMsg('Google login failed or was cancelled. If you are running on a custom domain like Vercel, please make sure your Supabase project URL configuration has both Site URL and Redirect URLs set up correctly.');
+      } else if (error === 'missing_code') {
+        setErrorMsg('Authorization code is missing. Please try again.');
+      }
+    }
+  }, []);
+
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
@@ -188,7 +200,7 @@ export default function LoginPage() {
             <form onSubmit={handleEmailSubmit} className="space-y-4">
               <div className="space-y-1">
                 <label className="block text-sm font-bold text-[#0A192F]">
-                  Email address *
+                  Email address
                 </label>
                 <input
                   type="email"
