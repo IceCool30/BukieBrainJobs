@@ -26,6 +26,30 @@ export async function GET(request: NextRequest) {
     (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'),
     {
       cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+        set(name: string, value: string, options: any) {
+          try {
+            cookieStore.set(name, value, {
+              ...options,
+              ...cookieOptions,
+            });
+          } catch (err) {
+            // Ignore for Server Components
+          }
+        },
+        remove(name: string, options: any) {
+          try {
+            cookieStore.set(name, '', {
+              ...options,
+              ...cookieOptions,
+              maxAge: 0,
+            });
+          } catch (err) {
+            // Ignore for Server Components
+          }
+        },
         getAll() {
           return cookieStore.getAll().map((cookie) => ({
             name: cookie.name,
@@ -56,7 +80,7 @@ export async function GET(request: NextRequest) {
     console.error('Auth exchange failed:', authError);
     const cookieNames = cookieStore.getAll().map((c) => c.name).join(', ');
     const detailMsg = authError 
-      ? `${authError.message} (Cookies present: [${cookieNames || 'none'}])` 
+      ? `${authError.message} (Cookies present: [${cookieNames || 'none'}], URL: ${process.env.NEXT_PUBLIC_SUPABASE_URL || 'missing'}, Options: ${JSON.stringify(cookieOptions)})` 
       : 'No user authenticated';
     return NextResponse.redirect(
       new URL(`/login?error=auth_failed&details=${encodeURIComponent(detailMsg)}`, request.url)

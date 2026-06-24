@@ -17,6 +17,34 @@ export async function middleware(req: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder',
     {
       cookies: {
+        get(name: string) {
+          return req.cookies.get(name)?.value;
+        },
+        set(name: string, value: string, options: any) {
+          req.cookies.set(name, {
+            value,
+            ...options,
+            ...cookieOptions,
+          });
+          res = NextResponse.next({
+            request: {
+              headers: req.headers,
+            },
+          });
+          res.cookies.set(name, value, {
+            ...options,
+            ...cookieOptions,
+          });
+        },
+        remove(name: string, options: any) {
+          req.cookies.delete(name);
+          res = NextResponse.next({
+            request: {
+              headers: req.headers,
+            },
+          });
+          res.cookies.delete(name);
+        },
         getAll() {
           return req.cookies.getAll().map((cookie) => ({
             name: cookie.name,
