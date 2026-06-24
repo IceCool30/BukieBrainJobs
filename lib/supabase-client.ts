@@ -15,12 +15,14 @@ export function getSupabaseBrowserClient() {
               process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
               'placeholder';
 
-  supabaseBrowserClient = createBrowserClient(url, key, {
+  const isIframeEnv = typeof window !== 'undefined' && window.location.hostname.endsWith('.run.app');
+
+  supabaseBrowserClient = createBrowserClient(url, key, isIframeEnv ? {
     cookieOptions: {
       sameSite: 'none',
       secure: true,
     },
-  });
+  } : undefined);
   return supabaseBrowserClient;
 }
 

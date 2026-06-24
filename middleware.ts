@@ -9,6 +9,8 @@ export async function middleware(req: NextRequest) {
     },
   });
 
+  const isIframeEnv = req.nextUrl.hostname.endsWith('.run.app');
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder',
@@ -21,32 +23,32 @@ export async function middleware(req: NextRequest) {
           }));
         },
         setAll(cookiesToSet: any[]) {
-          cookiesToSet.forEach(({ name, value, options }) =>
+          cookiesToSet.forEach(({ name, value, options }) => {
+            const finalOptions = isIframeEnv
+              ? { ...options, sameSite: 'none', secure: true }
+              : options;
             req.cookies.set(name, {
               value,
-              ...options,
-              sameSite: 'none',
-              secure: true,
-            })
-          );
+              ...finalOptions,
+            });
+          });
           res = NextResponse.next({
             request: {
               headers: req.headers,
             },
           });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            res.cookies.set(name, value, {
-              ...options,
-              sameSite: 'none',
-              secure: true,
-            })
-          );
+          cookiesToSet.forEach(({ name, value, options }) => {
+            const finalOptions = isIframeEnv
+              ? { ...options, sameSite: 'none', secure: true }
+              : options;
+            res.cookies.set(name, value, finalOptions);
+          });
         },
       },
-      cookieOptions: {
+      cookieOptions: isIframeEnv ? {
         sameSite: 'none',
         secure: true,
-      },
+      } : undefined,
     }
   );
 
