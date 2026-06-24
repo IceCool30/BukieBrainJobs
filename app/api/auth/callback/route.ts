@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { getCookieOptions } from '@/lib/supabase-client';
 
 const supabaseAdmin = createClient(
   (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
@@ -18,8 +19,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL('/login?error=missing_code', request.url));
   }
 
-  const isIframeEnv = requestUrl.hostname.endsWith('.run.app');
-
+  const cookieOptions = getCookieOptions(requestUrl.hostname);
   const cookieStore = cookies();
   const supabase = createServerClient(
     (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
@@ -35,20 +35,17 @@ export async function GET(request: NextRequest) {
         setAll(cookiesToSet: any[]) {
           try {
             cookiesToSet.forEach(({ name, value, options }) => {
-              const finalOptions = isIframeEnv
-                ? { ...options, sameSite: 'none', secure: true }
-                : options;
-              cookieStore.set(name, value, finalOptions);
+              cookieStore.set(name, value, {
+                ...options,
+                ...cookieOptions,
+              });
             });
           } catch (err) {
             // Ignore for Server Components
           }
         },
       },
-      cookieOptions: isIframeEnv ? {
-        sameSite: 'none',
-        secure: true,
-      } : undefined,
+      cookieOptions,
     }
   );
 
@@ -57,7 +54,13 @@ export async function GET(request: NextRequest) {
   
   if (authError || !authData.user) {
     console.error('Auth exchange failed:', authError);
-    return NextResponse.redirect(new URL('/login?error=auth_failed', request.url));
+    const cookieNames = cookieStore.getAll().map((c) => c.name).join(', ');
+    const detailMsg = authError 
+      ? `${authError.message} (Cookies present: [${cookieNames || 'none'}])` 
+      : 'No user authenticated';
+    return NextResponse.redirect(
+      new URL(`/login?error=auth_failed&details=${encodeURIComponent(detailMsg)}`, request.url)
+    );
   }
 
   const userId = authData.user.id;

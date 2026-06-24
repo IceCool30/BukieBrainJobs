@@ -33,7 +33,12 @@ export default function LoginPage() {
       const params = new URLSearchParams(window.location.search);
       const error = params.get('error');
       if (error === 'auth_failed') {
-        setErrorMsg('Google login failed or was cancelled. If you are running on a custom domain like Vercel, please make sure your Supabase project URL configuration has both Site URL and Redirect URLs set up correctly.');
+        const details = params.get('details');
+        if (details) {
+          setErrorMsg(`Google login failed: ${details}`);
+        } else {
+          setErrorMsg('Google login failed or was cancelled. If you are running on a custom domain like Vercel, please make sure your Supabase project URL configuration has both Site URL and Redirect URLs set up correctly.');
+        }
       } else if (error === 'missing_code') {
         setErrorMsg('Authorization code is missing. Please try again.');
       }

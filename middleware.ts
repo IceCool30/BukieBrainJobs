@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { getCookieOptions } from '@/lib/supabase-client';
 
 export async function middleware(req: NextRequest) {
   let res = NextResponse.next({
@@ -9,7 +10,7 @@ export async function middleware(req: NextRequest) {
     },
   });
 
-  const isIframeEnv = req.nextUrl.hostname.endsWith('.run.app');
+  const cookieOptions = getCookieOptions(req.nextUrl.hostname);
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
@@ -24,12 +25,10 @@ export async function middleware(req: NextRequest) {
         },
         setAll(cookiesToSet: any[]) {
           cookiesToSet.forEach(({ name, value, options }) => {
-            const finalOptions = isIframeEnv
-              ? { ...options, sameSite: 'none', secure: true }
-              : options;
             req.cookies.set(name, {
               value,
-              ...finalOptions,
+              ...options,
+              ...cookieOptions,
             });
           });
           res = NextResponse.next({
@@ -38,17 +37,14 @@ export async function middleware(req: NextRequest) {
             },
           });
           cookiesToSet.forEach(({ name, value, options }) => {
-            const finalOptions = isIframeEnv
-              ? { ...options, sameSite: 'none', secure: true }
-              : options;
-            res.cookies.set(name, value, finalOptions);
+            res.cookies.set(name, value, {
+              ...options,
+              ...cookieOptions,
+            });
           });
         },
       },
-      cookieOptions: isIframeEnv ? {
-        sameSite: 'none',
-        secure: true,
-      } : undefined,
+      cookieOptions,
     }
   );
 
