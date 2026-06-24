@@ -48,26 +48,38 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               window.__SUPABASE_ANON_KEY__ = ${JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '')};
               
               // Handle and suppress cross-origin "Script error." events that are outside our control
+              window.addEventListener('error', function(event) {
+                var msg = event.message || '';
+                var isScriptError = (
+                  msg.indexOf('Script error') > -1 || 
+                  msg.indexOf('script error') > -1 ||
+                  msg === 'Script error.'
+                );
+                if (isScriptError) {
+                  event.stopImmediatePropagation();
+                  event.preventDefault();
+                  event.stopPropagation();
+                  console.warn('Intercepted and suppressed cross-origin error event:', event);
+                }
+              }, true);
+
               window.onerror = function(message, source, lineno, colno, error) {
-                if (message && (message.toString().indexOf('Script error') > -1 || message.toString().indexOf('script error') > -1)) {
-                  console.warn('Suppressed cross-origin Script error:', message);
+                var msg = message ? message.toString() : '';
+                if (msg.indexOf('Script error') > -1 || msg.indexOf('script error') > -1) {
+                  console.warn('Suppressed cross-origin Script error via onerror:', message);
                   return true; // Prevent default browser error reporting
                 }
                 return false;
               };
-              
-              window.addEventListener('error', function(event) {
-                if (event.message && (event.message.indexOf('Script error') > -1 || event.message.indexOf('script error') > -1)) {
+
+              window.addEventListener('unhandledrejection', function(event) {
+                var msg = (event.reason && (event.reason.message || event.reason.toString())) || '';
+                if (msg.indexOf('Script error') > -1 || msg.indexOf('script error') > -1) {
+                  event.stopImmediatePropagation();
                   event.preventDefault();
                   event.stopPropagation();
                 }
               }, true);
-
-              window.addEventListener('unhandledrejection', function(event) {
-                if (event.reason && event.reason.message && (event.reason.message.indexOf('Script error') > -1 || event.reason.message.indexOf('script error') > -1)) {
-                  event.preventDefault();
-                }
-              });
             `
           }}
         />
