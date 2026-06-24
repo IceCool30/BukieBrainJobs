@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // MUST BE SERVICE ROLE, NOT ANON
+  (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
+  (process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder') // MUST BE SERVICE ROLE, NOT ANON
 );
 
 export async function POST(req: NextRequest) {
@@ -28,11 +28,23 @@ export async function POST(req: NextRequest) {
     // Extract metadata values
     const metadata = event.data.metadata || {};
     const paymentType = metadata.type || 'standard_activation'; // e.g., 'urgent_boost', 'inspection', 'standard_activation'
-    const userId = metadata.user_id || null;
+    const userId = metadata.profile_id || null;
+    
+    // Paystack amounts are in kobo (e.g. 1000 NGN = 100000 kobo)
+    const normalizedAmount = event.data.amount ? Math.floor(event.data.amount / 100) : 0;
 
     // 1. Prepare dynamic update query for the jobs table
     const updateData: Record<string, any> = {};
-    if (paymentType === 'urgent_boost') {
+    if (paymentType === 'wallet_funding') {
+      // Add funds to wallet
+      const { data: wallet } = await supabase.from('wallets').select('balance').eq('profile_id', userId).maybeSingle();
+      if (wallet) {
+        await supabase.from('wallets').update({ balance: wallet.balance + normalizedAmount }).eq('profile_id', userId);
+      } else {
+        await supabase.from('wallets').insert([{ profile_id: userId, balance: normalizedAmount }]);
+      }
+      console.log('Wallet credited for wallet_funding');
+    } else if (paymentType === 'urgent_boost') {
       updateData.is_urgent = true;
     } else if (paymentType === 'inspection') {
       updateData.inspection_fee_paid = true;
@@ -43,26 +55,26 @@ export async function POST(req: NextRequest) {
     }
 
     // Update the job stage/flags using the new DB structure
-    const { error: jobError } = await supabase
-      .from('jobs')
-      .update(updateData)
-      .eq('id', reference);
-
-    if (jobError) {
-      console.warn('Jobs update omitted or errored (reference might not be a job ID):', jobError.message);
-    } else {
-      console.log('Job status updated successfully to match paid action');
+    if (Object.keys(updateData).length > 0) {
+      const { error: jobError } = await supabase
+        .from('jobs')
+        .update(updateData)
+        .eq('id', reference);
+  
+      if (jobError) {
+        console.warn('Jobs update omitted or errored (reference might not be a job ID):', jobError.message);
+      } else {
+        console.log('Job status updated successfully to match paid action');
+      }
     }
 
     // 2. Track transaction in the Ledger (transactions table)
-    // Paystack amounts are in kobo (e.g. 1000 NGN = 100000 kobo)
-    const normalizedAmount = event.data.amount ? event.data.amount / 100 : 0;
     
     const { error: txError } = await supabase
       .from('transactions')
       .insert([
         {
-          user_id: userId,
+          profile_id: userId,
           amount: normalizedAmount,
           reference: reference,
           type: paymentType,

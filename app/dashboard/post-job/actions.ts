@@ -1,6 +1,6 @@
 'use server';
 
-import { createServerClient } from '@supabase/auth-helpers-nextjs';
+import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 export interface CreateJobInput {
@@ -18,8 +18,8 @@ export async function createJob(input: CreateJobInput) {
   try {
     const cookieStore = cookies();
     const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
+      (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'),
       {
         cookies: {
           getAll() {
@@ -28,7 +28,7 @@ export async function createJob(input: CreateJobInput) {
               value: cookie.value,
             }));
           },
-          setAll(cookiesToSet) {
+          setAll(cookiesToSet: any[]) {
             try {
               cookiesToSet.forEach(({ name, value, options }) =>
                 cookieStore.set(name, value, options)

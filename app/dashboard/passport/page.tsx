@@ -5,7 +5,7 @@ import { LogoLink } from '@/components/LogoLink';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, 
   Sparkles, 
@@ -19,15 +19,12 @@ import {
   Layers,
   ShieldAlert
 } from 'lucide-react';
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 
 
 export default function PassportEditorPage() {
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = getSupabaseBrowserClient();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -47,6 +44,15 @@ export default function PassportEditorPage() {
   // Auth & Access validation
   useEffect(() => {
     async function initPage() {
+      if (!isSupabaseConfigured()) {
+        setUser({ id: 'mock-user-id', email: 'worker@example.com' });
+        setProfile({ id: 'mock-user-id', full_name: 'Solomon Ogar', role: 'worker', location_state: 'Lagos', location_lga: 'Ikeja' });
+        setBio('I am an expert plumber and electrician.');
+        setSkills('Plumbing, Electrical, Tiling');
+        setHourlyRate('2500');
+        setLoading(false);
+        return;
+      }
       try {
         const { data: { session }, error: authError } = await supabase.auth.getSession();
         if (authError || !session) {
@@ -83,7 +89,7 @@ export default function PassportEditorPage() {
         const { data: passport, error: passportError } = await supabase
           .from('bukie_passports')
           .select('*')
-          .eq('user_id', currentUser.id)
+          .eq('profile_id', currentUser.id)
           .maybeSingle();
 
         if (!passportError && passport) {
@@ -100,7 +106,7 @@ export default function PassportEditorPage() {
     }
 
     initPage();
-  }, [supabase, router]);
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,12 +132,12 @@ export default function PassportEditorPage() {
       const { error } = await supabase
         .from('bukie_passports')
         .upsert({
-          user_id: user.id,
+          profile_id: user.id,
           bio: bio.trim(),
           skills: skillsArray,
           hourly_rate: parsedRate,
           updated_at: new Date().toISOString()
-        }, { onConflict: 'user_id' });
+        }, { onConflict: 'profile_id' });
 
       if (error) {
         throw new Error(error.message);

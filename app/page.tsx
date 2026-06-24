@@ -1,6 +1,7 @@
 'use client';
 import { LogoBase64 } from '@/lib/logo';
 import React, { useState, useEffect } from 'react';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Menu, Search, MapPin, X, ChevronDown, ChevronRight, ArrowRight, Briefcase, Hammer } from 'lucide-react';
@@ -28,12 +29,12 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchLandingSuggestions() {
+      if (!isSupabaseConfigured()) {
+        console.warn('Supabase is not configured yet. Landing page is running with high-quality default suggestions.');
+        return;
+      }
       try {
-        const { createBrowserClient } = await import('@supabase/auth-helpers-nextjs');
-        const supabase = createBrowserClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        );
+        const supabase = getSupabaseBrowserClient();
         const { data } = await supabase.from('jobs').select('title, category').limit(100);
         
         const suggestionsSet = new Set<string>([
@@ -43,7 +44,7 @@ export default function Home() {
         if (data) {
           data.forEach((j: any) => {
             if (j.title) {
-              const t = j.title.replace('[TEST]', '').replace('[test]', '').trim();
+              const t = (j.title || '').replace('[TEST]', '').replace('[test]', '').trim();
               if (t) suggestionsSet.add(t);
             }
             if (j.category) {

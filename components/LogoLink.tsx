@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 import { LogoBase64 } from '@/lib/logo';
 
 interface LogoLinkProps {
@@ -22,20 +22,18 @@ export function LogoLink({
   showText = true,
 }: LogoLinkProps) {
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
 
   const handleClick = async () => {
+    if (!isSupabaseConfigured()) {
+      router.push('/');
+      return;
+    }
+    const supabase = getSupabaseBrowserClient();
     const { data: { session } } = await supabase.auth.getSession();
     
     if (session) {
-      const confirmLogout = window.confirm("Are you sure you want to log out and return to the homepage?");
-      if (confirmLogout) {
-        await supabase.auth.signOut();
-        router.push('/');
-      }
+      await supabase.auth.signOut();
+      router.push('/');
     } else {
       router.push('/');
     }

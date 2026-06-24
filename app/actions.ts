@@ -1,6 +1,6 @@
 'use server';
 
-import { createServerClient } from '@supabase/auth-helpers-nextjs';
+import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { sendTelegramNotification } from '@/lib/telegram';
 
@@ -23,8 +23,8 @@ export async function buyBidsAction(reference: string) {
   try {
     const cookieStore = cookies();
     const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
+      (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'),
       {
         cookies: {
           getAll() {
@@ -33,7 +33,7 @@ export async function buyBidsAction(reference: string) {
               value: cookie.value,
             }));
           },
-          setAll(cookiesToSet) {
+          setAll(cookiesToSet: any[]) {
             try {
               cookiesToSet.forEach(({ name, value, options }) =>
                 cookieStore.set(name, value, options)
@@ -70,7 +70,7 @@ export async function buyBidsAction(reference: string) {
       .from('transactions')
       .insert([
         {
-          user_id: userId,
+          profile_id: userId,
           amount: 500, // Price in Naira for 10 Bids package
           reference: reference,
           type: 'bid_bundle',
@@ -87,7 +87,7 @@ export async function buyBidsAction(reference: string) {
     const { data: wallet, error: walletGetError } = await supabase
       .from('wallets')
       .select('*')
-      .eq('user_id', userId)
+      .eq('profile_id', userId)
       .maybeSingle();
 
     if (walletGetError) {
@@ -112,7 +112,7 @@ export async function buyBidsAction(reference: string) {
         .from('wallets')
         .insert([
           {
-            user_id: userId,
+            profile_id: userId,
             balance: 0.00,
             free_bids_remaining: 10,
           }
@@ -123,7 +123,7 @@ export async function buyBidsAction(reference: string) {
       const { error: updateError } = await supabase
         .from('wallets')
         .update(updatePayload)
-        .eq('user_id', userId);
+        .eq('profile_id', userId);
       walletUpdateError = updateError;
     }
 
@@ -146,8 +146,8 @@ export async function postJobAction(input: PostJobInput, paymentRef?: string) {
   try {
     const cookieStore = cookies();
     const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
+      (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'),
       {
         cookies: {
           getAll() {
@@ -156,7 +156,7 @@ export async function postJobAction(input: PostJobInput, paymentRef?: string) {
               value: cookie.value,
             }));
           },
-          setAll(cookiesToSet) {
+          setAll(cookiesToSet: any[]) {
             try {
               cookiesToSet.forEach(({ name, value, options }) =>
                 cookieStore.set(name, value, options)
@@ -197,7 +197,7 @@ export async function postJobAction(input: PostJobInput, paymentRef?: string) {
         .from('transactions')
         .insert([
           {
-            user_id: session.user.id,
+            profile_id: session.user.id,
             amount: 1000, // Urgent blast promotion fee ₦1,000 NGN
             reference: paymentRef,
             type: 'urgent_boost',
@@ -278,8 +278,8 @@ export async function sendMessageAction(input: { jobId: string; content: string;
   try {
     const cookieStore = cookies();
     const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
+      (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'),
       {
         cookies: {
           getAll() {
@@ -288,7 +288,7 @@ export async function sendMessageAction(input: { jobId: string; content: string;
               value: cookie.value,
             }));
           },
-          setAll(cookiesToSet) {
+          setAll(cookiesToSet: any[]) {
             try {
               cookiesToSet.forEach(({ name, value, options }) =>
                 cookieStore.set(name, value, options)
@@ -355,8 +355,8 @@ export async function verifyQASandboxEnvAction() {
   try {
     const cookieStore = cookies();
     const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
+      (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'),
       {
         cookies: {
           getAll() {
@@ -365,7 +365,7 @@ export async function verifyQASandboxEnvAction() {
               value: cookie.value,
             }));
           },
-          setAll(cookiesToSet) {
+          setAll(cookiesToSet: any[]) {
             try {
               cookiesToSet.forEach(({ name, value, options }) =>
                 cookieStore.set(name, value, options)
@@ -410,8 +410,8 @@ export async function clearQASandboxTestDataAction() {
   try {
     const cookieStore = cookies();
     const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
+      (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'),
       {
         cookies: {
           getAll() {
@@ -420,7 +420,7 @@ export async function clearQASandboxTestDataAction() {
               value: cookie.value,
             }));
           },
-          setAll(cookiesToSet) {
+          setAll(cookiesToSet: any[]) {
             try {
               cookiesToSet.forEach(({ name, value, options }) =>
                 cookieStore.set(name, value, options)

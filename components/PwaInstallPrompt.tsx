@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Extend the Window interface to include the BeforeInstallPromptEvent
 interface BeforeInstallPromptEvent extends Event {
@@ -28,16 +28,22 @@ export function PwaInstallPrompt() {
       setTimeout(() => setShowPrompt(true), 2000);
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    try {
+      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-    // If app is already installed, no need to show
-    window.addEventListener('appinstalled', () => {
-      setShowPrompt(false);
-      setDeferredPrompt(null);
-    });
+      // If app is already installed, no need to show
+      window.addEventListener('appinstalled', () => {
+        setShowPrompt(false);
+        setDeferredPrompt(null);
+      });
+    } catch (e) {
+      console.warn('PWA events not supported in this context', e);
+    }
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      try {
+        window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      } catch (e) {}
     };
   }, []);
 

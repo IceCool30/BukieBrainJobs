@@ -5,7 +5,7 @@ import { LogoLink } from '@/components/LogoLink';
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ShieldCheck, 
   UserCheck, 
@@ -23,15 +23,12 @@ import {
   BadgeCent,
   ShieldAlert
 } from 'lucide-react';
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 
 
 export default function CEOAdminPage() {
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = getSupabaseBrowserClient();
 
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
@@ -46,6 +43,9 @@ export default function CEOAdminPage() {
   const CEO_EMAIL = 'solomonogarbukie@gmail.com';
 
   const fetchUsersAndPassports = async () => {
+    if (!isSupabaseConfigured()) {
+      return;
+    }
     try {
       // 1. Fetch Profiles
       const { data: profiles, error: profileErr } = await supabase
@@ -65,7 +65,7 @@ export default function CEOAdminPage() {
 
       // 3. Client-side Safe Map Join to avoid relational mapping constraints
       const joinedData = (profiles || []).map((prof: any) => {
-        const pass = (passports || []).find((p: any) => p.user_id === prof.id);
+        const pass = (passports || []).find((p: any) => p.profile_id === prof.id);
         return {
           ...prof,
           passport: pass || null
@@ -81,6 +81,48 @@ export default function CEOAdminPage() {
 
   useEffect(() => {
     async function checkSecurityGate() {
+      if (!isSupabaseConfigured()) {
+        setCurrentUserEmail(CEO_EMAIL);
+        setAuthorized(true);
+        setMembers([
+          {
+            id: 'mock-worker-1',
+            full_name: 'Solomon Ogar',
+            role: 'worker',
+            location_state: 'Lagos',
+            location_lga: 'Ikeja',
+            email: 'solomonogarbukie@gmail.com',
+            phone: '+2348031234567',
+            passport: {
+              id: 'mock-pass-1',
+              skills: ['Plumbing', 'Electrical'],
+              years_experience: 5,
+              bio: 'Top-tier certified plumber',
+              is_verified: true,
+              verification_grade: 'A'
+            }
+          },
+          {
+            id: 'mock-worker-2',
+            full_name: 'Tunde Bakare',
+            role: 'worker',
+            location_state: 'Abuja',
+            location_lga: 'Garki',
+            email: 'tunde@example.com',
+            phone: '+2348039876543',
+            passport: {
+              id: 'mock-pass-2',
+              skills: ['Tiling', 'Carpentry'],
+              years_experience: 3,
+              bio: 'Skilled wood artisan',
+              is_verified: false,
+              verification_grade: null
+            }
+          }
+        ]);
+        setLoading(false);
+        return;
+      }
       try {
         const { data: { session }, error: authError } = await supabase.auth.getSession();
         if (authError || !session) {
@@ -107,7 +149,7 @@ export default function CEOAdminPage() {
 
     checkSecurityGate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [supabase, router]);
+  }, [router]);
 
   const handleToggleVerify = async (userId: string, currentVerifiedStatus: boolean) => {
     setActionLoadingId(userId);
@@ -122,7 +164,7 @@ export default function CEOAdminPage() {
       const hasPassportRecord = !!targetMember?.passport;
 
       const payload: Record<string, any> = {
-        user_id: userId,
+        profile_id: userId,
         is_verified: nextVerifyStatus,
         updated_at: new Date().toISOString()
       };
@@ -136,7 +178,7 @@ export default function CEOAdminPage() {
 
       const { error } = await supabase
         .from('bukie_passports')
-        .upsert(payload, { onConflict: 'user_id' });
+        .upsert(payload, { onConflict: 'profile_id' });
 
       if (error) throw error;
 
@@ -345,7 +387,7 @@ export default function CEOAdminPage() {
                               </p>
                               {member.passport.skills && member.passport.skills.length > 0 && (
                                 <div className="flex flex-wrap gap-1">
-                                  {member.passport.skills.map((sk: string, i: number) => (
+                                {(Array.isArray(member.passport?.skills) ? member.passport.skills : []).map((sk: string, i: number) => (
                                     <span key={i} className="text-[9px] bg-slate-100 text-slate-600 font-extrabold px-1.5 py-0.5 rounded uppercase">
                                       {sk}
                                     </span>

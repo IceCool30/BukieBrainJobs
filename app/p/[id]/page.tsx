@@ -5,7 +5,7 @@ import { LogoLink } from '@/components/LogoLink';
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, 
   Sparkles, 
@@ -24,12 +24,14 @@ import {
   Hammer,
   CreditCard,
   UserCheck,
-  Menu
+  Menu,
+  Briefcase
 } from 'lucide-react';
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 import { QRCodeSVG } from 'qrcode.react';
 import { SiteFooter } from '@/components/SiteFooter';
 import { Sidebar } from '@/components/Sidebar';
+import { getArtisanProfile } from '@/app/actions/reviews';
 
 
 export default function PublicPassportPage() {
@@ -37,18 +39,14 @@ export default function PublicPassportPage() {
   const params = useParams();
   const workerId = params?.id as string;
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = getSupabaseBrowserClient();
 
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [passport, setPassport] = useState<any>(null);
+  const [reviews, setReviews] = useState<any[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
-  const [completedJobsCount, setCompletedJobsCount] = useState<number | null>(null);
-  const [avgRating, setAvgRating] = useState<number | null>(null);
   
   // Shared & URL handling
   const [currentUrl, setCurrentUrl] = useState('');
@@ -67,6 +65,42 @@ export default function PublicPassportPage() {
   useEffect(() => {
     async function loadWorkerPassport() {
       if (!workerId) return;
+      if (!isSupabaseConfigured()) {
+        setCurrentUserId('mock-user-id');
+        setProfile({
+          id: workerId || 'mock-worker-id',
+          full_name: 'Solomon Ogar',
+          role: 'worker',
+          location_state: 'Lagos',
+          location_lga: 'Ikeja',
+          phone: '+234 803 123 4567'
+        });
+        setPassport({
+          bio: 'Expert plumber and home repair specialist with 5 years of certified experience.',
+          skills: ['Plumbing', 'Electrical Repairs', 'Tiling'],
+          is_verified: true,
+          verification_grade: 'A',
+          hourly_rate: 2500
+        });
+        setReviews([
+          {
+            id: 'rev-1',
+            rating: 5,
+            comment: 'Prompt and highly professional. Highly recommended!',
+            profiles: { full_name: 'Emeka Obi' },
+            created_at: new Date(Date.now() - 5 * 86400000).toISOString()
+          },
+          {
+            id: 'rev-2',
+            rating: 4.8,
+            comment: 'Resolved my leak issue instantly.',
+            profiles: { full_name: 'Chinyere Alao' },
+            created_at: new Date(Date.now() - 12 * 86400000).toISOString()
+          }
+        ]);
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
         setErrorMsg('');
@@ -77,83 +111,15 @@ export default function PublicPassportPage() {
           setCurrentUserId(session.user.id);
         }
 
-        // 1. Fetch profile info
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', workerId)
-          .maybeSingle();
-
-        if (profileError) {
-          throw new Error('Database connection issue: ' + profileError.message);
-        }
-
-        if (!profileData) {
-          setErrorMsg('This worker profile page could not be located in our system.');
-          setLoading(false);
-          return;
-        }
-
-        setProfile(profileData);
-
-        // 2. Fetch corresponding passport info
-        const { data: passportData, error: passportError } = await supabase
-          .from('bukie_passports')
-          .select('*')
-          .eq('user_id', workerId)
-          .maybeSingle();
-
-        if (!passportError && passportData) {
-          setPassport(passportData);
-        } else {
-          // Fallback if worker has profile but hasn't created a passport record yet
-          setPassport({
-            user_id: workerId,
-            bio: 'Active artisanal service provider verified on the BukieBrain platform.',
-            skills: ['General Works'],
-            is_verified: false,
-            hourly_rate: null
-          });
-        }
-
-        // 3. Count jobs where this worker was selected as selected_worker_id
-        const { count, error: countErr } = await supabase
-          .from('jobs')
-          .select('*', { count: 'exact', head: true })
-          .eq('selected_worker_id', workerId);
-
-        if (!countErr && count !== null) {
-          setCompletedJobsCount(count);
-
-          if (count > 0) {
-            const { data: jobList, error: listErr } = await supabase
-              .from('jobs')
-              .select('*')
-              .eq('selected_worker_id', workerId);
-
-            if (!listErr && jobList && jobList.length > 0) {
-              const jobsWithRatings = jobList.filter(
-                (j) => j.rating !== undefined && j.rating !== null
-              );
-              if (jobsWithRatings.length > 0) {
-                const sum = jobsWithRatings.reduce(
-                  (acc, curr) => acc + Number(curr.rating),
-                  0
-                );
-                setAvgRating(sum / jobsWithRatings.length);
-              } else {
-                setAvgRating(5.0); // Dynamic 5.0 baseline for completed jobs
-              }
-            } else {
-              setAvgRating(5.0);
-            }
-          } else {
-            setAvgRating(null);
-          }
-        } else {
-          setCompletedJobsCount(0);
-          setAvgRating(null);
-        }
+        const data = await getArtisanProfile(workerId);
+        setProfile(data.profile);
+        setPassport(data.passport || {
+          bio: 'Active artisanal service provider verified on the BukieBrain platform.',
+          skills: ['General Works'],
+          is_verified: false,
+          hourly_rate: null
+        });
+        setReviews(data.reviews || []);
 
       } catch (err: any) {
         setErrorMsg(err.message || 'An error occurred loading the public passport.');
@@ -164,11 +130,11 @@ export default function PublicPassportPage() {
     }
 
     loadWorkerPassport();
-  }, [supabase, workerId]);
+  }, [workerId]);
 
   const handleCopyLink = () => {
     if (typeof navigator !== 'undefined') {
-      navigator.clipboard.writeText(currentUrl);
+      navigator.clipboard.writeText(currentUrl).catch(e => console.error(e));
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
@@ -224,8 +190,11 @@ export default function PublicPassportPage() {
   const workerName = profile?.full_name || 'Artisan Partner';
   const workerRole = profile?.role || 'worker';
   const isVerifiedWorker = passport?.is_verified === true;
-  const skillsArray = passport?.skills || [];
+  const skillsArray = Array.isArray(passport?.skills) ? passport.skills : (passport?.skills ? [passport.skills] : []);
   const hourlyRateDisplay = passport?.hourly_rate ? `₦${passport.hourly_rate.toLocaleString()}/hr` : 'Negotiable';
+  const completedJobsCount = profile?.jobs_completed || 0;
+  const avgRating = profile?.avg_rating || 5.0;
+  const disputes = profile?.dispute_strikes || 0;
 
   return (
     <div className="min-h-screen bg-white text-[#0A192F] flex flex-col relative">
@@ -358,14 +327,20 @@ export default function PublicPassportPage() {
             <div className="w-full border-t border-gray-100 my-6"></div>
 
             {/* Premium Rate Metric */}
-            <div className="w-full grid grid-cols-2 gap-4 text-center bg-gray-50 rounded-2xl p-4 border border-gray-100/80 mb-6">
+            <div className="w-full grid grid-cols-3 gap-4 text-center bg-gray-50 rounded-2xl p-4 border border-gray-100/80 mb-6">
               <div>
-                <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Baseline Rate</span>
-                <span className="text-lg font-black text-[#0A192F] font-mono">{hourlyRateDisplay}</span>
+                <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Completed</span>
+                <span className="text-lg font-black text-[#0A192F] font-mono mt-1 block">{completedJobsCount} Jobs</span>
+              </div>
+              <div className="border-x border-gray-200 px-2">
+                <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Base Rate</span>
+                <span className="text-sm font-black text-[#0A192F] font-mono mt-1 block">{hourlyRateDisplay}</span>
               </div>
               <div>
-                <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Active Status</span>
-                <span className="inline-flex mt-1 text-xs font-black text-blue-800 bg-blue-100/80 px-2.5 py-1 rounded-lg border border-blue-200 uppercase font-mono tracking-wider">Available</span>
+                <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Disputes</span>
+                <span className={`text-sm font-black font-mono mt-1 block ${disputes > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  {disputes} Strikes
+                </span>
               </div>
             </div>
 
@@ -464,6 +439,80 @@ export default function PublicPassportPage() {
               <span className="text-[11px] font-black text-gray-500 uppercase tracking-widest font-mono text-center">
                 Scan to Hire Me
               </span>
+            </div>
+
+            <div className="w-full border-t border-gray-100 my-6"></div>
+
+            {/* Hire Button */}
+            {!isOwner && (
+              <button
+                onClick={() => router.push(`/dashboard/post-job?artisan_id=${workerId}`)}
+                className="w-full mb-8 bg-blue-600 hover:bg-blue-700 text-white text-sm font-extrabold uppercase tracking-wider py-4 px-6 rounded-2xl transition-all shadow-lg shadow-blue-600/20 cursor-pointer inline-flex items-center justify-center gap-2 active:scale-[0.98]"
+              >
+                <Briefcase className="w-5 h-5" />
+                <span>Hire {(workerName && typeof workerName === 'string') ? workerName.split(' ')[0] : 'Artisan'}</span>
+              </button>
+            )}
+
+            {/* Reviews Section */}
+            <div className="w-full">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-black text-gray-900 uppercase tracking-wide flex items-center gap-2">
+                  <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                  Client Reviews
+                </h3>
+                <span className="text-[10px] font-bold text-gray-400 bg-gray-50 px-2 py-1 rounded-full uppercase">
+                  {reviews.length} total
+                </span>
+              </div>
+
+              {reviews.length === 0 ? (
+                <div className="text-center py-6 bg-gray-50 rounded-2xl border border-gray-100 border-dashed">
+                  <span className="text-xs text-gray-400 font-medium">No reviews yet for this artisan.</span>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {reviews.map((review) => (
+                    <div key={review.id} className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center text-[10px] font-bold text-gray-600">
+                            {review.employer?.avatar_url ? (
+                              <img src={review.employer.avatar_url} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              review.employer?.full_name?.charAt(0) || 'U'
+                            )}
+                          </div>
+                          <span className="text-xs font-bold text-gray-900">
+                            {review.employer?.full_name || 'Anonymous User'}
+                          </span>
+                          {review.is_blue_check_reviewer && (
+                            <span className="bg-blue-50 text-blue-600 p-0.5 rounded-full" title="Verified Employer">
+                              <CheckCircle className="w-3 h-3" />
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-[10px] text-gray-400 font-mono">
+                          {new Date(review.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-0.5 mb-2">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star 
+                            key={i} 
+                            className={`w-3.5 h-3.5 ${i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-200'}`} 
+                          />
+                        ))}
+                      </div>
+                      {review.comment && (
+                        <p className="text-xs text-gray-600 leading-relaxed font-medium">
+                          &quot;{review.comment}&quot;
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
           </div>

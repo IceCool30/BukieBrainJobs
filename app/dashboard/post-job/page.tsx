@@ -5,7 +5,7 @@ import { LogoLink } from '@/components/LogoLink';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, 
   Briefcase, 
@@ -20,7 +20,7 @@ import {
   CreditCard,
   TrendingUp
 } from 'lucide-react';
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 import { postJobAction } from '@/app/actions';
 import dynamic from 'next/dynamic';
 import { SmoothCollapse } from '@/components/SmoothCollapse';
@@ -174,10 +174,7 @@ function getMarketRateRange(cat: string, type: 'task' | 'contract' | 'full_time'
 
 export default function PostJobPage() {
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = getSupabaseBrowserClient();
 
   const [loading, setLoading] = useState(false);
   const [authChecking, setAuthChecking] = useState(true);
@@ -208,6 +205,12 @@ export default function PostJobPage() {
   // Auth check on mount
   useEffect(() => {
     async function checkUser() {
+      if (!isSupabaseConfigured()) {
+        setUserEmail('preview-employer@example.com');
+        setUserId('mock-employer-id');
+        setAuthChecking(false);
+        return;
+      }
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         router.push('/login');
@@ -218,11 +221,14 @@ export default function PostJobPage() {
       }
     }
     checkUser();
-  }, [supabase, router]);
+  }, [router]);
 
   // Fetch dynamic listed job titles & categories from active data for smart recommendations
   useEffect(() => {
     async function fetchDatabaseSuggestions() {
+      if (!isSupabaseConfigured()) {
+        return;
+      }
       try {
         const { data } = await supabase
           .from('jobs')
@@ -234,7 +240,7 @@ export default function PostJobPage() {
           const catsSet = new Set<string>();
           data.forEach((j: any) => {
             if (j.title) {
-              const t = j.title.replace('[TEST]', '').replace('[test]', '').trim();
+              const t = (j.title || '').replace('[TEST]', '').replace('[test]', '').trim();
               if (t) titlesSet.add(t);
             }
             if (j.category) {
@@ -250,7 +256,7 @@ export default function PostJobPage() {
       }
     }
     fetchDatabaseSuggestions();
-  }, [supabase]);
+  }, []);
 
   // Merge default presets + dynamic listed databases
   const jobTitleSuggestions = Array.from(new Set([
@@ -796,7 +802,7 @@ export default function PostJobPage() {
                   email={userEmail}
                   metadata={{
                     type: 'urgent_boost',
-                    user_id: userId
+                    profile_id: userId
                   }}
                   text="Confirm & Pay ₦1,000"
                   onSuccess={handlePaystackSuccess}

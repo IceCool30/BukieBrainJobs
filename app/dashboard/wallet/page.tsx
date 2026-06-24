@@ -5,7 +5,7 @@ import { LogoLink } from '@/components/LogoLink';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { 
   ArrowLeft, 
   Wallet, 
@@ -18,7 +18,7 @@ import {
   ShieldCheck, 
   AlertCircle 
 } from 'lucide-react';
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 import { buyBidsAction } from '@/app/actions';
 import dynamic from 'next/dynamic';
 import { FadeUp } from '@/components/FadeUp';
@@ -35,10 +35,7 @@ const PaystackButton = dynamic(() => import('@/components/PaystackButton'), {
 
 export default function WalletPage() {
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = getSupabaseBrowserClient();
 
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
@@ -51,6 +48,23 @@ export default function WalletPage() {
 
   const fetchWalletDetails = async () => {
     setLoading(true);
+    if (!isSupabaseConfigured()) {
+      setUserEmail('preview-user@example.com');
+      setProfile({ id: 'mock-user-id', full_name: 'Solomon Ogar', role: 'worker', location_state: 'Lagos', location_lga: 'Ikeja' });
+      setWallet({ balance: 15000, bid_credits: 10 });
+      setTransactions([
+        {
+          id: 'tx-1',
+          reference: 'tx-mock-123456',
+          amount: 5000,
+          type: 'deposit',
+          status: 'success',
+          created_at: new Date().toISOString()
+        }
+      ]);
+      setLoading(false);
+      return;
+    }
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
@@ -72,7 +86,7 @@ export default function WalletPage() {
       const { data: walletData, error: walletError } = await supabase
         .from('wallets')
         .select('*')
-        .eq('user_id', session.user.id)
+        .eq('profile_id', session.user.id)
         .maybeSingle();
 
       if (walletData) {
@@ -93,7 +107,7 @@ export default function WalletPage() {
       const { data: txData } = await supabase
         .from('transactions')
         .select('*')
-        .eq('user_id', session.user.id)
+        .eq('profile_id', session.user.id)
         .order('created_at', { ascending: false });
       
       setTransactions(txData || []);
@@ -108,7 +122,7 @@ export default function WalletPage() {
   useEffect(() => {
     fetchWalletDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [supabase]);
+  }, []);
 
   // Handles successful Paystack response
   const handlePaymentSuccess = async (response: { reference: string; status: string }) => {
@@ -288,7 +302,7 @@ export default function WalletPage() {
                 onSuccess={handlePaymentSuccess}
                 metadata={{
                   type: 'bid_bundle',
-                  user_id: profile?.id
+                  profile_id: profile?.id
                 }}
                 id="topup-bids-trigger"
               />

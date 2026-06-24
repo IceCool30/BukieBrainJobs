@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 import { ArrowLeft, Eye, EyeOff, ShieldAlert, Sparkles, AlertCircle } from 'lucide-react';
 import { FadeUp } from '@/components/FadeUp';
 import { SmoothCollapse } from '@/components/SmoothCollapse';
@@ -15,10 +15,7 @@ type Step = 'identity_gateway' | 'password_gateway';
 
 export default function LoginPage() {
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = getSupabaseBrowserClient();
 
   const [step, setStep] = useState<Step>('identity_gateway');
   const [email, setEmail] = useState('');
@@ -44,6 +41,13 @@ export default function LoginPage() {
   const handleGoogleAuth = async () => {
     setErrorMsg('');
     setLoading(true);
+    if (!isSupabaseConfigured()) {
+      setMessage('Simulating Google Auth inside the Sandbox environment...');
+      setTimeout(() => {
+        router.push('/onboarding');
+      }, 1000);
+      return;
+    }
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -64,6 +68,14 @@ export default function LoginPage() {
     setErrorMsg('');
     setMessage('');
     setLoading(true);
+
+    if (!isSupabaseConfigured()) {
+      setMessage('Sandbox login successful! Redirecting to onboarding...');
+      setTimeout(() => {
+        router.push('/onboarding');
+      }, 1000);
+      return;
+    }
 
     try {
       if (isSignUp) {

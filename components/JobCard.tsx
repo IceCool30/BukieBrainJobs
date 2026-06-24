@@ -41,7 +41,7 @@ export function getRelativeTime(dateString: string): string {
     if (diffInHours < 24) return `${diffInHours}h ago`;
     if (diffInDays < 30) return `${diffInDays}d ago`;
     
-    return date.toLocaleDateString('en-XG', { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   } catch (err) {
     return 'Recently';
   }
@@ -180,7 +180,7 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
         <button 
           id={`apply-action-btn-${job.id}`}
           onClick={() => {
-            alert(`This job requires quick matching in ${job.location_lga}. Please contact the bot on Telegram or view in main feed.`);
+            console.log(`This job requires quick matching in ${job.location_lga}. Please contact the bot on Telegram or view in main feed.`);
           }}
           className={`text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
             job.is_urgent 

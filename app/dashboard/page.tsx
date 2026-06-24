@@ -5,27 +5,41 @@ import { LogoLink } from '@/components/LogoLink';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 import { User, LogOut, Briefcase, Hammer, RefreshCw, Wallet, Calendar, ShieldCheck, Sparkles } from 'lucide-react';
 import { FadeUp } from '@/components/FadeUp';
 import { FeedbackButton } from '@/components/FeedbackButton';
 
 export default function DashboardPage() {
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = getSupabaseBrowserClient();
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [wallet, setWallet] = useState<any>(null);
   const [passport, setPassport] = useState<any>(null);
+  const [employerJobs, setEmployerJobs] = useState<any[]>([]);
   const [errorMsg, setErrorMsg] = useState('');
 
   const fetchUserData = async () => {
     setLoading(true);
+    if (!isSupabaseConfigured()) {
+      // Provide mock user/profile/wallet/passport so the preview works seamlessly
+      setUser({ id: 'mock-user-id', email: 'user@example.com' });
+      setProfile({ id: 'mock-user-id', full_name: 'Solomon Ogar', role: 'worker', location_state: 'Lagos', location_lga: 'Ikeja' });
+      setWallet({ balance: 15000 });
+      setPassport({
+        id: 'mock-passport-id',
+        skills: ['Plumbing', 'Electrical'],
+        years_experience: 5,
+        bio: 'Professional artisanal provider.',
+        is_verified: true,
+        verification_grade: 'A'
+      });
+      setLoading(false);
+      return;
+    }
     try {
       const { data: { session }, error: authError } = await supabase.auth.getSession();
       if (authError || !session) {
@@ -46,13 +60,25 @@ export default function DashboardPage() {
         setErrorMsg('Failed to load profile. Please complete onboarding.');
       } else {
         setProfile(profileData);
+        
+        if (profileData.role === 'employer') {
+          const { data: jobsData } = await supabase
+            .from('jobs')
+            .select('*, bids(count)')
+            .eq('employer_id', session.user.id)
+            .order('created_at', { ascending: false });
+            
+          if (jobsData) {
+            setEmployerJobs(jobsData);
+          }
+        }
       }
 
       // Fetch Passport info
       const { data: passportData } = await supabase
         .from('bukie_passports')
         .select('*')
-        .eq('user_id', session.user.id)
+        .eq('profile_id', session.user.id)
         .maybeSingle();
 
       setPassport(passportData);
@@ -61,22 +87,22 @@ export default function DashboardPage() {
       const { data: walletData, error: walletError } = await supabase
         .from('wallets')
         .select('*')
-        .eq('id', session.user.id) // Or user_id depending on the key name in wallets schema
-        // Wait, let's verify if the field is user_id or id in our schema.
-        // In the user's schema: "CREATE TABLE public.wallets ( user_id UUID REFERENCES public.profiles(id) PRIMARY KEY, balance NUMERIC DEFAULT 0.00... )"
-        // Yes! It is user_id. Let's make sure we query by user_id or fallback.
+        .eq('id', session.user.id) // Or profile_id depending on the key name in wallets schema
+        // Wait, let's verify if the field is profile_id or id in our schema.
+        // In the user's schema: "CREATE TABLE public.wallets ( profile_id UUID REFERENCES public.profiles(id) PRIMARY KEY, balance NUMERIC DEFAULT 0.00... )"
+        // Yes! It is profile_id. Let's make sure we query by profile_id or fallback.
         .single();
       
-      // Let's try querying by user_id if we have any trouble, or try standard column query:
-      // Since schema defined user_id REFERENCES public.profiles(id) PRIMARY KEY, we query by user_id.
+      // Let's try querying by profile_id if we have any trouble, or try standard column query:
+      // Since schema defined profile_id REFERENCES public.profiles(id) PRIMARY KEY, we query by profile_id.
       if (!walletError && walletData) {
         setWallet(walletData);
       } else {
-        // Fallback or retry with user_id
+        // Fallback or retry with profile_id
         const { data: walletRetry } = await supabase
           .from('wallets')
           .select('*')
-          .eq('user_id', session.user.id)
+          .eq('profile_id', session.user.id)
           .single();
         if (walletRetry) {
           setWallet(walletRetry);
@@ -93,7 +119,7 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchUserData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [supabase, router]);
+  }, [router]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -316,40 +342,79 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Empty list with elegant visual action */}
-            <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center flex flex-col items-center justify-center">
-              <span className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 mb-3">
-                {isEmployer ? <Briefcase className="w-5 h-5" /> : <Hammer className="w-5 h-5" />}
-              </span>
-              <p className="text-sm font-bold text-gray-800">
-                {isEmployer ? "You haven't posted any jobs yet. Let's list your first opening!" : "Your job inquiry feed is currently clear."}
-              </p>
-              <p className="text-xs text-gray-400 mt-1 max-w-sm mx-auto leading-relaxed">
-                {isEmployer 
-                  ? "Post a job now. Plumbers, electricians, painters, and tech artisans are active and ready in your area."
-                  : "Complete your BukiePassport profile setup with verified skill tags and credentials to start receiving customized job recommendations!"}
-              </p>
-
-              <div className="flex gap-3 mt-6 flex-wrap justify-center">
-                {isEmployer ? (
-                  <button
-                    id="dash-post-job-btn"
-                    type="button"
-                    className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md cursor-pointer active:scale-95"
-                    onClick={() => router.push('/dashboard/post-job')}
-                  >
-                    Post a new job opening
-                  </button>
-                ) : (
-                  <>
+            {/* Active Feed or Empty list with elegant visual action */}
+            {isEmployer && employerJobs.length > 0 ? (
+              <div className="space-y-4">
+                {employerJobs.map(job => (
+                  <div key={job.id} className="border border-gray-100 rounded-xl p-4 flex flex-col md:flex-row justify-between md:items-center gap-4 hover:shadow-md transition-all bg-gray-50/50">
+                    <div>
+                      <h3 className="font-bold text-gray-900">{job.title}</h3>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-lg border ${
+                          job.stage === 'open' ? 'bg-green-50 text-green-700 border-green-200' :
+                          job.stage === 'in_progress' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                          'bg-gray-100 text-gray-600 border-gray-200'
+                        }`}>
+                          {job.stage ? job.stage.replace('_', ' ') : 'open'}
+                        </span>
+                        <span className="text-xs text-gray-500 font-mono">₦{job.budget?.toLocaleString()}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="text-right">
+                        <span className="block text-xl font-black text-[#0A192F] leading-none">{job.bids?.[0]?.count || 0}</span>
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Bids</span>
+                      </div>
+                      <button 
+                        onClick={() => router.push(`/dashboard/chat/${job.id}`)}
+                        className="ml-4 bg-white border border-gray-200 hover:bg-gray-50 text-[#0A192F] text-[10px] font-extrabold uppercase tracking-wider px-4 py-2 rounded-lg transition-all"
+                      >
+                        Manage
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <button
+                  onClick={() => router.push('/dashboard/post-job')}
+                  className="w-full mt-4 bg-gray-50 border border-dashed border-gray-200 text-gray-500 hover:text-[#0A192F] hover:bg-gray-100 text-xs font-bold uppercase tracking-wider py-3 rounded-xl transition-all"
+                >
+                  + Post Another Job
+                </button>
+              </div>
+            ) : (
+              <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center flex flex-col items-center justify-center">
+                <span className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 mb-3">
+                  {isEmployer ? <Briefcase className="w-5 h-5" /> : <Hammer className="w-5 h-5" />}
+                </span>
+                <p className="text-sm font-bold text-gray-800">
+                  {isEmployer ? "You haven't posted any jobs yet. Let's list your first opening!" : "Your job inquiry feed is currently clear."}
+                </p>
+                <p className="text-xs text-gray-400 mt-1 max-w-sm mx-auto leading-relaxed">
+                  {isEmployer 
+                    ? "Post a job now. Plumbers, electricians, painters, and tech artisans are active and ready in your area."
+                    : "Complete your BukiePassport profile setup with verified skill tags and credentials to start receiving customized job recommendations!"}
+                </p>
+  
+                <div className="flex gap-3 mt-6 flex-wrap justify-center">
+                  {isEmployer ? (
                     <button
-                      id="dash-find-work-btn"
+                      id="dash-post-job-btn"
                       type="button"
-                      className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md cursor-pointer active:scale-95 animate-bounce"
-                      onClick={() => router.push('/jobs')}
+                      className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md cursor-pointer active:scale-95"
+                      onClick={() => router.push('/dashboard/post-job')}
                     >
-                      Browse job listings
+                      Post a new job opening
                     </button>
+                  ) : (
+                    <>
+                      <button
+                        id="dash-find-work-btn"
+                        type="button"
+                        className="bg-[#0A192F] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-5 rounded-xl hover:bg-[#112a4f] transition-all shadow-md cursor-pointer active:scale-95 animate-bounce"
+                        onClick={() => router.push('/dashboard/jobs')}
+                      >
+                        Browse job listings
+                      </button>
                     <button
                       id="dash-passport-btn"
                       type="button"
@@ -362,6 +427,7 @@ export default function DashboardPage() {
                 )}
               </div>
             </div>
+            )}
           </FadeUp>
 
           {/* Quick Operations Sidebar Info */}

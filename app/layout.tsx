@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css'; // Global styles
-import { PwaInstallPrompt } from '@/components/PwaInstallPrompt';
-import { PushNotificationManager } from '@/components/PushNotificationManager';
 
 export const metadata: Metadata = {
   title: {
@@ -42,10 +40,40 @@ export const viewport: Viewport = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.__SUPABASE_URL__ = ${JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_URL || '')};
+              window.__SUPABASE_ANON_KEY__ = ${JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '')};
+              
+              // Handle and suppress cross-origin "Script error." events that are outside our control
+              window.onerror = function(message, source, lineno, colno, error) {
+                if (message && (message.toString().indexOf('Script error') > -1 || message.toString().indexOf('script error') > -1)) {
+                  console.warn('Suppressed cross-origin Script error:', message);
+                  return true; // Prevent default browser error reporting
+                }
+                return false;
+              };
+              
+              window.addEventListener('error', function(event) {
+                if (event.message && (event.message.indexOf('Script error') > -1 || event.message.indexOf('script error') > -1)) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+              }, true);
+
+              window.addEventListener('unhandledrejection', function(event) {
+                if (event.reason && event.reason.message && (event.reason.message.indexOf('Script error') > -1 || event.reason.message.indexOf('script error') > -1)) {
+                  event.preventDefault();
+                }
+              });
+            `
+          }}
+        />
+      </head>
       <body suppressHydrationWarning>
         {children}
-        <PwaInstallPrompt />
-        <PushNotificationManager />
       </body>
     </html>
   );

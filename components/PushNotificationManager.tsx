@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Bell } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function PushNotificationManager() {
   const [permission, setPermission] = useState<NotificationPermission>('default');
@@ -10,12 +10,16 @@ export function PushNotificationManager() {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'Notification' in window) {
-      setPermission(Notification.permission);
-      
-      // If we haven't asked yet, show the prompt after a short delay
-      if (Notification.permission === 'default') {
-        const timer = setTimeout(() => setShowPrompt(true), 5000);
-        return () => clearTimeout(timer);
+      try {
+        setPermission(Notification.permission);
+        
+        // If we haven't asked yet, show the prompt after a short delay
+        if (Notification.permission === 'default') {
+          const timer = setTimeout(() => setShowPrompt(true), 5000);
+          return () => clearTimeout(timer);
+        }
+      } catch (err) {
+        console.error('Notification API not allowed in this context:', err);
       }
     }
   }, []);
@@ -30,14 +34,26 @@ export function PushNotificationManager() {
       
       if (result === 'granted') {
         // Here we could subscribe to the push manager if VAPID keys were provided
-        const registration = await navigator.serviceWorker.ready;
-        console.log('Service worker is ready for push notifications', registration);
+        if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+          try {
+            const registration = await navigator.serviceWorker.ready;
+            console.log('Service worker is ready for push notifications', registration);
+          } catch (swErr) {
+            console.warn('Service worker not ready:', swErr);
+          }
+        }
         
         // Show a local success notification
-        new Notification('Alerts Enabled!', {
-          body: 'You will now receive job alerts and updates.',
-          icon: '/icon-192x192.png'
-        });
+        try {
+          if ('Notification' in window) {
+            new Notification('Alerts Enabled!', {
+              body: 'You will now receive job alerts and updates.',
+              icon: '/icon-192x192.png'
+            });
+          }
+        } catch (notifyErr) {
+          console.warn('Local Notification display not allowed or failed:', notifyErr);
+        }
       }
     } catch (err) {
       console.error('Error requesting notification permission:', err);

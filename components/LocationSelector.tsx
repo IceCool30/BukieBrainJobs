@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 import { nigeriaLocations, nigerianStates } from '@/lib/nigeria-locations';
 import { Info, Crosshair, Loader2, MapPin } from 'lucide-react';
 import { SmartSuggestInput } from './SmartSuggestInput';
@@ -32,8 +33,14 @@ export function LocationSelector({
 
   useEffect(() => {
     setIsMounted(true);
-    const savedState = localStorage.getItem('bukieBrain_lastState');
-    const savedArea = localStorage.getItem('bukieBrain_lastArea');
+    let savedState = null;
+    let savedArea = null;
+    try {
+      savedState = localStorage.getItem('bukieBrain_lastState');
+      savedArea = localStorage.getItem('bukieBrain_lastArea');
+    } catch (e) {
+      console.warn('localStorage not accessible', e);
+    }
     
     // Only set from local storage initially if we don't already have values
     if (!selectedState && savedState) {
@@ -49,12 +56,11 @@ export function LocationSelector({
   // Fetch listed locations from database for "easy picks"
   useEffect(() => {
     async function fetchListedLocations() {
+      if (!isSupabaseConfigured()) {
+        return;
+      }
       try {
-        const { createBrowserClient } = await import('@supabase/auth-helpers-nextjs');
-        const supabase = createBrowserClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        );
+        const supabase = getSupabaseBrowserClient();
         const { data } = await supabase
           .from('jobs')
           .select('location_state, location_lga')
@@ -87,23 +93,27 @@ export function LocationSelector({
 
   useEffect(() => {
     if (isMounted) {
-      if (selectedState) {
-        localStorage.setItem('bukieBrain_lastState', selectedState);
-      } else {
-        localStorage.removeItem('bukieBrain_lastState');
-      }
-      
-      if (selectedArea) {
-        localStorage.setItem('bukieBrain_lastArea', selectedArea);
-      } else {
-        localStorage.removeItem('bukieBrain_lastArea');
+      try {
+        if (selectedState) {
+          localStorage.setItem('bukieBrain_lastState', selectedState);
+        } else {
+          localStorage.removeItem('bukieBrain_lastState');
+        }
+        
+        if (selectedArea) {
+          localStorage.setItem('bukieBrain_lastArea', selectedArea);
+        } else {
+          localStorage.removeItem('bukieBrain_lastArea');
+        }
+      } catch (e) {
+        console.warn('localStorage not accessible', e);
       }
     }
   }, [selectedState, selectedArea, isMounted]);
 
   const handleDetectLocation = () => {
     if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser.');
+      console.error('Geolocation is not supported by your browser.');
       return;
     }
 
@@ -143,15 +153,14 @@ export function LocationSelector({
             }
           }
         } catch (error) {
-          console.error(error);
-          alert('Failed to detect location.');
+          console.error('Failed to detect location.', error);
         } finally {
           setIsDetecting(false);
         }
       },
       (error) => {
         setIsDetecting(false);
-        alert('Could not get your location. Please ensure you have granted location permissions.');
+        console.error('Could not get your location. Please ensure you have granted location permissions.');
       }
     );
   };

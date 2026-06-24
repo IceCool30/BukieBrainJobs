@@ -3,7 +3,7 @@ import { LogoBase64 } from '@/lib/logo';
 
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Send, 
   ShieldAlert, 
@@ -13,7 +13,7 @@ import {
   Loader2,
   HelpCircle
 } from 'lucide-react';
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 import { sendMessageAction } from '@/app/actions';
 
 
@@ -33,10 +33,7 @@ interface ChatWindowProps {
 }
 
 export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: ChatWindowProps) {
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = getSupabaseBrowserClient();
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,6 +67,30 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
   // Fetch initial messages and profiles to resolve names
   useEffect(() => {
     async function loadChatData() {
+      if (!isSupabaseConfigured()) {
+        setMessages([
+          {
+            id: 'mock-msg-1',
+            job_id: jobId,
+            sender_id: 'mock-worker-id',
+            content: 'Hello! I can fix the plumbing issue quickly. Let me know if you are ready.',
+            created_at: new Date(Date.now() - 3600000).toISOString()
+          },
+          {
+            id: 'mock-msg-2',
+            job_id: jobId,
+            sender_id: currentUserId,
+            content: 'Great! Do you have the proper copper pipe tools?',
+            created_at: new Date(Date.now() - 1800000).toISOString()
+          }
+        ]);
+        setProfiles({
+          'mock-worker-id': 'Solomon Ogar (Artisan)',
+          [currentUserId]: 'You (Employer)'
+        });
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
         setErrorMsg('');
@@ -81,7 +102,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
         
         if (profileList) {
           const profileMap: Record<string, string> = {};
-          profileList.forEach((p) => {
+          profileList.forEach((p: any) => {
             profileMap[p.id] = p.full_name || 'Artisan';
           });
           setProfiles(profileMap);
@@ -108,10 +129,13 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
     }
 
     loadChatData();
-  }, [supabase, jobId]);
+  }, [jobId]);
 
   // Setup Realtime Subscription mapping
   useEffect(() => {
+    if (!isSupabaseConfigured()) {
+      return;
+    }
     const channel = supabase
       .channel(`chat_room_${jobId}`)
       .on(
@@ -122,7 +146,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
           table: 'messages',
           filter: `job_id=eq.${jobId}`
         },
-        async (payload) => {
+        async (payload: any) => {
           const incoming = payload.new as Message;
           
           // Ensure sender profile is known, else fetch it on-demand
@@ -148,7 +172,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
           });
         }
       )
-      .on('broadcast', { event: 'typing' }, (payload) => {
+      .on('broadcast', { event: 'typing' }, (payload: any) => {
         const { userId, isTyping } = payload.payload;
         if (userId !== currentUserId) {
           if (isTyping) {
@@ -170,7 +194,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
       if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
       supabase.removeChannel(channel);
     };
-  }, [supabase, jobId, profiles, currentUserId]);
+  }, [jobId, profiles, currentUserId]);
 
   // Helper to send outbound typing status to other participants
   const handleTypingIndicator = (isTyping: boolean) => {
@@ -354,7 +378,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
           messages.map((msg) => {
             const isMe = msg.sender_id === currentUserId;
             const senderName = profiles[msg.sender_id] || 'Participant';
-            const formattedTime = new Date(msg.created_at).toLocaleTimeString('en-XG', {
+            const formattedTime = new Date(msg.created_at).toLocaleTimeString(undefined, {
               hour: '2-digit',
               minute: '2-digit'
             });

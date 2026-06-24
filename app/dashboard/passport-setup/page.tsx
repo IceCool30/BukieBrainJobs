@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
 import { ArrowLeft, Hammer, ShieldCheck, Sparkles, Star, User, Save, ListTodo, BadgeAlert, AlertCircle, Camera, UploadCloud, X, RefreshCw, CheckCircle, FileText, ShieldAlert, HelpCircle } from 'lucide-react';
 
 const SKILL_OPTIONS = [
@@ -77,10 +77,7 @@ const SKILL_OPTIONS = [
 
 export default function PassportSetupPage() {
   const router = useRouter();
-  const authSupabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const authSupabase = getSupabaseBrowserClient();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -157,6 +154,16 @@ export default function PassportSetupPage() {
 
   useEffect(() => {
     async function loadPassport() {
+      if (!isSupabaseConfigured()) {
+        setUserId('mock-user-id');
+        setUserName('Solomon Ogar');
+        setBio('I am an expert plumber and home repair specialist.');
+        setSelectedSkills(['Plumbing', 'Electrical']);
+        setCompletedJobsCount(4);
+        setAvgRating(4.9);
+        setLoading(false);
+        return;
+      }
       try {
         const { data: { session } } = await authSupabase.auth.getSession();
         if (!session) {
@@ -172,7 +179,7 @@ export default function PassportSetupPage() {
         const { data: passport, error } = await authSupabase
           .from('bukie_passports')
           .select('*')
-          .eq('user_id', userObj.id)
+          .eq('profile_id', userObj.id)
           .maybeSingle();
 
         if (!error && passport) {
@@ -221,11 +228,11 @@ export default function PassportSetupPage() {
 
             if (!listErr && jobList && jobList.length > 0) {
               const jobsWithRatings = jobList.filter(
-                (j) => j.rating !== undefined && j.rating !== null
+                (j: any) => j.rating !== undefined && j.rating !== null
               );
               if (jobsWithRatings.length > 0) {
                 const sum = jobsWithRatings.reduce(
-                  (acc, curr) => acc + Number(curr.rating),
+                  (acc: number, curr: any) => acc + Number(curr.rating),
                   0
                 );
                 setAvgRating(sum / jobsWithRatings.length);
@@ -249,11 +256,18 @@ export default function PassportSetupPage() {
       }
     }
     loadPassport();
-  }, [authSupabase, router]);
+  }, [router]);
 
   const startCamera = async () => {
     setCameraError('');
     setIsCameraActive(true);
+    
+    if (typeof navigator === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setCameraError('Camera access not supported or permitted in this context. Please upload an image file instead.');
+      setIsCameraActive(false);
+      return;
+    }
+
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user', width: 640, height: 480 }
@@ -417,13 +431,13 @@ export default function PassportSetupPage() {
       const { error } = await authSupabase
         .from('bukie_passports')
         .upsert({
-          user_id: userId,
+          profile_id: userId,
           bio,
           skills: skillsArray,
           avatar_url: photoUrl || null,
           id_card_url: idCardUrl || null,
           updated_at: new Date().toISOString()
-        }, { onConflict: 'user_id' });
+        }, { onConflict: 'profile_id' });
 
       if (error) {
         throw new Error(error.message);
