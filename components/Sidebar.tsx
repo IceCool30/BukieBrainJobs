@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { X, ChevronDown, ArrowRight, Zap, Users, Briefcase, ShieldCheck, HelpCircle } from 'lucide-react';
+import { X, ChevronDown, ArrowRight, Flame, Users, Briefcase, ShieldCheck, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 
@@ -69,7 +69,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     {
       id: 'hired',
       title: 'Get Hired',
-      icon: <Zap className="w-5 h-5 text-amber-500" />,
+      icon: <Flame className="w-5 h-5 text-amber-500" />,
       links: [
         { label: 'Find Gig Opportunities', path: '/dashboard/jobs' },
         { label: 'Setup BukiePassport', path: '/dashboard/passport-setup' },
@@ -207,7 +207,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 onClick={() => handleNavigation('/dashboard/post-job')}
                 className="w-full bg-brand-green hover:bg-brand-green/95 text-white py-3.5 px-5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_16px_rgba(0,135,90,0.12)] border border-brand-green transition-colors"
               >
-                <Zap className="w-4 h-4 text-white animate-pulse" />
+                <Flame className="w-4 h-4 text-white animate-pulse" />
                 <span>Post a Job Brief</span>
                 <motion.div
                   animate={{ x: [0, 4, 0] }}

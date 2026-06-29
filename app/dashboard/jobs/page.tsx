@@ -6,7 +6,7 @@ import { applyToJob } from './actions';
 import JobCard from './JobCard';
 import JobFilterBar from './JobFilterBar';
 import { LogoLink } from '@/components/LogoLink';
-import { ArrowLeft, Wallet, Briefcase, HelpCircle, AlertCircle, Sparkles } from 'lucide-react';
+import { ArrowLeft, Wallet, Briefcase, HelpCircle, AlertCircle, CheckCircle } from 'lucide-react';
 
 interface JobsDashboardProps {
   searchParams: {
@@ -143,7 +143,7 @@ export default async function JobsDashboard({ searchParams }: JobsDashboardProps
           
           {/* Quick Notice Card */}
           <div className="bg-brand-surface/80 border border-brand-border/60 p-4 rounded-xl max-w-xs flex gap-3 items-start">
-            <Sparkles className="w-5 h-5 text-brand-green shrink-0 mt-0.5 animate-pulse" />
+            <CheckCircle className="w-5 h-5 text-brand-green shrink-0 mt-0.5 animate-pulse" />
             <div className="space-y-1">
               <span className="block text-[10px] font-bold text-brand-navy uppercase tracking-wider">
                 Verified Advantage

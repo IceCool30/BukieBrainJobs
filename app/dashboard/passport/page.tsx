@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, 
-  Sparkles, 
+  Star, 
   Save, 
   Loader2, 
   CheckCircle,
@@ -256,7 +256,7 @@ export default function PassportEditorPage() {
                     Edit BukiePassport
                   </h1>
                   <span className="text-[10px] uppercase font-mono tracking-widest text-brand-green font-semibold flex items-center gap-1.5">
-                    <Sparkles className="w-3 h-3 fill-brand-green stroke-none animate-pulse text-brand-green" />
+                    <Star className="w-3 h-3 fill-brand-green stroke-none animate-pulse text-brand-green" />
                     Professional Worker ID
                   </span>
                 </div>

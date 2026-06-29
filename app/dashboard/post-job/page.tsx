@@ -9,12 +9,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, 
   Briefcase, 
-  Sparkles, 
+  Clock, 
   AlertTriangle, 
   Loader2, 
   CheckCircle,
   HelpCircle,
-  Zap,
+  Flame,
   X,
   ShieldCheck,
   CreditCard,
@@ -718,7 +718,7 @@ export default function PostJobPage() {
                               className="text-[10px] bg-brand-navy hover:bg-brand-navy/90 text-white font-bold px-3 py-1.5 rounded-lg transition-transform active:scale-[0.96] shadow-sm cursor-pointer whitespace-nowrap inline-flex items-center gap-1.5"
                               title="Auto-fill with recommended median rate"
                             >
-                              <Sparkles className="w-3 h-3 text-amber-400 fill-amber-400" />
+                              <Clock className="w-3 h-3 text-amber-400" />
                               Apply Suggested (₦{median.toLocaleString()})
                             </button>
                           </div>
@@ -814,7 +814,7 @@ export default function PostJobPage() {
                               className="bg-amber-100 text-amber-800 border border-amber-200 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1 shrink-0"
                               id="telegram-blast-badge"
                             >
-                              <Zap className="w-3 h-3 fill-amber-500 stroke-none" />
+                              <Flame className="w-3 h-3 fill-amber-500 stroke-none" />
                               <span>Telegram Blast</span>
                             </motion.span>
                           )}
@@ -927,7 +927,7 @@ export default function PostJobPage() {
             >
               <div className="flex justify-between items-center pb-4 border-b border-brand-border/40">
                 <div className="flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-amber-500 fill-amber-500" />
+                  <Flame className="w-5 h-5 text-amber-500 fill-amber-500" />
                   <span className="font-display font-extrabold text-sm text-brand-navy uppercase tracking-wide">
                     Want your job seen faster?
                   </span>

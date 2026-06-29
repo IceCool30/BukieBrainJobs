@@ -12,7 +12,7 @@ import {
   RefreshCw, 
   Wallet, 
   ShieldCheck, 
-  Sparkles, 
+  CheckCircle,
   MessageSquare, 
   MapPin, 
   Plus, 
@@ -751,7 +751,7 @@ export default function DashboardPage() {
               </div>
 
               <div className="bg-brand-surface p-4 rounded-xl border border-brand-border/40 flex items-start gap-2.5">
-                <Sparkles className="w-4 h-4 text-brand-green shrink-0 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-brand-green shrink-0 mt-0.5" />
                 <span className="text-[11px] font-bold text-brand-navy/70 leading-relaxed font-sans">
                   {isEmployer 
                     ? "Hire with confidence knowing your resources are held securely until the contractor delivers." 
@@ -777,12 +777,12 @@ export default function DashboardPage() {
               </div>
 
               <a
-                href="https://t.me/BukieBrainBot"
+                href="https://t.me/BukieBrainAlerts"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-brand-green hover:bg-brand-green/90 py-2.5 px-4 rounded-xl transition-all shadow-sm cursor-pointer self-start"
               >
-                <span>Connect Telegram Bot</span>
+                <span>Connect Telegram Alerts</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </FadeUp>

@@ -8,7 +8,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, 
-  Sparkles, 
   CheckCircle, 
   ShieldCheck, 
   Phone, 

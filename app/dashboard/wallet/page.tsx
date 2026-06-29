@@ -12,7 +12,6 @@ import {
   PlusCircle, 
   Coins, 
   Flame, 
-  Sparkles, 
   ArrowUpRight, 
   RefreshCw, 
   ShieldCheck, 
@@ -330,7 +329,7 @@ export default function WalletPage() {
         <FadeUp delay={0.2} className="bg-brand-bg rounded-2xl p-6 sm:p-8 border border-brand-border/60 shadow-xs" id="bid-bundle-actions">
           <div className="max-w-md mx-auto text-center space-y-6">
             <div className="inline-flex p-3 bg-brand-surface rounded-full border border-brand-border/60 text-brand-green mb-2 leading-none">
-              <Sparkles className="w-6 h-6 stroke-2 text-brand-green" />
+              <ShieldCheck className="w-6 h-6 stroke-2 text-brand-green" />
             </div>
             
             <div>

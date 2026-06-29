@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { MapPin, Calendar, Flame, Tag, Briefcase, Zap } from 'lucide-react';
+import { MapPin, Calendar, Flame, Tag, Briefcase } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export interface Job {
@@ -192,7 +192,7 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
         <button 
           id={`apply-action-btn-${job.id}`}
           onClick={() => {
-            console.log(`This job requires quick matching in ${job.location_lga}. Please contact the bot on Telegram or view in main feed.`);
+            console.log(`This job requires quick matching in ${job.location_lga}. Please view in main feed.`);
           }}
           className={`text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
             job.is_urgent 

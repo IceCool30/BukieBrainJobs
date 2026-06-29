@@ -7,7 +7,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
-import { ArrowLeft, Eye, EyeOff, ShieldAlert, Sparkles, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, ShieldAlert, CheckCircle, AlertCircle } from 'lucide-react';
 import { FadeUp } from '@/components/FadeUp';
 import { SmoothCollapse } from '@/components/SmoothCollapse';
 
@@ -278,7 +278,7 @@ export default function LoginPage() {
 
               <SmoothCollapse isOpen={!!message}>
                 <div className="flex items-start gap-2.5 bg-brand-green/5 text-brand-green p-3.5 rounded-xl text-xs sm:text-sm border border-brand-green/10" id="password-message">
-                  <Sparkles className="w-4 h-4 shrink-0 text-brand-green mt-0.5" />
+                  <CheckCircle className="w-4 h-4 shrink-0 text-brand-green mt-0.5" />
                   <span className="leading-relaxed font-medium">{message}</span>
                 </div>
               </SmoothCollapse>

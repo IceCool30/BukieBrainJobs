@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
-import { ArrowLeft, Hammer, ShieldCheck, Sparkles, Star, User, Save, ListTodo, BadgeAlert, AlertCircle, Camera, UploadCloud, X, RefreshCw, CheckCircle, FileText, ShieldAlert, HelpCircle } from 'lucide-react';
+import { ArrowLeft, Hammer, ShieldCheck, Star, User, Save, ListTodo, BadgeAlert, AlertCircle, Camera, UploadCloud, X, RefreshCw, CheckCircle, FileText, ShieldAlert, HelpCircle } from 'lucide-react';
 
 const SKILL_OPTIONS = [
   // Trade & Physical
@@ -933,7 +933,7 @@ export default function PassportSetupPage() {
                   </button>
                   
                   <div className="flex items-center gap-1.5 font-black text-brand-navy border-b border-brand-border pb-1.5 uppercase tracking-wider text-[10px] font-display">
-                    <Sparkles className="w-3.5 h-3.5 text-brand-green animate-pulse" />
+                    <Star className="w-3.5 h-3.5 text-brand-green animate-pulse" />
                     <span>How to write a high-converting Bio</span>
                   </div>
                   
@@ -1003,7 +1003,7 @@ export default function PassportSetupPage() {
                   </button>
                   
                   <div className="flex items-center gap-1.5 font-black text-brand-navy border-b border-brand-border pb-1.5 uppercase tracking-wider text-[10px] font-display">
-                    <Sparkles className="w-3.5 h-3.5 text-brand-green animate-pulse" />
+                    <Star className="w-3.5 h-3.5 text-brand-green animate-pulse" />
                     <span>How to select high-converting Skills</span>
                   </div>
                   
@@ -1314,7 +1314,7 @@ export default function PassportSetupPage() {
 
             {message && (
               <div className="flex items-start gap-2 bg-brand-green/10 text-brand-navy p-3.5 rounded-xl text-xs border border-brand-green/20 shadow-sm" id="passport-message">
-                <Sparkles className="w-4 h-4 text-brand-green shrink-0 animate-pulse" />
+                <CheckCircle className="w-4 h-4 text-brand-green shrink-0 animate-pulse" />
                 <span className="font-medium">{message}</span>
               </div>
             )}
