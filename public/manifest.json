@@ -1,11 +1,14 @@
 {
-  "name": "BukieBrainJobs",
-  "short_name": "BukieBrainJobs",
-  "description": "Telegram and WhatsApp bot powered job platform.",
-  "start_url": "/",
+  "name": "BukieBrainJobs - Verified Local Artisans & Gigs",
+  "short_name": "BukieBrain",
+  "description": "The premier platform to find trusted workers, artisans, and remote freelancers in Nigeria instantly.",
+  "start_url": "/?source=pwa",
+  "id": "/?source=pwa",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "background_color": "#0A192F",
+  "theme_color": "#00875A",
+  "orientation": "portrait",
+  "categories": ["business", "utilities", "productivity"],
   "icons": [
     {
       "src": "/icon-192x192.png",

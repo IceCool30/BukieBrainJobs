@@ -127,7 +127,7 @@ export default function ChatPage() {
     if (jobId) {
       initChatPage();
     }
-  }, [jobId, router]);
+  }, [jobId, router, supabase]);
 
   const handleReleaseFunds = async () => {
     // Note: removed window.confirm due to iframe restrictions
@@ -160,12 +160,12 @@ export default function ChatPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
+      <main className="flex min-h-screen items-center justify-center bg-brand-bg text-brand-navy">
         <div className="flex flex-col items-center gap-3">
           <LogoLink
-            className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit mb-3 animate-pulse cursor-pointer hover:opacity-80 transition-opacity"
+            className="bg-brand-bg rounded-[1.5rem] shadow-sm border border-brand-border flex items-center gap-1.5 p-1 w-fit mb-3 animate-pulse cursor-pointer hover:opacity-80 transition-opacity"
           />
-          <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
+          <span className="text-xs font-mono text-brand-navy/60 font-bold uppercase tracking-wide">
             Entering Secure Chatroom...
           </span>
         </div>
@@ -175,24 +175,24 @@ export default function ChatPage() {
 
   if (errorMsg || !job || !user) {
     return (
-      <main className="min-h-screen bg-white text-[#0A192F] py-12 px-4 flex flex-col items-center justify-center">
+      <main className="min-h-screen bg-brand-bg text-brand-navy py-12 px-4 flex flex-col items-center justify-center">
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-md w-full bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center"
+          className="max-w-md w-full bg-brand-bg rounded-2xl shadow-sm border border-brand-border p-8 text-center"
           id="chat-page-error-container"
         >
-          <div className="w-16 h-16 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-red-100">
+          <div className="w-16 h-16 bg-red-50 text-red-600 rounded-xl flex items-center justify-center mx-auto mb-4 border border-red-100">
             <HelpCircle className="w-8 h-8" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900 tracking-tight">Channel Unavailable</h1>
-          <p className="text-sm text-gray-500 mt-2 leading-relaxed">
+          <h1 className="text-xl font-bold text-brand-navy tracking-tight font-display">Channel Unavailable</h1>
+          <p className="text-sm text-brand-navy/60 mt-2 leading-relaxed">
             {errorMsg || 'A secure session could not be established with the database.'}
           </p>
           <div className="mt-6">
             <button
               onClick={() => router.push('/dashboard')}
-              className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+              className="w-full bg-brand-green hover:bg-brand-green/90 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2 active:scale-[0.98] transition-all font-display"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Dashboard</span>
@@ -206,22 +206,22 @@ export default function ChatPage() {
   const isEmployer = job.employer_id === user.id;
 
   return (
-    <main className="min-h-screen bg-white text-[#0A192F] py-8 px-4 md:px-8">
+    <main className="min-h-screen bg-brand-bg text-brand-navy py-8 px-4 md:px-8">
       <div className="max-w-4xl mx-auto space-y-6" id="chat-workspace-page">
         
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between">
           <button
             onClick={() => router.push('/dashboard')}
-            className="group inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-gray-900 uppercase tracking-wider transition-all cursor-pointer bg-white px-4 py-2.5 rounded-xl border border-gray-100 shadow-sm"
+            className="group inline-flex items-center gap-2 text-xs font-bold text-brand-navy/60 hover:text-brand-navy uppercase tracking-wider transition-all cursor-pointer bg-brand-surface px-4 py-2.5 rounded-xl border border-brand-border/60 shadow-xs"
             id="chat-back-btn"
           >
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             <span>Marketplace</span>
           </button>
           
-          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-500 bg-white px-4 py-2.5 rounded-xl border border-gray-100 shadow-sm">
-            <MessageSquare className="w-4 h-4 text-[#0A192F]" />
+          <div className="flex items-center gap-1.5 text-xs font-bold text-brand-navy/60 bg-brand-surface px-4 py-2.5 rounded-xl border border-brand-border/60 shadow-xs">
+            <MessageSquare className="w-4 h-4 text-brand-green" />
             <span>Active Guild Discussion</span>
           </div>
         </div>
@@ -235,30 +235,30 @@ export default function ChatPage() {
         )}
 
         {/* Short Job Metadata Header */}
-        <div className="bg-white rounded-3xl p-5 md:p-6 border border-gray-100 shadow-sm">
+        <div className="bg-brand-surface rounded-2xl p-5 md:p-6 border border-brand-border/60 shadow-xs">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="space-y-1.5 flex-1">
-              <span className="text-[10px] uppercase tracking-widest font-bold text-blue-600 font-mono block">
+              <span className="text-[10px] uppercase tracking-widest font-bold text-brand-green font-mono block">
                 Discussing Project
               </span>
-              <h1 className="text-lg md:text-xl font-black text-gray-900 tracking-tight">
+              <h1 className="text-lg md:text-xl font-extrabold text-brand-navy tracking-tight font-display">
                 {job.title}
               </h1>
               
               {/* Badges list */}
               <div className="flex flex-wrap items-center gap-2 pt-1">
                 {job.category && (
-                  <span className="text-[10px] uppercase font-bold text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-150 inline-flex items-center gap-1">
-                    <Tag className="w-3 h-3 text-gray-400" />
+                  <span className="text-[10px] uppercase font-bold text-brand-navy/60 bg-brand-bg px-2.5 py-1 rounded-lg border border-brand-border/60 inline-flex items-center gap-1">
+                    <Tag className="w-3 h-3 text-brand-navy/40" />
                     <span>{job.category}</span>
                   </span>
                 )}
-                <span className="text-[10px] uppercase font-bold text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-150 inline-flex items-center gap-1">
-                  <MapPin className="w-3 h-3 text-gray-400" />
+                <span className="text-[10px] uppercase font-bold text-brand-navy/60 bg-brand-bg px-2.5 py-1 rounded-lg border border-brand-border/60 inline-flex items-center gap-1">
+                  <MapPin className="w-3 h-3 text-brand-navy/40" />
                   <span>{job.location_lga}, {job.location_state}</span>
                 </span>
                 <span className={`text-[10px] uppercase font-bold px-2.5 py-1 rounded-lg border inline-flex items-center gap-1 ${
-                  job.stage === 'completed' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-amber-50 text-amber-700 border-amber-200'
+                  job.stage === 'completed' ? 'bg-brand-green/10 text-brand-green border-brand-green/30' : 'bg-amber-50/50 text-amber-700 border-amber-200'
                 }`}>
                   <CheckCircle className="w-3 h-3" />
                   <span>{job.stage === 'completed' ? 'Completed' : 'In Progress'}</span>
@@ -267,26 +267,15 @@ export default function ChatPage() {
             </div>
 
             {/* Actions & Pricing */}
-            <div className="flex flex-col items-end gap-3 shrink-0">
-              <div className="bg-[#0A192F]/5 border border-[#0A192F]/15 px-4 py-3 rounded-2xl text-right md:w-auto w-full flex justify-between md:flex-col items-center md:items-end">
-                <span className="text-[9px] uppercase font-bold text-gray-400 tracking-wider">
+            <div className="flex flex-col items-end gap-3 shrink-0 w-full md:w-auto">
+              <div className="bg-brand-bg border border-brand-border/60 px-4 py-3 rounded-xl text-right md:w-auto w-full flex justify-between md:flex-col items-center md:items-end">
+                <span className="text-[9px] uppercase font-bold text-brand-navy/40 tracking-wider">
                   Total Budget
                 </span>
-                <span className="text-base font-black text-[#0A192F] font-mono">
+                <span className="text-base font-black text-brand-navy font-mono">
                   ₦{job.budget?.toLocaleString()}
                 </span>
               </div>
-
-              {isEmployer && job.stage !== 'completed' && job.stage !== 'disputed' && job.stage !== 'cancelled' && (
-                <button
-                  onClick={handleReleaseFunds}
-                  disabled={releasingFunds}
-                  className="bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white text-xs font-extrabold uppercase tracking-wider py-3 px-5 rounded-xl transition-all shadow-md flex items-center gap-2 w-full justify-center md:w-auto"
-                >
-                  {releasingFunds ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wallet className="w-4 h-4" />}
-                  <span>Release Funds & Complete</span>
-                </button>
-              )}
             </div>
           </div>
         </div>
@@ -302,35 +291,35 @@ export default function ChatPage() {
         )}
 
         {isEmployer && job.stage === 'open' ? (
-          <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
-            <h2 className="text-lg font-black text-gray-900 mb-4">Proposals ({bids.length})</h2>
+          <div className="bg-brand-surface rounded-2xl p-6 border border-brand-border/60 shadow-xs">
+            <h2 className="text-lg font-bold text-brand-navy mb-4 font-display">Proposals ({bids.length})</h2>
             {bids.length === 0 ? (
-              <div className="text-center py-10 bg-gray-50 rounded-2xl border border-gray-200 border-dashed">
-                <span className="text-sm font-bold text-gray-500">No bids yet. Check back soon!</span>
+              <div className="text-center py-10 bg-brand-bg rounded-xl border border-brand-border/60 border-dashed">
+                <span className="text-sm font-bold text-brand-navy/50">No bids yet. Check back soon!</span>
               </div>
             ) : (
               <div className="space-y-4">
                 {bids.map(bid => (
-                  <div key={bid.id} className="border border-gray-100 rounded-xl p-4 md:p-5 flex flex-col md:flex-row justify-between gap-4 bg-gray-50/50 hover:shadow-md transition-all">
+                  <div key={bid.id} className="border border-brand-border/60 rounded-xl p-4 md:p-5 flex flex-col md:flex-row justify-between gap-4 bg-brand-bg hover:shadow-xs transition-all">
                     <div className="space-y-2 flex-1">
                       <div className="flex items-center gap-3">
-                        <span className="font-bold text-gray-900">{bid.profiles?.full_name || 'Artisan'}</span>
-                        <div className="flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md">
+                        <span className="font-bold text-brand-navy font-display">{bid.profiles?.full_name || 'Artisan'}</span>
+                        <div className="flex items-center gap-1 text-[10px] font-bold text-brand-navy/60 bg-brand-surface px-2 py-0.5 rounded-md border border-brand-border/60">
                           ★ {bid.profiles?.avg_rating || '5.0'}
                         </div>
-                        <div className="flex items-center gap-1 text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md">
+                        <div className="flex items-center gap-1 text-[10px] font-bold text-brand-navy/60 bg-brand-surface px-2 py-0.5 rounded-md border border-brand-border/60">
                           {bid.profiles?.jobs_completed || 0} Jobs
                         </div>
                         <button
                           onClick={() => router.push(`/p/${bid.profile_id}`)}
-                          className="text-[10px] font-bold text-blue-600 underline"
+                          className="text-[10px] font-bold text-brand-green hover:underline font-display"
                         >
                           View Profile
                         </button>
                       </div>
                       
                       {bid.cover_letter && (
-                        <p className="text-xs text-gray-600 font-medium leading-relaxed italic bg-white p-3 rounded-lg border border-gray-100">
+                        <p className="text-xs text-brand-navy/80 font-medium leading-relaxed italic bg-brand-surface p-3 rounded-lg border border-brand-border/40">
                           &quot;{bid.cover_letter}&quot;
                         </p>
                       )}
@@ -338,13 +327,13 @@ export default function ChatPage() {
 
                     <div className="flex flex-col items-end justify-between shrink-0">
                       <div className="text-right">
-                        <span className="block text-[10px] uppercase font-bold text-gray-400 tracking-wider">Proposed</span>
-                        <span className="text-lg font-black text-[#0A192F] font-mono">₦{(bid.proposed_budget || job.budget)?.toLocaleString()}</span>
+                        <span className="block text-[10px] uppercase font-bold text-brand-navy/40 tracking-wider">Proposed</span>
+                        <span className="text-lg font-black text-brand-navy font-mono">₦{(bid.proposed_budget || job.budget)?.toLocaleString()}</span>
                       </div>
                       <button
                         onClick={() => handleAcceptBid(bid.id)}
                         disabled={acceptingBid === bid.id}
-                        className="mt-3 bg-[#0A192F] hover:bg-[#112a4f] disabled:opacity-50 text-white text-[10px] font-extrabold uppercase tracking-wider py-2.5 px-5 rounded-lg transition-all flex items-center justify-center min-w-[120px]"
+                        className="mt-3 bg-brand-green hover:bg-brand-green/90 disabled:opacity-50 text-white text-[10px] font-extrabold uppercase tracking-wider py-2.5 px-5 rounded-lg transition-all flex items-center justify-center min-w-[120px] font-display cursor-pointer"
                       >
                         {acceptingBid === bid.id ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Accept Bid'}
                       </button>
@@ -356,11 +345,36 @@ export default function ChatPage() {
           </div>
         ) : (
           job.stage !== 'open' && (
-            <ChatWindow 
-              jobId={jobId} 
-              currentUserId={user.id} 
-              isInspectionPaid={job.inspection_fee_paid} 
-            />
+            <div className="space-y-4">
+              {/* Milestone Shortcut Quick Action Banner */}
+              {isEmployer && job.stage !== 'completed' && job.stage !== 'disputed' && job.stage !== 'cancelled' && (
+                <div className="bg-brand-bg rounded-xl border border-brand-border p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full" id="milestone-shortcut-card">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-brand-green/10 flex items-center justify-center shrink-0">
+                      <Wallet className="w-5 h-5 text-brand-green animate-pulse" />
+                    </div>
+                    <div>
+                      <span className="block text-xs font-bold text-brand-navy font-display">Protected Funds Milestone Shortcut</span>
+                      <span className="block text-[10px] text-brand-navy/60">₦{job.budget?.toLocaleString()} is currently secured in protected funds. Complete work and release.</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleReleaseFunds}
+                    disabled={releasingFunds}
+                    className="bg-brand-green hover:bg-brand-green/90 text-white text-xs font-extrabold uppercase tracking-wider py-2.5 px-5 rounded-xl transition-all shadow-sm flex items-center gap-2 justify-center shrink-0 disabled:opacity-45 cursor-pointer font-display"
+                  >
+                    {releasingFunds ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wallet className="w-4 h-4" />}
+                    <span>Release Funds & Complete</span>
+                  </button>
+                </div>
+              )}
+
+              <ChatWindow 
+                jobId={jobId} 
+                currentUserId={user.id} 
+                isInspectionPaid={job.inspection_fee_paid} 
+              />
+            </div>
           )
         )}
 

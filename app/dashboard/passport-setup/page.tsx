@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
@@ -114,6 +115,9 @@ export default function PassportSetupPage() {
   const [chkOriented, setChkOriented] = useState(false);
   const [chkValid, setChkValid] = useState(false);
 
+  // Hourly rate loaded from passport
+  const [hourlyRate, setHourlyRate] = useState<number | null>(null);
+
   const compressImage = (dataUrl: string, maxDim = 800): Promise<string> => {
     return new Promise((resolve) => {
       const img = new window.Image();
@@ -195,6 +199,9 @@ export default function PassportSetupPage() {
             setChkValid(true);
           }
           setIsVerified(passport.is_verified === true);
+          if (passport.hourly_rate !== undefined) {
+            setHourlyRate(passport.hourly_rate);
+          }
         }
 
         // Also check profiles table for avatar_url
@@ -256,7 +263,7 @@ export default function PassportSetupPage() {
       }
     }
     loadPassport();
-  }, [router]);
+  }, [router, authSupabase]);
 
   const startCamera = async () => {
     setCameraError('');
@@ -436,6 +443,7 @@ export default function PassportSetupPage() {
           skills: skillsArray,
           avatar_url: photoUrl || null,
           id_card_url: idCardUrl || null,
+          hourly_rate: hourlyRate,
           updated_at: new Date().toISOString()
         }, { onConflict: 'profile_id' });
 
@@ -467,24 +475,24 @@ export default function PassportSetupPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
+      <main className="flex min-h-screen items-center justify-center bg-brand-bg text-brand-navy">
         <div className="flex flex-col items-center gap-2">
-          <Hammer className="w-8 h-8 animate-spin text-amber-500" />
-          <span className="text-xs font-mono text-gray-500 font-semibold uppercase">Loading BukiePassport Builder...</span>
+          <Hammer className="w-8 h-8 animate-spin text-brand-green" />
+          <span className="text-xs font-mono text-brand-navy/60 font-semibold uppercase">Loading BukiePassport Builder...</span>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-white text-[#0A192F] flex flex-col">
+    <main className="min-h-screen bg-brand-bg text-brand-navy flex flex-col">
       {/* Navbar header */}
-      <nav className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm" id="passport-navbar">
+      <nav className="bg-brand-bg border-b border-brand-border/60 sticky top-0 z-40 shadow-sm" id="passport-navbar">
         <div className="max-w-4xl mx-auto px-4 flex justify-between items-center h-16">
           <button
             id="passport-back-btn"
             type="button"
-            className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-900 font-bold uppercase tracking-wider bg-gray-50 hover:bg-gray-100 px-3 py-2 rounded-xl transition-all cursor-pointer"
+            className="flex items-center gap-1.5 text-xs text-brand-navy hover:text-brand-navy/80 font-bold uppercase tracking-wider bg-brand-surface hover:bg-brand-border px-3 py-2 rounded-xl transition-all cursor-pointer border border-brand-border/40"
             onClick={() => router.push('/dashboard')}
           >
             <ArrowLeft className="w-3.5 h-3.5" />
@@ -493,7 +501,7 @@ export default function PassportSetupPage() {
           
           <div className="flex items-center gap-2">
             {isVerified ? (
-              <div className="flex items-center gap-1 bg-[#0A192F] border border-[#112a4f] px-3 py-1.5 rounded-full text-[10px] font-black text-white uppercase tracking-wider font-mono shadow-md">
+              <div className="flex items-center gap-1 bg-brand-green border border-brand-green/80 px-3 py-1.5 rounded-full text-[10px] font-black text-white uppercase tracking-wider font-mono shadow-md">
                 <ShieldCheck className="w-3.5 h-3.5 text-white" />
                 <span>Verified</span>
               </div>
@@ -505,8 +513,8 @@ export default function PassportSetupPage() {
             ) : null}
 
             {completedJobsCount === 0 || completedJobsCount === null ? (
-              <div className="flex items-center gap-1.5 text-xs font-black font-mono text-gray-500 uppercase bg-gray-50 border border-gray-150 px-3 py-1 rounded-full">
-                <Star className="w-3.5 h-3.5 text-gray-400" />
+              <div className="flex items-center gap-1.5 text-xs font-black font-mono text-brand-navy/55 uppercase bg-brand-surface border border-brand-border/60 px-3 py-1 rounded-full">
+                <Star className="w-3.5 h-3.5 text-brand-navy/35" />
                 <span>No Ratings Yet (New)</span>
               </div>
             ) : (
@@ -519,34 +527,127 @@ export default function PassportSetupPage() {
         </div>
       </nav>
  
-      <div className="flex-1 max-w-2xl w-full mx-auto px-4 py-8" id="passport-content">
+      <div className="flex-1 max-w-2xl w-full mx-auto px-4 py-8 space-y-6" id="passport-content">
         {/* Header summary */}
-        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 mb-6 text-center relative overflow-hidden" id="passport-intro">
-          <div className="absolute right-0 top-0 w-24 h-24 bg-[#0A192F]/5 rounded-full blur-xl"></div>
+        <div className="bg-brand-surface rounded-xl p-6 md:p-8 shadow-sm border border-brand-border/60 text-center relative overflow-hidden" id="passport-intro">
+          <div className="absolute right-0 top-0 w-24 h-24 bg-brand-green/5 rounded-full blur-xl"></div>
           
-          <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mx-auto mb-4 border border-amber-200">
-            <Hammer className="w-8 h-8" />
+          <div className="w-16 h-16 bg-brand-bg rounded-2xl flex items-center justify-center text-brand-green mx-auto mb-4 border border-brand-border">
+            <Hammer className="w-8 h-8 animate-pulse" />
           </div>
           
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight">Build your profile. Get noticed.</h1>
-          <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto leading-relaxed">
+          <h1 className="text-2xl font-display font-black text-brand-navy tracking-tight">Build your profile. Get noticed.</h1>
+          <p className="text-xs text-brand-navy/60 mt-1 max-w-sm mx-auto leading-relaxed">
             Employers want to know who they are hiring. A complete profile with your skills and experience helps you stand out and get hired faster.
           </p>
         </div>
+
+        {/* The Passport Profile Card Preview */}
+        <div className="bg-brand-bg rounded-2xl border border-brand-border shadow-sm p-6 overflow-hidden relative" id="passport-preview-card">
+          {/* Accent decoration */}
+          <div className="absolute right-0 top-0 w-24 h-24 bg-brand-green/5 rounded-full blur-xl pointer-events-none"></div>
+          
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+            {/* Avatar block with badge */}
+            <div className="relative shrink-0">
+              <div className="w-20 h-20 rounded-xl border-2 border-brand-border bg-brand-surface flex items-center justify-center font-display font-bold text-brand-navy text-3xl overflow-hidden shadow-sm">
+                {photoUrl ? (
+                  <Image
+                    src={photoUrl}
+                    alt="Artisan Avatar"
+                    width={80}
+                    height={80}
+                    unoptimized={true}
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  userName ? userName.charAt(0).toUpperCase() : 'A'
+                )}
+              </div>
+              {/* Verified badge status indicator overlay */}
+              {isVerified ? (
+                <div 
+                  className="absolute -bottom-1.5 -right-1.5 bg-brand-green text-white rounded-xl p-1.5 border-2 border-brand-bg shadow-sm flex items-center justify-center"
+                  title="Verified BukiePassport Partner"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-white" />
+                </div>
+              ) : idCardUrl && chkLegible && chkOriented && chkValid ? (
+                <div 
+                  className="absolute -bottom-1.5 -right-1.5 bg-amber-500 text-white rounded-xl p-1.5 border-2 border-brand-bg shadow-sm flex items-center justify-center animate-pulse"
+                  title="Document ready for review"
+                >
+                  <RefreshCw className="w-3.5 h-3.5 text-white animate-spin" style={{ animationDuration: '6s' }} />
+                </div>
+              ) : null}
+            </div>
+
+            {/* Profile Info block */}
+            <div className="flex-1 text-center md:text-left space-y-2">
+              <div className="flex flex-col md:flex-row md:items-center gap-2">
+                <h3 className="text-lg font-display font-bold text-brand-navy leading-snug">{userName || 'Artisan Partner'}</h3>
+                <div className="flex items-center justify-center md:justify-start gap-1.5">
+                  {isVerified ? (
+                    <span className="text-[9px] bg-brand-green text-white font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider font-mono">
+                      Verified Active
+                    </span>
+                  ) : (
+                    <span className="text-[9px] bg-brand-surface text-brand-navy/60 font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider font-mono border border-brand-border">
+                      Pending Setup
+                    </span>
+                  )}
+                  {/* Dynamic Tier Level */}
+                  <span className={`text-[9px] text-white font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider font-mono ${
+                    (completedJobsCount || 0) >= 4 ? 'bg-amber-600' : (completedJobsCount || 0) >= 1 ? 'bg-blue-600' : 'bg-gray-500'
+                  }`}>
+                    { (completedJobsCount || 0) >= 4 ? 'Gold Tier' : (completedJobsCount || 0) >= 1 ? 'Silver Tier' : 'Bronze Tier' }
+                  </span>
+                </div>
+              </div>
+
+              {/* Trade pricing / details */}
+              <div className="flex items-center justify-center md:justify-start gap-3 text-xs text-brand-navy/60 font-medium">
+                <span>Rate: <strong className="text-brand-navy">{hourlyRate ? `₦${hourlyRate.toLocaleString()}/hr` : 'Negotiable'}</strong></span>
+                <span className="w-1 h-1 bg-brand-border rounded-full"></span>
+                <span>Jobs: <strong className="text-brand-navy">{completedJobsCount || 0} completed</strong></span>
+              </div>
+
+              <div className="text-xs text-brand-navy/70 italic leading-relaxed max-w-md">
+                {bio ? (bio.length > 120 ? `${bio.substring(0, 120)}...` : bio) : 'No description provided yet.'}
+              </div>
+
+              {/* Verified Skills Display */}
+              <div className="pt-2">
+                <span className="block text-[10px] font-display font-extrabold text-brand-navy/40 uppercase tracking-widest mb-1.5">Verified Skills</span>
+                <div className="flex flex-wrap justify-center md:justify-start gap-1.5">
+                  {selectedSkills.map((skill) => (
+                    <span key={skill} className="text-[10px] font-bold bg-brand-surface text-brand-navy border border-brand-border/60 px-2 py-1 rounded-lg">
+                      {skill}
+                    </span>
+                  ))}
+                  {selectedSkills.length === 0 && (
+                    <span className="text-[10px] text-brand-navy/40 italic">No skills selected</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
  
         {/* Setup Form */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8" id="passport-form-container">
-          <form onSubmit={handleSave} className="space-y-5" id="passport-setup-form">
+        <div className="bg-brand-surface rounded-2xl shadow-sm border border-brand-border/60 p-6 md:p-8" id="passport-form-container">
+          <form onSubmit={handleSave} className="space-y-6" id="passport-setup-form">
             
             {/* Ratings & Completed Jobs Stats Section */}
             {completedJobsCount !== null && completedJobsCount > 0 ? (
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 rounded-2xl p-5 flex items-center justify-between shadow-sm mb-2 animate-fade-in" id="ratings-average-stats-section">
+              <div className="bg-brand-bg border border-brand-border rounded-2xl p-5 flex items-center justify-between shadow-xs mb-2 animate-fade-in" id="ratings-average-stats-section">
                 <div className="space-y-1">
-                  <span className="block text-[10px] font-black font-mono text-amber-800 uppercase tracking-widest">
+                  <span className="block text-[10px] font-black font-mono text-brand-navy/60 uppercase tracking-widest">
                     Your Track Record
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="text-3xl font-black text-gray-900 font-mono tracking-tight">
+                    <span className="text-3xl font-black text-brand-navy font-mono tracking-tight">
                       {avgRating !== null ? avgRating.toFixed(1) : '5.0'}
                     </span>
                     <div className="flex flex-col">
@@ -554,33 +655,33 @@ export default function PassportSetupPage() {
                         {Array.from({ length: 5 }).map((_, idx) => (
                           <Star 
                             key={idx} 
-                            className={`w-4 h-4 ${idx < Math.round(avgRating || 5) ? 'fill-amber-400 text-amber-400' : 'text-gray-205'}`} 
+                            className={`w-4 h-4 ${idx < Math.round(avgRating || 5) ? 'fill-amber-400 text-amber-400' : 'text-brand-border'}`} 
                           />
                         ))}
                       </div>
-                      <span className="text-[10px] text-amber-700 font-semibold font-mono mt-0.5">
+                      <span className="text-[10px] text-brand-navy/60 font-semibold font-mono mt-0.5">
                         based on {completedJobsCount} completed {completedJobsCount === 1 ? 'job' : 'jobs'}
                       </span>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-white/80 border border-amber-200 hover:border-amber-300 transition-all rounded-xl p-3 text-center min-w-24">
-                  <span className="block text-[9px] font-bold text-gray-400 uppercase">Hired Count</span>
-                  <span className="text-xl font-black text-[#0A192F] font-mono leading-none">{completedJobsCount}</span>
+                <div className="bg-brand-surface border border-brand-border hover:border-brand-border/80 transition-all rounded-xl p-3 text-center min-w-24">
+                  <span className="block text-[9px] font-bold text-brand-navy/55 uppercase">Hired Count</span>
+                  <span className="text-xl font-black text-brand-navy font-mono leading-none">{completedJobsCount}</span>
                 </div>
               </div>
             ) : null}
 
             {/* Professional Profile Photo Section */}
             <div id="field-profile-picture" className="space-y-3">
-              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider font-display">
                 Professional Profile Picture
               </label>
 
               <div 
-                className={`border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center transition-all ${
-                  dragActive ? 'border-[#0a192f] bg-blue-50/40' : 'border-gray-200 hover:border-gray-300'
+                className={`border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center transition-all bg-brand-bg ${
+                  dragActive ? 'border-brand-green bg-brand-green/5' : 'border-brand-border hover:border-brand-border/80'
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
@@ -589,37 +690,45 @@ export default function PassportSetupPage() {
               >
                 {photoUrl ? (
                   <div className="relative flex flex-col items-center gap-3">
-                    <div className="relative w-28 h-28 rounded-2xl overflow-hidden border-4 border-white shadow-md bg-gray-100">
-                      <img src={photoUrl} alt="Preview" className="w-full h-full object-cover" />
+                    <div className="relative w-28 h-28 rounded-xl overflow-hidden border-2 border-brand-border shadow-md bg-brand-surface">
+                      <Image
+                        src={photoUrl}
+                        alt="Preview"
+                        width={112}
+                        height={112}
+                        unoptimized={true}
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
                       <button
                         type="button"
                         onClick={() => setPhotoUrl('')}
-                        className="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full hover:bg-red-700 transition-all shadow-md cursor-pointer flex items-center justify-center"
+                        className="absolute top-1 right-1 bg-red-650 text-white p-1 rounded-full hover:bg-red-750 transition-all shadow-md cursor-pointer flex items-center justify-center"
                         title="Remove image"
                         id="remove-avatar-btn"
                       >
-                        <X className="w-3 h-3" />
+                        <X className="w-3.5 h-3.5" />
                       </button>
                     </div>
-                    <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-800 text-xs font-black uppercase px-3 py-1.5 rounded-xl shadow-sm">
+                    <span className="inline-flex items-center gap-1.5 bg-brand-green/10 border border-brand-green/30 text-brand-green text-xs font-black uppercase px-3 py-1.5 rounded-xl">
                       ✓ Profile image loaded successfully
                     </span>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-gray-50 border border-gray-100 text-gray-400 rounded-2xl flex items-center justify-center mb-3">
-                      <User className="w-8 h-8 text-gray-400" />
+                    <div className="w-14 h-14 bg-brand-surface border border-brand-border/60 text-brand-navy/40 rounded-xl flex items-center justify-center mb-3">
+                      <User className="w-6 h-6 text-brand-navy/40" />
                     </div>
                     
-                    <span className="text-xs font-bold text-gray-700">Drag and drop your image, or click to browse</span>
-                    <span className="text-[10px] text-gray-400 mt-1">Supports PNG, JPG, JPEG up to 4MB</span>
+                    <span className="text-xs font-bold text-brand-navy/85">Drag and drop your image, or click to browse</span>
+                    <span className="text-[10px] text-brand-navy/45 mt-1">Supports PNG, JPG, JPEG up to 4MB</span>
                   </div>
                 )}
 
                 {/* Video elements if camera is live */}
                 {isCameraActive && (
-                  <div className="mt-4 flex flex-col items-center gap-3 w-full max-w-sm bg-gray-900 p-4 rounded-2xl border border-gray-800 shadow-xl z-20">
-                    <div className="relative rounded-xl overflow-hidden bg-black aspect-video w-full border border-gray-700">
+                  <div className="mt-4 flex flex-col items-center gap-3 w-full max-w-sm bg-brand-navy p-4 rounded-xl border border-brand-border/40 shadow-xl z-20">
+                    <div className="relative rounded-lg overflow-hidden bg-black aspect-video w-full border border-brand-border/20">
                       <video 
                         ref={videoRef}
                         autoPlay 
@@ -632,7 +741,7 @@ export default function PassportSetupPage() {
                       <button
                         type="button"
                         onClick={handleCapture}
-                        className="bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold text-xs uppercase tracking-wider px-4 py-2 rounded-xl transition-all shadow-md cursor-pointer flex items-center gap-1.5"
+                        className="bg-brand-green hover:bg-brand-green/90 text-white font-bold text-xs uppercase tracking-wider px-4 py-2 rounded-xl transition-all shadow-md cursor-pointer flex items-center gap-1.5 font-display"
                         id="capture-live-snap-btn"
                       >
                         <Camera className="w-3.5 h-3.5" />
@@ -641,7 +750,7 @@ export default function PassportSetupPage() {
                       <button
                         type="button"
                         onClick={stopCamera}
-                        className="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold text-xs uppercase tracking-wider px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5"
+                        className="bg-brand-surface hover:bg-brand-border text-brand-navy font-bold text-xs uppercase tracking-wider px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 border border-brand-border"
                         id="cancel-live-cam-btn"
                       >
                         <X className="w-3.5 h-3.5" />
@@ -652,7 +761,7 @@ export default function PassportSetupPage() {
                 )}
 
                 {cameraError && (
-                  <div className="mt-3 text-[10px] text-red-600 font-medium bg-red-50 px-3 py-1 rounded-lg">
+                  <div className="mt-3 text-[10px] text-red-650 font-medium bg-red-50 px-3 py-1 rounded-lg">
                     {cameraError}
                   </div>
                 )}
@@ -662,7 +771,7 @@ export default function PassportSetupPage() {
                   <div className="flex flex-wrap justify-center gap-3 mt-4">
                     <label 
                       htmlFor="avatar-file-input"
-                      className="bg-gray-50 hover:bg-gray-100 border border-gray-250 text-gray-700 font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl cursor-pointer transition-all flex items-center gap-1.5 shadow-sm"
+                      className="bg-brand-surface hover:bg-brand-border border border-brand-border text-brand-navy font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl cursor-pointer transition-all flex items-center gap-1.5 shadow-sm"
                       id="upload-file-label"
                     >
                       <UploadCloud className="w-3.5 h-3.5" />
@@ -679,7 +788,7 @@ export default function PassportSetupPage() {
                     <button
                       type="button"
                       onClick={startCamera}
-                      className="bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl cursor-pointer transition-all flex items-center gap-1.5 shadow-sm"
+                      className="bg-brand-green hover:bg-brand-green/90 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl cursor-pointer transition-all flex items-center gap-1.5 shadow-sm font-display"
                       id="trigger-live-camera-btn"
                     >
                       <Camera className="w-3.5 h-3.5" />
@@ -691,32 +800,32 @@ export default function PassportSetupPage() {
             </div>
 
             {/* Government ID card verification field */}
-            <div id="field-verification-document" className="space-y-3 bg-slate-50/50 p-5 rounded-2xl border border-gray-150">
-              <div className="flex items-center justify-between border-b border-gray-200/60 pb-3">
+            <div id="field-verification-document" className="space-y-3 bg-brand-bg p-5 rounded-2xl border border-brand-border">
+              <div className="flex items-center justify-between border-b border-brand-border/60 pb-3">
                 <div>
-                  <label className="block text-xs font-bold text-[#0A192F] uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider font-display">
                     Government ID Card Verification
                   </label>
-                  <span className="block text-[10px] text-gray-400 mt-0.5">
+                  <span className="block text-[10px] text-brand-navy/50 mt-0.5 font-sans">
                     For verifying professional identity and security compliance
                   </span>
                 </div>
                 {idCardUrl && !isVerified && (
-                  <span className="inline-flex items-center gap-1.5 bg-amber-500 border border-amber-600 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-md animate-pulse shadow-sm">
+                  <span className="inline-flex items-center gap-1.5 bg-amber-500 border border-amber-600 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-md animate-pulse shadow-sm font-mono">
                     <RefreshCw className="w-3 h-3 text-white animate-spin" style={{ animationDuration: '4s' }} />
                     Pending Verification
                   </span>
                 )}
                 {isVerified && (
-                  <span className="inline-flex items-center gap-1 bg-[#0A192F] border border-[#112a4f] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-md shadow-sm">
+                  <span className="inline-flex items-center gap-1 bg-brand-green text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-md shadow-sm font-mono">
                     ✓ Identity Verified
                   </span>
                 )}
               </div>
 
               <div 
-                className={`border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center transition-all bg-white ${
-                  idCardDragActive ? 'border-[#0a192f] bg-blue-50/40' : 'border-gray-200 hover:border-gray-300'
+                className={`border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center transition-all bg-brand-bg ${
+                  idCardDragActive ? 'border-brand-green bg-brand-green/5' : 'border-brand-border hover:border-brand-border/80'
                 }`}
                 onDragEnter={handleIdCardDrag}
                 onDragLeave={handleIdCardDrag}
@@ -725,8 +834,16 @@ export default function PassportSetupPage() {
               >
                 {idCardUrl ? (
                   <div className="relative flex flex-col items-center gap-3 w-full">
-                    <div className="relative w-full max-w-sm h-36 rounded-xl overflow-hidden border border-gray-200 bg-gray-50 flex items-center justify-center group shadow-sm">
-                      <img src={idCardUrl} alt="Government ID Preview" className="w-full h-full object-contain" />
+                    <div className="relative w-full max-w-sm h-36 rounded-xl overflow-hidden border border-brand-border bg-brand-surface flex items-center justify-center group shadow-sm">
+                      <Image
+                        src={idCardUrl}
+                        alt="Government ID Preview"
+                        width={384}
+                        height={144}
+                        unoptimized={true}
+                        className="w-full h-full object-contain"
+                        referrerPolicy="no-referrer"
+                      />
                       <button
                         type="button"
                         onClick={() => {
@@ -744,22 +861,22 @@ export default function PassportSetupPage() {
                     </div>
                     
                     <div className="text-center">
-                      <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-805 text-xs font-black uppercase px-3 py-1.5 rounded-xl shadow-sm">
+                      <span className="inline-flex items-center gap-1.5 bg-brand-green/10 border border-brand-green/30 text-brand-green text-xs font-black uppercase px-3 py-1.5 rounded-xl">
                         ✓ ID document loaded successfully
                       </span>
-                      <span className="text-[10px] text-gray-400 block mt-0.5">
+                      <span className="text-[10px] text-brand-navy/50 block mt-0.5">
                         Click &apos;Save my profile&apos; at the bottom to submit for review.
                       </span>
                     </div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-12 bg-gray-50 border border-gray-100 text-gray-400 rounded-xl flex items-center justify-center mb-3">
-                      <FileText className="w-6 h-6 text-gray-400" />
+                    <div className="w-16 h-12 bg-brand-surface border border-brand-border/60 text-brand-navy/40 rounded-xl flex items-center justify-center mb-3">
+                      <FileText className="w-6 h-6 text-brand-navy/40" />
                     </div>
                     
-                    <span className="text-xs font-bold text-gray-700">Drag & drop your Government ID image, or browse</span>
-                    <span className="text-[10px] text-gray-400 mt-1">Supports national papers, license, or passport (PNG, JPG, max 4MB)</span>
+                    <span className="text-xs font-bold text-brand-navy/85">Drag & drop your Government ID image, or browse</span>
+                    <span className="text-[10px] text-brand-navy/45 mt-1">Supports national papers, license, or passport (PNG, JPG, max 4MB)</span>
                   </div>
                 )}
 
@@ -768,7 +885,7 @@ export default function PassportSetupPage() {
                   <div className="flex justify-center mt-4">
                     <label 
                       htmlFor="id-card-file-input"
-                      className="bg-gray-50 hover:bg-gray-100 border border-gray-250 text-gray-700 font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl cursor-pointer transition-all flex items-center gap-1.5 shadow-sm"
+                      className="bg-brand-surface hover:bg-brand-border border border-brand-border text-brand-navy font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl cursor-pointer transition-all flex items-center gap-1.5 shadow-sm"
                       id="upload-id-card-label"
                     >
                       <UploadCloud className="w-3.5 h-3.5" />
@@ -789,58 +906,58 @@ export default function PassportSetupPage() {
             {/* Bio info */}
             <div id="field-bio" className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider font-display">
                   Tell employers about yourself
                 </label>
                 <button
                   type="button"
                   id="bio-help-btn"
                   onClick={() => setShowBioHelp(!showBioHelp)}
-                  className="inline-flex items-center gap-1 text-[10px] font-black text-amber-900 bg-amber-100 hover:bg-amber-200 border border-amber-200 px-2 py-1 rounded-lg transition-all cursor-pointer shadow-sm"
+                  className="inline-flex items-center gap-1 text-[10px] font-black text-brand-green bg-brand-green/10 hover:bg-brand-green/20 border border-brand-green/20 px-2 py-1 rounded-lg transition-all cursor-pointer shadow-sm"
                   title="Show description suggestions for more job offers"
                 >
-                  <HelpCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <HelpCircle className="w-3.5 h-3.5 text-brand-green shrink-0" />
                   <span>Bio suggestions</span>
                 </button>
               </div>
 
               {showBioHelp && (
-                <div id="bio-help-card" className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 text-slate-850 p-4 rounded-xl text-xs space-y-2.5 shadow-sm relative animate-fadeIn">
+                <div id="bio-help-card" className="bg-brand-surface border border-brand-border text-brand-navy p-4 rounded-xl text-xs space-y-2.5 shadow-sm relative animate-fadeIn">
                   <button
                     type="button"
                     onClick={() => setShowBioHelp(false)}
-                    className="absolute top-2.5 right-2.5 text-amber-800 hover:text-amber-955 p-1 cursor-pointer"
+                    className="absolute top-2.5 right-2.5 text-brand-navy/50 hover:text-brand-navy p-1 cursor-pointer"
                     aria-label="Close"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
                   
-                  <div className="flex items-center gap-1.5 font-black text-amber-950 border-b border-amber-200/60 pb-1.5 uppercase tracking-wider text-[10px]">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+                  <div className="flex items-center gap-1.5 font-black text-brand-navy border-b border-brand-border pb-1.5 uppercase tracking-wider text-[10px] font-display">
+                    <Sparkles className="w-3.5 h-3.5 text-brand-green animate-pulse" />
                     <span>How to write a high-converting Bio</span>
                   </div>
                   
-                  <p className="text-gray-600 leading-relaxed font-medium">
+                  <p className="text-brand-navy/70 leading-relaxed font-medium">
                     A great bio connects with clients instantly and earns 3x more responses. Use this simple blueprint:
                   </p>
                   
-                  <ul className="space-y-2 text-gray-700 pl-4 list-disc list-outside">
+                  <ul className="space-y-2 text-brand-navy/80 pl-4 list-disc list-outside">
                     <li>
-                      <strong className="text-amber-950">Start with a Clear Hook:</strong> Say exactly what you do, for how long, and where (e.g., <span className="italic text-gray-500">&ldquo;Expert Plumber with 5+ years servicing residential buildings in Surulere&rdquo;</span>).
+                      <strong className="text-brand-navy">Start with a Clear Hook:</strong> Say exactly what you do, for how long, and where (e.g., <span className="italic text-brand-navy/55">&ldquo;Expert Plumber with 5+ years servicing residential buildings in Surulere&rdquo;</span>).
                     </li>
                     <li>
-                      <strong className="text-amber-950">List Your Specific Services:</strong> List exact, searchable specialties (e.g., <span className="italic text-gray-500">&ldquo;leak repair, copper pipe threading, bathroom installations&rdquo;</span>) so clients find you.
+                      <strong className="text-brand-navy">List Your Specific Services:</strong> List exact, searchable specialties (e.g., <span className="italic text-brand-navy/55">&ldquo;leak repair, copper pipe threading, bathroom installations&rdquo;</span>) so clients find you.
                     </li>
                     <li>
-                      <strong className="text-amber-950">Mention Your Availability:</strong> Highlight if you can support emergencies or offer same-day replies (e.g., <span className="italic text-gray-500">&ldquo;Highly responsive and available for urgent weekend calls&rdquo;</span>).
+                      <strong className="text-brand-navy">Mention Your Availability:</strong> Highlight if you can support emergencies or offer same-day replies (e.g., <span className="italic text-brand-navy/55">&ldquo;Highly responsive and available for urgent weekend calls&rdquo;</span>).
                     </li>
                     <li>
-                      <strong className="text-amber-950">Add a Trust Statement:</strong> Assure they receive premium results (e.g., <span className="italic text-gray-500">&ldquo;I charge fairly, respect deadlines, and keep the work area spotless&rdquo;</span>).
+                      <strong className="text-brand-navy">Add a Trust Statement:</strong> Assure they receive premium results (e.g., <span className="italic text-brand-navy/55">&ldquo;I charge fairly, respect deadlines, and keep the work area spotless&rdquo;</span>).
                     </li>
                   </ul>
                   
-                  <div className="bg-white/70 p-2 rounded-lg border border-amber-100 text-[11px] text-amber-950 flex items-center gap-1.5 font-medium shadow-2xs">
-                    <span className="font-extrabold text-amber-700">Pro-Tip:</span> Profiles with bios longer than 150 characters acquire significantly more interview callbacks from local employers.
+                  <div className="bg-brand-bg p-2 rounded-lg border border-brand-border text-[11px] text-brand-navy flex items-center gap-1.5 font-medium shadow-2xs">
+                    <span className="font-extrabold text-brand-green font-display">Pro-Tip:</span> Profiles with bios longer than 150 characters acquire significantly more interview callbacks from local employers.
                   </div>
                 </div>
               )}
@@ -850,7 +967,7 @@ export default function PassportSetupPage() {
                 required
                 rows={3}
                 placeholder="e.g. I am a plumber with 4 years of experience in Surulere and Ikeja. I fix burst pipes, install toilets, and repair water heaters. I am reliable and available on short notice."
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm resize-none bg-white"
+                className="w-full px-4 py-3 rounded-xl border border-brand-border focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent text-sm resize-none bg-brand-bg text-brand-navy"
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
               />
@@ -859,52 +976,52 @@ export default function PassportSetupPage() {
             {/* Skills array input */}
             <div id="field-skills" className="space-y-4">
               <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider font-display">
                   What can you do?
                 </label>
                 <button
                   type="button"
                   id="skills-help-btn"
                   onClick={() => setShowSkillsHelp(!showSkillsHelp)}
-                  className="inline-flex items-center gap-1 text-[10px] font-black text-amber-900 bg-amber-100 hover:bg-amber-200 border border-amber-200 px-2 py-1 rounded-lg transition-all cursor-pointer shadow-sm"
+                  className="inline-flex items-center gap-1 text-[10px] font-black text-brand-green bg-brand-green/10 hover:bg-brand-green/20 border border-brand-green/20 px-2 py-1 rounded-lg transition-all cursor-pointer shadow-sm"
                   title="Show advice for high-converting Skills"
                 >
-                  <HelpCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <HelpCircle className="w-3.5 h-3.5 text-brand-green shrink-0" />
                   <span>Skills suggestions</span>
                 </button>
               </div>
 
               {showSkillsHelp && (
-                <div id="skills-help-card" className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 text-slate-855 p-4 rounded-xl text-xs space-y-2.5 shadow-sm relative animate-fadeIn">
+                <div id="skills-help-card" className="bg-brand-surface border border-brand-border text-brand-navy p-4 rounded-xl text-xs space-y-2.5 shadow-sm relative animate-fadeIn">
                   <button
                     type="button"
                     onClick={() => setShowSkillsHelp(false)}
-                    className="absolute top-2.5 right-2.5 text-amber-800 hover:text-amber-955 p-1 cursor-pointer"
+                    className="absolute top-2.5 right-2.5 text-brand-navy/55 hover:text-brand-navy p-1 cursor-pointer"
                     aria-label="Close"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
                   
-                  <div className="flex items-center gap-1.5 font-black text-amber-950 border-b border-amber-200/60 pb-1.5 uppercase tracking-wider text-[10px]">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+                  <div className="flex items-center gap-1.5 font-black text-brand-navy border-b border-brand-border pb-1.5 uppercase tracking-wider text-[10px] font-display">
+                    <Sparkles className="w-3.5 h-3.5 text-brand-green animate-pulse" />
                     <span>How to select high-converting Skills</span>
                   </div>
                   
-                  <p className="text-gray-600 leading-relaxed font-medium">
+                  <p className="text-brand-navy/70 leading-relaxed font-medium">
                     Adding precise keywords ensures you rank matching search results when clients seek a professional.
                   </p>
                   
-                  <ul className="space-y-2 text-gray-750 pl-4 list-disc list-outside">
+                  <ul className="space-y-2 text-brand-navy/80 pl-4 list-disc list-outside">
                     <li>
-                      <strong className="text-amber-950">Avoid Hyper-Generic Terms:</strong> Instead of listing just <span className="italic text-gray-500">&ldquo;Plumbing&rdquo;</span>, add specific crafts like <span className="italic text-gray-500">&ldquo;Leak Detection, Drain Clog Repair, Copper Pipe Fitting&rdquo;</span>.
+                      <strong className="text-brand-navy">Avoid Hyper-Generic Terms:</strong> Instead of listing just <span className="italic text-brand-navy/55">&ldquo;Plumbing&rdquo;</span>, add specific crafts like <span className="italic text-brand-navy/55">&ldquo;Leak Detection, Drain Clog Repair, Copper Pipe Fitting&rdquo;</span>.
                     </li>
                     <li>
-                      <strong className="text-amber-950">Feature Industry Equipment & Certifications:</strong> Let clients know you can handle brand fixtures or unique repair apparatus.
+                      <strong className="text-brand-navy">Feature Industry Equipment & Certifications:</strong> Let clients know you can handle brand fixtures or unique repair apparatus.
                     </li>
                   </ul>
                   
-                  <div className="bg-white/70 p-2 rounded-lg border border-amber-100 text-[11px] text-amber-950 flex items-center gap-1.5 font-medium shadow-2xs">
-                    <span className="font-extrabold text-amber-700 font-mono text-[10px] uppercase">Suggestions:</span> Select relevant options from the list below or type custom entries.
+                  <div className="bg-brand-bg p-2 rounded-lg border border-brand-border text-[11px] text-brand-navy flex items-center gap-1.5 font-medium shadow-2xs">
+                    <span className="font-extrabold text-brand-green font-mono text-[10px] uppercase">Suggestions:</span> Select relevant options from the list below or type custom entries.
                   </div>
                 </div>
               )}
@@ -916,13 +1033,13 @@ export default function PassportSetupPage() {
                   return (
                     <span
                       key={skill}
-                      className="inline-flex items-center gap-1 bg-[#0A192F]/5 text-[#0A192F] text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-[#0A192F]/10"
+                      className="inline-flex items-center gap-1 bg-brand-green/10 text-brand-green text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-brand-green/20"
                     >
                       {option?.label || skill}
                       <button
                         type="button"
                         onClick={() => setSelectedSkills((prev) => prev.filter((s) => s !== skill))}
-                        className="text-gray-400 hover:text-red-500 transition-colors ml-0.5 cursor-pointer font-bold text-sm"
+                        className="text-brand-green hover:text-red-500 transition-colors ml-0.5 cursor-pointer font-bold text-sm"
                       >
                         ×
                       </button>
@@ -930,7 +1047,7 @@ export default function PassportSetupPage() {
                   );
                 })}
                 {selectedSkills.length === 0 && (
-                  <span className="text-xs text-gray-400 italic py-1.5">Pick from the list or write your own below</span>
+                  <span className="text-xs text-brand-navy/50 italic py-1.5">Pick from the list or write your own below</span>
                 )}
               </div>
 
@@ -938,7 +1055,7 @@ export default function PassportSetupPage() {
               <button
                 type="button"
                 onClick={() => setShowSkillDropdown(!showSkillDropdown)}
-                className="w-full bg-gray-50 border border-gray-200 text-sm text-left px-4 py-3 rounded-xl transition-all outline-none text-gray-700 font-medium flex justify-between items-center hover:border-gray-300 cursor-pointer"
+                className="w-full bg-brand-bg border border-brand-border text-sm text-left px-4 py-3 rounded-xl transition-all outline-none text-brand-navy font-medium flex justify-between items-center hover:border-brand-border/80 cursor-pointer"
               >
                 <span>{showSkillDropdown ? 'Close list' : 'Choose from list...'}</span>
                 <span className={`transition-transform ${showSkillDropdown ? 'rotate-180' : ''}`}>▼</span>
@@ -946,11 +1063,11 @@ export default function PassportSetupPage() {
 
               {/* Dropdown list */}
               {showSkillDropdown && (
-                <div className="mt-1 border border-gray-200 rounded-xl bg-white shadow-lg max-h-64 overflow-y-auto divide-y divide-gray-100">
+                <div className="mt-1 border border-brand-border rounded-xl bg-brand-surface shadow-lg max-h-64 overflow-y-auto divide-y divide-brand-border">
                   {/* Group each section */}
                   {['Trade & Physical Work', 'Digital & Remote Work', 'Hybrid & Event Work'].map((group) => (
                     <div key={group} className="p-2">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 px-2 py-1">
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-brand-navy/40 px-2 py-1">
                         {group}
                       </span>
                       <div className="grid grid-cols-2 gap-1">
@@ -969,8 +1086,8 @@ export default function PassportSetupPage() {
                               }}
                               className={`text-left text-xs px-2.5 py-1.5 rounded-lg transition-all cursor-pointer ${
                                 isSelected
-                                  ? 'bg-[#0A192F] text-white font-semibold shadow-xs'
-                                  : 'hover:bg-gray-100 text-gray-600 font-medium'
+                                  ? 'bg-brand-green text-white font-semibold shadow-xs'
+                                  : 'hover:bg-brand-bg text-brand-navy/80 font-medium'
                               }`}
                             >
                               {isSelected && '✓ '}{option.label}
@@ -1000,7 +1117,7 @@ export default function PassportSetupPage() {
                       setCustomSkill('');
                     }
                   }}
-                  className="flex-1 bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-xs px-4 py-2.5 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium"
+                  className="flex-1 bg-brand-bg border border-brand-border focus:border-brand-green focus:bg-brand-surface text-xs px-4 py-2.5 rounded-xl transition-all outline-none text-brand-navy placeholder-brand-navy/40 font-medium"
                 />
                 <button
                   type="button"
@@ -1011,19 +1128,19 @@ export default function PassportSetupPage() {
                     }
                   }}
                   disabled={!customSkill.trim()}
-                  className="bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all disabled:opacity-40 active:scale-95 cursor-pointer"
+                  className="bg-brand-green hover:bg-brand-green/90 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all disabled:opacity-40 active:scale-95 cursor-pointer font-display"
                 >
                   Add
                 </button>
               </div>
             </div>
 
-            {/* Blue check prompt placeholder */}
-            <div className="bg-[#0A192F] text-white p-4 rounded-xl border border-gray-800 flex items-center gap-3" id="blue-check-badge-ad">
-              <ShieldCheck className="w-10 h-10 text-blue-400 shrink-0" />
+            {/* Premium badge promotion */}
+            <div className="bg-brand-green/10 text-brand-navy p-4 rounded-xl border border-brand-green/20 flex items-center gap-3" id="blue-check-badge-ad">
+              <ShieldCheck className="w-10 h-10 text-brand-green shrink-0 animate-pulse" />
               <div>
-                <span className="block text-xs font-extrabold text-blue-400 uppercase tracking-wider font-mono">Get verified. Earn the badge.</span>
-                <span className="block text-[10px] text-gray-400 leading-normal mt-0.5">
+                <span className="block text-xs font-extrabold text-brand-green uppercase tracking-wider font-mono">Get verified. Earn the badge.</span>
+                <span className="block text-[10px] text-brand-navy/70 leading-normal mt-0.5 font-sans">
                   Verified workers appear higher in search results and get more job offers. It costs ₦1,500 per year, and you can do it right after setting up your profile.
                 </span>
               </div>
@@ -1032,31 +1149,31 @@ export default function PassportSetupPage() {
             {/* Verification Checklist */}
             <div 
               id="verification-checklist-block" 
-              className={`p-5 rounded-2xl border transition-all ${
+              className={`p-5 rounded-xl border transition-all ${
                 isVerified 
-                  ? 'bg-blue-50/60 border-blue-200 shadow-xs' 
+                  ? 'bg-brand-green/5 border-brand-green/30 shadow-xs' 
                   : idCardUrl 
                     ? (chkLegible && chkOriented && chkValid)
-                      ? 'bg-blue-50/40 border-blue-300 shadow-md ring-1 ring-blue-350/20' 
-                      : 'bg-amber-50/30 border-amber-300 shadow-sm'
-                    : 'bg-gray-50 border-gray-200 shadow-xs'
+                      ? 'bg-brand-green/5 border-brand-green/40 shadow-md ring-1 ring-brand-green/25' 
+                      : 'bg-amber-50/50 border-amber-300 shadow-sm'
+                    : 'bg-brand-bg border-brand-border shadow-xs'
               }`}
             >
-              <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200/60">
+              <div className="flex items-center justify-between mb-4 pb-2 border-b border-brand-border/60">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className={`w-5 h-5 ${isVerified || (idCardUrl && chkLegible && chkOriented && chkValid) ? 'text-blue-600' : 'text-amber-500'}`} />
-                  <span className="text-xs font-black uppercase font-mono tracking-wider text-slate-900">
+                  <ShieldCheck className={`w-5 h-5 ${isVerified || (idCardUrl && chkLegible && chkOriented && chkValid) ? 'text-brand-green' : 'text-amber-500'}`} />
+                  <span className="text-xs font-black uppercase font-mono tracking-wider text-brand-navy font-display">
                     Verification Checklist
                   </span>
                 </div>
                 <div>
                   {isVerified ? (
-                    <span className="bg-[#0A192F] text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider">
+                    <span className="bg-brand-green text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider">
                       Verified
                     </span>
                   ) : idCardUrl ? (
                     (chkLegible && chkOriented && chkValid) ? (
-                      <span className="bg-blue-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider animate-pulse">
+                      <span className="bg-brand-green text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider animate-pulse">
                         Ready
                       </span>
                     ) : (
@@ -1065,7 +1182,7 @@ export default function PassportSetupPage() {
                       </span>
                     )
                   ) : (
-                    <span className="bg-gray-400 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider">
+                    <span className="bg-brand-surface text-brand-navy/40 border border-brand-border text-[9px] font-black uppercase px-2 py-0.5 rounded-md font-mono tracking-wider">
                       Awaiting ID
                     </span>
                   )}
@@ -1073,12 +1190,12 @@ export default function PassportSetupPage() {
               </div>
 
               {isVerified ? (
-                <div className="text-xs text-blue-950 space-y-1 font-medium">
+                <div className="text-xs text-brand-navy/90 space-y-1 font-medium">
                   <p className="font-bold flex items-center gap-1">
-                    <CheckCircle className="w-4 h-4 text-blue-600 shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-brand-green shrink-0" />
                     Passport status verified by BukiePassport Moderation!
                   </p>
-                  <p className="text-[11px] text-blue-800 leading-relaxed font-normal pl-5">
+                  <p className="text-[11px] text-brand-navy/60 leading-relaxed font-normal pl-5">
                     Your verification identity documents are current and active. You are cleared to save any updates.
                   </p>
                 </div>
@@ -1088,8 +1205,8 @@ export default function PassportSetupPage() {
                   <div className="flex items-start gap-3">
                     <div className="mt-0.5">
                       {idCardUrl ? (
-                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-850 border border-blue-300">
-                          <CheckCircle className="w-3.5 h-3.5 text-blue-700" />
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-brand-green/10 text-brand-green border border-brand-green/20">
+                          <CheckCircle className="w-3.5 h-3.5 text-brand-green" />
                         </span>
                       ) : (
                         <span className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-50 text-amber-850 border border-amber-300">
@@ -1098,10 +1215,10 @@ export default function PassportSetupPage() {
                       )}
                     </div>
                     <div className="flex-1 text-xs">
-                      <span className={`block font-black uppercase tracking-wider text-[10px] ${idCardUrl ? 'text-blue-850' : 'text-amber-800'}`}>
+                      <span className={`block font-black uppercase tracking-wider text-[10px] ${idCardUrl ? 'text-brand-green' : 'text-amber-800'}`}>
                         {idCardUrl ? '✓ Government ID Loaded' : '⚠ Government ID Required'}
                       </span>
-                      <span className="block text-[11px] text-gray-500 leading-relaxed font-medium mt-0.5">
+                      <span className="block text-[11px] text-brand-navy/60 leading-relaxed font-medium mt-0.5 font-sans">
                         {idCardUrl 
                           ? 'We automatically scanned the geometry. Image successfully detected.' 
                           : 'Please scroll up to "Government ID Document" and upload a JPG or PNG.'}
@@ -1111,7 +1228,7 @@ export default function PassportSetupPage() {
 
                   {/* Item 2: Legibility Attestation */}
                   <label 
-                    className={`flex items-start gap-3 cursor-pointer select-none rounded-xl p-2 -mx-2 transition-all hover:bg-gray-100 ${!idCardUrl ? 'opacity-50 pointer-events-none' : ''}`}
+                    className={`flex items-start gap-3 cursor-pointer select-none rounded-lg p-2 -mx-2 transition-all hover:bg-brand-bg ${!idCardUrl ? 'opacity-50 pointer-events-none' : ''}`}
                     onClick={() => idCardUrl && setChkLegible(!chkLegible)}
                   >
                     <input 
@@ -1120,13 +1237,13 @@ export default function PassportSetupPage() {
                       checked={chkLegible}
                       disabled={!idCardUrl}
                       onChange={() => {}} // handled by click container
-                      className="mt-1 h-4 w-4 rounded border-gray-300 text-[#0A192F] focus:ring-[#0A192F] cursor-pointer"
+                      className="mt-1 h-4 w-4 rounded border-brand-border text-brand-green focus:ring-brand-green cursor-pointer bg-brand-bg"
                     />
                     <div className="flex-1 text-xs">
-                      <span className="block font-bold text-gray-800">
+                      <span className="block font-bold text-brand-navy">
                         Is the ID clearly legible?
                       </span>
-                      <span className="block text-[11px] text-gray-400 leading-relaxed font-medium mt-0.5">
+                      <span className="block text-[11px] text-brand-navy/55 leading-relaxed font-medium mt-0.5">
                         All texts, identification numbers, and your portrait are sharp, clearly visible, and not blurred.
                       </span>
                     </div>
@@ -1134,7 +1251,7 @@ export default function PassportSetupPage() {
 
                   {/* Item 3: Orientation Attestation */}
                   <label 
-                    className={`flex items-start gap-3 cursor-pointer select-none rounded-xl p-2 -mx-2 transition-all hover:bg-gray-100 ${!idCardUrl ? 'opacity-50 pointer-events-none' : ''}`}
+                    className={`flex items-start gap-3 cursor-pointer select-none rounded-lg p-2 -mx-2 transition-all hover:bg-brand-bg ${!idCardUrl ? 'opacity-50 pointer-events-none' : ''}`}
                     onClick={() => idCardUrl && setChkOriented(!chkOriented)}
                   >
                     <input 
@@ -1143,13 +1260,13 @@ export default function PassportSetupPage() {
                       checked={chkOriented}
                       disabled={!idCardUrl}
                       onChange={() => {}}
-                      className="mt-1 h-4 w-4 rounded border-gray-300 text-[#0A192F] focus:ring-[#0A192F] cursor-pointer"
+                      className="mt-1 h-4 w-4 rounded border-brand-border text-brand-green focus:ring-brand-green cursor-pointer bg-brand-bg"
                     />
                     <div className="flex-1 text-xs">
-                      <span className="block font-bold text-gray-800">
+                      <span className="block font-bold text-brand-navy">
                         Is the document properly oriented?
                       </span>
-                      <span className="block text-[11px] text-gray-400 leading-relaxed font-medium mt-0.5">
+                      <span className="block text-[11px] text-brand-navy/55 leading-relaxed font-medium mt-0.5">
                         The document is upright, not rotated sideways, and not cropped or cut off at the edges.
                       </span>
                     </div>
@@ -1157,7 +1274,7 @@ export default function PassportSetupPage() {
 
                   {/* Item 4: Validity Attestation */}
                   <label 
-                    className={`flex items-start gap-3 cursor-pointer select-none rounded-xl p-2 -mx-2 transition-all hover:bg-gray-100 ${!idCardUrl ? 'opacity-50 pointer-events-none' : ''}`}
+                    className={`flex items-start gap-3 cursor-pointer select-none rounded-lg p-2 -mx-2 transition-all hover:bg-brand-bg ${!idCardUrl ? 'opacity-50 pointer-events-none' : ''}`}
                     onClick={() => idCardUrl && setChkValid(!chkValid)}
                   >
                     <input 
@@ -1166,20 +1283,20 @@ export default function PassportSetupPage() {
                       checked={chkValid}
                       disabled={!idCardUrl}
                       onChange={() => {}}
-                      className="mt-1 h-4 w-4 rounded border-gray-300 text-[#0A192F] focus:ring-[#0A192F] cursor-pointer"
+                      className="mt-1 h-4 w-4 rounded border-brand-border text-brand-green focus:ring-brand-green cursor-pointer bg-brand-bg"
                     />
                     <div className="flex-1 text-xs">
-                      <span className="block font-bold text-gray-800">
+                      <span className="block font-bold text-brand-navy">
                         Is this a valid, active government ID?
                       </span>
-                      <span className="block text-[11px] text-gray-400 leading-relaxed font-medium mt-0.5">
+                      <span className="block text-[11px] text-brand-navy/55 leading-relaxed font-medium mt-0.5">
                         This is an official national ID, voter&apos;s card, driver&apos;s license or passport and is currently not expired.
                       </span>
                     </div>
                   </label>
 
                   {idCardUrl && (!chkLegible || !chkOriented || !chkValid) && (
-                    <div className="text-[10px] text-amber-800 bg-amber-50/50 p-2.5 rounded-lg border border-amber-200 font-medium tracking-tight">
+                    <div className="text-[10px] text-amber-800 bg-amber-50/55 p-2.5 rounded-lg border border-amber-200 font-medium tracking-tight">
                       Note: You must confirm all standard checklist criteria above to unlock passport update capabilities.
                     </div>
                   )}
@@ -1196,8 +1313,8 @@ export default function PassportSetupPage() {
             )}
 
             {message && (
-              <div className="flex items-start gap-2 bg-blue-50 text-blue-950 p-3.5 rounded-xl text-xs border border-blue-200 shadow-sm" id="passport-message">
-                <Sparkles className="w-4 h-4 text-blue-600 shrink-0 animate-pulse" />
+              <div className="flex items-start gap-2 bg-brand-green/10 text-brand-navy p-3.5 rounded-xl text-xs border border-brand-green/20 shadow-sm" id="passport-message">
+                <Sparkles className="w-4 h-4 text-brand-green shrink-0 animate-pulse" />
                 <span className="font-medium">{message}</span>
               </div>
             )}
@@ -1207,7 +1324,7 @@ export default function PassportSetupPage() {
               id="passport-save-btn"
               type="submit"
               disabled={saving || (!isVerified && (!idCardUrl || !chkLegible || !chkOriented || !chkValid))}
-              className="w-full bg-[#0A192F] text-white py-3.5 px-4 rounded-xl font-bold uppercase tracking-wider text-xs shadow-md hover:bg-[#112a4f] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-40 disabled:bg-gray-400/80 disabled:cursor-not-allowed disabled:shadow-none active:scale-[0.98]"
+              className="w-full bg-brand-green text-white py-3.5 px-4 rounded-xl font-bold uppercase tracking-wider text-xs shadow-md hover:bg-brand-green/90 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-45 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:shadow-none active:scale-[0.98] font-display"
             >
               {saving ? (
                 <span>Saving details...</span>

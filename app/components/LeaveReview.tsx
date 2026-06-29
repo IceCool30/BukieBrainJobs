@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Star, Loader2, CheckCircle } from 'lucide-react'
 import { createReview } from '@/app/actions/reviews'
@@ -20,6 +20,11 @@ export function LeaveReview({ jobId, artisanId, artisanName, jobBudget, onSucces
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,6 +51,10 @@ export function LeaveReview({ jobId, artisanId, artisanName, jobBudget, onSucces
     } finally {
       setLoading(false)
     }
+  }
+
+  if (!mounted) {
+    return <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm min-h-[150px] flex items-center justify-center text-sm text-gray-400">Loading rating panel...</div>
   }
 
   if (success) {

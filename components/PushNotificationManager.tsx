@@ -7,8 +7,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 export function PushNotificationManager() {
   const [permission, setPermission] = useState<NotificationPermission>('default');
   const [showPrompt, setShowPrompt] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     if (typeof window !== 'undefined' && 'Notification' in window) {
       try {
         setPermission(Notification.permission);
@@ -22,7 +28,7 @@ export function PushNotificationManager() {
         console.error('Notification API not allowed in this context:', err);
       }
     }
-  }, []);
+  }, [mounted]);
 
   const handleRequestPermission = async () => {
     if (!('Notification' in window)) return;
@@ -63,6 +69,10 @@ export function PushNotificationManager() {
   const handleDismiss = () => {
     setShowPrompt(false);
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <AnimatePresence>

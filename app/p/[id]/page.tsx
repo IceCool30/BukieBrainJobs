@@ -130,7 +130,7 @@ export default function PublicPassportPage() {
     }
 
     loadWorkerPassport();
-  }, [workerId]);
+  }, [workerId, supabase.auth]);
 
   const handleCopyLink = () => {
     if (typeof navigator !== 'undefined') {
@@ -144,12 +144,12 @@ export default function PublicPassportPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
+      <main className="flex min-h-screen items-center justify-center bg-brand-bg text-brand-navy">
         <div className="flex flex-col items-center gap-3">
           <LogoLink
-            className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit mb-3 animate-pulse cursor-pointer hover:opacity-80 transition-opacity"
+            className="bg-brand-bg rounded-2xl shadow-sm border border-brand-border/40 flex items-center gap-1.5 p-1 w-fit mb-3 animate-pulse cursor-pointer hover:opacity-80 transition-opacity"
           />
-          <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
+          <span className="text-xs font-mono text-brand-navy/60 font-bold uppercase tracking-wide">
             Reading BukiePassport...
           </span>
         </div>
@@ -159,24 +159,24 @@ export default function PublicPassportPage() {
 
   if (errorMsg) {
     return (
-      <main className="min-h-screen bg-white text-[#0A192F] py-12 px-4 flex flex-col items-center justify-center">
+      <main className="min-h-screen bg-brand-bg text-brand-navy py-12 px-4 flex flex-col items-center justify-center">
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-md w-full bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center"
+          className="max-w-md w-full bg-brand-bg rounded-2xl shadow-xl border border-brand-border/40 p-8 text-center"
           id="not-found-passport-container"
         >
           <div className="w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-100">
             <AlertCircle className="w-8 h-8" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900 tracking-tight">Passport Not Found</h1>
-          <p className="text-sm text-gray-500 mt-2 leading-relaxed">
+          <h1 className="text-xl font-display font-bold text-brand-navy tracking-tight">Passport Not Found</h1>
+          <p className="text-sm text-brand-navy/60 mt-2 leading-relaxed">
             {errorMsg}
           </p>
           <div className="mt-6">
             <button
               onClick={() => router.push('/dashboard')}
-              className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+              className="w-full bg-brand-navy hover:bg-brand-navy/90 text-white text-xs font-semibold py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2 active:scale-[0.98]"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Marketplace</span>
@@ -197,77 +197,67 @@ export default function PublicPassportPage() {
   const disputes = profile?.dispute_strikes || 0;
 
   return (
-    <div className="min-h-screen bg-white text-[#0A192F] flex flex-col relative">
+    <div className="min-h-screen bg-brand-bg text-brand-navy flex flex-col relative">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       
       {/* Header with Logo and Hamburger */}
-      <header className="flex justify-between items-center px-4 py-3 border-b border-gray-100 shrink-0">
+      <header className="flex justify-between items-center px-4 sm:px-6 py-4 bg-brand-bg border-b border-brand-border/40 sticky top-0 z-50 shadow-[0_1px_3px_rgba(10,25,47,0.01)] backdrop-blur-md">
         <LogoLink />
         <button 
           onClick={() => setIsSidebarOpen(true)}
-          className="text-[#0A192F] ml-1 p-1 hover:bg-gray-100 rounded-full active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F]">
-          <Menu className="w-6 h-6" />
+          className="text-brand-navy p-2 hover:bg-brand-surface rounded-xl active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-brand-green"
+        >
+          <Menu className="w-5.5 h-5.5" />
         </button>
       </header>
 
-      <main className="flex-1 py-12 px-4 flex flex-col items-center justify-center">
-      
-      {/* Container wrapper mimicking physical card style */}
-      <div className="w-full max-w-md" id="public-passport-wrapper">
+      <main className="flex-grow py-8 px-4 sm:px-6 flex flex-col items-center justify-start w-full max-w-lg mx-auto space-y-6">
         
-        {/* Navigation / Header Actions */}
-        <div className="flex justify-between items-center mb-6">
+        {/* Navigation & Actions Header Frame */}
+        <div className="w-full flex justify-between items-center">
           <button
             onClick={() => router.push('/dashboard')}
-            className="group inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-gray-900 uppercase tracking-wider transition-all cursor-pointer bg-white px-4 py-2.5 rounded-xl border border-gray-100 shadow-sm"
+            className="group inline-flex items-center gap-2 text-xs font-bold text-brand-navy/60 hover:text-brand-navy uppercase tracking-wider transition-all duration-200 bg-brand-surface hover:bg-brand-surface/80 px-4 py-2.5 rounded-xl border border-brand-border/30 shadow-sm cursor-pointer"
             id="back-to-jobs-btn"
           >
-            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
             <span>Marketplace</span>
           </button>
 
           <button
             onClick={handleCopyLink}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-gray-900 uppercase tracking-wider bg-white px-4 py-2.5 rounded-xl border border-gray-100 shadow-sm cursor-pointer transition-all"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-navy/60 hover:text-brand-navy uppercase tracking-wider bg-brand-surface hover:bg-brand-surface/80 px-4 py-2.5 rounded-xl border border-brand-border/30 shadow-sm cursor-pointer transition-all duration-200"
             id="share-passport-btn"
           >
             <Share2 className="w-4 h-4" />
-            <span>{copied ? 'Copied URL!' : 'Share'}</span>
+            <span>{copied ? 'Copied!' : 'Share'}</span>
           </button>
         </div>
 
-        {/* Physical Badge Layout */}
+        {/* Profile Intro Card */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="bg-white rounded-[32px] overflow-hidden border border-gray-100 shadow-xl relative"
+          className="w-full bg-brand-bg rounded-2xl border border-brand-border/40 shadow-[0_8px_30px_rgba(10,25,47,0.02)] p-6 sm:p-8 relative overflow-hidden text-center"
           id="identity-passport-card"
         >
-          {/* Top Banner accent */}
-          <div className="bg-[#0A192F] h-24 relative overflow-hidden flex items-center justify-between px-6 active:scale-95 transition-all">
-            <div className="absolute right-0 top-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
-            <div className="text-white z-10 flex flex-col">
-              <span className="text-[10px] font-black uppercase font-mono tracking-widest text-blue-400">
-                BukieBrain Identity
-              </span>
-              <span className="text-xs text-gray-400 font-medium">Verified Local Artisan System</span>
-            </div>
-            <div className="w-8 h-8 rounded-lg bg-[#0A192F] border border-blue-400/50 flex items-center justify-center font-black text-white text-sm">
-              B
-            </div>
-          </div>
-
-          <div className="p-6 md:p-8 pt-0 -mt-10 flex flex-col items-center">
-            {/* Avatar Header block */}
-            <div className="relative">
-              {/* Profile Avatar Pill */}
-              <div id="worker-avatar" className="relative w-24 h-24 rounded-[24px] border-4 border-white bg-slate-100 shadow-md flex items-center justify-center text-[#0A192F] text-4xl font-extrabold select-none overflow-hidden">
+          {/* Design Accent Pattern */}
+          <div className="absolute right-0 top-0 w-32 h-32 bg-brand-green/5 rounded-full blur-2xl pointer-events-none"></div>
+          
+          <div className="flex flex-col items-center">
+            {/* Avatar Header Block */}
+            <div className="relative mb-5">
+              <div id="worker-avatar" className="relative w-24 h-24 rounded-2xl border-2 border-brand-border bg-brand-surface shadow-sm flex items-center justify-center text-brand-navy text-4xl font-display font-bold select-none overflow-hidden">
                 {profile?.avatar_url || passport?.avatar_url ? (
-                  <img
+                  <Image
                     src={profile?.avatar_url || passport?.avatar_url}
                     alt={workerName}
+                    width={96}
+                    height={96}
+                    unoptimized={true}
                     className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
                   />
                 ) : (
                   workerName.charAt(0).toUpperCase()
@@ -277,247 +267,263 @@ export default function PublicPassportPage() {
               {/* Verified badge status indicator overlay */}
               {isVerifiedWorker && (
                 <div 
-                  className="absolute -bottom-1 -right-1 bg-sky-500 text-white rounded-full p-1.5 border-2 border-white shadow-md flex items-center justify-center"
+                  className="absolute -bottom-1 -right-1 bg-brand-green text-white rounded-xl p-1.5 border-2 border-brand-bg shadow-sm flex items-center justify-center"
                   title="BukiePassport Verified Partner"
                   id="verified-badge-pill"
                 >
-                  <CheckCircle className="w-4 h-4 fill-white text-sky-500" />
+                  <CheckCircle className="w-4 h-4 fill-white text-brand-green" />
                 </div>
               )}
             </div>
 
-            {/* Profile Info Text block */}
-            <div className="text-center mt-4 space-y-1">
-              <div className="flex items-center justify-center gap-1.5 flex-wrap">
-                <span className="text-xl font-extrabold text-gray-900 tracking-tight">{workerName}</span>
+            {/* Profile Info Text Block */}
+            <div className="space-y-1.5 w-full">
+              <div className="flex items-center justify-center gap-2 flex-wrap">
+                <h2 className="text-2xl font-display font-bold text-brand-navy tracking-tight">{workerName}</h2>
                 {isVerifiedWorker && (
-                  <span className="text-[10px] text-sky-700 bg-sky-50 border border-sky-200 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-0.5">
+                  <span className="text-[10px] text-brand-green bg-brand-green/10 border border-brand-green/20 font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-0.5">
+                    <ShieldCheck className="w-3 h-3" />
                     Verified
                   </span>
                 )}
               </div>
               
-              <span className="block text-[11px] font-black text-blue-700 uppercase tracking-widest font-mono">
-                Artisan Specialist
+              <span className="block text-xs font-semibold text-brand-green uppercase tracking-wider font-sans">
+                Artisan Specialist • {profile?.location_lga || 'Local'}, {profile?.location_state || 'Nigeria'}
               </span>
 
               {/* Trust Score block */}
-              <div className="pt-2 flex items-center justify-center gap-2 text-xs font-bold text-gray-500" id="trust-rating-score">
+              <div className="pt-2 flex items-center justify-center gap-2 text-xs font-bold text-brand-navy/60" id="trust-rating-score">
                 {completedJobsCount === 0 || completedJobsCount === null ? (
-                  <span className="text-gray-500 font-bold bg-gray-50 border border-gray-150 px-2.5 py-1 rounded-full text-[11px] uppercase tracking-wide">
+                  <span className="text-brand-navy/50 font-semibold bg-brand-surface border border-brand-border/40 px-3 py-1 rounded-full text-[11px] uppercase tracking-wide">
                     New Worker (No Ratings Yet)
                   </span>
                 ) : (
-                  <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-100 px-3 py-1 rounded-full text-[11px] font-extrabold text-amber-800 uppercase tracking-wider">
-                    <span>
+                  <div className="flex items-center gap-2 bg-amber-50/70 border border-amber-200/50 px-3 py-1.5 rounded-full text-[11px] font-bold text-amber-800 uppercase tracking-wider">
+                    <div className="flex items-center">
                       {Array.from({ length: 5 }).map((_, idx) => (
-                        <span key={idx} className="text-amber-500 text-sm">
-                          {idx < Math.round(avgRating || 5) ? '★' : '☆'}
-                        </span>
+                        <Star key={idx} className={`w-3.5 h-3.5 ${idx < Math.round(avgRating || 5) ? 'text-amber-500 fill-amber-500' : 'text-brand-navy/15'}`} />
                       ))}
-                    </span>
-                    <span className="bg-white/80 px-1.5 py-0.5 rounded-md border border-amber-200 text-amber-800 font-mono">
+                    </div>
+                    <span className="bg-white px-1.5 py-0.5 rounded-md border border-amber-200 text-amber-800 font-mono text-[10px]">
                       {(avgRating || 5.0).toFixed(1)} Score
                     </span>
                   </div>
                 )}
               </div>
             </div>
+          </div>
+        </motion.div>
 
-            <div className="w-full border-t border-gray-100 my-6"></div>
-
-            {/* Premium Rate Metric */}
-            <div className="w-full grid grid-cols-3 gap-4 text-center bg-gray-50 rounded-2xl p-4 border border-gray-100/80 mb-6">
+        {/* Metadata Grid System */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Stats Box */}
+          <div className="bg-brand-surface border border-brand-border/40 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+            <span className="text-[10px] font-bold text-brand-navy/45 uppercase tracking-wider block">Professional Record</span>
+            
+            <div className="grid grid-cols-3 gap-2 text-center">
               <div>
-                <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Completed</span>
-                <span className="text-lg font-black text-[#0A192F] font-mono mt-1 block">{completedJobsCount} Jobs</span>
+                <span className="block text-[10px] font-semibold text-brand-navy/50 uppercase tracking-wider">Completed</span>
+                <span className="text-base font-bold text-brand-navy font-mono mt-1 block">{completedJobsCount} Jobs</span>
               </div>
-              <div className="border-x border-gray-200 px-2">
-                <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Base Rate</span>
-                <span className="text-sm font-black text-[#0A192F] font-mono mt-1 block">{hourlyRateDisplay}</span>
+              <div className="border-x border-brand-border/60 px-1">
+                <span className="block text-[10px] font-semibold text-brand-navy/50 uppercase tracking-wider">Base Rate</span>
+                <span className="text-sm font-bold text-brand-navy font-mono mt-1 block leading-tight">{hourlyRateDisplay}</span>
               </div>
               <div>
-                <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Disputes</span>
-                <span className={`text-sm font-black font-mono mt-1 block ${disputes > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                <span className="block text-[10px] font-semibold text-brand-navy/50 uppercase tracking-wider">Disputes</span>
+                <span className={`text-sm font-bold font-mono mt-1 block ${disputes > 0 ? 'text-red-600' : 'text-brand-green'}`}>
                   {disputes} Strikes
                 </span>
               </div>
             </div>
+          </div>
 
-            {/* Bio info */}
-            <div className="w-full space-y-2 mb-6 text-center">
-              <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400 block">About Me</span>
-              <p className="text-sm text-gray-600 leading-relaxed font-medium block">
-                {passport?.bio || 'No professional overview pitch documented in identity file.'}
-              </p>
-            </div>
-
-            {/* Core Skills Pill Tag List */}
-            {skillsArray.length > 0 && (
-              <div className="w-full space-y-3 mb-6" id="skills-pill-tags">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400 text-center block">Artisanal Core Capacities</span>
-                <div className="flex flex-wrap gap-1.5 justify-center">
-                  {skillsArray.map((skill: string, index: number) => (
-                    <span 
-                      key={index}
-                      className="text-xs text-[#0A192F] bg-[#0A192F]/5 border border-[#0A192F]/10 font-bold px-3 py-1 rounded-xl uppercase tracking-wide active:scale-95 transition-all"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="w-full border-t border-gray-100 my-6"></div>
-
-            {/* Contact Reveal Logic */}
-            <div className="w-full space-y-4" id="identity-contact-block">
-              {isOwner ? (
-                // Owner Option
-                <div className="space-y-2 text-center">
-                  <div className="p-3 bg-blue-50 border border-blue-100 rounded-xl text-blue-800 text-xs font-semibold flex items-center gap-2 justify-center">
-                    <Info className="w-4 h-4 text-blue-600 shrink-0" />
-                    <span>You are viewing your own public BukiePassport page.</span>
-                  </div>
-                  <button
-                    onClick={() => router.push('/dashboard/passport')}
-                    className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
-                  >
-                    <span>Edit Identity Profile</span>
-                  </button>
-                </div>
-              ) : (
-                // Non-owner (Employer/Public) Option
-                <div className="bg-gray-50 border border-gray-100 p-5 rounded-2xl space-y-4 relative overflow-hidden">
-                  <span className="block text-[10px] uppercase font-bold tracking-wider text-gray-400 text-center">
-                    Worker Direct Contact
-                  </span>
-                  
-                  {/* Blurred contact block */}
-                  <div className="flex items-center justify-between bg-white px-4 py-3 border border-gray-100 rounded-xl">
-                    <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm font-bold tracking-wide text-gray-500 font-mono blur-sm select-none active:scale-95 transition-all">
-                        +234 812 000 0000
-                      </span>
-                    </div>
-                    <span className="text-[10px] font-black uppercase text-amber-600 tracking-wider flex items-center gap-1 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full">
-                      <Lock className="w-2.5 h-2.5" />
-                      <span>Locked</span>
-                    </span>
-                  </div>
-
-                  {/* Reveal Trigger */}
-                  <button
-                    onClick={() => setShowRevealModal(true)}
-                    className="w-full bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-md shadow-blue-950/10 cursor-pointer inline-flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all"
-                    id="reveal-contact-btn"
-                  >
-                    <Coins className="w-4 h-4 text-yellow-300" />
-                    <span>Reveal Contact (₦200)</span>
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className="w-full border-t border-gray-100 my-6"></div>
-
-            {/* QR Code Section */}
-            <div className="flex flex-col items-center space-y-3" id="qr-code-section">
-              <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400 flex items-center gap-1">
-                <QrCode className="w-3.5 h-3.5" />
+          {/* Verification QR Code Box */}
+          <div className="bg-brand-surface border border-brand-border/40 rounded-2xl p-5 flex flex-col items-center justify-between text-center" id="qr-code-section">
+            <div className="w-full flex justify-between items-center mb-3">
+              <span className="text-[10px] font-bold text-brand-navy/45 uppercase tracking-wider flex items-center gap-1">
+                <QrCode className="w-3.5 h-3.5 text-brand-navy/60" />
                 <span>BukiePassport QR Link</span>
               </span>
-              <div className="p-3 bg-white border-2 border-gray-100 rounded-2xl shadow-inner inline-block">
-                {currentUrl ? (
-                  <QRCodeSVG value={currentUrl} size={132} />
-                ) : (
-                  <div className="w-[132px] h-[132px] bg-gray-50 rounded-lg animate-pulse"></div>
-                )}
-              </div>
-              <span className="text-[11px] font-black text-gray-500 uppercase tracking-widest font-mono text-center">
-                Scan to Hire Me
-              </span>
+              {passport?.verification_grade && (
+                <span className="text-[10px] font-bold bg-brand-green/10 text-brand-green border border-brand-green/20 px-2 py-0.5 rounded-full uppercase">
+                  Tier {passport.verification_grade}
+                </span>
+              )}
             </div>
+            
+            <div className="p-2 bg-brand-bg border border-brand-border/50 rounded-xl shadow-inner inline-block">
+              {currentUrl ? (
+                <QRCodeSVG value={currentUrl} size={92} />
+              ) : (
+                <div className="w-[92px] h-[92px] bg-brand-bg rounded-lg animate-pulse"></div>
+              )}
+            </div>
+            
+            <span className="text-[10px] font-bold text-brand-navy/50 uppercase tracking-widest font-mono mt-2 block">
+              Scan to Verify or Hire
+            </span>
+          </div>
+        </div>
 
-            <div className="w-full border-t border-gray-100 my-6"></div>
+        {/* Professional Summary & Skills */}
+        <div className="w-full bg-brand-bg rounded-2xl border border-brand-border/40 shadow-[0_8px_30px_rgba(10,25,47,0.015)] p-6 space-y-6">
+          <div className="space-y-2">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-brand-navy/45 block">Professional Summary</span>
+            <p className="text-sm text-brand-navy/85 leading-relaxed font-medium">
+              {passport?.bio || 'No professional overview pitch documented in identity file.'}
+            </p>
+          </div>
 
-            {/* Hire Button */}
-            {!isOwner && (
+          {skillsArray.length > 0 && (
+            <div className="space-y-3 pt-4 border-t border-brand-border/30" id="skills-pill-tags">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-brand-navy/45 block">Artisanal Core Capacities</span>
+              <div className="flex flex-wrap gap-1.5">
+                {skillsArray.map((skill: string, index: number) => (
+                  <span 
+                    key={index}
+                    className="text-xs text-brand-navy bg-brand-surface border border-brand-border/50 font-semibold px-3 py-1.5 rounded-xl uppercase tracking-wide active:scale-95 transition-all duration-150"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Contact Block */}
+        <div className="w-full bg-brand-bg rounded-2xl border border-brand-border/40 shadow-[0_8px_30px_rgba(10,25,47,0.015)] p-6 space-y-4" id="identity-contact-block">
+          {isOwner ? (
+            <div className="space-y-4 text-center">
+              <div className="p-3.5 bg-brand-surface border border-brand-border/40 rounded-xl text-brand-navy/80 text-xs font-semibold flex items-center gap-2 justify-center">
+                <Info className="w-4 h-4 text-brand-navy shrink-0" />
+                <span>You are viewing your own public BukiePassport page.</span>
+              </div>
               <button
-                onClick={() => router.push(`/dashboard/post-job?artisan_id=${workerId}`)}
-                className="w-full mb-8 bg-blue-600 hover:bg-blue-700 text-white text-sm font-extrabold uppercase tracking-wider py-4 px-6 rounded-2xl transition-all shadow-lg shadow-blue-600/20 cursor-pointer inline-flex items-center justify-center gap-2 active:scale-[0.98]"
+                onClick={() => router.push('/dashboard/passport')}
+                className="w-full bg-brand-navy hover:bg-brand-navy/90 text-white text-xs sm:text-sm font-semibold py-3.5 rounded-xl transition-all shadow-sm active:scale-[0.98]"
               >
-                <Briefcase className="w-5 h-5" />
-                <span>Hire {(workerName && typeof workerName === 'string') ? workerName.split(' ')[0] : 'Artisan'}</span>
+                Edit Passport Identity
               </button>
-            )}
-
-            {/* Reviews Section */}
-            <div className="w-full">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-black text-gray-900 uppercase tracking-wide flex items-center gap-2">
-                  <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-                  Client Reviews
-                </h3>
-                <span className="text-[10px] font-bold text-gray-400 bg-gray-50 px-2 py-1 rounded-full uppercase">
-                  {reviews.length} total
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <span className="block text-[10px] uppercase font-bold tracking-wider text-brand-navy/45">
+                Worker Direct Contact
+              </span>
+              
+              {/* Blurred contact block */}
+              <div className="flex items-center justify-between bg-brand-surface px-4 py-3 border border-brand-border/40 rounded-xl">
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-brand-navy/40" />
+                  <span className="text-sm font-bold tracking-wide text-brand-navy/60 font-mono blur-[3px] select-none">
+                    +234 812 000 0000
+                  </span>
+                </div>
+                <span className="text-[10px] font-bold uppercase text-amber-700 tracking-wider flex items-center gap-1 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
+                  <Lock className="w-2.5 h-2.5" />
+                  <span>Locked</span>
                 </span>
               </div>
 
-              {reviews.length === 0 ? (
-                <div className="text-center py-6 bg-gray-50 rounded-2xl border border-gray-100 border-dashed">
-                  <span className="text-xs text-gray-400 font-medium">No reviews yet for this artisan.</span>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {reviews.map((review) => (
-                    <div key={review.id} className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center text-[10px] font-bold text-gray-600">
-                            {review.employer?.avatar_url ? (
-                              <img src={review.employer.avatar_url} alt="" className="w-full h-full object-cover" />
-                            ) : (
-                              review.employer?.full_name?.charAt(0) || 'U'
-                            )}
-                          </div>
-                          <span className="text-xs font-bold text-gray-900">
-                            {review.employer?.full_name || 'Anonymous User'}
-                          </span>
-                          {review.is_blue_check_reviewer && (
-                            <span className="bg-blue-50 text-blue-600 p-0.5 rounded-full" title="Verified Employer">
-                              <CheckCircle className="w-3 h-3" />
-                            </span>
-                          )}
-                        </div>
-                        <span className="text-[10px] text-gray-400 font-mono">
-                          {new Date(review.created_at).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-0.5 mb-2">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star 
-                            key={i} 
-                            className={`w-3.5 h-3.5 ${i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-200'}`} 
-                          />
-                        ))}
-                      </div>
-                      {review.comment && (
-                        <p className="text-xs text-gray-600 leading-relaxed font-medium">
-                          &quot;{review.comment}&quot;
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
+              {/* Reveal Trigger */}
+              <button
+                onClick={() => setShowRevealModal(true)}
+                className="w-full bg-brand-navy hover:bg-brand-navy/95 text-white text-xs sm:text-sm font-semibold py-3.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 active:scale-[0.98]"
+                id="reveal-contact-btn"
+              >
+                <Coins className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <span>Reveal Contact (₦200)</span>
+              </button>
             </div>
+          )}
+        </div>
 
+        {/* Hire Button */}
+        {!isOwner && (
+          <button
+            onClick={() => router.push(`/dashboard/post-job?artisan_id=${workerId}`)}
+            className="w-full bg-brand-green hover:bg-brand-green/90 text-white text-sm sm:text-base font-semibold py-4 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 active:scale-[0.98]"
+          >
+            <Briefcase className="w-5 h-5" />
+            <span>Hire {workerName.split(' ')[0]} Now</span>
+          </button>
+        )}
+
+        {/* Reviews Section */}
+        <div className="w-full space-y-4 pt-4">
+          <div className="flex items-center justify-between px-1">
+            <h3 className="text-base font-display font-bold text-brand-navy flex items-center gap-2">
+              <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+              Client Reviews Ledger
+            </h3>
+            <span className="text-[10px] font-bold text-brand-navy/50 bg-brand-surface border border-brand-border/30 px-2.5 py-1 rounded-full uppercase">
+              {reviews.length} total
+            </span>
           </div>
-        </motion.div>
-      </div>
+
+          {reviews.length === 0 ? (
+            <div className="text-center py-8 bg-brand-surface rounded-2xl border border-brand-border/30 border-dashed">
+              <span className="text-xs text-brand-navy/55 font-semibold font-sans">No reviews yet for this artisan.</span>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {reviews.map((review) => (
+                <div key={review.id} className="bg-brand-bg border border-brand-border/40 rounded-2xl p-5 shadow-[0_4px_16px_rgba(10,25,47,0.01)] space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-brand-surface border border-brand-border/50 overflow-hidden flex items-center justify-center text-xs font-bold text-brand-navy/60">
+                        {review.employer?.avatar_url ? (
+                          <Image
+                            src={review.employer.avatar_url}
+                            alt="Employer Avatar"
+                            width={28}
+                            height={28}
+                            unoptimized={true}
+                            className="w-full h-full object-cover"
+                            referrerPolicy="no-referrer"
+                          />
+                        ) : (
+                          review.employer?.full_name?.charAt(0) || 'U'
+                        )}
+                      </div>
+                      <span className="text-xs font-bold text-brand-navy flex items-center gap-1">
+                        {review.employer?.full_name || 'Anonymous User'}
+                        {review.is_blue_check_reviewer && (
+                          <span className="text-brand-green" title="Verified Employer">
+                            <CheckCircle className="w-3.5 h-3.5 fill-brand-green text-white" />
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-brand-navy/40 font-mono">
+                      {new Date(review.created_at).toLocaleDateString()}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star 
+                        key={i} 
+                        className={`w-3.5 h-3.5 ${i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-brand-navy/15'}`} 
+                      />
+                    ))}
+                  </div>
+
+                  {review.comment && (
+                    <p className="text-xs sm:text-sm text-brand-navy/70 leading-relaxed font-sans font-medium italic">
+                      &quot;{review.comment}&quot;
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+      </main>
 
       {/* Phase 6 Contact Reveal Information Modal */}
       <AnimatePresence>
@@ -538,21 +544,21 @@ export default function PublicPassportPage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="fixed inset-x-4 bottom-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full shadow-2xl z-50 space-y-5 text-center"
+              className="fixed inset-x-4 bottom-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 bg-brand-bg rounded-2xl p-6 md:p-8 max-w-sm w-full shadow-2xl z-50 border border-brand-border/40 space-y-5 text-center"
               id="reveal-info-modal"
             >
-              <div className="w-12 h-12 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center mx-auto border border-amber-100">
+              <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mx-auto border border-amber-100">
                 <Lock className="w-6 h-6 animate-pulse" />
               </div>
 
               <div>
-                <h3 className="font-extrabold text-sm text-gray-900 uppercase tracking-wide">
+                <h3 className="font-display font-bold text-base text-brand-navy uppercase tracking-wide">
                   Contact Reveal Verification
                 </h3>
-                <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+                <p className="text-xs text-brand-navy/60 mt-2 leading-relaxed font-sans">
                   Direct worker contact details will become unlockable in <strong>Phase 6 (Wallet Payments)</strong>. 
                 </p>
-                <p className="text-xs text-amber-700 bg-amber-50/50 border border-amber-100 rounded-xl p-3 mt-3 leading-relaxed">
+                <p className="text-xs text-amber-800 bg-amber-50/50 border border-amber-100 rounded-xl p-3 mt-3 leading-relaxed font-sans font-medium">
                   Once active, clicking this button triggers an immediate <strong>₦200 micro-payment</strong> debit directly from your main wallet balance to release the phone number lock.
                 </p>
               </div>
@@ -561,14 +567,14 @@ export default function PublicPassportPage() {
                 <button
                   type="button"
                   onClick={() => setShowRevealModal(false)}
-                  className="w-full text-xs text-gray-500 hover:text-gray-900 font-bold uppercase tracking-wider py-3 px-4 rounded-xl transition-all cursor-pointer bg-gray-100 hover:bg-gray-200 text-center"
+                  className="w-full text-xs text-brand-navy/70 hover:text-brand-navy font-semibold uppercase tracking-wider py-3 px-4 rounded-xl transition-all cursor-pointer bg-brand-surface hover:bg-brand-surface/80 text-center border border-brand-border/30"
                 >
                   Close
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowRevealModal(false)}
-                  className="w-full bg-[#0s06D44] bg-[#0A192F] hover:bg-[#112a4f] text-white text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl transition-all cursor-pointer text-center active:scale-[0.98] transition-all"
+                  className="w-full bg-brand-navy hover:bg-brand-navy/95 text-white text-xs font-semibold uppercase tracking-wider py-3 px-4 rounded-xl transition-all cursor-pointer text-center active:scale-[0.98]"
                 >
                   Acknowledge
                 </button>
@@ -578,7 +584,6 @@ export default function PublicPassportPage() {
         )}
       </AnimatePresence>
 
-      </main>
       <SiteFooter />
     </div>
   );

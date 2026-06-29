@@ -117,5 +117,5 @@ export async function middleware(req: NextRequest) {
 
 // Ensure middleware only intercepts paths it is supposed to handle
 export const config = {
-  matcher: ['/dashboard', '/onboarding', '/login'],
+  matcher: ['/dashboard/:path*', '/onboarding/:path*', '/login'],
 };

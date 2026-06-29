@@ -18,11 +18,16 @@ const nextConfig = {
     ],
   },
   output: 'standalone',
+  transpilePackages: ['framer-motion'],
   webpack: (config, {dev}) => {
-    if (dev && process.env.DISABLE_HMR === 'true') {
-      config.watchOptions = {
-        ignored: /.*/,
-      };
+    if (dev) {
+      // Disable disk caching to prevent ENOENT pack file write errors in containerized environment
+      config.cache = false;
+      if (process.env.DISABLE_HMR === 'true') {
+        config.watchOptions = {
+          ignored: /.*/,
+        };
+      }
     }
     return config;
   },

@@ -139,78 +139,79 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-4 pt-20 sm:pt-28 pb-12 bg-white text-[#0A192F] relative">
+    <main className="flex min-h-screen flex-col items-center justify-center p-4 py-16 bg-brand-bg text-brand-navy relative font-sans">
       <button 
         onClick={() => router.push('/')} 
-        className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-gray-500 hover:text-[#0A192F] transition-colors font-medium text-sm sm:text-base z-10"
+        className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-brand-navy/60 hover:text-brand-navy transition-all duration-200 font-semibold text-xs sm:text-sm z-10 bg-brand-surface/80 hover:bg-brand-surface border border-brand-border/40 px-3.5 py-1.5 rounded-xl shadow-[0_1px_2px_rgba(0,0,0,0.02)] cursor-pointer"
       >
-        <ArrowLeft className="w-5 h-5" />
-        Back
+        <ArrowLeft className="w-4 h-4" />
+        <span>Back</span>
       </button>
 
       {/* Brand logo at the top */}
-      <div className="flex items-center gap-3 mb-8">
+      <div className="flex items-center gap-2.5 mb-8">
         <LogoLink
-          className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer focus:outline-none"
-          imageClassName="rounded-[12px] shadow-sm border border-gray-200 bg-white p-[2px]"
-          width={40}
-          height={40}
+          className="flex items-center gap-2.5 hover:opacity-80 transition-opacity cursor-pointer focus:outline-none"
+          imageClassName="rounded-xl shadow-sm border border-brand-border/40 bg-brand-bg p-[2px]"
+          width={36}
+          height={36}
           showText={false}
         />
-        <h1 className="text-3xl font-bold text-[#0A192F] font-sans tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-display font-bold text-brand-navy tracking-tight">
           BukieBrainJobs
         </h1>
       </div>
 
-      <FadeUp delay={0.1} className="w-full max-w-md bg-white rounded-3xl border border-gray-200 overflow-hidden flex-shrink-0" id="login-wizard-card">
+      <FadeUp delay={0.1} className="w-full max-w-md bg-brand-bg rounded-2xl border border-brand-border/40 shadow-[0_8px_30px_rgba(10,25,47,0.02)] overflow-hidden flex-shrink-0" id="login-wizard-card">
         {step === 'identity_gateway' && (
           <div className="p-6 sm:p-8 space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-[#0A192F] mb-2 tracking-tight">Ready to take the next step?</h2>
-              <p className="text-gray-600">Create an account or sign in.</p>
+              <h2 className="text-xl sm:text-2xl font-display font-bold text-brand-navy mb-2 tracking-tight">Ready to take the next step?</h2>
+              <p className="text-sm text-brand-navy/60 font-medium">Create an account or sign in.</p>
             </div>
 
-            <div className="text-[13px] text-gray-500 leading-relaxed font-medium">
+            <div className="text-xs text-brand-navy/50 leading-relaxed font-medium">
               By creating an account or logging in, you understand and agree to the BukieBrainJobs Terms. You also acknowledge our Cookie and Privacy policies. You will receive updates regarding community jobs.
             </div>
 
             <SmoothCollapse isOpen={!!errorMsg}>
-              <div className="flex items-start gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-sm border border-red-100 mb-4" id="identity-error">
+              <div className="flex items-start gap-2.5 bg-red-50 text-red-700 p-3.5 rounded-xl text-xs sm:text-sm border border-red-100/50 mb-4" id="identity-error">
                 <AlertCircle className="w-4 h-4 shrink-0 text-red-600 mt-0.5" />
-                <span>{errorMsg}</span>
+                <span className="leading-relaxed font-medium">{errorMsg}</span>
               </div>
             </SmoothCollapse>
 
             <button
               onClick={handleGoogleAuth}
               disabled={loading}
-              className="w-full bg-white text-[#0A192F] font-bold py-3 px-4 rounded-xl border border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-150 flex items-center justify-center gap-3 disabled:opacity-50"
+              className="w-full bg-brand-surface hover:bg-brand-surface/80 text-brand-navy font-semibold py-3 px-4 rounded-xl border border-brand-border/50 transition-all duration-150 flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer text-xs sm:text-sm"
             >
               {/* Google Brand SVG */}
-              <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                 <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.16v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.16C1.43 8.55 1 10.22 1 12s.43 3.45 1.16 4.93l3.68-2.84z" fill="#FBBC05"/>
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.16 7.07l3.68 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
               </svg>
-              Continue with Google
+              <span>Continue with Google</span>
             </button>
 
-            <div className="flex items-center gap-4 text-gray-400 text-sm font-medium">
-              <div className="flex-1 h-px bg-gray-200"></div>
-              or
-              <div className="flex-1 h-px bg-gray-200"></div>
+            <div className="flex items-center gap-4 text-brand-navy/30 text-xs font-semibold">
+              <div className="flex-1 h-px bg-brand-border/40"></div>
+              <span>OR</span>
+              <div className="flex-1 h-px bg-brand-border/40"></div>
             </div>
 
             <form onSubmit={handleEmailSubmit} className="space-y-4">
-              <div className="space-y-1">
-                <label className="block text-sm font-bold text-[#0A192F]">
+              <div className="space-y-1.5">
+                <label className="block text-xs sm:text-sm font-semibold text-brand-navy/80">
                   Email address
                 </label>
                 <input
                   type="email"
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm transition-shadow"
+                  placeholder="name@example.com"
+                  className="w-full px-4 py-3 bg-brand-surface border border-brand-border/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent text-xs sm:text-sm transition-all duration-150 text-brand-navy placeholder-brand-navy/35"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -218,7 +219,7 @@ export default function LoginPage() {
 
               <button
                 type="submit"
-                className="w-full bg-[#0A192F] text-white py-3 px-4 rounded-xl font-bold hover:bg-[#112a4f] transition-all duration-150 active:scale-[0.98]"
+                className="w-full bg-brand-navy hover:bg-brand-navy/95 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 active:scale-[0.98] cursor-pointer text-xs sm:text-sm"
               >
                 Continue with Email
               </button>
@@ -227,77 +228,78 @@ export default function LoginPage() {
         )}
 
         {step === 'password_gateway' && (
-          <div className="p-6 sm:p-8">
+          <div className="p-6 sm:p-8 space-y-6">
             <button
               onClick={() => {
                 setStep('identity_gateway');
                 setErrorMsg('');
                 setMessage('');
               }}
-              className="flex items-center gap-2 text-[#0A192F] font-bold mb-6 hover:opacity-80 transition-opacity"
+              className="flex items-center gap-1.5 text-brand-navy/60 hover:text-brand-navy font-semibold text-xs sm:text-sm transition-colors cursor-pointer bg-brand-surface hover:bg-brand-surface/80 border border-brand-border/40 px-3.5 py-1.5 rounded-xl"
             >
-              <ArrowLeft className="w-5 h-5" />
-              Back
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back</span>
             </button>
 
-            <h2 className="text-2xl font-black text-[#0A192F] mb-6 tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-brand-navy tracking-tight">
               Enter your secure account password
             </h2>
 
-            <form onSubmit={handlePasswordSubmit} className="space-y-6">
-              <div className="space-y-1">
-                <label className="block text-sm font-bold text-[#0A192F]">
+            <form onSubmit={handlePasswordSubmit} className="space-y-5">
+              <div className="space-y-1.5">
+                <label className="block text-xs sm:text-sm font-semibold text-brand-navy/80">
                   Password *
                 </label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0A192F] focus:border-transparent text-sm transition-shadow pr-12"
+                    placeholder="••••••••"
+                    className="w-full px-4 py-3 bg-brand-surface border border-brand-border/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent text-xs sm:text-sm transition-all duration-150 pr-12 text-brand-navy placeholder-brand-navy/30"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 hover:text-[#0A192F] transition-colors"
+                    className="absolute inset-y-0 right-0 flex items-center pr-4 text-brand-navy/40 hover:text-brand-navy transition-colors cursor-pointer"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
               <SmoothCollapse isOpen={!!errorMsg}>
-                <div className="flex items-start gap-2 bg-red-50 text-red-700 p-3 rounded-xl text-sm border border-red-100" id="password-error">
-                  <AlertCircle className="w-4 h-4 shrink-0 text-red-600 mt-0.5" />
-                  <span>{errorMsg}</span>
+                <div className="flex items-start gap-2.5 bg-red-50 text-red-700 p-3.5 rounded-xl text-xs sm:text-sm border border-red-100/50" id="password-error">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-red-650 mt-0.5" />
+                  <span className="leading-relaxed font-medium">{errorMsg}</span>
                 </div>
               </SmoothCollapse>
 
               <SmoothCollapse isOpen={!!message}>
-                <div className="flex items-start gap-2 bg-blue-50 text-[#0A192F] p-3 rounded-xl text-sm border border-blue-100" id="password-message">
-                  <Sparkles className="w-4 h-4 shrink-0 text-blue-650 mt-0.5" />
-                  <span>{message}</span>
+                <div className="flex items-start gap-2.5 bg-brand-green/5 text-brand-green p-3.5 rounded-xl text-xs sm:text-sm border border-brand-green/10" id="password-message">
+                  <Sparkles className="w-4 h-4 shrink-0 text-brand-green mt-0.5" />
+                  <span className="leading-relaxed font-medium">{message}</span>
                 </div>
               </SmoothCollapse>
 
-              <div className="flex items-center gap-2 text-sm text-[#0A192F] font-medium pt-2">
+              <div className="flex items-center gap-2.5 text-xs sm:text-sm text-brand-navy/80 font-medium pt-1">
                 <input
                   type="checkbox"
                   id="signup-toggle"
                   checked={isSignUp}
                   onChange={(e) => setIsSignUp(e.target.checked)}
-                  className="w-4 h-4 rounded border-gray-300 text-[#0A192F] focus:ring-[#0A192F]"
+                  className="w-4 h-4 rounded border-brand-border text-brand-green focus:ring-brand-green cursor-pointer"
                 />
-                <label htmlFor="signup-toggle" className="cursor-pointer">
-                  I am creating a new account
+                <label htmlFor="signup-toggle" className="cursor-pointer select-none font-sans text-brand-navy/70 text-xs sm:text-sm font-semibold">
+                  I am creating a new account (Sign Up)
                 </label>
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#0A192F] text-white py-3 px-4 rounded-xl font-bold hover:bg-[#112a4f] transition-all duration-150 active:scale-[0.98] disabled:opacity-50"
+                className="w-full bg-brand-navy hover:bg-brand-navy/95 text-white py-3 px-4 rounded-xl font-bold transition-all duration-150 active:scale-[0.98] disabled:opacity-50 cursor-pointer text-xs sm:text-sm"
               >
                 {loading ? 'Processing...' : isSignUp ? 'Create Account' : 'Sign In'}
               </button>
@@ -307,14 +309,14 @@ export default function LoginPage() {
       </FadeUp>
 
       {/* Footer */}
-      <div className="mt-auto pt-16 text-center text-sm text-gray-500 font-medium">
+      <div className="mt-auto pt-16 text-center text-xs sm:text-sm text-brand-navy/50 font-medium">
         <p className="mb-2">© {new Date().getFullYear()} BukieBrainJobs</p>
-        <div className="flex items-center justify-center gap-4 text-xs sm:text-sm">
-          <button className="hover:text-[#0A192F] transition-colors">About us</button>
-          <span className="text-gray-300">•</span>
-          <button className="hover:text-[#0A192F] transition-colors">Privacy Center</button>
-          <span className="text-gray-300">•</span>
-          <button className="hover:text-[#0A192F] transition-colors">Terms</button>
+        <div className="flex items-center justify-center gap-4 text-xs">
+          <button className="hover:text-brand-navy transition-colors cursor-pointer">About us</button>
+          <span className="text-brand-navy/20">•</span>
+          <button className="hover:text-brand-navy transition-colors cursor-pointer">Privacy Center</button>
+          <span className="text-brand-navy/20">•</span>
+          <button className="hover:text-brand-navy transition-colors cursor-pointer">Terms</button>
         </div>
       </div>
     </main>

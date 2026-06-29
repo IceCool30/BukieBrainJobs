@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Search, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface SmartSuggestInputProps {
   value: string;
@@ -138,15 +139,15 @@ export function SmartSuggestInput({
           placeholder={placeholder}
           disabled={disabled}
           required={required}
-          className={`w-full outline-none font-medium transition-all text-gray-900 placeholder-gray-400 ${
+          className={`w-full outline-none font-sans font-medium transition-all text-brand-navy placeholder-brand-navy/40 ${
             flat
               ? 'bg-transparent border-0 ring-0 focus:ring-0 text-base py-1 px-1'
-              : 'bg-white border border-gray-250 rounded-xl py-3 text-sm focus:ring-2 focus:ring-[#0A192F] focus:border-transparent px-4'
+              : 'bg-brand-surface border border-brand-border/50 focus:border-brand-green focus:bg-white rounded-xl py-3 text-sm px-4'
           } ${
             icon ? 'pl-11' : ''
           } ${
             search ? 'pr-9' : 'pr-8'
-          } ${disabled ? 'bg-gray-50 opacity-60 cursor-not-allowed' : ''} ${inputClassName}`}
+          } ${disabled ? 'bg-brand-surface/50 opacity-60 cursor-not-allowed' : ''} ${inputClassName}`}
           autoComplete="off"
         />
 
@@ -175,43 +176,53 @@ export function SmartSuggestInput({
       </div>
 
       {/* Floating suggestion panel */}
-      {isOpen && !disabled && (
-        <div className="absolute z-50 w-full mt-1.5 bg-white border border-gray-200 rounded-xl shadow-lg max-h-72 overflow-y-auto py-1 scrollbar-thin scrollbar-thumb-gray-200 animate-in fade-in slide-in-from-top-1 duration-150">
-          {visibleSuggestions.length === 0 ? (
-            <div className="px-4 py-3 text-xs text-gray-500 font-medium">
-              No matching suggestions. You can keep typing to input your custom entry.
-            </div>
-          ) : (
-            <>
-              {visibleSuggestions.map((item, index) => {
-                const isSelected = item.toLowerCase() === value.toLowerCase();
-                const isHighlighted = index === highlightedIndex;
-                return (
-                  <button
-                    key={`${item}-${index}`}
-                    type="button"
-                    onClick={() => handleSelect(item)}
-                    className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors duration-100 flex items-center justify-between ${
-                      isSelected 
-                        ? 'bg-[#0A192F]/5 text-[#0A192F]' 
-                        : isHighlighted 
-                          ? 'bg-gray-100/80 text-gray-900 font-semibold' 
-                          : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                    }`}
-                  >
-                    <span className="truncate">{item}</span>
-                    {isSelected && (
-                      <span className="text-[10px] bg-blue-50 text-blue-700 font-bold px-2 py-0.5 rounded-full border border-blue-100 uppercase tracking-widest shrink-0 scale-90">
-                        Picked
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </>
-          )}
-        </div>
-      )}
+      <AnimatePresence>
+        {isOpen && !disabled && (
+          <motion.div 
+            initial={{ opacity: 0, y: -8, scale: 0.99 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.99 }}
+            transition={{ type: 'spring', stiffness: 450, damping: 28 }}
+            className="absolute z-50 w-full mt-1.5 bg-white border border-gray-200 rounded-xl shadow-lg max-h-72 overflow-y-auto py-1 scrollbar-thin scrollbar-thumb-gray-200"
+          >
+            {visibleSuggestions.length === 0 ? (
+              <div className="px-4 py-3 text-xs text-gray-500 font-medium">
+                No matching suggestions. You can keep typing to input your custom entry.
+              </div>
+            ) : (
+              <div className="flex flex-col">
+                {visibleSuggestions.map((item, index) => {
+                  const isSelected = item.toLowerCase() === value.toLowerCase();
+                  const isHighlighted = index === highlightedIndex;
+                  return (
+                    <motion.button
+                      key={`${item}-${index}`}
+                      type="button"
+                      whileHover={{ x: 2 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                      onClick={() => handleSelect(item)}
+                      className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors duration-100 flex items-center justify-between outline-none ${
+                        isSelected 
+                          ? 'bg-[#0A192F]/5 text-[#0A192F]' 
+                          : isHighlighted 
+                            ? 'bg-gray-100/80 text-gray-900 font-semibold' 
+                            : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                      }`}
+                    >
+                      <span className="truncate">{item}</span>
+                      {isSelected && (
+                        <span className="text-[10px] bg-blue-50 text-blue-700 font-bold px-2 py-0.5 rounded-full border border-blue-100 uppercase tracking-widest shrink-0 scale-90">
+                          Picked
+                        </span>
+                      )}
+                    </motion.button>
+                  );
+                })}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

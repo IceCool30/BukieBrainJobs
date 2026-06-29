@@ -1,10 +1,18 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-bg: #FFFFFF;
+  --color-brand-navy: #0A192F;
+  --color-brand-green: #00875A;
+  --color-brand-surface: #F4F6F8;
+  --color-brand-border: #E5E7EB;
+}
+
 /* Standard baseline CSS custom layers and standard adjustments */
 @layer base {
   body {
-    background-color: #ffffff;
-    color: #0A192F;
+    background-color: var(--color-brand-bg);
+    color: var(--color-brand-navy);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
   * {
@@ -12,5 +20,92 @@
   }
   button, a {
     touch-action: manipulation;
+  }
+
+  /* Make all interactive clickables feel premium and highly responsive to user interaction */
+  button,
+  a,
+  [role="button"] {
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Scale and lift on hover with smooth shadow transitions */
+  button:not([disabled]):hover,
+  a:not([disabled]):hover,
+  [role="button"]:not([disabled]):hover {
+    transform: translateY(-1.5px) scale(1.02);
+    filter: brightness(1.04);
+    box-shadow: 0 6px 16px rgba(10, 25, 47, 0.08);
+  }
+
+  /* Tactile active press state for instant physical mechanical click feel */
+  button:not([disabled]):active,
+  a:not([disabled]):active,
+  [role="button"]:not([disabled]):active {
+    transform: translateY(1px) scale(0.97) !important;
+    filter: brightness(0.94);
+    box-shadow: 0 2px 6px rgba(10, 25, 47, 0.04);
+    transition-duration: 0.06s !important;
+  }
+
+  /* High-visibility and premium focus-visible outlines */
+  button:focus-visible,
+  a:focus-visible,
+  [role="button"]:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 3px solid #00875A !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 4px rgba(0, 135, 90, 0.2) !important;
+  }
+
+  /* Search Glow & Accent Highlight Animations */
+  @keyframes search-pulse {
+    0%, 100% {
+      border-color: rgba(0, 135, 90, 0.4);
+      box-shadow: 0 4px 16px rgba(10, 25, 47, 0.02);
+    }
+    50% {
+      border-color: rgba(0, 135, 90, 0.85);
+      box-shadow: 0 4px 24px rgba(0, 135, 90, 0.12);
+    }
+  }
+
+  .animate-search-pulse {
+    animation: search-pulse 2.2s infinite ease-in-out;
+  }
+
+  /* Ultra-smooth low-bandwidth loading skeletons */
+  @keyframes skeleton-shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .skeleton-shimmer {
+    background: linear-gradient(90deg, #F4F6F8 25%, #EBEFF2 50%, #F4F6F8 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.6s infinite linear;
+  }
+
+  /* Thin scrollbar to optimize mobile screen space */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #E5E7EB;
+    border-radius: 99px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #D1D5DB;
   }
 }

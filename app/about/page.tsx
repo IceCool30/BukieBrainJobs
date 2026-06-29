@@ -33,7 +33,7 @@ export default function AboutPage() {
                 BukieBrainJobs connects everyday Nigerians with trusted local workers. Need a plumber in Ikeja? An electrician in Surulere? A driver for the week? We help you find someone reliable, fast.
               </p>
               <p>
-                For workers, it is a place to find jobs near you, build your reputation, and get paid without stress. No middleman drama. No waiting weeks for your money.
+                For those looking to get hired, it is a place to find jobs near you, build your reputation, and get paid without stress. No middleman drama. No waiting weeks for your money.
               </p>
               <p>
                 We started because too many people in Nigeria struggle to find good workers they can trust, and too many skilled workers struggle to find steady jobs. We are fixing that, one connection at a time.
@@ -53,7 +53,7 @@ export default function AboutPage() {
               <div className="bg-gray-50 border border-gray-100 rounded-2xl p-8 hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:border-gray-200 transition-all">
                 <h3 className="text-xl font-bold text-[#0A192F] mb-6 flex items-center gap-2">
                   <span className="w-8 h-8 rounded-full bg-[#0A192F] text-white flex items-center justify-center text-sm">1</span>
-                  Employers
+                  Hire Talent
                 </h3>
                 <ol className="space-y-6">
                   <li className="flex gap-4">
@@ -84,7 +84,7 @@ export default function AboutPage() {
               <div className="bg-gray-50 border border-gray-100 rounded-2xl p-8 hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:border-gray-200 transition-all">
                 <h3 className="text-xl font-bold text-[#0A192F] mb-6 flex items-center gap-2">
                   <span className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm">2</span>
-                  Workers
+                  Get Hired
                 </h3>
                 <ol className="space-y-6">
                   <li className="flex gap-4">

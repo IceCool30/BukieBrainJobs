@@ -1,5 +1,20 @@
 import type { Metadata, Viewport } from 'next';
+import { Inter, Space_Grotesk } from 'next/font/google';
 import './globals.css'; // Global styles
+import { PwaInstallPrompt } from '@/components/PwaInstallPrompt';
+import { PushNotificationManager } from '@/components/PushNotificationManager';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -39,7 +54,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -84,9 +99,18 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           }}
         />
       </head>
-      <body suppressHydrationWarning>
-        {children}
+      <body suppressHydrationWarning className="bg-brand-bg text-brand-navy min-h-screen antialiased selection:bg-brand-green/20 selection:text-brand-navy">
+        <div id="master-layout-wrapper" className="min-h-screen flex flex-col w-full bg-brand-bg">
+          <main className="flex-grow w-full flex flex-col">
+            {children}
+          </main>
+        </div>
+        
+        {/* Global PWA & Notification Handlers */}
+        <PwaInstallPrompt />
+        <PushNotificationManager />
       </body>
     </html>
   );
 }
+

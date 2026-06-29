@@ -17,8 +17,14 @@ interface BeforeInstallPromptEvent extends Event {
 export function PwaInstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const handleBeforeInstallPrompt = (e: Event) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
@@ -45,7 +51,7 @@ export function PwaInstallPrompt() {
         window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       } catch (e) {}
     };
-  }, []);
+  }, [mounted]);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
@@ -69,6 +75,10 @@ export function PwaInstallPrompt() {
   const handleClose = () => {
     setShowPrompt(false);
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <AnimatePresence>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { MapPin, Calendar, Flame, Tag, Briefcase, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export interface Job {
   id: string;
@@ -64,12 +65,23 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
   };
 
   return (
-    <div 
+    <motion.div 
       id={`job-card-${job.id}`}
-      className={`bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border-2 overflow-hidden flex flex-col justify-between ${
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, margin: "-10px" }}
+      transition={{ type: "spring", stiffness: 120, damping: 18 }}
+      whileHover={{ 
+        y: -5, 
+        scale: 1.012,
+        boxShadow: "0 12px 30px rgba(10, 25, 47, 0.05)",
+        borderColor: job.is_urgent ? '#2563eb' : '#f1f5f9'
+      }}
+      whileTap={{ scale: 0.995 }}
+      className={`bg-white rounded-2xl shadow-sm border-2 overflow-hidden flex flex-col justify-between transition-colors duration-300 ${
         job.is_urgent 
           ? 'border-blue-600 relative' 
-          : 'border-transparent hover:border-gray-100'
+          : 'border-transparent'
       }`}
     >
       {/* Golden Highlight border or background accent if urgent */}
@@ -192,6 +204,6 @@ export default function JobCard({ job, onClickToggle, isExpanded = false }: JobC
         </button>
       </div>
 
-    </div>
+    </motion.div>
   );
 }

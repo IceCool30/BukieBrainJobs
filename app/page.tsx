@@ -5,6 +5,7 @@ import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-c
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Menu, Search, MapPin, X, ChevronDown, ChevronRight, ArrowRight, Briefcase, Hammer, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FadeUp } from '@/components/FadeUp';
 import { SmoothCollapse } from '@/components/SmoothCollapse';
 import { nigeriaLocations, nigerianStates } from '@/lib/nigeria-locations';
@@ -22,6 +23,31 @@ export default function Home() {
   const [selectedState, setSelectedState] = useState('');
   const [selectedArea, setSelectedArea] = useState('');
   const [whatQuery, setWhatQuery] = useState('');
+  
+  // Dynamic rotating categories matching the agency-grade hero design in the user video
+  const rotatingCategories = [
+    "carpentry work",
+    "web design",
+    "kitchen plumbing",
+    "copywriting & blogs",
+    "electrical repairs",
+    "mobile app dev",
+    "house painting",
+    "screeding & tiling",
+    "graphic design",
+    "generator repair",
+    "video editing",
+    "ac servicing"
+  ];
+  const [rotatingIndex, setRotatingIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRotatingIndex((prev) => (prev + 1) % rotatingCategories.length);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, [rotatingCategories.length]);
+
   
   // High-quality defaults available instantly on focus
   const [listedTitlesAndCats, setListedTitlesAndCats] = useState<string[]>([
@@ -111,40 +137,49 @@ export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white text-[#0A192F] font-sans">
+    <div className="min-h-screen bg-brand-bg text-brand-navy font-sans flex flex-col justify-between">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      
       {/* Navigation Bar */}
-      <header className="flex justify-between items-center px-4 py-3 border-b border-gray-100">
+      <header className="flex justify-between items-center px-4 sm:px-6 py-4 bg-brand-bg border-b border-brand-border/40 sticky top-0 z-50 shadow-[0_1px_3px_rgba(10,25,47,0.01)] backdrop-blur-md">
         <LogoLink />
-        <div className="flex items-center gap-2 sm:gap-4">
-          <button 
+        <div className="flex items-center gap-3 sm:gap-4">
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => router.push('/login')}
-            className="text-sm font-bold text-[#0A192F] hover:text-black hover:underline active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] rounded-sm"
+            className="text-sm font-semibold text-brand-navy/80 hover:text-brand-navy transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-brand-green rounded-lg px-2.5 py-1.5 cursor-pointer"
           >
             Sign in
-          </button>
-          <button 
+          </motion.button>
+          <motion.button 
+            whileHover={{ scale: 1.05, y: -1 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 15 }}
             onClick={() => router.push('/dashboard/post-job')}
-            className="bg-[#0A192F] hover:bg-[#112a4f] text-white text-[13px] font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full whitespace-nowrap active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] focus-visible:ring-offset-2" 
+            className="bg-brand-green hover:bg-brand-green/90 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition-all outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 shadow-sm cursor-pointer" 
           >
             Post a Job
-          </button>
-          <button 
+          </motion.button>
+          <motion.button 
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
             onClick={() => setIsSidebarOpen(true)}
-            className="text-[#0A192F] ml-1 p-1 hover:bg-gray-100 rounded-full active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F]">
-            <Menu className="w-6 h-6" />
-          </button>
+            className="text-brand-navy p-2 hover:bg-brand-surface rounded-xl transition-all outline-none focus-visible:ring-2 focus-visible:ring-brand-green cursor-pointer"
+          >
+            <Menu className="w-5.5 h-5.5" />
+          </motion.button>
         </div>
       </header>
 
-      <main className="px-4 py-6 max-w-2xl mx-auto w-full">
+      <main className="px-4 sm:px-6 py-8 max-w-2xl mx-auto w-full flex-grow space-y-8">
         {oauthError && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl flex gap-3 text-sm text-red-800 relative shadow-sm" id="landing-oauth-error">
+          <div className="p-4 bg-red-50/70 border border-red-200/60 rounded-2xl flex gap-3 text-sm text-red-800 relative shadow-sm" id="landing-oauth-error">
             <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="font-bold text-red-900 mb-1">Google Sign-In Configuration Required</h3>
-              <p className="leading-relaxed">{oauthError.message}</p>
-              <div className="mt-2 text-xs text-red-600 font-medium font-mono">
+              <h3 className="font-display font-bold text-red-900 mb-1">Google Sign-In Configuration Required</h3>
+              <p className="leading-relaxed font-sans text-red-800/90">{oauthError.message}</p>
+              <div className="mt-2 text-xs text-red-600 font-semibold font-mono">
                 Error: {oauthError.code}
               </div>
             </div>
@@ -157,9 +192,41 @@ export default function Home() {
           </div>
         )}
 
+        {/* Hero Area - Dual Audience Header with dynamic text rotator from the reference video */}
+        <motion.div 
+          initial={{ opacity: 0, y: -15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 120, damping: 15 }}
+          className="text-center max-w-xl mx-auto py-3 px-2 flex flex-col items-center justify-center"
+        >
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-brand-navy tracking-tight mb-3 flex flex-col sm:flex-row items-center justify-center gap-x-2 flex-wrap min-h-[90px] sm:min-h-[auto] leading-snug">
+            <span>Work with Nigeria&apos;s best in</span>
+            <span className="relative overflow-hidden h-[45px] sm:h-[48px] inline-flex items-center text-brand-green font-extrabold min-w-[280px] sm:min-w-[360px] justify-center sm:justify-start perspective-1000">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={rotatingIndex}
+                  initial={{ y: 24, opacity: 0, rotateX: -70 }}
+                  animate={{ y: 0, opacity: 1, rotateX: 0 }}
+                  exit={{ y: -24, opacity: 0, rotateX: 70 }}
+                  transition={{ type: "spring", stiffness: 280, damping: 15 }}
+                  className="absolute whitespace-nowrap origin-center"
+                >
+                  {rotatingCategories[rotatingIndex]}
+                </motion.span>
+              </AnimatePresence>
+            </span>
+          </h2>
+          <p className="text-sm sm:text-base text-brand-navy/60 font-sans font-medium mt-1">
+            Find trusted verified artisans or claim gig requests near you. One platform, zero stress.
+          </p>
+        </motion.div>
+
+
         {/* Search Container */}
-        <FadeUp delay={0.1} className="relative z-25 mb-10">
-          <form 
+        <FadeUp delay={0.1} className="relative z-20">
+          <motion.form 
+            whileHover={{ y: -3, boxShadow: "0 12px 30px rgba(10, 25, 47, 0.04)" }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
             onSubmit={(e) => {
               e.preventDefault();
               let whereParam = '';
@@ -168,26 +235,26 @@ export default function Home() {
               } else {
                 whereParam = selectedState || selectedArea || '';
               }
-              router.push(`/jobs?what=${encodeURIComponent(whatQuery)}&where=${encodeURIComponent(whereParam)}`);
+              router.push(`/dashboard/jobs?what=${encodeURIComponent(whatQuery)}&where=${encodeURIComponent(whereParam)}`);
             }}
-            className="flex flex-col sm:flex-row items-center w-full bg-white border border-gray-300 rounded-2xl sm:rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.04)] px-4 py-3 sm:py-2 focus-within:ring-2 focus-within:ring-[#0A192F]/60 focus-within:border-[#0A192F] focus-within:shadow-[0_0_15px_rgba(10,25,47,0.2)] transition-all hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] gap-2 sm:gap-0"
+            className="flex flex-col sm:flex-row items-center w-full bg-brand-surface border border-brand-border/40 rounded-2xl shadow-[0_4px_16px_rgba(10,25,47,0.02)] px-4 py-3 sm:py-2.5 focus-within:ring-2 focus-within:ring-brand-green/20 focus-within:border-brand-green transition-all duration-300 gap-3 sm:gap-0"
           >
             <div className="flex items-center flex-1 w-full min-w-0">
-              <Search className="w-5 h-5 text-gray-500 mr-2 flex-shrink-0 font-bold" />
+              <Search className="w-5 h-5 text-brand-navy/45 mr-2.5 flex-shrink-0" />
               <SmartSuggestInput
                 value={whatQuery}
                 onChange={setWhatQuery}
                 placeholder="Search jobs, categories, keyword..."
                 suggestions={listedTitlesAndCats}
                 flat
-                className="w-full font-medium"
+                className="w-full font-sans font-medium placeholder:text-brand-navy/40 text-brand-navy text-sm sm:text-base bg-transparent border-0 focus:outline-none focus:ring-0"
               />
             </div>
             
-            <div className="hidden sm:block w-[1px] h-6 bg-gray-300 mx-3 flex-shrink-0"></div>
+            <div className="hidden sm:block w-[1.5px] h-6 bg-brand-navy/10 mx-4 flex-shrink-0"></div>
             
-            <div className="flex items-center flex-1 w-full min-w-0 gap-2 border-t border-gray-100 pt-2 sm:border-0 sm:pt-0">
-              <MapPin className="w-5 h-5 text-gray-500 flex-shrink-0 font-bold hidden sm:block" />
+            <div className="flex items-center flex-1 w-full min-w-0 gap-2 border-t border-brand-border/40 pt-2 sm:border-0 sm:pt-0">
+              <MapPin className="w-5 h-5 text-brand-navy/45 flex-shrink-0 hidden sm:block" />
               <div className="flex-1 min-w-0 flex items-center gap-1.5">
                 <SmartSuggestInput
                   value={selectedState}
@@ -198,9 +265,9 @@ export default function Home() {
                   placeholder="State..."
                   suggestions={nigerianStates}
                   flat
-                  className="w-1/2"
+                  className="w-1/2 font-sans font-medium placeholder:text-brand-navy/40 text-brand-navy text-sm bg-transparent border-0 focus:outline-none focus:ring-0"
                 />
-                <span className="text-gray-300">/</span>
+                <span className="text-brand-navy/20 font-bold">/</span>
                 <SmartSuggestInput
                   value={selectedArea}
                   onChange={setSelectedArea}
@@ -208,300 +275,379 @@ export default function Home() {
                   suggestions={selectedState ? (nigeriaLocations[selectedState] || []) : []}
                   disabled={!selectedState}
                   flat
-                  className="w-1/2"
+                  className="w-1/2 font-sans font-medium placeholder:text-brand-navy/40 text-brand-navy text-sm bg-transparent border-0 focus:outline-none focus:ring-0"
                 />
               </div>
             </div>
 
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               type="submit"
-              className="bg-[#0A192F] hover:bg-[#112a4f] text-white text-sm font-bold px-5 py-2.5 sm:py-2.5 rounded-full whitespace-nowrap active:scale-95 transition-all outline-none md:ml-2 sm:w-auto w-full transition-all cursor-pointer"
+              className="bg-brand-green hover:bg-brand-green/90 text-white text-sm font-semibold px-6 py-2.5 rounded-xl whitespace-nowrap transition-all outline-none sm:ml-3 sm:w-auto w-full cursor-pointer shadow-sm"
             >
               Search
-            </button>
-          </form>
+            </motion.button>
+          </motion.form>
         </FadeUp>
 
-        {/* Hero Area - Dual Audience */}
-        <div className="max-w-2xl mx-auto text-center mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#0A192F] tracking-tight mb-2">
-            Whatever you need, we have got you.
-          </h2>
-          <p className="text-sm text-gray-500 mb-8">
-            Find trusted workers or find work near you. One platform, no stress.
-          </p>
-        </div>
-
-        <FadeUp delay={0.2} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+        {/* Target Audience Cards */}
+        <FadeUp delay={0.2} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Employer Card */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:border-gray-300 transition-all">
-            <div className="w-12 h-12 rounded-2xl bg-[#0A192F]/10 flex items-center justify-center mb-4">
-              <Briefcase className="w-6 h-6 text-[#0A192F]" />
+          <motion.div 
+            whileHover={{ y: -6, scale: 1.015, borderColor: "rgba(10, 25, 47, 0.18)", boxShadow: "0 12px 30px rgba(10, 25, 47, 0.04)" }}
+            whileTap={{ scale: 0.995 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="bg-brand-bg border border-brand-border/75 rounded-2xl p-6 shadow-[0_4px_16px_rgba(10, 25, 47, 0.02)] flex flex-col justify-between"
+          >
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-brand-surface flex items-center justify-center mb-4">
+                <Briefcase className="w-6 h-6 text-brand-navy" />
+              </div>
+              <h3 className="text-xl font-display font-bold text-brand-navy mb-2">Hire Talent</h3>
+              <p className="text-sm text-brand-navy/60 leading-relaxed mb-6 font-sans">
+                Post a job. Get matched with verified workers in your area. Pay only when the job is done.
+              </p>
             </div>
-            <h3 className="text-lg font-black text-[#0A192F] mb-2">I need a worker</h3>
-            <p className="text-sm text-gray-500 leading-relaxed mb-5">
-              Post a job. Get matched with verified workers in your area. Pay only when the job is done.
-            </p>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/post-job')}
-              className="w-full bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold text-sm py-3 rounded-xl transition-all active:scale-[0.98]"
+              className="w-full bg-brand-navy hover:bg-brand-navy/95 text-white font-semibold text-sm py-3 rounded-xl transition-all shadow-sm cursor-pointer"
             >
               Post a Job
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
           {/* Worker Card */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:border-gray-300 transition-all">
-            <div className="w-12 h-12 rounded-2xl bg-[#0A192F]/10 flex items-center justify-center mb-4">
-              <Hammer className="w-6 h-6 text-[#0A192F]" />
+          <motion.div 
+            whileHover={{ y: -6, scale: 1.015, borderColor: "rgba(10, 25, 47, 0.18)", boxShadow: "0 12px 30px rgba(10, 25, 47, 0.04)" }}
+            whileTap={{ scale: 0.995 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="bg-brand-bg border border-brand-border/75 rounded-2xl p-6 shadow-[0_4px_16px_rgba(10, 25, 47, 0.02)] flex flex-col justify-between"
+          >
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-brand-surface flex items-center justify-center mb-4">
+                <Hammer className="w-6 h-6 text-brand-green" />
+              </div>
+              <h3 className="text-xl font-display font-bold text-brand-navy mb-2">Get Hired</h3>
+              <p className="text-sm text-brand-navy/60 leading-relaxed mb-6 font-sans">
+                Browse jobs in your area. Apply, get hired, and get paid straight to your wallet.
+              </p>
             </div>
-            <h3 className="text-lg font-black text-[#0A192F] mb-2">I need work</h3>
-            <p className="text-sm text-gray-500 leading-relaxed mb-5">
-              Browse jobs in your area. Apply, get hired, and get paid straight to your wallet.
-            </p>
-            <button
-              onClick={() => router.push('/jobs')}
-              className="w-full bg-[#0A192F] hover:bg-[#112a4f] text-white font-bold text-sm py-3 rounded-xl transition-all active:scale-[0.98]"
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => router.push('/dashboard/jobs')}
+              className="w-full bg-brand-green hover:bg-brand-green/90 text-white font-semibold text-sm py-3 rounded-xl transition-all shadow-sm cursor-pointer"
             >
               Browse Jobs
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </FadeUp>
 
         {/* Accordion Navigation List */}
-        <FadeUp delay={0.4} className="border-t border-gray-200">
+        <FadeUp delay={0.4} className="space-y-4 pt-4 border-t border-brand-border/40">
           {/* Item 1 */}
-          <div className="py-5 border-b border-gray-200">
+          <motion.div 
+            whileHover={{ scale: 1.015, y: -2, borderColor: "rgba(10, 25, 47, 0.15)" }}
+            transition={{ type: "spring", stiffness: 350, damping: 18 }}
+            className="bg-brand-bg border border-brand-border/60 rounded-2xl p-5 shadow-[0_2px_12px_rgba(10,25,47,0.01)] transition-all duration-300"
+          >
             <button 
               onClick={() => setOpenTrending(!openTrending)}
-              className="w-full flex justify-between items-center text-left group outline-none rounded-md px-2 -mx-2 hover:bg-gray-50 active:scale-[0.99] transition-all focus-visible:ring-2 focus-visible:ring-[#0A192F] py-2"
+              className="w-full flex justify-between items-center text-left group outline-none cursor-pointer"
             >
-              <span className="font-black text-[#0A192F] text-[18px] group-hover:text-black transition-colors">What&apos;s trending on BukieBrain</span>
-              <ChevronDown className={`w-6 h-6 text-[#0A192F] transition-transform ${openTrending ? 'rotate-180' : ''}`} />
+              <div className="flex flex-col">
+                <span className="font-display font-bold text-lg text-brand-navy group-hover:text-brand-green transition-colors">What&apos;s trending on BukieBrain</span>
+                <span className="text-brand-navy/55 text-xs sm:text-sm mt-0.5 font-sans">
+                  See what&apos;s happening to further your job search.
+                </span>
+              </div>
+              <motion.span
+                animate={{ rotate: openTrending ? 180 : 0 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                className="text-brand-navy/50"
+              >
+                <ChevronDown className="w-5 h-5" />
+              </motion.span>
             </button>
-            <p className="text-[#595959] mt-2 text-[15px] px-2">
-              See what&apos;s happening to further your job search.
-            </p>
             <SmoothCollapse isOpen={openTrending}>
-              <div className="mt-6 space-y-2 px-2 pb-2">
-                <div 
-                  tabIndex={0} 
-                  onClick={() => router.push('/jobs')}
-                  className="flex justify-between items-center cursor-pointer hover:bg-gray-100 active:bg-gray-200 active:scale-[0.99] transition-all px-3 py-2.5 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F]"
-                >
-                  <span className="font-medium text-[#0A192F] text-[15px]">Trending Searches</span>
-                  <ChevronRight className="w-[22px] h-[22px] stroke-[2.5] text-[#0A192F]" />
-                </div>
-                <div 
-                  tabIndex={0} 
-                  onClick={() => router.push('/jobs')}
-                  className="flex justify-between items-center cursor-pointer hover:bg-gray-100 active:bg-gray-200 active:scale-[0.99] transition-all px-3 py-2.5 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F]"
-                >
-                  <span className="font-medium text-[#0A192F] text-[15px]">Trending Jobs</span>
-                  <ChevronRight className="w-[22px] h-[22px] stroke-[2.5] text-[#0A192F]" />
-                </div>
-                <div 
-                  tabIndex={0} 
-                  onClick={() => router.push('/jobs')}
-                  className="flex justify-between items-center cursor-pointer hover:bg-gray-100 active:bg-gray-200 active:scale-[0.99] transition-all px-3 py-2.5 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F]"
-                >
-                  <span className="font-medium text-[#0A192F] text-[15px]">Trending Locations</span>
-                  <ChevronRight className="w-[22px] h-[22px] stroke-[2.5] text-[#0A192F]" />
-                </div>
+               <div className="mt-4 pt-4 border-t border-brand-border/40 space-y-1">
+                 {[
+                   { text: "Trending Searches", path: "/dashboard/jobs" },
+                   { text: "Trending Jobs", path: "/dashboard/jobs" },
+                   { text: "Trending Locations", path: "/dashboard/jobs" }
+                 ].map((item, idx) => (
+                  <motion.div 
+                    key={idx}
+                    whileHover={{ scale: 1.01, x: 6, backgroundColor: "rgba(10, 25, 47, 0.02)" }}
+                    whileTap={{ scale: 0.99 }}
+                    tabIndex={0} 
+                    onClick={() => router.push(item.path)}
+                    className="flex justify-between items-center cursor-pointer hover:bg-brand-surface active:bg-brand-surface/80 transition-all px-4 py-3 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-green"
+                  >
+                    <span className="font-sans font-medium text-brand-navy text-sm sm:text-base">{item.text}</span>
+                    <ChevronRight className="w-5 h-5 text-brand-navy/45" />
+                  </motion.div>
+                ))}
               </div>
             </SmoothCollapse>
-          </div>
+          </motion.div>
 
-          {/* Item 2 */}
-          <div className="py-5 border-b border-gray-200">
+          {/* Item 2 - Sign In Card */}
+          <motion.div 
+            whileHover={{ scale: 1.015, y: -2, borderColor: "rgba(10, 25, 47, 0.15)" }}
+            whileTap={{ scale: 0.995 }}
+            transition={{ type: "spring", stiffness: 350, damping: 18 }}
+            className="bg-brand-bg border border-brand-border/60 rounded-2xl p-5 shadow-[0_2px_12px_rgba(10,25,47,0.01)] transition-all duration-300"
+          >
             <button 
               onClick={() => router.push('/login')}
-              className="w-full flex justify-between items-center group outline-none rounded-md px-2 -mx-2 hover:bg-gray-50 active:scale-[0.99] transition-all focus-visible:ring-2 focus-visible:ring-[#0A192F] py-2"
+              className="w-full flex justify-between items-center group outline-none text-left cursor-pointer"
             >
-              <span className="font-black text-[#0A192F] text-[18px] group-hover:text-black transition-colors">Sign in</span>
-              <ChevronRight className="w-[22px] h-[22px] stroke-[2.5] text-[#0A192F] group-hover:translate-x-1 transition-transform" />
+              <div className="flex flex-col">
+                <span className="font-display font-bold text-lg text-brand-navy group-hover:text-brand-green transition-colors">Sign in to your account</span>
+                <span className="text-brand-navy/55 text-xs sm:text-sm mt-0.5 font-sans">Access your profile, messages, and wallet.</span>
+              </div>
+              <motion.span
+                whileHover={{ x: 4 }}
+                transition={{ type: "spring", stiffness: 300, damping: 10 }}
+              >
+                <ChevronRight className="w-5 h-5 text-brand-navy/50 group-hover:translate-x-1 transition-transform" />
+              </motion.span>
             </button>
-          </div>
+          </motion.div>
 
           {/* Item 3 */}
-          <div className="py-5 border-b border-gray-200">
+          <motion.div 
+            whileHover={{ scale: 1.015, y: -2, borderColor: "rgba(10, 25, 47, 0.15)" }}
+            transition={{ type: "spring", stiffness: 350, damping: 18 }}
+            className="bg-brand-bg border border-brand-border/60 rounded-2xl p-5 shadow-[0_2px_12px_rgba(10,25,47,0.01)] transition-all duration-300"
+          >
             <button 
               onClick={() => setOpenArtisans(!openArtisans)}
-              className="w-full flex justify-between items-center group outline-none rounded-md px-2 -mx-2 hover:bg-gray-50 active:scale-[0.99] transition-all focus-visible:ring-2 focus-visible:ring-[#0A192F] py-2"
+              className="w-full flex justify-between items-center text-left group outline-none cursor-pointer"
             >
-              <span className="font-black text-[#0A192F] text-[18px] group-hover:text-black transition-colors">Looking for work? Start here.</span>
-              <ChevronDown className={`w-6 h-6 text-[#0A192F] transition-transform ${openArtisans ? 'rotate-180' : ''}`} />
+              <div className="flex flex-col">
+                <span className="font-display font-bold text-lg text-brand-navy group-hover:text-brand-green transition-colors">Looking to Get Hired? Start here.</span>
+                <span className="text-brand-navy/55 text-xs sm:text-sm mt-0.5 font-sans">Browse opportunities, setup passport, and manage payments.</span>
+              </div>
+              <motion.span
+                animate={{ rotate: openArtisans ? 180 : 0 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                className="text-brand-navy/50"
+              >
+                <ChevronDown className="w-5 h-5" />
+              </motion.span>
             </button>
             <SmoothCollapse isOpen={openArtisans}>
-              <div className="mt-6 space-y-2 px-2 pb-2">
-                <div
+              <div className="mt-4 pt-4 border-t border-brand-border/40 space-y-1">
+                <motion.div
+                  whileHover={{ scale: 1.01, x: 4, backgroundColor: "rgba(10, 25, 47, 0.02)" }}
+                  whileTap={{ scale: 0.99 }}
                   tabIndex={0}
-                  onClick={() => router.push('/jobs')}
-                  className="flex justify-between items-center cursor-pointer hover:bg-gray-100 active:bg-gray-200 active:scale-[0.99] transition-all px-3 py-2.5 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F]"
+                  onClick={() => router.push('/dashboard/jobs')}
+                  className="flex justify-between items-center cursor-pointer hover:bg-brand-surface transition-all px-4 py-3 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-green"
                 >
-                  <span className="font-medium text-[#0A192F] text-[15px]">Browse available jobs near you</span>
-                  <ChevronRight className="w-[22px] h-[22px] stroke-[2.5] text-[#0A192F]" />
-                </div>
-                <div
+                  <span className="font-sans font-medium text-brand-navy text-sm sm:text-base">Browse available jobs near you</span>
+                  <ChevronRight className="w-5 h-5 text-brand-navy/45" />
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.01, x: 4, backgroundColor: "rgba(10, 25, 47, 0.02)" }}
+                  whileTap={{ scale: 0.99 }}
                   tabIndex={0}
                   onClick={() => router.push('/login')}
-                  className="flex justify-between items-center cursor-pointer hover:bg-gray-100 active:bg-gray-200 active:scale-[0.99] transition-all px-3 py-2.5 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F]"
+                  className="flex justify-between items-center cursor-pointer hover:bg-brand-surface transition-all px-4 py-3 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-green"
                 >
-                  <span className="font-medium text-[#0A192F] text-[15px]">Set up your BukiePassport</span>
-                  <ChevronRight className="w-[22px] h-[22px] stroke-[2.5] text-[#0A192F]" />
-                </div>
-                <div
+                  <span className="font-sans font-medium text-brand-navy text-sm sm:text-base">Set up your BukiePassport</span>
+                  <ChevronRight className="w-5 h-5 text-brand-navy/45" />
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.01, x: 4, backgroundColor: "rgba(10, 25, 47, 0.02)" }}
+                  whileTap={{ scale: 0.99 }}
                   tabIndex={0}
                   onClick={() => {
                     setOpenFaq(2);
                     document.getElementById('faq-section')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="flex justify-between items-center cursor-pointer hover:bg-gray-100 active:bg-gray-200 active:scale-[0.99] transition-all px-3 py-2.5 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F]"
+                  className="flex justify-between items-center cursor-pointer hover:bg-brand-surface transition-all px-4 py-3 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-green"
                 >
-                  <span className="font-medium text-[#0A192F] text-[15px]">How payments work for workers</span>
-                  <ChevronDown className="w-[22px] h-[22px] text-[#0A192F]" />
-                </div>
+                  <span className="font-sans font-medium text-brand-navy text-sm sm:text-base">How payments work to Get Hired</span>
+                  <ChevronDown className="w-5 h-5 text-brand-navy/45" />
+                </motion.div>
               </div>
             </SmoothCollapse>
-          </div>
+          </motion.div>
 
           {/* Item 4 */}
-          <div className="py-5 border-b border-gray-200">
+          <motion.div 
+            whileHover={{ scale: 1.015, y: -2, borderColor: "rgba(10, 25, 47, 0.15)" }}
+            transition={{ type: "spring", stiffness: 350, damping: 18 }}
+            className="bg-brand-bg border border-brand-border/60 rounded-2xl p-5 shadow-[0_2px_12px_rgba(10,25,47,0.01)] transition-all duration-300"
+          >
             <button 
               onClick={() => setOpenEmployers(!openEmployers)}
-              className="w-full flex justify-between items-center group outline-none rounded-md px-2 -mx-2 hover:bg-gray-50 active:scale-[0.99] transition-all focus-visible:ring-2 focus-visible:ring-[#0A192F] py-2"
+              className="w-full flex justify-between items-center text-left group outline-none cursor-pointer"
             >
-              <span className="font-black text-[#0A192F] text-[18px] group-hover:text-black transition-colors">Employers</span>
-              <ChevronDown className={`w-6 h-6 text-[#0A192F] transition-transform ${openEmployers ? 'rotate-180' : ''}`} />
+              <div className="flex flex-col">
+                <span className="font-display font-bold text-lg text-brand-navy group-hover:text-brand-green transition-colors">Hire Talent</span>
+                <span className="text-brand-navy/55 text-xs sm:text-sm mt-0.5 font-sans">Find trusted local service providers and post jobs.</span>
+              </div>
+              <motion.span
+                animate={{ rotate: openEmployers ? 180 : 0 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                className="text-brand-navy/50"
+              >
+                <ChevronDown className="w-5 h-5" />
+              </motion.span>
             </button>
             <SmoothCollapse isOpen={openEmployers}>
-              <div className="mt-4 flex flex-col space-y-1 text-[#595959] px-2 pb-2">
-                <span 
-                  tabIndex={0} 
+              <div className="mt-4 pt-4 border-t border-brand-border/40 grid grid-cols-2 gap-3">
+                <motion.button 
+                  whileHover={{ scale: 1.03, y: -1 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => router.push('/dashboard/post-job')}
-                  className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]"
+                  className="text-center font-semibold bg-brand-surface hover:bg-brand-surface/80 text-brand-navy transition-all text-sm px-4 py-3 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-green border border-brand-border/30 cursor-pointer"
                 >
-                  Post a job
-                </span>
-                <span 
-                  tabIndex={0} 
+                  Post a Job
+                </motion.button>
+                <motion.button 
+                  whileHover={{ scale: 1.03, y: -1 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => router.push('/legal/terms')}
-                  className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]"
+                  className="text-center font-semibold bg-brand-surface hover:bg-brand-surface/80 text-brand-navy transition-all text-sm px-4 py-3 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-green border border-brand-border/30 cursor-pointer"
                 >
                   Help Center
-                </span>
+                </motion.button>
               </div>
             </SmoothCollapse>
-          </div>
+          </motion.div>
 
           {/* Item 5 */}
-          <div className="py-5 border-b border-gray-200">
+          <motion.div 
+            whileHover={{ scale: 1.015, y: -2, borderColor: "rgba(10, 25, 47, 0.15)" }}
+            transition={{ type: "spring", stiffness: 350, damping: 18 }}
+            className="bg-brand-bg border border-brand-border/60 rounded-2xl p-5 shadow-[0_2px_12px_rgba(10,25,47,0.01)] transition-all duration-300"
+          >
             <button 
               onClick={() => setOpenAbout(!openAbout)}
-              className="w-full flex justify-between items-center group outline-none rounded-md px-2 -mx-2 hover:bg-gray-50 active:scale-[0.99] transition-all focus-visible:ring-2 focus-visible:ring-[#0A192F] py-2"
+              className="w-full flex justify-between items-center text-left group outline-none cursor-pointer"
             >
-              <span className="font-black text-[#0A192F] text-[18px] group-hover:text-black transition-colors">About</span>
-              <ChevronDown className={`w-6 h-6 text-[#0A192F] transition-transform ${openAbout ? 'rotate-180' : ''}`} />
+              <div className="flex flex-col">
+                <span className="font-display font-bold text-lg text-brand-navy group-hover:text-brand-green transition-colors">About & Trust</span>
+                <span className="text-brand-navy/55 text-xs sm:text-sm mt-0.5 font-sans">Learn about BukieBrain, policies, and platform safety.</span>
+              </div>
+              <motion.span
+                animate={{ rotate: openAbout ? 180 : 0 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                className="text-brand-navy/50"
+              >
+                <ChevronDown className="w-5 h-5" />
+              </motion.span>
             </button>
             <SmoothCollapse isOpen={openAbout}>
-              <div className="mt-4 flex flex-col space-y-1 text-[#595959] px-2 pb-2">
-                <span 
-                  tabIndex={0} 
+              <div className="mt-4 pt-4 border-t border-brand-border/40 grid grid-cols-2 gap-3">
+                <motion.button 
+                  whileHover={{ scale: 1.03, y: -1 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => router.push('/about')}
-                  className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]"
+                  className="text-center font-semibold bg-brand-surface hover:bg-brand-surface/80 text-brand-navy transition-all text-sm px-4 py-3 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-green border border-brand-border/30 cursor-pointer"
                 >
                   About us
-                </span>
-                <span 
-                  tabIndex={0} 
+                </motion.button>
+                <motion.button 
+                  whileHover={{ scale: 1.03, y: -1 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => router.push('/legal/privacy')}
-                  className="cursor-pointer hover:bg-gray-100 hover:text-[#0A192F] transition-colors text-[15px] px-3 py-2 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#0A192F] active:scale-[0.99]"
+                  className="text-center font-semibold bg-brand-surface hover:bg-brand-surface/80 text-brand-navy transition-all text-sm px-4 py-3 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-green border border-brand-border/30 cursor-pointer"
                 >
                   Trust & Safety
-                </span>
+                </motion.button>
               </div>
             </SmoothCollapse>
-          </div>
+          </motion.div>
         </FadeUp>
 
         {/* FAQ Section */}
-        <FadeUp id="faq-section" delay={0.3} className="mb-16">
-          <h2 className="text-2xl font-black text-[#0A192F] mb-6 tracking-tight px-2">Frequently Asked Questions</h2>
-          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+        <FadeUp id="faq-section" delay={0.3} className="space-y-6">
+          <h2 className="text-2xl font-display font-bold text-brand-navy tracking-tight px-1">Frequently Asked Questions</h2>
+          <div className="bg-brand-bg rounded-2xl border border-brand-border/80 overflow-hidden shadow-[0_4px_16px_rgba(10,25,47,0.015)]">
             {/* FAQ Item 1 */}
-            <div className="border-b border-gray-100 last:border-b-0">
+            <div className="border-b border-brand-border/50 last:border-b-0">
               <button
                 onClick={() => setOpenFaq(openFaq === 1 ? null : 1)}
-                className="w-full py-4 px-5 flex items-center justify-between gap-1.5 font-bold text-[#0A192F] text-base outline-none hover:bg-gray-50 transition-colors focus-visible:bg-gray-50"
+                className="w-full py-4.5 px-5 flex items-center justify-between gap-2.5 font-sans font-bold text-brand-navy text-base outline-none hover:bg-brand-surface transition-colors focus-visible:bg-brand-surface text-left"
               >
                 What is BukieBrainJobs?
-                <span className={`shrink-0 transition-transform duration-300 ${openFaq === 1 ? '-rotate-180' : ''}`}>
+                <span className={`shrink-0 transition-transform duration-300 ${openFaq === 1 ? '-rotate-180' : ''} text-brand-navy/55`}>
                   <ChevronDown className="h-5 w-5" />
                 </span>
               </button>
               <SmoothCollapse isOpen={openFaq === 1}>
-                <div className="px-5 pb-4 leading-relaxed text-gray-500 text-sm font-medium">
+                <div className="px-5 pb-5 leading-relaxed text-brand-navy/65 text-sm font-medium font-sans">
                   BukieBrainJobs helps you find and hire trusted local workers: plumbers, electricians, drivers, and more. Every worker is verified, and your payment is protected until the job is done.
                 </div>
               </SmoothCollapse>
             </div>
             
             {/* FAQ Item 2 */}
-            <div className="border-b border-gray-100 last:border-b-0">
+            <div className="border-b border-brand-border/50 last:border-b-0">
               <button
                 onClick={() => setOpenFaq(openFaq === 2 ? null : 2)}
-                className="w-full py-4 px-5 flex items-center justify-between gap-1.5 font-bold text-[#0A192F] text-base outline-none hover:bg-gray-50 transition-colors focus-visible:bg-gray-50"
+                className="w-full py-4.5 px-5 flex items-center justify-between gap-2.5 font-sans font-bold text-brand-navy text-base outline-none hover:bg-brand-surface transition-colors focus-visible:bg-brand-surface text-left"
               >
                 How do I get paid as an artisan?
-                <span className={`shrink-0 transition-transform duration-300 ${openFaq === 2 ? '-rotate-180' : ''}`}>
+                <span className={`shrink-0 transition-transform duration-300 ${openFaq === 2 ? '-rotate-180' : ''} text-brand-navy/55`}>
                   <ChevronDown className="h-5 w-5" />
                 </span>
               </button>
               <SmoothCollapse isOpen={openFaq === 2}>
-                <div className="px-5 pb-4 leading-relaxed text-gray-500 text-sm font-medium">
+                <div className="px-5 pb-5 leading-relaxed text-brand-navy/65 text-sm font-medium font-sans">
                   Simple. Do the job, the employer confirms it is done, and the money moves to your wallet. From there, withdraw straight to your bank account. No stress.
                 </div>
               </SmoothCollapse>
             </div>
 
             {/* FAQ Item 3 */}
-            <div className="border-b border-gray-100 last:border-b-0">
+            <div className="border-b border-brand-border/50 last:border-b-0">
               <button
                 onClick={() => setOpenFaq(openFaq === 3 ? null : 3)}
-                className="w-full py-4 px-5 flex items-center justify-between gap-1.5 font-bold text-[#0A192F] text-base outline-none hover:bg-gray-50 transition-colors focus-visible:bg-gray-50"
+                className="w-full py-4.5 px-5 flex items-center justify-between gap-2.5 font-sans font-bold text-brand-navy text-base outline-none hover:bg-brand-surface transition-colors focus-visible:bg-brand-surface text-left"
               >
                 Is it free to join?
-                <span className={`shrink-0 transition-transform duration-300 ${openFaq === 3 ? '-rotate-180' : ''}`}>
+                <span className={`shrink-0 transition-transform duration-300 ${openFaq === 3 ? '-rotate-180' : ''} text-brand-navy/55`}>
                   <ChevronDown className="h-5 w-5" />
                 </span>
               </button>
               <SmoothCollapse isOpen={openFaq === 3}>
-                <div className="px-5 pb-4 leading-relaxed text-gray-500 text-sm font-medium">
+                <div className="px-5 pb-5 leading-relaxed text-brand-navy/65 text-sm font-medium font-sans">
                   Yes. Signing up costs nothing. We only take a small fee when a job is completed and paid. No hidden charges.
                 </div>
               </SmoothCollapse>
             </div>
 
             {/* FAQ Item 4 */}
-            <div className="border-b border-gray-100 last:border-b-0">
+            <div className="border-b border-brand-border/50 last:border-b-0">
               <button
                 onClick={() => setOpenFaq(openFaq === 4 ? null : 4)}
-                className="w-full py-4 px-5 flex items-center justify-between gap-1.5 font-bold text-[#0A192F] text-base outline-none hover:bg-gray-50 transition-colors focus-visible:bg-gray-50"
+                className="w-full py-4.5 px-5 flex items-center justify-between gap-2.5 font-sans font-bold text-brand-navy text-base outline-none hover:bg-brand-surface transition-colors focus-visible:bg-brand-surface text-left"
               >
-                I am a worker. How do I get started?
-                <span className={`shrink-0 transition-transform duration-300 ${openFaq === 4 ? '-rotate-180' : ''}`}>
+                I want to get hired. How do I get started?
+                <span className={`shrink-0 transition-transform duration-300 ${openFaq === 4 ? '-rotate-180' : ''} text-brand-navy/55`}>
                   <ChevronDown className="h-5 w-5" />
                 </span>
               </button>
               <SmoothCollapse isOpen={openFaq === 4}>
-                <div className="px-5 pb-4 leading-relaxed text-gray-500 text-sm font-medium">
-                  Create a free account, choose &apos;I want to find work&apos; during onboarding, fill in your skills and location, then browse jobs near you. When an employer hires you, chat with them on the platform. Once the job is confirmed, payment goes straight to your BukieBrain wallet and you can withdraw to your bank.
+                <div className="px-5 pb-5 leading-relaxed text-brand-navy/65 text-sm font-medium font-sans">
+                  Create a free account, choose &apos;Get Hired&apos; during onboarding, fill in your skills and location, then browse jobs near you. When an employer hires you, chat with them on the platform. Once the job is confirmed, payment goes straight to your BukieBrain wallet and you can withdraw to your bank.
                 </div>
               </SmoothCollapse>
             </div>
           </div>
         </FadeUp>
       </main>
+      
       <SiteFooter />
     </div>
   );

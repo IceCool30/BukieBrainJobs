@@ -194,12 +194,12 @@ export default function CEOAdminPage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-white text-[#0A192F]">
+      <main className="flex min-h-screen items-center justify-center bg-brand-bg text-brand-navy">
         <div className="flex flex-col items-center gap-3">
           <LogoLink
-            className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center gap-1.5 p-1 w-fit mb-3 animate-pulse cursor-pointer hover:opacity-80 transition-opacity"
+            className="bg-brand-surface rounded-[1.5rem] shadow-xs border border-brand-border/60 flex items-center gap-1.5 p-1 w-fit mb-3 animate-pulse cursor-pointer hover:opacity-80 transition-opacity"
           />
-          <span className="text-xs font-mono text-gray-500 font-bold uppercase tracking-wide">
+          <span className="text-xs font-mono text-brand-navy/60 font-bold uppercase tracking-wide">
             Authorizing security clearance...
           </span>
         </div>
@@ -210,28 +210,28 @@ export default function CEOAdminPage() {
   // Gates non-CEO email accounts
   if (!authorized) {
     return (
-      <main className="min-h-screen bg-white text-[#0A192F] py-12 px-4 flex flex-col items-center justify-center">
+      <main className="min-h-screen bg-brand-bg text-brand-navy py-12 px-4 flex flex-col items-center justify-center">
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-md w-full bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center"
+          className="max-w-md w-full bg-brand-surface rounded-2xl shadow-xs border border-brand-border/60 p-8 text-center"
           id="admin-gate-unauthorized"
         >
-          <div className="w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-100">
+          <div className="w-16 h-16 bg-red-50/50 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-red-200">
             <ShieldAlert className="w-8 h-8 text-red-600 animate-bounce" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900 tracking-tight">CEO Access Only</h1>
-          <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-            This module represents absolute business root authority at BukieBrainJobs. Your account <strong className="text-gray-900">{currentUserEmail || 'unknown'}</strong> is unauthorized.
+          <h1 className="text-xl font-bold text-brand-navy tracking-tight font-display">CEO Access Only</h1>
+          <p className="text-xs text-brand-navy/60 mt-2 leading-relaxed">
+            This module represents absolute business root authority at BukieBrainJobs. Your account <strong className="text-brand-navy">{currentUserEmail || 'unknown'}</strong> is unauthorized.
           </p>
-          <div className="mt-4 p-3 bg-red-50 text-red-700 rounded-xl text-[10px] font-mono leading-relaxed text-left border border-red-100">
+          <div className="mt-4 p-3 bg-red-50/50 text-red-700 rounded-xl text-[10px] font-mono leading-relaxed text-left border border-red-100">
             SECURE_GATEWATCH: ACCESS_DENIED <br />
             REQUIRED_UID: {CEO_EMAIL}
           </div>
           <div className="mt-6">
             <button
               onClick={() => router.push('/dashboard')}
-              className="w-full bg-[#0A192F] hover:bg-gray-800 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+              className="w-full bg-brand-green hover:bg-brand-green/90 text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2 active:scale-[0.98] font-display"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Dashboard</span>
@@ -252,66 +252,141 @@ export default function CEOAdminPage() {
   });
 
   return (
-    <main className="min-h-screen bg-white text-[#0A192F] py-8 px-4 flex flex-col">
+    <main className="min-h-screen bg-brand-bg text-brand-navy py-8 px-4 flex flex-col">
       <div className="max-w-6xl w-full mx-auto space-y-6" id="admin-panel-container">
         
         {/* Navigation Action */}
-        <div className="flex justify-between items-center bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+        <div className="flex justify-between items-center bg-brand-surface p-4 rounded-2xl border border-brand-border/60 shadow-xs">
           <button
             onClick={() => router.push('/dashboard')}
-            className="group inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-gray-900 uppercase tracking-wider transition-all cursor-pointer"
+            className="group inline-flex items-center gap-2 text-xs font-bold text-brand-navy/60 hover:text-brand-navy uppercase tracking-wider transition-all cursor-pointer font-display"
             id="back-btn"
           >
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             <span>Dashboard</span>
           </button>
-          <span className="text-[10px] uppercase font-mono tracking-widest text-amber-800 font-semibold flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
-            <Sparkles className="w-3.5 h-3.5 fill-amber-500 stroke-none animate-spin" />
-            <span>CEO Control Central</span>
-          </span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => router.push('/admin/qa-sandbox')}
+              className="inline-flex items-center gap-1.5 text-xs font-bold bg-brand-navy/5 hover:bg-brand-navy/10 text-brand-navy px-3 py-1.5 rounded-xl border border-brand-border/60 transition-all font-display"
+            >
+              <Hammer className="w-3.5 h-3.5" />
+              <span>QA Sandbox</span>
+            </button>
+            <span className="text-[10px] uppercase font-mono tracking-widest text-brand-green font-semibold flex items-center gap-1 bg-brand-green/10 px-2.5 py-1.5 rounded-xl border border-brand-green/20">
+              <Sparkles className="w-3.5 h-3.5 fill-brand-green stroke-none animate-spin" />
+              <span>CEO Control Central</span>
+            </span>
+          </div>
         </div>
 
         {/* Brand Banner */}
-        <div className="bg-[#0A192F] text-white rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-md">
-          <div className="absolute right-0 top-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"></div>
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-[#0A192F] border-2 border-blue-500 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg">
+        <div className="bg-brand-navy text-white rounded-2xl p-6 md:p-8 relative overflow-hidden shadow-xs border border-brand-navy/80">
+          <div className="absolute right-0 top-0 w-48 h-48 bg-brand-green/10 rounded-full blur-3xl"></div>
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="w-14 h-14 bg-brand-green/10 border-2 border-brand-green rounded-2xl flex items-center justify-center text-brand-green font-black text-2xl font-display shadow-xs">
               CEO
             </div>
             <div>
-              <h1 className="text-xl md:text-3xl font-black tracking-tight flex items-center gap-2">
+              <h1 className="text-xl md:text-3xl font-bold tracking-tight flex items-center gap-2 font-display">
                 <span>BukieBrain Verification Terminal</span>
               </h1>
-              <p className="text-xs text-gray-400 mt-1.5 leading-relaxed max-w-xl font-medium">
+              <p className="text-xs text-white/75 mt-1.5 leading-relaxed max-w-xl font-medium">
                 Administrative desk for Solomon Ogar Bukie. Grant trust credentials, inspect registered provider portfolios, and trigger instantaneous manual verification of Worker identities.
               </p>
             </div>
           </div>
         </div>
 
+        {/* Supervision Dashboard Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6" id="supervision-dashboard-grid">
+          {/* Total Registered Users */}
+          <div className="bg-brand-surface p-6 rounded-2xl border border-brand-border/60 shadow-xs">
+            <div className="flex justify-between items-start">
+              <div>
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-navy/60">
+                  Total Registered Users
+                </span>
+                <h3 className="text-3xl font-black text-brand-navy mt-1 tracking-tight font-display">
+                  {members.length}
+                </h3>
+              </div>
+              <div className="p-2.5 bg-brand-navy/5 text-brand-navy rounded-xl border border-brand-border/40">
+                <Users className="w-5 h-5" />
+              </div>
+            </div>
+            <p className="text-[10px] text-brand-green font-bold mt-3 flex items-center gap-1.5 font-mono">
+              <span className="w-2 h-2 rounded-full bg-brand-green inline-block animate-pulse"></span>
+              <span>System Online & Syncing</span>
+            </p>
+          </div>
+
+          {/* Active Protected Funds */}
+          <div className="bg-brand-surface p-6 rounded-2xl border border-brand-border/60 shadow-xs">
+            <div className="flex justify-between items-start">
+              <div>
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-navy/60">
+                  Active Protected Funds
+                </span>
+                <h3 className="text-3xl font-black text-brand-navy mt-1 tracking-tight font-display">
+                  8
+                </h3>
+              </div>
+              <div className="p-2.5 bg-brand-navy/5 text-brand-navy rounded-xl border border-brand-border/40">
+                <BadgeCent className="w-5 h-5" />
+              </div>
+            </div>
+            <p className="text-[10px] text-brand-navy/50 font-medium mt-3 flex items-center gap-1.5 font-mono">
+              <span className="w-2 h-2 rounded-full bg-brand-green inline-block"></span>
+              <span>All Protected Deposits Secured</span>
+            </p>
+          </div>
+
+          {/* Open Dispute Tickets */}
+          <div className="bg-brand-surface p-6 rounded-2xl border border-brand-border/60 shadow-xs">
+            <div className="flex justify-between items-start">
+              <div>
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-navy/60">
+                  Open Dispute Tickets
+                </span>
+                <h3 className="text-3xl font-black text-brand-navy mt-1 tracking-tight font-display">
+                  0
+                </h3>
+              </div>
+              <div className="p-2.5 bg-brand-green/10 text-brand-green rounded-xl border border-brand-green/20">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+            </div>
+            <p className="text-[10px] text-brand-green font-bold mt-3 flex items-center gap-1.5 font-mono">
+              <span className="w-2 h-2 rounded-full bg-brand-green inline-block"></span>
+              <span>All Disputes Resolved</span>
+            </p>
+          </div>
+        </div>
+
         {/* Database notification updates bar */}
         {statusMessage && (
-          <div className="bg-blue-50 border border-blue-100/80 text-blue-800 text-xs px-4 py-3 rounded-xl font-bold flex items-center gap-2" id="flash-status">
-            <Check className="w-4 h-4 text-blue-600 shrink-0" />
+          <div className="bg-brand-green/10 border border-brand-green/20 text-brand-green text-xs px-4 py-3 rounded-xl font-bold flex items-center gap-2 font-display" id="flash-status">
+            <Check className="w-4 h-4 text-brand-green shrink-0 animate-bounce" />
             <span>{statusMessage}</span>
           </div>
         )}
 
         {/* Table & Filtering Block */}
-        <div className="bg-white rounded-3xl border border-gray-100 shadow-md p-6 space-y-6" id="profiles-master-block">
+        <div className="bg-brand-surface rounded-2xl border border-brand-border/60 shadow-xs p-6 space-y-6" id="profiles-master-block">
           
           {/* Filtering Header */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex items-center gap-2">
-              <Users className="w-5 h-5 text-gray-500" />
-              <span className="text-sm font-black uppercase tracking-wider text-gray-800">
+              <Users className="w-5 h-5 text-brand-navy/60" />
+              <span className="text-sm font-bold uppercase tracking-wider text-brand-navy font-display">
                 Register Database ({filteredMembers.length} users)
               </span>
             </div>
 
             {/* Search Input */}
             <div className="relative w-full md:w-72">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-navy/40">
                 <Search className="w-4 h-4" />
               </span>
               <input
@@ -319,27 +394,27 @@ export default function CEOAdminPage() {
                 placeholder="Search by candidate name or role..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-xs px-4 py-2.5 pl-10 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium"
+                className="w-full bg-brand-bg border border-brand-border/60 focus:border-brand-green focus:bg-brand-surface text-xs px-4 py-2.5 pl-10 rounded-xl transition-all outline-none text-brand-navy placeholder-brand-navy/30 font-medium"
               />
             </div>
           </div>
 
           {/* Master Table Grid */}
-          <div className="overflow-x-auto rounded-2xl border border-gray-100">
-            <table className="w-full text-left text-xs text-gray-500 border-collapse">
-              <thead className="bg-gray-50 text-gray-400 uppercase font-bold text-[10px] tracking-wider border-b border-gray-100">
+          <div className="overflow-x-auto rounded-xl border border-brand-border/60 bg-brand-bg">
+            <table className="w-full text-left text-xs text-brand-navy/70 border-collapse">
+              <thead className="bg-brand-surface text-brand-navy/50 uppercase font-bold text-[10px] tracking-wider border-b border-brand-border/60">
                 <tr>
-                  <th scope="col" className="px-6 py-4">Participant Detail</th>
-                  <th scope="col" className="px-6 py-4">Role System</th>
-                  <th scope="col" className="px-6 py-4">Bio / Passport Status</th>
-                  <th scope="col" className="px-6 py-4 text-center">Identity Badge</th>
-                  <th scope="col" className="px-6 py-4 text-center">Action Console</th>
+                  <th scope="col" className="px-6 py-4 font-display">Participant Detail</th>
+                  <th scope="col" className="px-6 py-4 font-display">Role System</th>
+                  <th scope="col" className="px-6 py-4 font-display">Bio / Passport Status</th>
+                  <th scope="col" className="px-6 py-4 text-center font-display">Identity Badge</th>
+                  <th scope="col" className="px-6 py-4 text-center font-display">Action Console</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-brand-border/40">
                 {filteredMembers.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-12 text-center text-gray-400 font-mono">
+                    <td colSpan={5} className="px-6 py-12 text-center text-brand-navy/40 font-mono">
                       No matching participants identified in this workspace search.
                     </td>
                   </tr>
@@ -348,19 +423,19 @@ export default function CEOAdminPage() {
                     const hasPassport = !!member.passport;
                     const isVerified = member.passport?.is_verified === true;
                     return (
-                      <tr key={member.id} className="hover:bg-gray-50/50 transition-colors">
+                      <tr key={member.id} className="hover:bg-brand-surface/50 transition-colors">
                         
                         {/* Detail */}
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 bg-[#0A192F]/5 rounded-xl flex items-center justify-center text-gray-800 font-black">
+                            <div className="w-9 h-9 bg-brand-navy/5 rounded-xl flex items-center justify-center text-brand-navy font-black font-display border border-brand-border/40">
                               {member.full_name?.charAt(0).toUpperCase() || 'P'}
                             </div>
                             <div>
-                              <span className="font-extrabold text-gray-900 block text-sm">
+                              <span className="font-extrabold text-brand-navy block text-sm">
                                 {member.full_name || 'Anonymous User'}
                               </span>
-                              <span className="text-[10px] text-gray-400 font-mono font-medium tracking-wide">
+                              <span className="text-[10px] text-brand-navy/40 font-mono font-medium tracking-wide">
                                 ID: {member.id.substring(0, 8)}...
                               </span>
                             </div>
@@ -371,10 +446,10 @@ export default function CEOAdminPage() {
                         <td className="px-6 py-4">
                           <span className={`inline-block px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${
                             member.role === 'worker' 
-                              ? 'bg-[#0A192F]/5 text-[#0A192F] border border-[#0A192F]/15' 
-                              : 'bg-blue-50 text-blue-700 border border-blue-100'
+                              ? 'bg-brand-navy/5 text-brand-navy border border-brand-border/60' 
+                              : 'bg-blue-50/50 text-blue-700 border border-blue-200'
                           }`}>
-                            {member.role || 'Unspecified'}
+                            {member.role === 'worker' ? 'Get Hired' : member.role === 'employer' ? 'Hire Talent' : (member.role || 'Unspecified')}
                           </span>
                         </td>
 
@@ -382,13 +457,13 @@ export default function CEOAdminPage() {
                         <td className="px-6 py-4 max-w-xs">
                           {hasPassport ? (
                             <div className="space-y-1">
-                              <p className="font-medium text-gray-600 line-clamp-2 leading-relaxed">
+                              <p className="font-medium text-brand-navy/80 line-clamp-2 leading-relaxed">
                                 {member.passport.bio}
                               </p>
                               {member.passport.skills && member.passport.skills.length > 0 && (
                                 <div className="flex flex-wrap gap-1">
                                 {(Array.isArray(member.passport?.skills) ? member.passport.skills : []).map((sk: string, i: number) => (
-                                    <span key={i} className="text-[9px] bg-slate-100 text-slate-600 font-extrabold px-1.5 py-0.5 rounded uppercase">
+                                    <span key={i} className="text-[9px] bg-brand-navy/5 text-brand-navy/70 font-bold px-1.5 py-0.5 rounded uppercase">
                                       {sk}
                                     </span>
                                   ))}
@@ -396,7 +471,7 @@ export default function CEOAdminPage() {
                               )}
                             </div>
                           ) : (
-                            <span className="text-gray-400 italic text-[11px]">
+                            <span className="text-brand-navy/40 italic text-[11px]">
                               No Passport document built yet.
                             </span>
                           )}
@@ -406,13 +481,13 @@ export default function CEOAdminPage() {
                         <td className="px-6 py-4 text-center">
                           <div className="flex justify-center">
                             {isVerified ? (
-                              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-sky-800 bg-sky-50 border border-sky-100 px-2 rounded-full py-0.5">
-                                <ShieldCheck className="w-3.5 h-3.5 fill-sky-500 text-white" />
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-brand-green bg-brand-green/10 border border-brand-green/20 px-2.5 py-1 rounded-full">
+                                <ShieldCheck className="w-3.5 h-3.5 fill-brand-green text-brand-bg" />
                                 <span>Verified Hub</span>
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-gray-400 bg-gray-50 border border-gray-100 px-2 rounded-full py-0.5">
-                                <X className="w-3 h-3 text-gray-400" />
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-brand-navy/40 bg-brand-navy/5 border border-brand-border/40 px-2.5 py-1 rounded-full">
+                                <X className="w-3 h-3 text-brand-navy/40" />
                                 <span>Unverified</span>
                               </span>
                             )}
@@ -423,15 +498,15 @@ export default function CEOAdminPage() {
                         <td className="px-6 py-4 text-center">
                           <div className="flex justify-center">
                             {actionLoadingId === member.id ? (
-                              <Loader2 className="w-5 h-5 animate-spin text-[#0A192F]" />
+                              <Loader2 className="w-5 h-5 animate-spin text-brand-green" />
                             ) : (
                               <button
                                 type="button"
                                 onClick={() => handleToggleVerify(member.id, isVerified)}
-                                className={`text-[10px] font-extrabold uppercase tracking-widest px-4 py-2 rounded-xl transition-all shadow-sm cursor-pointer border ${
+                                className={`text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-xl transition-all shadow-xs cursor-pointer border font-display ${
                                   isVerified 
-                                    ? 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100' 
-                                    : 'bg-[#0A192F] text-white border-transparent hover:bg-[#112a4f]'
+                                    ? 'bg-amber-50/50 text-amber-800 border-amber-200 hover:bg-amber-100/50' 
+                                    : 'bg-brand-green text-white border-transparent hover:bg-brand-green/90'
                                 }`}
                               >
                                 {isVerified ? 'Unverify User' : 'Verify User'}

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface SmoothCollapseProps {
   isOpen: boolean;
@@ -10,6 +10,15 @@ interface SmoothCollapseProps {
 }
 
 export function SmoothCollapse({ isOpen, children, className = '' }: SmoothCollapseProps) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return isOpen ? <div className={`overflow-hidden ${className}`}>{children}</div> : null;
+  }
+
   return (
     <AnimatePresence initial={false}>
       {isOpen && (

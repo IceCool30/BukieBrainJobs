@@ -35,11 +35,16 @@ interface ChatWindowProps {
 export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: ChatWindowProps) {
   const supabase = getSupabaseBrowserClient();
 
+  const [mounted, setMounted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [sendLoading, setSendLoading] = useState(false);
   const [newMessage, setNewMessage] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Real-time typing indicator states
   const [typingUser, setTypingUser] = useState<string | null>(null);
@@ -129,7 +134,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
     }
 
     loadChatData();
-  }, [jobId]);
+  }, [jobId, currentUserId, supabase]);
 
   // Setup Realtime Subscription mapping
   useEffect(() => {
@@ -194,7 +199,7 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
       if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
       supabase.removeChannel(channel);
     };
-  }, [jobId, profiles, currentUserId]);
+  }, [jobId, profiles, currentUserId, supabase]);
 
   // Helper to send outbound typing status to other participants
   const handleTypingIndicator = (isTyping: boolean) => {
@@ -303,11 +308,20 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
     }
   };
 
+  if (!mounted) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center bg-brand-surface min-h-[500px] rounded-2xl border border-brand-border/60">
+        <Loader2 className="w-8 h-8 animate-spin text-brand-green" />
+        <span className="text-sm text-brand-navy/60 font-semibold mt-2">Loading secure artisan chat network...</span>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center p-12 min-h-[400px]">
-        <Image src={LogoBase64} alt="Loading..." width={40} height={40} className="animate-pulse shadow-md rounded-xl mb-3 bg-white p-[2px]" />
-        <span className="text-xs font-mono text-gray-400 uppercase tracking-widest font-bold">
+      <div className="flex flex-col items-center justify-center p-12 min-h-[400px] bg-brand-bg rounded-2xl border border-brand-border">
+        <Image src={LogoBase64} alt="Loading..." width={40} height={40} className="animate-pulse shadow-sm rounded-xl mb-3 bg-brand-surface p-[2px]" />
+        <span className="text-xs font-mono text-brand-navy/40 uppercase tracking-widest font-bold">
           Binding Secure Channel...
         </span>
       </div>
@@ -315,13 +329,13 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
   }
 
   return (
-    <div className="flex flex-col h-[600px] bg-white rounded-3xl border border-gray-100 shadow-xl overflow-hidden" id="chat-window-terminal">
+    <div className="flex flex-col h-[600px] bg-brand-bg rounded-2xl border border-brand-border shadow-xs overflow-hidden" id="chat-window-terminal">
       
       {/* Security Level Header */}
-      <div className="p-4 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
+      <div className="p-4 bg-brand-surface border-b border-brand-border/60 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${
-            isInspectionPaid ? 'bg-blue-600 text-white' : 'bg-red-500 text-white animate-pulse'
+            isInspectionPaid ? 'bg-brand-green text-white' : 'bg-red-500 text-white animate-pulse'
           }`}>
             {isInspectionPaid ? (
               <ShieldCheck className="w-2.5 h-2.5" />
@@ -330,10 +344,10 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
             )}
           </div>
           <div>
-            <span className="block text-xs font-extrabold text-gray-700">
+            <span className="block text-xs font-bold text-brand-navy/80">
               Chat safely. Contact details are hidden until the employer pays the inspection fee.
             </span>
-            <span className="block text-[10px] text-gray-400 font-medium mt-0.5">
+            <span className="block text-[10px] text-brand-navy/40 font-medium mt-0.5">
               {isInspectionPaid 
                 ? 'Standard contact data bypass validation approved' 
                 : 'Phone numbers and contact info hidden for your protection.'}
@@ -361,16 +375,16 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
       {/* Messages Scroll Area */}
       <div 
         ref={containerRef}
-        className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/60"
+        className="flex-1 overflow-y-auto p-5 space-y-4 bg-brand-bg"
         id="chat-messages-scroll"
       >
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center text-center h-full py-12 space-y-2">
-            <div className="w-12 h-12 bg-[#0A192F]/5 text-[#0A192F] rounded-full flex items-center justify-center border border-[#0A192F]/10">
+            <div className="w-12 h-12 bg-brand-surface text-brand-navy/60 rounded-full flex items-center justify-center border border-brand-border/60">
               <HelpCircle className="w-6 h-6" />
             </div>
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Empty Conversation</p>
-            <p className="text-xs text-gray-400 max-w-xs leading-relaxed">
+            <p className="text-xs font-bold text-brand-navy/40 uppercase tracking-wider">Empty Conversation</p>
+            <p className="text-xs text-brand-navy/40 max-w-xs leading-relaxed">
               No chat logs are presently recorded. Send a greeting to initiate matching discussions with your client.
             </p>
           </div>
@@ -390,23 +404,23 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
                 id={`msg-bubble-${msg.id}`}
               >
                 {/* Sender Tag Header */}
-                <span className="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1 px-1">
+                <span className="text-[9px] font-display font-semibold text-brand-navy/50 uppercase tracking-wider mb-1 px-1">
                   {isMe ? 'Me' : senderName}
                 </span>
 
                 {/* Message Bubble Body */}
                 <div 
-                  className={`p-3.5 rounded-2xl text-xs font-semibold leading-relaxed ${
+                  className={`p-3.5 rounded-2xl text-xs font-medium leading-relaxed ${
                     isMe 
-                      ? 'bg-[#0A192F] text-white rounded-tr-none shadow-md shadow-blue-900/5' 
-                      : 'bg-white text-gray-900 border border-gray-150 rounded-tl-none shadow-sm'
+                      ? 'bg-brand-green text-white rounded-tr-none shadow-xs' 
+                      : 'bg-brand-surface text-brand-navy border border-brand-border/40 rounded-tl-none shadow-xs'
                   }`}
                 >
                   {renderMessageContent(msg.content)}
                 </div>
 
                 {/* Timestamp Footer */}
-                <span className="text-[8px] font-mono text-gray-400 mt-1 px-1">
+                <span className="text-[8px] font-mono text-brand-navy/45 mt-1 px-1">
                   {formattedTime}
                 </span>
               </div>
@@ -416,11 +430,11 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
         
         {/* Real-time typing indicators */}
         {typingUser && (
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 animate-pulse px-2 py-1" id="chat-typing-indicator">
-            <span className="w-1.5 h-1.5 bg-[#0A192F] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-            <span className="w-1.5 h-1.5 bg-[#0A192F] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-            <span className="w-1.5 h-1.5 bg-[#0A192F] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-            <span className="ml-1 font-medium italic text-gray-400">
+          <div className="flex items-center gap-2 text-xs font-semibold text-brand-navy/60 animate-pulse px-2 py-1" id="chat-typing-indicator">
+            <span className="w-1.5 h-1.5 bg-brand-green rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+            <span className="w-1.5 h-1.5 bg-brand-green rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+            <span className="w-1.5 h-1.5 bg-brand-green rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            <span className="ml-1 font-medium italic text-brand-navy/40">
               {profiles[typingUser] || 'Participant'} is typing...
             </span>
           </div>
@@ -440,24 +454,37 @@ export default function ChatWindow({ jobId, currentUserId, isInspectionPaid }: C
       )}
 
       {/* Footer input form */}
-      <form onSubmit={handleSendMessage} className="p-4 bg-white border-t border-gray-100 flex items-center gap-3">
-        <input
-          required
-          type="text"
-          placeholder="Compose text message..."
-          value={newMessage}
-          onChange={(e) => {
-            const val = e.target.value;
-            setNewMessage(val);
-            handleTypingIndicator(val.length > 0);
-          }}
-          className="flex-1 bg-gray-50 border border-gray-200 focus:border-[#0A192F] focus:bg-white text-xs px-4 py-3 rounded-xl transition-all outline-none text-gray-900 placeholder-gray-400 font-medium shadow-inner"
-          id="chat-message-input"
-        />
+      <form onSubmit={handleSendMessage} className="p-4 bg-brand-bg border-t border-brand-border/60 flex items-center gap-2">
+        <div className="flex-1 flex items-center bg-brand-surface border border-brand-border rounded-full px-4 py-1 focus-within:ring-2 focus-within:ring-brand-green/20 focus-within:border-brand-green transition-all">
+          {/* Attachment Indicator / Paperclip Icon */}
+          <button 
+            type="button" 
+            className="text-brand-navy/40 hover:text-brand-navy p-2 rounded-full cursor-pointer transition-colors" 
+            title="Attach File"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+            </svg>
+          </button>
+          
+          <input
+            required
+            type="text"
+            placeholder="Compose text message..."
+            value={newMessage}
+            onChange={(e) => {
+              const val = e.target.value;
+              setNewMessage(val);
+              handleTypingIndicator(val.length > 0);
+            }}
+            className="flex-1 bg-transparent text-xs py-2 px-2 outline-none text-brand-navy placeholder-brand-navy/40 font-medium"
+            id="chat-message-input"
+          />
+        </div>
         <button
           type="submit"
           disabled={sendLoading || !newMessage.trim()}
-          className="bg-[#0A192F] hover:bg-[#112a4f] text-white p-3 rounded-xl transition-all shadow-md shadow-blue-950/10 hover:shadow-blue-950/20 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer shrink-0"
+          className="bg-brand-green hover:bg-brand-green/90 text-white p-3 rounded-full transition-all shadow-xs active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer shrink-0"
           id="chat-send-submit-btn"
         >
           {sendLoading ? (
