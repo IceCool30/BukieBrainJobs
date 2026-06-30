@@ -175,6 +175,21 @@ export async function postJobAction(input: PostJobInput, paymentRef?: string) {
       return { success: false, error: 'Unauthorized. Please login again.' };
     }
 
+    // Verify user role before letting them post a job
+    const { data: profileData, error: profileError } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single();
+
+    if (profileError || !profileData) {
+      return { success: false, error: 'Your user profile could not be found. Please complete onboarding first.' };
+    }
+
+    if (profileData.role !== 'employer') {
+      return { success: false, error: 'Unauthorized. Only employers are permitted to post jobs. If you are an artisan, you can bid on existing jobs instead.' };
+    }
+
     // Financial checking for Urgent Boosts
     if (input.is_urgent) {
       if (!paymentRef) {

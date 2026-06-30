@@ -4,7 +4,15 @@ import { redirect } from 'next/navigation';
 import { setUserRole } from './actions';
 import { RoleSelectionForm } from './RoleSelectionForm';
 
-export default async function OnboardingPage() {
+export default async function OnboardingPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  let nextUrl = typeof searchParams?.next === 'string' ? searchParams.next : undefined;
+  if (nextUrl && (nextUrl.includes('/onboarding') || nextUrl.includes('/login'))) {
+    nextUrl = undefined;
+  }
   const cookieStore = cookies();
   const supabase = createServerClient(
     (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
@@ -44,13 +52,14 @@ export default async function OnboardingPage() {
     .single();
 
   if (profile?.role) {
-    redirect('/dashboard');
+    redirect(nextUrl || '/dashboard');
   }
 
   return (
     <div className="min-h-screen bg-brand-bg flex items-center justify-center py-12 px-4">
       <RoleSelectionForm 
         fullName={profile?.full_name} 
+        nextUrl={nextUrl}
         setUserRole={setUserRole} 
       />
     </div>

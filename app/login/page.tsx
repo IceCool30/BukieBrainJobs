@@ -24,6 +24,9 @@ export default function LoginPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [nextUrl, setNextUrl] = useState('');
+  const [showResend, setShowResend] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
   
   // Internal toggle for unified sign in/sign up processing
   const [isSignUp, setIsSignUp] = useState(false);
@@ -31,6 +34,10 @@ export default function LoginPage() {
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
+      const next = params.get('next');
+      if (next) {
+        setNextUrl(next);
+      }
       const error = params.get('error');
       if (error === 'auth_failed') {
         const details = params.get('details');
@@ -60,16 +67,21 @@ export default function LoginPage() {
     setLoading(true);
     if (!isSupabaseConfigured()) {
       setMessage('Simulating Google Auth inside the Sandbox environment...');
+      const target = nextUrl ? `/onboarding?next=${encodeURIComponent(nextUrl)}` : '/onboarding';
       setTimeout(() => {
-        router.push('/onboarding');
+        router.push(target);
       }, 1000);
       return;
     }
     try {
+      const callbackUrl = new URL(`${window.location.origin}/api/auth/callback`);
+      if (nextUrl) {
+        callbackUrl.searchParams.set('next', nextUrl);
+      }
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/api/auth/callback`,
+          redirectTo: callbackUrl.toString(),
         },
       });
       if (error) setErrorMsg(error.message);
@@ -77,6 +89,35 @@ export default function LoginPage() {
       setErrorMsg(err?.message || 'An error occurred during Google Auth.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendConfirm = async () => {
+    if (!email) return;
+    setResendLoading(true);
+    setErrorMsg('');
+    setMessage('');
+    try {
+      const callbackUrl = new URL(`${window.location.origin}/api/auth/callback`);
+      if (nextUrl) {
+        callbackUrl.searchParams.set('next', nextUrl);
+      }
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+        options: {
+          emailRedirectTo: callbackUrl.toString()
+        }
+      });
+      if (error) {
+        setErrorMsg(error.message);
+      } else {
+        setMessage('Confirmation email resent successfully! Please check your spam folder too.');
+      }
+    } catch (err: any) {
+      setErrorMsg(err?.message || 'Failed to resend confirmation email.');
+    } finally {
+      setResendLoading(false);
     }
   };
 
@@ -88,19 +129,24 @@ export default function LoginPage() {
 
     if (!isSupabaseConfigured()) {
       setMessage('Sandbox login successful! Redirecting to onboarding...');
+      const target = nextUrl ? `/onboarding?next=${encodeURIComponent(nextUrl)}` : '/onboarding';
       setTimeout(() => {
-        router.push('/onboarding');
+        router.push(target);
       }, 1000);
       return;
     }
 
     try {
       if (isSignUp) {
+        const callbackUrl = new URL(`${window.location.origin}/api/auth/callback`);
+        if (nextUrl) {
+          callbackUrl.searchParams.set('next', nextUrl);
+        }
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/api/auth/callback`
+            emailRedirectTo: callbackUrl.toString()
           }
         });
 
@@ -109,9 +155,11 @@ export default function LoginPage() {
         } else {
           if (data?.session) {
             setMessage('Registration successful! Redirecting...');
-            setTimeout(() => router.push('/onboarding'), 1500);
+            const target = nextUrl ? `/onboarding?next=${encodeURIComponent(nextUrl)}` : '/onboarding';
+            setTimeout(() => router.push(target), 1500);
           } else {
             setMessage('Account created! Please check your email inbox to confirm your registration.');
+            setShowResend(true);
           }
         }
       } else {
@@ -123,12 +171,16 @@ export default function LoginPage() {
         if (error) {
           if (error.message.includes('Invalid login credentials')) {
             setErrorMsg('Invalid login credentials. If you are new, try checking the sign up option below.');
+          } else if (error.message.includes('Email not confirmed')) {
+            setErrorMsg('Your email has not been confirmed yet. Please verify your email first.');
+            setShowResend(true);
           } else {
             setErrorMsg(error.message);
           }
         } else {
           setMessage('Login successful! Redirecting...');
-          setTimeout(() => router.push('/onboarding'), 1000);
+          const target = nextUrl ? `/onboarding?next=${encodeURIComponent(nextUrl)}` : '/onboarding';
+          setTimeout(() => router.push(target), 1000);
         }
       }
     } catch (err: any) {
@@ -282,6 +334,28 @@ export default function LoginPage() {
                   <span className="leading-relaxed font-medium">{message}</span>
                 </div>
               </SmoothCollapse>
+
+              {showResend && (
+                <div className="bg-brand-surface border border-brand-border/40 p-4 rounded-xl space-y-2 text-center" id="resend-confirmation-card">
+                  <p className="text-xs text-brand-navy/70 font-medium">Did not receive the confirmation email? Check your spam folder or trigger a new one.</p>
+                  <button
+                    type="button"
+                    onClick={handleResendConfirm}
+                    disabled={resendLoading}
+                    className="inline-flex items-center justify-center bg-brand-green text-white hover:bg-brand-green/90 font-bold text-xs py-2 px-4 rounded-lg transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+                  >
+                    {resendLoading ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Resending...
+                      </>
+                    ) : 'Resend Confirmation Email'}
+                  </button>
+                </div>
+              )}
 
               <div className="flex items-center gap-2.5 text-xs sm:text-sm text-brand-navy/80 font-medium pt-1">
                 <input

@@ -10,7 +10,8 @@ export async function setUserRole(
   fullName?: string,
   state?: string,
   lga?: string,
-  phone?: string
+  phone?: string,
+  redirectTo?: string
 ) {
   const cookieStore = cookies();
   const supabase = createServerClient(
@@ -108,7 +109,9 @@ export async function setUserRole(
   }
 
   // Route based on role
-  if (role === 'worker') {
+  if (redirectTo && (redirectTo.startsWith('/') || redirectTo.startsWith('http'))) {
+    redirect(redirectTo);
+  } else if (role === 'worker') {
     redirect('/dashboard/passport-setup'); // Artisan goes to Blue Check setup
   } else {
     redirect('/dashboard'); // Employer goes to post jobs

@@ -19,6 +19,7 @@ export default function Home() {
   const router = useRouter();
   const [showEmployerBanner, setShowEmployerBanner] = useState(true);
   const [oauthError, setOauthError] = useState<{ code: string; message: string } | null>(null);
+  const [hasSession, setHasSession] = useState<boolean | null>(null);
   
   const [selectedState, setSelectedState] = useState('');
   const [selectedArea, setSelectedArea] = useState('');
@@ -94,6 +95,20 @@ export default function Home() {
       }
     }
 
+    async function checkActiveSession() {
+      if (!isSupabaseConfigured()) {
+        setHasSession(true); // Treat as logged in/mock mode when Supabase is offline
+        return;
+      }
+      try {
+        const supabase = getSupabaseBrowserClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        setHasSession(!!session);
+      } catch (err) {
+        setHasSession(false);
+      }
+    }
+
     async function fetchLandingSuggestions() {
       if (!isSupabaseConfigured()) {
         console.warn('Supabase is not configured yet. Landing page is running with high-quality default suggestions.');
@@ -125,8 +140,17 @@ export default function Home() {
         console.error('Failed to pre-fetch landing page search queries:', err);
       }
     }
+    checkActiveSession();
     fetchLandingSuggestions();
   }, []);
+
+  const handlePostJobClick = () => {
+    if (hasSession === false) {
+      router.push('/login?next=/dashboard/post-job');
+    } else {
+      router.push('/dashboard/post-job');
+    }
+  };
 
   // Accordion states
   const [openTrending, setOpenTrending] = useState(true);
@@ -156,7 +180,7 @@ export default function Home() {
             whileHover={{ scale: 1.05, y: -1 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
-            onClick={() => router.push('/dashboard/post-job')}
+            onClick={handlePostJobClick}
             className="bg-brand-green hover:bg-brand-green/90 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl whitespace-nowrap transition-all outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 shadow-sm cursor-pointer" 
           >
             Post a Job
@@ -312,7 +336,7 @@ export default function Home() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => router.push('/dashboard/post-job')}
+              onClick={handlePostJobClick}
               className="w-full bg-brand-navy hover:bg-brand-navy/95 text-white font-semibold text-sm py-3 rounded-xl transition-all shadow-sm cursor-pointer"
             >
               Post a Job
@@ -507,7 +531,7 @@ export default function Home() {
                 <motion.button 
                   whileHover={{ scale: 1.03, y: -1 }}
                   whileTap={{ scale: 0.97 }}
-                  onClick={() => router.push('/dashboard/post-job')}
+                  onClick={handlePostJobClick}
                   className="text-center font-semibold bg-brand-surface hover:bg-brand-surface/80 text-brand-navy transition-all text-sm px-4 py-3 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-green border border-brand-border/30 cursor-pointer"
                 >
                   Post a Job

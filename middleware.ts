@@ -87,14 +87,20 @@ export async function middleware(req: NextRequest) {
   if (!session) {
     // Restrict access for unauthenticated users
     if (url.pathname.startsWith('/dashboard') || url.pathname.startsWith('/onboarding')) {
-      url.pathname = '/login';
-      return NextResponse.redirect(url);
+      const loginUrl = new URL('/login', req.url);
+      loginUrl.searchParams.set('next', req.nextUrl.pathname + req.nextUrl.search);
+      return NextResponse.redirect(loginUrl);
     }
   } else {
     // Prevent authenticated users from visiting the login page again
     if (url.pathname === '/login') {
-      url.pathname = '/onboarding';
-      return NextResponse.redirect(url);
+      const nextParam = req.nextUrl.searchParams.get('next');
+      let targetPath = nextParam || '/onboarding';
+      if (targetPath.includes('/login')) {
+        targetPath = '/onboarding';
+      }
+      const targetUrl = new URL(targetPath, req.url);
+      return NextResponse.redirect(targetUrl);
     }
   }
 

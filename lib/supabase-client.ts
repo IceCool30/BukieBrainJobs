@@ -10,6 +10,7 @@ export function getCookieOptions(hostname: string) {
     path: '/',
     sameSite: (isIframeEnv ? 'none' : 'lax') as 'none' | 'lax',
     secure: isIframeEnv || !isLocalhost,
+    maxAge: 604800, // 7 days in seconds
   };
 }
 

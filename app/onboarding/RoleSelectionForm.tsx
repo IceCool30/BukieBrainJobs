@@ -18,16 +18,18 @@ import { LocationSelector } from '@/components/LocationSelector';
 
 interface RoleSelectionFormProps {
   fullName?: string;
+  nextUrl?: string;
   setUserRole: (
     role: 'employer' | 'worker',
     fullName?: string,
     state?: string,
     lga?: string,
-    phone?: string
+    phone?: string,
+    redirectTo?: string
   ) => Promise<never>;
 }
 
-export function RoleSelectionForm({ fullName: initialFullName, setUserRole }: RoleSelectionFormProps) {
+export function RoleSelectionForm({ fullName: initialFullName, nextUrl, setUserRole }: RoleSelectionFormProps) {
   const [step, setStep] = useState<1 | 2>(1);
   const [selectedRole, setSelectedRole] = useState<'employer' | 'worker' | null>(null);
   
@@ -68,7 +70,7 @@ export function RoleSelectionForm({ fullName: initialFullName, setUserRole }: Ro
     setFormError('');
     startTransition(async () => {
       try {
-        await setUserRole(selectedRole, fullName, state, lga, phone);
+        await setUserRole(selectedRole, fullName, state, lga, phone, nextUrl);
       } catch (err) {
         console.error('Failed to complete onboarding:', err);
         setFormError('Something went wrong during onboarding. Please try again.');
@@ -340,7 +342,7 @@ export function RoleSelectionForm({ fullName: initialFullName, setUserRole }: Ro
                       transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
                       className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
                     />
-                    <span>Deploying track...</span>
+                    <span>Completing Setup...</span>
                   </>
                 ) : (
                   <>

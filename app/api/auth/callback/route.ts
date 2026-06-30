@@ -131,13 +131,21 @@ export async function GET(request: NextRequest) {
     if (profileError) console.error('Profile creation failed:', profileError);
 
     // Force to onboarding for role selection
-    return NextResponse.redirect(new URL('/onboarding', request.url));
+    const targetUrl = new URL('/onboarding', request.url);
+    if (next && next !== '/') {
+      targetUrl.searchParams.set('next', next);
+    }
+    return NextResponse.redirect(targetUrl);
   }
 
   // 4. RETURNING USER: Smart routing based on profile status
   if (!profile.role) {
     // User exists but never picked role. Send to onboarding.
-    return NextResponse.redirect(new URL('/onboarding', request.url));
+    const targetUrl = new URL('/onboarding', request.url);
+    if (next && next !== '/') {
+      targetUrl.searchParams.set('next', next);
+    }
+    return NextResponse.redirect(targetUrl);
   }
 
   // 5. VERIFIED USER: Go to dashboard
