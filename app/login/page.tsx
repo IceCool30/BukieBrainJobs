@@ -95,7 +95,7 @@ export default function LoginPage() {
   const handleWorkOSAuth = () => {
     setErrorMsg('');
     const target = nextUrl ? `/api/auth/workos-login?next=${encodeURIComponent(nextUrl)}` : '/api/auth/workos-login';
-    router.push(target);
+    window.location.href = target;
   };
 
   const handleResendConfirm = async () => {
