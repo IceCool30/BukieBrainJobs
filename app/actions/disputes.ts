@@ -239,7 +239,7 @@ export async function resolveDisputeByAdmin({
     await supabase.rpc('increment_dispute_strikes', { artisan_id: dispute.artisan_id })
   }
 
-  revalidatePath('/admin/disputes')
+  revalidatePath('/dashboard/disputes')
   return { success: true, employer_refund, artisan_payout }
 }
 
