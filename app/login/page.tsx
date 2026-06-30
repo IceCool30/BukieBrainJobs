@@ -92,6 +92,12 @@ export default function LoginPage() {
     }
   };
 
+  const handleWorkOSAuth = () => {
+    setErrorMsg('');
+    const target = nextUrl ? `/api/auth/workos-login?next=${encodeURIComponent(nextUrl)}` : '/api/auth/workos-login';
+    router.push(target);
+  };
+
   const handleResendConfirm = async () => {
     if (!email) return;
     setResendLoading(true);
@@ -246,6 +252,19 @@ export default function LoginPage() {
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.16 7.07l3.68 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
               </svg>
               <span>Continue with Google</span>
+            </button>
+
+            <button
+              onClick={handleWorkOSAuth}
+              className="w-full bg-brand-surface hover:bg-brand-surface/80 text-brand-navy font-semibold py-3 px-4 rounded-xl border border-brand-border/50 transition-all duration-150 flex items-center justify-center gap-3 cursor-pointer text-xs sm:text-sm"
+              id="workos-auth-button"
+            >
+              {/* Secure Lock Shield SVG */}
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-brand-green">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              <span>Continue with AuthKit (WorkOS)</span>
             </button>
 
             <div className="flex items-center gap-4 text-brand-navy/30 text-xs font-semibold">
