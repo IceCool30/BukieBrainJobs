@@ -243,7 +243,7 @@ export default function Home() {
           </h1>
           
           <p className="text-sm sm:text-base md:text-lg text-brand-navy/60 font-sans font-medium mt-6 max-w-2xl mx-auto leading-relaxed">
-            A comprehensive platform connecting verified local artisans and top-tier freelancers with hirers across Nigeria. Direct communication, secure escrow wallets, and verified delivery.
+            The all in one marketplace to post jobs or find freelance and service workers across Nigeria. Hirers can easily source verified talent, while professionals can securely browse gigs, communicate directly, and get paid safely via secure wallets.
           </p>
 
           {/* Centered Pill Call-To-Actions (Behance-Style) */}
