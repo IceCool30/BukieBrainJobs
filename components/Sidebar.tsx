@@ -91,7 +91,10 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden flex flex-col justify-start">
+        <div 
+          onClick={onClose}
+          className="fixed inset-0 z-50 lg:hidden flex flex-col justify-start cursor-pointer"
+        >
           {/* Backdrop with spring fade - covers full screen absolute behind panel */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -108,7 +111,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             exit={{ y: '-100%', opacity: 0.8 }}
             transition={{ type: 'spring', damping: 26, stiffness: 210, mass: 0.95 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full bg-white shadow-2xl z-10 flex flex-col border-b border-gray-100 rounded-b-[2rem] overflow-hidden max-h-[88vh]"
+            className="relative w-full bg-white shadow-2xl z-10 flex flex-col border-b border-gray-100 rounded-b-[2rem] overflow-hidden max-h-[88vh] cursor-default"
           >
             {/* Header with clear branding to perfectly match user request */}
             <div className="flex items-center justify-between p-5 border-b border-gray-100/60 bg-gray-50/40">

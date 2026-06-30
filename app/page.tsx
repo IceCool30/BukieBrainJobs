@@ -225,7 +225,7 @@ export default function Home() {
         >
           <h1 className="text-3xl sm:text-6xl md:text-7xl font-display font-black text-brand-navy tracking-tight leading-[1.05] text-center max-w-4xl mx-auto">
             Nigeria&apos;s <br className="sm:hidden" />
-            <span className="relative inline-block text-brand-green min-w-[280px] sm:min-w-[340px] md:min-w-[400px] text-center h-[1.15em] overflow-hidden align-bottom">
+            <span className="relative inline-block text-brand-green min-w-[300px] sm:min-w-[500px] md:min-w-[600px] lg:min-w-[680px] text-center h-[1.3em] overflow-hidden align-bottom pb-1.5">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={rotatingIndex}
@@ -233,7 +233,7 @@ export default function Home() {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: '-70%', opacity: 0 }}
                   transition={{ type: "spring", stiffness: 220, damping: 18 }}
-                  className="absolute left-0 right-0 whitespace-nowrap"
+                  className="absolute left-0 right-0 bottom-1 whitespace-nowrap"
                 >
                   Best {rotatingPhrases[rotatingIndex]}
                 </motion.span>
