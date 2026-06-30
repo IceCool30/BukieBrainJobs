@@ -225,7 +225,10 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <motion.button
                   whileHover={{ scale: 1.02, backgroundColor: "#0A192F", color: "#fff" }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => handleNavigation('/login')}
+                  onClick={() => {
+                    onClose();
+                    window.location.href = '/api/auth/workos-login';
+                  }}
                   className="py-2.5 px-3 rounded-xl border border-gray-200 text-xs font-bold text-brand-navy bg-white hover:border-[#0A192F] transition-all cursor-pointer text-center"
                 >
                   My Account
