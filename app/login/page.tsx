@@ -1,16 +1,35 @@
 'use client';
 
+import { LogoBase64 } from '@/lib/logo';
 import { LogoLink } from '@/components/LogoLink';
+import Image from 'next/image';
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, AlertCircle, ShieldCheck } from 'lucide-react';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase-client';
+import { ArrowLeft, Eye, EyeOff, ShieldAlert, CheckCircle, AlertCircle } from 'lucide-react';
 import { FadeUp } from '@/components/FadeUp';
 import { SmoothCollapse } from '@/components/SmoothCollapse';
 
+type Step = 'identity_gateway' | 'password_gateway';
+
 export default function LoginPage() {
   const router = useRouter();
+  const supabase = getSupabaseBrowserClient();
+
+  const [step, setStep] = useState<Step>('identity_gateway');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
   const [nextUrl, setNextUrl] = useState('');
+  const [showResend, setShowResend] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  
+  // Internal toggle for unified sign in/sign up processing
+  const [isSignUp, setIsSignUp] = useState(false);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -23,20 +42,152 @@ export default function LoginPage() {
       if (error === 'auth_failed') {
         const details = params.get('details');
         if (details) {
-          setErrorMsg(`Authentication failed: ${details}`);
+          setErrorMsg(`Google login failed: ${details}`);
         } else {
-          setErrorMsg('Authentication failed or was cancelled. Please try again.');
+          setErrorMsg('Google login failed or was cancelled. If you are running on a custom domain like Vercel, please make sure your Supabase project URL configuration has both Site URL and Redirect URLs set up correctly.');
         }
       } else if (error === 'missing_code') {
-        setErrorMsg('Authorization code is missing from the login provider. Please try again.');
+        setErrorMsg('Authorization code is missing. Please try again.');
       }
     }
   }, []);
 
-  const handleWorkOSAuth = () => {
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes('@')) {
+      setErrorMsg('Please enter a valid email address.');
+      return;
+    }
     setErrorMsg('');
-    const target = nextUrl ? `/api/auth/workos-login?next=${encodeURIComponent(nextUrl)}` : '/api/auth/workos-login';
-    window.location.href = target;
+    setStep('password_gateway');
+  };
+
+  const handleGoogleAuth = async () => {
+    setErrorMsg('');
+    setLoading(true);
+    if (!isSupabaseConfigured()) {
+      setMessage('Simulating Google Auth inside the Sandbox environment...');
+      const target = nextUrl ? `/onboarding?next=${encodeURIComponent(nextUrl)}` : '/onboarding';
+      setTimeout(() => {
+        router.push(target);
+      }, 1000);
+      return;
+    }
+    try {
+      const callbackUrl = new URL(`${window.location.origin}/api/auth/callback`);
+      if (nextUrl) {
+        callbackUrl.searchParams.set('next', nextUrl);
+      }
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: callbackUrl.toString(),
+        },
+      });
+      if (error) setErrorMsg(error.message);
+    } catch (err: any) {
+      setErrorMsg(err?.message || 'An error occurred during Google Auth.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendConfirm = async () => {
+    if (!email) return;
+    setResendLoading(true);
+    setErrorMsg('');
+    setMessage('');
+    try {
+      const callbackUrl = new URL(`${window.location.origin}/api/auth/callback`);
+      if (nextUrl) {
+        callbackUrl.searchParams.set('next', nextUrl);
+      }
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+        options: {
+          emailRedirectTo: callbackUrl.toString()
+        }
+      });
+      if (error) {
+        setErrorMsg(error.message);
+      } else {
+        setMessage('Confirmation email resent successfully! Please check your spam folder too.');
+      }
+    } catch (err: any) {
+      setErrorMsg(err?.message || 'Failed to resend confirmation email.');
+    } finally {
+      setResendLoading(false);
+    }
+  };
+
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg('');
+    setMessage('');
+    setLoading(true);
+
+    if (!isSupabaseConfigured()) {
+      setMessage('Sandbox login successful! Redirecting to onboarding...');
+      const target = nextUrl ? `/onboarding?next=${encodeURIComponent(nextUrl)}` : '/onboarding';
+      setTimeout(() => {
+        router.push(target);
+      }, 1000);
+      return;
+    }
+
+    try {
+      if (isSignUp) {
+        const callbackUrl = new URL(`${window.location.origin}/api/auth/callback`);
+        if (nextUrl) {
+          callbackUrl.searchParams.set('next', nextUrl);
+        }
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: callbackUrl.toString()
+          }
+        });
+
+        if (error) {
+          setErrorMsg(error.message);
+        } else {
+          if (data?.session) {
+            setMessage('Registration successful! Redirecting...');
+            const target = nextUrl ? `/onboarding?next=${encodeURIComponent(nextUrl)}` : '/onboarding';
+            setTimeout(() => router.push(target), 1500);
+          } else {
+            setMessage('Account created! Please check your email inbox to confirm your registration.');
+            setShowResend(true);
+          }
+        }
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) {
+          if (error.message.includes('Invalid login credentials')) {
+            setErrorMsg('Invalid login credentials. If you are new, try checking the sign up option below.');
+          } else if (error.message.includes('Email not confirmed')) {
+            setErrorMsg('Your email has not been confirmed yet. Please verify your email first.');
+            setShowResend(true);
+          } else {
+            setErrorMsg(error.message);
+          }
+        } else {
+          setMessage('Login successful! Redirecting...');
+          const target = nextUrl ? `/onboarding?next=${encodeURIComponent(nextUrl)}` : '/onboarding';
+          setTimeout(() => router.push(target), 1000);
+        }
+      }
+    } catch (err: any) {
+      setErrorMsg(err?.message || 'An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -64,37 +215,28 @@ export default function LoginPage() {
       </div>
 
       <FadeUp delay={0.1} className="w-full max-w-md bg-brand-bg rounded-2xl border border-brand-border/40 shadow-[0_8px_30px_rgba(10,25,47,0.02)] overflow-hidden flex-shrink-0" id="login-wizard-card">
-        <div className="p-6 sm:p-8 space-y-6">
-          <div>
-            <span className="inline-flex items-center gap-1 bg-brand-green/10 text-brand-green text-xs font-bold px-2.5 py-1 rounded-full mb-3">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              Secure Action Gateway
-            </span>
-            <h2 className="text-xl sm:text-2xl font-display font-bold text-brand-navy mb-2 tracking-tight">
-              Ready to take the next step?
-            </h2>
-            <p className="text-sm text-brand-navy/60 font-medium leading-relaxed">
-              This action requires a verified BukieBrainJobs profile. Authenticate securely with WorkOS AuthKit to continue.
-            </p>
-          </div>
-
-          <div className="text-xs text-brand-navy/50 leading-relaxed font-medium">
-            By logging in or creating an account, you agree to the BukieBrainJobs Terms. You also acknowledge our Cookie and Privacy policies.
-          </div>
-
-          <SmoothCollapse isOpen={!!errorMsg}>
-            <div className="flex items-start gap-2.5 bg-red-50 text-red-700 p-3.5 rounded-xl text-xs sm:text-sm border border-red-100/50 mb-4" id="identity-error">
-              <AlertCircle className="w-4 h-4 shrink-0 text-red-600 mt-0.5" />
-              <span className="leading-relaxed font-medium">{errorMsg}</span>
+        {step === 'identity_gateway' && (
+          <div className="p-6 sm:p-8 space-y-6">
+            <div>
+              <h2 className="text-xl sm:text-2xl font-display font-bold text-brand-navy mb-2 tracking-tight">Ready to take the next step?</h2>
+              <p className="text-sm text-brand-navy/60 font-medium">Create an account or sign in.</p>
             </div>
-          </SmoothCollapse>
 
-          <div className="space-y-3.5">
-            {/* WorkOS Google Auth Redirect */}
+            <div className="text-xs text-brand-navy/50 leading-relaxed font-medium">
+              By creating an account or logging in, you understand and agree to the BukieBrainJobs Terms. You also acknowledge our Cookie and Privacy policies. You will receive updates regarding community jobs.
+            </div>
+
+            <SmoothCollapse isOpen={!!errorMsg}>
+              <div className="flex items-start gap-2.5 bg-red-50 text-red-700 p-3.5 rounded-xl text-xs sm:text-sm border border-red-100/50 mb-4" id="identity-error">
+                <AlertCircle className="w-4 h-4 shrink-0 text-red-600 mt-0.5" />
+                <span className="leading-relaxed font-medium">{errorMsg}</span>
+              </div>
+            </SmoothCollapse>
+
             <button
-              onClick={handleWorkOSAuth}
-              className="w-full bg-brand-surface hover:bg-brand-surface/80 text-brand-navy font-semibold py-3 px-4 rounded-xl border border-brand-border/50 transition-all duration-150 flex items-center justify-center gap-3 cursor-pointer text-xs sm:text-sm"
-              id="google-workos-auth-button"
+              onClick={handleGoogleAuth}
+              disabled={loading}
+              className="w-full bg-brand-surface hover:bg-brand-surface/80 text-brand-navy font-semibold py-3 px-4 rounded-xl border border-brand-border/50 transition-all duration-150 flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer text-xs sm:text-sm"
             >
               {/* Google Brand SVG */}
               <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
@@ -106,40 +248,138 @@ export default function LoginPage() {
               <span>Continue with Google</span>
             </button>
 
-            {/* General AuthKit Button */}
-            <button
-              onClick={handleWorkOSAuth}
-              className="w-full bg-[#0A192F] hover:bg-[#0A192F]/90 text-white font-semibold py-3.5 px-4 rounded-xl transition-all duration-150 flex items-center justify-center gap-3 cursor-pointer text-xs sm:text-sm shadow-md"
-              id="workos-auth-button"
-            >
-              {/* Secure Lock Shield SVG */}
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-brand-green animate-pulse">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-              <span>Continue with AuthKit (WorkOS)</span>
-            </button>
-
-            <div className="flex items-center gap-4 text-brand-navy/30 text-xs font-semibold py-1">
+            <div className="flex items-center gap-4 text-brand-navy/30 text-xs font-semibold">
               <div className="flex-1 h-px bg-brand-border/40"></div>
               <span>OR</span>
               <div className="flex-1 h-px bg-brand-border/40"></div>
             </div>
 
-            {/* Email Redirect Button */}
-            <button
-              onClick={handleWorkOSAuth}
-              className="w-full bg-brand-surface hover:bg-brand-surface/80 text-brand-navy font-semibold py-3 px-4 rounded-xl border border-brand-border/50 transition-all duration-150 flex items-center justify-center gap-3 cursor-pointer text-xs sm:text-sm"
-              id="email-workos-auth-button"
-            >
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-navy/60">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-              <span>Continue with Email</span>
-            </button>
+            <form onSubmit={handleEmailSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="block text-xs sm:text-sm font-semibold text-brand-navy/80">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  required
+                  placeholder="name@example.com"
+                  className="w-full px-4 py-3 bg-brand-surface border border-brand-border/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent text-xs sm:text-sm transition-all duration-150 text-brand-navy placeholder-brand-navy/35"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-brand-navy hover:bg-brand-navy/95 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 active:scale-[0.98] cursor-pointer text-xs sm:text-sm"
+              >
+                Continue with Email
+              </button>
+            </form>
           </div>
-        </div>
+        )}
+
+        {step === 'password_gateway' && (
+          <div className="p-6 sm:p-8 space-y-6">
+            <button
+              onClick={() => {
+                setStep('identity_gateway');
+                setErrorMsg('');
+                setMessage('');
+              }}
+              className="flex items-center gap-1.5 text-brand-navy/60 hover:text-brand-navy font-semibold text-xs sm:text-sm transition-colors cursor-pointer bg-brand-surface hover:bg-brand-surface/80 border border-brand-border/40 px-3.5 py-1.5 rounded-xl"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back</span>
+            </button>
+
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-brand-navy tracking-tight">
+              Enter your secure account password
+            </h2>
+
+            <form onSubmit={handlePasswordSubmit} className="space-y-5">
+              <div className="space-y-1.5">
+                <label className="block text-xs sm:text-sm font-semibold text-brand-navy/80">
+                  Password *
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    placeholder="••••••••"
+                    className="w-full px-4 py-3 bg-brand-surface border border-brand-border/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent text-xs sm:text-sm transition-all duration-150 pr-12 text-brand-navy placeholder-brand-navy/30"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 flex items-center pr-4 text-brand-navy/40 hover:text-brand-navy transition-colors cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <SmoothCollapse isOpen={!!errorMsg}>
+                <div className="flex items-start gap-2.5 bg-red-50 text-red-700 p-3.5 rounded-xl text-xs sm:text-sm border border-red-100/50" id="password-error">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-red-650 mt-0.5" />
+                  <span className="leading-relaxed font-medium">{errorMsg}</span>
+                </div>
+              </SmoothCollapse>
+
+              <SmoothCollapse isOpen={!!message}>
+                <div className="flex items-start gap-2.5 bg-brand-green/5 text-brand-green p-3.5 rounded-xl text-xs sm:text-sm border border-brand-green/10" id="password-message">
+                  <CheckCircle className="w-4 h-4 shrink-0 text-brand-green mt-0.5" />
+                  <span className="leading-relaxed font-medium">{message}</span>
+                </div>
+              </SmoothCollapse>
+
+              {showResend && (
+                <div className="bg-brand-surface border border-brand-border/40 p-4 rounded-xl space-y-2 text-center" id="resend-confirmation-card">
+                  <p className="text-xs text-brand-navy/70 font-medium">Did not receive the confirmation email? Check your spam folder or trigger a new one.</p>
+                  <button
+                    type="button"
+                    onClick={handleResendConfirm}
+                    disabled={resendLoading}
+                    className="inline-flex items-center justify-center bg-brand-green text-white hover:bg-brand-green/90 font-bold text-xs py-2 px-4 rounded-lg transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+                  >
+                    {resendLoading ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Resending...
+                      </>
+                    ) : 'Resend Confirmation Email'}
+                  </button>
+                </div>
+              )}
+
+              <div className="flex items-center gap-2.5 text-xs sm:text-sm text-brand-navy/80 font-medium pt-1">
+                <input
+                  type="checkbox"
+                  id="signup-toggle"
+                  checked={isSignUp}
+                  onChange={(e) => setIsSignUp(e.target.checked)}
+                  className="w-4 h-4 rounded border-brand-border text-brand-green focus:ring-brand-green cursor-pointer"
+                />
+                <label htmlFor="signup-toggle" className="cursor-pointer select-none font-sans text-brand-navy/70 text-xs sm:text-sm font-semibold">
+                  I am creating a new account (Sign Up)
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-brand-navy hover:bg-brand-navy/95 text-white py-3 px-4 rounded-xl font-bold transition-all duration-150 active:scale-[0.98] disabled:opacity-50 cursor-pointer text-xs sm:text-sm"
+              >
+                {loading ? 'Processing...' : isSignUp ? 'Create Account' : 'Sign In'}
+              </button>
+            </form>
+          </div>
+        )}
       </FadeUp>
 
       {/* Footer */}

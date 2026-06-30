@@ -171,7 +171,7 @@ export default function Home() {
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => window.location.href = '/api/auth/workos-login'}
+            onClick={() => router.push('/login')}
             className="text-sm font-semibold text-brand-navy/80 hover:text-brand-navy transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-brand-green rounded-lg px-2.5 py-1.5 cursor-pointer"
           >
             Sign in
@@ -484,11 +484,11 @@ export default function Home() {
             className="bg-brand-bg border border-brand-border/60 rounded-2xl p-5 shadow-[0_2px_12px_rgba(10,25,47,0.01)] transition-all duration-300"
           >
             <button 
-              onClick={() => window.location.href = '/api/auth/workos-login'}
+              onClick={() => router.push('/login')}
               className="w-full flex justify-between items-center group outline-none text-left cursor-pointer"
             >
               <div className="flex flex-col">
-                <span className="font-display font-bold text-lg text-[#0A192F] group-hover:text-brand-green transition-colors">Sign in to your account</span>
+                <span className="font-display font-bold text-lg text-brand-navy group-hover:text-brand-green transition-colors">Sign in to your account</span>
                 <span className="text-brand-navy/55 text-xs sm:text-sm mt-0.5 font-sans">Access your profile, messages, and wallet.</span>
               </div>
               <motion.span
