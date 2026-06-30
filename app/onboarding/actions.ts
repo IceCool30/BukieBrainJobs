@@ -5,7 +5,13 @@ import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export async function setUserRole(role: 'employer' | 'worker') {
+export async function setUserRole(
+  role: 'employer' | 'worker',
+  fullName?: string,
+  state?: string,
+  lga?: string,
+  phone?: string
+) {
   const cookieStore = cookies();
   const supabase = createServerClient(
     (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'),
@@ -71,6 +77,10 @@ export async function setUserRole(role: 'employer' | 'worker') {
       .insert({ 
         id: user.id, 
         role: role,
+        full_name: fullName || null,
+        location_state: state || null,
+        location_lga: lga || null,
+        phone: phone || null,
         bukie_passport_id: passport?.id || null 
       });
     
@@ -79,10 +89,16 @@ export async function setUserRole(role: 'employer' | 'worker') {
       return redirect('/onboarding?error=create_profile_failed');
     }
   } else {
-    // Update role only
+    // Update role and other profile attributes
     const { error: updateError } = await supabase
       .from('profiles')
-      .update({ role: role })
+      .update({ 
+        role: role,
+        full_name: fullName || undefined,
+        location_state: state || undefined,
+        location_lga: lga || undefined,
+        phone: phone || undefined,
+      })
       .eq('id', user.id);
 
     if (updateError) {
