@@ -91,23 +91,24 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
-          {/* Backdrop with spring fade */}
+        <div className="fixed inset-0 z-50 lg:hidden flex flex-col justify-start">
+          {/* Backdrop with spring fade - covers full screen absolute behind panel */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-[#0A192F]/40 backdrop-blur-md z-50 lg:hidden cursor-pointer"
+            className="absolute inset-0 bg-[#0A192F]/40 backdrop-blur-md cursor-pointer"
           />
 
-          {/* Drawer Dropdown Panel (floating from top, rounded at the bottom) */}
+          {/* Drawer Dropdown Panel (floating from top, rounded at the bottom, stops propagation) */}
           <motion.div
             initial={{ y: '-100%', opacity: 0.8 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: '-100%', opacity: 0.8 }}
             transition={{ type: 'spring', damping: 26, stiffness: 210, mass: 0.95 }}
-            className="fixed top-0 left-0 right-0 w-full bg-white shadow-2xl z-50 flex flex-col border-b border-gray-100 rounded-b-[2rem] overflow-hidden max-h-[88vh]"
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full bg-white shadow-2xl z-10 flex flex-col border-b border-gray-100 rounded-b-[2rem] overflow-hidden max-h-[88vh]"
           >
             {/* Header with clear branding to perfectly match user request */}
             <div className="flex items-center justify-between p-5 border-b border-gray-100/60 bg-gray-50/40">
@@ -205,7 +206,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 whileHover={{ scale: 1.02, y: -1, boxShadow: "0 8px 20px rgba(0, 135, 90, 0.15)" }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleNavigation('/dashboard/post-job')}
-                className="w-full bg-brand-green hover:bg-brand-green/95 text-white py-3.5 px-5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_16px_rgba(0,135,90,0.12)] border border-brand-green transition-colors"
+                className="w-full bg-brand-green hover:bg-brand-green/95 text-white py-3.5 px-5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_16px_rgba(0, 135, 90, 0.12)] border border-brand-green transition-colors"
               >
                 <Flame className="w-4 h-4 text-white animate-pulse" />
                 <span>Post a Job Brief</span>
@@ -237,7 +238,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               </div>
             </div>
           </motion.div>
-        </>
+        </div>
       )}
     </AnimatePresence>
   );

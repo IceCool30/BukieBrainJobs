@@ -25,29 +25,29 @@ export default function Home() {
   const [selectedArea, setSelectedArea] = useState('');
   const [whatQuery, setWhatQuery] = useState('');
   
-  // Dynamic rotating categories matching the agency-grade hero design in the user video
-  const rotatingCategories = [
-    "carpentry work",
-    "web design",
-    "kitchen plumbing",
-    "copywriting & blogs",
-    "electrical repairs",
-    "mobile app dev",
-    "house painting",
-    "screeding & tiling",
-    "graphic design",
-    "generator repair",
-    "video editing",
-    "ac servicing"
+  // Dynamic rotating categories matching the high-impact editorial/Behance hero layout
+  const rotatingPhrases = [
+    "Artisans",
+    "Plumbers",
+    "Electricians",
+    "Carpenters",
+    "Painters",
+    "Tilers",
+    "Developers",
+    "Designers",
+    "Writers",
+    "Caterers",
+    "Tailors",
+    "Cleaners"
   ];
   const [rotatingIndex, setRotatingIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setRotatingIndex((prev) => (prev + 1) % rotatingCategories.length);
+      setRotatingIndex((prev) => (prev + 1) % rotatingPhrases.length);
     }, 2800);
     return () => clearInterval(interval);
-  }, [rotatingCategories.length]);
+  }, [rotatingPhrases.length]);
 
   
   // High-quality defaults available instantly on focus
@@ -196,9 +196,9 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="px-4 sm:px-6 py-8 max-w-2xl mx-auto w-full flex-grow space-y-8">
+      <main className="px-4 sm:px-6 py-12 max-w-5xl mx-auto w-full flex-grow space-y-16">
         {oauthError && (
-          <div className="p-4 bg-red-50/70 border border-red-200/60 rounded-2xl flex gap-3 text-sm text-red-800 relative shadow-sm" id="landing-oauth-error">
+          <div className="p-4 bg-red-50/70 border border-red-200/60 rounded-2xl flex gap-3 text-sm text-red-800 relative shadow-sm max-w-3xl mx-auto" id="landing-oauth-error">
             <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
             <div className="flex-1">
               <h3 className="font-display font-bold text-red-900 mb-1">Google Sign-In Configuration Required</h3>
@@ -216,104 +216,161 @@ export default function Home() {
           </div>
         )}
 
-        {/* Hero Area - Dual Audience Header with dynamic text rotator from the reference video */}
+        {/* Hero Area - Bold, editorial Behance-inspired title structure adapted to BukieBrain's identity */}
         <motion.div 
-          initial={{ opacity: 0, y: -15 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 120, damping: 15 }}
-          className="text-center max-w-xl mx-auto py-3 px-2 flex flex-col items-center justify-center"
+          className="text-center w-full max-w-4xl mx-auto py-4 px-2 flex flex-col items-center justify-center"
         >
-          <h2 className="text-3xl sm:text-4xl font-display font-bold text-brand-navy tracking-tight mb-3 flex flex-col sm:flex-row items-center justify-center gap-x-2 flex-wrap min-h-[90px] sm:min-h-[auto] leading-snug">
-            <span>Work with Nigeria&apos;s best in</span>
-            <span className="relative overflow-hidden h-[45px] sm:h-[48px] inline-flex items-center text-brand-green font-extrabold min-w-[280px] sm:min-w-[360px] justify-center sm:justify-start perspective-1000">
+          <h1 className="text-3xl sm:text-6xl md:text-7xl font-display font-black text-brand-navy tracking-tight leading-[1.05] text-center max-w-4xl mx-auto">
+            Nigeria&apos;s <br className="sm:hidden" />
+            <span className="relative inline-block text-brand-green min-w-[280px] sm:min-w-[340px] md:min-w-[400px] text-center h-[1.15em] overflow-hidden align-bottom">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={rotatingIndex}
-                  initial={{ y: 24, opacity: 0, rotateX: -70 }}
-                  animate={{ y: 0, opacity: 1, rotateX: 0 }}
-                  exit={{ y: -24, opacity: 0, rotateX: 70 }}
-                  transition={{ type: "spring", stiffness: 280, damping: 15 }}
-                  className="absolute whitespace-nowrap origin-center"
+                  initial={{ y: '70%', opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: '-70%', opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 220, damping: 18 }}
+                  className="absolute left-0 right-0 whitespace-nowrap"
                 >
-                  {rotatingCategories[rotatingIndex]}
+                  Best {rotatingPhrases[rotatingIndex]}
                 </motion.span>
               </AnimatePresence>
             </span>
-          </h2>
-          <p className="text-sm sm:text-base text-brand-navy/60 font-sans font-medium mt-1">
-            Find trusted verified artisans or claim gig requests near you. One platform, zero stress.
+            <br /> Are on BukieBrainJobs
+          </h1>
+          
+          <p className="text-sm sm:text-base md:text-lg text-brand-navy/60 font-sans font-medium mt-6 max-w-2xl mx-auto leading-relaxed">
+            A comprehensive platform connecting verified local artisans and top-tier freelancers with hirers across Nigeria. Direct communication, secure escrow wallets, and verified delivery.
           </p>
+
+          {/* Centered Pill Call-To-Actions (Behance-Style) */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8 w-full max-w-md mx-auto">
+            <motion.button
+              whileHover={{ scale: 1.03, y: -1 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={handlePostJobClick}
+              className="w-full sm:w-auto bg-brand-green text-white hover:bg-brand-green/95 font-bold text-base px-8 py-3.5 rounded-full shadow-md cursor-pointer text-center whitespace-nowrap"
+            >
+              Hire Artisans/Freelancers
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.03, y: -1 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => router.push('/dashboard/jobs')}
+              className="w-full sm:w-auto bg-brand-surface hover:bg-brand-border/30 text-brand-navy border border-brand-border/60 font-bold text-base px-8 py-3.5 rounded-full shadow-sm cursor-pointer text-center whitespace-nowrap"
+            >
+              Browse Gig Jobs
+            </motion.button>
+          </div>
         </motion.div>
 
 
-        {/* Search Container */}
-        <FadeUp delay={0.1} className="relative z-20">
-          <motion.form 
-            whileHover={{ y: -3, boxShadow: "0 12px 30px rgba(10, 25, 47, 0.04)" }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              let whereParam = '';
-              if (selectedState && selectedArea) {
-                whereParam = `${selectedArea}, ${selectedState}`;
-              } else {
-                whereParam = selectedState || selectedArea || '';
-              }
-              router.push(`/dashboard/jobs?what=${encodeURIComponent(whatQuery)}&where=${encodeURIComponent(whereParam)}`);
-            }}
-            className="flex flex-col sm:flex-row items-center w-full bg-brand-surface border border-brand-border/40 rounded-2xl shadow-[0_4px_16px_rgba(10,25,47,0.02)] px-4 py-3 sm:py-2.5 focus-within:ring-2 focus-within:ring-brand-green/20 focus-within:border-brand-green transition-all duration-300 gap-3 sm:gap-0"
-          >
-            <div className="flex items-center flex-1 w-full min-w-0">
-              <Search className="w-5 h-5 text-brand-navy/45 mr-2.5 flex-shrink-0" />
-              <SmartSuggestInput
-                value={whatQuery}
-                onChange={setWhatQuery}
-                placeholder="Search jobs, categories, keyword..."
-                suggestions={listedTitlesAndCats}
-                flat
-                className="w-full font-sans font-medium placeholder:text-brand-navy/40 text-brand-navy text-sm sm:text-base bg-transparent border-0 focus:outline-none focus:ring-0"
-              />
-            </div>
-            
-            <div className="hidden sm:block w-[1.5px] h-6 bg-brand-navy/10 mx-4 flex-shrink-0"></div>
-            
-            <div className="flex items-center flex-1 w-full min-w-0 gap-2 border-t border-brand-border/40 pt-2 sm:border-0 sm:pt-0">
-              <MapPin className="w-5 h-5 text-brand-navy/45 flex-shrink-0 hidden sm:block" />
-              <div className="flex-1 min-w-0 flex items-center gap-1.5">
+        {/* Search & Categories Cluster */}
+        <div className="space-y-6 max-w-3xl mx-auto w-full">
+          {/* Search Container */}
+          <FadeUp delay={0.1} className="relative z-20">
+            <motion.form 
+              whileHover={{ y: -2, boxShadow: "0 12px 30px rgba(10, 25, 47, 0.05)" }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                let whereParam = '';
+                if (selectedState && selectedArea) {
+                  whereParam = `${selectedArea}, ${selectedState}`;
+                } else {
+                  whereParam = selectedState || selectedArea || '';
+                }
+                router.push(`/dashboard/jobs?what=${encodeURIComponent(whatQuery)}&where=${encodeURIComponent(whereParam)}`);
+              }}
+              className="flex flex-col md:flex-row items-center w-full bg-white border border-brand-border/70 rounded-[2rem] md:rounded-full shadow-[0_4px_20px_rgba(10,25,47,0.03)] px-5 py-4 md:py-2.5 focus-within:ring-2 focus-within:ring-brand-green/20 focus-within:border-brand-green transition-all duration-300 gap-4 md:gap-0"
+            >
+              <div className="flex items-center flex-1 w-full min-w-0">
+                <Search className="w-5 h-5 text-brand-navy/40 mr-3 flex-shrink-0" />
                 <SmartSuggestInput
-                  value={selectedState}
-                  onChange={(val) => {
-                    setSelectedState(val);
-                    setSelectedArea('');
-                  }}
-                  placeholder="State..."
-                  suggestions={nigerianStates}
+                  value={whatQuery}
+                  onChange={setWhatQuery}
+                  placeholder="Search jobs, categories, keywords..."
+                  suggestions={listedTitlesAndCats}
                   flat
-                  className="w-1/2 font-sans font-medium placeholder:text-brand-navy/40 text-brand-navy text-sm bg-transparent border-0 focus:outline-none focus:ring-0"
-                />
-                <span className="text-brand-navy/20 font-bold">/</span>
-                <SmartSuggestInput
-                  value={selectedArea}
-                  onChange={setSelectedArea}
-                  placeholder={selectedState ? "Area..." : "Pick State"}
-                  suggestions={selectedState ? (nigeriaLocations[selectedState] || []) : []}
-                  disabled={!selectedState}
-                  flat
-                  className="w-1/2 font-sans font-medium placeholder:text-brand-navy/40 text-brand-navy text-sm bg-transparent border-0 focus:outline-none focus:ring-0"
+                  className="w-full font-sans font-medium placeholder:text-brand-navy/35 text-brand-navy text-sm sm:text-base bg-transparent border-0 focus:outline-none focus:ring-0"
                 />
               </div>
-            </div>
+              
+              <div className="hidden md:block w-[1.5px] h-7 bg-brand-navy/10 mx-5 flex-shrink-0"></div>
+              
+              <div className="flex items-center flex-1 w-full min-w-0 gap-2 border-t border-brand-border/30 pt-3 md:border-0 md:pt-0">
+                <MapPin className="w-5 h-5 text-brand-navy/40 flex-shrink-0 hidden md:block" />
+                <div className="flex-1 min-w-0 flex items-center gap-1.5">
+                  <SmartSuggestInput
+                    value={selectedState}
+                    onChange={(val) => {
+                      setSelectedState(val);
+                      setSelectedArea('');
+                    }}
+                    placeholder="State..."
+                    suggestions={nigerianStates}
+                    flat
+                    className="w-1/2 font-sans font-medium placeholder:text-brand-navy/35 text-brand-navy text-sm bg-transparent border-0 focus:outline-none focus:ring-0"
+                  />
+                  <span className="text-brand-navy/20 font-bold">/</span>
+                  <SmartSuggestInput
+                    value={selectedArea}
+                    onChange={setSelectedArea}
+                    placeholder={selectedState ? "Area..." : "Pick State"}
+                    suggestions={selectedState ? (nigeriaLocations[selectedState] || []) : []}
+                    disabled={!selectedState}
+                    flat
+                    className="w-1/2 font-sans font-medium placeholder:text-brand-navy/35 text-brand-navy text-sm bg-transparent border-0 focus:outline-none focus:ring-0"
+                  />
+                </div>
+              </div>
 
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="submit"
-              className="bg-brand-green hover:bg-brand-green/90 text-white text-sm font-semibold px-6 py-2.5 rounded-xl whitespace-nowrap transition-all outline-none sm:ml-3 sm:w-auto w-full cursor-pointer shadow-sm"
-            >
-              Search
-            </motion.button>
-          </motion.form>
-        </FadeUp>
+              <motion.button 
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                type="submit"
+                className="bg-brand-green hover:bg-brand-green/95 text-white text-sm font-bold px-7 py-3 rounded-full whitespace-nowrap transition-all outline-none md:ml-3 md:w-auto w-full cursor-pointer shadow-sm"
+              >
+                Search
+              </motion.button>
+            </motion.form>
+          </FadeUp>
+
+          {/* Horizontal Category Chips */}
+          <FadeUp delay={0.15} className="w-full">
+            <div className="flex items-center gap-2 overflow-x-auto pb-3 pt-1 px-1 custom-scrollbar scrollbar-none snap-x">
+              <span className="text-xs font-bold text-brand-navy/45 uppercase tracking-wider whitespace-nowrap mr-2 select-none self-center">Popular:</span>
+              {[
+                { label: "🔨 Carpentry", query: "Carpentry" },
+                { label: "🚰 Plumbing", query: "Plumbing" },
+                { label: "⚡ Electrical", query: "Electrical" },
+                { label: "🎨 Painting", query: "Painting" },
+                { label: "🧱 Screeding", query: "Screeding" },
+                { label: "💻 Web Dev", query: "Web Development" },
+                { label: "📱 Mobile Apps", query: "Mobile App Development" },
+                { label: "💅 Beauty & Hair", query: "Hair & Beauty Services" },
+                { label: "👗 Tailoring", query: "Tailoring" },
+                { label: "🧼 Cleaning", query: "Cleaning Services" }
+              ].map((chip, idx) => (
+                <motion.button
+                  key={idx}
+                  whileHover={{ scale: 1.04, backgroundColor: "rgba(0, 135, 90, 0.08)", borderColor: "rgba(0, 135, 90, 0.3)" }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => {
+                    setWhatQuery(chip.query);
+                    router.push(`/dashboard/jobs?what=${encodeURIComponent(chip.query)}`);
+                  }}
+                  className="snap-start flex-shrink-0 bg-brand-surface border border-brand-border/60 hover:border-brand-green/30 text-brand-navy/80 hover:text-brand-green font-sans font-semibold text-xs sm:text-sm px-4 py-2 rounded-full transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-brand-green"
+                >
+                  {chip.label}
+                </motion.button>
+              ))}
+            </div>
+          </FadeUp>
+        </div>
 
         {/* Target Audience Cards */}
         <FadeUp delay={0.2} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
