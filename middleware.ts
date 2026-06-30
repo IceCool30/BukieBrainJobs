@@ -96,20 +96,6 @@ export async function middleware(req: NextRequest) {
       url.pathname = '/onboarding';
       return NextResponse.redirect(url);
     }
-
-    // Optional Check: If going to the main /dashboard, make sure they have chosen a role
-    if (url.pathname === '/dashboard') {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', session.user.id)
-        .single();
-
-      if (!profile || !profile.role) {
-        url.pathname = '/onboarding';
-        return NextResponse.redirect(url);
-      }
-    }
   }
 
   return res;

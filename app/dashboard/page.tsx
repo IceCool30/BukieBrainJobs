@@ -100,8 +100,9 @@ export default function DashboardPage() {
         .eq('id', session.user.id)
         .single();
 
-      if (profileError) {
-        setErrorMsg('Failed to load profile. Please complete onboarding.');
+      if (profileError || !profileData || !profileData.role) {
+        router.push('/onboarding');
+        return;
       } else {
         setProfile(profileData);
         
