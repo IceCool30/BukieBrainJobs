@@ -137,6 +137,7 @@ model User {
   reviewsGiven      Review[]           @relation("ReviewsGiven")
   reviewsReceived   Review[]           @relation("ReviewsReceived")
   disputes          Dispute[]          @relation("DisputeInitiator")
+  disputesResolved  Dispute[]          @relation("DisputeResolver")
   sessions          Session[]
 
   @@index([phone])
@@ -227,6 +228,7 @@ model TaskerProfile {
   jobsAssigned        Job[]              @relation("AssignedTasker")
   savedByClients      SavedTasker[]
   challenges          ChallengeParticipant[]
+  jobInvitations      JobInvitation[]
 
   @@index([verificationStatus])
   @@index([isAvailable])
@@ -541,7 +543,7 @@ model Dispute {
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
 
-  jobId               String        @db.Uuid
+  jobId               String        @unique @db.Uuid
   initiatorId         String        @db.Uuid
   status              DisputeStatus @default(OPEN)
 
@@ -560,7 +562,7 @@ model Dispute {
 
   job                 Job           @relation(fields: [jobId], references: [id])
   initiator           User          @relation("DisputeInitiator", fields: [initiatorId], references: [id])
-  resolvedBy          User?         @relation(fields: [resolvedById], references: [id])
+  resolvedBy          User?         @relation("DisputeResolver", fields: [resolvedById], references: [id])
 
   @@index([jobId])
   @@index([status])
