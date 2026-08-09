@@ -69,3 +69,7 @@ The final release record must identify:
 - Person responsible for the release decision.
 
 This gate is intentionally stricter than a simple documentation checklist. The purpose is to make the repository dependable as the company's permanent engineering handoff point.
+
+## Authority rule
+
+Registers, indexes, summaries, conversation exports, and prompt files are not substitutes for missing normative source artifacts. If a required source is unavailable in canonical repository form, the gate remains blocked and the agent must not invent the missing content.
