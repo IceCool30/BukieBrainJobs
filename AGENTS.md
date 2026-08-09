@@ -7,19 +7,23 @@ This file governs coding agents, including Google Antigravity and future AI or a
 1. Read `README.md`.
 2. Read `CONTRIBUTING.md`.
 3. Read `docs/00-governance/SOURCE-OF-TRUTH.md`.
-4. Read the relevant product, design and technical specifications for the task.
-5. Inspect the existing repository before creating files or changing architecture.
-6. Check the decision log for related decisions.
+4. Read `docs/00-governance/LEGACY-SOURCE-BOUNDARY.md`.
+5. Read `docs/02-design-system/DESIGN-CANONICALIZATION.md` when the task touches visual design.
+6. Read the relevant product, design and technical specifications for the task.
+7. Inspect the existing repository before creating files or changing architecture.
+8. Check the decision log for related decisions.
 
 ## Authority
 
 Do not invent requirements when an approved project document already defines them.
 
-`DESIGN.md` governs visual design.
+`DESIGN.md` governs visual tokens and visual language. Its legacy product-language passages are governed by `docs/02-design-system/DESIGN-CANONICALIZATION.md`.
 
-Approved product specifications govern behavior and user experience.
+Approved BukieBrainJobs product specifications govern product behavior, terminology and user experience.
 
 The approved technical specification governs architecture unless a newer, explicitly approved technical decision supersedes it.
+
+Historical research and project exports are context, not current product authority.
 
 ## Required behavior
 
@@ -36,6 +40,7 @@ The approved technical specification governs architecture unless a newer, explic
 ## Do not
 
 - Start implementation from a vague feature request when a specification is missing.
+- Treat historical terminology or research as current product requirements.
 - Change the technology stack silently.
 - Introduce a new design language.
 - Duplicate shared types or validation rules between apps.
