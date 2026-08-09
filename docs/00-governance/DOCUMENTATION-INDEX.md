@@ -1,8 +1,8 @@
 # BukieBrainJobs Documentation Index
 
 **Document ID:** GOV-005
-**Version:** 1.1
-**Status:** Approved foundation
+**Version:** 1.2
+**Status:** Foundation in progress
 
 This is the navigation map for the repository documentation. The repository is the canonical handoff point for humans and coding/design agents.
 
@@ -14,6 +14,9 @@ This is the navigation map for the repository documentation. The repository is t
 - `DECISION-LOG.md` — material decisions
 - `DOCUMENTATION-INDEX.md` — this index
 - `TECHNICAL-BASELINE.md` — approved engineering baseline
+- `FOUNDATION-STATUS.md` — foundation gate and readiness status
+- `SOURCE-MATERIAL-REGISTER.md` — supplied source inventory and verification record
+- `CANONICALIZATION-PLAN.md` — consolidation rules and release gate
 
 ## 01 Product
 
@@ -44,13 +47,21 @@ Canonical visual source:
 
 The DS artifacts are the formal design-system records. Root `DESIGN.md` remains authoritative for the visual source material.
 
-## 03 Information Architecture
+## 03 Architecture
+
+- `README.md` — engineering architecture hub and implementation boundary
+- `ARCHITECTURE-BASELINE.md` — approved engineering baseline
+- Detailed Full-Stack Technical Specification — supplied engineering reference to be preserved as a canonical source artifact
+
+Future canonical documents include API contracts, database schema, state machines, integrations, infrastructure, environment strategy and observability.
+
+## 04 Information Architecture
 
 - `SCREEN-CATALOG.md` — current product surface inventory and planning estimate
 
 Future canonical documents include the site map, navigation model, role-based information architecture, route inventory and deep-link rules.
 
-## 04 Public Website
+## 05 Public Website
 
 Current approved feature:
 
@@ -60,7 +71,7 @@ Current approved feature:
 - `WEB-001B-MCP` Antigravity to Stitch MCP orchestration prompt
 - `WEB-001C` Engineering implementation specification, to be created only after design approval
 
-## 05 Authentication
+## 06 Authentication
 
 Planned:
 
@@ -72,7 +83,7 @@ Planned:
 - Session management
 - Role routing
 
-## 06 Customer Platform
+## 07 Customer Platform
 
 Planned:
 
@@ -87,7 +98,7 @@ Planned:
 - Notifications
 - Settings
 
-## 07 BrainWorker Platform
+## 08 BrainWorker Platform
 
 Planned:
 
@@ -101,7 +112,7 @@ Planned:
 - Portfolio
 - Performance
 
-## 08 Booking
+## 09 Booking
 
 Planned:
 
@@ -113,7 +124,7 @@ Planned:
 - Cancellation
 - Disputes
 
-## 09 Payments and Wallet
+## 10 Payments and Wallet
 
 Planned:
 
@@ -126,7 +137,7 @@ Planned:
 - Payouts
 - Webhook idempotency
 
-## 10 Messaging and Notifications
+## 11 Messaging and Notifications
 
 Planned:
 
@@ -138,7 +149,7 @@ Planned:
 - SMS
 - Contact-sharing policy
 
-## 11 Corporate
+## 12 Corporate
 
 Planned:
 
@@ -148,7 +159,7 @@ Planned:
 - Billing
 - Reporting
 
-## 12 Admin
+## 13 Admin
 
 Planned:
 
@@ -161,7 +172,7 @@ Planned:
 - CMS
 - Analytics
 
-## 13 API
+## 14 API
 
 Planned:
 
@@ -172,7 +183,7 @@ Planned:
 - Rate limits
 - Webhook contracts
 
-## 14 Database
+## 15 Database
 
 Planned:
 
@@ -183,7 +194,7 @@ Planned:
 - Data retention
 - Backup and recovery
 
-## 15 Analytics
+## 16 Analytics
 
 Planned:
 
@@ -193,13 +204,13 @@ Planned:
 - Marketplace metrics
 - Operational metrics
 
-## 16 Security and Compliance
+## 17 Security and Compliance
 
 - `SECURITY-BASELINE.md` — approved security baseline
 
 Future canonical documents include the threat model, privacy/data protection, abuse prevention and incident response.
 
-## 17 Accessibility
+## 18 Accessibility
 
 Planned:
 
@@ -208,21 +219,23 @@ Planned:
 - Mobile accessibility
 - Content accessibility
 
-## 18 QA and Testing
+## 19 QA and Testing
 
 - `QA-BASELINE.md` — approved test and release-quality baseline
 
 Future canonical documents include the complete test strategy, E2E matrix and release acceptance suite.
 
-## 19 Deployment and Operations
+## 20 Deployment and Operations
 
 - `RELEASE-BASELINE.md` — approved deployment and operations baseline
 
 Future canonical documents include local setup, development, staging, production, CI/CD, observability, alerts, rollback and disaster recovery.
 
-## 20 Prompts
+## 21 Prompts
 
 Every approved agent prompt belongs here and must reference the specification it implements.
+
+- `AGENT-EXECUTION-POLICY.md` — rules for all design, coding and QA agents
 
 ```text
 docs/20-prompts/
@@ -231,7 +244,7 @@ docs/20-prompts/
 └── qa/
 ```
 
-## 21 Decision Log
+## 22 Decision Log
 
 Use for detailed ADRs when the central decision index becomes too large.
 
