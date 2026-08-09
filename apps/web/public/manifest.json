@@ -1,0 +1,21 @@
+{
+  "name": "BukieBrainJobs - On-Demand Nigerian Artisan Marketplace",
+  "short_name": "BukieBrainJobs",
+  "description": "Book verified Nigerian artisans instantly for AC repair, plumbing, electrical, TV mounting, and home maintenance.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#001A41",
+  "theme_color": "#001A41",
+  "icons": [
+    {
+      "src": "/images/logo-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/logo-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
