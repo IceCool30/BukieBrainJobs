@@ -20,6 +20,8 @@ build/
 .expo/
 .expo-shared/
 coverage/
+*.tsbuildinfo
+lh-report*/
 playwright-report/
 test-results/
 
