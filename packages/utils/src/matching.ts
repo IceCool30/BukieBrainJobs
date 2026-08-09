@@ -324,8 +324,8 @@ function calculateMatchScore(
   const distanceKm = haversineDistance(
     jobLocation.lat,
     jobLocation.lng,
-    candidate.user.latitude?.toNumber() || 0,
-    candidate.user.longitude?.toNumber() || 0
+    Number(candidate.user.latitude) || 0,
+    Number(candidate.user.longitude) || 0
   )
   
   // Calculate individual scores
@@ -342,11 +342,11 @@ function calculateMatchScore(
   )
   const experienceScore = calculateExperienceScore(candidate.yearsExperience)
   const ratingScore = calculateRatingScore(
-    candidate.averageRating?.toNumber() || 0,
+    Number(candidate.averageRating) || 0,
     candidate.totalReviews || 0
   )
   const responseRateScore = calculateResponseRateScore(
-    candidate.responseRate?.toNumber() || 0
+    Number(candidate.responseRate) || 0
   )
   
   // Calculate weighted score
@@ -396,16 +396,16 @@ export function findMatches(
   // Filter candidates by basic criteria
   const filteredCandidates = candidates.filter(candidate => {
     // Check minimum rating
-    if (candidate.averageRating?.toNumber() && candidate.averageRating.toNumber() < minRating) {
+    if (Number(candidate.averageRating) && Number(candidate.averageRating) < minRating) {
       return false
     }
     
     // Check distance limit
     const distanceKm = haversineDistance(
-      job.latitude.toNumber(),
-      job.longitude.toNumber(),
-      candidate.user.latitude?.toNumber() || 0,
-      candidate.user.longitude?.toNumber() || 0
+      Number(job.latitude),
+      Number(job.longitude),
+      Number(candidate.user.latitude) || 0,
+      Number(candidate.user.longitude) || 0
     )
     if (distanceKm > maxDistanceKm) {
       return false
@@ -433,8 +433,8 @@ export function findMatches(
   // Calculate scores for each candidate
   const scoredCandidates = filteredCandidates.map(candidate =>
     calculateMatchScore(job, candidate, {
-      lat: job.latitude.toNumber(),
-      lng: job.longitude.toNumber(),
+      lat: Number(job.latitude),
+      lng: Number(job.longitude),
     })
   )
   
@@ -462,8 +462,8 @@ export function scoreCandidate(
   }
 ): MatchingCandidate {
   return calculateMatchScore(job, candidate, {
-    lat: job.latitude.toNumber(),
-    lng: job.longitude.toNumber(),
+    lat: Number(job.latitude),
+    lng: Number(job.longitude),
   })
 }
 

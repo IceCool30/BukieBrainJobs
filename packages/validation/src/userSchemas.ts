@@ -20,7 +20,7 @@ export const RegisterClientSchema = z.object({
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
-  role: z.literal(UserRole.CLIENT).default(UserRole.CLIENT),
+  role: z.literal('CLIENT').default('CLIENT'),
   
   // Optional profile data
   city: z.string().optional(),
@@ -40,7 +40,7 @@ export const RegisterTaskerSchema = z.object({
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
-  role: z.literal(UserRole.TASKER).default(UserRole.TASKER),
+  role: z.literal('TASKER').default('TASKER'),
   
   // Professional data
   bio: z.string().max(500).optional(),
@@ -124,8 +124,8 @@ export const VerifyOtpSchema = z.object({
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 export const UserQuerySchema = z.object({
-  role: z.nativeEnum(UserRole).optional(),
-  verificationStatus: z.nativeEnum(VerificationStatus).optional(),
+  role: z.string().optional(),
+  verificationStatus: z.string().optional(),
   city: z.string().optional(),
   state: z.string().optional(),
   isAvailable: z.boolean().optional(),
