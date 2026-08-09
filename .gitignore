@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.turbo/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*service-account*.json
+
+# Builds and caches
+.next/
+out/
+dist/
+build/
+.expo/
+.expo-shared/
+coverage/
+playwright-report/
+test-results/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*.log
+
+# Local tooling
+*.local
+*.tmp
+*.swp
