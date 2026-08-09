@@ -1,10 +1,10 @@
 # BukieBrainJobs Documentation Index
 
 **Document ID:** GOV-005
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Approved foundation
 
-This is the navigation map for the repository documentation.
+This is the navigation map for the repository documentation. The repository is the canonical handoff point for humans and coding/design agents.
 
 ## 00 Governance
 
@@ -13,24 +13,22 @@ This is the navigation map for the repository documentation.
 - `DEVELOPMENT-WORKFLOW.md` — product-to-code workflow
 - `DECISION-LOG.md` — material decisions
 - `DOCUMENTATION-INDEX.md` — this index
+- `TECHNICAL-BASELINE.md` — approved engineering baseline
 
 ## 01 Product
 
-Planned canonical documents:
+- `PRODUCT-FOUNDATION.md` — product foundation
+- `ROADMAP.md` — milestones and sequencing
+- `OPERATING-CHARTER.md` — project operating rules and responsibilities
 
-- Product Bible
-- Product Requirements Document
-- Operating Charter
-- Business model and marketplace strategy
-- Personas and roles
-- Product roadmap
-- Success metrics
+Future canonical documents include the Product Bible, PRD, business model, personas, marketplace strategy and success metrics.
 
 ## 02 Design System
 
 Canonical visual source:
 
 - Root `DESIGN.md`
+- `DESIGN-SYSTEM-v1.0.md`
 - DS-001 Brand Identity
 - DS-002 Logo System
 - DS-003 Color System
@@ -48,13 +46,9 @@ The DS artifacts are the formal design-system records. Root `DESIGN.md` remains 
 
 ## 03 Information Architecture
 
-Planned canonical documents:
+- `SCREEN-CATALOG.md` — current product surface inventory and planning estimate
 
-- Site map
-- Navigation model
-- Role-based information architecture
-- Route inventory
-- Deep-link rules
+Future canonical documents include the site map, navigation model, role-based information architecture, route inventory and deep-link rules.
 
 ## 04 Public Website
 
@@ -201,15 +195,9 @@ Planned:
 
 ## 16 Security and Compliance
 
-Planned:
+- `SECURITY-BASELINE.md` — approved security baseline
 
-- Threat model
-- Authentication security
-- Authorization
-- Privacy
-- Data protection
-- Abuse prevention
-- Incident response
+Future canonical documents include the threat model, privacy/data protection, abuse prevention and incident response.
 
 ## 17 Accessibility
 
@@ -222,30 +210,15 @@ Planned:
 
 ## 18 QA and Testing
 
-Planned:
+- `QA-BASELINE.md` — approved test and release-quality baseline
 
-- Test strategy
-- Unit testing
-- Integration testing
-- API testing
-- Web E2E
-- Mobile E2E
-- Real-time testing
-- Release acceptance
+Future canonical documents include the complete test strategy, E2E matrix and release acceptance suite.
 
 ## 19 Deployment and Operations
 
-Planned:
+- `RELEASE-BASELINE.md` — approved deployment and operations baseline
 
-- Local setup
-- Development
-- Staging
-- Production
-- CI/CD
-- Observability
-- Alerts
-- Rollback
-- Disaster recovery
+Future canonical documents include local setup, development, staging, production, CI/CD, observability, alerts, rollback and disaster recovery.
 
 ## 20 Prompts
 
@@ -265,3 +238,5 @@ Use for detailed ADRs when the central decision index becomes too large.
 ## Canonical-document rule
 
 Do not create duplicate versions of a specification in different directories. If a document moves, update this index and preserve its history.
+
+Historical project summaries and conversation exports are reference material, not canonical specifications.
