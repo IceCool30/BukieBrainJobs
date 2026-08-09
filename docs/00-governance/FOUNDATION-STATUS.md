@@ -1,12 +1,12 @@
 # BukieBrainJobs Repository Foundation Status
 
 **Document ID:** GOV-007
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Active
 
 ## Current Gate
 
-**Repository Foundation:** In progress
+**Repository Foundation:** Canonical artifact registration in progress
 
 **Application implementation:** Blocked until the documentation foundation is explicitly released.
 
@@ -31,14 +31,22 @@
 - QA baseline
 - Release and operations baseline
 - Source-material register
+- Canonical artifact register
+- Full technical-specification consolidation map
+- Approved Design System artifact register
+- Approved Homepage artifact register
 
 ## Design Foundation
 
-DS-001 through DS-012 are recorded as approved and locked for v1.0.
+DS-001 through DS-012 are approved and locked for v1.0. The repository now has a canonical register for all twelve artifacts. The complete source documents still require physical mirroring where the register identifies that requirement.
 
 ## Public Website Foundation
 
-WEB-001 is approved. WEB-001A and WEB-001B are approved project artifacts for the homepage design workflow. WEB-001C remains intentionally deferred until the Stitch design is human-approved.
+WEB-001, WEB-001A, WEB-001B and WEB-001B-MCP are approved workflow artifacts. The repository now has a canonical homepage artifact register. WEB-001C remains intentionally deferred until the Stitch design is human-approved.
+
+## Engineering Reference
+
+The full 27-section technical specification is the detailed engineering authority. A section-by-section consolidation map now exists. The full source must still be mirrored or otherwise made traceably available in the canonical repository tree before release.
 
 ## Repository Rule
 
@@ -46,6 +54,12 @@ No application code should be introduced solely because the repository directori
 
 ## Remaining Foundation Work
 
-The repository still requires consolidation of any remaining canonical source artifacts that are not yet represented in the canonical tree, including the full detailed engineering reference and the complete approved DS/WEB artifact set where a verbatim copy is required.
+1. Mirror the complete authoritative technical specification.
+2. Mirror the complete approved DS-001 through DS-012 source artifacts.
+3. Mirror the complete WEB-001, WEB-001A, WEB-001B and WEB-001B-MCP source artifacts.
+4. Verify every mirrored artifact against the supplied source fingerprints where applicable.
+5. Update the documentation index with final artifact paths.
+6. Run a final source-of-truth and contradiction audit.
+7. Only then consider the Documentation Foundation Release Gate.
 
 This status document prevents the project from falsely declaring the documentation foundation complete before that consolidation is verified.
