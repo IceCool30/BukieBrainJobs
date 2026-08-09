@@ -1,0 +1,635 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [postgis, pg_trgm, uuid_ossp]
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  CLIENT
+  TASKER
+  ADMIN
+  CORPORATE_CLIENT
+}
+
+enum VerificationStatus {
+  UNVERIFIED
+  PENDING
+  VERIFIED
+  FAILED
+  SUSPENDED
+}
+
+enum JobStatus {
+  OPEN
+  PENDING_ACCEPTANCE
+  CONFIRMED
+  IN_PROGRESS
+  PENDING_COMPLETION
+  COMPLETED
+  PAID
+  CANCELLED
+  EXPIRED
+  DISPUTED
+  RESOLVED
+}
+
+enum JobType {
+  TASK
+  PROJECT
+  RECURRING
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  SPLIT_COMPLETE
+  REFUNDED
+  FAILED
+}
+
+enum DisputeStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED_CLIENT_FAVOUR
+  RESOLVED_TASKER_FAVOUR
+  RESOLVED_SPLIT
+  CLOSED
+}
+
+enum BadgeType {
+  ID_VERIFIED
+  BACKGROUND_CHECKED
+  SKILLS_CERTIFIED
+  TOP_RATED
+  ELITE_TASKER
+}
+
+enum NotificationType {
+  JOB_INVITE
+  JOB_ACCEPTED
+  JOB_CONFIRMED
+  JOB_STARTED
+  JOB_COMPLETED
+  PAYMENT_RECEIVED
+  REVIEW_RECEIVED
+  DISPUTE_OPENED
+  DISPUTE_RESOLVED
+  VERIFICATION_COMPLETE
+  CHALLENGE_EARNED
+  SYSTEM
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// USER & IDENTITY
+// ─────────────────────────────────────────────────────────────────────────────
+
+model User {
+  id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  deletedAt         DateTime?          // Soft delete
+
+  // Core identity
+  email             String?            @unique
+  phone             String             @unique  // Nigerian format: +234XXXXXXXXXX
+  phoneVerified     Boolean            @default(false)
+  passwordHash      String?
+  role              UserRole           @default(CLIENT)
+
+  // Profile
+  firstName         String
+  lastName          String
+  avatarUrl         String?
+  dateOfBirth       DateTime?
+  gender            String?
+
+  // Location (stored as lat/lng for geo queries)
+  city              String?
+  state             String?
+  latitude          Decimal?           @db.Decimal(10, 8)
+  longitude         Decimal?           @db.Decimal(11, 8)
+
+  // Auth
+  otpHash           String?
+  otpExpiresAt      DateTime?
+  lastLoginAt       DateTime?
+  fcmToken          String?            // Firebase push token
+
+  // Relationships
+  clientProfile     ClientProfile?
+  taskerProfile TaskerProfile?
+  sentMessages      Message[]          @relation("SentMessages")
+  notifications     Notification[]
+  reviewsGiven      Review[]           @relation("ReviewsGiven")
+  reviewsReceived   Review[]           @relation("ReviewsReceived")
+  disputes          Dispute[]          @relation("DisputeInitiator")
+  disputesResolved  Dispute[]          @relation("DisputeResolver")
+  sessions          Session[]
+
+  @@index([phone])
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String   @db.Uuid
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userAgent String?
+  ipAddress String?
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+  @@map("sessions")
+}
+
+model ClientProfile {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId            String   @unique @db.Uuid
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // B2B fields
+  isCorporate       Boolean  @default(false)
+  companyName       String?
+  companyRcNumber   String?  // CAC registration number
+  subscriptionTier  String?  // "basic" | "pro" | "enterprise"
+  subscriptionEndsAt DateTime?
+
+  // Stats
+  totalJobsPosted   Int      @default(0)
+  totalAmountSpent  Decimal  @default(0) @db.Decimal(14, 2)
+
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobs              Job[]    @relation("ClientJobs")
+  savedTaskers SavedTasker[]
+
+  @@map("client_profiles")
+}
+
+model TaskerProfile {
+  id                  String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId              String             @unique @db.Uuid
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  // Verification
+  verificationStatus  VerificationStatus @default(UNVERIFIED)
+  ninNumber           String?            // Encrypted at rest
+  bvnNumber           String?            // Encrypted at rest
+  smileJobId          String?            // Smile Identity job reference
+  verifiedAt          DateTime?
+
+  // Professional
+  bio                 String?            @db.Text
+  yearsExperience     Int                @default(0)
+  paystackSubaccountCode String?         // For split payments
+  bankAccountName     String?
+  bankAccountNumber   String?            // Encrypted
+  bankCode            String?            // Nigerian bank code
+
+  // Availability
+  isAvailable         Boolean            @default(true)
+  availabilityRadius  Int                @default(10) // km
+  workingHoursStart   Int                @default(8)  // 24hr format
+  workingHoursEnd     Int                @default(20)
+
+  // Stats (denormalized for performance)
+  averageRating       Decimal            @default(0) @db.Decimal(3, 2)
+  totalReviews        Int                @default(0)
+  totalJobsCompleted  Int                @default(0)
+  totalEarnings       Decimal            @default(0) @db.Decimal(14, 2)
+  completionRate      Decimal            @default(0) @db.Decimal(5, 4) // 0.0000 - 1.0000
+  responseRate        Decimal            @default(0) @db.Decimal(5, 4)
+  onTimeRate          Decimal            @default(0) @db.Decimal(5, 4)
+
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skills              TaskerSkill[]
+  badges              TaskerBadge[]
+  jobsAssigned        Job[]              @relation("AssignedTasker")
+  savedByClients      SavedTasker[]
+  challenges          ChallengeParticipant[]
+  jobInvitations      JobInvitation[]
+
+  @@index([verificationStatus])
+  @@index([isAvailable])
+  @@index([averageRating])
+  @@map("tasker_profiles")
+}
+
+model Skill {
+  id          String             @id @default(cuid())
+  name        String             @unique
+  slug        String             @unique
+  category    String             // e.g. "home_services", "professional"
+  description String?
+  iconUrl     String?
+  isActive    Boolean            @default(true)
+  sortOrder   Int                @default(0)
+
+  taskers TaskerSkill[]
+  jobs         JobSkill[]
+
+  @@map("skills")
+}
+
+model TaskerSkill {
+  id                String             @id @default(cuid())
+  taskerProfileId String          @db.Uuid
+  skillId           String
+  hourlyRateKobo    Decimal            @db.Decimal(10, 2) // Tasker's self-set rate
+  isActive          Boolean            @default(true)
+  certificationUrl  String?            // Proof of certification
+  certifiedAt       DateTime?
+
+  taskerProfile TaskerProfile @relation(fields: [taskerProfileId], references: [id], onDelete: Cascade)
+  skill             Skill              @relation(fields: [skillId], references: [id])
+
+  @@unique([taskerProfileId, skillId])
+  @@map("tasker_skills")
+}
+
+model TaskerBadge {
+  id                   String             @id @default(cuid())
+  taskerProfileId String             @db.Uuid
+  badgeType            BadgeType
+  awardedAt            DateTime           @default(now())
+  expiresAt            DateTime?
+
+  taskerProfile   TaskerProfile @relation(fields: [taskerProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([taskerProfileId, badgeType])
+  @@map("tasker_badges")
+}
+
+model SavedTasker {
+  id                   String             @id @default(cuid())
+  clientProfileId      String             @db.Uuid
+  taskerProfileId String             @db.Uuid
+  createdAt            DateTime           @default(now())
+
+  clientProfile        ClientProfile      @relation(fields: [clientProfileId], references: [id], onDelete: Cascade)
+  taskerProfile   TaskerProfile @relation(fields: [taskerProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([clientProfileId, taskerProfileId])
+  @@map("saved_taskers")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// JOBS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Job {
+  id                   String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  // Core
+  title                String
+  description          String         @db.Text
+  status               JobStatus      @default(OPEN)
+  jobType              JobType        @default(TASK)
+
+  // Relationships
+  clientProfileId      String         @db.Uuid
+  taskerProfileId String?        @db.Uuid
+  parentJobId          String?        @db.Uuid  // For recurring jobs
+
+  // Location
+  address              String
+  city                 String
+  state                String
+  latitude             Decimal        @db.Decimal(10, 8)
+  longitude            Decimal        @db.Decimal(11, 8)
+
+  // Scheduling
+  scheduledStartAt     DateTime
+  scheduledEndAt       DateTime?
+  estimatedHours       Decimal?       @db.Decimal(4, 1)
+  actualStartAt        DateTime?
+  actualEndAt          DateTime?
+
+  // Pricing (all in NGN, stored as kobo integers for precision)
+  taskerRateKobo  Int            // Tasker's set hourly rate x 100
+  estimatedTotalKobo   Int            // Estimated total before job
+  actualTotalKobo      Int?           // Final total after job
+  serviceFeeKobo       Int?           // Platform service fee (10%)
+  trustFeeKobo         Int?           // Trust & Support fee (7.5%)
+  clientTotalKobo      Int?           // What client pays (tasker + fees)
+
+  // Recurring
+  isRecurring          Boolean        @default(false)
+  recurringFrequency   String?        // "weekly" | "biweekly" | "monthly"
+  recurringEndsAt      DateTime?
+
+  // Evidence
+  beforePhotoUrls      String[]       @default([])
+  afterPhotoUrls       String[]       @default([])
+
+  // Metadata
+  cancellationReason   String?
+  cancelledBy          String?        @db.Uuid
+  expiresAt            DateTime?
+
+  clientProfile        ClientProfile  @relation("ClientJobs", fields: [clientProfileId], references: [id])
+  taskerProfile   TaskerProfile? @relation("AssignedTasker", fields: [taskerProfileId], references: [id])
+  parentJob            Job?           @relation("RecurringJobs", fields: [parentJobId], references: [id])
+  childJobs            Job[]          @relation("RecurringJobs")
+  skills               JobSkill[]
+  messages             Message[]
+  payment              Payment?
+  review               Review?
+  dispute              Dispute?
+  statusHistory        JobStatusHistory[]
+  invitations          JobInvitation[]
+
+  @@index([status])
+  @@index([clientProfileId])
+  @@index([taskerProfileId])
+  @@index([scheduledStartAt])
+  @@index([city, state])
+  @@map("jobs")
+}
+
+model JobSkill {
+  id      String @id @default(cuid())
+  jobId   String @db.Uuid
+  skillId String
+
+  job     Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skill   Skill  @relation(fields: [skillId], references: [id])
+
+  @@unique([jobId, skillId])
+  @@map("job_skills")
+}
+
+model JobStatusHistory {
+  id         String    @id @default(cuid())
+  jobId      String    @db.Uuid
+  fromStatus JobStatus?
+  toStatus   JobStatus
+  changedBy  String?   @db.Uuid
+  reason     String?
+  createdAt  DateTime  @default(now())
+
+  job        Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+  @@map("job_status_history")
+}
+
+model JobInvitation {
+  id                   String    @id @default(cuid())
+  jobId                String    @db.Uuid
+  taskerProfileId String    @db.Uuid
+  sentAt               DateTime  @default(now())
+  respondedAt          DateTime?
+  accepted             Boolean?
+  declineReason        String?
+
+  job                  Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  taskerProfile   TaskerProfile @relation(fields: [taskerProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, taskerProfileId])
+  @@map("job_invitations")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PAYMENTS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Payment {
+  id                    String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  jobId                 String        @unique @db.Uuid
+  status                PaymentStatus @default(PENDING)
+
+  // Paystack references
+  paystackReference     String        @unique
+  paystackTransactionId String?
+  paystackAccessCode    String?       // For checkout initialization
+
+  // Amounts (all in kobo)
+  amountKobo            Int           // Total charged to client
+  taskerShareKobo  Int           // Amount routed to Tasker subaccount
+  platformShareKobo     Int           // Amount kept by platform
+  tipKobo               Int           @default(0)
+
+  // Split payment
+  taskerSubaccountCode String?
+  splitReference        String?
+
+  // Timestamps
+  authorizedAt          DateTime?
+  capturedAt            DateTime?
+  splitCompletedAt      DateTime?
+
+  // Refund
+  refundedAmountKobo    Int?
+  refundedAt            DateTime?
+  refundReason          String?
+
+  job                   Job           @relation(fields: [jobId], references: [id])
+  webhookEvents         PaymentWebhookEvent[]
+
+  @@index([paystackReference])
+  @@index([status])
+  @@map("payments")
+}
+
+model PaymentWebhookEvent {
+  id          String   @id @default(cuid())
+  paymentId   String   @db.Uuid
+  event       String   // e.g. "charge.success", "transfer.success"
+  payload     Json
+  processedAt DateTime @default(now())
+  idempotencyKey String @unique  // Paystack event ID for deduplication
+
+  payment     Payment  @relation(fields: [paymentId], references: [id])
+
+  @@map("payment_webhook_events")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MESSAGING
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Message {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime  @default(now())
+
+  jobId       String    @db.Uuid
+  senderId    String    @db.Uuid
+  content     String    @db.Text
+  contentType String    @default("text")  // "text" | "image" | "location"
+  mediaUrl    String?
+  isRead      Boolean   @default(false)
+  readAt      DateTime?
+
+  // Moderation
+  isFlagged   Boolean   @default(false)
+  flagReason  String?
+
+  job         Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  sender      User      @relation("SentMessages", fields: [senderId], references: [id])
+
+  @@index([jobId, createdAt])
+  @@index([senderId])
+  @@map("messages")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// REVIEWS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Review {
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt            DateTime  @default(now())
+
+  jobId                String    @unique @db.Uuid
+  reviewerId           String    @db.Uuid
+  revieweeId           String    @db.Uuid
+
+  // Ratings (1-5)
+  overallRating        Int       // 1-5
+  punctualityRating    Int?      // 1-5
+  qualityRating        Int?      // 1-5
+  communicationRating  Int?      // 1-5
+
+  comment              String?   @db.Text
+  isPublic             Boolean   @default(true)
+
+  // Response
+  responseComment      String?   @db.Text
+  respondedAt          DateTime?
+
+  job                  Job       @relation(fields: [jobId], references: [id])
+  reviewer             User      @relation("ReviewsGiven", fields: [reviewerId], references: [id])
+  reviewee             User      @relation("ReviewsReceived", fields: [revieweeId], references: [id])
+
+  @@index([jobId])
+  @@index([reviewerId])
+  @@index([revieweeId])
+  @@map("reviews")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DISPUTES
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Dispute {
+  id                  String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  jobId               String        @unique @db.Uuid
+  initiatorId         String        @db.Uuid
+  status              DisputeStatus @default(OPEN)
+
+  // Reason
+  reason              String
+  description          String        @db.Text
+
+  // Resolution
+  resolvedById        String?       @db.Uuid
+  resolvedAt          DateTime?
+  resolutionNotes     String?       @db.Text
+  resolutionAmountKobo Int?          // Amount to be refunded/adjusted
+
+  // Evidence
+  evidenceUrls        String[]      @default([])
+
+  job                 Job           @relation(fields: [jobId], references: [id])
+  initiator           User          @relation("DisputeInitiator", fields: [initiatorId], references: [id])
+  resolvedBy          User?         @relation("DisputeResolver", fields: [resolvedById], references: [id])
+
+  @@index([jobId])
+  @@index([status])
+  @@index([initiatorId])
+  @@map("disputes")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NOTIFICATIONS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Notification {
+  id          String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  userId      String           @db.Uuid
+  type        NotificationType
+  title       String
+  message     String           @db.Text
+  data        Json?
+
+  isRead      Boolean          @default(false)
+  readAt      DateTime?
+
+  // Target
+  targetUrl   String?
+  targetId    String?
+
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CHALLENGES (Gamification)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Challenge {
+  id              String   @id @default(cuid())
+  name            String
+  description     String   @db.Text
+  requirements    Json     // e.g., { completedJobs: 5, rating: 4.5 }
+  reward          String   // e.g., "badge", "bonus_ngn"
+  rewardValue     String?  // e.g., "TOP_RATED", "1000" (for bonus)
+  startDate       DateTime
+  endDate         DateTime
+  isActive        Boolean  @default(true)
+
+  participants    ChallengeParticipant[]
+
+  @@map("challenges")
+}
+
+model ChallengeParticipant {
+  id              String   @id @default(cuid())
+  challengeId     String
+  taskerProfileId String   @db.Uuid
+  joinedAt        DateTime @default(now())
+  progress        Json     // Current progress toward requirements
+  completedAt     DateTime?
+
+  challenge       Challenge      @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  taskerProfile TaskerProfile @relation(fields: [taskerProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([challengeId, taskerProfileId])
+  @@map("challenge_participants")
+}

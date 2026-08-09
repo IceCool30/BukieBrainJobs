@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --color-navy: #001A41;
+  --color-navy-hover: #000F2D;
+  --color-emerald: #296A4B;
+  --color-emerald-hover: #205139;
+  --color-surface: #F8F9FF;
+  --color-on-surface: #0B1C30;
+}
+
+body {
+  color: var(--color-on-surface);
+  background-color: var(--color-surface);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* Custom scrollbar for web */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f3f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-navy);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-navy-hover);
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
+}
+
+/* Custom utility classes */
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-navy-800 to-emerald-600 bg-clip-text text-transparent;
+  }
+
+  .btn-primary {
+    @apply bg-navy-800 hover:bg-navy-900 text-white px-6 py-3 rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply border-2 border-navy-800 text-navy-800 hover:bg-navy-800 hover:text-white px-6 py-3 rounded-full font-medium transition-colors;
+  }
+
+  .btn-emerald {
+    @apply bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-full font-medium transition-colors;
+  }
+
+  .card {
+    @apply bg-white p-6 rounded-3xl shadow-ambient hover:shadow-ambient-hover transition-shadow;
+  }
+
+  .form-input {
+    @apply w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-500 focus:border-transparent;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-slate-700 mb-2;
+  }
+
+  .error-text {
+    @apply text-error text-sm mt-1;
+  }
+
+  .success-text {
+    @apply text-emerald-600 text-sm mt-1;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
