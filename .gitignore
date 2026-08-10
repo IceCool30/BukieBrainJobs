@@ -36,3 +36,7 @@ Thumbs.db
 *.tmp
 *.swp
 .vercel
+gh_cli/
+
+# Agent execution state
+.agents/
