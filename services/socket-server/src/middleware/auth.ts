@@ -2,7 +2,7 @@
 import { Socket } from 'socket.io'
 import { type SocketData } from '@bukiebrainjobs/api-types'
 
-export function authMiddleware(socket: Socket<unknown, unknown, unknown, SocketData>, next: (err?: Error) => void) {
+export function authMiddleware(socket: Socket<any, any, any, SocketData>, next: (err?: Error) => void) {
   // Extract JWT token from handshake headers or query
   const token = socket.handshake.headers.authorization?.replace('Bearer ', '') ||
                socket.handshake.query.token as string | undefined
@@ -14,8 +14,6 @@ export function authMiddleware(socket: Socket<unknown, unknown, unknown, SocketD
   // In production, verify the JWT here
   // For now, just decode and extract user data
   try {
-    // This is a placeholder - implement proper JWT verification
-    // using the same secret as the web app
     const decoded = parseToken(token)
     
     if (!decoded || !decoded.sub || !decoded.role) {
@@ -23,9 +21,9 @@ export function authMiddleware(socket: Socket<unknown, unknown, unknown, SocketD
     }
     
     // Set user data on socket
-    socket.data.userId = decoded.sub
-    socket.data.role = decoded.role as string
-    socket.data.phone = decoded.phone as string | undefined
+    if (decoded.sub) socket.data.userId = decoded.sub
+    if (decoded.role) socket.data.role = decoded.role as string
+    if (decoded.phone) socket.data.phone = decoded.phone as string
     
     // Add user to socket rooms for their role
     socket.join(`role:${decoded.role}`)
@@ -40,15 +38,9 @@ export function authMiddleware(socket: Socket<unknown, unknown, unknown, SocketD
 
 // Temporary token parser - replace with proper JWT verification
 function parseToken(token: string): { sub?: string; role?: string; phone?: string } | null {
-  // In production, use:
-  // import { jwtVerify } from 'jose'
-  // const { payload } = await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET!))
-  // return payload as { sub: string; role: string; phone: string }
-  
-  // For development, just decode base64 (not secure!)
   try {
     const parts = token.split('.')
-    if (parts.length !== 3) return null
+    if (parts.length !== 3 || !parts[1]) return null
     
     const payload = Buffer.from(parts[1], 'base64').toString('utf8')
     return JSON.parse(payload)

@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuthStore } from '@bukiebrainjobs/store';
 import { 
-  User, 
   ShieldCheck, 
   Wallet, 
   MessageSquare, 
@@ -16,7 +15,7 @@ import {
 } from 'lucide-react';
 
 export default function Navbar() {
-  const { currentRole, setRole, userName, passportStatus } = useAuthStore();
+  const { currentRole, setRole, passportStatus } = useAuthStore();
 
   return (
     <header className="sticky top-0 z-50 bg-[#001A41] text-white shadow-md border-b border-blue-900/50">
@@ -39,7 +38,7 @@ export default function Navbar() {
                 BukieBrain<span className="text-[#296A4B]">Jobs</span>
               </span>
               <span className="block text-[10px] text-slate-300 tracking-wider font-semibold uppercase">
-                Nigeria's #1 Artisan Marketplace
+                Nigeria&apos;s #1 Artisan Marketplace
               </span>
             </div>
           </Link>

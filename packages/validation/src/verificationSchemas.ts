@@ -50,7 +50,7 @@ export const VerificationWebhookSchema = z.object({
 
 export const UpdateVerificationStatusSchema = z.object({
   userId: z.string().uuid(),
-  verificationStatus: z.nativeEnum(VerificationStatus),
+  verificationStatus: z.enum(['UNVERIFIED', 'PENDING', 'VERIFIED', 'FAILED', 'SUSPENDED']),
   ninNumber: z.string().regex(NigerianNINRegex).optional(),
   bvnNumber: z.string().regex(NigerianBVNRegex).optional(),
   smileJobId: z.string().optional(),
@@ -73,7 +73,7 @@ export const UploadDocumentSchema = z.object({
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 export const VerificationQuerySchema = z.object({
-  status: z.nativeEnum(VerificationStatus).optional(),
+  status: z.enum(['UNVERIFIED', 'PENDING', 'VERIFIED', 'FAILED', 'SUSPENDED']).optional(),
   userId: z.string().uuid().optional(),
   page: z.number().int().min(1).default(1),
   limit: z.number().int().min(1).max(50).default(10),

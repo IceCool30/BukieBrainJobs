@@ -9,7 +9,7 @@ const MAX_CONNECTIONS_PER_WINDOW = 30 // Max connections per user per minute
 // Track connection attempts per user
 const connectionAttempts = new Map<string, { count: number; lastReset: number }>()
 
-export function rateLimitMiddleware(socket: Socket<unknown, unknown, unknown, SocketData>, next: (err?: Error) => void) {
+export function rateLimitMiddleware(socket: Socket<any, any, any, SocketData>, next: (err?: Error) => void) {
   const userId = socket.handshake.query.userId as string ||
                socket.handshake.headers['x-user-id'] as string ||
                socket.id

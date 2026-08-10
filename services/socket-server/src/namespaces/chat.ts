@@ -2,8 +2,7 @@
 // Chat Namespace for Socket.io
 
 import { Namespace, Server, Socket } from 'socket.io'
-import { type ServerToClientEvents, type ClientToServerEvents, type SocketData } from '@bukiebrainjobs/api-types'
-import { type Message } from '@bukiebrainjobs/api-types'
+import { type ServerToClientEvents, type ClientToServerEvents, type SocketData, type Message, type ContentType } from '@bukiebrainjobs/api-types'
 
 // Active rooms map: jobId -> Set of socket IDs
 type ActiveRooms = Map<string, Set<string>>
@@ -30,10 +29,10 @@ function removeUserSocket(userId: string, socketId: string): void {
   }
 }
 
-export function setupChatNamespace(io: Server<ClientToServerEvents, ServerToClientEvents, unknown, SocketData>) {
+export function setupChatNamespace(io: Server<any, any, any, SocketData>) {
   const chatNamespace = io.of('/chat')
   
-  chatNamespace.use((socket, next) => {
+  chatNamespace.use((socket: Socket<any, any, any, SocketData>, next: (err?: Error) => void) => {
     const userId = socket.handshake.auth?.userId
     const role = socket.handshake.auth?.role
     if (!userId || !role) {
@@ -45,13 +44,12 @@ export function setupChatNamespace(io: Server<ClientToServerEvents, ServerToClie
     next()
   })
   
-  chatNamespace.on('connection', (socket) => {
+  chatNamespace.on('connection', (socket: Socket<any, any, any, SocketData>) => {
     console.log(`Chat namespace: user ${socket.data.userId} connected`)
     
-    socket.on('join_room', (data: { jobId: string }) => {
-      const { jobId } = data
+    socket.on('join_chat', (jobId: string, callback?: (success: boolean, error?: string) => void) => {
       if (!jobId) {
-        socket.emit('error', { message: 'jobId is required' })
+        if (callback) callback(false, 'jobId is required')
         return
       }
       socket.join(`job:${jobId}`)
@@ -60,15 +58,16 @@ export function setupChatNamespace(io: Server<ClientToServerEvents, ServerToClie
       }
       activeRooms.get(jobId)!.add(socket.id)
       socket.data.jobId = jobId
-      socket.to(`job:${jobId}`).emit('chat:user_joined', {
-        userId: socket.data.userId,
-        role: socket.data.role,
-        jobId,
+      socket.to(`job:${jobId}`).emit('chat_joined', jobId, {
+        id: socket.data.userId || '',
+        firstName: socket.data.firstName || '',
+        lastName: socket.data.lastName || '',
+        role: socket.data.role || 'client',
       })
+      if (callback) callback(true)
     })
     
-    socket.on('leave_room', (data: { jobId: string }) => {
-      const { jobId } = data
+    socket.on('leave_chat', (jobId: string) => {
       if (!jobId) return
       socket.leave(`job:${jobId}`)
       const room = activeRooms.get(jobId)
@@ -76,58 +75,53 @@ export function setupChatNamespace(io: Server<ClientToServerEvents, ServerToClie
         room.delete(socket.id)
         if (room.size === 0) activeRooms.delete(jobId)
       }
-      if (socket.data.jobId === jobId) socket.data.jobId = undefined
-      socket.to(`job:${jobId}`).emit('chat:user_left', {
-        userId: socket.data.userId,
-        role: socket.data.role,
-        jobId,
-      })
+      if (socket.data.jobId === jobId) delete socket.data.jobId
+      socket.to(`job:${jobId}`).emit('chat_left', jobId, socket.data.userId || '')
     })
     
-    socket.on('chat:send_message', async (data: { jobId: string; content: string; contentType?: string; mediaUrl?: string }, callback?: any) => {
+    socket.on('send_message', async (data: { jobId: string; content: string; contentType?: ContentType; mediaUrl?: string }, callback?: (success: boolean, message?: Message, error?: string) => void) => {
       const { jobId, content, contentType } = data
       if (!jobId || !content) {
-        socket.emit('error', { message: 'jobId and content are required' })
-        if (callback) callback({ success: false })
+        if (callback) callback(false, undefined, 'jobId and content are required')
         return
       }
-      const message: Partial<Message> = {
+      const message: Message = {
+        id: `msg_${Date.now()}`,
         jobId,
-        senderId: socket.data.userId,
+        senderId: socket.data.userId || '',
         content,
         contentType: contentType || 'text',
-        mediaUrl: data.mediaUrl || null,
         isRead: false,
-        createdAt: new Date(),
+        isFlagged: false,
+        createdAt: new Date().toISOString(),
+        ...(data.mediaUrl ? { mediaUrl: data.mediaUrl } : {}),
       }
-      chatNamespace.to(`job:${jobId}`).emit('chat:message', message)
-      socket.emit('chat:message', message)
-      if (callback) callback({ success: true, data: message })
+      chatNamespace.to(`job:${jobId}`).emit('new_message', message)
+      if (callback) callback(true, message)
     })
     
-    socket.on('chat:typing', (data: { jobId: string; isTyping: boolean }) => {
-      const { jobId, isTyping } = data
+    socket.on('start_typing', (jobId: string) => {
       if (!jobId) return
-      socket.to(`job:${jobId}`).emit('chat:typing', {
-        userId: socket.data.userId,
-        role: socket.data.role,
-        isTyping,
-        jobId,
-      })
+      socket.to(`job:${jobId}`).emit('typing', jobId, socket.data.userId || '', true)
+    })
+
+    socket.on('stop_typing', (jobId: string) => {
+      if (!jobId) return
+      socket.to(`job:${jobId}`).emit('typing', jobId, socket.data.userId || '', false)
     })
     
-    socket.on('chat:read', (data: { jobId: string; messageId: string }) => {
-      const { jobId, messageId } = data
-      if (!jobId || !messageId) return
-      socket.to(`job:${jobId}`).emit('chat:read', {
-        userId: socket.data.userId,
-        messageId,
-        jobId,
-      })
+    socket.on('read_message', (messageId: string) => {
+      if (!messageId) return
+      const readAt = new Date().toISOString()
+      if (socket.data.jobId) {
+        socket.to(`job:${socket.data.jobId}`).emit('message_read', messageId, readAt)
+      }
     })
     
     socket.on('disconnect', () => {
-      removeUserSocket(socket.data.userId, socket.id)
+      if (socket.data.userId) {
+        removeUserSocket(socket.data.userId, socket.id)
+      }
       if (socket.data.jobId) {
         const room = activeRooms.get(socket.data.jobId)
         if (room) {

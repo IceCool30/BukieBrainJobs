@@ -1,8 +1,8 @@
 # Technical Architecture Baseline
 
 **Document ID:** TECH-000
-**Version:** 1.0
-**Status:** Approved baseline
+**Version:** 2.0
+**Status:** Approved baseline (updated by FOUNDATION-002)
 **Canonical detailed reference:** `BukieBrainJobs — Full-Stack Technical Specification.md`
 
 ## Non-negotiable principle
@@ -17,18 +17,18 @@ API contracts, database models, shared state shapes and validation rules must be
 |---|---|
 | Package manager | pnpm 9.x |
 | Build orchestration | Turborepo 2.x |
-| Language | TypeScript 5.x strict mode |
-| Node | 20 LTS |
-| Web | Next.js 14 App Router |
-| Mobile | React Native + Expo SDK 51+ |
-| Mobile routing | Expo Router v3 |
+| Language | TypeScript 5.7.x strict mode |
+| Node | 22 LTS |
+| Web | Next.js 15 App Router |
+| Mobile | React Native + Expo SDK 52 |
+| Mobile routing | Expo Router v4 |
 | Database | PostgreSQL 16.x |
-| ORM | Prisma 5.x |
+| ORM | Prisma 6.x |
 | Cache / queues | Redis 7.x |
 | Real-time | Socket.io 4.x |
-| Authentication | NextAuth.js v5 with JWT strategy and OTP via Termii |
-| State | Zustand 4.x |
-| Web styling | Tailwind CSS 3.x |
+| Authentication | NextAuth.js v4 stable (v5 remains in beta as of FOUNDATION-002) |
+| State | Zustand 5.x |
+| Web styling | Tailwind CSS 4.x (CSS-first config) |
 | Mobile styling | NativeWind v4 |
 | Validation | Zod 3.x |
 | API | REST via Route Handlers |
