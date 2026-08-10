@@ -54,15 +54,18 @@ Historical research and project exports are context, not current product authori
 ```text
 Product decision
   -> Product specification
-  -> UX specification
-  -> UI / Stitch design
-  -> Human approval
-  -> Engineering specification
-  -> Antigravity implementation
+  -> UX/UI requirements (DESIGN.md)
+  -> Antigravity design & implementation
   -> Tests
-  -> Security / accessibility review
+  -> Security / accessibility / performance review
+  -> Preview deployment
   -> Human approval
+  -> Merge to main
 ```
+
+> [!NOTE]
+> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
+
 
 If a required artifact is missing, stop and identify the gap rather than guessing.
 

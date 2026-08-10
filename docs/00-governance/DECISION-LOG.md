@@ -36,9 +36,10 @@ The GitHub repository will contain the durable project guidance required for hum
 
 ### GOV-003: Product-to-engineering separation
 
-**Status:** Approved
+**Status:** Superseded / Updated
 
-ChatGPT defines product and technical specifications, Google Stitch produces visual designs, and Google Antigravity implements approved designs.
+ChatGPT defines product and technical specifications, Google Antigravity is responsible for UI design interpretation and implementation using the approved product specifications and DESIGN.md. Google Stitch is deprecated as a required design intermediary.
+
 
 ### GOV-004: Documentation before application code
 

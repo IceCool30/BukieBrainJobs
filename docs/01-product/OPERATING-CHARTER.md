@@ -24,13 +24,12 @@ Build a trusted, scalable services marketplace for Nigeria, with a product found
 
 ChatGPT is the product architecture and specification authority for this project. Responsibilities include product decisions, PRD and feature specifications, UX, architecture, acceptance criteria, decision records, QA guidance and approved agent prompts.
 
-### Visual Design
+### UI Design & Engineering
 
-Google Stitch is the visual design environment. Stitch turns approved product and design specifications into high-fidelity interfaces and prototypes.
+Google Antigravity is the UI design and engineering environment. Antigravity interprets approved specifications and DESIGN.md to produce and implement visual layouts, frontend, backend, APIs, infrastructure, testing and deployment.
 
-### Engineering
-
-Google Antigravity is the engineering environment. Antigravity implements only approved specifications and approved designs, including frontend, backend, APIs, infrastructure, testing and deployment.
+> [!NOTE]
+> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
 
 ### Source Control
 
@@ -43,21 +42,14 @@ Idea / Request
     ↓
 Product Specification
     ↓
-UX Flow and States
+UX Requirements & Flow
     ↓
-Screen / UI Specification
+Google Antigravity UI Design & Implementation (using DESIGN.md)
     ↓
-Google Stitch Design
-    ↓
-Human Design Approval
-    ↓
-Engineering Specification
-    ↓
-Google Antigravity Implementation
-    ↓
-Automated Tests
+Automated & Manual Tests
     ↓
 Security + Accessibility + Performance Review
+
     ↓
 Human Approval
     ↓

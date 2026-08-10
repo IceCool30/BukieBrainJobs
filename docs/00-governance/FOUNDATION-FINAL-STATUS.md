@@ -13,14 +13,14 @@ The repository contains the governance layer required to make it the central pro
 - Product foundation and roadmap
 - Design System governance
 - Approved DS-001 through DS-012 register
-- Approved WEB-001 through WEB-001B-MCP register
+- Approved WEB-001 and WEB-001A register (Stitch design requirements WEB-001B and WEB-001B-MCP are deprecated)
 - Technical specification section register
 - Architecture baseline
 - Security baseline
 - QA baseline
 - Deployment baseline
 - Agent execution policy
-- Antigravity and Stitch workflow
+- Antigravity workflow (Google Stitch is deprecated)
 - Canonical artifact register
 - Foundation verification controls
 - Implementation handoff rules
@@ -34,7 +34,8 @@ Foundation completion means the repository governance and canonical-reference la
 
 No agent may begin arbitrary application development from a broad instruction. Work must enter through an approved feature specification and follow the Feature Factory sequence:
 
-Product specification → UX/UI specification → Stitch design → human approval → engineering implementation → QA → release.
+Product specification → UX requirements (DESIGN.md) → Antigravity design & implementation → QA & verification.
+
 
 ## Known source conflict
 

@@ -22,8 +22,7 @@ When documents conflict, use this order unless a documented decision explicitly 
 4. Approved design-system artifacts
 5. Approved feature and screen specifications
 6. Technical architecture and implementation specifications
-7. Google Stitch designs
-8. Google Antigravity implementation
+7. Google Antigravity implementation and design interpretation
 
 Never silently resolve a material conflict by inventing a requirement.
 
@@ -32,9 +31,12 @@ Never silently resolve a material conflict by inventing a requirement.
 | Area | Authority / Tool | Responsibility |
 |---|---|---|
 | Product architecture | ChatGPT | Product decisions, specifications, UX, architecture, acceptance criteria |
-| Visual design | Google Stitch | High-fidelity UI and prototypes |
-| Engineering | Google Antigravity | Frontend, backend, APIs, infrastructure, testing and deployment |
+| UI design & Engineering | Google Antigravity | UI design interpretation, frontend, backend, APIs, infrastructure, testing and deployment |
 | Source control | GitHub | Versioned source, documentation, reviews and release history |
+
+> [!NOTE]
+> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
+
 
 Antigravity and any other coding agent must read the repository guidance before modifying code.
 

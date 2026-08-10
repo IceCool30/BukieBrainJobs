@@ -6,9 +6,10 @@
 
 ## Purpose
 
-This policy governs Google Antigravity, Google Stitch MCP orchestration, QA agents, and any future coding or design agent working on BukieBrainJobs.
+This policy governs Google Antigravity, QA agents, and any future coding or design agent working on BukieBrainJobs. Google Stitch is deprecated.
 
 ## Required Reading
+
 
 Before work begins, an agent must identify and read the applicable:
 
@@ -35,13 +36,12 @@ Before work begins, an agent must identify and read the applicable:
 
 The required sequence is:
 
-`Product specification -> UX/UI specification -> approved design -> engineering specification -> implementation -> QA -> release`
+`Product specification -> UX requirements (DESIGN.md) -> Antigravity design & implementation -> QA -> release`
 
-A design-generation agent must not implement code.
-
-An engineering agent must not redesign an approved screen without an explicit change request.
+Google Antigravity is responsible for producing the actual visual UI design and implementation directly from specifications and DESIGN.md.
 
 A QA agent must evaluate implementation against the approved specification rather than redesigning the feature during testing.
+
 
 ## Change Discipline
 

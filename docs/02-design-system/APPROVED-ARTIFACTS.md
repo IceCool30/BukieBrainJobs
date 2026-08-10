@@ -8,7 +8,7 @@
 
 The Design Foundation is complete and locked for v1.0. The approved chain is:
 
-`DESIGN.md → DS-001 through DS-012 → Design Tokens → Google Stitch → Human Approval → Google Antigravity`
+DESIGN.md → DS-001 through DS-012 → Design Tokens → Google Antigravity UI Design & Implementation
 
 No agent may create a competing foundational design system.
 
@@ -47,7 +47,8 @@ No agent may create a competing foundational design system.
 
 ## Brand asset rule
 
-Supplied BukieBrainJobs logo assets are authoritative. They must be used as provided. Stitch and Antigravity must not regenerate, redraw, approximate, distort or recolor the approved logo.
+Supplied BukieBrainJobs logo assets are authoritative. They must be used as provided. Antigravity must not regenerate, redraw, approximate, distort or recolor the approved logo.
+
 
 ## Revision policy
 

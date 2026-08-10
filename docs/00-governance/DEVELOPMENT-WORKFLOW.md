@@ -15,21 +15,15 @@ Idea / request
     ↓
 Product specification
     ↓
-UX flow and states
+UX requirements & flow
     ↓
-Screen / UI specification
+Google Antigravity design & implementation (using DESIGN.md)
     ↓
-Google Stitch design
-    ↓
-Human design approval
-    ↓
-Engineering specification
-    ↓
-Google Antigravity implementation
-    ↓
-Automated tests
+Automated & manual testing
     ↓
 Security + accessibility + performance review
+    ↓
+Pull request & preview deployment
     ↓
 Human approval
     ↓
@@ -43,7 +37,7 @@ Each substantive feature should have:
 1. Product brief
 2. UX specification
 3. Screen specification
-4. Stitch prompt or design reference
+4. DESIGN.md design-system references
 5. Engineering specification
 6. API and data requirements where applicable
 7. Acceptance criteria
@@ -52,7 +46,11 @@ Each substantive feature should have:
 
 ## Design gate
 
-Antigravity must not start implementation merely because a Stitch design exists. The design must be explicitly approved and mapped to the relevant product and technical requirements.
+Antigravity is responsible for interpreting visual layouts directly from the product/UX requirements and DESIGN.md. The implementation is evaluated directly as the design artifact.
+
+> [!NOTE]
+> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
+
 
 ## Engineering gate
 

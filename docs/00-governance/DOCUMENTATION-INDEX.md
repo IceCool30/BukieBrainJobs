@@ -67,9 +67,9 @@ Current approved feature:
 
 - `WEB-001` Homepage Product and UX Specification
 - `WEB-001A` Homepage Section-by-Section Design Brief
-- `WEB-001B` Google Stitch Design Requirements
-- `WEB-001B-MCP` Antigravity to Stitch MCP orchestration prompt
-- `WEB-001C` Engineering implementation specification, to be created only after design approval
+- `WEB-001B` [DEPRECATED] Google Stitch Design Requirements
+- `WEB-001B-MCP` [DEPRECATED] Antigravity to Stitch MCP orchestration prompt
+
 
 ## 06 Authentication
 
@@ -239,7 +239,7 @@ Every approved agent prompt belongs here and must reference the specification it
 
 ```text
 docs/20-prompts/
-├── stitch/
+├── stitch/ (Deprecated)
 ├── antigravity/
 └── qa/
 ```
