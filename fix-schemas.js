@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const dir = 'c:/Users/john.bisong/Bukie Workspace/bukiebrainjobs/packages/validation/src';
+const dir = path.join(__dirname, 'packages/validation/src');
 
 const files = fs.readdirSync(dir);
 
