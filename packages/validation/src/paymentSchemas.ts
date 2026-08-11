@@ -34,7 +34,7 @@ export const PaystackWebhookSchema = z.object({
 
 export const PaymentQuerySchema = z.object({
   jobId: z.string().uuid().optional(),
-  status: z.string().optional(),
+  status: z.enum(['PENDING', 'AUTHORIZED', 'CAPTURED', 'SPLIT_COMPLETE', 'REFUNDED', 'FAILED']).optional(),
   startDate: z.string().datetime().optional(),
   endDate: z.string().datetime().optional(),
   page: z.number().int().min(1).default(1),

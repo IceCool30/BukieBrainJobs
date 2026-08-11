@@ -2,11 +2,11 @@
 
 BukieBrainJobs is a **two-sided, real-time service marketplace** with five distinct actor roles: Client, BrainWorker, Admin, Corporate Client (B2B), and System (automated). The platform must simultaneously support:
 
-- A **web application** (Next.js 14 App Router, SSR + ISR for SEO, client-side for real-time features)
+- A **web application** (Next.js 15 App Router, SSR + ISR for SEO, client-side for real-time features)
 - A **Progressive Web App** (PWA) served from the same Next.js build, installable on Android/iOS
 - A **React Native Expo** application targeting Android (primary) and iOS (secondary)
 - A **shared backend API** (Next.js Route Handlers + a dedicated Socket.io server)
-- A **shared design system** (NativeWind v4 on mobile, Tailwind CSS v3 on web, unified tokens)
+- A **shared design system** (NativeWind v4 on mobile, Tailwind CSS v4 on web, unified tokens)
 - A **shared business logic layer** (TypeScript types, Zustand stores, validation schemas, utilities)
 
 The non-negotiable architectural principle is: **write once, run everywhere, trust the type system**. Every API contract, every database model, every state shape, and every validation rule must be defined exactly once in the `packages/` layer and consumed by all apps. No duplicated types. No platform-specific business logic. No runtime surprises.
@@ -18,8 +18,8 @@ The repository uses **pnpm workspaces** as the package manager (faster installs,
 ```
 Package Manager : pnpm 9.x
 Build System    : Turborepo 2.x
-Language        : TypeScript 5.x (strict mode, no `any`)
-Node Version    : 20 LTS (managed via .nvmrc + Volta)
+Language        : TypeScript 5.7.x (strict mode, no `any`)
+Node Version    : 24 LTS (managed via .nvmrc)
 ```
 
 ## 3. Full Directory Map
@@ -34,7 +34,7 @@ bukiebrainjobs/
 │   └── CODEOWNERS
 │
 ├── apps/
-│   ├── web/                        # Next.js 14 (App Router)
+│   ├── web/                        # Next.js 15 (App Router)
 │   │   ├── app/
 │   │   │   ├── (auth)/
 │   │   │   │   ├── login/page.tsx

@@ -14,6 +14,15 @@ type JobSkill = {
   niceToHave?: boolean
 }
 
+function toNum(val: number | { toNumber(): number } | null | undefined): number {
+  if (val === null || val === undefined) return 0
+  if (typeof val === 'number') return val
+  if (typeof val === 'object' && typeof (val as { toNumber?: unknown }).toNumber === 'function') {
+    return (val as { toNumber(): number }).toNumber()
+  }
+  return Number(val) || 0
+}
+
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Configuration Constants
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -324,8 +333,8 @@ function calculateMatchScore(
   const distanceKm = haversineDistance(
     jobLocation.lat,
     jobLocation.lng,
-    Number(candidate.user.latitude) || 0,
-    Number(candidate.user.longitude) || 0
+    toNum(candidate.user.latitude),
+    toNum(candidate.user.longitude)
   )
   
   // Calculate individual scores
@@ -342,11 +351,11 @@ function calculateMatchScore(
   )
   const experienceScore = calculateExperienceScore(candidate.yearsExperience)
   const ratingScore = calculateRatingScore(
-    Number(candidate.averageRating) || 0,
+    toNum(candidate.averageRating),
     candidate.totalReviews || 0
   )
   const responseRateScore = calculateResponseRateScore(
-    Number(candidate.responseRate) || 0
+    toNum(candidate.responseRate)
   )
   
   // Calculate weighted score
@@ -396,16 +405,16 @@ export function findMatches(
   // Filter candidates by basic criteria
   const filteredCandidates = candidates.filter(candidate => {
     // Check minimum rating
-    if (Number(candidate.averageRating) && Number(candidate.averageRating) < minRating) {
+    if (toNum(candidate.averageRating) < minRating) {
       return false
     }
     
     // Check distance limit
     const distanceKm = haversineDistance(
-      Number(job.latitude),
-      Number(job.longitude),
-      Number(candidate.user.latitude) || 0,
-      Number(candidate.user.longitude) || 0
+      toNum(job.latitude),
+      toNum(job.longitude),
+      toNum(candidate.user.latitude),
+      toNum(candidate.user.longitude)
     )
     if (distanceKm > maxDistanceKm) {
       return false
@@ -433,8 +442,8 @@ export function findMatches(
   // Calculate scores for each candidate
   const scoredCandidates = filteredCandidates.map(candidate =>
     calculateMatchScore(job, candidate, {
-      lat: Number(job.latitude),
-      lng: Number(job.longitude),
+      lat: toNum(job.latitude),
+      lng: toNum(job.longitude),
     })
   )
   
@@ -462,8 +471,8 @@ export function scoreCandidate(
   }
 ): MatchingCandidate {
   return calculateMatchScore(job, candidate, {
-    lat: Number(job.latitude),
-    lng: Number(job.longitude),
+    lat: toNum(job.latitude),
+    lng: toNum(job.longitude),
   })
 }
 

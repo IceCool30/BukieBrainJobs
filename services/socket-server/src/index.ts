@@ -58,7 +58,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEve
 // Setup Redis adapter for multi-instance support
 const redis = setupRedis()
 if (redis) {
-  io.adapter(createAdapter(redis.pubClient, redis.subClient))
+  io.adapter(createAdapter(redis, redis.duplicate()))
   console.log('Using Redis adapter for Socket.io')
 }
 

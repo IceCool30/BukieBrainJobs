@@ -34,25 +34,21 @@ This is a documentation-maintenance item, not permission to invent requirements.
 ```text
 Approved feature specification
         ↓
-UX / UI specification
-        ↓
-Approved Stitch design
-        ↓
-Engineering specification
+UX requirements (DESIGN.md)
         ↓
 Feature branch
         ↓
-Implementation
+Antigravity UI design & implementation
         ↓
-Tests
+Tests & verification
         ↓
-Security / accessibility review
+Security / accessibility / performance review
         ↓
-Pull request
+Pull request & preview deployment
         ↓
 Human approval
         ↓
-main
+Merge to main
 ```
 
 ## Branch rule

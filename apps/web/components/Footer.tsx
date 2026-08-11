@@ -39,7 +39,7 @@ export default function Footer() {
         <div>
           <h4 className="font-bold text-white mb-3">B2B & Retail Partnerships</h4>
           <p className="text-xs text-slate-400 mb-3">
-            Electronics retailer or estate manager? Integrate our "Book Installation at Checkout" API.
+            Electronics retailer or estate manager? Integrate our &quot;Book Installation at Checkout&quot; API.
           </p>
           <button className="bg-[#296A4B] text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-[#1f523a] transition-all">
             Partner With Us

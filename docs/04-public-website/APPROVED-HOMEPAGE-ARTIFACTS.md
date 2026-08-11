@@ -5,7 +5,7 @@
 
 ## Authority chain
 
-`WEB-001 → WEB-001A → WEB-001B → WEB-001B-MCP → Stitch Design → Human Design Approval → WEB-001C → Antigravity Implementation`
+`WEB-001 → WEB-001A → Antigravity design & implementation → Human review & approval`
 
 ## Approved artifacts
 
@@ -13,9 +13,8 @@
 |---|---|---|---|
 | WEB-001 | Homepage Product and UX Specification | Approved | Product behavior and acceptance criteria |
 | WEB-001A | Homepage Section-by-Section Design Brief | Approved | Visual design requirements |
-| WEB-001B | Google Stitch Design Requirements | Approved | Stitch generation requirements |
-| WEB-001B-MCP | Antigravity to Stitch MCP Orchestration | Approved | Controlled design generation workflow |
-| WEB-001C | Antigravity Implementation Specification | Deferred | Created only after human approval of Stitch output |
+| WEB-001B | Google Stitch Design Requirements | Deprecated | Legacy Stitch generation requirements |
+| WEB-001B-MCP | Antigravity to Stitch MCP Orchestration | Deprecated | Legacy design generation workflow |
 
 ## Locked homepage decisions
 
@@ -104,4 +103,5 @@ Do not:
 
 ## Current handoff state
 
-The homepage product and design briefs are approved. Stitch generation may proceed through the approved MCP orchestration workflow. Antigravity implementation remains blocked until the generated visual design receives human approval.
+The homepage product and design briefs are approved. Antigravity UI design and implementation may proceed directly under the revised workflow using DESIGN.md.
+

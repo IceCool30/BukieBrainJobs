@@ -13,7 +13,7 @@ export const CreateJobSchema = z.object({
   description: z.string()
     .min(20, 'Description must be at least 20 characters')
     .max(2000, 'Description must be at most 2000 characters'),
-  jobType: z.string().default('TASK'),
+  jobType: z.enum(['TASK', 'PROJECT', 'RECURRING']).default('TASK'),
   
   // Location
   address: z.string().min(5, 'Address must be at least 5 characters'),
@@ -45,7 +45,7 @@ export const CreateJobSchema = z.object({
 
 export const UpdateJobSchema = CreateJobSchema.partial().extend({
   id: z.string().uuid(),
-  status: z.string().optional(),
+  status: z.enum(['OPEN', 'PENDING_ACCEPTANCE', 'CONFIRMED', 'IN_PROGRESS', 'PENDING_COMPLETION', 'COMPLETED', 'PAID', 'CANCELLED', 'EXPIRED', 'DISPUTED', 'RESOLVED']).optional(),
   actualStartAt: z.string().datetime().optional(),
   actualEndAt: z.string().datetime().optional(),
   actualTotalKobo: z.number().int().optional(),
@@ -59,8 +59,8 @@ export const UpdateJobSchema = CreateJobSchema.partial().extend({
 export const JobQuerySchema = z.object({
   page: z.number().int().min(1).default(1),
   limit: z.number().int().min(1).max(50).default(10),
-  status: z.string().optional(),
-  jobType: z.string().optional(),
+  status: z.enum(['OPEN', 'PENDING_ACCEPTANCE', 'CONFIRMED', 'IN_PROGRESS', 'PENDING_COMPLETION', 'COMPLETED', 'PAID', 'CANCELLED', 'EXPIRED', 'DISPUTED', 'RESOLVED']).optional(),
+  jobType: z.enum(['TASK', 'PROJECT', 'RECURRING']).optional(),
   city: z.string().optional(),
   state: z.string().optional(),
   skillIds: z.array(z.string().uuid()).optional(),
@@ -82,7 +82,7 @@ export const JobIdParamSchema = z.object({
 
 export const JobStatusTransitionSchema = z.object({
   jobId: z.string().uuid(),
-  toStatus: z.string(),
+  toStatus: z.enum(['OPEN', 'PENDING_ACCEPTANCE', 'CONFIRMED', 'IN_PROGRESS', 'PENDING_COMPLETION', 'COMPLETED', 'PAID', 'CANCELLED', 'EXPIRED', 'DISPUTED', 'RESOLVED']),
   reason: z.string().max(500).optional(),
 })
 

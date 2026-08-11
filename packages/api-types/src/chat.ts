@@ -85,6 +85,7 @@ export interface SocketData {
   lastName?: string
   avatarUrl?: string
   fcmToken?: string
+  jobId?: string
 }
 
 // Server to Client Events (emitted by server, received by client)

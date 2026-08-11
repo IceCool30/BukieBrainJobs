@@ -35,3 +35,9 @@ Thumbs.db
 *.local
 *.tmp
 *.swp
+.vercel
+gh_cli/
+BukieBrainJobs_PWA_Icons.zip
+
+# Agent execution state
+.agents/

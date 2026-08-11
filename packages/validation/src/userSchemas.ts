@@ -124,8 +124,8 @@ export const VerifyOtpSchema = z.object({
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 export const UserQuerySchema = z.object({
-  role: z.string().optional(),
-  verificationStatus: z.string().optional(),
+  role: z.enum(['CLIENT', 'TASKER', 'ADMIN', 'CORPORATE_CLIENT']).optional(),
+  verificationStatus: z.enum(['UNVERIFIED', 'PENDING', 'VERIFIED', 'FAILED', 'SUSPENDED']).optional(),
   city: z.string().optional(),
   state: z.string().optional(),
   isAvailable: z.boolean().optional(),

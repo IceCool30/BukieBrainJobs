@@ -24,11 +24,13 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
       - name: Install dependencies
@@ -44,7 +46,13 @@ jobs:
         run: pnpm turbo lint
 
       - name: Run tests
-        run: echo "Tests will be introduced with relevant feature domains."
+        run: pnpm turbo test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-secret-key-at-least-32-characters-long
+          ENCRYPTION_KEY: 0000000000000000000000000000000000000000000000000000000000000000
+
     services:
       postgres:
         image: postgis/postgis:16-3.4

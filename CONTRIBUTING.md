@@ -68,13 +68,14 @@ The approved workflow is:
 
 ```text
 Product specification
-    -> UX specification
-    -> Stitch design
-    -> Design review
-    -> Engineering specification
-    -> Implementation
-    -> QA
+    -> UX/UI requirements (DESIGN.md)
+    -> Antigravity design & implementation
+    -> QA & verification
 ```
+
+> [!NOTE]
+> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
+
 
 ## Design rules
 

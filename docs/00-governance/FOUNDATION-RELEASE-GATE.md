@@ -45,7 +45,7 @@ All conditions below must be true before the gate can change to `RELEASED`.
 ### Agent handoff
 
 - [ ] Antigravity can identify the files it must read before implementation.
-- [ ] Stitch can identify the visual authority and approved design artifacts.
+- [ ] [DEPRECATED] Stitch can identify the visual authority and approved design artifacts.
 - [ ] Agents are explicitly forbidden from inventing missing requirements.
 - [ ] Agents are explicitly forbidden from bypassing approval gates.
 

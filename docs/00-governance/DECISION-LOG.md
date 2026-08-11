@@ -36,9 +36,10 @@ The GitHub repository will contain the durable project guidance required for hum
 
 ### GOV-003: Product-to-engineering separation
 
-**Status:** Approved
+**Status:** Superseded / Updated
 
-ChatGPT defines product and technical specifications, Google Stitch produces visual designs, and Google Antigravity implements approved designs.
+ChatGPT defines product and technical specifications, Google Antigravity is responsible for UI design interpretation and implementation using the approved product specifications and DESIGN.md. Google Stitch is deprecated as a required design intermediary.
+
 
 ### GOV-004: Documentation before application code
 
@@ -67,3 +68,78 @@ The public homepage is customer-first, supports three marketplace entry paths, s
 ## Adding a decision
 
 Do not edit a historical decision to hide a change. If a decision changes, create a new decision, link the superseded decision and explain the reason.
+
+---
+
+## FOUNDATION-002 Baseline Upgrade Decisions (2026-08-10)
+
+### FOUND-001: Node 20 LTS superseded by Node 22 LTS
+
+**Date:** 2026-08-10
+**Status:** Approved
+
+Node 20 LTS reached end-of-life in April 2026. Node 22 LTS is the current long-term support release. All CI, deployment, and local tooling declarations updated to Node 22. `.nvmrc` pinned to `22`.
+
+### FOUND-002: Next.js 14 upgraded to Next.js 15
+
+**Date:** 2026-08-10
+**Status:** Approved
+
+Next.js 15 (15.5.21) is the current stable release with security patches covering CVEs present in 14.2.5 (GHSA-gp8f-8m3g-qvj9). Next.js 15 brings async Request APIs, React 19 compatibility, and Turbopack stability. Phase 1 mock-only app has minimal App Router surface area so migration impact is low.
+
+### FOUND-003: React 18 upgraded to React 19 (web only)
+
+**Date:** 2026-08-10
+**Status:** Approved
+
+React 19 is required by Next.js 15. Mobile app remains on React 18.3.1 per Expo SDK 52 compatibility constraints.
+
+### FOUND-004: NextAuth v5 beta replaced with NextAuth v4 stable
+
+**Date:** 2026-08-10
+**Status:** Approved
+
+`next-auth@5.0.0-beta.25` violates the no-prerelease policy. NextAuth v5 has no stable release as of 2026-08-10. Downgraded to `next-auth@4.24.15` (latest stable). Authentication implementation is Phase 2 scope; no Phase 1 functionality is affected.
+
+### FOUND-005: Tailwind CSS v3 upgraded to Tailwind CSS v4 (CSS-first)
+
+**Date:** 2026-08-10
+**Status:** Approved
+
+Tailwind v4 uses a CSS-first configuration model. `tailwind.config.ts` is simplified to content paths only. Design tokens migrated to CSS `@theme` block in `globals.css`. PostCSS plugin updated from `tailwindcss` to `@tailwindcss/postcss`. Autoprefixer removed (bundled in v4).
+
+### FOUND-006: Prisma v5 upgraded to Prisma v6
+
+**Date:** 2026-08-10
+**Status:** Approved
+
+Prisma 6.x (6.17.0) is the current stable major with performance improvements and API stability. No schema changes required for v5-to-v6 migration. Prisma v7 introduces Driver Adapters as required (breaking change); deferred until Phase 2 backend work begins.
+
+### FOUND-007: Zustand v4 unified to v5 across all workspaces
+
+**Date:** 2026-08-10
+**Status:** Approved
+
+`apps/web` was on Zustand v4 while `packages/store` and `apps/mobile` were on v5. This split created a risk of dual-instance Zustand in the web bundle. Unified to `zustand@5.0.14` across all workspaces.
+
+### FOUND-008: Socket server package.json created
+
+**Date:** 2026-08-10
+**Status:** Approved
+
+`services/socket-server` had source code but no `package.json`. This was a critical infrastructure gap preventing Turborepo from building or type-checking the socket server. Created `package.json` with socket.io, @socket.io/redis-adapter, ioredis, and typescript dev tools.
+
+### FOUND-009: ESLint configuration created for apps/web
+
+**Date:** 2026-08-10
+**Status:** Approved
+
+`apps/web` had no `.eslintrc.json` despite `pnpm turbo lint` being defined in CI. Created with `next/core-web-vitals` and `next/typescript` rulesets.
+
+### FOUND-010: Standardize project baseline on Node 24 LTS
+
+**Date:** 2026-08-10
+**Status:** Approved
+
+Project runtime baseline standardized on Node.js 24 LTS to align local, CI, deployment, and Vercel environments. All `.nvmrc`, `package.json` engines, and GitHub Actions workflows updated to Node 24.
+

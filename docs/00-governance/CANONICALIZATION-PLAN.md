@@ -77,7 +77,7 @@ This document defines how project source material becomes canonical repository d
 ### Agent Operations
 
 - `AGENTS.md`
-- Stitch prompts
+- [DEPRECATED] Stitch prompts
 - Antigravity prompts
 - QA prompts
 - Feature Factory workflow

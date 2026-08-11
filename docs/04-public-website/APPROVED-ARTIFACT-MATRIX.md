@@ -6,9 +6,8 @@
 |---|---|---|---|---|
 | WEB-001 | Public Homepage Product & UX Specification | Product behavior and homepage requirements | Approved | Yes |
 | WEB-001A | Homepage Section-by-Section Design Brief | Detailed UX/UI design brief | Approved | Yes |
-| WEB-001B | Google Stitch Design Requirements | Stitch visual-generation requirements | Approved | Yes |
-| WEB-001B-MCP | Antigravity → Stitch MCP Orchestration | Operational design orchestration | Approved | Yes |
-| WEB-001C | Engineering Implementation Specification | Post-design engineering handoff | Deferred until human design approval | No |
+| WEB-001B | Google Stitch Design Requirements | Stitch visual-generation requirements | Deprecated | No |
+| WEB-001B-MCP | Antigravity → Stitch MCP Orchestration | Operational design orchestration | Deprecated | No |
 
 ## Locked homepage rules
 
@@ -22,6 +21,9 @@
 
 ## Design workflow
 
-`WEB-001 → WEB-001A → WEB-001B → WEB-001B-MCP → Stitch → Human review → WEB-001C → Engineering`
+`WEB-001 → WEB-001A → Antigravity UI design & implementation → Human review & approval`
 
-No implementation artifact should bypass the human design approval gate.
+No implementation artifact should bypass the human approval gate.
+
+> [!NOTE]
+> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.

@@ -1,7 +1,14 @@
 // packages/ui/src/tokens/colors.ts
-// Brand design tokens - single source of truth for all apps
+// Brand design tokens - JavaScript constants for non-CSS consumers
+// CSS design tokens live in apps/web/app/globals.css under @theme
 // Must match DESIGN.md: Deep Navy primary, Emerald secondary, Amber accent
-import colors from 'tailwindcss/colors';
+
+// Tailwind slate hex values inlined to remove tailwindcss runtime import
+const slate = {
+  50:  '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1',
+  400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155',
+  800: '#1e293b', 900: '#0f172a', 950: '#020617',
+};
 
 export const brandColors = {
   navy: {
@@ -42,7 +49,7 @@ export const brandColors = {
     700: '#B45309',
   },
   // Use Tailwind's native slate as required by DESIGN.md (derived from #64748B)
-  slate: colors.slate,
+  slate,
   
   // Material Design 3 (M3) Semantic Tokens from DESIGN.md frontmatter
   surface: {

@@ -1,8 +1,7 @@
 import type { Config } from 'tailwindcss';
-import sharedConfig from '../../packages/ui/tailwind.config';
 
+/** @type {Config} */
 const config: Config = {
-  ...sharedConfig,
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',

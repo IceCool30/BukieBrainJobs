@@ -28,11 +28,15 @@ Approved feature and screen specifications define feature-level behavior, conten
 
 ### 5. Design implementation
 
-Approved Google Stitch designs are the visual implementation of the specifications. They do not silently override product or technical requirements.
+Google Antigravity is responsible for interpreting and implementing the visual layout directly from the approved project specifications and DESIGN.md. 
+
+> [!NOTE]
+> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
 
 ### 6. Engineering implementation
 
 Google Antigravity and human developers implement the approved requirements. Code is not a higher authority than an approved specification.
+
 
 ## Conflict rule
 
