@@ -1,128 +1,175 @@
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-display: "Hanken Grotesk", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-headline: "Hanken Grotesk", system-ui, sans-serif;
+  --font-label: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  --color-navy-50:  #F0F4FA;
-  --color-navy-100: #D6E0F0;
-  --color-navy-200: #ADBFE0;
-  --color-navy-300: #7A98C8;
-  --color-navy-400: #4A6EA8;
-  --color-navy-500: #003478;
-  --color-navy-600: #002A62;
-  --color-navy-700: #001F4D;
-  --color-navy-800: #001A41;
-  --color-navy-900: #000F2D;
-  --color-navy:     #001A41;
+  /* Colors */
+  --color-surface: #f8f9ff;
+  --color-surface-dim: #cbdbf5;
+  --color-surface-bright: #f8f9ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eff4ff;
+  --color-surface-container: #e5eeff;
+  --color-surface-container-high: #dce9ff;
+  --color-surface-container-highest: #d3e4fe;
+  --color-on-surface: #0b1c30;
+  --color-on-surface-variant: #44474e;
+  --color-inverse-surface: #213145;
+  --color-inverse-on-surface: #eaf1ff;
+  --color-outline: #75777f;
+  --color-outline-variant: #c5c6cf;
+  --color-surface-tint: #4a5e88;
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #001a41;
+  --color-on-primary-container: #6f84b0;
+  --color-inverse-primary: #b2c6f7;
+  --color-secondary: #296a4b;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #abeec8;
+  --color-on-secondary-container: #2e6e4f;
+  --color-tertiary: #000000;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #360f00;
+  --color-on-tertiary-container: #b47458;
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+  --color-primary-fixed: #d8e2ff;
+  --color-primary-fixed-dim: #b2c6f7;
+  --color-on-primary-fixed: #001a41;
+  --color-on-primary-fixed-variant: #32466f;
+  --color-secondary-fixed: #aef1ca;
+  --color-secondary-fixed-dim: #93d5af;
+  --color-on-secondary-fixed: #002112;
+  --color-on-secondary-fixed-variant: #075135;
+  --color-tertiary-fixed: #ffdbcd;
+  --color-tertiary-fixed-dim: #ffb596;
+  --color-on-tertiary-fixed: #360f00;
+  --color-on-tertiary-fixed-variant: #6c3921;
+  --color-background: #f8f9ff;
+  --color-on-background: #0b1c30;
+  --color-surface-variant: #d3e4fe;
 
-  --color-emerald-50:  #EEFBF3;
-  --color-emerald-100: #D4F5E2;
-  --color-emerald-200: #ABEEC8;
-  --color-emerald-300: #72DFA3;
-  --color-emerald-400: #40C87A;
-  --color-emerald-500: #2E8B57;
-  --color-emerald-600: #296A4B;
-  --color-emerald-700: #205139;
-  --color-emerald-800: #1A3F2D;
-  --color-emerald-900: #132E21;
-  --color-emerald:     #296A4B;
+  /* Typography */
+  --text-display-lg: 48px;
+  --text-display-lg--line-height: 56px;
+  --text-display-lg--letter-spacing: -0.02em;
 
-  --color-amber-500: #F59E0B;
-  --color-amber:     #F59E0B;
+  --text-display-lg-mobile: 36px;
+  --text-display-lg-mobile--line-height: 44px;
+  --text-display-lg-mobile--letter-spacing: -0.02em;
 
-  --color-surface:     #F8F9FF;
-  --color-on-surface:  #0B1C30;
-  --color-error:       #BA1A1A;
-  --color-background:  #F8F9FF;
+  --text-headline-md: 30px;
+  --text-headline-md--line-height: 38px;
+  --text-headline-md--letter-spacing: -0.01em;
 
-  --radius-xl:   1rem;
-  --radius-3xl:  2rem;
+  --text-headline-sm: 24px;
+  --text-headline-sm--line-height: 32px;
+
+  --text-title-lg: 20px;
+  --text-title-lg--line-height: 28px;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 28px;
+  --text-body-lg--letter-spacing: 0.01em;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+
+  --text-label-md: 14px;
+  --text-label-md--line-height: 20px;
+  --text-label-md--letter-spacing: 0.05em;
+
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 16px;
+
+  /* Radiuses */
+  --radius-sm: 0.5rem;
+  --radius: 1rem;
+  --radius-md: 1.5rem;
+  --radius-lg: 2rem;
+  --radius-xl: 3rem;
   --radius-full: 9999px;
 
-  --shadow-ambient:       0 4px 20px rgba(0, 26, 65, 0.08);
+  /* Spacing */
+  --spacing-container-max: 1280px;
+  --spacing-margin-desktop: 64px;
+  --spacing-margin-mobile: 20px;
+  --spacing-unit-xs: 4px;
+  --spacing-unit-sm: 8px;
+  --spacing-unit-md: 16px;
+  --spacing-unit-lg: 32px;
+  --spacing-unit-xl: 64px;
+
+  --shadow-ambient: 0 4px 20px rgba(0, 26, 65, 0.08);
   --shadow-ambient-hover: 0 4px 20px rgba(0, 26, 65, 0.15);
 }
 
 body {
-  color: var(--color-on-surface);
-  background-color: var(--color-surface);
-  font-family: var(--font-sans);
+  color: var(--color-on-background);
+  background-color: var(--color-background);
+  font-family: var(--font-body);
   line-height: 1.6;
 }
 
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #f1f3f5; }
-::-webkit-scrollbar-thumb { background: var(--color-navy); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-navy-900); }
+::-webkit-scrollbar-thumb { background: var(--color-primary-container); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #000f2d; }
 
 *:focus-visible {
-  outline: 2px solid var(--color-navy);
+  outline: 2px solid var(--color-primary-container);
   outline-offset: 2px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.material-symbols-outlined.fill {
+  font-variation-settings: 'FILL' 1;
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -10px rgba(0, 26, 65, 0.1);
 }
 
 @layer utilities {
   .text-gradient {
-    background: linear-gradient(to right, var(--color-navy-800), var(--color-emerald-600));
+    background: linear-gradient(to right, var(--color-primary-container), var(--color-secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-
-  .btn-primary {
-    background-color: var(--color-navy-800);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius-full);
-    font-weight: 500;
-    transition: background-color 0.2s;
+  .brush-underline {
+    position: relative;
+    display: inline-block;
   }
-  .btn-primary:hover { background-color: var(--color-navy-900); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  .btn-secondary {
-    border: 2px solid var(--color-navy-800);
-    color: var(--color-navy-800);
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius-full);
-    font-weight: 500;
-    transition: background-color 0.2s, color 0.2s;
-  }
-  .btn-secondary:hover { background-color: var(--color-navy-800); color: white; }
-
-  .btn-emerald {
-    background-color: var(--color-emerald-600);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius-full);
-    font-weight: 500;
-    transition: background-color 0.2s;
-  }
-  .btn-emerald:hover { background-color: var(--color-emerald-700); }
-
-  .card {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: var(--radius-3xl);
-    box-shadow: var(--shadow-ambient);
-    transition: box-shadow 0.2s;
-  }
-  .card:hover { box-shadow: var(--shadow-ambient-hover); }
-
-  .form-input {
+  .brush-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
     width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #cbd5e1;
-    border-radius: var(--radius-xl);
-    outline: none;
+    height: 8px;
+    background-color: var(--color-secondary);
+    opacity: 0.85;
+    border-radius: 4px;
+    transform: rotate(-1deg);
+    z-index: -1;
   }
-  .form-input:focus { outline: none; ring: 2px solid var(--color-navy-500); border-color: transparent; }
-
-  .form-label { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem; }
-  .error-text { color: var(--color-error); font-size: 0.875rem; margin-top: 0.25rem; }
-  .success-text { color: var(--color-emerald-600); font-size: 0.875rem; margin-top: 0.25rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
