@@ -2,18 +2,18 @@ import React from 'react';
 import './globals.css';
 
 export const metadata = {
-  title: 'BukieBrainJobs - Nigeria\'s On-Demand Hybrid Service Marketplace',
-  description: 'Connect with verified artisans for generator repair, furniture assembly, TV mounting, and home services.',
+  title: 'BukieBrainJobs | Find trusted local professionals',
+  description: 'Find trusted Nigerian professionals for home, business and everyday services.',
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
-      <body className="bg-[#F8F9FF] text-[#001A41] font-body min-h-screen antialiased">
+      <body className="min-h-screen bg-[#f8f9ff] font-sans text-[#0b1c30] antialiased">
         {children}
       </body>
     </html>
