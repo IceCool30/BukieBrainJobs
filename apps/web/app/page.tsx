@@ -7,7 +7,6 @@ import {
   Bell,
   BriefcaseBusiness,
   Check,
-  ChevronDown,
   Clock3,
   MapPin,
   Menu,
@@ -193,7 +192,7 @@ export default function HomePage() {
 
       <section id="how-it-works" className="border-y border-[#dfe5ef] bg-[#eff4ff]">
         <div className="mx-auto max-w-[1280px] px-5 py-20 lg:px-8 lg:py-28">
-          <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296a4b]">Simple by design</p><h2 className="mt-3 font-display text-4xl font-semibold tracking-[-0.025em] text-[#001a41]">From "I need help" to "job done".</h2><p className="mt-4 text-lg leading-7 text-[#44474e]">The marketplace should remove uncertainty, not add more steps.</p></div>
+          <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296a4b]">Simple by design</p><h2 className="mt-3 font-display text-4xl font-semibold tracking-[-0.025em] text-[#001a41]">From &quot;I need help&quot; to &quot;job done&quot;.</h2><p className="mt-4 text-lg leading-7 text-[#44474e]">The marketplace should remove uncertainty, not add more steps.</p></div>
           <div className="mt-12 grid border-l border-t border-[#c5c6cf] md:grid-cols-2 lg:grid-cols-4">
             {steps.map(([number, title, body]) => <div key={number} className="min-h-[250px] border-b border-r border-[#c5c6cf] bg-white p-7"><p className="font-mono text-xs font-bold text-[#296a4b]">{number}</p><h3 className="mt-16 font-display text-xl font-semibold text-[#001a41]">{title}</h3><p className="mt-3 text-sm leading-6 text-[#44474e]">{body}</p></div>)}
           </div>
@@ -214,11 +213,11 @@ export default function HomePage() {
           <div><p className="text-xs font-bold uppercase tracking-[0.14em] text-[#abeec8]">Trust & safety</p><h2 className="mt-3 font-display text-4xl font-semibold tracking-[-0.025em]">Trust should be visible, not assumed.</h2><p className="mt-5 max-w-xl text-base leading-7 text-[#d8e2ff]">BukieBrainJobs is designed around information users can understand before they commit: who is doing the work, what it costs, and how payment is protected.</p><button className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#296a4b] px-5 py-3 text-sm font-bold text-white hover:bg-[#205139]">Learn about BukiePassport <ArrowRight size={16} /></button></div>
           <div className="grid gap-0 border border-white/20 sm:grid-cols-2">
             {[
-              ['BukiePassport', 'Verification tiers make identity and professional history easier to assess.', BadgeCheck],
-              ['Escrow', 'Eligible payments are protected while the work is being completed.', ShieldCheck],
-              ['BukieGuarantee', 'Coverage is available on qualifying jobs, subject to clear terms.', ShieldCheck],
-              ['Transparent pricing', 'See starting prices and worker details before choosing who to hire.', Check],
-            ].map(([title, body, Icon]) => <div key={title as string} className="border-b border-r border-white/20 p-6 last:border-b-0"><Icon size={22} className="text-[#abeec8]" /><h3 className="mt-7 font-display text-lg font-semibold">{title as string}</h3><p className="mt-2 text-sm leading-6 text-[#d8e2ff]">{body as string}</p></div>)}
+              { title: 'BukiePassport', body: 'Verification tiers make identity and professional history easier to assess.', icon: BadgeCheck },
+              { title: 'Escrow', body: 'Eligible payments are protected while the work is being completed.', icon: ShieldCheck },
+              { title: 'BukieGuarantee', body: 'Coverage is available on qualifying jobs, subject to clear terms.', icon: ShieldCheck },
+              { title: 'Transparent pricing', body: 'See starting prices and worker details before choosing who to hire.', icon: Check },
+            ].map(({ title, body, icon: Icon }) => <div key={title} className="border-b border-r border-white/20 p-6 last:border-b-0"><Icon size={22} className="text-[#abeec8]" /><h3 className="mt-7 font-display text-lg font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-[#d8e2ff]">{body}</p></div>)}
           </div>
         </div>
       </section>
@@ -242,7 +241,7 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-[1280px] px-5 py-20 lg:px-8 lg:py-28">
         <div className="grid gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2 border border-[#c5c6cf] bg-[#eff4ff] p-8 lg:p-10"><div className="flex items-center gap-2 text-[#296a4b]"><Star size={17} fill="currentColor" /><Star size={17} fill="currentColor" /><Star size={17} fill="currentColor" /><Star size={17} fill="currentColor" /><Star size={17} fill="currentColor" /></div><blockquote className="mt-8 max-w-3xl font-display text-3xl font-semibold leading-tight tracking-[-0.02em] text-[#001a41]">"I needed a generator technician quickly. I could see the worker's rating, location and history before I chose who to contact."</blockquote><p className="mt-8 text-sm font-semibold text-[#44474e]">Adaeze N. · Ikeja, Lagos</p></div>
+          <div className="lg:col-span-2 border border-[#c5c6cf] bg-[#eff4ff] p-8 lg:p-10"><div className="flex items-center gap-2 text-[#296a4b]"><Star size={17} fill="currentColor" /><Star size={17} fill="currentColor" /><Star size={17} fill="currentColor" /><Star size={17} fill="currentColor" /><Star size={17} fill="currentColor" /></div><blockquote className="mt-8 max-w-3xl font-display text-3xl font-semibold leading-tight tracking-[-0.02em] text-[#001a41]">&quot;I needed a generator technician quickly. I could see the worker&apos;s rating, location and history before I chose who to contact.&quot;</blockquote><p className="mt-8 text-sm font-semibold text-[#44474e]">Adaeze N. · Ikeja, Lagos</p></div>
           <div className="flex flex-col justify-between border border-[#001a41] bg-[#001a41] p-8 text-white"><div><Clock3 size={24} className="text-[#abeec8]" /><h3 className="mt-10 font-display text-2xl font-semibold">Need something else?</h3><p className="mt-3 text-sm leading-6 text-[#d8e2ff]">Tell us what you need. The marketplace can help you find the right category or create a custom job.</p></div><button className="mt-10 flex items-center justify-between border-t border-white/20 pt-5 text-sm font-bold">Describe a task <ArrowRight size={17} /></button></div>
         </div>
       </section>
