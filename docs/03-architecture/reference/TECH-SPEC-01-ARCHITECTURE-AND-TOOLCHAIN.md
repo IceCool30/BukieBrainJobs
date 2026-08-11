@@ -19,7 +19,7 @@ The repository uses **pnpm workspaces** as the package manager (faster installs,
 Package Manager : pnpm 9.x
 Build System    : Turborepo 2.x
 Language        : TypeScript 5.7.x (strict mode, no `any`)
-Node Version    : 22 LTS (managed via .nvmrc)
+Node Version    : 24 LTS (managed via .nvmrc)
 ```
 
 ## 3. Full Directory Map

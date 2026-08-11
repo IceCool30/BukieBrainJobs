@@ -18,7 +18,7 @@ API contracts, database models, shared state shapes and validation rules must be
 | Package manager | pnpm 9.x |
 | Build orchestration | Turborepo 2.x |
 | Language | TypeScript 5.7.x strict mode |
-| Node | 22 LTS |
+| Node | 24 LTS |
 | Web | Next.js 15 App Router |
 | Mobile | React Native + Expo SDK 52 |
 | Mobile routing | Expo Router v4 |

@@ -135,3 +135,11 @@ Prisma 6.x (6.17.0) is the current stable major with performance improvements an
 **Status:** Approved
 
 `apps/web` had no `.eslintrc.json` despite `pnpm turbo lint` being defined in CI. Created with `next/core-web-vitals` and `next/typescript` rulesets.
+
+### FOUND-010: Standardize project baseline on Node 24 LTS
+
+**Date:** 2026-08-10
+**Status:** Approved
+
+Project runtime baseline standardized on Node.js 24 LTS to align local, CI, deployment, and Vercel environments. All `.nvmrc`, `package.json` engines, and GitHub Actions workflows updated to Node 24.
+
