@@ -41,3 +41,4 @@ BukieBrainJobs_PWA_Icons.zip
 
 # Agent execution state
 .agents/
+.env*
