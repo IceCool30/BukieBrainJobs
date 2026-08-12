@@ -141,3 +141,5 @@ Do not introduce arbitrary colors, typography, spacing, radii, motion or compone
 ## Status
 
 This repository currently contains the company and product foundation only. Application implementation will be introduced deliberately after the local working tree has been aligned with this repository structure and the relevant engineering specifications have been reviewed.
+
+<!-- Sync deployment trigger -->
