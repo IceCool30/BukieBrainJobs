@@ -74,7 +74,7 @@ export default function MarketplacePaths({ onPostJobClick, onBecomeWorkerClick }
               </h3>
 
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Join Nigeria's leading professional network. Set your rates, build your reputation, and receive direct bank payouts upon client approval.
+                Join Nigeria&apos;s leading professional network. Set your rates, build your reputation, and receive direct bank payouts upon client approval.
               </p>
 
               <ul className="space-y-2 text-xs text-slate-600 pt-2">

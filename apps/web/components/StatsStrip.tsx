@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Users, Briefcase, Star, Globe2 } from 'lucide-react';
 
 type StatDef =
-  | { icon: typeof Users; kind: 'count'; value: number; suffix: string; label: string }
-  | { icon: typeof Star; kind: 'rating'; value: number; label: string };
+  | { icon: typeof Users; kind: 'count'; value: number; suffix: string; label: string; shortLabel?: string }
+  | { icon: typeof Star; kind: 'rating'; value: number; label: string; shortLabel?: string };
 
 const STATS: StatDef[] = [
   { icon: Users, kind: 'count', value: 25000, suffix: '+', label: 'Verified Professionals' },
@@ -38,7 +38,7 @@ function StatCell({ stat }: { stat: StatDef }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && setVisible(true), { threshold: 0.4 });
+    const io = new IntersectionObserver(([entry]) => entry?.isIntersecting && setVisible(true), { threshold: 0.4 });
     io.observe(el);
     return () => io.disconnect();
   }, []);

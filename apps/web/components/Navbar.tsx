@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -23,10 +23,12 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick }: NavbarPr
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  if (typeof window !== 'undefined' && !('bbjScroll' in window)) {
-    window.addEventListener('scroll', () => setScrolled(window.scrollY > 40), { passive: true });
-    window.bbjScroll = true;
-  }
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 40);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const solid = scrolled || mobileMenuOpen;
 

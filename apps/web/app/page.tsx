@@ -17,23 +17,21 @@ import PartnerBar from '../components/PartnerBar';
 import ClosingCTA from '../components/ClosingCTA';
 import PostJobModal from '../components/modals/PostJobModal';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
-import { ServiceCategory, BrainWorker } from '../lib/mock/homepage-data';
-
 export default function CustomerHomepage() {
   const [postJobOpen, setPostJobOpen] = useState(false);
   const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
 
-  const handleSearchSubmit = (_service: string, _location: string) => {
+  const handleSearchSubmit = () => {
     const element = document.getElementById('services');
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSelectCategory = (_category: ServiceCategory) => {
+  const handleSelectCategory = () => {
     const element = document.getElementById('services');
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSelectWorker = (_worker: BrainWorker) => {
+  const handleSelectWorker = () => {
     // Smooth scroll to trust or open booking modal
     const element = document.getElementById('trust');
     element?.scrollIntoView({ behavior: 'smooth' });
