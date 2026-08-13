@@ -92,12 +92,12 @@
   --text-label-sm: 12px;
   --text-label-sm--line-height: 16px;
 
-  /* Radiuses */
+  /* Radiuses (DESIGN.md: inputs 8px, cards 16px = wordmark profile) */
   --radius-sm: 0.5rem;
   --radius: 1rem;
-  --radius-md: 1.5rem;
-  --radius-lg: 2rem;
-  --radius-xl: 3rem;
+  --radius-md: 1rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1rem;
   --radius-full: 9999px;
 
   /* Spacing */

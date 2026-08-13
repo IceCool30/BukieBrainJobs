@@ -15,7 +15,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#001A41]/60 backdrop-blur-sm">
-      <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-slate-200 shadow-2xl relative space-y-6">
+      <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 border border-slate-200 shadow-2xl relative space-y-6">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100"
@@ -28,13 +28,13 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
             <div className="space-y-2">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5EEFF] text-[#001A41] text-xs font-bold">
                 <UserCheck className="w-3.5 h-3.5 text-[#296A4B]" />
-                Artisan Registration
+                Professional Registration
               </div>
               <h3 className="font-display font-bold text-xl sm:text-2xl text-[#0B1C30]">
-                Become a BukiePassport BrainWorker
+                Join as a Professional
               </h3>
               <p className="text-xs text-slate-500">
-                Submit your profile to undergo NIN/BVN biometric verification and start receiving client requests.
+                Submit your profile for comprehensive NIN and BVN verification and begin receiving service requests.
               </p>
             </div>
 
@@ -57,28 +57,28 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Primary Skill Trade</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Primary Trade or Service</label>
                   <select className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-white">
                     <option>Generator Servicing</option>
-                    <option>AC Repair &amp; Gas Refill</option>
-                    <option>Plumbing &amp; Piping</option>
-                    <option>Electrical &amp; Solar</option>
-                    <option>Cleaning &amp; Haulage</option>
+                    <option>AC Repair and Gas Refill</option>
+                    <option>Plumbing and Piping</option>
+                    <option>Electrical and Solar</option>
+                    <option>Cleaning and Haulage</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Operating City</label>
                   <select className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-white">
                     <option>Lagos State</option>
-                    <option>Abuja (FCT)</option>
+                    <option>Abuja FCT</option>
                     <option>Port Harcourt</option>
-                    <option>Ibadan (Soon)</option>
+                    <option>Ibadan Soon</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Phone Number (WhatsApp Active)</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Phone Number WhatsApp</label>
                 <input
                   type="tel"
                   required
@@ -89,14 +89,14 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
 
               <div className="p-3 rounded-xl bg-[#EFF4FF] border border-[#CBDBF5] text-[11px] text-[#0B1C30] flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#296A4B] shrink-0" />
-                <span>BukiePassport Tier 1 vetting will verify government photo ID and BVN record.</span>
+                <span>BukiePassport verification includes government photo ID and BVN confirmation.</span>
               </div>
 
               <button
                 type="submit"
                 className="w-full py-3.5 bg-[#296A4B] hover:bg-[#1F523A] text-white text-xs font-bold rounded-full transition-all shadow-md"
               >
-                Apply as a BrainWorker
+                Submit Application
               </button>
             </form>
           </>
@@ -109,7 +109,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
               Application Received!
             </h3>
             <p className="text-xs text-slate-600 max-w-sm mx-auto">
-              Our verification team will review your credentials and contact you on WhatsApp to schedule your BukiePassport biometric audit.
+              Our verification team will review your submission and contact you via WhatsApp to schedule your BukiePassport verification.
             </p>
             <button
               onClick={() => {

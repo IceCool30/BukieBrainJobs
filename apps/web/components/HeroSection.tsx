@@ -1,190 +1,142 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, MapPin, ShieldCheck, Lock, Sparkles, CheckCircle2, ChevronDown } from 'lucide-react';
-import { NIGERIAN_LOCATIONS, NigerianLocation } from '../lib/mock/homepage-data';
+import Image from 'next/image';
+import{ Search, ShieldCheck, Award, Lock, Star } from 'lucide-react';
+import { NIGERIAN_LOCATIONS } from '../lib/mock/homepage-data';
 
 interface HeroSectionProps {
-  onSearchSubmit?: (service: string, location: NigerianLocation) => void;
-  onLocationNotice?: (location: NigerianLocation) => void;
+  onSearchSubmit?: (service: string, location: string) => void;
 }
 
-export default function HeroSection({ onSearchSubmit, onLocationNotice }: HeroSectionProps) {
+export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
   const [serviceQuery, setServiceQuery] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState<NigerianLocation>(
-    NIGERIAN_LOCATIONS[0] || { id: 'lagos', name: 'Lagos', state: 'Lagos State', status: 'active' }
-  );
-  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const popularQuickSearches = [
+    'Plumbing',
+    'AC Repair',
+    'Cleaning',
     'Generator Repair',
-    'AC Gas Refill',
-    'Plumbing Tank',
     'Solar Setup',
-    'Deep Cleaning',
     'DSTV Mounting',
   ];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedLocation.status === 'soon') {
-      onLocationNotice?.(selectedLocation);
-    } else {
-      onSearchSubmit?.(serviceQuery || 'All Services', selectedLocation);
-    }
-  };
-
-  const handleSelectLocation = (loc: NigerianLocation) => {
-    setSelectedLocation(loc);
-    setShowLocationDropdown(false);
-    if (loc.status === 'soon') {
-      onLocationNotice?.(loc);
-    }
+    onSearchSubmit?.(serviceQuery || 'All Services', NIGERIAN_LOCATIONS[0]?.name || 'Lagos');
   };
 
   return (
-    <section className="relative bg-[#001A41] text-white pt-12 pb-20 overflow-hidden border-b border-[#1E3A60]">
-      {/* Decorative Subtle Background Gradients */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#296A4B]/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#1E3A60]/40 rounded-full blur-3xl pointer-events-none" />
+    <section className="relative bg-[#001A41] text-white pt-28 pb-16 overflow-hidden border-b border-[#1E3A60]">
+      {/* Hero portrait backdrop */}
+      <div className="absolute inset-0 z-0">
+        <picture>
+          <source media="(max-width: 768px)" srcSet="/images/hero-mobile-1080.jpg" />
+          <Image
+            src="/images/hero-portrait-1920.png"
+            alt="Verified BukieBrainJobs artisans against the Lagos waterfront"
+            fill
+            priority
+            className="object-cover"
+            style={{ objectPosition: "55% 80%" }}
+          />
+        </picture>
+        {/* Desktop overlay: dark from the left, warm on the right */}
+        <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-[#001A41]/85 via-[#001A41]/55 to-[#001A41]/30" />
+        {/* Mobile overlay: photo clear at the top, navy gathers at the bottom to hold the headline area */}
+        <div className="absolute inset-x-0 bottom-0 h-[38%] block md:hidden bg-gradient-to-t from-[#001A41]/92 via-[#001A41]/60 to-[#001A41]/0" />
+      </div>
 
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-3xl mx-auto text-center space-y-6">
-          {/* Sub-badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#06152B] border border-[#296A4B]/50 text-xs font-semibold text-[#ABEEC8]">
-            <Sparkles className="w-3.5 h-3.5 text-[#296A4B]" />
-            <span>Biometric Verified Artisans across Nigeria</span>
-          </div>
+        <div className="max-w-3xl text-left space-y-6">
 
           {/* Headline */}
-          <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-white leading-tight">
-            Find trusted Nigerian professionals for every <span className="text-[#ABEEC8]">home &amp; business</span> service.
+          <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-[3.4rem] tracking-tight text-white leading-[1.12] sm:leading-[1.08]">
+            Skilled hands, on demand.
+            <br />
+            Trusted from the start.
           </h1>
 
           {/* Subtitle */}
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
-            From generator servicing and AC repairs to plumbing and solar setups. Verified with NIN/BVN biometrics and backed by Escrow protection.
+          <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl hidden md:block">
+            Book verified artisans and technicians across Nigeria. Every job is
+            protected by escrow, so money moves only when the work is done to
+            your standard.
           </p>
 
-          {/* Primary Action (LEVEL 1 CTA: Search for a Service) */}
-          <div className="pt-4 max-w-2xl mx-auto">
+          {/* Primary Search Row: one clean service field, TaskRabbit search-pill pattern */}
+          <div className="pt-5 max-w-2xl w-full">
             <form
               onSubmit={handleSearch}
-              className="bg-white p-2 sm:p-2.5 rounded-2xl sm:rounded-full shadow-2xl border border-slate-200 text-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
+              className="flex items-stretch gap-0 bg-white rounded-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] overflow-hidden"
+              style={{ borderRadius: '16px' }}
             >
-              {/* Service Input */}
-              <div className="flex-1 flex items-center gap-2.5 px-3.5 py-2">
-                <Search className="w-5 h-5 text-[#296A4B] shrink-0" />
+              <div className="relative flex-1 min-w-0">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
                 <input
+                  id="hero-service-input"
                   type="text"
                   value={serviceQuery}
                   onChange={(e) => setServiceQuery(e.target.value)}
-                  placeholder="What service do you need? (e.g. AC Repair, Plumbing...)"
-                  className="w-full text-sm font-medium text-slate-900 bg-transparent focus:outline-none placeholder:text-slate-400"
+                  onFocus={() => setShowSuggestions(serviceQuery.length === 0)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                  placeholder="What service do you need? e.g. plumbing, AC repair"
+                  className="w-full h-[56px] pl-11 pr-4 text-[15px] font-medium text-slate-900 bg-white focus:outline-none placeholder:text-slate-400"
                 />
-              </div>
-
-              {/* Divider */}
-              <div className="hidden sm:block w-px h-8 bg-slate-200" />
-
-              {/* Location Dropdown Selector */}
-              <div className="relative shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-                  className="w-full sm:w-auto flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl sm:rounded-full bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-800 border border-slate-200 transition-colors"
-                >
-                  <MapPin className="w-4 h-4 text-[#296A4B]" />
-                  <span>{selectedLocation.name}</span>
-                  {selectedLocation.status === 'soon' && (
-                    <span className="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">
-                      Soon
-                    </span>
-                  )}
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
-                </button>
-
-                {/* Dropdown Menu */}
-                {showLocationDropdown && (
-                  <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 text-left">
-                    <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                      Select Location
-                    </div>
-                    {NIGERIAN_LOCATIONS.map((loc) => (
+                {showSuggestions && serviceQuery.trim() === '' && (
+                  <div className="absolute left-0 right-0 top-full mt-1 bg-white rounded-b-lg shadow-xl border border-t-0 border-slate-100 py-2 z-50">
+                    {popularQuickSearches.map((item) => (
                       <button
-                        key={loc.id}
+                        key={item}
                         type="button"
-                        onClick={() => handleSelectLocation(loc)}
-                        className="w-full px-3 py-2 text-xs text-left hover:bg-slate-50 flex items-center justify-between border-b border-slate-100 last:border-0"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          setServiceQuery(item);
+                          setShowSuggestions(false);
+                        }}
+                        className="w-full px-4 py-2.5 text-sm text-left text-slate-800 hover:bg-slate-50 flex items-center gap-3"
                       >
-                        <div>
-                          <div className="font-semibold text-slate-900">{loc.name}</div>
-                          <div className="text-[10px] text-slate-500">{loc.popularArea}</div>
-                        </div>
-                        {loc.status === 'active' ? (
-                          <span className="text-[10px] bg-[#ABEEC8] text-[#2E6E4F] px-1.5 py-0.5 rounded font-bold">
-                            Active
-                          </span>
-                        ) : (
-                          <span className="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">
-                            Coming Soon
-                          </span>
-                        )}
+                        <Search className="w-4 h-4 text-slate-400" />
+                        {item}
                       </button>
                     ))}
                   </div>
                 )}
               </div>
-
-              {/* Primary Search Button (LEVEL 1 CTA) */}
               <button
                 type="submit"
-                className="w-full sm:w-auto px-6 py-3 bg-[#001A41] hover:bg-[#000F2D] text-white font-semibold text-sm rounded-xl sm:rounded-full transition-all shadow-md flex items-center justify-center gap-2"
+                className="flex items-center justify-center gap-2.5 bg-[#296A4B] hover:bg-[#1f5239] active:bg-[#17402c] text-white font-semibold text-[15px] px-8 h-[56px] transition-colors"
+                aria-label="Search services"
               >
-                <span>Search</span>
-                <Search className="w-4 h-4 text-[#ABEEC8]" />
+                <Search className="w-[18px] h-[18px]" />
+                Search
               </button>
             </form>
+
+
           </div>
 
-          {/* Quick Suggestions Chips */}
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-300">
-            <span className="text-slate-400 font-medium">Popular:</span>
-            {popularQuickSearches.map((item) => (
-              <button
-                key={item}
-                onClick={() => setServiceQuery(item)}
-                className="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-200 border border-white/15 transition-all text-[11px]"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-
-          {/* Trust Guarantee Strip */}
-          <div className="pt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left max-w-2xl mx-auto border-t border-[#1E3A60]/60">
-            <div className="flex items-center gap-3 bg-[#06152B]/60 p-3 rounded-xl border border-[#1E3A60]">
-              <ShieldCheck className="w-6 h-6 text-[#ABEEC8] shrink-0" />
-              <div>
-                <div className="text-xs font-semibold text-white">NIN / BVN Biometrics</div>
-                <div className="text-[11px] text-slate-400">BukiePassport Tier 2</div>
+          {/* Trust line: one quiet row, ratings first as the strongest proof */}
+          <div className="pt-7 hidden md:flex flex-wrap items-center gap-x-6 sm:gap-x-8 gap-y-3">
+            <div className="flex items-center gap-2">
+              <div className="flex text-[#ABEEC8]">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-[#ABEEC8]" />
+                ))}
               </div>
+              <span className="text-sm font-semibold text-white">4.8/5</span>
+              <span className="text-sm text-slate-400">from 9,400+ reviews</span>
             </div>
-
-            <div className="flex items-center gap-3 bg-[#06152B]/60 p-3 rounded-xl border border-[#1E3A60]">
-              <Lock className="w-6 h-6 text-[#ABEEC8] shrink-0" />
-              <div>
-                <div className="text-xs font-semibold text-white">100% Escrow Protection</div>
-                <div className="text-[11px] text-slate-400">Funds held safely</div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 bg-[#06152B]/60 p-3 rounded-xl border border-[#1E3A60]">
-              <CheckCircle2 className="w-6 h-6 text-[#ABEEC8] shrink-0" />
-              <div>
-                <div className="text-xs font-semibold text-white">BukieGuarantee</div>
-                <div className="text-[11px] text-slate-400">Up to ₦500k Protection</div>
-              </div>
+            <div className="flex items-center gap-x-2.5 gap-y-1 text-slate-400 flex-wrap">
+              <ShieldCheck className="w-4 h-4 text-[#ABEEC8]" />
+              <span className="text-xs sm:text-sm whitespace-nowrap">Verified professionals</span>
+              <span className="text-slate-600 hidden sm:inline">·</span>
+              <Award className="w-4 h-4 text-[#ABEEC8]" />
+              <span className="text-xs sm:text-sm whitespace-nowrap">Escrow protected</span>
+              <span className="text-slate-600 hidden sm:inline">·</span>
+              <Lock className="w-4 h-4 text-[#ABEEC8]" />
+              <span className="text-xs sm:text-sm whitespace-nowrap">Secure payments</span>
             </div>
           </div>
         </div>

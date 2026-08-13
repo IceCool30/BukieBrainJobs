@@ -16,7 +16,7 @@ export default function LocationNoticeModal({ location, onClose }: LocationNotic
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#001A41]/60 backdrop-blur-sm">
-      <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 border border-slate-200 shadow-2xl relative space-y-5">
+      <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 border border-slate-200 shadow-2xl relative space-y-5">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100"
@@ -32,13 +32,13 @@ export default function LocationNoticeModal({ location, onClose }: LocationNotic
 
             <div className="text-center space-y-2">
               <span className="text-[10px] bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                Controlled Geographic Activation
+                Service Availability
               </span>
               <h3 className="font-display font-bold text-xl text-[#0B1C30]">
-                {location.name} is Coming Soon!
+                Coming Soon to {location.name}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                BukieBrainJobs is actively onboarding and vetting Tier 2 artisans in {location.name} ({location.state}). Live bookings will launch shortly.
+                We are currently onboarding and verifying professionals in {location.name}, {location.state}. Full service will be available shortly.
               </p>
             </div>
 
@@ -51,7 +51,7 @@ export default function LocationNoticeModal({ location, onClose }: LocationNotic
             >
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Get Notified When Live in {location.name}
+                  Get Notified When We Launch in {location.name}
                 </label>
                 <input
                   type="email"
@@ -66,7 +66,7 @@ export default function LocationNoticeModal({ location, onClose }: LocationNotic
                 className="w-full py-3 bg-[#001A41] hover:bg-[#000F2D] text-white text-xs font-bold rounded-full transition-all flex items-center justify-center gap-2"
               >
                 <Bell className="w-4 h-4 text-[#ABEEC8]" />
-                <span>Notify Me When Live</span>
+                <span>Notify Me When Available</span>
               </button>
             </form>
           </>
@@ -76,10 +76,10 @@ export default function LocationNoticeModal({ location, onClose }: LocationNotic
               <CheckCircle2 className="w-7 h-7" />
             </div>
             <h3 className="font-display font-bold text-xl text-[#0B1C30]">
-              You&apos;re on the Priority List!
+              You are on the Priority List!
             </h3>
             <p className="text-xs text-slate-600 max-w-xs mx-auto">
-              We will email you as soon as verified artisans are live in {location.name}.
+              We will notify you as soon as verified professionals become available in {location.name}.
             </p>
             <button
               onClick={() => {

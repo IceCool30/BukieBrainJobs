@@ -16,11 +16,11 @@ export default function FAQSection() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header */}
         <div className="text-center max-w-xl mx-auto space-y-2">
-          <div className="text-xs font-bold text-[#296A4B] uppercase tracking-wider">
-            Clear Answers
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Frequently Asked Questions
           </div>
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0B1C30]">
-            Frequently Asked Questions
+            Clear Answers to Your Questions
           </h2>
         </div>
 
@@ -31,21 +31,21 @@ export default function FAQSection() {
             return (
               <div
                 key={faq.id}
-                className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-colors"
+                className="bg-white rounded-xl border border-slate-200 shadow-[0_2px_8px_-4px_rgba(0,26,65,0.10)] overflow-hidden transition-colors hover:border-slate-300"
               >
                 <button
                   type="button"
                   onClick={() => toggleFaq(faq.id)}
                   aria-expanded={isOpen}
-                  className="w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-display font-semibold text-sm sm:text-base text-[#0B1C30] hover:text-[#296A4B] transition-colors"
+                  className="w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-display font-semibold text-sm sm:text-base text-[#0B1C30] hover:text-[#0B1C30] transition-colors"
                 >
                   <span className="flex items-center gap-2.5">
-                    <HelpCircle className="w-4 h-4 text-[#296A4B] shrink-0" />
+                    <HelpCircle className="w-4 h-4 text-slate-400 shrink-0" />
                     <span>{faq.question}</span>
                   </span>
                   <ChevronDown
                     className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
-                      isOpen ? 'rotate-180 text-[#296A4B]' : ''
+                      isOpen ? 'rotate-180 text-slate-500' : ''
                     }`}
                   />
                 </button>

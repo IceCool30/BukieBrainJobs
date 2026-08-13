@@ -5,27 +5,27 @@ export default function HowItWorks() {
   const steps = [
     {
       num: '01',
-      title: 'Search & Discover',
-      desc: 'Type your service or location to view background-checked Nigerian BrainWorkers with upfront pricing.',
-      icon: <Search className="w-5 h-5 text-[#296A4B]" />,
+      title: 'Find the Right Professional',
+      desc: 'Search for a service and see verified professionals in your area, each with transparent pricing and detailed work histories.',
+      icon: <Search className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '02',
-      title: 'Book or Request Quote',
-      desc: 'Select a professional directly based on BukiePassport ratings or post custom job requirements.',
-      icon: <UserCheck className="w-5 h-5 text-[#296A4B]" />,
+      title: 'Book Directly or Request Quotes',
+      desc: 'Book a professional within 24 hours or post your job to receive competitive quotes from verified specialists.',
+      icon: <UserCheck className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '03',
-      title: 'Work Completed',
-      desc: 'The verified artisan arrives on schedule to diagnose, service, or install with standard quality rules.',
-      icon: <ShieldCheck className="w-5 h-5 text-[#296A4B]" />,
+      title: 'Professional Service Delivery',
+      desc: 'Your selected professional arrives promptly, completes the work, and provides updates throughout the process.',
+      icon: <ShieldCheck className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '04',
-      title: 'Protected Escrow Payout',
-      desc: 'Your funds remain held safely in escrow and are only released when you inspect and approve the job.',
-      icon: <Lock className="w-5 h-5 text-[#296A4B]" />,
+      title: 'Secure Payment Release',
+      desc: 'Your payment remains securely in escrow and is released only after you inspect and approve the completed work.',
+      icon: <Lock className="w-5 h-5 text-slate-600" />,
     },
   ];
 
@@ -34,14 +34,14 @@ export default function HowItWorks() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <div className="text-xs font-bold text-[#296A4B] uppercase tracking-wider">
-            Simple &amp; Transparent Journey
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            How It Works
           </div>
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0B1C30]">
-            How BukieBrainJobs Protects You
+            Simple, Secure, and Straightforward
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-            A frictionless 4-step process built specifically to eliminate artisan unreliability in Nigeria.
+            Post a job, get quotes, pay only when the work is done.
           </p>
         </div>
 
@@ -50,14 +50,14 @@ export default function HowItWorks() {
           {steps.map((s, idx) => (
             <div
               key={s.num}
-              className="bg-[#F8F9FF] p-6 rounded-2xl border border-slate-200/80 relative flex flex-col justify-between space-y-4 hover:border-[#296A4B]/40 transition-colors"
+              className="bg-white p-7 rounded-xl border border-slate-200 shadow-[0_2px_8px_-4px_rgba(0,26,65,0.10)] relative flex flex-col justify-between space-y-4 hover:border-[#296A4B] hover:shadow-[0_12px_32px_-12px_rgba(0,26,65,0.18)] hover:-translate-y-1 transition-all"
             >
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-display font-extrabold text-2xl text-[#001A41]/30">
+                  <span className="font-display font-extrabold text-3xl text-[#001A41]/85">
                     {s.num}
                   </span>
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shadow-sm">
+                  <div className="w-10 h-10 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center">
                     {s.icon}
                   </div>
                 </div>
@@ -65,14 +65,14 @@ export default function HowItWorks() {
                 <h3 className="font-display font-bold text-base text-[#0B1C30]">
                   {s.title}
                 </h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
+                <p className="text-sm text-slate-600 leading-relaxed">
                   {s.desc}
                 </p>
               </div>
 
               {idx < steps.length - 1 && (
                 <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-10">
-                  <ArrowRight className="w-4 h-4 text-slate-300" />
+                  <ArrowRight className="w-4 h-4 text-slate-400" />
                 </div>
               )}
             </div>

@@ -10,70 +10,65 @@ export default function Footer() {
           {/* Brand Overview Column */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 relative rounded-full overflow-hidden border border-[#296A4B] bg-white p-1">
-                <Image
-                  src="/images/logo-icon.png"
-                  alt="BukieBrainJobs"
-                  width={36}
-                  height={36}
-                  className="object-contain"
-                />
-              </div>
-              <span className="font-display font-bold text-xl text-white tracking-tight">
-                BukieBrain<span className="text-[#296A4B]">Jobs</span>
-              </span>
+              <Image
+                src="/images/wordmark-banner-tight.png?v=3"
+                alt="BukieBrainJobs"
+                width={180}
+                height={40}
+                className="object-contain h-8 w-auto"
+              />
             </div>
 
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-              Nigeria&apos;s premier verified marketplace connecting homeowners, estate managers, and business leaders across Lagos, Abuja, Port Harcourt, and state capitals with background-checked artisans.
+              BukieBrainJobs connects you with verified artisans and technicians across Nigeria. Every job is protected by escrow.
             </p>
 
             <div className="pt-2 flex flex-col gap-2 text-xs">
               <div className="flex items-center gap-2 text-[#ABEEC8] font-mono">
                 <Lock className="w-3.5 h-3.5 text-[#296A4B]" />
-                Dual Paystack &amp; Flutterwave Escrow Rails
+                Secured by Paystack and Flutterwave escrow
               </div>
-              <div className="flex items-center gap-2 text-slate-400">
+              <a href="/guarantee" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
-                BukieGuarantee Protection (Up to ₦500,000)
-              </div>
+                BukieGuarantee Protection: Up to N500,000 Coverage
+              </a>
             </div>
           </div>
 
-          {/* Column 1: Popular Services */}
+          {/* Column 1: Our Services */}
           <div>
-            <h4 className="font-display font-semibold text-white text-sm mb-4">Popular Services</h4>
+            <h4 className="font-display font-semibold text-white text-sm mb-4">Our Services</h4>
             <ul className="space-y-2.5 text-xs text-slate-400">
-              <li><a href="#services" className="hover:text-white transition-colors">Generator Repair &amp; AVR</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">AC Repair &amp; Gas Top-Up</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">Plumbing &amp; Water Tank</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">Electrical &amp; Solar Setup</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">DSTV &amp; TV Wall Mount</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">Home &amp; Office Relocation</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Generator Maintenance and AVR Services</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">AC Repair and Gas Replenishment</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Plumbing and Water Systems</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Electrical and Solar Installation</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">DSTV and TV Installation</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Office and Home Relocation</a></li>
             </ul>
           </div>
 
-          {/* Column 2: Customers & Trust */}
+          {/* Column 2: Trust and Safety */}
           <div>
-            <h4 className="font-display font-semibold text-white text-sm mb-4">Trust &amp; Verification</h4>
+            <h4 className="font-display font-semibold text-white text-sm mb-4">Trust and Safety</h4>
             <ul className="space-y-2.5 text-xs text-slate-400">
-              <li><a href="#trust" className="hover:text-white transition-colors">BukiePassport System</a></li>
-              <li><a href="#trust" className="hover:text-white transition-colors">NIN / BVN Biometrics</a></li>
-              <li><a href="#how-it-works" className="hover:text-white transition-colors">Escrow Payment Security</a></li>
-              <li><a href="#how-it-works" className="hover:text-white transition-colors">BukieGuarantee Coverage</a></li>
-              <li><a href="#faq" className="hover:text-white transition-colors">Frequently Asked Questions</a></li>
+              <li><a href="#trust" className="hover:text-white transition-colors">About BukiePassport</a></li>
+              <li><a href="#trust" className="hover:text-white transition-colors">Verification Process</a></li>
+              <li><a href="#how-it-works" className="hover:text-white transition-colors">Payment Protection</a></li>
+              <li><a href="/guarantee" className="hover:text-white transition-colors">BukieGuarantee</a></li>
+              <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
             </ul>
           </div>
 
-          {/* Column 3: Corporate & Support */}
+          {/* Column 3: Business and Support */}
           <div>
-            <h4 className="font-display font-semibold text-white text-sm mb-4">Corporate &amp; Contact</h4>
+            <h4 className="font-display font-semibold text-white text-sm mb-4">Business and Support</h4>
             <ul className="space-y-2.5 text-xs text-slate-400">
-              <li><a href="#corporate" className="hover:text-white transition-colors">Business Solutions</a></li>
-              <li><a href="#corporate" className="hover:text-white transition-colors">Estate Maintenance API</a></li>
+              <li><a href="/enterprise" className="hover:text-white transition-colors">Corporate Solutions</a></li>
+              <li><a href="/enterprise" className="hover:text-white transition-colors">API Integration</a></li>
               <li className="flex items-center gap-1.5 pt-1 text-slate-300">
                 <PhoneCall className="w-3.5 h-3.5 text-[#ABEEC8]" />
-                +234 (0) 800-BUKIE-JOBS
+                +234 800-BUKIE-JOBS
               </li>
               <li className="flex items-center gap-1.5 text-slate-300">
                 <Mail className="w-3.5 h-3.5 text-[#ABEEC8]" />
@@ -83,15 +78,15 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Copyright & Legal Links */}
+        {/* Bottom Copyright and Legal Links */}
         <div className="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-4">
           <div>
-            &copy; 2026 BukieBrainJobs Platform Ltd. All rights reserved.
+            &copy; 2026 BukieBrainJobs Platform Limited. All rights reserved.
           </div>
           <div className="flex gap-6">
             <span className="hover:text-slate-300 cursor-pointer">Privacy Policy</span>
             <span className="hover:text-slate-300 cursor-pointer">Terms of Service</span>
-            <span className="hover:text-slate-300 cursor-pointer">Escrow Rules</span>
+            <span className="hover:text-slate-300 cursor-pointer">Escrow Terms</span>
             <span className="hover:text-slate-300 cursor-pointer">Security Center</span>
           </div>
         </div>

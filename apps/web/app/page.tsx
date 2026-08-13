@@ -8,27 +8,24 @@ import PopularServices from '../components/PopularServices';
 import HowItWorks from '../components/HowItWorks';
 import TrustSafetySection from '../components/TrustSafetySection';
 import FeaturedBrainWorkers from '../components/FeaturedBrainWorkers';
+import StatsStrip from '../components/StatsStrip';
 import MarketplacePaths from '../components/MarketplacePaths';
 import TestimonialsSection from '../components/TestimonialsSection';
 import CorporateSolutions from '../components/CorporateSolutions';
 import FAQSection from '../components/FAQSection';
+import PartnerBar from '../components/PartnerBar';
+import ClosingCTA from '../components/ClosingCTA';
 import PostJobModal from '../components/modals/PostJobModal';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
-import LocationNoticeModal from '../components/modals/LocationNoticeModal';
-import { NigerianLocation, ServiceCategory, BrainWorker } from '../lib/mock/homepage-data';
+import { ServiceCategory, BrainWorker } from '../lib/mock/homepage-data';
 
 export default function CustomerHomepage() {
   const [postJobOpen, setPostJobOpen] = useState(false);
   const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
-  const [noticeLocation, setNoticeLocation] = useState<NigerianLocation | null>(null);
 
-  const handleSearchSubmit = (service: string, location: NigerianLocation) => {
-    if (location.status === 'soon') {
-      setNoticeLocation(location);
-    } else {
-      const element = document.getElementById('services');
-      element?.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handleSearchSubmit = (_service: string, _location: string) => {
+    const element = document.getElementById('services');
+    element?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleSelectCategory = (_category: ServiceCategory) => {
@@ -53,10 +50,10 @@ export default function CustomerHomepage() {
       {/* Main Homepage Flow */}
       <main className="flex-grow">
         {/* Hero & Discovery Search (LOCKED LEVEL 1 CTA) */}
-        <HeroSection
-          onSearchSubmit={handleSearchSubmit}
-          onLocationNotice={(loc) => setNoticeLocation(loc)}
-        />
+        <HeroSection onSearchSubmit={handleSearchSubmit} />
+
+        {/* Muted partner credibility bar */}
+        <PartnerBar />
 
         {/* Popular Service Categories */}
         <PopularServices onSelectCategory={handleSelectCategory} />
@@ -71,6 +68,8 @@ export default function CustomerHomepage() {
         <FeaturedBrainWorkers onSelectWorker={handleSelectWorker} />
 
         {/* Secondary Marketplace Pathways (Level 2 CTAs: Post a Job & Become a BrainWorker) */}
+        <StatsStrip />
+
         <MarketplacePaths
           onPostJobClick={() => setPostJobOpen(true)}
           onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}
@@ -82,6 +81,9 @@ export default function CustomerHomepage() {
         {/* Corporate & Estate Solutions */}
         <CorporateSolutions />
 
+        {/* Final single CTA band, then FAQ */}
+        <ClosingCTA onPostJobClick={() => setPostJobOpen(true)} />
+
         {/* Frequently Asked Questions */}
         <FAQSection />
       </main>
@@ -92,7 +94,6 @@ export default function CustomerHomepage() {
       {/* Modals & Drawers */}
       <PostJobModal isOpen={postJobOpen} onClose={() => setPostJobOpen(false)} />
       <BecomeWorkerModal isOpen={becomeWorkerOpen} onClose={() => setBecomeWorkerOpen(false)} />
-      <LocationNoticeModal location={noticeLocation} onClose={() => setNoticeLocation(null)} />
     </div>
   );
 }

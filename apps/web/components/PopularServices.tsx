@@ -25,7 +25,7 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
               Our Most Popular Services
             </h2>
             <p className="text-sm text-slate-500 mt-1">
-              Explore top rated services with transparent, upfront pricing.
+              The categories our customers book most, with clear upfront pricing.
             </p>
           </div>
           <Link

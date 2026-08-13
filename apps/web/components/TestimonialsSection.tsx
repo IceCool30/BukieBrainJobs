@@ -1,61 +1,53 @@
 import React from 'react';
-import { Star, CheckCircle2, MapPin } from 'lucide-react';
+import { Star, CheckCircle2 } from 'lucide-react';
 import { MOCK_TESTIMONIALS } from '../lib/mock/homepage-data';
 
 export default function TestimonialsSection() {
   return (
-    <section className="py-16 bg-[#F8F9FF] border-b border-slate-200">
+    <section className="py-16 bg-white border-b border-slate-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header */}
         <div className="text-center max-w-xl mx-auto space-y-2">
-          <div className="text-xs font-bold text-[#296A4B] uppercase tracking-wider">
-            Verified Customer Stories
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Customer Success Stories
           </div>
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0B1C30]">
-            Trusted by Nigerian Homeowners &amp; Businesses
+            Real bookings. Real reviews.
           </h2>
+          <p className="text-sm text-slate-500 leading-relaxed">
+            Every review below comes from a verified booking protected by escrow.
+          </p>
         </div>
 
-        {/* 3 Story Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Typographic review grid, no boxes */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
           {MOCK_TESTIMONIALS.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow relative"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-1">
-                    {[...Array(item.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#2E6E4F] bg-[#ABEEC8]/30 px-2 py-0.5 rounded-full border border-[#296A4B]/20">
-                    <CheckCircle2 className="w-3 h-3" />
-                    Verified Booking
-                  </span>
-                </div>
-
-                <p className="text-xs sm:text-sm text-slate-700 italic leading-relaxed">
-                  &ldquo;{item.quote}&rdquo;
-                </p>
+            <article key={item.id} className="flex flex-col space-y-4">
+              <div className="flex gap-1">
+                {[...Array(item.rating)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                ))}
               </div>
-
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                <div>
-                  <h4 className="font-display font-bold text-xs text-[#0B1C30]">
-                    {item.author}
-                  </h4>
-                  <div className="text-[11px] text-slate-500">{item.role}</div>
-                  <div className="flex items-center gap-1 text-[10px] text-slate-400 mt-0.5">
-                    <MapPin className="w-3 h-3 text-[#296A4B]" />
-                    <span>{item.location}</span>
-                  </div>
+              <p className="text-base text-[#0B1C30] leading-relaxed">
+                {item.quote}
+              </p>
+              <div className="space-y-0.5">
+                <h4 className="font-display font-bold text-sm text-[#001A41]">
+                  {item.author}
+                </h4>
+                <div className="text-xs text-slate-500">{item.role}, {item.location}</div>
+                <div className="flex items-center gap-1.5 text-xs text-slate-400 pt-0.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Verified {item.service} booking</span>
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
+
+        <p className="text-center text-xs text-slate-400 pt-2">
+          4.8/5 average from 9,400+ customer reviews
+        </p>
       </div>
     </section>
   );

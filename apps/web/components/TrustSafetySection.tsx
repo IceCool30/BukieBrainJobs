@@ -38,7 +38,7 @@ export default function TrustSafetySection() {
             Built on Trust and Security
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-            When you invite a professional into your home or office, trust is essential. We verify every professional and protect every payment.
+            When you invite a professional into your home or office, trust is essential. Every professional is identity-verified, and every payment is secured in escrow.
           </p>
         </div>
 
