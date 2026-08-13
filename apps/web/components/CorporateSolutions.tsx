@@ -18,7 +18,7 @@ export default function CorporateSolutions() {
             </h2>
 
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              For estate managers, facility teams, and business owners: centralize every repair request across your properties on one platform with unified invoicing.
+              One platform for every repair request across your properties, with one invoice instead of twenty.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs text-slate-700">
