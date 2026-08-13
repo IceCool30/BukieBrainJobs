@@ -13,6 +13,18 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
   const [serviceQuery, setServiceQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === '/' && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        const input = document.getElementById('hero-service-input');
+        input?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const popularQuickSearches = [
     'Plumbing',
     'AC Repair',
@@ -51,6 +63,12 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-3xl text-left space-y-6">
 
+          {/* Live Operational Signal */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#001A41]/80 backdrop-blur-sm border border-[#296A4B]/60 text-xs font-semibold text-[#ABEEC8]">
+            <span className="w-2 h-2 rounded-full bg-[#ABEEC8] animate-pulse shrink-0" />
+            <span>48 Verified Artisans Online in Lagos &amp; Abuja today</span>
+          </div>
+
           {/* Headline */}
           <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-[3.4rem] tracking-tight text-white leading-[1.12] sm:leading-[1.08]">
             Skilled hands, on demand.
@@ -72,7 +90,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
               className="flex items-stretch gap-0 bg-white rounded-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] overflow-hidden"
               style={{ borderRadius: '16px' }}
             >
-              <div className="relative flex-1 min-w-0">
+              <div className="relative flex-1 min-w-0 flex items-center">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
                 <input
                   id="hero-service-input"
@@ -82,8 +100,11 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
                   onFocus={() => setShowSuggestions(serviceQuery.length === 0)}
                   onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
                   placeholder="What service do you need? e.g. plumbing, AC repair"
-                  className="w-full h-[56px] pl-11 pr-4 text-[15px] font-medium text-slate-900 bg-white focus:outline-none placeholder:text-slate-400"
+                  className="w-full h-[56px] pl-11 pr-14 text-[15px] font-medium text-slate-900 bg-white focus:outline-none placeholder:text-slate-400"
                 />
+                <span className="hidden sm:inline-flex items-center justify-center absolute right-3 px-2 py-0.5 text-[11px] font-mono text-slate-400 bg-slate-100 rounded border border-slate-200 pointer-events-none">
+                  /
+                </span>
                 {showSuggestions && serviceQuery.trim() === '' && (
                   <div className="absolute left-0 right-0 top-full mt-1 bg-white rounded-b-lg shadow-xl border border-t-0 border-slate-100 py-2 z-50">
                     {popularQuickSearches.map((item) => (

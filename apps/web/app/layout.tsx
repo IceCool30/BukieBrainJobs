@@ -1,8 +1,16 @@
 import React from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
+export const viewport: Viewport = {
+  themeColor: '#001A41',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL('https://bukie-brain-jobs.vercel.app'),
   title: 'BukieBrainJobs | Find trusted local professionals',
   description:
     "Nigeria's premier verified marketplace connecting homeowners and businesses with background-checked artisan BrainWorkers. Escrow-protected payments via Paystack and Flutterwave.",
@@ -12,7 +20,6 @@ export const metadata: Metadata = {
     shortcut: [{ url: '/icons/icon-512x512.png' }],
   },
   manifest: '/manifest.json',
-  themeColor: '#001A41',
   openGraph: {
     title: 'BukieBrainJobs | Find trusted local professionals',
     description: "Nigeria's verified marketplace for vetted artisans. Escrow-protected payments.",

@@ -11,8 +11,6 @@ const GROUPS: { heading: string; ids: string[] }[] = [
   { heading: 'Cleaning & Moving', ids: ['cleaning', 'moving'] },
 ];
 
-const ALL_IDS = SERVICE_CATEGORIES.map((c) => c.id);
-
 const CHIPS = [
   'Plumbing help',
   'AC repair',
