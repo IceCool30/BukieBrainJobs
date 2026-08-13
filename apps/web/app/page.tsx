@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Navbar from '../components/Navbar';
+import PwaHome from '../components/PwaHome';
+import { useIsPwa } from '../hooks/useIsPwa';
 import Footer from '../components/Footer';
 import HeroSection from '../components/HeroSection';
 import PopularServices from '../components/PopularServices';
@@ -20,10 +22,18 @@ import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
 export default function CustomerHomepage() {
   const [postJobOpen, setPostJobOpen] = useState(false);
   const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
+  const isPwa = useIsPwa();
+  const drawerRef = useRef<(() => void) | null>(null);
 
   const handleSearchSubmit = () => {
     const element = document.getElementById('services');
     element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const openSearch = () => {
+    const input = document.getElementById('hero-service-input') as HTMLInputElement | null;
+    input?.focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSelectCategory = () => {
@@ -38,15 +48,19 @@ export default function CustomerHomepage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans selection:bg-[#ABEEC8] selection:text-[#001A41]">
+          <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans selection:bg-[#ABEEC8] selection:text-[#001A41]">
       {/* Navigation Header */}
       <Navbar
         onPostJobClick={() => setPostJobOpen(true)}
         onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}
+        drawerOpenRef={drawerRef}
+        hideOnPwa={isPwa}
       />
-
       {/* Main Homepage Flow */}
-      <main className="flex-grow">
+      <main className="flex-grow">{isPwa ? (
+        <PwaHome onOpenDrawer={() => drawerRef.current?.()} onOpenSearch={openSearch} />
+      ) : (
+        <>
         {/* Hero & Discovery Search (LOCKED LEVEL 1 CTA) */}
         <HeroSection onSearchSubmit={handleSearchSubmit} />
 
@@ -84,6 +98,7 @@ export default function CustomerHomepage() {
 
         {/* Frequently Asked Questions */}
         <FAQSection />
+              </>)}
       </main>
 
       {/* Corporate Footer */}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -17,27 +17,103 @@ import {
 interface NavbarProps {
   onPostJobClick?: () => void;
   onBecomeWorkerClick?: () => void;
+  drawerOpenRef?: React.MutableRefObject<(() => void) | null>;
+  hideOnPwa?: boolean;
 }
 
-export default function Navbar({ onPostJobClick, onBecomeWorkerClick }: NavbarProps) {
+const DRAWER_LINKS = [
+  { href: '/services', label: 'Services', icon: Search, tint: '#296A4B' },
+  { href: '/guarantee', label: 'BukieGuarantee', icon: ShieldCheck, tint: '#296A4B' },
+  { href: '/#how-it-works', label: 'How It Works', icon: Briefcase, tint: '#296A4B' },
+  { href: '/#trust', label: 'Verification', icon: UserCheck, tint: '#296A4B' },
+  { href: '/enterprise', label: 'For Business', icon: Briefcase, tint: '#ABEEC8' },
+];
+
+export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpenRef, hideOnPwa }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const openDrawer = useCallback(() => {
+    setMobileMenuOpen(true);
+    requestAnimationFrame(() => setVisible(true));
+    document.body.style.overflow = 'hidden';
+  }, []);
+
+  if (drawerOpenRef) drawerOpenRef.current = openDrawer;
+
+  const closeDrawer = useCallback(() => {
+    setVisible(false);
+    setTimeout(() => {
+      setMobileMenuOpen(false);
+      document.body.style.overflow = '';
+      triggerRef.current?.focus();
+    }, 250);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.body.style.overflow = '';
+    };
   }, []);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeDrawer();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [mobileMenuOpen, closeDrawer]);
+
+  const navigateTo = (href: string) => {
+    closeDrawer();
+    if (href.startsWith('/#')) {
+      const id = href.slice(2);
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    window.location.href = href;
+  };
+
   const solid = scrolled || mobileMenuOpen;
+  const renderHeader = !(hideOnPwa && !mobileMenuOpen && !scrolled);
+  const drawerOnly = hideOnPwa && mobileMenuOpen;
+  const noop = () => {};
+  const doPostJob = onPostJobClick ?? noop;
+  const doBecomeWorker = onBecomeWorkerClick ?? noop;
+
+  if (!renderHeader) return null;
 
   return (
+    <>
+    {/* Drawer rendered alone on PWA so the desktop header never sits behind it */}
+    {drawerOnly ? (
+      <>
+        <div
+          className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
+          onClick={closeDrawer}
+          aria-hidden="true"
+        />
+        <DrawerPanel
+          visible={visible}
+          onClose={closeDrawer}
+          onNavigate={navigateTo}
+          onPostJob={doPostJob}
+          onBecomeWorker={doBecomeWorker}
+        />
+      </>
+    ) : (
     <header
       className={`sticky top-0 z-50 w-full text-white transition-all duration-300 ${
         solid
-          ? 'bg-[#001A41]/35 backdrop-blur-md border-b border-white/10'
-          : 'bg-transparent'
+          ? 'bg-[#001A41]/35 backdrop-blur-md border-b border-white/10 pointer-events-auto'
+          : 'bg-transparent pointer-events-none'
       }`}
       style={solid ? {} : { position: 'absolute', top: 0, left: 0, right: 0 }}
     >
@@ -142,72 +218,114 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick }: NavbarPr
 
         {/* Mobile Hamburger Toggle */}
         <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10"
+          ref={triggerRef}
+          onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
+          className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 pointer-events-auto"
           aria-label="Toggle Navigation Menu"
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#001A41] border-b border-[#1E3A60] px-4 pt-3 pb-6 space-y-4">
-          <nav className="flex flex-col space-y-3 text-sm font-medium text-slate-200">
-            <Link
-              href="/services"
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1.5 hover:text-[#ABEEC8] flex items-center gap-2"
-            >
-              <Search className="w-4 h-4 text-[#296A4B]" />
-              Services
-            </Link>
-            <a
-              href="#how-it-works"
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1.5 hover:text-[#ABEEC8]"
-            >
-              How It Works
-            </a>
-            <a
-              href="#trust"
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1.5 hover:text-[#ABEEC8] flex items-center gap-2"
-            >
-              <ShieldCheck className="w-4 h-4 text-[#ABEEC8]" />
-              Verification
-            </a>
-            <Link
-              href="/enterprise"
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1.5 hover:text-[#ABEEC8]"
-            >
-              For Business
-            </Link>
-          </nav>
-
-          <div className="pt-3 border-t border-[#1E3A60] flex flex-col gap-2.5">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onPostJobClick?.();
-              }}
-              className="w-full py-2.5 px-4 text-xs font-semibold text-center text-[#ABEEC8] border border-[#296A4B] rounded-full bg-[#296A4B]/20"
-            >
-              Post a Job Request
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onBecomeWorkerClick?.();
-              }}
-              className="w-full py-2.5 px-4 text-xs font-semibold text-center text-white bg-slate-800 rounded-full"
-            >
-              Join as a Professional
-            </button>
-          </div>
-        </div>
+      {/* Mobile slide-in drawer */}
+      {mobileMenuOpen && !drawerOnly && (
+        <>
+          <div
+            className={`lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
+            onClick={closeDrawer}
+            aria-hidden="true"
+          />
+          <DrawerPanel
+            visible={visible}
+            onClose={closeDrawer}
+            onNavigate={navigateTo}
+            onPostJob={doPostJob}
+            onBecomeWorker={doBecomeWorker}
+          />
+        </>
       )}
     </header>
+    )}
+    </>
+  );
+}
+
+function DrawerPanel({
+  visible,
+  onClose,
+  onNavigate,
+  onPostJob,
+  onBecomeWorker,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  onNavigate: (href: string) => void;
+  onPostJob: () => void;
+  onBecomeWorker: () => void;
+}) {
+  return (
+          <aside
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation Menu"
+            className={`lg:hidden fixed top-0 right-0 z-50 h-full w-[300px] max-w-[85vw] bg-[#001A41] border-l border-[#1E3A60] flex flex-col transition-transform duration-300 ease-out ${visible ? 'translate-x-0' : 'translate-x-full'}`}
+          >
+            {/* Drawer header */}
+            <div className="flex items-center justify-between px-5 h-20 border-b border-[#1E3A60]">
+              <Image
+                src="/images/logo-icon.png?v=3"
+                alt="BukieBrainJobs"
+                width={36}
+                height={36}
+                className="object-contain h-9 w-9 rounded-xl"
+                priority
+              />
+              <button
+                onClick={onClose}
+                className="p-2 -mr-2 text-slate-400 hover:text-white transition-colors"
+                aria-label="Close Navigation Menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Link zone */}
+            <nav className="flex flex-col gap-1 px-4 py-5 overflow-y-auto">
+              {DRAWER_LINKS.map(({ href, label, icon: Icon, tint }) => (
+                <button
+                  key={label}
+                  onClick={() => onNavigate(href)}
+                  className="flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-[#ABEEC8]/10 hover:text-[#ABEEC8] active:bg-[#ABEEC8]/15 transition-colors"
+                >
+                  <Icon className={`w-[18px] h-[18px] ${tint === '#ABEEC8' ? 'text-[#ABEEC8]' : 'text-[#ABEEC8]/80'}`} />
+                  {label}
+                </button>
+              ))}
+            </nav>
+
+            {/* Action zone */}
+            <div className="mt-auto px-5 pb-8 pt-4 space-y-2.5 border-t border-[#1E3A60]">
+              <button
+                onClick={() => { onClose(); onPostJob?.(); }}
+                className="w-full py-3.5 px-4 text-sm font-semibold text-center text-[#ABEEC8] bg-[#296A4B] hover:bg-[#1f5239] active:bg-[#17402c] rounded-xl transition-colors flex items-center justify-center gap-2"
+              >
+                <Briefcase className="w-4 h-4" />
+                Post a Job Request
+              </button>
+              <button
+                onClick={() => { onClose(); onBecomeWorker?.(); }}
+                className="w-full py-3.5 px-4 text-sm font-semibold text-center text-white bg-white/10 hover:bg-white/15 active:bg-white/20 border border-white/15 rounded-xl transition-colors"
+              >
+                Join as a Professional
+              </button>
+              <button
+                onClick={onClose}
+                className="w-full py-2 text-xs font-semibold text-slate-400 hover:text-white underline-offset-4 hover:underline"
+              >
+                Sign In
+              </button>
+            </div>
+          </aside>
   );
 }

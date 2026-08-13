@@ -39,7 +39,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
             fill
             priority
             className="object-cover"
-            style={{ objectPosition: "55% 80%" }}
+            style={{ objectPosition: "50% 50%" }}
           />
         </picture>
         {/* Desktop overlay: dark from the left, warm on the right */}
