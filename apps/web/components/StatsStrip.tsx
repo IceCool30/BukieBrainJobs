@@ -34,11 +34,11 @@ function useCountUp(target: number, active: boolean) {
 
 function StatCell({ stat }: { stat: StatDef }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(([entry]) => entry?.isIntersecting && setVisible(true), { threshold: 0.4 });
+    const io = new IntersectionObserver(([entry]) => entry?.isIntersecting && setVisible(true), { threshold: 0.1 });
     io.observe(el);
     return () => io.disconnect();
   }, []);

@@ -65,7 +65,7 @@ export default function PwaInstallBanner() {
   if (!showBanner) return null;
 
   return (
-    <div className="fixed bottom-20 sm:bottom-6 left-4 right-4 max-w-md mx-auto z-40 bg-[#001A41] text-white p-4 rounded-2xl shadow-2xl border border-[#296A4B]/60 flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300">
+    <div className="fixed bottom-20 left-4 right-4 max-w-md mx-auto z-40 bg-[#001A41] text-white p-4 rounded-2xl shadow-2xl border border-[#296A4B]/60 flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300 md:hidden">
       <div className="flex items-center gap-3 min-w-0">
         <div className="w-11 h-11 relative rounded-xl overflow-hidden border border-[#296A4B] bg-white p-1 shrink-0">
           <Image
