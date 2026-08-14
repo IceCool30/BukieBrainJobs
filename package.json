@@ -30,7 +30,8 @@
   "pnpm": {
     "overrides": {
       "@bukiebrainjobs/mobile>react": "18.3.1",
-      "@bukiebrainjobs/mobile>react-dom": "18.3.1"
+      "@bukiebrainjobs/mobile>react-dom": "18.3.1",
+      "@bukiebrainjobs/mobile>@types/react": "18.3.18"
     }
   }
 }
