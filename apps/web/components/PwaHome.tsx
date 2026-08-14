@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ChevronDown, Menu } from 'lucide-react';
+import { Search, Menu } from 'lucide-react';
 import { SERVICE_CATEGORIES } from '../lib/mock/homepage-data';
 
 export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: () => void; onOpenSearch: () => void }) {
@@ -28,28 +28,28 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
               style={{ objectPosition: "50% 20%" }}
             />
           </picture>
-          {/* Subtle navy tint so the photo governs; the navy gathers gently at the bottom to keep the headline readable */}
-          <div className="absolute inset-0 bg-[#001A41]/25" />
-          <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-[#001A41]/70 to-[#001A41]/0" />
+          {/* Near-invisible tint; the photo fills the hero and the navy is only strong enough for the headline to sit on */}
+          <div className="absolute inset-0 bg-[#001A41]/12" />
+          <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-[#001A41]/55 to-[#001A41]/0" />
         </div>
 
         <div className="relative z-10 px-4 pt-4 pb-8">
           {/* Slim top bar */}
           <div className="flex items-center justify-between">
-            <button onClick={onOpenDrawer} className="flex items-center gap-2" aria-label="Open menu">
-              <Image
-                src="/images/logo-icon.png?v=3"
-                alt="BukieBrainJobs"
-                width={32}
-                height={32}
-                className="object-contain h-8 w-8 rounded-xl"
-                priority
-              />
+            <Image
+              src="/images/logo-icon.png?v=3"
+              alt="BukieBrainJobs"
+              width={32}
+              height={32}
+              className="object-contain h-8 w-8 rounded-xl"
+              priority
+            />
+            <button
+              onClick={onOpenDrawer}
+              className="flex h-9 w-9 items-center justify-center rounded-full"
+              aria-label="Open menu"
+            >
               <Menu className="w-5 h-5 text-white" />
-            </button>
-            <button className="flex items-center gap-1 text-white text-[12px] font-medium opacity-90">
-              <ChevronDown className="w-3.5 h-3.5" />
-              Lagos
             </button>
           </div>
 
