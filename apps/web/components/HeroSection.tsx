@@ -40,7 +40,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
   };
 
   return (
-    <section className="relative bg-[#001A41] text-white pt-28 pb-16 overflow-hidden border-b border-[#1E3A60]">
+    <section className="relative bg-[#001A41] text-white pt-28 pb-16 overflow-hidden">
       {/* Hero portrait backdrop */}
       <div className="absolute inset-0 z-0">
         <picture>
@@ -54,10 +54,10 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
             style={{ objectPosition: "50% 50%" }}
           />
         </picture>
-        {/* Desktop overlay: dark from the left, warm on the right */}
-        <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-[#001A41]/85 via-[#001A41]/55 to-[#001A41]/30" />
-        {/* Mobile overlay: photo clear at the top, navy gathers at the bottom to hold the headline area */}
-        <div className="absolute inset-x-0 bottom-0 h-[38%] block md:hidden bg-gradient-to-t from-[#001A41]/92 via-[#001A41]/60 to-[#001A41]/0" />
+        {/* Desktop overlay: thin navy veil at the left edge only, photo governs the rest */}
+        <div className="absolute inset-y-0 left-0 w-[46%] hidden md:block bg-gradient-to-r from-[#001A41]/72 to-[#001A41]/0" />
+        {/* Mobile overlay: navy only at the very bottom edge so text stays readable */}
+        <div className="absolute inset-x-0 bottom-0 h-[26%] block md:hidden bg-gradient-to-t from-[#001A41]/88 via-[#001A41]/45 to-[#001A41]/0" />
       </div>
 
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
