@@ -25,12 +25,11 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
               fill
               priority
               className="object-cover"
-              style={{ objectPosition: "50% 20%" }}
+              style={{ objectPosition: "50% 35%" }}
             />
           </picture>
-          {/* Near-invisible tint; the photo fills the hero and the navy is only strong enough for the headline to sit on */}
-          <div className="absolute inset-0 bg-[#001A41]/12" />
-          <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-[#001A41]/55 to-[#001A41]/0" />
+          {/* Photo shines; only a whisper of navy at the very bottom keeps the headline readable */}
+          <div className="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-[#001A41]/40 to-[#001A41]/0" />
         </div>
 
         <div className="relative z-10 px-4 pt-4 pb-8">
