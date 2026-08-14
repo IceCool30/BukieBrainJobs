@@ -9,7 +9,7 @@ BukieBrainJobs is being built as a long-lived product, not as an unstructured pr
 Read:
 
 1. `README.md`
-2. `AGENTS.md`
+2. `AGENTS.md` (Development Standards)
 3. `docs/00-governance/SOURCE-OF-TRUTH.md`
 4. `docs/00-governance/DEVELOPMENT-WORKFLOW.md`
 5. The specification and decision documents relevant to your task
@@ -62,20 +62,16 @@ Do not merge a feature that contradicts an approved specification without an app
 
 ## Product and design gate
 
-Application code should not be created solely from a visual screenshot or an informal prompt. The relevant feature must have enough product, UX, UI and technical definition to remove major implementation ambiguity.
+Application code should not be created solely from a visual screenshot or an informal request. The relevant feature must have enough product, UX, UI and technical definition to remove major implementation ambiguity.
 
 The approved workflow is:
 
 ```text
 Product specification
     -> UX/UI requirements (DESIGN.md)
-    -> Antigravity design & implementation
-    -> QA & verification
+    -> Design and implementation
+    -> QA and verification
 ```
-
-> [!NOTE]
-> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
-
 
 ## Design rules
 
