@@ -52,7 +52,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
 
           {/* Headline and quiet search, pulled down over the photo */}
           <div className="pt-10">
-            <h1 className="font-display font-extrabold text-[26px] leading-tight tracking-tight text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]">
+            <h1 className="font-display font-extrabold text-[26px] leading-tight tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.65)]">
               Skilled hands, on demand.
               <br />
               Trusted from the start.
