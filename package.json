@@ -10,6 +10,12 @@
     "db:generate": "turbo run db:generate",
     "db:migrate": "turbo run db:migrate",
     "db:push": "turbo run db:push",
+    "web:dev": "pnpm --filter @bukiebrainjobs/web dev",
+    "mobile:start": "pnpm --filter @bukiebrainjobs/mobile start",
+    "mobile:tunnel": "pnpm --filter @bukiebrainjobs/mobile tunnel",
+    "mobile:web": "pnpm --filter @bukiebrainjobs/mobile web",
+    "mobile:android": "pnpm --filter @bukiebrainjobs/mobile android",
+    "mobile:ios": "pnpm --filter @bukiebrainjobs/mobile ios",
     "clean": "turbo run clean && rm -rf node_modules && rm -rf apps/*/node_modules && rm -rf packages/*/node_modules && rm -rf services/*/node_modules"
   },
   "devDependencies": {
@@ -22,10 +28,6 @@
   },
   "pnpm": {
     "overrides": {
-      "react": "^19.0.0",
-      "react-dom": "^19.0.0",
-      "@types/react": "^19.0.8",
-      "@types/react-dom": "^19.0.3",
       "postcss": "^8.5.3"
     }
   }
