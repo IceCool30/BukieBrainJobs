@@ -29,7 +29,8 @@
   },
   "pnpm": {
     "overrides": {
-      "postcss": "^8.5.3"
+      "@bukiebrainjobs/mobile>react": "18.3.1",
+      "@bukiebrainjobs/mobile>react-dom": "18.3.1"
     }
   }
 }
