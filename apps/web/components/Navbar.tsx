@@ -32,8 +32,13 @@ const DRAWER_LINKS = [
 export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpenRef, hideOnPwa }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [chipShown, setChipShown] = useState(false);
   const [visible, setVisible] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const settledTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [settleAtTop, setSettleAtTop] = useState(
+    typeof window !== 'undefined' && window.innerWidth < 640
+  );
 
   const openDrawer = useCallback(() => {
     setMobileMenuOpen(true);
@@ -53,11 +58,26 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 40);
+      if (settleAtTop) {
+        setChipShown(false);
+        if (settledTimer.current) clearTimeout(settledTimer.current);
+        settledTimer.current = setTimeout(() => {
+          setChipShown(y > 40);
+          settledTimer.current = null;
+        }, 450);
+      }
+    };
     handleScroll();
+    const onResize = () => setSettleAtTop(window.innerWidth < 640);
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', onResize);
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', onResize);
+      if (settledTimer.current) clearTimeout(settledTimer.current);
       document.body.style.overflow = '';
     };
   }, []);
@@ -81,7 +101,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     window.location.href = href;
   };
 
-  const solid = scrolled || mobileMenuOpen;
+  const solid = scrolled || mobileMenuOpen || (hideOnPwa && chipShown);
   const drawerOnly = hideOnPwa && mobileMenuOpen;
   const noop = () => {};
   const doPostJob = onPostJobClick ?? noop;

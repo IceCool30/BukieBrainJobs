@@ -15,17 +15,17 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
   return (
     <div className="min-h-screen bg-[#F8F9FF] pb-10">
       {/* Compact branded hero, mirrors the desktop hero on a smaller canvas */}
-      <section className="relative bg-transparent text-white overflow-hidden">
-        <div className="absolute inset-0 z-0">
+      <section className="relative bg-transparent text-white">
+        <div className="absolute inset-0 z-0 overflow-hidden">
           <picture>
-            <source media="(max-width: 768px)" srcSet="/images/hero-mobile-1080.jpg" />
+            <source media="(max-width: 768px)" srcSet="/images/hero-mobile-crop.jpg" />
             <Image
               src="/images/hero-portrait-1920.png"
               alt="Verified BukieBrainJobs artisans against the Lagos waterfront"
               fill
               priority
               className="object-cover"
-              style={{ objectPosition: "50% 35%" }}
+              style={{ objectPosition: "50% 20%" }}
             />
           </picture>
         </div>
@@ -66,7 +66,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
                 className="w-full h-[46px] pl-9 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
               />
               {matched.length > 0 && (
-                <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-20">
+                <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
                   {matched.map((c) => (
                     <Link
                       key={c.id}
