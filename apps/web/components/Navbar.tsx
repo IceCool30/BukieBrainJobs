@@ -82,33 +82,51 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
   };
 
   const solid = scrolled || mobileMenuOpen;
-  const renderHeader = !(hideOnPwa && !mobileMenuOpen && !scrolled);
   const drawerOnly = hideOnPwa && mobileMenuOpen;
   const noop = () => {};
   const doPostJob = onPostJobClick ?? noop;
   const doBecomeWorker = onBecomeWorkerClick ?? noop;
 
-  if (!renderHeader) return null;
+  if (hideOnPwa) {
+    if (!drawerOnly && !solid) return null;
+    return (
+      <>
+        {solid && !drawerOnly && (
+          <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-sm rounded-full bg-white/15 backdrop-blur-md border border-white/20 shadow-[0_6px_20px_-8px_rgba(0,26,65,0.45)] flex items-center justify-between px-4 h-11 pointer-events-auto">
+            <span className="text-[11px] font-medium text-white/90 drop-shadow">Payments secured by escrow</span>
+            <button
+              ref={triggerRef}
+              onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
+              className="p-1.5 rounded-full text-white hover:bg-white/15"
+              aria-label="Open menu"
+            >
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
+          </div>
+        )}
+        {drawerOnly && (
+          <>
+            <div
+              className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
+              onClick={closeDrawer}
+              aria-hidden="true"
+            />
+            <DrawerPanel
+              visible={visible}
+              onClose={closeDrawer}
+              onNavigate={navigateTo}
+              onPostJob={doPostJob}
+              onBecomeWorker={doBecomeWorker}
+            />
+          </>
+        )}
+      </>
+    );
+  }
 
   return (
     <>
-    {/* Drawer rendered alone on PWA so the desktop header never sits behind it */}
-    {drawerOnly ? (
-      <>
-        <div
-          className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
-          onClick={closeDrawer}
-          aria-hidden="true"
-        />
-        <DrawerPanel
-          visible={visible}
-          onClose={closeDrawer}
-          onNavigate={navigateTo}
-          onPostJob={doPostJob}
-          onBecomeWorker={doBecomeWorker}
-        />
-      </>
-    ) : (
+    {/* Desktop header, never rendered on the PWA home */}
     <header
       className={`sticky top-0 z-50 w-full text-white transition-all duration-300 ${
         solid
@@ -246,7 +264,38 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
         </>
       )}
     </header>
-    )}
+    </>
+  );
+}
+
+
+function DrawerSheet({
+  visible,
+  onClose,
+  onNavigate,
+  onPostJob,
+  onBecomeWorker,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  onNavigate: (href: string) => void;
+  onPostJob: () => void;
+  onBecomeWorker: () => void;
+}) {
+  return (
+    <>
+      <div
+        className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <DrawerPanel
+        visible={visible}
+        onClose={onClose}
+        onNavigate={onNavigate}
+        onPostJob={onPostJob}
+        onBecomeWorker={onBecomeWorker}
+      />
     </>
   );
 }
