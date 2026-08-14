@@ -15,7 +15,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
   return (
     <div className="min-h-screen bg-[#F8F9FF] pb-10">
       {/* Compact branded hero, mirrors the desktop hero on a smaller canvas */}
-      <section className="relative bg-[#001A41] text-white overflow-hidden">
+      <section className="relative bg-transparent text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
           <picture>
             <source media="(max-width: 768px)" srcSet="/images/hero-mobile-1080.jpg" />
@@ -28,8 +28,6 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
               style={{ objectPosition: "50% 35%" }}
             />
           </picture>
-          {/* Photo shines; only a whisper of navy at the very bottom keeps the headline readable */}
-          <div className="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-[#001A41]/40 to-[#001A41]/0" />
         </div>
 
         <div className="relative z-10 px-4 pt-4 pb-8">
@@ -54,7 +52,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
 
           {/* Headline and quiet search, pulled down over the photo */}
           <div className="pt-10">
-            <h1 className="font-display font-extrabold text-[26px] leading-tight tracking-tight text-white">
+            <h1 className="font-display font-extrabold text-[26px] leading-tight tracking-tight text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]">
               Skilled hands, on demand.
               <br />
               Trusted from the start.
