@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ChevronDown } from 'lucide-react';
+import { Search, ChevronDown, Menu } from 'lucide-react';
 import { SERVICE_CATEGORIES } from '../lib/mock/homepage-data';
 
 export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: () => void; onOpenSearch: () => void }) {
@@ -28,13 +28,15 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
               style={{ objectPosition: "50% 20%" }}
             />
           </picture>
-          <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-[#001A41]/95 via-[#001A41]/65 to-[#001A41]/0" />
+          {/* Subtle navy tint so the photo governs; the navy gathers gently at the bottom to keep the headline readable */}
+          <div className="absolute inset-0 bg-[#001A41]/25" />
+          <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-[#001A41]/70 to-[#001A41]/0" />
         </div>
 
         <div className="relative z-10 px-4 pt-4 pb-8">
           {/* Slim top bar */}
           <div className="flex items-center justify-between">
-            <button onClick={onOpenDrawer} className="flex items-center gap-2.5" aria-label="Open menu">
+            <button onClick={onOpenDrawer} className="flex items-center gap-2" aria-label="Open menu">
               <Image
                 src="/images/logo-icon.png?v=3"
                 alt="BukieBrainJobs"
@@ -43,9 +45,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
                 className="object-contain h-8 w-8 rounded-xl"
                 priority
               />
-              <span className="text-white text-[14px] font-semibold tracking-tight">
-                BukieBrainJobs
-              </span>
+              <Menu className="w-5 h-5 text-white" />
             </button>
             <button className="flex items-center gap-1 text-white text-[12px] font-medium opacity-90">
               <ChevronDown className="w-3.5 h-3.5" />

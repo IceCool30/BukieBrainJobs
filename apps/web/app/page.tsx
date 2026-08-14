@@ -117,13 +117,15 @@ export default function CustomerHomepage() {
       {/* Corporate Footer */}
       <Footer />
 
-      {/* Persistent Ergonomic Mobile Bottom Nav */}
+      {/* Persistent Ergonomic Mobile Bottom Nav, absent on the home landing page */}
+      {!isPwa && (
       <BottomNav
         onExploreClick={openSearch}
         onJobsClick={() => setPostJobOpen(true)}
         onVerifyClick={() => setPassportModalOpen(true)}
         onMenuClick={() => drawerRef.current?.()}
       />
+      )}
 
       {/* PWA Install Banner */}
       <PwaInstallBanner />
