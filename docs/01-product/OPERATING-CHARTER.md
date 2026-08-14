@@ -1,7 +1,7 @@
 # BukieBrainJobs Operating Charter v1.0
 
 **Document ID:** PROD-001
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Approved
 
 ## Mission
@@ -22,14 +22,11 @@ Build a trusted, scalable services marketplace for Nigeria, with a product found
 
 ### Product Architecture and Documentation
 
-ChatGPT is the product architecture and specification authority for this project. Responsibilities include product decisions, PRD and feature specifications, UX, architecture, acceptance criteria, decision records, QA guidance and approved agent prompts.
+Product decisions, PRD and feature specifications, UX, architecture, acceptance criteria, decision records and QA guidance are owned by the product and architecture function.
 
-### UI Design & Engineering
+### UI Design and Engineering
 
-Google Antigravity is the UI design and engineering environment. Antigravity interprets approved specifications and DESIGN.md to produce and implement visual layouts, frontend, backend, APIs, infrastructure, testing and deployment.
-
-> [!NOTE]
-> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
+UI design and engineering interpret approved specifications and DESIGN.md to produce visual layouts, frontend, backend, APIs, infrastructure, testing and deployment.
 
 ### Source Control
 
@@ -44,12 +41,11 @@ Product Specification
     ↓
 UX Requirements & Flow
     ↓
-Google Antigravity UI Design & Implementation (using DESIGN.md)
+Design and Implementation (using DESIGN.md)
     ↓
 Automated & Manual Tests
     ↓
 Security + Accessibility + Performance Review
-
     ↓
 Human Approval
     ↓
