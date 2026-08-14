@@ -24,8 +24,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
               alt="Verified BukieBrainJobs artisans against the Lagos waterfront"
               fill
               priority
-              className="object-cover"
-              style={{ objectPosition: "50% 20%" }}
+              className="object-cover object-top"
             />
           </picture>
         </div>
@@ -112,10 +111,6 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
         </div>
       </div>
 
-      {/* One quiet assurance line */}
-      <p className="mt-8 px-8 text-center text-[12px] text-slate-500 leading-relaxed">
-        Every professional is identity-verified. Payments sit in escrow until you approve the work.
-      </p>
     </div>
   );
 }
