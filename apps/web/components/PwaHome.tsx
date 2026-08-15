@@ -15,21 +15,22 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
   return (
     <div className="min-h-screen bg-[#F8F9FF] pb-10">
       {/* Compact branded hero, mirrors the desktop hero on a smaller canvas */}
-      <section className="relative bg-transparent text-white">
+      <section className="relative h-[340px] bg-transparent text-white">
         <div className="absolute inset-0 z-0 overflow-hidden">
-          <picture>
-            <source media="(max-width: 768px)" srcSet="/images/hero-mobile-crop.jpg" />
-            <Image
-              src="/images/hero-portrait-1920.png"
-              alt="Verified BukieBrainJobs artisans against the Lagos waterfront"
-              fill
-              priority
-              className="object-cover object-top"
-            />
-          </picture>
+          <img
+            src="/images/hero-portrait-1920.png"
+            alt="Verified BukieBrainJobs artisans against the Lagos waterfront"
+            className="absolute inset-0 h-full w-full object-cover object-[76%_66%]"
+            fetchPriority="high"
+          />
+          {/* Thin edge-only navy accents, never over the faces */}
+          <div className="absolute inset-x-0 top-0 h-[10%] bg-gradient-to-b from-[#001A41]/40 to-[#001A41]/0" />
+          <div className="absolute inset-x-0 bottom-0 h-[22%] bg-gradient-to-t from-[#001A41]/70 via-[#001A41]/25 to-[#001A41]/0" />
+          <div className="absolute inset-y-0 left-0 w-[14%] bg-gradient-to-r from-[#001A41]/30 to-[#001A41]/0" />
+          <div className="absolute inset-y-0 right-0 w-[14%] bg-gradient-to-l from-[#001A41]/30 to-[#001A41]/0" />
         </div>
 
-        <div className="relative z-10 px-4 pt-4 pb-8">
+        <div className="relative z-10 px-4 pt-3 pb-7">
           {/* Slim top bar */}
           <div className="flex items-center justify-between">
             <Image
@@ -50,7 +51,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
           </div>
 
           {/* Headline and quiet search, pulled down over the photo */}
-          <div className="pt-10">
+          <div className="pt-8">
             <h1 className="font-display font-extrabold text-[26px] leading-tight tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.65)]">
               Skilled hands, on demand.
               <br />
