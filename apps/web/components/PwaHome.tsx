@@ -57,8 +57,8 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
             </span>
             .
           </h1>
-          <div className="relative mt-3 h-[44px] max-w-md">
-            <Search className="absolute top-1/2 left-3.5 -translate-y-1/2 w-[16px] h-[16px] text-slate-400 shrink-0" />
+          <div className="relative mt-3 max-w-md">
+            <Search className="absolute top-1/2 left-3.5 -translate-y-1/2 w-[16px] h-[16px] text-slate-400 shrink-0 z-10" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -70,7 +70,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
               provide fair work that respects your worth.
             </p>
             {matched.length > 0 && (
-              <div className="absolute left-0 right-0 bottom-full mb-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
+              <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
                 {matched.map((c) => (
                   <Link
                     key={c.id}
