@@ -86,13 +86,13 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5EEFF] text-[#001A41] text-xs font-bold border border-[#CBDBF5]">
             <Calculator className="w-3.5 h-3.5 text-[#296A4B]" />
-            <span>Upfront Market Transparency</span>
+            <span>Plan your booking</span>
           </div>
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0B1C30]">
-            Instant Service Price Estimator
+            Get a starting estimate
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-            See realistic pricing benchmarks before booking. No surprise surge charges or haggling on site.
+            Use this guide to plan your booking. Final prices depend on the job scope and your location.
           </p>
         </div>
 
@@ -103,7 +103,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
             {/* Step 1: Select Service Category */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2.5">
-                1. Select Service Category
+                1. Choose a service
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {SERVICES_DATA.map((svc) => (
@@ -126,7 +126,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
             {/* Step 2: Select Job Scope / Option */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2.5">
-                2. Select Job Scope / Capacity
+                2. Choose the job scope
               </label>
               <div className="space-y-2">
                 {currentService?.options.map((opt) => (
@@ -152,7 +152,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
             {/* Step 3: Location */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                3. Operating Location
+                3. Choose your location
               </label>
               <div className="flex gap-2">
                 {['Lagos', 'Abuja (FCT)', 'Port Harcourt'].map((city) => (
@@ -177,7 +177,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
           <div className="lg:col-span-5 bg-[#001A41] text-white rounded-2xl p-6 sm:p-7 flex flex-col justify-between space-y-6 shadow-xl border border-[#1E3A60]">
             <div className="space-y-4">
               <div className="text-[11px] font-bold text-[#ABEEC8] uppercase tracking-wider">
-                Transparent Benchmark Rate
+                Estimated price range
               </div>
 
               <div>
@@ -193,15 +193,15 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
               <div className="space-y-2.5 pt-4 border-t border-[#1E3A60] text-xs text-slate-300">
                 <div className="flex items-center gap-2">
                   <Lock className="w-4 h-4 text-[#ABEEC8] shrink-0" />
-                  <span>100% Escrow protected in Paystack/Flutterwave</span>
+                  <span>Pay through Escrow for eligible bookings</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-[#ABEEC8] shrink-0" />
-                  <span>BukiePassport Tier 2 verified artisans only</span>
+                  <span>Review Profile Verification before you book</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-[#ABEEC8] shrink-0" />
-                  <span>Under 2-hour arrival in {selectedCity} active zones</span>
+                  <span>Confirm availability and timing with your professional</span>
                 </div>
               </div>
             </div>
@@ -211,7 +211,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
               onClick={() => onBookEstimate?.(currentService?.name || 'General Service')}
               className="w-full py-3.5 bg-[#296A4B] hover:bg-[#1F523A] active:bg-[#17402C] text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md"
             >
-              <span>Book at this Estimated Rate</span>
+              <span>Continue with this estimate</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

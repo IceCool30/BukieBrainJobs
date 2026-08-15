@@ -69,7 +69,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
           {/* Live Operational Signal */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#001A41]/85 backdrop-blur-md border border-[#ABEEC8]/50 text-xs font-semibold text-[#ABEEC8] shadow-[0_2px_10px_-3px_rgba(0,0,0,0.5)]">
             <span className="w-2 h-2 rounded-full bg-[#ABEEC8] animate-pulse shrink-0" />
-            <span>48 Verified Artisans Online in Lagos &amp; Abuja today</span>
+            <span>Explore services available in your location</span>
           </div>
 
           {/* Headline: shared headline, brand name pops with the mint accent */}
@@ -85,8 +85,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
 
           {/* Subtitle */}
           <p className="text-base sm:text-lg font-bold text-slate-100 leading-relaxed max-w-2xl hidden md:block">
-            Expert hands you can trust, wherever you are. We are here to
-            provide fair work that respects your worth.
+            Find a professional for the job, or use your skills to find work that values your time.
           </p>
 
           {/* Primary Search Row: single field, same language as the mobile hero */}
@@ -100,7 +99,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
                 onChange={(e) => setServiceQuery(e.target.value)}
                 onFocus={() => setShowSuggestions(serviceQuery.length === 0)}
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-                placeholder="What service do you need?"
+                placeholder="Search for a service, for example plumbing"
                 className="w-full h-[56px] pl-11 pr-4 text-[15px] font-medium text-slate-900 bg-white rounded-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] placeholder:text-slate-400"
                 style={{ borderRadius: '12px' }}
               />
@@ -138,24 +137,19 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
 
           {/* Trust line: one quiet row, ratings first as the strongest proof */}
           <div className="pt-7 hidden md:flex flex-wrap items-center gap-x-6 sm:gap-x-8 gap-y-3">
-            <div className="flex items-center gap-2">
-              <div className="flex text-[#ABEEC8]">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-[#ABEEC8]" />
-                ))}
-              </div>
-              <span className="text-sm font-semibold text-white">4.8/5</span>
-              <span className="text-sm text-slate-400">from 9,400+ reviews</span>
+            <div className="flex items-center gap-2 text-sm text-slate-300">
+              <Star className="w-4 h-4 text-[#ABEEC8]" />
+              <span>Review profiles before you book</span>
             </div>
             <div className="flex items-center gap-x-2.5 gap-y-1 text-slate-400 flex-wrap">
               <ShieldCheck className="w-4 h-4 text-[#ABEEC8]" />
-              <span className="text-xs sm:text-sm whitespace-nowrap">Verified professionals</span>
+              <span className="text-xs sm:text-sm whitespace-nowrap">Profile Verification</span>
               <span className="text-slate-600 hidden sm:inline">·</span>
               <Award className="w-4 h-4 text-[#ABEEC8]" />
-              <span className="text-xs sm:text-sm whitespace-nowrap">Escrow protected</span>
+              <span className="text-xs sm:text-sm whitespace-nowrap">Pay through Escrow</span>
               <span className="text-slate-600 hidden sm:inline">·</span>
               <Lock className="w-4 h-4 text-[#ABEEC8]" />
-              <span className="text-xs sm:text-sm whitespace-nowrap">Secure payments</span>
+              <span className="text-xs sm:text-sm whitespace-nowrap">Clear booking details</span>
             </div>
           </div>
         </div>

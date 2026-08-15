@@ -5,26 +5,26 @@ export default function HowItWorks() {
   const steps = [
     {
       num: '01',
-      title: 'Find the Right Professional',
-      desc: 'Search for a service and see verified professionals in your area, each with transparent pricing and detailed work histories.',
+      title: 'Search for a Service',
+      desc: 'Choose a service and location, then review professionals, pricing information, and profile details.',
       icon: <Search className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '02',
-      title: 'Book Directly or Request Quotes',
-      desc: 'Book a professional within 24 hours or post your job to receive competitive quotes from verified specialists.',
+      title: 'Book or Post a Job',
+      desc: 'Book a professional when the work is clear, or post a job when you need tailored quotes.',
       icon: <UserCheck className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '03',
-      title: 'Professional Service Delivery',
-      desc: 'Your selected professional arrives promptly, completes the work, and provides updates throughout the process.',
+      title: 'Agree the Details',
+      desc: 'Confirm the scope, price, and timing with your chosen professional before work begins.',
       icon: <ShieldCheck className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '04',
-      title: 'Secure Payment Release',
-      desc: 'Your payment remains securely in escrow and is released only after you inspect and approve the completed work.',
+      title: 'Pay Through Escrow',
+      desc: 'Pay through Escrow, inspect the completed work, then release payment when you are satisfied.',
       icon: <Lock className="w-5 h-5 text-slate-600" />,
     },
   ];
@@ -38,10 +38,10 @@ export default function HowItWorks() {
             How It Works
           </div>
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0B1C30]">
-            Simple, Secure, and Straightforward
+            A clearer way to book
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-            Post a job, get quotes, pay only when the work is done.
+            Search for a service, review your options, and book with confidence.
           </p>
         </div>
 

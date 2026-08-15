@@ -9,11 +9,10 @@ export default function ClosingCTA({ onPostJobClick }: ClosingCTAProps) {
     <section aria-label="Final call to action" className="relative bg-[#F8F9FF] overflow-hidden">
       <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center space-y-6">
         <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-[#001A41] leading-tight">
-          Skilled hands are one search away.
+          Ready to get the job done?
         </h2>
         <p className="text-base text-slate-500 max-w-xl mx-auto">
-          Post a job, compare verified quotes, and pay with confidence.
-          Every booking on BukieBrainJobs is escrow protected.
+          Search for a service or post a job. Review your options, agree the details, and use Escrow for eligible bookings.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
@@ -22,7 +21,7 @@ export default function ClosingCTA({ onPostJobClick }: ClosingCTAProps) {
             style={{ borderRadius: '16px' }}
           >
             <Briefcase className="w-[18px] h-[18px]" />
-            Post a Job Request
+            Post a job
           </button>
           <a
             href="#services"
@@ -30,12 +29,12 @@ export default function ClosingCTA({ onPostJobClick }: ClosingCTAProps) {
             style={{ borderRadius: '16px' }}
           >
             <Search className="w-[18px] h-[18px]" />
-            Browse Services
+            Explore services
           </a>
         </div>
         <p className="text-xs text-slate-500 pt-2">
           <ArrowRight className="w-3.5 h-3.5 inline mr-1 -mt-0.5" />
-          Live in Lagos, Abuja and Port Harcourt, with 34 more state capitals on the way.
+          Availability depends on the service and your location.
         </p>
       </div>
     </section>

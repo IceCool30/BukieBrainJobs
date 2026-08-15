@@ -9,12 +9,6 @@ interface PopularServicesProps {
   onSelectCategory?: (category: ServiceCategory) => void;
 }
 
-const TRENDING: Record<string, string> = {
-  generator: 'One of our most booked services this month',
-  ac: 'Peak demand season is here',
-  'tv-mounting': 'One of our most booked services this month',
-};
-
 export default function PopularServices({ onSelectCategory }: PopularServicesProps) {
   return (
     <section id="services" className="py-16 bg-white border-b border-slate-200">
@@ -22,17 +16,17 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
         <div className="flex items-end justify-between gap-4">
           <div>
             <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
-              Our Most Popular Services
+              Services for your home and work
             </h2>
             <p className="text-sm text-slate-500 mt-1">
-              The categories our customers book most, with prices shown up front.
+              Explore services, compare starting estimates, and choose the right professional for the job.
             </p>
           </div>
           <Link
             href="/services"
             className="inline-flex items-center gap-1 text-sm font-semibold text-[#296A4B] hover:text-[#1f5239] transition-colors"
           >
-            View All Services
+            View all services
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -53,20 +47,15 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
                 />
                 <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 to-transparent" />
                 <span className="absolute bottom-2 left-3 text-[11px] font-semibold text-white drop-shadow">
-                  From {cat.startingPrice}
+                  Estimated from {cat.startingPrice}
                 </span>
-                {TRENDING[cat.id] && (
-                  <span className="absolute top-2 left-2 inline-flex items-center text-[10px] font-semibold uppercase tracking-wider text-white bg-[#296A4B]/90 rounded-full px-2.5 py-0.5">
-                    Now trending
-                  </span>
-                )}
               </div>
               <div className="p-3.5 pt-3">
                 <span className="text-sm font-semibold text-[#001A41] group-hover:text-[#296A4B] transition-colors leading-tight block">
                   {cat.title}
                 </span>
                 <span className="text-[11px] text-slate-500 mt-1 line-clamp-1 block">
-                  {cat.popularServices[0]} + more
+                  Explore available options
                 </span>
               </div>
             </button>

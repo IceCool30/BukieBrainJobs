@@ -268,38 +268,38 @@ export const MOCK_TESTIMONIALS: CustomerTestimonial[] = [
 export const MOCK_FAQS: FAQItem[] = [
   {
     id: 'faq-1',
-    question: 'How does BukieBrainJobs protect my money when I book a service?',
-    answer: 'You pay into an escrow account, not directly to the worker. The money sits protected while the job is done, and is only released once you inspect the work and confirm you are happy with it.',
+    question: 'How does Escrow work for a booking?',
+    answer: 'For eligible bookings, you can pay through Escrow. Review the job details, inspect the completed work, then release payment when you are satisfied.',
     category: 'Payments & Escrow',
   },
   {
     id: 'faq-2',
-    question: 'What is BukiePassport and how are BrainWorkers verified?',
-    answer: 'BukiePassport is our verification system. Tier 1 requires valid government photo ID and BVN confirmation. Tier 2 adds biometric NIN verification, physical residential address verification, and trade skill assessment.',
+    question: 'How do I review a professional before I book?',
+    answer: 'Open the professional’s profile to review their service information, work history, availability, and verification status before you decide.',
     category: 'Verification & Trust',
   },
   {
     id: 'faq-3',
-    question: 'What is the BukieGuarantee job protection?',
-    answer: 'The BukieGuarantee is platform coverage available on qualifying bookings (up to ₦500,000) that protects homeowners against property damage or unsatisfactory work, subject to clear terms and dispute resolution.',
+    question: 'What is BukieGuarantee?',
+    answer: 'BukieGuarantee may apply to qualifying bookings. Review the terms to understand eligibility, coverage, and how to raise a concern.',
     category: 'Verification & Trust',
   },
   {
     id: 'faq-4',
     question: 'Can I request quotes by posting a job instead of booking directly?',
-    answer: 'Yes. For custom tasks or bigger projects, use "Post a Job". Describe what you need, where, and your budget range, and qualified verified BrainWorkers in your area will come back to you with quotes.',
+    answer: 'Yes. For custom tasks or bigger projects, post a job with the work, location, and budget range. You can compare the responses you receive before choosing a professional.',
     category: 'General',
   },
   {
     id: 'faq-5',
-    question: 'Which Nigerian cities are currently active for bookings?',
-    answer: 'Full live bookings are available in Lagos, Abuja, and Port Harcourt. We are opening 34 more state capitals, including Ibadan, Enugu, Kano, and Benin City. You can register your interest for those cities now.',
+    question: 'Where can I use BukieBrainJobs?',
+    answer: 'Service availability depends on the work you need and your location. Search for a service or post a job to see the options available to you.',
     category: 'General',
   },
   {
     id: 'faq-6',
     question: 'How do I join as a skilled artisan or technician?',
-    answer: 'Click "Become a BrainWorker" at the top of the page. You will build your profile, submit your ID and trade documents for BukiePassport vetting, and start receiving job requests once you are approved.',
+    answer: 'Create a professional profile, add your service information, and complete the required verification steps. You can then respond to work that matches your skills and availability.',
     category: 'General',
   },
 ];

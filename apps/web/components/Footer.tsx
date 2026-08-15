@@ -20,31 +20,31 @@ export default function Footer() {
             </div>
 
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-              BukieBrainJobs connects you with verified artisans and technicians across Nigeria. Every job is protected by escrow.
+              BukieBrainJobs helps customers find professionals and helps skilled people find work. Review the booking details before you proceed.
             </p>
 
             <div className="pt-2 flex flex-col gap-2 text-xs">
               <div className="flex items-center gap-2 text-[#ABEEC8] font-mono">
                 <Lock className="w-3.5 h-3.5 text-[#296A4B]" />
-                Secured by Paystack and Flutterwave escrow
+                Escrow is available for eligible bookings
               </div>
               <a href="/guarantee" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
-                BukieGuarantee Protection: Up to N500,000 Coverage
+                Review BukieGuarantee terms
               </a>
             </div>
           </div>
 
           {/* Column 1: Our Services */}
           <div>
-            <h4 className="font-display font-semibold text-white text-sm mb-4">Our Services</h4>
+            <h4 className="font-display font-semibold text-white text-sm mb-4">Explore services</h4>
             <ul className="space-y-2.5 text-xs text-slate-400">
-              <li><a href="/services" className="hover:text-white transition-colors">Generator Maintenance and AVR Services</a></li>
-              <li><a href="/services" className="hover:text-white transition-colors">AC Repair and Gas Replenishment</a></li>
-              <li><a href="/services" className="hover:text-white transition-colors">Plumbing and Water Systems</a></li>
-              <li><a href="/services" className="hover:text-white transition-colors">Electrical and Solar Installation</a></li>
-              <li><a href="/services" className="hover:text-white transition-colors">DSTV and TV Installation</a></li>
-              <li><a href="/services" className="hover:text-white transition-colors">Office and Home Relocation</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Generator services</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Air-conditioning services</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Plumbing services</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Electrical and solar services</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">TV and satellite services</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Moving and relocation</a></li>
             </ul>
           </div>
 
@@ -52,9 +52,9 @@ export default function Footer() {
           <div>
             <h4 className="font-display font-semibold text-white text-sm mb-4">Trust and Safety</h4>
             <ul className="space-y-2.5 text-xs text-slate-400">
-              <li><a href="#trust" className="hover:text-white transition-colors">About BukiePassport</a></li>
+              <li><a href="#trust" className="hover:text-white transition-colors">Profile Verification</a></li>
               <li><a href="#trust" className="hover:text-white transition-colors">Verification Process</a></li>
-              <li><a href="#how-it-works" className="hover:text-white transition-colors">Payment Protection</a></li>
+              <li><a href="#how-it-works" className="hover:text-white transition-colors">Pay through Escrow</a></li>
               <li><a href="/guarantee" className="hover:text-white transition-colors">BukieGuarantee</a></li>
               <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
             </ul>
@@ -62,10 +62,10 @@ export default function Footer() {
 
           {/* Column 3: Business and Support */}
           <div>
-            <h4 className="font-display font-semibold text-white text-sm mb-4">Business and Support</h4>
+            <h4 className="font-display font-semibold text-white text-sm mb-4">For businesses and support</h4>
             <ul className="space-y-2.5 text-xs text-slate-400">
-              <li><a href="/enterprise" className="hover:text-white transition-colors">Corporate Solutions</a></li>
-              <li><a href="/enterprise" className="hover:text-white transition-colors">API Integration</a></li>
+              <li><a href="/enterprise" className="hover:text-white transition-colors">Business services</a></li>
+              <li><a href="/enterprise" className="hover:text-white transition-colors">Contact support</a></li>
               <li className="flex items-center gap-1.5 pt-1 text-slate-300">
                 <PhoneCall className="w-3.5 h-3.5 text-[#ABEEC8]" />
                 +234 800-BUKIE-JOBS
@@ -86,8 +86,8 @@ export default function Footer() {
           <div className="flex gap-6">
             <span className="hover:text-slate-300 cursor-pointer">Privacy Policy</span>
             <span className="hover:text-slate-300 cursor-pointer">Terms of Service</span>
-            <span className="hover:text-slate-300 cursor-pointer">Escrow Terms</span>
-            <span className="hover:text-slate-300 cursor-pointer">Security Center</span>
+            <span className="hover:text-slate-300 cursor-pointer">Escrow information</span>
+            <span className="hover:text-slate-300 cursor-pointer">Trust and safety</span>
           </div>
         </div>
       </div>

@@ -9,13 +9,13 @@ export default function TestimonialsSection() {
         {/* Header */}
         <div className="text-center max-w-xl mx-auto space-y-2">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Customer Success Stories
+            Booking feedback
           </div>
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0B1C30]">
-            Real bookings. Real reviews.
+            Feedback that helps you choose
           </h2>
           <p className="text-sm text-slate-500 leading-relaxed">
-            Every review below comes from a verified booking protected by escrow.
+            Professional profiles bring together service details, booking history, and customer feedback.
           </p>
         </div>
 
@@ -38,7 +38,7 @@ export default function TestimonialsSection() {
                 <div className="text-xs text-slate-500">{item.role}, {item.location}</div>
                 <div className="flex items-center gap-1.5 text-xs text-slate-400 pt-0.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Verified {item.service} booking</span>
+                  <span>{item.service} booking</span>
                 </div>
               </div>
             </article>
@@ -46,7 +46,7 @@ export default function TestimonialsSection() {
         </div>
 
         <p className="text-center text-xs text-slate-400 pt-2">
-          4.8/5 average from 9,400+ customer reviews
+          Ratings and reviews are shown on professional profiles.
         </p>
       </div>
     </section>

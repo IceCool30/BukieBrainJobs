@@ -18,7 +18,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
       <section className="relative h-[320px]">
         <img
           src="/images/hero-portrait-1920.png"
-          alt="Verified BukieBrainJobs artisans against the Lagos waterfront"
+          alt="BukieBrainJobs professionals at work"
           className="absolute inset-0 h-full w-full object-cover object-[78%_52%]"
           fetchPriority="high"
         />
@@ -63,7 +63,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder={"Try 'mount TV' or 'leaky faucet'"}
+                placeholder="Search for a service, for example plumbing"
                 className="w-full h-[44px] pl-10 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
               />
               {matched.length > 0 && (
@@ -85,8 +85,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
               )}
             </div>
             <p className="mt-2 text-right text-[11px] leading-tight font-semibold text-white/90 max-w-xs ml-auto line-clamp-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
-              Expert hands you can trust, wherever you are. We are here to
-              provide fair work that respects your worth.
+              Find a professional for the job, or use your skills to find work that values your time.
             </p>
           </div>
         </div>
@@ -95,9 +94,9 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
       {/* Quiet service grid, same card language as the desktop site */}
       <div className="px-4 pt-6">
         <div className="flex items-baseline justify-between">
-          <h2 className="font-display font-bold text-[17px] text-[#001A41]">Popular services</h2>
+          <h2 className="font-display font-bold text-[17px] text-[#001A41]">Find a service</h2>
           <button onClick={onOpenSearch} className="text-[13px] font-medium text-[#296A4B]">
-            See all
+            View all services
           </button>
         </div>
 
@@ -108,7 +107,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
                 <img src={cat.photoUrl} alt={cat.title} loading="lazy" className="w-full h-full object-cover" />
                 <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/55 to-transparent" />
                 <span className="absolute bottom-1.5 left-2 text-[10px] font-semibold text-white drop-shadow">
-                  From {cat.startingPrice}
+                  Estimated from {cat.startingPrice}
                 </span>
               </div>
               <p className="mt-1.5 text-[13px] font-medium text-slate-700 leading-snug">{cat.title}</p>
