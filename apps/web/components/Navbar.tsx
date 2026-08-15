@@ -163,10 +163,10 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#296A4B]/30 text-[#ABEEC8] text-[10px] font-semibold border border-[#296A4B]/40">
               <span className="w-1.5 h-1.5 rounded-full bg-[#ABEEC8] animate-pulse" />
-              Live Now
+              Booking open
             </span>
             <span className="hidden sm:inline">
-              Live in Lagos, Abuja and Port Harcourt, expanding to 34 state capitals
+              Available in Lagos, Abuja and Port Harcourt
             </span>
           </div>
           <div className="flex items-center gap-4">

@@ -37,12 +37,12 @@ const FEATURES = [
   {
     icon: <Clock className="w-5 h-5 text-slate-600" />,
     title: 'Predictable Response Windows',
-    desc: 'Guaranteed response times on every request class, from emergency plumbing to routine preventive maintenance.',
+    desc: 'Agreed response windows on every request class, from emergency plumbing to routine preventive maintenance.',
   },
   {
     icon: <Users className="w-5 h-5 text-slate-600" />,
     title: 'One Verified Workforce',
-    desc: 'Every professional on your account is BukiePassport verified, biometrically confirmed, and insured under the BukieGuarantee.',
+    desc: 'Professionals on your account complete profile verification and identity checks. Terms for guarantee coverage are agreed per booking.',
   },
 ];
 

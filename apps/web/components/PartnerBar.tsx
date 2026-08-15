@@ -16,12 +16,12 @@ export default function PartnerBar() {
           <div className="hidden sm:block w-px h-6 bg-slate-200" />
           <div className="flex items-center gap-2.5">
             <Fingerprint className="w-5 h-5 text-slate-400" />
-            <span className="text-sm font-medium text-slate-500">NIN verified</span>
+            <span className="text-sm font-medium text-slate-500">NIN verification available</span>
           </div>
           <div className="hidden sm:block w-px h-6 bg-slate-200" />
           <div className="flex items-center gap-2.5">
             <ShieldCheck className="w-5 h-5 text-[#296A4B]" />
-            <span className="text-sm font-medium text-slate-500">Every payment held in escrow</span>
+            <span className="text-sm font-medium text-slate-500">Escrow available for eligible bookings</span>
           </div>
         </div>
       </div>

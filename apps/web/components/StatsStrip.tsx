@@ -7,11 +7,13 @@ type StatDef =
   | { icon: typeof Users; kind: 'count'; value: number; suffix: string; label: string; shortLabel?: string }
   | { icon: typeof Star; kind: 'rating'; value: number; label: string; shortLabel?: string };
 
+// Placeholder until real platform figures exist. Avoid publishing exact counts
+// we cannot verify; the guide forbids unsupported statistics and ratings.
 const STATS: StatDef[] = [
-  { icon: Users, kind: 'count', value: 25000, suffix: '+', label: 'Verified Professionals' },
-  { icon: Briefcase, kind: 'count', value: 120000, suffix: '+', label: 'Jobs Successfully Completed', shortLabel: 'Jobs Completed' },
-  { icon: Star, kind: 'rating', value: 4.8, label: 'Customer Rating' },
-  { icon: Globe2, kind: 'count', value: 36, suffix: ' States', label: 'Nigerian Coverage' },
+  { icon: Users, kind: 'count', value: 0, suffix: '', label: 'Verified Professionals', shortLabel: 'Verified Professionals' },
+  { icon: Briefcase, kind: 'count', value: 0, suffix: '', label: 'Jobs Completed', shortLabel: 'Jobs Completed' },
+  { icon: Star, kind: 'rating', value: 0, label: 'Customer Rating' },
+  { icon: Globe2, kind: 'count', value: 0, suffix: '', label: 'Serving Your Area', shortLabel: 'Serving Your Area' },
 ];
 
 function useCountUp(target: number, active: boolean) {
@@ -57,14 +59,14 @@ function StatCell({ stat }: { stat: StatDef }) {
 }
 
 const CATEGORY_STATS: { label: string; value: string }[] = [
-  { label: 'Generator repairs', value: '21,300+' },
-  { label: 'AC services', value: '18,700+' },
-  { label: 'Plumbing jobs', value: '16,900+' },
-  { label: 'Electrical & solar', value: '14,400+' },
-  { label: 'Cleaning jobs', value: '12,800+' },
-  { label: 'Carpentry jobs', value: '9,500+' },
-  { label: 'TV & DSTV installs', value: '11,200+' },
-  { label: 'Relocations', value: '8,100+' },
+  { label: 'Generator repairs', value: 'Coming soon' },
+  { label: 'AC services', value: 'Coming soon' },
+  { label: 'Plumbing jobs', value: 'Coming soon' },
+  { label: 'Electrical & solar', value: 'Coming soon' },
+  { label: 'Cleaning jobs', value: 'Coming soon' },
+  { label: 'Carpentry jobs', value: 'Coming soon' },
+  { label: 'TV & DSTV installs', value: 'Coming soon' },
+  { label: 'Relocations', value: 'Coming soon' },
 ];
 
 export default function StatsStrip() {
@@ -78,7 +80,7 @@ export default function StatsStrip() {
         </div>
         <div className="border-t border-slate-100 pt-5">
           <p className="text-center text-xs font-semibold uppercase tracking-[0.15em] text-slate-400 mb-3">
-            Jobs completed by category (approx.)
+            Platform activity by category
           </p>
           <div className="flex flex-wrap justify-center gap-x-7 gap-y-2">
             {CATEGORY_STATS.map((cs) => (
