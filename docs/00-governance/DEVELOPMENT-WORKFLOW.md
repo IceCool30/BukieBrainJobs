@@ -1,7 +1,7 @@
 # Development Workflow
 
 **Document ID:** GOV-003
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Approved foundation
 
 ## Core rule
@@ -17,7 +17,7 @@ Product specification
     ↓
 UX requirements & flow
     ↓
-Google Antigravity design & implementation (using DESIGN.md)
+Design and implementation (using DESIGN.md)
     ↓
 Automated & manual testing
     ↓
@@ -46,11 +46,7 @@ Each substantive feature should have:
 
 ## Design gate
 
-Antigravity is responsible for interpreting visual layouts directly from the product/UX requirements and DESIGN.md. The implementation is evaluated directly as the design artifact.
-
-> [!NOTE]
-> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
-
+Visual layouts are interpreted directly from the product/UX requirements and DESIGN.md. The implementation is evaluated as the design artifact.
 
 ## Engineering gate
 
@@ -99,6 +95,6 @@ When a requirement is ambiguous or contradictory:
 4. Ask for a decision or create a clearly labelled assumption.
 5. Record the final decision if it affects future work.
 
-## Agent safety rule
+## Change safety rule
 
-Agents should prefer a small, reversible change over a broad refactor. If an architectural change is necessary, document it before implementing it.
+Prefer a small, reversible change over a broad refactor. If an architectural change is necessary, document it before implementing it.

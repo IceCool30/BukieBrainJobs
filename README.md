@@ -6,11 +6,16 @@ This repository is the engineering and documentation source of truth for the pro
 
 ## Current repository status
 
-**Phase:** Repository Foundation
+**Phase:** Active development
 
-**Code status:** No application code has been committed yet.
+**Code status:** Monorepo scaffold is in place.
 
-The repository is intentionally being established as a governed project foundation before application code is introduced.
+- `apps/web` — Next.js web application
+- `apps/mobile` — Expo mobile application
+- `packages/` — shared contracts, UI, validation, database, utilities
+- `services/socket-server` — real-time messaging service
+
+Feature work proceeds on short-lived branches. The public homepage redesign is the current focus area.
 
 ## Source-of-truth hierarchy
 
@@ -22,25 +27,21 @@ When documents conflict, use this order unless a documented decision explicitly 
 4. Approved design-system artifacts
 5. Approved feature and screen specifications
 6. Technical architecture and implementation specifications
-7. Google Antigravity implementation and design interpretation
+7. Implementation that follows the approved specifications
 
 Never silently resolve a material conflict by inventing a requirement.
 
-## Toolchain and responsibilities
+## Responsibilities
 
-| Area | Authority / Tool | Responsibility |
-|---|---|---|
-| Product architecture | ChatGPT | Product decisions, specifications, UX, architecture, acceptance criteria |
-| UI design & Engineering | Google Antigravity | UI design interpretation, frontend, backend, APIs, infrastructure, testing and deployment |
-| Source control | GitHub | Versioned source, documentation, reviews and release history |
+| Area | Responsibility |
+|---|---|
+| Product and specifications | Product decisions, feature specifications, UX, architecture, acceptance criteria |
+| Design and engineering | UI interpretation from DESIGN.md, frontend, backend, APIs, infrastructure, testing and deployment |
+| Source control | Versioned source, documentation, reviews and release history on GitHub |
 
-> [!NOTE]
-> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
+All contributors must read the repository guidance before modifying code.
 
-
-Antigravity and any other coding agent must read the repository guidance before modifying code.
-
-## Intended repository structure
+## Repository structure
 
 ```text
 BukieBrainJobs/
@@ -55,13 +56,15 @@ BukieBrainJobs/
 │
 ├── packages/
 │   ├── ui/
-│   ├── design-tokens/
 │   ├── types/
 │   ├── validation/
-│   ├── database/
-│   ├── auth/
-│   ├── config/
+│   ├── db/
+│   ├── store/
+│   ├── api-types/
 │   └── utils/
+│
+├── services/
+│   └── socket-server/
 │
 ├── docs/
 │   ├── 00-governance/
@@ -87,15 +90,13 @@ BukieBrainJobs/
 │   ├── 20-prompts/
 │   └── 21-decision-log/
 │
-├── infrastructure/
-├── scripts/
 ├── DESIGN.md
 ├── CONTRIBUTING.md
 ├── SECURITY.md
 └── README.md
 ```
 
-This is the target organizational model. Directories should only become implementation-bearing when their requirements are approved and work begins.
+Directories become implementation-bearing when their requirements are approved and work begins.
 
 ## Engineering principles
 
@@ -128,9 +129,9 @@ See `CONTRIBUTING.md` and `docs/00-governance/DEVELOPMENT-WORKFLOW.md`.
 
 ## Architecture baseline
 
-The approved technical specification defines a pnpm workspace with Turborepo, TypeScript strict mode and Node 20 LTS. The intended application architecture includes a Next.js web application, an Expo mobile application and shared packages for contracts, validation, business logic and infrastructure concerns.
+The approved technical baseline uses a pnpm workspace with Turborepo, TypeScript strict mode, and Node 24+. The application architecture includes a Next.js web application, an Expo mobile application, and shared packages for contracts, validation, business logic and infrastructure concerns.
 
-The implementation must follow the approved technical specification rather than recreating requirements from memory.
+Implementation must follow the approved technical specification rather than recreating requirements from memory.
 
 ## Design baseline
 
@@ -140,6 +141,4 @@ Do not introduce arbitrary colors, typography, spacing, radii, motion or compone
 
 ## Status
 
-This repository currently contains the company and product foundation only. Application implementation will be introduced deliberately after the local working tree has been aligned with this repository structure and the relevant engineering specifications have been reviewed.
-
-<!-- Sync deployment trigger -->
+The product foundation, design system, and monorepo scaffold are in place. Feature implementation proceeds through approved specifications, short-lived branches, review, and merge to main.

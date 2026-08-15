@@ -1,12 +1,12 @@
 # Source of Truth and Document Governance
 
 **Document ID:** GOV-001
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Approved foundation
 
 ## Purpose
 
-This document defines where agents, developers, designers and future contributors should look for authoritative BukieBrainJobs requirements.
+This document defines where developers, designers and future contributors should look for authoritative BukieBrainJobs requirements.
 
 ## Authority hierarchy
 
@@ -24,19 +24,15 @@ Approved feature and screen specifications define feature-level behavior, conten
 
 ### 4. Technical authority
 
-`BukieBrainJobs — Full-Stack Technical Specification.md` and approved engineering specifications define architecture, contracts, data, infrastructure, security and testing requirements.
+The full-stack technical specification and approved engineering specifications define architecture, contracts, data, infrastructure, security and testing requirements.
 
 ### 5. Design implementation
 
-Google Antigravity is responsible for interpreting and implementing the visual layout directly from the approved project specifications and DESIGN.md. 
-
-> [!NOTE]
-> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
+Visual layout is interpreted and implemented directly from the approved project specifications and DESIGN.md.
 
 ### 6. Engineering implementation
 
-Google Antigravity and human developers implement the approved requirements. Code is not a higher authority than an approved specification.
-
+Contributors implement the approved requirements. Code is not a higher authority than an approved specification.
 
 ## Conflict rule
 
@@ -48,12 +44,12 @@ If two sources conflict:
 4. Do not silently invent a compromise.
 5. Record a new decision if the conflict requires a product or architectural change.
 
-## Required reading for agents
+## Required reading before implementation
 
 Before implementing a feature, read:
 
 - `README.md`
-- `AGENTS.md`
+- `AGENTS.md` (Development Standards)
 - `CONTRIBUTING.md`
 - `DESIGN.md`
 - The relevant product specification
