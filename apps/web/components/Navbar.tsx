@@ -205,13 +205,13 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-200">
+        <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]">
           <Link href="/services" className="hover:text-[#ABEEC8] transition-colors flex items-center gap-1.5">
-            <Search className="w-4 h-4 text-[#296A4B]" />
+            <Search className="w-4 h-4 text-[#ABEEC8]" />
             Services
           </Link>
           <Link href="/guarantee" className="hover:text-[#ABEEC8] transition-colors flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-[#296A4B]" />
+            <ShieldCheck className="w-4 h-4 text-[#ABEEC8]" />
             BukieGuarantee
           </Link>
           <a href="#trust" className="hover:text-[#ABEEC8] transition-colors flex items-center gap-1.5">
@@ -228,7 +228,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           {/* Level 2 Secondary: Join as Professional */}
           <button
             onClick={onBecomeWorkerClick}
-            className="px-3.5 py-2 text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 rounded-full transition-all flex items-center gap-1.5"
+            className="px-3.5 py-2 text-xs font-semibold text-white hover:text-[#ABEEC8] rounded-full transition-all flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
           >
             <UserCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
             Join as a Professional
@@ -237,14 +237,14 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           {/* Level 2 Secondary: Post a Job */}
           <button
             onClick={onPostJobClick}
-            className="px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#296A4B] hover:bg-[#296A4B]/20 rounded-full transition-all flex items-center gap-1.5 shadow-sm"
+            className="px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/70 bg-[#001A41]/55 backdrop-blur-sm hover:bg-[#296A4B]/60 rounded-full transition-all flex items-center gap-1.5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.45)]"
           >
             <Briefcase className="w-3.5 h-3.5" />
             Post a Job Request
           </button>
 
           {/* Level 3 Supporting: Sign In */}
-          <button className="ml-1 text-xs font-semibold text-slate-300 hover:text-white underline-offset-4 hover:underline">
+          <button className="ml-1 text-xs font-semibold text-white hover:text-[#ABEEC8] underline-offset-4 hover:underline drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]">
             Sign In
           </button>
         </div>

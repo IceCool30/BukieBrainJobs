@@ -64,7 +64,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
         <div className="max-w-3xl text-left space-y-6">
 
           {/* Live Operational Signal */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#001A41]/80 backdrop-blur-sm border border-[#296A4B]/60 text-xs font-semibold text-[#ABEEC8]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#001A41]/85 backdrop-blur-md border border-[#ABEEC8]/50 text-xs font-semibold text-[#ABEEC8] shadow-[0_2px_10px_-3px_rgba(0,0,0,0.5)]">
             <span className="w-2 h-2 rounded-full bg-[#ABEEC8] animate-pulse shrink-0" />
             <span>48 Verified Artisans Online in Lagos &amp; Abuja today</span>
           </div>
