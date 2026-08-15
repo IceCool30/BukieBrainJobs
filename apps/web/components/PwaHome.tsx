@@ -49,7 +49,13 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
 
         <div className="absolute inset-x-0 top-1/2 -translate-y-[38%] z-10 px-5 text-left">
           <h1 className="font-display font-extrabold text-[19px] leading-snug tracking-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.55)]">
-            Book a skilled local or remote worker in minutes, or find flexible work that pays what you are worth. Only on BukieBrainJobs.
+            Book a skilled local or remote worker in minutes, or find flexible
+            work that pays what you are worth. Only on{' '}
+            <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#ABEEC8] to-[#5FD8A5]">
+              BukieBrainJobs
+              <span className="absolute inset-x-0 bottom-0 h-[2px] rounded-full bg-gradient-to-r from-[#ABEEC8] to-transparent" />
+            </span>
+            .
           </h1>
           <div className="relative mt-3 max-w-md">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[16px] h-[16px] text-slate-400" />
