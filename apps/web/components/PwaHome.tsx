@@ -14,22 +14,18 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
 
   return (
     <div className="min-h-screen bg-[#F8F9FF] pb-10">
-      {/* Photo-governed hero with edge-only navy accents */}
-      <section className="relative h-[288px] bg-transparent">
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <img
-            src="/images/hero-portrait-1920.png"
-            alt="Verified BukieBrainJobs artisans against the Lagos waterfront"
-            className="absolute inset-0 h-full w-full object-cover object-[76%_66%]"
-            fetchPriority="high"
-          />
-          {/* Thin edge-only navy accents, never over the faces */}
-          <div className="absolute inset-x-0 top-0 h-[14%] bg-gradient-to-b from-[#001A41]/45 to-[#001A41]/0" />
-          <div className="absolute inset-y-0 left-0 w-[14%] bg-gradient-to-r from-[#001A41]/30 to-[#001A41]/0" />
-          <div className="absolute inset-y-0 right-0 w-[14%] bg-gradient-to-l from-[#001A41]/30 to-[#001A41]/0" />
-        </div>
+      {/* Compact photo-governed hero: headline and search centered over the photo */}
+      <section className="relative h-[320px]">
+        <img
+          src="/images/hero-portrait-1920.png"
+          alt="Verified BukieBrainJobs artisans against the Lagos waterfront"
+          className="absolute inset-0 h-full w-full object-cover object-[78%_52%]"
+          fetchPriority="high"
+        />
+        {/* Symmetric navy vignette: soft on both sides and corners, clear over the faces */}
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 120% 90% at 50% 55%, transparent 42%, rgba(0,26,65,0.42) 100%)' }} />
 
-        <div className="relative z-10 px-4 pt-3">
+        <div className="absolute inset-x-0 top-0 z-10 px-4 pt-3">
           <div className="flex items-center justify-between">
             <Image
               src="/images/logo-icon.png?v=3"
@@ -48,40 +44,37 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
             </button>
           </div>
         </div>
-      </section>
 
-      {/* Navy band carrying the headline and search, faces stay untouched */}
-      <section className="bg-[#001A41] text-white px-4 pt-6 pb-5">
-        <h1 className="font-display font-extrabold text-[22px] leading-snug tracking-tight text-white">
-          Book a skilled local or remote worker in minutes, or find
-          flexible work that pays what you are worth. Only on
-          BukieBrainJobs.
-        </h1>
-        <div className="relative mt-4 max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[16px] h-[16px] text-slate-400" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={"Try 'mount TV' or 'leaky faucet'"}
-            className="w-full h-[46px] pl-9 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
-          />
-          {matched.length > 0 && (
-            <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
-              {matched.map((c) => (
-                <Link
-                  key={c.id}
-                  href="/services"
-                  className="flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50"
-                >
-                  <span className="w-9 h-9 rounded-lg overflow-hidden bg-slate-100 shrink-0">
-                    <img src={c.photoUrl} alt={c.title} className="w-full h-full object-cover" />
-                  </span>
-                  <span className="text-[14px] font-medium text-slate-800">{c.title}</span>
-                  <span className="ml-auto text-[12px] text-slate-400">{c.startingPrice}</span>
-                </Link>
-              ))}
-            </div>
-          )}
+        <div className="absolute inset-x-0 top-1/2 -translate-y-[38%] z-10 px-5 text-center">
+          <h1 className="font-display font-extrabold text-[18px] leading-snug tracking-tight text-white drop-shadow-md">
+            Book a skilled local or remote worker in minutes, or find flexible work that pays what you are worth. Only on BukieBrainJobs.
+          </h1>
+          <div className="relative mx-auto mt-3 max-w-md">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[16px] h-[16px] text-slate-400" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={"Try 'mount TV' or 'leaky faucet'"}
+              className="w-full h-[44px] pl-9 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
+            />
+            {matched.length > 0 && (
+              <div className="absolute left-0 right-0 bottom-full mb-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
+                {matched.map((c) => (
+                  <Link
+                    key={c.id}
+                    href="/services"
+                    className="flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50"
+                  >
+                    <span className="w-9 h-9 rounded-lg overflow-hidden bg-slate-100 shrink-0">
+                      <img src={c.photoUrl} alt={c.title} className="w-full h-full object-cover" />
+                    </span>
+                    <span className="text-[14px] font-medium text-slate-800">{c.title}</span>
+                    <span className="ml-auto text-[12px] text-slate-400">{c.startingPrice}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
