@@ -82,8 +82,8 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
 
           {/* Subtitle */}
           <p className="text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl hidden md:block">
-            Skilled hands you can trust, whether next door or across the
-            country, and fair work that values what you bring to the table.
+            Expert hands you can trust, wherever you are. We are here to
+            provide fair work that respects your worth.
           </p>
 
           {/* Primary Search Row: single field, same language as the mobile hero */}
