@@ -22,8 +22,8 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
           className="absolute inset-0 h-full w-full object-cover object-[78%_52%]"
           fetchPriority="high"
         />
-        {/* Symmetric navy vignette: soft on both sides and corners, clear over the faces */}
-        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 120% 90% at 50% 55%, transparent 42%, rgba(0,26,65,0.42) 100%)' }} />
+        {/* Symmetric navy vignette, softened so the image stays dominant */}
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 120% 90% at 50% 55%, transparent 50%, rgba(0,26,65,0.35) 100%)', mixBlendMode: 'multiply' }} />
 
         <div className="absolute inset-x-0 top-0 z-10 px-4 pt-3">
           <div className="flex items-center justify-between">
@@ -45,11 +45,11 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
           </div>
         </div>
 
-        <div className="absolute inset-x-0 top-1/2 -translate-y-[38%] z-10 px-5 text-center">
-          <h1 className="font-display font-extrabold text-[18px] leading-snug tracking-tight text-white drop-shadow-md">
+        <div className="absolute inset-x-0 top-1/2 -translate-y-[38%] z-10 px-5 text-left">
+          <h1 className="font-display font-extrabold text-[19px] leading-snug tracking-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.55)]">
             Book a skilled local or remote worker in minutes, or find flexible work that pays what you are worth. Only on BukieBrainJobs.
           </h1>
-          <div className="relative mx-auto mt-3 max-w-md">
+          <div className="relative mt-3 max-w-md">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[16px] h-[16px] text-slate-400" />
             <input
               value={query}
