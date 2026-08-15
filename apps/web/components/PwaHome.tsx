@@ -57,8 +57,8 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
             </span>
             .
           </h1>
-          <div className="relative mt-3 max-w-md">
-            <Search className="absolute inset-y-0 left-3.5 my-auto w-[16px] h-[16px] text-slate-400" />
+          <div className="relative mt-3 h-[44px] max-w-md">
+            <Search className="absolute top-1/2 left-3.5 -translate-y-1/2 w-[16px] h-[16px] text-slate-400 shrink-0" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
