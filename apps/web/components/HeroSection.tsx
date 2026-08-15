@@ -43,9 +43,9 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
     SERVICE_CATEGORIES.filter((c) => c.title.toLowerCase().includes(q.toLowerCase()));
 
   return (
-    <section className="relative bg-[#001A41] text-white pt-20 pb-12 overflow-hidden">
+    <section className="relative bg-[#001A41] text-white pt-20 pb-12 overflow-visible">
       {/* Hero portrait backdrop */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 overflow-hidden">
         <picture>
           <source media="(max-width: 768px)" srcSet="/images/hero-mobile-1080.jpg" />
           <Image
