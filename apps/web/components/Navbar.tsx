@@ -150,7 +150,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
       className={`sticky top-0 z-50 w-full text-white transition-all duration-300 ${
         solid
           ? 'bg-[#001A41]/45 backdrop-blur-md border-b border-white/10 pointer-events-auto'
-          : 'bg-[#001A41]/60 backdrop-blur-md pointer-events-none'
+          : 'bg-transparent pointer-events-none'
       }`}
       style={solid ? {} : { position: 'absolute', top: 0, left: 0, right: 0 }}
     >

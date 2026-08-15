@@ -40,7 +40,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
   };
 
   return (
-    <section className="relative bg-[#001A41] text-white pt-28 pb-16 overflow-hidden">
+    <section className="relative bg-[#001A41] text-white pt-20 pb-12 overflow-hidden">
       {/* Hero portrait backdrop */}
       <div className="absolute inset-0 z-0">
         <picture>
@@ -55,7 +55,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
           />
         </picture>
         {/* Desktop overlay: thin navy veil at the left edge only, photo governs the rest */}
-        <div className="absolute inset-y-0 left-0 w-[46%] hidden md:block bg-gradient-to-r from-[#001A41]/72 to-[#001A41]/0" />
+        <div className="absolute inset-y-0 left-0 w-[38%] hidden md:block bg-gradient-to-r from-[#001A41]/60 to-[#001A41]/0" />
         {/* Mobile overlay: navy only at the very bottom edge so text stays readable */}
         <div className="absolute inset-x-0 bottom-0 h-[26%] block md:hidden bg-gradient-to-t from-[#001A41]/88 via-[#001A41]/45 to-[#001A41]/0" />
       </div>
