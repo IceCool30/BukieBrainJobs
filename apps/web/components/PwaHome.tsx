@@ -24,7 +24,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
         />
         {/* Navy accents on left, right, and bottom only; faces and top stay clear */}
         <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 115% 100% at 55% 38%, transparent 48%, rgba(0,26,65,0.32) 100%)', mixBlendMode: 'multiply' }} />
-        <div className="absolute inset-x-0 bottom-0 h-[26%] bg-gradient-to-t from-[#001A41]/45 via-[#001A41]/15 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-[34%] bg-gradient-to-t from-[#001A41]/75 via-[#001A41]/30 to-transparent" />
 
         <div className="absolute inset-x-0 top-0 z-10 px-4 pt-3">
           <div className="flex items-center justify-between">
