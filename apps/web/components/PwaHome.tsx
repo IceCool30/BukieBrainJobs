@@ -58,14 +58,14 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
             .
           </h1>
           <div className="relative mt-3 max-w-md">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[16px] h-[16px] text-slate-400" />
+            <Search className="absolute inset-y-0 left-3.5 my-auto w-[16px] h-[16px] text-slate-400" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={"Try 'mount TV' or 'leaky faucet'"}
-              className="w-full h-[44px] pl-9 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
+              className="w-full h-[44px] pl-10 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
             />
-            <p className="mt-2 text-right text-[11px] leading-tight text-white/85 max-w-xs ml-auto line-clamp-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
+            <p className="mt-2 text-right text-[11px] leading-tight font-semibold text-white/90 max-w-xs ml-auto line-clamp-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
               Expert hands you can trust, wherever you are. We are here to
               provide fair work that respects your worth.
             </p>

@@ -39,8 +39,8 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
     onSearchSubmit?.(serviceQuery || 'All Services', NIGERIAN_LOCATIONS[0]?.name || 'Lagos');
   };
 
-  const matchedServices = (q: string) =>
-    SERVICE_CATEGORIES.filter((c) => c.title.toLowerCase().includes(q.toLowerCase())).map((c) => c.title);
+  const matchedCategories = (q: string) =>
+    SERVICE_CATEGORIES.filter((c) => c.title.toLowerCase().includes(q.toLowerCase()));
 
   return (
     <section className="relative bg-[#001A41] text-white pt-20 pb-12 overflow-hidden">
@@ -84,7 +84,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl hidden md:block">
+          <p className="text-base sm:text-lg font-bold text-slate-100 leading-relaxed max-w-2xl hidden md:block">
             Expert hands you can trust, wherever you are. We are here to
             provide fair work that respects your worth.
           </p>
@@ -105,23 +105,30 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
                 style={{ borderRadius: '12px' }}
               />
               {(showSuggestions || serviceQuery.trim().length >= 2) && (
-                <div className="absolute left-0 right-0 bottom-full mb-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-50">
+                <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-50">
                   {(serviceQuery.trim().length >= 2
-                    ? matchedServices(serviceQuery)
-                    : popularQuickSearches
-                  ).map((item) => (
+                    ? matchedCategories(serviceQuery)
+                    : matchedCategories('')
+                  ).map((cat) => (
                     <button
-                      key={item}
+                      key={cat.id}
                       type="button"
                       onMouseDown={(e) => {
                         e.preventDefault();
-                        setServiceQuery(item);
+                        setServiceQuery(cat.title);
                         setShowSuggestions(false);
                       }}
-                      className="w-full px-4 py-2.5 text-sm text-left text-slate-800 hover:bg-slate-50 flex items-center gap-3"
+                      className="w-full px-3 py-2 text-sm text-left text-slate-800 hover:bg-slate-50 flex items-center gap-3"
                     >
-                      <Search className="w-4 h-4 text-slate-400" />
-                      {item}
+                      <Image
+                        src={cat.photoUrl}
+                        alt={cat.title}
+                        width={40}
+                        height={40}
+                        className="w-10 h-10 rounded-lg object-cover shrink-0"
+                      />
+                      <span className="flex-1 truncate font-medium">{cat.title}</span>
+                      <span className="text-[#001A41]/60 text-xs whitespace-nowrap">from {cat.startingPrice}</span>
                     </button>
                   ))}
                 </div>
