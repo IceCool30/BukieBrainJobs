@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import{ Search, ShieldCheck, Award, Lock, Star } from 'lucide-react';
-import { NIGERIAN_LOCATIONS } from '../lib/mock/homepage-data';
+import { NIGERIAN_LOCATIONS, SERVICE_CATEGORIES } from '../lib/mock/homepage-data';
 
 interface HeroSectionProps {
   onSearchSubmit?: (service: string, location: string) => void;
@@ -38,6 +38,9 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
     e.preventDefault();
     onSearchSubmit?.(serviceQuery || 'All Services', NIGERIAN_LOCATIONS[0]?.name || 'Lagos');
   };
+
+  const matchedServices = (q: string) =>
+    SERVICE_CATEGORIES.filter((c) => c.title.toLowerCase().includes(q.toLowerCase())).map((c) => c.title);
 
   return (
     <section className="relative bg-[#001A41] text-white pt-20 pb-12 overflow-hidden">
@@ -101,9 +104,12 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
                 className="w-full h-[56px] pl-11 pr-4 text-[15px] font-medium text-slate-900 bg-white rounded-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] placeholder:text-slate-400"
                 style={{ borderRadius: '12px' }}
               />
-              {showSuggestions && serviceQuery.trim() === '' && (
+              {(showSuggestions || serviceQuery.trim().length >= 2) && (
                 <div className="absolute left-0 right-0 bottom-full mb-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-50">
-                  {popularQuickSearches.map((item) => (
+                  {(serviceQuery.trim().length >= 2
+                    ? matchedServices(serviceQuery)
+                    : popularQuickSearches
+                  ).map((item) => (
                     <button
                       key={item}
                       type="button"

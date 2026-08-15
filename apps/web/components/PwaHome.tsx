@@ -65,6 +65,10 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
               placeholder={"Try 'mount TV' or 'leaky faucet'"}
               className="w-full h-[44px] pl-9 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
             />
+            <p className="mt-2 text-right text-[11px] leading-tight text-white/85 max-w-xs ml-auto line-clamp-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
+              Expert hands you can trust, wherever you are. We are here to
+              provide fair work that respects your worth.
+            </p>
             {matched.length > 0 && (
               <div className="absolute left-0 right-0 bottom-full mb-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
                 {matched.map((c) => (
