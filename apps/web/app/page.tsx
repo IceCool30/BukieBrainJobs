@@ -114,8 +114,8 @@ export default function CustomerHomepage() {
         )}
       </main>
 
-      {/* Corporate Footer, skipped on the PWA landing page for a minimal feel */}
-      {!isPwa && <Footer />}
+      {/* Corporate Footer */}
+      <Footer />
 
       {/* Persistent Ergonomic Mobile Bottom Nav, absent on the home landing page */}
       {!isPwa && (

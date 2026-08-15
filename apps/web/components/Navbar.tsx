@@ -112,8 +112,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     return (
       <>
         {solid && !drawerOnly && (
-          <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-sm rounded-full bg-white/15 backdrop-blur-md border border-white/20 shadow-[0_6px_20px_-8px_rgba(0,26,65,0.45)] flex items-center justify-between px-4 h-11 pointer-events-auto">
-            <span className="text-[11px] font-medium text-white/90 drop-shadow">Payments secured by escrow</span>
+          <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-sm rounded-full bg-white/15 backdrop-blur-md border border-white/20 shadow-[0_6px_20px_-8px_rgba(0,26,65,0.45)] flex items-center justify-end px-3 h-11 pointer-events-auto">
             <button
               ref={triggerRef}
               onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
@@ -150,8 +149,8 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     <header
       className={`sticky top-0 z-50 w-full text-white transition-all duration-300 ${
         solid
-          ? 'bg-[#001A41]/35 backdrop-blur-md border-b border-white/10 pointer-events-auto'
-          : 'bg-transparent pointer-events-none'
+          ? 'bg-[#001A41]/45 backdrop-blur-md border-b border-white/10 pointer-events-auto'
+          : 'bg-[#001A41]/60 backdrop-blur-md pointer-events-none'
       }`}
       style={solid ? {} : { position: 'absolute', top: 0, left: 0, right: 0 }}
     >
@@ -171,10 +170,6 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="hidden md:flex items-center gap-1 text-[#ABEEC8]">
-              <Lock className="w-3 h-3 text-[#296A4B]" />
-              Payments secured by escrow
-            </span>
             <span className="flex items-center gap-1 text-slate-300 hover:text-white transition-colors">
               <PhoneCall className="w-3 h-3 text-[#ABEEC8]" />
               +234 800-BUKIE-JOBS

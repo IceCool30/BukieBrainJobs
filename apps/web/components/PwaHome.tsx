@@ -15,18 +15,14 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
   return (
     <div className="min-h-screen bg-[#F8F9FF] pb-10">
       {/* Compact branded hero, mirrors the desktop hero on a smaller canvas */}
-      <section className="relative bg-transparent text-white">
+      <section className="relative h-[380px] bg-transparent text-white">
         <div className="absolute inset-0 z-0 overflow-hidden">
-          <picture>
-            <source media="(max-width: 768px)" srcSet="/images/hero-mobile-crop.jpg" />
-            <Image
-              src="/images/hero-portrait-1920.png"
-              alt="Verified BukieBrainJobs artisans against the Lagos waterfront"
-              fill
-              priority
-              className="object-cover object-top"
-            />
-          </picture>
+          <img
+            src="/images/hero-portrait-1920.png"
+            alt="Verified BukieBrainJobs artisans against the Lagos waterfront"
+            className="absolute inset-0 h-full w-full object-cover object-[76%_66%]"
+            fetchPriority="high"
+          />
         </div>
 
         <div className="relative z-10 px-4 pt-4 pb-8">
