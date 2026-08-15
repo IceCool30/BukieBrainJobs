@@ -57,21 +57,18 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
             </span>
             .
           </h1>
-          <div className="relative mt-3 max-w-md">
-            <Search className="absolute top-1/2 left-3.5 -translate-y-1/2 w-[16px] h-[16px] text-slate-400 shrink-0 z-10" />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={"Try 'mount TV' or 'leaky faucet'"}
-              className="w-full h-[44px] pl-10 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
-            />
-            <p className="mt-2 text-right text-[11px] leading-tight font-semibold text-white/90 max-w-xs ml-auto line-clamp-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
-              Expert hands you can trust, wherever you are. We are here to
-              provide fair work that respects your worth.
-            </p>
-            {matched.length > 0 && (
-              <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
-                {matched.map((c) => (
+          <div className="mt-3 max-w-md">
+            <div className="relative h-[44px]">
+              <Search className="absolute top-1/2 left-3.5 -translate-y-1/2 w-[16px] h-[16px] text-slate-400 shrink-0 z-10" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={"Try 'mount TV' or 'leaky faucet'"}
+                className="w-full h-[44px] pl-10 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
+              />
+              {matched.length > 0 && (
+                <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
+                  {matched.map((c) => (
                   <Link
                     key={c.id}
                     href="/services"
@@ -84,8 +81,13 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
                     <span className="ml-auto text-[12px] text-slate-400">{c.startingPrice}</span>
                   </Link>
                 ))}
-              </div>
-            )}
+                </div>
+              )}
+            </div>
+            <p className="mt-2 text-right text-[11px] leading-tight font-semibold text-white/90 max-w-xs ml-auto line-clamp-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
+              Expert hands you can trust, wherever you are. We are here to
+              provide fair work that respects your worth.
+            </p>
           </div>
         </div>
       </section>
