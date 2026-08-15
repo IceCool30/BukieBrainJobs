@@ -69,18 +69,21 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
             <span>48 Verified Artisans Online in Lagos &amp; Abuja today</span>
           </div>
 
-          {/* Headline */}
-          <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-[3.4rem] tracking-tight text-white leading-[1.12] sm:leading-[1.08]">
-            Skilled hands, on demand.
-            <br />
-            Trusted from the start.
+          {/* Headline: shared headline, brand name pops with the mint accent */}
+          <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-[3rem] tracking-tight text-white leading-[1.15] sm:leading-[1.15]">
+            Book a skilled local or remote worker in minutes, or find flexible
+            work that pays what you are worth. Only on{' '}
+            <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#ABEEC8] to-[#5FD8A5]">
+              BukieBrainJobs
+              <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-gradient-to-r from-[#ABEEC8] to-transparent" />
+            </span>
+            .
           </h1>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl hidden md:block">
-            Book verified artisans and technicians across Nigeria. Every job is
-            protected by escrow, so money moves only when the work is done to
-            your standard.
+          <p className="text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl hidden md:block">
+            Verified artisans and technicians across Nigeria, paid only when
+            the work meets your standard.
           </p>
 
           {/* Primary Search Row: one clean service field, TaskRabbit search-pill pattern */}
