@@ -112,14 +112,14 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     return (
       <>
         {solid && !drawerOnly && (
-          <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-sm rounded-full bg-white/15 backdrop-blur-md border border-white/20 shadow-[0_6px_20px_-8px_rgba(0,26,65,0.45)] flex items-center justify-end px-3 h-11 pointer-events-auto">
+          <div className="fixed top-3 right-4 z-50 h-11 w-11 rounded-xl bg-[#001A41]/90 border border-white/15 shadow-[0_6px_20px_-8px_rgba(0,26,65,0.45)] flex items-center justify-center pointer-events-auto">
             <button
               ref={triggerRef}
               onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
-              className="p-1.5 rounded-full text-white hover:bg-white/15"
+              className="p-2 rounded-lg text-white hover:bg-white/10"
               aria-label="Open menu"
             >
-              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         )}
