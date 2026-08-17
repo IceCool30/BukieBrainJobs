@@ -102,15 +102,14 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
 
         <div className="grid grid-cols-2 gap-3 pt-3">
           {SERVICE_CATEGORIES.slice(0, 6).map((cat) => (
-            <Link key={cat.id} href="/services" className="block">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-white shadow-[0_1px_4px_-1px_rgba(0,26,65,0.12),0_4px_12px_-2px_rgba(0,26,65,0.08)]">
-                <img src={cat.photoUrl} alt={cat.title} loading="lazy" className="w-full h-full object-cover" />
-                <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/55 to-transparent" />
-                <span className="absolute bottom-1.5 left-2 text-[10px] font-semibold text-white drop-shadow">
-                  Estimated from {cat.startingPrice}
+            <Link key={cat.id} href="/services" className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2">
+              <div className="relative aspect-[5/4] overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_2px_10px_-6px_rgba(0,26,65,0.2)]">
+                <img src={cat.photoUrl} alt={cat.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-200 group-active:scale-[1.02]" />
+                <span className="absolute left-2.5 top-2.5 rounded-full bg-white px-2 py-1 text-[10px] font-semibold text-[#001A41] shadow-sm">
+                  From {cat.startingPrice}
                 </span>
               </div>
-              <p className="mt-1.5 text-[13px] font-medium text-slate-700 leading-snug">{cat.title}</p>
+              <p className="mt-2 line-clamp-2 text-[13px] font-semibold leading-snug text-[#001A41]">{cat.title}</p>
             </Link>
           ))}
         </div>

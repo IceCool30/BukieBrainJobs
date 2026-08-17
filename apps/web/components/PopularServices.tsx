@@ -11,7 +11,7 @@ interface PopularServicesProps {
 
 export default function PopularServices({ onSelectCategory }: PopularServicesProps) {
   return (
-    <section id="services" className="py-16 bg-white border-b border-slate-200">
+    <section id="services" className="bg-[#F8F9FF] py-16 sm:py-20">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="flex items-end justify-between gap-4">
           <div>
@@ -31,31 +31,30 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
           {SERVICE_CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               onClick={() => onSelectCategory?.(cat)}
-              className="group bg-white rounded-xl border border-slate-200 shadow-[0_2px_8px_-4px_rgba(0,26,65,0.10)] hover:border-[#296A4B] hover:shadow-[0_12px_32px_-12px_rgba(0,26,65,0.18)] hover:-translate-y-1 transition-all overflow-hidden text-left"
+              className="group overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left shadow-[0_2px_10px_-6px_rgba(0,26,65,0.18)] transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-[#296A4B]/45 hover:shadow-[0_16px_36px_-16px_rgba(0,26,65,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+              <div className="relative aspect-[5/4] overflow-hidden bg-slate-100">
                 <img
                   src={cat.photoUrl}
                   alt={cat.title}
                   loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.035]"
                 />
-                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 to-transparent" />
-                <span className="absolute bottom-2 left-3 text-[11px] font-semibold text-white drop-shadow">
-                  Estimated from {cat.startingPrice}
+                <span className="absolute left-3 top-3 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-[#001A41] shadow-sm">
+                  From {cat.startingPrice}
+                </span>
+                <span className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#001A41] text-base text-white opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true">
+                  <ArrowRight className="h-4 w-4" />
                 </span>
               </div>
-              <div className="p-3.5 pt-3">
-                <span className="text-sm font-semibold text-[#001A41] group-hover:text-[#296A4B] transition-colors leading-tight block">
+              <div className="p-4">
+                <span className="block text-[15px] font-semibold leading-snug text-[#001A41] transition-colors group-hover:text-[#296A4B]">
                   {cat.title}
-                </span>
-                <span className="text-[11px] text-slate-500 mt-1 line-clamp-1 block">
-                  Explore available options
                 </span>
               </div>
             </button>
