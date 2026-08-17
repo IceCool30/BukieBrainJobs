@@ -154,7 +154,7 @@ body {
 }
 
 .motion-input {
-  transition: box-shadow 140ms var(--ease-ui-out), border-color 140ms var(--ease-ui-out);
+  transition: transform 180ms var(--ease-ui-out), box-shadow 180ms var(--ease-ui-out), border-color 180ms var(--ease-ui-out);
 }
 
 .motion-popover {
@@ -170,6 +170,38 @@ body {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .motion-reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 280ms var(--ease-ui-out), transform 280ms var(--ease-ui-out);
+  }
+
+  .motion-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .motion-reveal-item {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 240ms var(--ease-ui-out), transform 240ms var(--ease-ui-out);
+  }
+
+  .motion-reveal.is-visible .motion-reveal-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .motion-reveal.is-visible .motion-reveal-item:nth-child(2) { transition-delay: 55ms; }
+  .motion-reveal.is-visible .motion-reveal-item:nth-child(3) { transition-delay: 110ms; }
+  .motion-reveal.is-visible .motion-reveal-item:nth-child(4) { transition-delay: 165ms; }
+
+  .motion-popover-mobile {
+    animation-duration: 220ms;
   }
 }
 

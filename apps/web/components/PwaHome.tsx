@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Search, Menu } from 'lucide-react';
@@ -8,6 +8,22 @@ import { SERVICE_CATEGORIES } from '../lib/mock/homepage-data';
 export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: () => void; onOpenSearch: () => void }) {
   const [query, setQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const [servicesVisible, setServicesVisible] = useState(false);
+
+  useEffect(() => {
+    const target = servicesRef.current;
+    if (!target) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries[0]?.isIntersecting) return;
+      setServicesVisible(true);
+      observer.disconnect();
+    }, { threshold: 0.15 });
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
 
   const matched = searchOpen && query.trim()
     ? SERVICE_CATEGORIES.filter((c) => c.title.toLowerCase().includes(query.toLowerCase()))
@@ -73,10 +89,10 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
                   }
                 }}
                 placeholder="Search for a service, for example plumbing"
-                className="motion-input w-full h-[44px] pl-10 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:shadow-[0_10px_24px_-12px_rgba(0,26,65,0.55)]"
+                className="motion-input w-full h-[44px] pl-10 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:scale-[1.01] focus:shadow-[0_12px_26px_-12px_rgba(0,26,65,0.62)]"
               />
               {matched.length > 0 && (
-                <div className="motion-popover absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
+                <div className="motion-popover motion-popover-mobile absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
                   {matched.map((c) => (
                   <Link
                     key={c.id}
@@ -101,8 +117,8 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
       </section>
 
       {/* Quiet service grid, same card language as the desktop site */}
-      <div className="px-4 pt-6">
-        <div className="flex items-baseline justify-between">
+      <div ref={servicesRef} className={`motion-reveal px-4 pt-6${servicesVisible ? ' is-visible' : ''}`}>
+        <div className="motion-reveal-item flex items-baseline justify-between">
           <h2 className="font-display font-bold text-[17px] text-[#001A41]">Find a service</h2>
           <button onClick={onOpenSearch} className="motion-press text-[13px] font-medium text-[#296A4B]">
             View all services
@@ -111,9 +127,9 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
 
         <div className="grid grid-cols-2 gap-3 pt-3">
           {SERVICE_CATEGORIES.slice(0, 6).map((cat) => (
-            <Link key={cat.id} href="/services" className="motion-press group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2">
+            <Link key={cat.id} href="/services" className="motion-press motion-reveal-item group block rounded-2xl active:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2">
               <div className="relative aspect-[5/4] overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_2px_10px_-6px_rgba(0,26,65,0.2)]">
-                <img src={cat.photoUrl} alt={cat.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-[140ms] ease-[var(--ease-ui-out)] group-active:scale-[1.015]" />
+                <img src={cat.photoUrl} alt={cat.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-[180ms] ease-[var(--ease-ui-out)] group-active:scale-[1.035]" />
                 <span className="absolute left-2.5 top-2.5 rounded-full bg-white px-2 py-1 text-[10px] font-semibold text-[#001A41] shadow-sm">
                   From {cat.startingPrice}
                 </span>
