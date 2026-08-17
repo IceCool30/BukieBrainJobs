@@ -17,7 +17,7 @@ export default function ClosingCTA({ onPostJobClick }: ClosingCTAProps) {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={onPostJobClick}
-            className="inline-flex items-center gap-2.5 bg-[#296A4B] hover:bg-[#1f5239] active:bg-[#17402c] text-white font-semibold text-[15px] rounded-xl px-7 h-[52px] shadow-[0_8px_24px_-8px_rgba(41,106,75,0.6)] transition-all"
+            className="motion-press inline-flex items-center gap-2.5 bg-[#296A4B] hover:bg-[#1f5239] active:bg-[#17402c] text-white font-semibold text-[15px] rounded-xl px-7 h-[52px] shadow-[0_8px_24px_-8px_rgba(41,106,75,0.6)] transition-colors"
             style={{ borderRadius: '16px' }}
           >
             <Briefcase className="w-[18px] h-[18px]" />
@@ -25,7 +25,7 @@ export default function ClosingCTA({ onPostJobClick }: ClosingCTAProps) {
           </button>
           <a
             href="#services"
-            className="inline-flex items-center gap-2.5 border border-[#001A41]/25 hover:border-[#001A41] text-[#001A41] font-semibold text-[15px] rounded-xl px-7 h-[52px] transition-colors"
+            className="motion-press inline-flex items-center gap-2.5 border border-[#001A41]/25 hover:border-[#001A41] text-[#001A41] font-semibold text-[15px] rounded-xl px-7 h-[52px] transition-colors"
             style={{ borderRadius: '16px' }}
           >
             <Search className="w-[18px] h-[18px]" />

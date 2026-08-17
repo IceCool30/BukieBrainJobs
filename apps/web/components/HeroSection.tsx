@@ -97,14 +97,20 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
                 type="text"
                 value={serviceQuery}
                 onChange={(e) => setServiceQuery(e.target.value)}
-                onFocus={() => setShowSuggestions(serviceQuery.length === 0)}
+                onFocus={() => setShowSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape') {
+                    setShowSuggestions(false);
+                    event.currentTarget.blur();
+                  }
+                }}
                 placeholder="Search for a service, for example plumbing"
-                className="w-full h-[56px] pl-11 pr-4 text-[15px] font-medium text-slate-900 bg-white rounded-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] placeholder:text-slate-400"
+                className="motion-input w-full h-[56px] pl-11 pr-4 text-[15px] font-medium text-slate-900 bg-white rounded-xl shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:shadow-[0_22px_52px_-20px_rgba(0,0,0,0.62)] placeholder:text-slate-400"
                 style={{ borderRadius: '12px' }}
               />
-              {(showSuggestions || serviceQuery.trim().length >= 2) && (
-                <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-50">
+              {showSuggestions && (
+                <div className="motion-popover absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-50">
                   {(serviceQuery.trim().length >= 2
                     ? matchedCategories(serviceQuery)
                     : matchedCategories('')
@@ -117,7 +123,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
                         setServiceQuery(cat.title);
                         setShowSuggestions(false);
                       }}
-                      className="w-full px-3 py-2 text-sm text-left text-slate-800 hover:bg-slate-50 flex items-center gap-3"
+                      className="motion-press w-full px-3 py-2 text-sm text-left text-slate-800 transition-colors duration-[140ms] hover:bg-slate-50 flex items-center gap-3"
                     >
                       <Image
                         src={cat.photoUrl}

@@ -53,7 +53,7 @@ export default function MarketplacePaths({ onPostJobClick, onBecomeWorkerClick }
             <div className="pt-2 relative z-10">
               <button
                 onClick={onPostJobClick}
-                className="w-full sm:w-auto px-6 py-3 bg-[#296A4B] hover:bg-[#1F523A] text-white text-xs font-bold rounded-full transition-all flex items-center justify-center gap-2 shadow-md"
+                className="motion-press w-full sm:w-auto px-6 py-3 bg-[#296A4B] hover:bg-[#1F523A] text-white text-xs font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-md"
               >
                 <span>Post a job</span>
                 <ArrowRight className="w-4 h-4" />
@@ -92,7 +92,7 @@ export default function MarketplacePaths({ onPostJobClick, onBecomeWorkerClick }
             <div className="pt-2 relative z-10">
               <button
                 onClick={onBecomeWorkerClick}
-                className="w-full sm:w-auto px-6 py-3 bg-[#001A41] hover:bg-[#000F2D] text-white text-xs font-bold rounded-full transition-all flex items-center justify-center gap-2 shadow-md"
+                className="motion-press w-full sm:w-auto px-6 py-3 bg-[#001A41] hover:bg-[#000F2D] text-white text-xs font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-md"
               >
                 <span>Create a professional profile</span>
                 <ArrowRight className="w-4 h-4 text-[#ABEEC8]" />

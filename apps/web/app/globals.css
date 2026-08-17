@@ -112,6 +112,9 @@
 
   --shadow-ambient: 0 4px 20px rgba(0, 26, 65, 0.08);
   --shadow-ambient-hover: 0 4px 20px rgba(0, 26, 65, 0.15);
+
+  --ease-ui-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-ui-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 body {
@@ -139,11 +142,57 @@ body {
 }
 
 .card-hover {
-  transition: all 0.3s ease;
+  transition: transform 180ms var(--ease-ui-out), box-shadow 180ms var(--ease-ui-out);
 }
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px -10px rgba(0, 26, 65, 0.1);
+
+.motion-press {
+  transition: transform 140ms var(--ease-ui-out), background-color 140ms var(--ease-ui-out), color 140ms var(--ease-ui-out), box-shadow 140ms var(--ease-ui-out);
+}
+
+.motion-press:active {
+  transform: scale(0.97);
+}
+
+.motion-input {
+  transition: box-shadow 140ms var(--ease-ui-out), border-color 140ms var(--ease-ui-out);
+}
+
+.motion-popover {
+  transform-origin: top;
+  animation: motion-popover-in 180ms var(--ease-ui-out) both;
+}
+
+@keyframes motion-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -10px rgba(0, 26, 65, 0.1);
+  }
+
+  .service-card-motion:hover {
+    transform: translateY(-4px);
+    border-color: rgb(41 106 75 / 0.45);
+    box-shadow: 0 16px 36px -16px rgb(0 26 65 / 0.28);
+  }
+
+  .service-card-motion:hover .service-card-image {
+    transform: scale(1.025);
+  }
+
+  .service-card-motion:hover .service-card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @layer utilities {

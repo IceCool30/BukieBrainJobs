@@ -36,19 +36,19 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
             <button
               key={cat.id}
               onClick={() => onSelectCategory?.(cat)}
-              className="group overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left shadow-[0_2px_10px_-6px_rgba(0,26,65,0.18)] transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-[#296A4B]/45 hover:shadow-[0_16px_36px_-16px_rgba(0,26,65,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
+              className="service-card-motion motion-press group overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left shadow-[0_2px_10px_-6px_rgba(0,26,65,0.18)] transition-[transform,box-shadow,border-color] duration-[180ms] ease-[var(--ease-ui-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
             >
               <div className="relative aspect-[5/4] overflow-hidden bg-slate-100">
                 <img
                   src={cat.photoUrl}
                   alt={cat.title}
                   loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.035]"
+                  className="service-card-image h-full w-full object-cover transition-transform duration-[180ms] ease-[var(--ease-ui-out)]"
                 />
                 <span className="absolute left-3 top-3 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-[#001A41] shadow-sm">
                   From {cat.startingPrice}
                 </span>
-                <span className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#001A41] text-base text-white opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true">
+                <span className="service-card-arrow absolute right-3 top-3 flex h-8 w-8 translate-x-1 items-center justify-center rounded-full bg-[#001A41] text-base text-white opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">
                   <ArrowRight className="h-4 w-4" />
                 </span>
               </div>

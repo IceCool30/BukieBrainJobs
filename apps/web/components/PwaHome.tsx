@@ -7,8 +7,9 @@ import { SERVICE_CATEGORIES } from '../lib/mock/homepage-data';
 
 export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: () => void; onOpenSearch: () => void }) {
   const [query, setQuery] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
 
-  const matched = query.trim()
+  const matched = searchOpen && query.trim()
     ? SERVICE_CATEGORIES.filter((c) => c.title.toLowerCase().includes(query.toLowerCase()))
     : [];
 
@@ -63,16 +64,24 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onFocus={() => setSearchOpen(true)}
+                onBlur={() => setTimeout(() => setSearchOpen(false), 150)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape') {
+                    setSearchOpen(false);
+                    event.currentTarget.blur();
+                  }
+                }}
                 placeholder="Search for a service, for example plumbing"
-                className="w-full h-[44px] pl-10 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
+                className="motion-input w-full h-[44px] pl-10 pr-4 rounded-xl bg-white text-[14px] font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:shadow-[0_10px_24px_-12px_rgba(0,26,65,0.55)]"
               />
               {matched.length > 0 && (
-                <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
+                <div className="motion-popover absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-[0_12px_32px_-12px_rgba(0,26,65,0.35)] py-1.5 z-40">
                   {matched.map((c) => (
                   <Link
                     key={c.id}
                     href="/services"
-                    className="flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50"
+                    className="motion-press flex items-center gap-3 px-4 py-2.5 transition-colors duration-[140ms] hover:bg-slate-50"
                   >
                     <span className="w-9 h-9 rounded-lg overflow-hidden bg-slate-100 shrink-0">
                       <img src={c.photoUrl} alt={c.title} className="w-full h-full object-cover" />
@@ -95,16 +104,16 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
       <div className="px-4 pt-6">
         <div className="flex items-baseline justify-between">
           <h2 className="font-display font-bold text-[17px] text-[#001A41]">Find a service</h2>
-          <button onClick={onOpenSearch} className="text-[13px] font-medium text-[#296A4B]">
+          <button onClick={onOpenSearch} className="motion-press text-[13px] font-medium text-[#296A4B]">
             View all services
           </button>
         </div>
 
         <div className="grid grid-cols-2 gap-3 pt-3">
           {SERVICE_CATEGORIES.slice(0, 6).map((cat) => (
-            <Link key={cat.id} href="/services" className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2">
+            <Link key={cat.id} href="/services" className="motion-press group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2">
               <div className="relative aspect-[5/4] overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_2px_10px_-6px_rgba(0,26,65,0.2)]">
-                <img src={cat.photoUrl} alt={cat.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-200 group-active:scale-[1.02]" />
+                <img src={cat.photoUrl} alt={cat.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-[140ms] ease-[var(--ease-ui-out)] group-active:scale-[1.015]" />
                 <span className="absolute left-2.5 top-2.5 rounded-full bg-white px-2 py-1 text-[10px] font-semibold text-[#001A41] shadow-sm">
                   From {cat.startingPrice}
                 </span>

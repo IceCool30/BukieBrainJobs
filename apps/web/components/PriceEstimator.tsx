@@ -111,7 +111,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
                     key={svc.id}
                     type="button"
                     onClick={() => handleServiceChange(svc.id)}
-                    className={`px-3 py-2.5 rounded-xl text-xs font-semibold transition-all border text-left truncate ${
+                    className={`motion-press px-3 py-2.5 rounded-xl text-xs font-semibold transition-[background-color,border-color,color,box-shadow] duration-[140ms] border text-left truncate ${
                       selectedServiceId === svc.id
                         ? 'bg-[#001A41] text-white border-[#001A41] shadow-sm'
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
@@ -134,7 +134,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
                     key={opt.id}
                     type="button"
                     onClick={() => setSelectedOptionId(opt.id)}
-                    className={`w-full p-3.5 rounded-xl text-xs font-medium transition-all border flex items-center justify-between gap-3 text-left ${
+                    className={`motion-press w-full p-3.5 rounded-xl text-xs font-medium transition-[background-color,border-color,color,box-shadow] duration-[140ms] border flex items-center justify-between gap-3 text-left ${
                       selectedOptionId === opt.id
                         ? 'bg-[#EFF4FF] text-[#001A41] border-[#296A4B] font-semibold'
                         : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
@@ -160,7 +160,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
                     key={city}
                     type="button"
                     onClick={() => setSelectedCity(city)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                    className={`motion-press px-3.5 py-1.5 rounded-full text-xs font-medium transition-[background-color,border-color,color] duration-[140ms] border ${
                       selectedCity === city
                         ? 'bg-[#296A4B] text-white border-[#296A4B]'
                         : 'bg-slate-50 text-slate-600 border-slate-200'
@@ -209,7 +209,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
             <button
               type="button"
               onClick={() => onBookEstimate?.(currentService?.name || 'General Service')}
-              className="w-full py-3.5 bg-[#296A4B] hover:bg-[#1F523A] active:bg-[#17402C] text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md"
+              className="motion-press w-full py-3.5 bg-[#296A4B] hover:bg-[#1F523A] active:bg-[#17402C] text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 shadow-md"
             >
               <span>Continue with this estimate</span>
               <ArrowRight className="w-4 h-4" />

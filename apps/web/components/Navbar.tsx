@@ -116,7 +116,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             <button
               ref={triggerRef}
               onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
-              className="p-2 rounded-lg text-white hover:bg-white/10"
+              className="motion-press p-2 rounded-lg text-white hover:bg-white/10"
               aria-label="Open menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -126,7 +126,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
         {drawerOnly && (
           <>
             <div
-              className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
+              className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-[180ms] ease-[var(--ease-ui-out)] ${visible ? 'opacity-100' : 'opacity-0'}`}
               onClick={closeDrawer}
               aria-hidden="true"
             />
@@ -191,7 +191,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             alt="BukieBrainJobs"
             width={210}
             height={47}
-            className="hidden sm:block object-contain h-10 w-auto transition-transform group-hover:scale-105"
+            className="hidden sm:block object-contain h-10 w-auto transition-transform duration-[180ms] ease-[var(--ease-ui-out)] group-hover:scale-[1.03]"
             priority
           />
           <Image
@@ -228,7 +228,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           {/* Level 2 Secondary: Join as Professional */}
           <button
             onClick={onBecomeWorkerClick}
-            className="px-3.5 py-2 text-xs font-semibold text-white hover:text-[#ABEEC8] rounded-full transition-all flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
+            className="motion-press px-3.5 py-2 text-xs font-semibold text-white hover:text-[#ABEEC8] rounded-full transition-colors flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
           >
             <UserCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
             Join as a Professional
@@ -237,7 +237,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           {/* Level 2 Secondary: Post a Job */}
           <button
             onClick={onPostJobClick}
-            className="px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/70 bg-[#001A41]/55 backdrop-blur-sm hover:bg-[#296A4B]/60 rounded-full transition-all flex items-center gap-1.5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.45)]"
+            className="motion-press px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/70 bg-[#001A41]/55 backdrop-blur-sm hover:bg-[#296A4B]/60 rounded-full transition-colors flex items-center gap-1.5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.45)]"
           >
             <Briefcase className="w-3.5 h-3.5" />
             Post a Job Request
@@ -253,7 +253,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
         <button
           ref={triggerRef}
           onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
-          className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 pointer-events-auto"
+          className="motion-press lg:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 pointer-events-auto"
           aria-label="Toggle Navigation Menu"
           aria-expanded={mobileMenuOpen}
         >
@@ -265,7 +265,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
       {mobileMenuOpen && !drawerOnly && (
         <>
           <div
-            className={`lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
+            className={`lg:hidden fixed inset-0 z-40 bg-black/50 transition-opacity duration-[180ms] ease-[var(--ease-ui-out)] ${visible ? 'opacity-100' : 'opacity-0'}`}
             onClick={closeDrawer}
             aria-hidden="true"
           />
@@ -300,7 +300,7 @@ function DrawerSheet({
   return (
     <>
       <div
-        className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
+        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-[180ms] ease-[var(--ease-ui-out)] ${visible ? 'opacity-100' : 'opacity-0'}`}
         onClick={onClose}
         aria-hidden="true"
       />
@@ -333,7 +333,7 @@ function DrawerPanel({
             role="dialog"
             aria-modal="true"
             aria-label="Navigation Menu"
-            className={`lg:hidden fixed top-0 right-0 z-50 h-full w-[300px] max-w-[85vw] bg-[#001A41] border-l border-[#1E3A60] flex flex-col transition-transform duration-300 ease-out ${visible ? 'translate-x-0' : 'translate-x-full'}`}
+            className={`lg:hidden fixed top-0 right-0 z-50 h-full w-[300px] max-w-[85vw] bg-[#001A41] border-l border-[#1E3A60] flex flex-col transition-transform duration-[240ms] ease-[var(--ease-ui-out)] ${visible ? 'translate-x-0' : 'translate-x-full'}`}
           >
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 h-20 border-b border-[#1E3A60]">
@@ -360,7 +360,7 @@ function DrawerPanel({
                 <button
                   key={label}
                   onClick={() => onNavigate(href)}
-                  className="flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-[#ABEEC8]/10 hover:text-[#ABEEC8] active:bg-[#ABEEC8]/15 transition-colors"
+                  className="motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-[#ABEEC8]/10 hover:text-[#ABEEC8] active:bg-[#ABEEC8]/15 transition-colors"
                 >
                   <Icon className={`w-[18px] h-[18px] ${tint === '#ABEEC8' ? 'text-[#ABEEC8]' : 'text-[#ABEEC8]/80'}`} />
                   {label}
@@ -372,14 +372,14 @@ function DrawerPanel({
             <div className="mt-auto px-5 pb-8 pt-4 space-y-2.5 border-t border-[#1E3A60]">
               <button
                 onClick={() => { onClose(); onPostJob?.(); }}
-                className="w-full py-3.5 px-4 text-sm font-semibold text-center text-[#ABEEC8] bg-[#296A4B] hover:bg-[#1f5239] active:bg-[#17402c] rounded-xl transition-colors flex items-center justify-center gap-2"
+                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-[#ABEEC8] bg-[#296A4B] hover:bg-[#1f5239] active:bg-[#17402c] rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <Briefcase className="w-4 h-4" />
                 Post a Job Request
               </button>
               <button
                 onClick={() => { onClose(); onBecomeWorker?.(); }}
-                className="w-full py-3.5 px-4 text-sm font-semibold text-center text-white bg-white/10 hover:bg-white/15 active:bg-white/20 border border-white/15 rounded-xl transition-colors"
+                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-white bg-white/10 hover:bg-white/15 active:bg-white/20 border border-white/15 rounded-xl transition-colors"
               >
                 Join as a Professional
               </button>

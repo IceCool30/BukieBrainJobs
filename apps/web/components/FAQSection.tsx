@@ -37,14 +37,14 @@ export default function FAQSection() {
                   type="button"
                   onClick={() => toggleFaq(faq.id)}
                   aria-expanded={isOpen}
-                  className="w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-display font-semibold text-sm sm:text-base text-[#0B1C30] hover:text-[#0B1C30] transition-colors"
+                  className="motion-press w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-display font-semibold text-sm sm:text-base text-[#0B1C30] hover:text-[#0B1C30] transition-colors"
                 >
                   <span className="flex items-center gap-2.5">
                     <HelpCircle className="w-4 h-4 text-slate-400 shrink-0" />
                     <span>{faq.question}</span>
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
+                    className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-[160ms] ease-[var(--ease-ui-out)] ${
                       isOpen ? 'rotate-180 text-slate-500' : ''
                     }`}
                   />
