@@ -344,7 +344,7 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
                             </span>
                             <span className="text-xs font-bold text-[#001A41]">{scope.name}</span>
                           </div>
-                          <p className="text-[11px] text-slate-500 pl-5 leading-snug">
+                          <p className="text-[11px] font-medium text-slate-600 pl-5 leading-snug">
                             {scope.description}
                           </p>
                         </div>
