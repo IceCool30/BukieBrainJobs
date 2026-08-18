@@ -4,8 +4,8 @@ import React from 'react';
 import { Briefcase, UserCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 interface MarketplacePathsProps {
-  onPostJobClick?: () => void;
-  onBecomeWorkerClick?: () => void;
+  onPostJobClick?: (() => void) | undefined;
+  onBecomeWorkerClick?: (() => void) | undefined;
 }
 
 export default function MarketplacePaths({ onPostJobClick, onBecomeWorkerClick }: MarketplacePathsProps) {

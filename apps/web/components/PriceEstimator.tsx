@@ -204,15 +204,17 @@ const CITY_MULTIPLIERS: Record<string, { multiplier: number; label: string; popu
 };
 
 interface PriceEstimatorProps {
-  onBookEstimate?: (
-    serviceName: string,
-    details?: {
-      scopeName: string;
-      city: string;
-      priceRange: string;
-      scopeNote: string;
-    }
-  ) => void;
+  onBookEstimate?:
+    | ((
+        serviceName: string,
+        details?: {
+          scopeName: string;
+          city: string;
+          priceRange: string;
+          scopeNote: string;
+        }
+      ) => void)
+    | undefined;
 }
 
 export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) {

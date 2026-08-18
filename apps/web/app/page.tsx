@@ -21,7 +21,13 @@ import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
 import BukiePassportModal from '../components/modals/BukiePassportModal';
 import BrainWorkerProfileModal from '../components/modals/BrainWorkerProfileModal';
 import DirectBookingModal from '../components/modals/DirectBookingModal';
-import { BrainWorker, ServiceCategory, SERVICE_CATEGORIES } from '../lib/mock/homepage-data';
+import LocationNoticeModal from '../components/modals/LocationNoticeModal';
+import {
+  BrainWorker,
+  ServiceCategory,
+  SERVICE_CATEGORIES,
+  NigerianLocation,
+} from '../lib/mock/homepage-data';
 
 export default function CustomerHomepage() {
   const [postJobOpen, setPostJobOpen] = useState(false);
@@ -31,6 +37,7 @@ export default function CustomerHomepage() {
   const [directBookingOpen, setDirectBookingOpen] = useState(false);
   const [bookingWorker, setBookingWorker] = useState<BrainWorker | null>(null);
   const [bookingCategory, setBookingCategory] = useState<ServiceCategory | null>(null);
+  const [comingSoonLocation, setComingSoonLocation] = useState<NigerianLocation | null>(null);
   const [bookingInitialDetails, setBookingInitialDetails] = useState<{
     title?: string;
     startingPrice?: string;
@@ -119,11 +126,24 @@ export default function CustomerHomepage() {
       {/* Main Homepage Flow */}
       <main className="flex-grow pb-16 md:pb-0">
         {isPwa ? (
-          <PwaHome onOpenDrawer={() => drawerRef.current?.()} onOpenSearch={openSearch} />
+          <PwaHome
+            onOpenDrawer={() => drawerRef.current?.()}
+            onOpenSearch={openSearch}
+            onSelectCategory={handleSelectCategory}
+            onSelectWorker={handleSelectWorker}
+            onBookEstimate={handleBookEstimate}
+            onPostJobClick={() => setPostJobOpen(true)}
+            onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}
+            onSelectComingSoonLocation={(loc) => setComingSoonLocation(loc)}
+          />
         ) : (
           <>
             {/* Hero & Discovery Search (LOCKED LEVEL 1 CTA) */}
-            <HeroSection onSearchSubmit={handleSearchSubmit} />
+            <HeroSection
+              onSearchSubmit={handleSearchSubmit}
+              onSelectCategory={handleSelectCategory}
+              onSelectComingSoonLocation={(loc) => setComingSoonLocation(loc)}
+            />
 
             {/* Muted partner credibility bar */}
             <PartnerBar />
@@ -160,12 +180,12 @@ export default function CustomerHomepage() {
 
       {/* Persistent Ergonomic Mobile Bottom Nav, absent on the home landing page */}
       {!isPwa && (
-      <BottomNav
-        onExploreClick={openSearch}
-        onJobsClick={() => setPostJobOpen(true)}
-        onVerifyClick={() => setPassportModalOpen(true)}
-        onMenuClick={() => drawerRef.current?.()}
-      />
+        <BottomNav
+          onExploreClick={openSearch}
+          onJobsClick={() => setPostJobOpen(true)}
+          onVerifyClick={() => setPassportModalOpen(true)}
+          onMenuClick={() => drawerRef.current?.()}
+        />
       )}
 
       {/* PWA Install Banner */}
@@ -175,6 +195,10 @@ export default function CustomerHomepage() {
       <PostJobModal isOpen={postJobOpen} onClose={() => setPostJobOpen(false)} />
       <BecomeWorkerModal isOpen={becomeWorkerOpen} onClose={() => setBecomeWorkerOpen(false)} />
       <BukiePassportModal isOpen={passportModalOpen} onClose={() => setPassportModalOpen(false)} />
+      <LocationNoticeModal
+        location={comingSoonLocation}
+        onClose={() => setComingSoonLocation(null)}
+      />
       <BrainWorkerProfileModal
         worker={selectedWorker}
         isOpen={!!selectedWorker}

@@ -7,7 +7,7 @@ import { Star, BadgeCheck, ArrowRight } from 'lucide-react';
 import { MOCK_BRAINWORKERS, BrainWorker } from '../lib/mock/homepage-data';
 
 interface FeaturedBrainWorkersProps {
-  onSelectWorker?: (worker: BrainWorker) => void;
+  onSelectWorker?: ((worker: BrainWorker) => void) | undefined;
 }
 
 export default function FeaturedBrainWorkers({ onSelectWorker }: FeaturedBrainWorkersProps) {
