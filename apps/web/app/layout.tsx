@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   title: 'BukieBrainJobs | Find trusted local professionals',
   description:
     "Nigeria's premier verified marketplace connecting homeowners and businesses with background-checked artisan BrainWorkers. Escrow-protected payments via Paystack and Flutterwave.",
+  alternates: {
+    canonical: '/',
+  },
   icons: {
     icon: [{ url: '/favicon.ico' }, { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' }],
     apple: [{ url: '/icons/apple-touch-icon-180x180.png', sizes: '180x180' }],
@@ -28,6 +31,42 @@ export const metadata: Metadata = {
     locale: 'en_NG',
     siteName: 'BukieBrainJobs',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'BukieBrainJobs | Find trusted local professionals',
+    description: "Nigeria's verified marketplace for vetted artisans. Escrow-protected payments.",
+    images: ['/images/og-banner-1200x630.png'],
+  },
+};
+
+const JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://bukie-brain-jobs.vercel.app/#organization',
+      name: 'BukieBrainJobs',
+      url: 'https://bukie-brain-jobs.vercel.app',
+      logo: 'https://bukie-brain-jobs.vercel.app/images/logo-icon.png',
+      description: "Nigeria's verified marketplace for vetted artisans with escrow-protected payments.",
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: '+234-800-BUKIE-JOBS',
+        contactType: 'customer support',
+        areaServed: 'NG',
+        availableLanguage: 'en',
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://bukie-brain-jobs.vercel.app/#website',
+      url: 'https://bukie-brain-jobs.vercel.app',
+      name: 'BukieBrainJobs',
+      publisher: {
+        '@id': 'https://bukie-brain-jobs.vercel.app/#organization',
+      },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -37,6 +76,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+        />
+      </head>
       <body className="min-h-screen bg-[#f8f9ff] font-sans text-[#0b1c30] antialiased">
         {children}
       </body>
