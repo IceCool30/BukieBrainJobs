@@ -32,12 +32,12 @@ export default function TestimonialsSection() {
                 {item.quote}
               </p>
               <div className="space-y-0.5">
-                <h4 className="font-display font-bold text-sm text-[#001A41]">
+                <h3 className="font-display font-bold text-sm text-[#001A41]">
                   {item.author}
-                </h4>
-                <div className="text-xs text-slate-500">{item.role}, {item.location}</div>
-                <div className="flex items-center gap-1.5 text-xs text-slate-400 pt-0.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-slate-400" />
+                </h3>
+                <div className="text-xs font-medium text-slate-600">{item.role}, {item.location}</div>
+                <div className="flex items-center gap-1.5 text-xs text-slate-600 pt-0.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-slate-500" />
                   <span>{item.service} booking</span>
                 </div>
               </div>
@@ -45,7 +45,7 @@ export default function TestimonialsSection() {
           ))}
         </div>
 
-        <p className="text-center text-xs text-slate-400 pt-2">
+        <p className="text-center text-xs font-medium text-slate-600 pt-2">
           Ratings and reviews are shown on professional profiles.
         </p>
       </div>
