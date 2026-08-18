@@ -37,8 +37,8 @@ export default function Footer() {
 
           {/* Column 1: Our Services */}
           <div>
-            <h4 className="font-display font-semibold text-white text-sm mb-4">Explore services</h4>
-            <ul className="space-y-2.5 text-xs text-slate-400">
+            <h3 className="font-display font-semibold text-white text-sm mb-4">Explore services</h3>
+            <ul className="space-y-2.5 text-xs text-slate-300">
               <li><a href="/services" className="hover:text-white transition-colors">Generator services</a></li>
               <li><a href="/services" className="hover:text-white transition-colors">Air-conditioning services</a></li>
               <li><a href="/services" className="hover:text-white transition-colors">Plumbing services</a></li>
@@ -50,8 +50,8 @@ export default function Footer() {
 
           {/* Column 2: Trust and Safety */}
           <div>
-            <h4 className="font-display font-semibold text-white text-sm mb-4">Trust and Safety</h4>
-            <ul className="space-y-2.5 text-xs text-slate-400">
+            <h3 className="font-display font-semibold text-white text-sm mb-4">Trust and Safety</h3>
+            <ul className="space-y-2.5 text-xs text-slate-300">
               <li><a href="#trust" className="hover:text-white transition-colors">Profile Verification</a></li>
               <li><a href="#trust" className="hover:text-white transition-colors">Verification Process</a></li>
               <li><a href="#how-it-works" className="hover:text-white transition-colors">Pay through Escrow</a></li>
@@ -62,8 +62,8 @@ export default function Footer() {
 
           {/* Column 3: Business and Support */}
           <div>
-            <h4 className="font-display font-semibold text-white text-sm mb-4">For businesses and support</h4>
-            <ul className="space-y-2.5 text-xs text-slate-400">
+            <h3 className="font-display font-semibold text-white text-sm mb-4">For businesses and support</h3>
+            <ul className="space-y-2.5 text-xs text-slate-300">
               <li><a href="/enterprise" className="hover:text-white transition-colors">Business services</a></li>
               <li><a href="/enterprise" className="hover:text-white transition-colors">Contact support</a></li>
               <li className="flex items-center gap-1.5 pt-1 text-slate-300">
@@ -79,15 +79,15 @@ export default function Footer() {
         </div>
 
         {/* Bottom Copyright and Legal Links */}
-        <div className="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-4">
+        <div className="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-300 gap-4">
           <div>
             &copy; 2026 BukieBrainJobs Platform Limited. All rights reserved.
           </div>
           <div className="flex gap-6">
-            <span className="hover:text-slate-300 cursor-pointer">Privacy Policy</span>
-            <span className="hover:text-slate-300 cursor-pointer">Terms of Service</span>
-            <span className="hover:text-slate-300 cursor-pointer">Escrow information</span>
-            <span className="hover:text-slate-300 cursor-pointer">Trust and safety</span>
+            <span className="hover:text-white cursor-pointer transition-colors">Privacy Policy</span>
+            <span className="hover:text-white cursor-pointer transition-colors">Terms of Service</span>
+            <span className="hover:text-white cursor-pointer transition-colors">Escrow information</span>
+            <span className="hover:text-white cursor-pointer transition-colors">Trust and safety</span>
           </div>
         </div>
       </div>

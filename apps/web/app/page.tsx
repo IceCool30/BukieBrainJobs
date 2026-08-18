@@ -23,15 +23,32 @@ import PwaInstallBanner from '../components/PwaInstallBanner';
 import PostJobModal from '../components/modals/PostJobModal';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
 import BukiePassportModal from '../components/modals/BukiePassportModal';
+import BrainWorkerProfileModal from '../components/modals/BrainWorkerProfileModal';
+import DirectBookingModal from '../components/modals/DirectBookingModal';
+import { BrainWorker, ServiceCategory, SERVICE_CATEGORIES } from '../lib/mock/homepage-data';
 
 export default function CustomerHomepage() {
   const [postJobOpen, setPostJobOpen] = useState(false);
   const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
   const [passportModalOpen, setPassportModalOpen] = useState(false);
+  const [selectedWorker, setSelectedWorker] = useState<BrainWorker | null>(null);
+  const [directBookingOpen, setDirectBookingOpen] = useState(false);
+  const [bookingWorker, setBookingWorker] = useState<BrainWorker | null>(null);
+  const [bookingCategory, setBookingCategory] = useState<ServiceCategory | null>(null);
+
   const isPwa = useIsPwa();
   const drawerRef = useRef<(() => void) | null>(null);
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (serviceQuery: string) => {
+    const matched = SERVICE_CATEGORIES.find((c) =>
+      c.title.toLowerCase().includes(serviceQuery.toLowerCase())
+    );
+    if (matched) {
+      setBookingCategory(matched);
+      setBookingWorker(null);
+      setDirectBookingOpen(true);
+      return;
+    }
     const element = document.getElementById('services');
     element?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -42,17 +59,29 @@ export default function CustomerHomepage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSelectCategory = () => {
-    const element = document.getElementById('services');
-    element?.scrollIntoView({ behavior: 'smooth' });
+  const handleSelectCategory = (category: ServiceCategory) => {
+    setBookingCategory(category);
+    setBookingWorker(null);
+    setDirectBookingOpen(true);
   };
 
-  const handleSelectWorker = () => {
-    setPassportModalOpen(true);
+  const handleSelectWorker = (worker: BrainWorker) => {
+    setSelectedWorker(worker);
   };
 
-  const handleBookEstimate = (_serviceName: string) => {
-    setPostJobOpen(true);
+  const handleBookWorker = (worker: BrainWorker) => {
+    setBookingWorker(worker);
+    setBookingCategory(null);
+    setDirectBookingOpen(true);
+  };
+
+  const handleBookEstimate = (serviceName: string) => {
+    const matched = SERVICE_CATEGORIES.find((c) =>
+      c.title.toLowerCase().includes(serviceName.toLowerCase())
+    );
+    setBookingCategory(matched || null);
+    setBookingWorker(null);
+    setDirectBookingOpen(true);
   };
 
   return (
@@ -134,6 +163,22 @@ export default function CustomerHomepage() {
       <PostJobModal isOpen={postJobOpen} onClose={() => setPostJobOpen(false)} />
       <BecomeWorkerModal isOpen={becomeWorkerOpen} onClose={() => setBecomeWorkerOpen(false)} />
       <BukiePassportModal isOpen={passportModalOpen} onClose={() => setPassportModalOpen(false)} />
+      <BrainWorkerProfileModal
+        worker={selectedWorker}
+        isOpen={!!selectedWorker}
+        onClose={() => setSelectedWorker(null)}
+        onBookWorker={handleBookWorker}
+      />
+      <DirectBookingModal
+        isOpen={directBookingOpen}
+        onClose={() => {
+          setDirectBookingOpen(false);
+          setBookingWorker(null);
+          setBookingCategory(null);
+        }}
+        worker={bookingWorker}
+        serviceCategory={bookingCategory}
+      />
     </div>
   );
 }

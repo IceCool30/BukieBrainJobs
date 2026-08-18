@@ -53,7 +53,7 @@ function StatCell({ stat }: { stat: StatDef }) {
     <div ref={ref} className="flex flex-col items-center text-center gap-1.5">
       <stat.icon className="w-6 h-6 text-slate-400" />
       <div className="text-lg sm:text-xl font-display font-extrabold text-[#0B1C30]">{display}</div>
-      <div className="text-xs font-semibold text-slate-500">{stat.shortLabel ?? stat.label}</div>
+      <div className="text-xs font-semibold text-slate-600">{stat.shortLabel ?? stat.label}</div>
     </div>
   );
 }
@@ -79,14 +79,14 @@ export default function StatsStrip() {
           ))}
         </div>
         <div className="border-t border-slate-100 pt-5">
-          <p className="text-center text-xs font-semibold uppercase tracking-[0.15em] text-slate-400 mb-3">
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.15em] text-slate-600 mb-3">
             Platform activity by category
           </p>
           <div className="flex flex-wrap justify-center gap-x-7 gap-y-2">
             {CATEGORY_STATS.map((cs) => (
               <div key={cs.label} className="flex items-baseline gap-1.5">
                 <span className="text-base font-display font-bold text-slate-700">{cs.value}</span>
-                <span className="text-sm text-slate-500">{cs.label}</span>
+                <span className="text-sm font-medium text-slate-600">{cs.label}</span>
               </div>
             ))}
           </div>

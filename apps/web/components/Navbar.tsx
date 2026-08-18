@@ -11,7 +11,6 @@ import {
   Menu,
   X,
   UserCheck,
-  Lock,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -36,9 +35,6 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
   const [visible, setVisible] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const settledTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [settleAtTop, setSettleAtTop] = useState(
-    typeof window !== 'undefined' && window.innerWidth < 640
-  );
 
   const openDrawer = useCallback(() => {
     setMobileMenuOpen(true);
@@ -61,7 +57,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 40);
-      if (settleAtTop) {
+      if (window.innerWidth < 640) {
         setChipShown(false);
         if (settledTimer.current) clearTimeout(settledTimer.current);
         settledTimer.current = setTimeout(() => {
@@ -71,12 +67,9 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
       }
     };
     handleScroll();
-    const onResize = () => setSettleAtTop(window.innerWidth < 640);
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', onResize);
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', onResize);
       if (settledTimer.current) clearTimeout(settledTimer.current);
       document.body.style.overflow = '';
     };
@@ -147,12 +140,11 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     <>
     {/* Desktop header, never rendered on the PWA home */}
     <header
-      className={`sticky top-0 z-50 w-full text-white transition-all duration-300 ${
+      className={`fixed top-0 inset-x-0 z-50 w-full text-white transition-all duration-300 pointer-events-auto ${
         solid
-          ? 'bg-[#001A41]/45 backdrop-blur-md border-b border-white/10 pointer-events-auto'
-          : 'bg-transparent pointer-events-none'
+          ? 'bg-[#001A41]/90 backdrop-blur-md border-b border-white/10 shadow-sm'
+          : 'bg-gradient-to-b from-[#001A41]/75 to-transparent border-b border-transparent'
       }`}
-      style={solid ? {} : { position: 'absolute', top: 0, left: 0, right: 0 }}
     >
       {/* Compact escrow + contact strip, visible only once scrolled for contrast on light page sections */}
       <div
@@ -279,38 +271,6 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
         </>
       )}
     </header>
-    </>
-  );
-}
-
-
-function DrawerSheet({
-  visible,
-  onClose,
-  onNavigate,
-  onPostJob,
-  onBecomeWorker,
-}: {
-  visible: boolean;
-  onClose: () => void;
-  onNavigate: (href: string) => void;
-  onPostJob: () => void;
-  onBecomeWorker: () => void;
-}) {
-  return (
-    <>
-      <div
-        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-[180ms] ease-[var(--ease-ui-out)] ${visible ? 'opacity-100' : 'opacity-0'}`}
-        onClick={onClose}
-        aria-hidden="true"
-      />
-      <DrawerPanel
-        visible={visible}
-        onClose={onClose}
-        onNavigate={onNavigate}
-        onPostJob={onPostJob}
-        onBecomeWorker={onBecomeWorker}
-      />
     </>
   );
 }

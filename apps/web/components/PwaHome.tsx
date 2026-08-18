@@ -33,11 +33,12 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
     <div className="min-h-screen bg-[#F8F9FF] pb-10">
       {/* Compact photo-governed hero: headline and search centered over the photo */}
       <section className="relative h-[320px]">
-        <img
+        <Image
           src="/images/hero-portrait-1920.png"
           alt="BukieBrainJobs professionals at work"
-          className="absolute inset-0 h-full w-full object-cover object-[78%_52%]"
-          fetchPriority="high"
+          fill
+          priority
+          className="object-cover object-[78%_52%]"
         />
         {/* Navy accents on left, right, and bottom only; faces and top stay clear */}
         <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 115% 100% at 55% 38%, transparent 48%, rgba(0,26,65,0.32) 100%)', mixBlendMode: 'multiply' }} />
@@ -78,6 +79,9 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
             <div className="relative h-[44px]">
               <Search className="absolute top-1/2 left-3.5 -translate-y-1/2 w-[16px] h-[16px] text-slate-400 shrink-0 z-10" />
               <input
+                id="pwa-search-input"
+                name="searchQuery"
+                aria-label="Search for a service"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setSearchOpen(true)}
@@ -99,8 +103,8 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
                     href="/services"
                     className="motion-press flex items-center gap-3 px-4 py-2.5 transition-colors duration-[140ms] hover:bg-slate-50"
                   >
-                    <span className="w-9 h-9 rounded-lg overflow-hidden bg-slate-100 shrink-0">
-                      <img src={c.photoUrl} alt={c.title} className="w-full h-full object-cover" />
+                    <span className="relative w-9 h-9 rounded-lg overflow-hidden bg-slate-100 shrink-0">
+                      <Image src={c.photoUrl} alt={c.title} fill sizes="36px" className="object-cover" />
                     </span>
                     <span className="text-[14px] font-medium text-slate-800">{c.title}</span>
                     <span className="ml-auto text-[12px] text-slate-400">{c.startingPrice}</span>
@@ -129,7 +133,7 @@ export default function PwaHome({ onOpenDrawer, onOpenSearch }: { onOpenDrawer: 
           {SERVICE_CATEGORIES.slice(0, 6).map((cat) => (
             <Link key={cat.id} href="/services" className="motion-press motion-reveal-item group block rounded-2xl active:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2">
               <div className="relative aspect-[5/4] overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_2px_10px_-6px_rgba(0,26,65,0.2)]">
-                <img src={cat.photoUrl} alt={cat.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-[180ms] ease-[var(--ease-ui-out)] group-active:scale-[1.035]" />
+                <Image src={cat.photoUrl} alt={cat.title} fill sizes="50vw" className="object-cover transition-transform duration-[180ms] ease-[var(--ease-ui-out)] group-active:scale-[1.035]" />
                 <span className="absolute left-2.5 top-2.5 rounded-full bg-white px-2 py-1 text-[10px] font-semibold text-[#001A41] shadow-sm">
                   From {cat.startingPrice}
                 </span>

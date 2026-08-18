@@ -43,7 +43,7 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
     SERVICE_CATEGORIES.filter((c) => c.title.toLowerCase().includes(q.toLowerCase()));
 
   return (
-    <section className="relative bg-[#001A41] text-white pt-20 pb-12 overflow-visible">
+    <section className="relative bg-[#001A41] text-white pt-28 sm:pt-32 pb-12 overflow-visible">
       {/* Hero portrait backdrop */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <picture>
@@ -94,6 +94,8 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
               <input
                 id="hero-service-input"
+                name="serviceQuery"
+                aria-label="Search for a service"
                 type="text"
                 value={serviceQuery}
                 onChange={(e) => setServiceQuery(e.target.value)}
@@ -139,6 +141,24 @@ export default function HeroSection({ onSearchSubmit }: HeroSectionProps) {
                 </div>
               )}
             </form>
+
+            {/* Quick search chips */}
+            <div className="flex flex-wrap items-center gap-2 pt-3">
+              <span className="text-xs text-slate-300 font-medium mr-1">Popular:</span>
+              {popularQuickSearches.map((term) => (
+                <button
+                  key={term}
+                  type="button"
+                  onClick={() => {
+                    setServiceQuery(term);
+                    onSearchSubmit?.(term, NIGERIAN_LOCATIONS[0]?.name || 'Lagos');
+                  }}
+                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/10 hover:bg-white/20 text-slate-100 hover:text-white transition-colors border border-white/15 cursor-pointer"
+                >
+                  {term}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Trust line: one quiet row, ratings first as the strongest proof */}

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { SERVICE_CATEGORIES, ServiceCategory } from '../lib/mock/homepage-data';
 
@@ -39,11 +40,12 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
               className="service-card-motion motion-press group overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left shadow-[0_2px_10px_-6px_rgba(0,26,65,0.18)] transition-[transform,box-shadow,border-color] duration-[180ms] ease-[var(--ease-ui-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
             >
               <div className="relative aspect-[5/4] overflow-hidden bg-slate-100">
-                <img
+                <Image
                   src={cat.photoUrl}
                   alt={cat.title}
-                  loading="lazy"
-                  className="service-card-image h-full w-full object-cover transition-transform duration-[180ms] ease-[var(--ease-ui-out)]"
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className="service-card-image object-cover transition-transform duration-[180ms] ease-[var(--ease-ui-out)]"
                 />
                 <span className="absolute left-3 top-3 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-[#001A41] shadow-sm">
                   From {cat.startingPrice}
