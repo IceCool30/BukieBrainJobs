@@ -1,218 +1,465 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Calculator, ShieldCheck, Lock, Clock, ArrowRight } from 'lucide-react';
+import {
+  Calculator,
+  ShieldCheck,
+  Lock,
+  ArrowRight,
+  Zap,
+  Wind,
+  Sun,
+  Wrench,
+  Sparkles,
+  CheckCircle2,
+  MapPin,
+  HelpCircle,
+} from 'lucide-react';
 
-interface EstimateOption {
-  id: string;
-  label: string;
-  baseMin: number;
-  baseMax: number;
-  unit: string;
-}
-
-const SERVICES_DATA: {
+export interface ScopeOption {
   id: string;
   name: string;
-  options: EstimateOption[];
-}[] = [
-  {
-    id: 'ac',
-    name: 'AC Servicing & Gas Refill',
-    options: [
-      { id: '1unit', label: '1 Split Unit (1.0 - 1.5 HP)', baseMin: 10000, baseMax: 14000, unit: 'per service' },
-      { id: '2units', label: '2 - 3 Split Units (Full House)', baseMin: 22000, baseMax: 32000, unit: 'total estimate' },
-      { id: 'heavy', label: 'Standing / Commercial AC (3.0+ HP)', baseMin: 25000, baseMax: 40000, unit: 'per unit' },
-    ],
-  },
+  description: string;
+  laborMin: number;
+  laborMax: number;
+  partsMin: number;
+  partsMax: number;
+  commonParts: string;
+}
+
+export interface EstimatorTrade {
+  id: string;
+  name: string;
+  shortName: string;
+  icon: React.ElementType;
+  scopes: ScopeOption[];
+}
+
+const TRADES_DATA: EstimatorTrade[] = [
   {
     id: 'generator',
     name: 'Generator Servicing & Repair',
-    options: [
-      { id: 'small', label: 'Petrol Generator (2.5kVA - 8kVA)', baseMin: 8000, baseMax: 14000, unit: 'oil & filter service' },
-      { id: 'diesel', label: 'Diesel Generator (15kVA - 30kVA)', baseMin: 20000, baseMax: 35000, unit: 'full diagnostic & service' },
-      { id: 'heavy-diesel', label: 'Industrial Diesel (50kVA - 250kVA)', baseMin: 45000, baseMax: 80000, unit: 'scheduled overhaul' },
+    shortName: 'Generator',
+    icon: Zap,
+    scopes: [
+      {
+        id: 'gen-petrol',
+        name: 'Petrol Generator (2.5kVA - 8.5kVA)',
+        description: 'Oil drainage, carburetor cleanout, spark plug swap & valve tune-up',
+        laborMin: 8000,
+        laborMax: 12000,
+        partsMin: 4000,
+        partsMax: 6500,
+        commonParts: 'Engine Oil (20W-50), Spark Plug & Fuel Filter',
+      },
+      {
+        id: 'gen-diesel-small',
+        name: 'Small Diesel Generator (15kVA - 30kVA)',
+        description: 'Full fuel injection diagnostics, dual filter change & AVR calibration',
+        laborMin: 22000,
+        laborMax: 30000,
+        partsMin: 14000,
+        partsMax: 20000,
+        commonParts: 'Diesel Fuel Filter, Oil Filter Element & 15W-40 Lube',
+      },
+      {
+        id: 'gen-diesel-industrial',
+        name: 'Industrial Perkins / Mikano (50kVA - 250kVA)',
+        description: 'Scheduled multi-point overhaul, radiator flush & ATS synchronization',
+        laborMin: 45000,
+        laborMax: 65000,
+        partsMin: 30000,
+        partsMax: 50000,
+        commonParts: 'Heavy-Duty Fuel Separator, Coolant & Air Filter Cartridge',
+      },
     ],
   },
   {
-    id: 'plumbing',
-    name: 'Plumbing & Water Tanks',
-    options: [
-      { id: 'leak', label: 'Pipe Leak / Tap / Toilet Repair', baseMin: 7000, baseMax: 12000, unit: 'per fixture' },
-      { id: 'tank', label: 'Overhead Water Tank Setup / Cleaning', baseMin: 15000, baseMax: 25000, unit: 'per tank' },
-      { id: 'pump', label: 'Pressure Pump Installation / Repair', baseMin: 18000, baseMax: 30000, unit: 'complete setup' },
+    id: 'ac',
+    name: 'AC Repair & Gas Refill',
+    shortName: 'AC / Cooling',
+    icon: Wind,
+    scopes: [
+      {
+        id: 'ac-single-service',
+        name: '1 Split Unit (Routine Chemical Wash & Check)',
+        description: 'Deep blower coil steam cleaning, drainage unclog & electrical test',
+        laborMin: 9000,
+        laborMax: 13000,
+        partsMin: 2500,
+        partsMax: 4000,
+        commonParts: 'Chemical Coil Wash Solution & Capacitor Test',
+      },
+      {
+        id: 'ac-gas-refill',
+        name: '1 Split Unit (R410A / R22 Full Gas Recharge)',
+        description: 'Pressure vacuum testing, flare-nut leak sealing & full gas top-up',
+        laborMin: 12000,
+        laborMax: 16000,
+        partsMin: 10000,
+        partsMax: 15000,
+        commonParts: 'Virgin R410A/R22 Refrigerant Gas & Copper Flare Gasket',
+      },
+      {
+        id: 'ac-multi-unit',
+        name: 'Whole House (3 - 5 Split Units Maintenance)',
+        description: 'Comprehensive multi-room AC overhaul, filter swap & condenser check',
+        laborMin: 28000,
+        laborMax: 40000,
+        partsMin: 18000,
+        partsMax: 28000,
+        commonParts: 'Multi-Unit Gas Equalization & Chemical Service Kit',
+      },
     ],
   },
   {
     id: 'solar',
     name: 'Solar & Inverter Installation',
-    options: [
-      { id: 'inverter-basic', label: '1kVA - 2.5kVA Inverter + 2 Batteries', baseMin: 25000, baseMax: 40000, unit: 'wiring & installation' },
-      { id: 'inverter-pro', label: '3.5kVA - 5kVA Solar Hybrid Setup', baseMin: 50000, baseMax: 90000, unit: 'full solar array setup' },
+    shortName: 'Solar / Inverter',
+    icon: Sun,
+    scopes: [
+      {
+        id: 'solar-inverter-basic',
+        name: '1kVA - 2.5kVA Inverter Backup System',
+        description: 'Changeover integration, battery rack wiring & load segregation',
+        laborMin: 25000,
+        laborMax: 35000,
+        partsMin: 12000,
+        partsMax: 18000,
+        commonParts: '35mm DC Copper Cables, Heavy Battery Lugs & 63A Breaker',
+      },
+      {
+        id: 'solar-hybrid-full',
+        name: '3.5kVA - 5kVA Hybrid Solar Array Setup',
+        description: 'Roof rail PV mounting, MPPT controller config & surge protection',
+        laborMin: 55000,
+        laborMax: 80000,
+        partsMin: 28000,
+        partsMax: 42000,
+        commonParts: 'Aluminium Roof Clamps, 6mm Solar PV Cables & DC SPD Breakers',
+      },
     ],
   },
   {
-    id: 'tv',
-    name: 'DSTV & TV Wall Mounting',
-    options: [
-      { id: 'tv-mount', label: 'TV Wall Mount (32" - 65") with Trunking', baseMin: 7500, baseMax: 12000, unit: 'per TV' },
-      { id: 'dstv', label: 'DSTV Dish Mounting & Signal Calibration', baseMin: 8000, baseMax: 14000, unit: 'complete setup' },
+    id: 'plumbing',
+    name: 'Plumbing & Water Tanks',
+    shortName: 'Plumbing',
+    icon: Wrench,
+    scopes: [
+      {
+        id: 'plumb-leak-tap',
+        name: 'Pipe Leak, Tap & Pressure Pump Repair',
+        description: 'Leak detection, PPR pipe heat-joint repair & pressure sensor check',
+        laborMin: 8000,
+        laborMax: 13000,
+        partsMin: 3500,
+        partsMax: 6000,
+        commonParts: 'PPR Heat Fittings, High-Pressure Seal Tape & Gate Valve',
+      },
+      {
+        id: 'plumb-tank-setup',
+        name: 'Overhead Tank Setup & Float Switch Install',
+        description: 'Scaffold mounting, float switch auto-cutoff & overflow pipe piping',
+        laborMin: 20000,
+        laborMax: 30000,
+        partsMin: 12000,
+        partsMax: 18000,
+        commonParts: 'Automatic Float Switch, 1" Non-Return Valve & PVC Union',
+      },
+    ],
+  },
+  {
+    id: 'cleaning',
+    name: 'Deep Cleaning & Post-Construction',
+    shortName: 'Cleaning',
+    icon: Sparkles,
+    scopes: [
+      {
+        id: 'clean-flat',
+        name: '2-Bedroom Flat Full Deep Scrub',
+        description: 'Kitchen degreasing, bathroom descaling, tile scrubbing & window wash',
+        laborMin: 20000,
+        laborMax: 28000,
+        partsMin: 5000,
+        partsMax: 8000,
+        commonParts: 'Eco Tile Scrub Detergents, Glass Shine & Disinfectant',
+      },
+      {
+        id: 'clean-duplex',
+        name: '4-Bedroom Duplex Post-Construction Clean',
+        description: 'Paint splatter removal, industrial floor buffing & deep carpet extraction',
+        laborMin: 45000,
+        laborMax: 65000,
+        partsMin: 12000,
+        partsMax: 18000,
+        commonParts: 'Industrial Floor Stripper, Pad Buffers & Protective Sealant',
+      },
     ],
   },
 ];
 
-export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (serviceName: string) => void }) {
-  const [selectedServiceId, setSelectedServiceId] = useState('ac');
-  const [selectedOptionId, setSelectedOptionId] = useState('1unit');
-  const [selectedCity, setSelectedCity] = useState('Lagos');
+const CITY_MULTIPLIERS: Record<string, { multiplier: number; label: string; popularHub: string }> = {
+  Lagos: { multiplier: 1.0, label: 'Lagos State', popularHub: 'Ikeja / Lekki / VI / Yaba' },
+  Abuja: { multiplier: 1.05, label: 'Abuja (FCT)', popularHub: 'Maitama / Wuse 2 / Garki' },
+  'Port Harcourt': { multiplier: 1.0, label: 'Port Harcourt', popularHub: 'GRA Phase 2 / Trans-Amadi' },
+};
 
-  const currentService = SERVICES_DATA.find((s) => s.id === selectedServiceId) || SERVICES_DATA[0];
-  const currentOption = currentService?.options.find((o) => o.id === selectedOptionId) || currentService?.options[0];
+interface PriceEstimatorProps {
+  onBookEstimate?: (
+    serviceName: string,
+    details?: {
+      scopeName: string;
+      city: string;
+      priceRange: string;
+      scopeNote: string;
+    }
+  ) => void;
+}
 
-  const handleServiceChange = (id: string) => {
-    setSelectedServiceId(id);
-    const newService = SERVICES_DATA.find((s) => s.id === id);
-    if (newService?.options[0]) {
-      setSelectedOptionId(newService.options[0].id);
+export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) {
+  const [selectedTradeId, setSelectedTradeId] = useState<string>('generator');
+  const [selectedScopeId, setSelectedScopeId] = useState<string>('gen-petrol');
+  const [selectedCity, setSelectedCity] = useState<string>('Lagos');
+
+  const currentTrade = TRADES_DATA.find((t) => t.id === selectedTradeId) || TRADES_DATA[0];
+  const currentScope =
+    currentTrade.scopes.find((s) => s.id === selectedScopeId) || currentTrade.scopes[0];
+
+  const cityData = CITY_MULTIPLIERS[selectedCity] || CITY_MULTIPLIERS['Lagos'];
+  const multiplier = cityData.multiplier;
+
+  const adjLaborMin = Math.round((currentScope.laborMin * multiplier) / 500) * 500;
+  const adjLaborMax = Math.round((currentScope.laborMax * multiplier) / 500) * 500;
+  const adjPartsMin = Math.round((currentScope.partsMin * multiplier) / 500) * 500;
+  const adjPartsMax = Math.round((currentScope.partsMax * multiplier) / 500) * 500;
+
+  const totalMin = adjLaborMin + adjPartsMin;
+  const totalMax = adjLaborMax + adjPartsMax;
+
+  const formatNaira = (n: number) => `₦${n.toLocaleString('en-NG')}`;
+
+  const handleTradeChange = (tradeId: string) => {
+    setSelectedTradeId(tradeId);
+    const trade = TRADES_DATA.find((t) => t.id === tradeId);
+    if (trade?.scopes[0]) {
+      setSelectedScopeId(trade.scopes[0].id);
     }
   };
 
-  const formatNaira = (amount: number) => `₦${amount.toLocaleString('en-NG')}`;
+  const handleBook = () => {
+    const formattedRange = `${formatNaira(totalMin)} - ${formatNaira(totalMax)}`;
+    const note = `Scope: ${currentScope.name}. Labor: ${formatNaira(adjLaborMin)}-${formatNaira(adjLaborMax)}. Estimated parts: ${currentScope.commonParts} (${formatNaira(adjPartsMin)}-${formatNaira(adjPartsMax)}). Location: ${selectedCity}.`;
+    onBookEstimate?.(currentTrade.name, {
+      scopeName: currentScope.name,
+      city: selectedCity,
+      priceRange: formattedRange,
+      scopeNote: note,
+    });
+  };
 
   return (
-    <section className="py-16 bg-white border-b border-slate-200">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5EEFF] text-[#001A41] text-xs font-bold border border-[#CBDBF5]">
+    <section id="estimator" className="py-16 sm:py-20 bg-[#F8F9FF] border-b border-slate-200">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
+        {/* Header with clear value proposition */}
+        <div className="text-center max-w-3xl mx-auto space-y-2.5">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-50 text-[#296A4B] text-xs font-bold border border-emerald-200 shadow-sm">
             <Calculator className="w-3.5 h-3.5 text-[#296A4B]" />
-            <span>Plan your booking</span>
+            <span>Interactive Scope & Escrow Calculator</span>
           </div>
-          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
-            Get a starting estimate
+          <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-[#001A41]">
+            Know the exact cost breakdown before you book
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-            Use this guide to plan your booking. Final prices depend on the job scope and your location.
+          <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
+            Eliminate on-site price surprises. See verified labor benchmarks, typical spare parts ranges, and escrow protections tailored to your city.
           </p>
         </div>
 
-        {/* Interactive Estimator Container */}
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-md grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Controls Column (7 cols) */}
+        {/* Main Calculator Container */}
+        <div className="max-w-5xl mx-auto bg-white rounded-2xl p-6 sm:p-9 border border-slate-200 shadow-[0_4px_24px_-12px_rgba(0,26,65,0.12)] grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left Column: Scope Builder (7 Cols) */}
           <div className="lg:col-span-7 space-y-6">
-            {/* Step 1: Select Service Category */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2.5">
-                1. Choose a service
+            {/* Step 1: Trade Selector */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                1. Select Trade or Category
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {SERVICES_DATA.map((svc) => (
-                  <button
-                    key={svc.id}
-                    type="button"
-                    onClick={() => handleServiceChange(svc.id)}
-                    className={`motion-press px-3 py-2.5 rounded-xl text-xs font-semibold transition-[background-color,border-color,color,box-shadow] duration-[140ms] border text-left truncate ${
-                      selectedServiceId === svc.id
-                        ? 'bg-[#001A41] text-white border-[#001A41] shadow-sm'
-                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                    }`}
-                  >
-                    {svc.name}
-                  </button>
-                ))}
+                {TRADES_DATA.map((trade) => {
+                  const Icon = trade.icon;
+                  const isSelected = selectedTradeId === trade.id;
+                  return (
+                    <button
+                      key={trade.id}
+                      type="button"
+                      onClick={() => handleTradeChange(trade.id)}
+                      className={`motion-press p-2.5 rounded-xl text-xs font-semibold border flex items-center gap-2 text-left transition-all ${
+                        isSelected
+                          ? 'bg-[#001A41] text-white border-[#001A41] shadow-sm'
+                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                      }`}
+                    >
+                      <Icon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#ABEEC8]' : 'text-[#296A4B]'}`} />
+                      <span className="truncate">{trade.shortName}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Step 2: Select Job Scope / Option */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2.5">
-                2. Choose the job scope
+            {/* Step 2: Job Scope Radio Cards */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                2. Choose Appliance Capacity & Work Scope
               </label>
-              <div className="space-y-2">
-                {currentService?.options.map((opt) => (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    onClick={() => setSelectedOptionId(opt.id)}
-                    className={`motion-press w-full p-3.5 rounded-xl text-xs font-medium transition-[background-color,border-color,color,box-shadow] duration-[140ms] border flex items-center justify-between gap-3 text-left ${
-                      selectedOptionId === opt.id
-                        ? 'bg-[#EFF4FF] text-[#001A41] border-[#296A4B] font-semibold'
-                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                    }`}
-                  >
-                    <span>{opt.label}</span>
-                    <span className="text-[11px] text-[#296A4B] font-bold shrink-0">
-                      {formatNaira(opt.baseMin)}+
-                    </span>
-                  </button>
-                ))}
+              <div className="space-y-2.5">
+                {currentTrade.scopes.map((scope) => {
+                  const isSelected = selectedScopeId === scope.id;
+                  return (
+                    <button
+                      key={scope.id}
+                      type="button"
+                      onClick={() => setSelectedScopeId(scope.id)}
+                      className={`motion-press w-full p-3.5 rounded-xl text-left border transition-all ${
+                        isSelected
+                          ? 'bg-[#EFF4FF] border-[#296A4B] shadow-sm'
+                          : 'bg-white border-slate-200 hover:bg-slate-50/80 hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="space-y-0.5 flex-1">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 ${
+                                isSelected
+                                  ? 'border-[#296A4B] bg-[#296A4B]'
+                                  : 'border-slate-300 bg-white'
+                              }`}
+                            >
+                              {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
+                            </span>
+                            <span className="text-xs font-bold text-[#001A41]">{scope.name}</span>
+                          </div>
+                          <p className="text-[11px] text-slate-500 pl-5 leading-snug">
+                            {scope.description}
+                          </p>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <span className="text-[11px] font-extrabold text-[#296A4B] block">
+                            Labor from {formatNaira(Math.round((scope.laborMin * multiplier) / 500) * 500)}
+                          </span>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Step 3: Location */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                3. Choose your location
-              </label>
-              <div className="flex gap-2">
-                {['Lagos', 'Abuja (FCT)', 'Port Harcourt'].map((city) => (
+            {/* Step 3: City Benchmarker */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                  3. Service Location in Nigeria
+                </label>
+                <span className="text-[11px] text-slate-500">Hub: {cityData.popularHub}</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {Object.keys(CITY_MULTIPLIERS).map((city) => (
                   <button
                     key={city}
                     type="button"
                     onClick={() => setSelectedCity(city)}
-                    className={`motion-press px-3.5 py-1.5 rounded-full text-xs font-medium transition-[background-color,border-color,color] duration-[140ms] border ${
+                    className={`motion-press py-2 px-3 rounded-xl text-xs font-semibold border flex items-center justify-center gap-1.5 transition-all ${
                       selectedCity === city
-                        ? 'bg-[#296A4B] text-white border-[#296A4B]'
-                        : 'bg-slate-50 text-slate-600 border-slate-200'
+                        ? 'bg-[#296A4B] text-white border-[#296A4B] shadow-sm'
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
                     }`}
                   >
-                    {city}
+                    <MapPin className="w-3.5 h-3.5" />
+                    <span>{city}</span>
                   </button>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Estimate Display Card (5 cols) */}
+          {/* Right Column: Interactive Escrow Breakdown Card (5 Cols) */}
           <div className="lg:col-span-5 bg-[#001A41] text-white rounded-2xl p-6 sm:p-7 flex flex-col justify-between space-y-6 shadow-xl border border-[#1E3A60]">
-            <div className="space-y-4">
-              <div className="text-[11px] font-bold text-[#ABEEC8] uppercase tracking-wider">
-                Estimated price range
+            <div className="space-y-5">
+              {/* Header pill */}
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#ABEEC8] uppercase tracking-wider">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  Escrow Benchmark
+                </span>
+                <span className="text-[10px] text-slate-300 bg-white/10 px-2 py-0.5 rounded-full">
+                  {selectedCity}
+                </span>
               </div>
 
-              <div>
-                <div className="text-2xl sm:text-3xl font-display font-extrabold text-white">
-                  {currentOption ? `${formatNaira(currentOption.baseMin)} - ${formatNaira(currentOption.baseMax)}` : '₦12,000'}
+              {/* Total Price Range */}
+              <div className="space-y-1">
+                <div className="text-xs text-slate-300">Total Estimated Escrow Hold</div>
+                <div className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight">
+                  {formatNaira(totalMin)} – {formatNaira(totalMax)}
                 </div>
-                <div className="text-xs text-slate-300 mt-1">
-                  Estimated range for {selectedCity} ({currentOption?.unit})
+                <div className="text-[11px] text-slate-400">
+                  {currentScope.name}
                 </div>
               </div>
 
-              {/* Guarantees List */}
-              <div className="space-y-2.5 pt-4 border-t border-[#1E3A60] text-xs text-slate-300">
-                <div className="flex items-center gap-2">
-                  <Lock className="w-4 h-4 text-[#ABEEC8] shrink-0" />
-                  <span>Pay through Escrow for eligible bookings</span>
+              {/* Itemized Cost Breakdown */}
+              <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2.5 text-xs">
+                <div className="flex justify-between items-center text-slate-300">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#ABEEC8]" />
+                    Artisan Labor & Diagnostic
+                  </span>
+                  <span className="font-bold text-white">
+                    {formatNaira(adjLaborMin)} - {formatNaira(adjLaborMax)}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#ABEEC8] shrink-0" />
-                  <span>Review Profile Verification before you book</span>
+
+                <div className="flex justify-between items-start text-slate-300">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#ABEEC8] shrink-0 mt-0.5" />
+                    <span>Est. Replacement Parts</span>
+                  </span>
+                  <span className="font-bold text-white shrink-0">
+                    {formatNaira(adjPartsMin)} - {formatNaira(adjPartsMax)}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-[#ABEEC8] shrink-0" />
-                  <span>Confirm availability and timing with your professional</span>
+
+                <div className="text-[10px] text-slate-400 pl-5 italic">
+                  Common parts: {currentScope.commonParts}
                 </div>
+
+                <div className="border-t border-white/10 pt-2 flex justify-between items-center text-slate-300">
+                  <span className="flex items-center gap-1.5">
+                    <Lock className="w-3.5 h-3.5 text-[#ABEEC8]" />
+                    BukieGuarantee Escrow Protection
+                  </span>
+                  <span className="font-bold text-[#ABEEC8]">FREE (₦0)</span>
+                </div>
+              </div>
+
+              {/* Escrow Reassurance */}
+              <div className="flex items-start gap-2 text-[11px] text-slate-300 leading-relaxed">
+                <Lock className="w-3.5 h-3.5 text-[#ABEEC8] shrink-0 mt-0.5" />
+                <span>
+                  Funds are held safely in escrow. Your assigned professional is only paid after you test and approve the work.
+                </span>
               </div>
             </div>
 
+            {/* CTA Button prefilling booking modal */}
             <button
               type="button"
-              onClick={() => onBookEstimate?.(currentService?.name || 'General Service')}
-              className="motion-press w-full py-3.5 bg-[#296A4B] hover:bg-[#1F523A] active:bg-[#17402C] text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 shadow-md"
+              onClick={handleBook}
+              className="motion-press w-full py-3.5 bg-[#296A4B] hover:bg-[#1F523A] active:bg-[#17402C] text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg"
             >
-              <span>Continue with this estimate</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>Lock in Estimate & Book This Scope</span>
+              <ArrowRight className="w-4 h-4 text-[#ABEEC8]" />
             </button>
           </div>
         </div>

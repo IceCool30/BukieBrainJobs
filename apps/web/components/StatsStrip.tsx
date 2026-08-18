@@ -71,8 +71,8 @@ const CATEGORY_STATS: { label: string; value: string }[] = [
 
 export default function StatsStrip() {
   return (
-    <section aria-label="Platform statistics" className="py-10 bg-white border-b border-slate-200">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
+    <section aria-label="Platform statistics" className="py-16 bg-white border-b border-slate-200">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 bg-slate-50 rounded-xl border border-slate-100 p-6 sm:p-8">
           {STATS.map((stat) => (
             <StatCell key={stat.label} stat={stat} />

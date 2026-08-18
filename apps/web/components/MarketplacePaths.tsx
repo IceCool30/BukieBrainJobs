@@ -10,9 +10,9 @@ interface MarketplacePathsProps {
 
 export default function MarketplacePaths({ onPostJobClick, onBecomeWorkerClick }: MarketplacePathsProps) {
   return (
-    <section className="py-16 bg-white border-b border-slate-200">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="text-center max-w-xl mx-auto space-y-2">
+    <section className="py-16 bg-[#F8F9FF] border-b border-slate-200">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Two ways to use BukieBrainJobs
           </div>
@@ -69,7 +69,7 @@ export default function MarketplacePaths({ onPostJobClick, onBecomeWorkerClick }
                 <span>Offer your skills</span>
               </div>
 
-              <h3 className="font-display font-bold text-2xl text-[#0B1C30]">
+              <h3 className="font-display font-bold text-2xl text-[#001A41]">
                 Find work that fits your skills
               </h3>
 

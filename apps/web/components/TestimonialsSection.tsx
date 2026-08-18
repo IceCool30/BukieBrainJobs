@@ -7,11 +7,11 @@ export default function TestimonialsSection() {
     <section className="py-16 bg-white border-b border-slate-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header */}
-        <div className="text-center max-w-xl mx-auto space-y-2">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Booking feedback
           </div>
-          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0B1C30]">
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
             Feedback that helps you choose
           </h2>
           <p className="text-sm text-slate-500 leading-relaxed">
@@ -28,7 +28,7 @@ export default function TestimonialsSection() {
                   <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <p className="text-base text-[#0B1C30] leading-relaxed">
+              <p className="text-base text-[#001A41] leading-relaxed">
                 {item.quote}
               </p>
               <div className="space-y-0.5">

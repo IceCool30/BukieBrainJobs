@@ -30,14 +30,14 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-16 bg-white border-b border-slate-200">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <section id="how-it-works" className="py-16 bg-[#F8F9FF] border-b border-slate-200">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             How It Works
           </div>
-          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0B1C30]">
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
             A clearer way to book
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
@@ -62,7 +62,7 @@ export default function HowItWorks() {
                   </div>
                 </div>
 
-                <h3 className="font-display font-bold text-base text-[#0B1C30]">
+                <h3 className="font-display font-bold text-base text-[#001A41]">
                   {s.title}
                 </h3>
                 <p className="text-sm text-slate-600 leading-relaxed">

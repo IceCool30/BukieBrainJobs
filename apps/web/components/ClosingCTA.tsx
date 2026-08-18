@@ -6,7 +6,7 @@ interface ClosingCTAProps {
 
 export default function ClosingCTA({ onPostJobClick }: ClosingCTAProps) {
   return (
-    <section aria-label="Final call to action" className="relative bg-[#F8F9FF] overflow-hidden">
+    <section aria-label="Final call to action" className="relative bg-white overflow-hidden border-b border-slate-200">
       <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center space-y-6">
         <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-[#001A41] leading-tight">
           Ready to get the job done?

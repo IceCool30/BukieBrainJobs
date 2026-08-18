@@ -15,11 +15,11 @@ export default function FAQSection() {
     <section id="faq" className="py-16 bg-[#F8F9FF] border-b border-slate-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header */}
-        <div className="text-center max-w-xl mx-auto space-y-2">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Frequently Asked Questions
           </div>
-          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0B1C30]">
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
             Clear Answers to Your Questions
           </h2>
         </div>
@@ -37,7 +37,7 @@ export default function FAQSection() {
                   type="button"
                   onClick={() => toggleFaq(faq.id)}
                   aria-expanded={isOpen}
-                  className="motion-press w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-display font-semibold text-sm sm:text-base text-[#0B1C30] hover:text-[#0B1C30] transition-colors"
+                  className="motion-press w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-display font-semibold text-sm sm:text-base text-[#001A41] hover:text-[#001A41] transition-colors"
                 >
                   <span className="flex items-center gap-2.5">
                     <HelpCircle className="w-4 h-4 text-slate-400 shrink-0" />

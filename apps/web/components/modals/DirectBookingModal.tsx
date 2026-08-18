@@ -21,6 +21,12 @@ interface DirectBookingModalProps {
   onClose: () => void;
   worker?: BrainWorker | null;
   serviceCategory?: ServiceCategory | null;
+  initialDetails?: {
+    title?: string;
+    startingPrice?: string;
+    city?: string;
+    scopeNote?: string;
+  } | null;
 }
 
 export default function DirectBookingModal({
@@ -28,21 +34,32 @@ export default function DirectBookingModal({
   onClose,
   worker,
   serviceCategory,
+  initialDetails,
 }: DirectBookingModalProps) {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [selectedDate, setSelectedDate] = useState('Tomorrow, 10:00 AM');
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('Morning (9:00 AM - 12:00 PM)');
   const [address, setAddress] = useState('');
   const [landmark, setLandmark] = useState('');
-  const [city, setCity] = useState(worker?.location.includes('Abuja') ? 'Abuja' : worker?.location.includes('Port Harcourt') ? 'Port Harcourt' : 'Lagos');
+  const [city, setCity] = useState(
+    initialDetails?.city ||
+      (worker?.location.includes('Abuja')
+        ? 'Abuja'
+        : worker?.location.includes('Port Harcourt')
+        ? 'Port Harcourt'
+        : 'Lagos')
+  );
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'transfer' | 'ussd'>('card');
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState(initialDetails?.scopeNote || '');
 
   useEffect(() => {
     if (!isOpen) {
       setStep(1);
       return;
     }
+    if (initialDetails?.city) setCity(initialDetails.city);
+    if (initialDetails?.scopeNote) setNotes(initialDetails.scopeNote);
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
@@ -52,12 +69,20 @@ export default function DirectBookingModal({
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, initialDetails]);
 
   if (!isOpen) return null;
 
-  const startingPrice = worker?.startingRate || serviceCategory?.startingPrice || '₦10,000';
-  const serviceTitle = worker?.category || serviceCategory?.title || 'Service Booking';
+  const startingPrice =
+    initialDetails?.startingPrice ||
+    worker?.startingRate ||
+    serviceCategory?.startingPrice ||
+    '₦10,000';
+  const serviceTitle =
+    initialDetails?.title ||
+    worker?.category ||
+    serviceCategory?.title ||
+    'Service Booking';
 
   return (
     <div

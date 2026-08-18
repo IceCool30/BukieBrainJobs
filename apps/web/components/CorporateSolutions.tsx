@@ -4,7 +4,7 @@ import { Building2, ShieldCheck, ArrowRight, Layers, FileCheck } from 'lucide-re
 
 export default function CorporateSolutions() {
   return (
-    <section id="corporate" className="py-16 bg-white border-b border-slate-200">
+    <section id="corporate" className="py-16 bg-[#F8F9FF] border-b border-slate-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-slate-50 rounded-xl p-8 sm:p-12 border border-slate-200 flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="space-y-4 max-w-xl">
