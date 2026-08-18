@@ -70,7 +70,7 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Estimated Budget</label>
                   <input
                     type="text"
-                    placeholder="e.g. N15,000 - N25,000"
+                    placeholder="e.g. N15,000 – N25,000"
                     className="w-full text-xs p-3 rounded-xl border border-slate-300 focus:outline-none"
                   />
                 </div>
