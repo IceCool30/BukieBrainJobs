@@ -31,6 +31,12 @@ export default function CustomerHomepage() {
   const [directBookingOpen, setDirectBookingOpen] = useState(false);
   const [bookingWorker, setBookingWorker] = useState<BrainWorker | null>(null);
   const [bookingCategory, setBookingCategory] = useState<ServiceCategory | null>(null);
+  const [bookingInitialDetails, setBookingInitialDetails] = useState<{
+    title?: string;
+    startingPrice?: string;
+    city?: string;
+    scopeNote?: string;
+  } | null>(null);
 
   const isPwa = useIsPwa();
   const drawerRef = useRef<(() => void) | null>(null);
@@ -42,6 +48,7 @@ export default function CustomerHomepage() {
     if (matched) {
       setBookingCategory(matched);
       setBookingWorker(null);
+      setBookingInitialDetails(null);
       setDirectBookingOpen(true);
       return;
     }
@@ -58,6 +65,7 @@ export default function CustomerHomepage() {
   const handleSelectCategory = (category: ServiceCategory) => {
     setBookingCategory(category);
     setBookingWorker(null);
+    setBookingInitialDetails(null);
     setDirectBookingOpen(true);
   };
 
@@ -68,15 +76,34 @@ export default function CustomerHomepage() {
   const handleBookWorker = (worker: BrainWorker) => {
     setBookingWorker(worker);
     setBookingCategory(null);
+    setBookingInitialDetails(null);
     setDirectBookingOpen(true);
   };
 
-  const handleBookEstimate = (serviceName: string) => {
+  const handleBookEstimate = (
+    serviceName: string,
+    details?: {
+      scopeName: string;
+      city: string;
+      priceRange: string;
+      scopeNote: string;
+    }
+  ) => {
     const matched = SERVICE_CATEGORIES.find((c) =>
       c.title.toLowerCase().includes(serviceName.toLowerCase())
     );
     setBookingCategory(matched || null);
     setBookingWorker(null);
+    if (details) {
+      setBookingInitialDetails({
+        title: `${serviceName} (${details.scopeName})`,
+        startingPrice: details.priceRange,
+        city: details.city,
+        scopeNote: details.scopeNote,
+      });
+    } else {
+      setBookingInitialDetails(null);
+    }
     setDirectBookingOpen(true);
   };
 
@@ -160,9 +187,11 @@ export default function CustomerHomepage() {
           setDirectBookingOpen(false);
           setBookingWorker(null);
           setBookingCategory(null);
+          setBookingInitialDetails(null);
         }}
         worker={bookingWorker}
         serviceCategory={bookingCategory}
+        initialDetails={bookingInitialDetails}
       />
     </div>
   );

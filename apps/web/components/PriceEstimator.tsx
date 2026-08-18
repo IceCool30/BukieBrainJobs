@@ -13,7 +13,6 @@ import {
   Sparkles,
   CheckCircle2,
   MapPin,
-  HelpCircle,
 } from 'lucide-react';
 
 export interface ScopeOption {
@@ -221,11 +220,17 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
   const [selectedScopeId, setSelectedScopeId] = useState<string>('gen-petrol');
   const [selectedCity, setSelectedCity] = useState<string>('Lagos');
 
-  const currentTrade = TRADES_DATA.find((t) => t.id === selectedTradeId) || TRADES_DATA[0];
+  const currentTrade =
+    TRADES_DATA.find((t) => t.id === selectedTradeId) || (TRADES_DATA[0] as EstimatorTrade);
   const currentScope =
-    currentTrade.scopes.find((s) => s.id === selectedScopeId) || currentTrade.scopes[0];
+    currentTrade.scopes.find((s) => s.id === selectedScopeId) ||
+    (currentTrade.scopes[0] as ScopeOption);
 
-  const cityData = CITY_MULTIPLIERS[selectedCity] || CITY_MULTIPLIERS['Lagos'];
+  const cityData = CITY_MULTIPLIERS[selectedCity] ?? {
+    multiplier: 1.0,
+    label: 'Lagos State',
+    popularHub: 'Ikeja / Lekki / VI / Yaba',
+  };
   const multiplier = cityData.multiplier;
 
   const adjLaborMin = Math.round((currentScope.laborMin * multiplier) / 500) * 500;
