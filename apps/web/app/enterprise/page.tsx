@@ -74,7 +74,7 @@ export default function EnterprisePage() {
       </div>
 
       {/* Features */}
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURES.map((f) => (
             <div
@@ -84,7 +84,7 @@ export default function EnterprisePage() {
               <div className="w-10 h-10 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center">
                 {f.icon}
               </div>
-              <h2 className="font-display font-bold text-base text-[#0B1C30]">{f.title}</h2>
+              <h2 className="font-display font-bold text-base text-[#001A41]">{f.title}</h2>
               <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>
             </div>
           ))}
@@ -93,9 +93,9 @@ export default function EnterprisePage() {
 
       {/* CTA */}
       <div className="border-t border-slate-200 bg-white">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="space-y-1.5 max-w-xl">
-            <h2 className="font-display font-bold text-xl text-[#0B1C30]">
+            <h2 className="font-display font-bold text-xl text-[#001A41]">
               Talk to the corporate team
             </h2>
             <p className="text-sm text-slate-500 leading-relaxed">
@@ -106,14 +106,14 @@ export default function EnterprisePage() {
           <div className="space-y-3 shrink-0">
             <Link
               href="mailto:corporate@bukiebrainjobs.ng"
-              className="w-full sm:w-auto px-6 py-3.5 bg-[#001A41] hover:bg-[#000F2D] text-white text-sm font-bold rounded-full transition-all flex items-center justify-center gap-2 shadow-md"
+              className="motion-press w-full sm:w-auto px-6 py-3.5 bg-[#001A41] hover:bg-[#000F2D] text-white text-sm font-bold rounded-full transition-all flex items-center justify-center gap-2 shadow-md"
             >
               <Mail className="w-4 h-4" />
               corporate@bukiebrainjobs.ng
             </Link>
             <Link
               href="/"
-              className="w-full sm:w-auto px-6 py-3.5 bg-white border border-slate-300 text-[#0B1C30] text-sm font-bold rounded-full transition-all flex items-center justify-center gap-2 hover:border-slate-400"
+              className="motion-press w-full sm:w-auto px-6 py-3.5 bg-white border border-slate-300 text-[#001A41] text-sm font-bold rounded-full transition-all flex items-center justify-center gap-2 hover:border-slate-400"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to home

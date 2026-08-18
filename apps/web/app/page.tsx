@@ -48,14 +48,19 @@ export default function CustomerHomepage() {
   const isPwa = useIsPwa();
   const drawerRef = useRef<(() => void) | null>(null);
 
-  const handleSearchSubmit = (serviceQuery: string) => {
+  const handleSearchSubmit = (serviceQuery: string, location?: string) => {
     const matched = SERVICE_CATEGORIES.find((c) =>
       c.title.toLowerCase().includes(serviceQuery.toLowerCase())
     );
     if (matched) {
       setBookingCategory(matched);
       setBookingWorker(null);
-      setBookingInitialDetails(null);
+      setBookingInitialDetails({
+        title: matched.title,
+        startingPrice: matched.startingPrice,
+        city: location || 'Lagos',
+        scopeNote: `Direct booking request for ${matched.title} in ${location || 'Lagos'}.`,
+      });
       setDirectBookingOpen(true);
       return;
     }

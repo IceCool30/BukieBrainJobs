@@ -164,6 +164,7 @@ export default function HeroSection({
 
   const containerRef = useRef<HTMLDivElement>(null);
   const locationDropdownRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -173,15 +174,14 @@ export default function HeroSection({
         document.activeElement?.tagName !== 'TEXTAREA'
       ) {
         e.preventDefault();
-        const input = document.getElementById('hero-service-input');
-        input?.focus();
+        inputRef.current?.focus();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Close dropdowns on outside click
+  // Close popovers on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -211,7 +211,6 @@ export default function HeroSection({
         s.toLowerCase().includes(cleanQ)
       );
 
-      // Check synonyms
       let synonymMatch = false;
       for (const [key, synonyms] of Object.entries(SYNONYM_MAP)) {
         if (
@@ -231,6 +230,7 @@ export default function HeroSection({
 
   const handleSelectLocation = (loc: NigerianLocation) => {
     setShowLocationDropdown(false);
+    setShowSuggestions(false);
     if (loc.status === 'soon') {
       onSelectComingSoonLocation?.(loc);
       return;
@@ -251,8 +251,8 @@ export default function HeroSection({
     const finalQuery = term.trim() || 'All Services';
     saveRecentSearch(finalQuery);
     setShowSuggestions(false);
+    setShowLocationDropdown(false);
 
-    // If an exact category matches, open direct booking or category flow
     const exact = SERVICE_CATEGORIES.find(
       (c) => c.title.toLowerCase() === finalQuery.toLowerCase()
     );
@@ -305,9 +305,7 @@ export default function HeroSection({
             style={{ objectPosition: '50% 50%' }}
           />
         </picture>
-        {/* Desktop overlay: thin navy veil at left edge, photo governs rest */}
         <div className="absolute inset-y-0 left-0 w-[38%] hidden md:block bg-gradient-to-r from-[#001A41]/60 to-[#001A41]/0" />
-        {/* Mobile overlay */}
         <div className="absolute inset-x-0 bottom-0 h-[26%] block md:hidden bg-gradient-to-t from-[#001A41]/88 via-[#001A41]/45 to-[#001A41]/0" />
       </div>
 
@@ -345,6 +343,7 @@ export default function HeroSection({
               <div className="relative flex-1 flex items-center">
                 <Search className="absolute left-3.5 w-4 h-4 text-slate-400 shrink-0" />
                 <input
+                  ref={inputRef}
                   id="hero-service-input"
                   name="serviceQuery"
                   aria-label="Search for a service"
@@ -354,9 +353,13 @@ export default function HeroSection({
                   onChange={(e) => {
                     setServiceQuery(e.target.value);
                     setHighlightedIndex(-1);
+                    setShowLocationDropdown(false);
                     setShowSuggestions(true);
                   }}
-                  onFocus={() => setShowSuggestions(true)}
+                  onFocus={() => {
+                    setShowLocationDropdown(false);
+                    setShowSuggestions(true);
+                  }}
                   onKeyDown={handleKeyDownInput}
                   placeholder="What service do you need? (e.g. AC, Generator)"
                   className="w-full h-11 sm:h-12 pl-10 pr-8 text-sm font-medium text-slate-900 bg-transparent rounded-xl focus:outline-none placeholder:text-slate-400"
@@ -366,7 +369,9 @@ export default function HeroSection({
                     type="button"
                     onClick={() => {
                       setServiceQuery('');
+                      setShowLocationDropdown(false);
                       setShowSuggestions(true);
+                      inputRef.current?.focus();
                     }}
                     className="absolute right-2.5 p-1 text-slate-400 hover:text-slate-600 rounded-full"
                   >
@@ -379,7 +384,10 @@ export default function HeroSection({
               <div ref={locationDropdownRef} className="relative shrink-0">
                 <button
                   type="button"
-                  onClick={() => setShowLocationDropdown(!showLocationDropdown)}
+                  onClick={() => {
+                    setShowSuggestions(false);
+                    setShowLocationDropdown((prev) => !prev);
+                  }}
                   className="motion-press h-10 sm:h-12 px-3 sm:px-4 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold flex items-center justify-between sm:justify-center gap-1.5 border border-slate-200 w-full sm:w-auto transition-colors"
                 >
                   <MapPin className="w-3.5 h-3.5 text-[#296A4B] shrink-0" />
@@ -449,7 +457,7 @@ export default function HeroSection({
             </form>
 
             {/* Rich Dropdown Suggestions (Zero State & Active State) */}
-            {showSuggestions && (
+            {showSuggestions && !showLocationDropdown && (
               <div className="motion-popover absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)] border border-slate-200 p-3 z-50 max-h-[380px] overflow-y-auto space-y-3">
                 {/* Zero State: Recent & Trending */}
                 {!serviceQuery.trim() && (

@@ -158,7 +158,10 @@ export default function PwaHome({
             {/* Quick City Pill */}
             <button
               type="button"
-              onClick={() => setLocationOpen(!locationOpen)}
+              onClick={() => {
+                setSearchOpen(false);
+                setLocationOpen(!locationOpen);
+              }}
               className="px-2.5 py-1 rounded-full bg-[#001A41]/80 backdrop-blur-sm border border-white/20 text-white text-[11px] font-semibold flex items-center gap-1"
             >
               <MapPin className="w-3 h-3 text-[#ABEEC8]" />
@@ -238,7 +241,10 @@ export default function PwaHome({
                 aria-label="Search for a service"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => setSearchOpen(true)}
+                onFocus={() => {
+                  setLocationOpen(false);
+                  setSearchOpen(true);
+                }}
                 onBlur={() => setTimeout(() => setSearchOpen(false), 200)}
                 placeholder="What service do you need? (e.g. AC, Generator)"
                 className="motion-input w-full h-[48px] pl-10 pr-4 rounded-xl bg-white text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] shadow-lg"

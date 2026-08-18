@@ -86,7 +86,7 @@ export default function ServicesPage() {
       </div>
 
       {/* Filter Tabs & Content */}
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
         {/* Category Group Tabs */}
         <div className="flex flex-wrap gap-2">
           {groups.map((group) => (
@@ -94,7 +94,7 @@ export default function ServicesPage() {
               key={group}
               type="button"
               onClick={() => setSelectedGroup(group)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold transition-all ${
+              className={`motion-press px-4 py-2 rounded-full text-xs font-semibold transition-all ${
                 selectedGroup === group
                   ? 'bg-[#001A41] text-white shadow-sm'
                   : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
@@ -123,7 +123,7 @@ export default function ServicesPage() {
                 </div>
 
                 <div>
-                  <h2 className="font-display font-bold text-base text-[#0B1C30]">{cat.title}</h2>
+                  <h2 className="font-display font-bold text-base text-[#001A41]">{cat.title}</h2>
                   <p className="text-xs text-slate-500 leading-relaxed mt-1">{cat.description}</p>
                 </div>
 
@@ -150,7 +150,7 @@ export default function ServicesPage() {
                 <button
                   type="button"
                   onClick={() => setSelectedCategory(cat)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#001A41] hover:bg-[#000F2D] text-white text-xs font-bold transition-colors shadow-sm"
+                  className="motion-press inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#001A41] hover:bg-[#000F2D] text-white text-xs font-bold transition-colors shadow-sm"
                 >
                   Book Service
                   <ArrowRight className="w-3.5 h-3.5 text-[#ABEEC8]" />
@@ -166,7 +166,7 @@ export default function ServicesPage() {
             <ShieldCheck className="w-6 h-6 text-[#296A4B]" />
           </div>
           <div className="space-y-1">
-            <h2 className="font-display font-bold text-base text-[#0B1C30]">
+            <h2 className="font-display font-bold text-base text-[#001A41]">
               The price agreed is the price held in escrow
             </h2>
             <p className="text-xs text-slate-500 leading-relaxed max-w-2xl">

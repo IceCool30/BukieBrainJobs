@@ -62,7 +62,7 @@ export default function GuaranteePage() {
         </div>
       </div>
 
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-12">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
         {/* What is covered */}
         <section>
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-6">
@@ -92,7 +92,7 @@ export default function GuaranteePage() {
                 className="bg-white rounded-xl border border-slate-200 shadow-[0_2px_8px_-4px_rgba(0,26,65,0.10)] p-7 space-y-3"
               >
                 <div className="font-display font-extrabold text-2xl text-[#001A41]/80">{s.n}</div>
-                <h2 className="font-display font-bold text-base text-[#0B1C30]">{s.title}</h2>
+                <h2 className="font-display font-bold text-base text-[#001A41]">{s.title}</h2>
                 <p className="text-sm text-slate-500 leading-relaxed">{s.desc}</p>
               </div>
             ))}
@@ -122,7 +122,7 @@ export default function GuaranteePage() {
             <Scale className="w-6 h-6 text-slate-600" />
           </div>
           <div className="space-y-1.5 flex-grow">
-            <h2 className="font-display font-bold text-lg text-[#0B1C30]">
+            <h2 className="font-display font-bold text-lg text-[#001A41]">
               Escrow works alongside the guarantee
             </h2>
             <p className="text-sm text-slate-500 leading-relaxed max-w-2xl">
@@ -135,9 +135,9 @@ export default function GuaranteePage() {
 
       {/* CTA */}
       <div className="border-t border-slate-200 bg-white">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="space-y-1.5 max-w-xl">
-            <h2 className="font-display font-bold text-xl text-[#0B1C30]">
+            <h2 className="font-display font-bold text-xl text-[#001A41]">
               Questions about the guarantee?
             </h2>
             <p className="text-sm text-slate-500 leading-relaxed">
@@ -147,14 +147,14 @@ export default function GuaranteePage() {
           <div className="space-y-3 shrink-0">
             <a
               href="mailto:support@bukiebrainjobs.ng"
-              className="w-full sm:w-auto px-6 py-3.5 bg-[#001A41] hover:bg-[#000F2D] text-white text-sm font-bold rounded-full transition-all flex items-center justify-center gap-2 shadow-md"
+              className="motion-press w-full sm:w-auto px-6 py-3.5 bg-[#001A41] hover:bg-[#000F2D] text-white text-sm font-bold rounded-full transition-all flex items-center justify-center gap-2 shadow-md"
             >
               <Headphones className="w-4 h-4" />
               Contact support
             </a>
             <Link
               href="/"
-              className="w-full sm:w-auto px-6 py-3.5 bg-white border border-slate-300 text-[#0B1C30] text-sm font-bold rounded-full transition-all flex items-center justify-center gap-2 hover:border-slate-400"
+              className="motion-press w-full sm:w-auto px-6 py-3.5 bg-white border border-slate-300 text-[#001A41] text-sm font-bold rounded-full transition-all flex items-center justify-center gap-2 hover:border-slate-400"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to home
