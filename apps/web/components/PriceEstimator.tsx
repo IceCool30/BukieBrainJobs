@@ -80,7 +80,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
   const formatNaira = (amount: number) => `₦${amount.toLocaleString('en-NG')}`;
 
   return (
-    <section className="py-16 bg-[#F8F9FF] border-b border-slate-200">
+    <section className="py-16 bg-white border-b border-slate-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-2">
@@ -88,7 +88,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
             <Calculator className="w-3.5 h-3.5 text-[#296A4B]" />
             <span>Plan your booking</span>
           </div>
-          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#0B1C30]">
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
             Get a starting estimate
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
@@ -97,7 +97,7 @@ export default function PriceEstimator({ onBookEstimate }: { onBookEstimate?: (s
         </div>
 
         {/* Interactive Estimator Container */}
-        <div className="max-w-4xl mx-auto bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-md grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="max-w-4xl mx-auto bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-md grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Controls Column (7 cols) */}
           <div className="lg:col-span-7 space-y-6">
             {/* Step 1: Select Service Category */}

@@ -12,8 +12,8 @@ interface PopularServicesProps {
 
 export default function PopularServices({ onSelectCategory }: PopularServicesProps) {
   return (
-    <section id="services" className="bg-[#F8F9FF] py-16 sm:py-20">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <section id="services" className="bg-[#F8F9FF] py-16 border-b border-slate-200">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="flex items-end justify-between gap-4">
           <div>
             <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">

@@ -9,15 +9,11 @@ import HeroSection from '../components/HeroSection';
 import PopularServices from '../components/PopularServices';
 import PriceEstimator from '../components/PriceEstimator';
 import HowItWorks from '../components/HowItWorks';
-import TrustSafetySection from '../components/TrustSafetySection';
 import FeaturedBrainWorkers from '../components/FeaturedBrainWorkers';
-import StatsStrip from '../components/StatsStrip';
 import MarketplacePaths from '../components/MarketplacePaths';
 import TestimonialsSection from '../components/TestimonialsSection';
-import CorporateSolutions from '../components/CorporateSolutions';
 import FAQSection from '../components/FAQSection';
 import PartnerBar from '../components/PartnerBar';
-import ClosingCTA from '../components/ClosingCTA';
 import BottomNav from '../components/BottomNav';
 import PwaInstallBanner from '../components/PwaInstallBanner';
 import PostJobModal from '../components/modals/PostJobModal';
@@ -111,31 +107,20 @@ export default function CustomerHomepage() {
             {/* Instant Price Estimator Benchmark */}
             <PriceEstimator onBookEstimate={handleBookEstimate} />
 
-            {/* How BukieBrainJobs Works */}
-            <HowItWorks />
-
-            {/* Trust & Safety (BukiePassport & Escrow) */}
-            <TrustSafetySection />
-
             {/* Featured BrainWorkers (Vetted Nigerian Artisans) */}
             <FeaturedBrainWorkers onSelectWorker={handleSelectWorker} />
 
-            {/* Secondary Marketplace Pathways */}
-            <StatsStrip />
-
-            <MarketplacePaths
-              onPostJobClick={() => setPostJobOpen(true)}
-              onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}
-            />
+            {/* How BukieBrainJobs Works */}
+            <HowItWorks />
 
             {/* Verified Customer Testimonials */}
             <TestimonialsSection />
 
-            {/* Corporate & Estate Solutions */}
-            <CorporateSolutions />
-
-            {/* Final single CTA band, then FAQ */}
-            <ClosingCTA onPostJobClick={() => setPostJobOpen(true)} />
+            {/* Secondary Marketplace Pathways */}
+            <MarketplacePaths
+              onPostJobClick={() => setPostJobOpen(true)}
+              onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}
+            />
 
             {/* Frequently Asked Questions */}
             <FAQSection />
