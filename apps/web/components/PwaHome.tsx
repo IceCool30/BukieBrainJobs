@@ -97,6 +97,21 @@ export default function PwaHome({
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [servicesVisible, setServicesVisible] = useState(false);
 
+  // Load recent searches from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('bbj_recent_searches');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setRecentSearches(parsed.slice(0, 5));
+        }
+      }
+    } catch {
+      // safe fallback
+    }
+  }, []);
+
   useEffect(() => {
     const target = servicesRef.current;
     if (!target) return;
@@ -149,6 +164,7 @@ export default function PwaHome({
 
   const handleSelectLocation = (loc: NigerianLocation) => {
     setLocationOpen(false);
+    setSearchOpen(false);
     if (loc.status === 'soon') {
       onSelectComingSoonLocation?.(loc);
       return;
@@ -158,13 +174,32 @@ export default function PwaHome({
 
   const saveRecentSearch = (term: string) => {
     if (!term.trim()) return;
-    setRecentSearches((items) => [term, ...items.filter((item) => item.toLowerCase() !== term.toLowerCase())].slice(0, 4));
+    setRecentSearches((items) => {
+      const updated = [term, ...items.filter((item) => item.toLowerCase() !== term.toLowerCase())].slice(0, 5);
+      try {
+        localStorage.setItem('bbj_recent_searches', JSON.stringify(updated));
+      } catch {
+        // safe fallback
+      }
+      return updated;
+    });
+  };
+
+  const clearRecentSearches = () => {
+    setRecentSearches([]);
+    try {
+      localStorage.removeItem('bbj_recent_searches');
+    } catch {
+      // safe fallback
+    }
   };
 
   const executeSearch = (term = query) => {
     const finalQuery = term.trim() || 'All Services';
     saveRecentSearch(finalQuery);
     setSearchOpen(false);
+    setLocationOpen(false);
+
     const exact = SERVICE_CATEGORIES.find((category) => category.title.toLowerCase() === finalQuery.toLowerCase());
     if (exact) {
       onSelectCategory?.(exact);
@@ -202,6 +237,17 @@ export default function PwaHome({
 
   return (
     <div className="min-h-screen bg-[#F8F9FF] pb-12">
+      {/* Mobile transparent tap-catcher when a popover is active */}
+      {(searchOpen || locationOpen) && (
+        <div
+          className="fixed inset-0 z-40 bg-black/10 backdrop-blur-[1px]"
+          onClick={() => {
+            setSearchOpen(false);
+            setLocationOpen(false);
+          }}
+        />
+      )}
+
       {/* Compact photo-governed mobile hero */}
       <section className="relative min-h-[340px] pb-6">
         <Image
@@ -387,8 +433,8 @@ export default function PwaHome({
                           </span>
                           <button
                             type="button"
-                            onClick={() => setRecentSearches([])}
-                            className="text-[10px] lowercase text-slate-400 hover:text-slate-600"
+                            onClick={clearRecentSearches}
+                            className="text-[10px] lowercase text-slate-400 hover:text-slate-600 cursor-pointer"
                           >
                             clear
                           </button>
@@ -402,7 +448,7 @@ export default function PwaHome({
                                 setQuery(term);
                                 executeSearch(term);
                               }}
-                              className="flex items-center gap-1.5 rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-200"
+                              className="flex items-center gap-1.5 rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-200 cursor-pointer"
                             >
                               {term}
                             </button>
@@ -425,7 +471,7 @@ export default function PwaHome({
                               setQuery(term);
                               executeSearch(term);
                             }}
-                            className="flex items-center justify-between rounded-xl border border-transparent p-2 text-left text-xs font-medium text-slate-700 transition-colors hover:border-slate-200 hover:bg-[#EFF4FF] hover:text-[#001A41]"
+                            className="flex items-center justify-between rounded-xl border border-transparent p-2 text-left text-xs font-medium text-slate-700 transition-colors hover:border-slate-200 hover:bg-[#EFF4FF] hover:text-[#001A41] cursor-pointer"
                           >
                             <span className="truncate">{term}</span>
                             <ArrowRight className="h-3 w-3 shrink-0 text-slate-400" />
