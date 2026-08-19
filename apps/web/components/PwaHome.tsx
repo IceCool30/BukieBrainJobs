@@ -130,13 +130,13 @@ export default function PwaHome({
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: PointerEvent) => {
       if (searchContainerRef.current?.contains(event.target as Node)) return;
       setSearchOpen(false);
       setLocationOpen(false);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('pointerdown', handleClickOutside);
+    return () => document.removeEventListener('pointerdown', handleClickOutside);
   }, []);
 
   const getMatched = (q: string): ServiceCategory[] => {
