@@ -6,8 +6,8 @@ interface PartnerBarProps {
 
 export default function PartnerBar({ compact = false }: PartnerBarProps) {
   const layout = compact
-    ? 'flex items-center justify-center gap-6'
-    : 'flex flex-wrap items-center justify-center gap-x-10 gap-y-4';
+    ? 'grid grid-cols-3 items-center gap-3'
+    : 'mx-auto grid max-w-3xl grid-cols-3 items-center gap-12';
   const logoHeight = compact ? 'h-4' : 'h-5';
 
   return (
@@ -19,21 +19,21 @@ export default function PartnerBar({ compact = false }: PartnerBarProps) {
             alt="Paystack"
             width={157}
             height={28}
-            className={`${logoHeight} w-auto`}
+            className={`${logoHeight} w-auto max-w-full justify-self-center`}
           />
           <Image
             src="/images/partners/flutterwave-official.svg"
             alt="Flutterwave"
             width={1013}
             height={241}
-            className={`${logoHeight} w-auto`}
+            className={`${logoHeight} w-auto max-w-full justify-self-center`}
           />
           <Image
             src="/images/partners/dojah-official.svg"
             alt="Dojah"
             width={67}
             height={30}
-            className={`${logoHeight} w-auto`}
+            className={`${logoHeight} w-auto max-w-full justify-self-center`}
           />
         </div>
       </div>
