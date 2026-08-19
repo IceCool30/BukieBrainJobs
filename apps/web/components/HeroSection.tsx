@@ -276,7 +276,7 @@ export default function HeroSection({
             fill
             priority
             className="object-cover"
-            style={{ objectPosition: '56% 50%' }}
+            style={{ objectPosition: '100% 50%' }}
           />
         </picture>
         <div className="absolute inset-y-0 left-0 w-[38%] hidden md:block bg-gradient-to-r from-[#001A41]/60 to-[#001A41]/0" />
