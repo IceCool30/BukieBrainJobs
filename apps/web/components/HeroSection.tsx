@@ -279,8 +279,10 @@ export default function HeroSection({
             style={{ objectPosition: '100% 50%' }}
           />
         </picture>
-        <div className="absolute inset-y-0 left-0 w-[38%] hidden md:block bg-gradient-to-r from-[#001A41]/60 to-[#001A41]/0" />
-        <div className="absolute inset-x-0 bottom-0 h-[26%] block md:hidden bg-gradient-to-t from-[#001A41]/88 via-[#001A41]/45 to-[#001A41]/0" />
+        <div className="absolute inset-y-0 left-0 hidden w-[38%] bg-gradient-to-r from-[#001A41]/60 to-[#001A41]/0 md:block" />
+        <div className="absolute inset-y-0 right-0 hidden w-[24%] bg-gradient-to-l from-[#001A41]/42 to-[#001A41]/0 md:block" />
+        <div className="absolute inset-x-0 bottom-0 hidden h-[28%] bg-gradient-to-t from-[#001A41]/48 via-[#001A41]/18 to-[#001A41]/0 md:block" />
+        <div className="absolute inset-x-0 bottom-0 h-[26%] bg-gradient-to-t from-[#001A41]/88 via-[#001A41]/45 to-[#001A41]/0 md:hidden" />
       </div>
 
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
