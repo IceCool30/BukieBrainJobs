@@ -16,6 +16,7 @@ import HowItWorks from './HowItWorks';
 import TestimonialsSection from './TestimonialsSection';
 import MarketplacePaths from './MarketplacePaths';
 import FAQSection from './FAQSection';
+import PartnerBar from './PartnerBar';
 
 interface PwaHomeProps {
   onOpenDrawer: () => void;
@@ -301,6 +302,8 @@ export default function PwaHome({
             </p>
         </div>
       </section>
+
+      <PartnerBar compact />
 
       {/* Popular Services Grid */}
       <div ref={servicesRef} className={`motion-reveal px-4 pt-6${servicesVisible ? ' is-visible' : ''}`}>
