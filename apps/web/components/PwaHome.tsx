@@ -237,17 +237,6 @@ export default function PwaHome({
 
   return (
     <div className="min-h-screen bg-[#F8F9FF] pb-12">
-      {/* Mobile transparent tap-catcher when a popover is active */}
-      {(searchOpen || locationOpen) && (
-        <div
-          className="fixed inset-0 z-40 bg-black/10 backdrop-blur-[1px]"
-          onClick={() => {
-            setSearchOpen(false);
-            setLocationOpen(false);
-          }}
-        />
-      )}
-
       {/* Compact photo-governed mobile hero */}
       <section className="relative min-h-[340px] pb-6">
         <Image
