@@ -147,7 +147,6 @@ export default function CustomerHomepage() {
             <HeroSection
               onSearchSubmit={handleSearchSubmit}
               onSelectCategory={handleSelectCategory}
-              onSelectComingSoonLocation={(loc) => setComingSoonLocation(loc)}
             />
 
             {/* Muted partner credibility bar */}

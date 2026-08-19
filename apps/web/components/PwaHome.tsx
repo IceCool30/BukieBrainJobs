@@ -296,6 +296,9 @@ export default function PwaHome({
               </div>
             )}
           </div>
+          <p className="ml-auto max-w-[290px] pt-1 text-right text-[13px] font-bold leading-snug text-slate-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
+              Find a professional for the job, or use your skills to find work that values your time
+            </p>
         </div>
       </section>
 

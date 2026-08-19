@@ -8,8 +8,6 @@ import {
   Award,
   Lock,
   Star,
-  MapPin,
-  ChevronDown,
   ArrowRight,
   TrendingUp,
   History,
@@ -17,7 +15,6 @@ import {
 } from 'lucide-react';
 import {
   NIGERIAN_LOCATIONS,
-  NigerianLocation,
   SERVICE_CATEGORIES,
   ServiceCategory,
 } from '../lib/mock/homepage-data';
@@ -25,7 +22,6 @@ import {
 interface HeroSectionProps {
   onSearchSubmit?: (service: string, location: string) => void;
   onSelectCategory?: (category: ServiceCategory) => void;
-  onSelectComingSoonLocation?: (location: NigerianLocation) => void;
 }
 
 const SYNONYM_MAP: Record<string, string[]> = {
@@ -142,19 +138,15 @@ const TRENDING_SEARCHES = [
 export default function HeroSection({
   onSearchSubmit,
   onSelectCategory,
-  onSelectComingSoonLocation,
 }: HeroSectionProps) {
   const [serviceQuery, setServiceQuery] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState<NigerianLocation>(
-    NIGERIAN_LOCATIONS[0] || {
-      id: 'lagos',
-      name: 'Lagos',
-      state: 'Lagos State',
-      status: 'active',
-      popularArea: 'Ikeja / Lekki / VI',
-    }
-  );
-  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const selectedLocation = NIGERIAN_LOCATIONS[0] ?? {
+    id: 'lagos',
+    name: 'Lagos',
+    state: 'Lagos State',
+    status: 'active',
+    popularArea: 'Ikeja / Lekki / VI',
+  };
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([
     'AC Gas Refill',
@@ -163,7 +155,6 @@ export default function HeroSection({
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const locationDropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -189,12 +180,6 @@ export default function HeroSection({
         !containerRef.current.contains(e.target as Node)
       ) {
         setShowSuggestions(false);
-      }
-      if (
-        locationDropdownRef.current &&
-        !locationDropdownRef.current.contains(e.target as Node)
-      ) {
-        setShowLocationDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -228,16 +213,6 @@ export default function HeroSection({
 
   const matches = getMatchedCategories(serviceQuery);
 
-  const handleSelectLocation = (loc: NigerianLocation) => {
-    setShowLocationDropdown(false);
-    setShowSuggestions(false);
-    if (loc.status === 'soon') {
-      onSelectComingSoonLocation?.(loc);
-      return;
-    }
-    setSelectedLocation(loc);
-  };
-
   const saveRecentSearch = (term: string) => {
     if (!term.trim()) return;
     setRecentSearches((prev) => {
@@ -251,7 +226,6 @@ export default function HeroSection({
     const finalQuery = term.trim() || 'All Services';
     saveRecentSearch(finalQuery);
     setShowSuggestions(false);
-    setShowLocationDropdown(false);
 
     const exact = SERVICE_CATEGORIES.find(
       (c) => c.title.toLowerCase() === finalQuery.toLowerCase()
@@ -302,7 +276,7 @@ export default function HeroSection({
             fill
             priority
             className="object-cover"
-            style={{ objectPosition: '50% 50%' }}
+            style={{ objectPosition: '56% 50%' }}
           />
         </picture>
         <div className="absolute inset-y-0 left-0 w-[38%] hidden md:block bg-gradient-to-r from-[#001A41]/60 to-[#001A41]/0" />
@@ -333,15 +307,14 @@ export default function HeroSection({
             Find a professional for the job, or use your skills to find work that values your time.
           </p>
 
-          {/* Unified Dual Service + Location Search Bar */}
+          {/* Service search */}
           <div ref={containerRef} className="pt-4 max-w-2xl w-full relative">
             <form
               onSubmit={handleFormSubmit}
-              className="bg-white rounded-2xl p-1.5 sm:p-2 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 border border-slate-200"
+              className="w-full"
             >
-              {/* Service Input */}
-              <div className="relative flex-1 flex items-center">
-                <Search className="absolute left-3.5 w-4 h-4 text-slate-400 shrink-0" />
+              <div className="relative">
+                <Search className="absolute top-1/2 left-3.5 z-10 h-4 w-4 -translate-y-1/2 shrink-0 text-slate-400" />
                 <input
                   ref={inputRef}
                   id="hero-service-input"
@@ -353,111 +326,32 @@ export default function HeroSection({
                   onChange={(e) => {
                     setServiceQuery(e.target.value);
                     setHighlightedIndex(-1);
-                    setShowLocationDropdown(false);
                     setShowSuggestions(true);
                   }}
-                  onFocus={() => {
-                    setShowLocationDropdown(false);
-                    setShowSuggestions(true);
-                  }}
+                  onFocus={() => setShowSuggestions(true)}
                   onKeyDown={handleKeyDownInput}
                   placeholder="What service do you need? (e.g. AC, Generator)"
-                  className="w-full h-11 sm:h-12 pl-10 pr-8 text-sm font-medium text-slate-900 bg-transparent rounded-xl focus:outline-none placeholder:text-slate-400"
+                  className="motion-input h-12 w-full rounded-xl bg-white pl-10 pr-10 text-sm font-medium text-slate-900 shadow-lg placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
                 />
                 {serviceQuery && (
                   <button
                     type="button"
                     onClick={() => {
                       setServiceQuery('');
-                      setShowLocationDropdown(false);
                       setShowSuggestions(true);
                       inputRef.current?.focus();
                     }}
-                    className="absolute right-2.5 p-1 text-slate-400 hover:text-slate-600 rounded-full"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600"
+                    aria-label="Clear search"
                   >
-                    <X className="w-3.5 h-3.5" />
+                    <X className="h-3.5 w-3.5" />
                   </button>
                 )}
               </div>
-
-              {/* Location Switcher Pill */}
-              <div ref={locationDropdownRef} className="relative shrink-0">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowSuggestions(false);
-                    setShowLocationDropdown((prev) => !prev);
-                  }}
-                  className="motion-press h-10 sm:h-12 px-3 sm:px-4 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold flex items-center justify-between sm:justify-center gap-1.5 border border-slate-200 w-full sm:w-auto transition-colors"
-                >
-                  <MapPin className="w-3.5 h-3.5 text-[#296A4B] shrink-0" />
-                  <span className="truncate max-w-[110px] sm:max-w-[130px]">
-                    {selectedLocation.name}
-                  </span>
-                  <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
-                </button>
-
-                {/* Location Selection Dropdown */}
-                {showLocationDropdown && (
-                  <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-fadeIn">
-                    <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      Active Nigerian Cities
-                    </div>
-                    {NIGERIAN_LOCATIONS.filter((l) => l.status === 'active').map((loc) => (
-                      <button
-                        key={loc.id}
-                        type="button"
-                        onClick={() => handleSelectLocation(loc)}
-                        className={`w-full px-3 py-2 text-left text-xs font-medium flex items-center justify-between transition-colors ${
-                          selectedLocation.id === loc.id
-                            ? 'bg-[#EFF4FF] text-[#001A41] font-bold'
-                            : 'text-slate-700 hover:bg-slate-50'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                          <span>{loc.name}</span>
-                        </div>
-                        <span className="text-[10px] text-slate-400">{loc.popularArea}</span>
-                      </button>
-                    ))}
-
-                    <div className="border-t border-slate-100 my-1.5 pt-1.5 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                      <span>Coming Soon</span>
-                      <span className="text-[9px] text-[#296A4B] font-normal">Notify Me</span>
-                    </div>
-                    {NIGERIAN_LOCATIONS.filter((l) => l.status === 'soon').map((loc) => (
-                      <button
-                        key={loc.id}
-                        type="button"
-                        onClick={() => handleSelectLocation(loc)}
-                        className="w-full px-3 py-2 text-left text-xs font-medium text-slate-500 hover:bg-amber-50/70 hover:text-amber-900 flex items-center justify-between transition-colors"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                          <span>{loc.name}</span>
-                        </div>
-                        <span className="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-semibold text-[9px]">
-                          Soon
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Submit CTA Button */}
-              <button
-                type="submit"
-                className="motion-press h-10 sm:h-12 px-5 bg-[#296A4B] hover:bg-[#1F523A] active:bg-[#17402C] text-white text-xs sm:text-sm font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition-colors shrink-0"
-              >
-                <span>Search</span>
-                <ArrowRight className="w-4 h-4 text-[#ABEEC8]" />
-              </button>
             </form>
 
             {/* Rich Dropdown Suggestions (Zero State & Active State) */}
-            {showSuggestions && !showLocationDropdown && (
+            {showSuggestions && (
               <div className="motion-popover absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)] border border-slate-200 p-3 z-50 max-h-[380px] overflow-y-auto space-y-3">
                 {/* Zero State: Recent & Trending */}
                 {!serviceQuery.trim() && (
