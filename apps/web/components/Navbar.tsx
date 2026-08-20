@@ -23,7 +23,7 @@ const DRAWER_LINKS = [
   { href: '/services', label: 'Services', icon: Search, tint: '#296A4B' },
   { href: '/guarantee', label: 'BukieGuarantee', icon: ShieldCheck, tint: '#296A4B' },
   { href: '/#how-it-works', label: 'How It Works', icon: Briefcase, tint: '#296A4B' },
-  { href: '/#trust', label: 'Verification', icon: UserCheck, tint: '#296A4B' },
+  { href: '/guarantee#verification', label: 'Verification', icon: UserCheck, tint: '#296A4B' },
   { href: '/enterprise', label: 'For Business', icon: Briefcase, tint: '#ABEEC8' },
 ];
 
@@ -181,10 +181,10 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             <ShieldCheck className="w-4 h-4 text-[#ABEEC8]" />
             BukieGuarantee
           </Link>
-          <a href="#trust" className="hover:text-[#ABEEC8] transition-colors flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-[#ABEEC8]" />
+          <Link href="/guarantee#verification" className="hover:text-[#ABEEC8] transition-colors flex items-center gap-1.5">
+            <UserCheck className="w-4 h-4 text-[#ABEEC8]" />
             Verification
-          </a>
+          </Link>
           <Link href="/enterprise" className="hover:text-[#ABEEC8] transition-colors">
             For Business
           </Link>
