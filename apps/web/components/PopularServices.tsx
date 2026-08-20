@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { SERVICE_CATEGORIES, ServiceCategory } from '../lib/mock/homepage-data';
+import ServiceCategoryRail from './ServiceCategoryRail';
 
 interface PopularServicesProps {
   onSelectCategory?: (category: ServiceCategory) => void;
@@ -13,16 +14,11 @@ interface PopularServicesProps {
 export default function PopularServices({ onSelectCategory }: PopularServicesProps) {
   return (
     <section id="services" className="bg-[#F8F9FF] py-16 border-b border-slate-200">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="flex items-end justify-between gap-4">
-          <div>
-            <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
-              Services for your home and work
-            </h2>
-            <p className="text-sm text-slate-500 mt-1">
-              Explore services, compare starting estimates, and choose the right BrainWorker for the job.
-            </p>
-          </div>
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
+            Services for your home and work
+          </h2>
           <Link
             href="/services"
             className="inline-flex items-center gap-1 text-sm font-semibold text-[#296A4B] hover:text-[#1f5239] transition-colors"
@@ -31,6 +27,8 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
+
+        <ServiceCategoryRail onSelectCategory={onSelectCategory} />
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
           {SERVICE_CATEGORIES.map((cat) => (

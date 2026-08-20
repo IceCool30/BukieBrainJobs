@@ -26,6 +26,7 @@ import HowItWorks from './HowItWorks';
 import TestimonialsSection from './TestimonialsSection';
 import MarketplacePaths from './MarketplacePaths';
 import FAQSection from './FAQSection';
+import ServiceCategoryRail from './ServiceCategoryRail';
 
 interface PwaHomeProps {
   onOpenDrawer: () => void;
@@ -550,13 +551,17 @@ export default function PwaHome({
       {/* Popular Services Grid */}
       <div ref={servicesRef} className={`motion-reveal px-4 pt-6${servicesVisible ? ' is-visible' : ''}`}>
         <div className="motion-reveal-item flex items-baseline justify-between">
-          <h2 className="font-display font-bold text-[17px] text-[#001A41]">Popular Services</h2>
+          <h2 className="font-display font-bold text-[17px] text-[#001A41]">Browse services</h2>
           <button onClick={onOpenSearch} className="motion-press text-[13px] font-semibold text-[#296A4B]">
             View all
           </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 pt-3">
+        <div className="pt-2">
+          <ServiceCategoryRail onSelectCategory={onSelectCategory} />
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 pt-4">
           {SERVICE_CATEGORIES.slice(0, 6).map((cat) => (
             <button
               key={cat.id}
