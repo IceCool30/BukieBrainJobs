@@ -155,7 +155,7 @@ export default function ServicesPage() {
                     : 'text-slate-700 hover:bg-slate-50'
                 }`}
               >
-                <ServiceTaskIcon categoryId="all" className="h-14 w-14" />
+                <ServiceTaskIcon categoryId="all" className="h-11 w-11 sm:h-12 sm:w-12" />
                 All services
               </button>
               {SERVICE_CATEGORIES.map((category) => (
@@ -170,7 +170,7 @@ export default function ServicesPage() {
                       : 'text-slate-700 hover:bg-slate-50'
                   }`}
                 >
-                  <ServiceTaskIcon categoryId={category.id} className="h-14 w-14" />
+                  <ServiceTaskIcon categoryId={category.id} className="h-11 w-11 sm:h-12 sm:w-12" />
                   {TASK_LABELS[category.id] ?? category.title}
                 </button>
               ))}
