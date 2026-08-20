@@ -24,7 +24,7 @@ function CategoryButton({ category, onSelect }: { category: ServiceCategory; onS
       type="button"
       onClick={() => onSelect?.(category)}
       aria-label={category.title}
-      className="motion-press flex h-20 w-[68px] shrink-0 flex-col items-center justify-center gap-1 rounded-xl px-1 text-center transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2 sm:h-[104px] sm:w-full sm:gap-2"
+      className="motion-press flex h-20 w-[68px] shrink-0 flex-col items-center justify-center gap-1 rounded-xl px-1 text-center transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:h-[104px] sm:w-full sm:gap-2"
     >
       <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F2F8F4] sm:h-12 sm:w-12">
         <ServiceTaskIcon categoryId={category.id} className="h-7 w-7 sm:h-9 sm:w-9" />

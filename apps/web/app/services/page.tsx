@@ -106,14 +106,13 @@ export default function ServicesPage() {
         <div className="relative mx-auto flex min-h-[390px] max-w-[1280px] flex-col justify-center px-4 py-12 sm:min-h-[420px] sm:px-6 sm:py-14 lg:min-h-[432px] lg:px-8">
           <Link
             href="/"
-            className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-slate-200 transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 focus:ring-offset-[#001A41]"
+            className="inline-flex self-start min-h-11 items-center gap-2 text-xs font-semibold text-slate-200 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#ABEEC8]"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to home
           </Link>
           <div className="mt-6 max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#ABEEC8]">Service directory</p>
-            <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-5xl">
+            <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-5xl">
               Find the right service for the job.
             </h1>
             <p className="mt-4 max-w-xl text-sm leading-6 text-slate-200 sm:text-base">
@@ -149,7 +148,7 @@ export default function ServicesPage() {
                 type="button"
                 onClick={() => setSelectedGroup('All')}
                 aria-pressed={selectedGroup === 'All'}
-                className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
+                className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
                   selectedGroup === 'All'
                     ? 'border-[#296A4B] text-[#001A41]'
                     : 'border-transparent text-slate-700 hover:border-slate-200 hover:text-[#001A41]'
@@ -166,7 +165,7 @@ export default function ServicesPage() {
                   type="button"
                   onClick={() => setSelectedGroup(category.id)}
                   aria-pressed={selectedGroup === category.id}
-className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
+className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
                     selectedGroup === category.id
                       ? 'border-[#296A4B] text-[#001A41]'
                       : 'border-transparent text-slate-700 hover:border-slate-200 hover:text-[#001A41]'
