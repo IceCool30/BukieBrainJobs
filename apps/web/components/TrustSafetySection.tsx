@@ -6,7 +6,7 @@ export default function TrustSafetySection() {
   const trustPillars = [
     {
       title: 'Profile Verification',
-      desc: 'Review a professional’s profile and verification status before you decide who to book.',
+      desc: 'Review a BrainWorker’s profile and verification status before you decide who to book.',
       icon: <UserCheck className="w-5 h-5 text-[#296A4B]" />,
     },
     {

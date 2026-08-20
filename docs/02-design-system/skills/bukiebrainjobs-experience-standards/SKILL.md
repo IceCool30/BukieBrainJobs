@@ -85,7 +85,8 @@ Apply the bundled content guide as a mandatory companion standard. The guide gov
 At minimum, ensure that every customer-facing change:
 
 - Uses clear, human, professional, action-oriented language.
-- Uses `Customer`, `BrainWorker`, `Professional`, `Job`, `Service`, `Profile`, `Verification`, and `Escrow` accurately.
+- Uses `BrainWorker` as the mandatory customer-facing name for any person who offers services on the platform. Do not use `professional`, `worker`, `provider`, `artisan`, `technician`, `freelancer`, or `vendor` as a substitute identity label. Use a trade or skill only when it gives necessary context, such as “electrician” or “plumber.”
+- Uses `Customer`, `Job`, `Service`, `Profile`, `Verification`, and `Escrow` accurately.
 - Avoids em dashes, filler, generic AI-sounding descriptions, and unsupported absolute claims.
 - Does not invent availability, safety, verification, rating, coverage, payment, or outcome claims.
 - States the next action clearly and uses meaningful labels and link text.

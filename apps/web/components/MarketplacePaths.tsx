@@ -41,14 +41,14 @@ export default function MarketplacePaths({ onPostJobClick, onBecomeWorkerClick }
             </div>
           </div>
 
-          {/* Pathway B: Join as Professional */}
+          {/* Pathway B: Become a BrainWorker */}
           <div className="bg-slate-50 text-slate-900 rounded-xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between space-y-6 relative overflow-hidden">
             <div className="space-y-3 relative z-10">
               <h3 className="font-display font-bold text-2xl text-[#001A41]">
                 Offer your skills
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Create a professional profile and respond to work that fits your skills.
+                Create your BrainWorker profile and respond to work that fits your skills.
               </p>
             </div>
 
@@ -57,7 +57,7 @@ export default function MarketplacePaths({ onPostJobClick, onBecomeWorkerClick }
                 onClick={onBecomeWorkerClick}
                 className="motion-press w-full sm:w-auto px-6 py-3 bg-[#001A41] hover:bg-[#000F2D] text-white text-xs font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-md"
               >
-                  <span>Become a BrainWorker</span>
+                <span>Become a BrainWorker</span>
                 <ArrowRight className="w-4 h-4 text-[#ABEEC8]" />
               </button>
             </div>

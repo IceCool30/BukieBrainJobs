@@ -41,7 +41,7 @@ const FEATURES = [
   {
     icon: <Users className="w-5 h-5 text-slate-600" />,
     title: 'One Verified Workforce',
-    desc: 'Professionals on your account complete profile verification and identity checks. Terms for guarantee coverage are agreed per booking.',
+    desc: 'BrainWorkers on your account complete profile verification and identity checks. Terms for guarantee coverage are agreed per booking.',
   },
 ];
 
@@ -67,7 +67,7 @@ export default function EnterprisePage() {
             <p className="text-base text-slate-300 leading-relaxed">
               Estate managers, facility teams, and business owners centralize every maintenance
               operation on one platform. Tenants and employees raise requests, verified
-              professionals complete them, and you keep full visibility of cost and completion.
+              BrainWorkers complete them, and you keep full visibility of cost and completion.
             </p>
           </div>
         </div>

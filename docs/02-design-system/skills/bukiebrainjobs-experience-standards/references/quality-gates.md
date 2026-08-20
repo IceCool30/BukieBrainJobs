@@ -50,7 +50,7 @@ Use this checklist before presenting customer-facing work as complete. Treat a f
 | Check | Pass condition |
 |---|---|
 | Voice | Copy is natural, concise, professional, direct, and action-oriented. |
-| Terminology | `Customer`, `BrainWorker`, `Professional`, `Job`, `Service`, `Profile`, `Verification`, and `Escrow` are used correctly. |
+| Terminology | `BrainWorker` is the sole customer-facing identity label for a service provider. `Customer`, `Job`, `Service`, `Profile`, `Verification`, and `Escrow` are used correctly. |
 | Claims | No invented counts, ratings, availability, guarantees, coverage, verification, payment protection, or safety claim appears. |
 | Microcopy | Labels are explicit, actions are clear, and errors explain recovery. |
 | Punctuation | No em dash is used in customer-facing copy. |

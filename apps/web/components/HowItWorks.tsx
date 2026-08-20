@@ -12,7 +12,7 @@ export default function HowItWorks() {
     {
       num: '02',
       title: 'Choose how to book',
-      desc: 'Book a professional or post a job for tailored quotes.',
+      desc: 'Book a BrainWorker or post a job for tailored quotes.',
       icon: <UserCheck className="w-5 h-5 text-slate-600" />,
     },
     {

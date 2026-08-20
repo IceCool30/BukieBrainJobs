@@ -210,7 +210,7 @@ export const MOCK_TESTIMONIALS: CustomerTestimonial[] = [
     location: 'Victoria Island, Lagos',
     service: 'AC Repair & Inverter Solar Setup',
     rating: 5,
-    quote: "We've been burned before by technicians who promised and disappeared. This time the engineer showed up at 10am exactly, showed his ID before touching anything, and I could see my payment sitting in escrow the whole time. When the AC finally blew cold air, I approved it myself.",
+    quote: "We had been let down before. This time, the BrainWorker arrived at 10am, showed their ID before touching anything, and I could see my payment sitting in escrow. When the AC finally blew cold air, I approved it myself.",
     verifiedBooking: true,
   },
   {
@@ -220,7 +220,7 @@ export const MOCK_TESTIMONIALS: CustomerTestimonial[] = [
     location: 'Maitama, Abuja',
     service: 'Commercial Plumbing & Tank Maintenance',
     rating: 5,
-    quote: "As facility manager I spend most of my week chasing artisans who don't show. BukieBrainJobs sent two verified plumbers who fixed our water pressure issue in under three hours. I released payment from the app once I checked the work. Simple.",
+    quote: "As a facility manager, I spend most of my week chasing people who do not show. BukieBrainJobs sent two verified BrainWorkers who fixed our water-pressure issue in under three hours. I released payment from the app once I checked the work. Simple.",
     verifiedBooking: true,
   },
   {
@@ -274,8 +274,8 @@ export const MOCK_FAQS: FAQItem[] = [
   },
   {
     id: 'faq-2',
-    question: 'How do I review a professional before I book?',
-    answer: 'Open the professional’s profile to review their service information, work history, availability, and verification status before you decide.',
+    question: 'How do I review a BrainWorker before I book?',
+    answer: 'Open the BrainWorker’s profile to review their service information, work history, availability, and verification status before you decide.',
     category: 'Verification & Trust',
   },
   {
@@ -287,7 +287,7 @@ export const MOCK_FAQS: FAQItem[] = [
   {
     id: 'faq-4',
     question: 'Can I request quotes by posting a job instead of booking directly?',
-    answer: 'Yes. For custom tasks or bigger projects, post a job with the work, location, and budget range. You can compare the responses you receive before choosing a professional.',
+    answer: 'Yes. For custom tasks or bigger projects, post a job with the work, location, and budget range. You can compare the responses you receive before choosing a BrainWorker.',
     category: 'General',
   },
   {
@@ -298,8 +298,8 @@ export const MOCK_FAQS: FAQItem[] = [
   },
   {
     id: 'faq-6',
-    question: 'How do I join as a skilled artisan or technician?',
-    answer: 'Create a professional profile, add your service information, and complete the required verification steps. You can then respond to work that matches your skills and availability.',
+    question: 'How do I become a BrainWorker?',
+    answer: 'Create a BrainWorker profile, add your service information, and complete the required verification steps. You can then respond to work that matches your skills and availability.',
     category: 'General',
   },
 ];

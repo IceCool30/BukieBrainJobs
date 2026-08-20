@@ -38,7 +38,7 @@ export default function LocationNoticeModal({ location, onClose }: LocationNotic
                 Coming Soon to {location.name}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                We are currently onboarding and verifying professionals in {location.name}, {location.state}. Full service will be available shortly.
+                We are currently onboarding and verifying BrainWorkers in {location.name}, {location.state}. Full service will be available shortly.
               </p>
             </div>
 
@@ -79,7 +79,7 @@ export default function LocationNoticeModal({ location, onClose }: LocationNotic
               You are on the Priority List!
             </h3>
             <p className="text-xs text-slate-600 max-w-xs mx-auto">
-              We will notify you as soon as verified professionals become available in {location.name}.
+              We will notify you as soon as verified BrainWorkers become available in {location.name}.
             </p>
             <button
               onClick={() => {

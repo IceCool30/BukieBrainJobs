@@ -54,8 +54,8 @@ Consistent terminology is mandatory across customer-facing content.
 | Concept | Preferred Term | Avoid |
 |---|---|---|
 | Person hiring | Customer | Client, Employer |
-| Service provider | BrainWorker | Worker, Artisan, Talent |
-| Generic service provider reference | Professional | Worker, Artisan |
+| Service provider | BrainWorker | Professional, Worker, Artisan, Talent |
+| Generic service provider reference | BrainWorker | Professional, Worker, Artisan, Talent |
 | Work request | Job | Gig, Task |
 | Service offering | Service | Gig |
 | Hiring action | Book | Hire, Engage |
@@ -65,12 +65,12 @@ Consistent terminology is mandatory across customer-facing content.
 | Provider verification | Verification | BukiePassport |
 | Payment protection | Escrow | Transactional payment |
 | Geographic availability | Location | Coordinates |
-| Search result | Professional / Service | Candidate |
+| Search result | BrainWorker / Service | Candidate, Professional |
 | Work opportunity | Job / Opportunity | Gig |
 
-Use **BrainWorker** when referring specifically to a service provider on BukieBrainJobs.
+Use **BrainWorker** for every customer-facing reference to a person who provides services on BukieBrainJobs.
 
-Use **professional** when the context is generic or marketing-focused.
+Do not use **professional**, **worker**, **artisan**, or **talent** as a standalone label for a service provider. **Professional** remains appropriate only as an adjective, such as “professional and approachable.”
 
 ### 2.2 Platform Terminology
 
@@ -86,7 +86,7 @@ Use the term that fits the context.
 
 For example:
 
-> Find professionals on our platform.
+> Find BrainWorkers on our platform.
 
 > Open the mobile app to manage your jobs.
 
@@ -112,7 +112,7 @@ Bad:
 
 Good:
 
-> We match you with relevant professionals.
+> We match you with relevant BrainWorkers.
 
 ---
 
@@ -126,7 +126,7 @@ Use:
 
 > Join BukieBrainJobs.
 
-> Find professionals on BukieBrainJobs.
+> Find BrainWorkers on BukieBrainJobs.
 
 Avoid exposing internal product names, experimental terminology, architectural concepts, or deprecated branding.
 
@@ -166,7 +166,7 @@ Longer sentences are acceptable when shortening them would reduce meaning or pre
 
 Bad:
 
-> In order to facilitate the optimal matching of your professional profile with relevant opportunities in your geographic area, we utilize advanced algorithms.
+> In order to facilitate the optimal matching of your profile with relevant opportunities in your geographic area, we utilize advanced algorithms.
 
 Good:
 
@@ -206,7 +206,7 @@ Example:
 <ul className="list-disc pl-5 space-y-2">
   <li><strong>Account Information:</strong> Your name, email, and phone number.</li>
   <li><strong>Location:</strong> Your state and local area.</li>
-  <li><strong>Skills:</strong> Your professional credentials.</li>
+  <li><strong>Skills:</strong> Your skills and credentials.</li>
 </ul>
 
 5.3 Cards and Content Sections
@@ -228,7 +228,7 @@ Search for a Service
 
 Post a Job
 
-Find Professionals
+Find BrainWorkers
 
 View Profile
 
@@ -356,7 +356,7 @@ Bad:
 
 Good:
 
-> No professionals found in this area.
+> No BrainWorkers found in this area.
 
 
 
@@ -370,7 +370,7 @@ Describe the current action when useful.
 
 Examples:
 
-> Finding professionals near you...
+> Finding BrainWorkers near you...
 
 
 
@@ -431,7 +431,7 @@ Avoid:
 
 Completely risk-free
 
-Guaranteed professional
+Guaranteed BrainWorker
 
 Fully trusted
 
@@ -448,13 +448,13 @@ Prefer precise statements.
 
 Example:
 
-> This professional has completed profile verification.
+> This BrainWorker has completed profile verification.
 
 
 
 Instead of:
 
-> This professional is completely trusted.
+> This BrainWorker is completely trusted.
 
 
 
@@ -508,11 +508,11 @@ Customer-facing content should make these paths understandable without creating 
 
 Preferred examples
 
-> Find a professional for your job.
+> Find a BrainWorker for your job.
 
 
 
-> Post a job and get matched with professionals.
+> Post a job and get matched with BrainWorkers.
 
 
 
@@ -568,7 +568,7 @@ Example:
 
 
 
-> Get notified when professionals become available.
+> Get notified when BrainWorkers become available.
 
 
 
@@ -620,7 +620,7 @@ Bad:
 
 Better:
 
-> Find verified professionals near you.
+> Find verified BrainWorkers near you.
 
 
 
@@ -848,7 +848,7 @@ A customer benefit.
 
 Example:
 
-> Find Verified Professionals Near You
+> Find Verified BrainWorkers Near You
 
 
 
@@ -896,7 +896,7 @@ Example:
 
 For Customers
 
-Find a Professional
+Find a BrainWorker
 
 Search services and book verified BrainWorkers near you.
 
@@ -1049,10 +1049,10 @@ CTA	Click Here	Post a Job
 Error	Something went wrong	Unable to process payment. Please try again.
 Success	You're all set!	Your job has been posted successfully.
 Section header	Important Information	How It Works
-Description	Our platform utilizes advanced matching algorithms	We match you with relevant professionals.
-Empty state	No results found	No professionals found in this area.
+Description	Our platform utilizes advanced matching algorithms	We match you with relevant BrainWorkers.
+Empty state	No results found	No BrainWorkers found in this area.
 Verification	Complete your BukiePassport	Complete your profile verification.
-Location	Browse every professional nationwide	Find professionals in your area.
+Location	Browse every professional nationwide	Find BrainWorkers in your area.
 Payment	Your transaction is completely protected	Pay through our escrow system.
 
 
@@ -1252,11 +1252,11 @@ Voice
 
 Terminology
 
-[ ] "Customer" is used for people hiring professionals.
+[ ] "Customer" is used for people hiring BrainWorkers.
 
-[ ] "BrainWorker" is used for service providers.
+[ ] "BrainWorker" is used for every customer-facing service-provider label.
 
-[ ] "Professional" is used where generic provider language is appropriate.
+[ ] "Professional", "worker", "artisan", and "talent" are not used as standalone service-provider labels.
 
 [ ] "Job" is used for work requests.
 

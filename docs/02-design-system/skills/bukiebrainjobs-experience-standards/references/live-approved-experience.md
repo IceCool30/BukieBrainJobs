@@ -8,12 +8,12 @@ When the live implementation changes with explicit approval, update this file in
 
 ## Experience Character
 
-The approved product feels **calm, capable, photo-led, clear, and premium without excess**. It uses real service imagery and purposeful contrast instead of saturated backgrounds, dense decoration, or generic marketing content. The primary job is always obvious: find a service, book a professional, post a job, or become a BrainWorker.
+The approved product feels **calm, capable, photo-led, clear, and premium without excess**. It uses real service imagery and purposeful contrast instead of saturated backgrounds, dense decoration, or generic marketing content. The primary job is always obvious: find a service, book a BrainWorker, post a job, or become a BrainWorker.
 
 | Principle | Live expression |
 |---|---|
 | Clarity before decoration | Headings, search, calls to action, and service choices remain readable at a glance. |
-| Image-led quality | Professional and service photos carry most of the visual richness. |
+| Image-led quality | BrainWorker and service photos carry most of the visual richness. |
 | Colour restraint | Navy creates structure, mint and green create emphasis, and the quiet off-white canvas gives content room. |
 | Real marketplace confidence | UI explains the next action without unsupported proof, ratings, guarantees, or inflated claims. |
 | One coherent system | Desktop feels editorial and spacious. Mobile feels focused and direct. Neither feels like an unrelated product. |
@@ -38,11 +38,11 @@ Avoid copying visual trends that conflict with this language. In particular, do 
 
 ### Hero and Header
 
-The desktop hero uses the approved paired-professional image with the people’s faces and practical work context visible. The navigation belongs to the hero composition rather than appearing as a disconnected panel. Navy depth is controlled through vignettes and contrast, never a full opaque overlay that buries the image.
+The desktop hero uses the approved paired BrainWorker image with the people’s faces and practical work context visible. The navigation belongs to the hero composition rather than appearing as a disconnected panel. Navy depth is controlled through vignettes and contrast, never a full opaque overlay that buries the image.
 
 The approved hero headline is:
 
-> Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on BukieBrainJobs
+> Book a skilled local or remote BrainWorker in minutes or find flexible work that pays what you are worth only on BukieBrainJobs
 
 The search field is central to the hero task. Its suggestions open **below** the field, include real service imagery, and remain unclipped. Its focus state is visible without displacing the page.
 
@@ -70,7 +70,7 @@ The mobile experience is a compact service-discovery product, not a compressed d
 
 ### Mobile Hero
 
-The approved mobile hero is compact and photo-governed. It uses the same paired-professional image with intentional positioning so faces and meaningful work remain visible. Navy depth exists only at controlled side and lower edges to support text. Do not restore a broad blue overlay above the image.
+The approved mobile hero is compact and photo-governed. It uses the same paired-BrainWorker image with intentional positioning so faces and meaningful work remain visible. Navy depth exists only at controlled side and lower edges to support text. Do not restore a broad blue overlay above the image.
 
 The mobile top controls are minimal:
 

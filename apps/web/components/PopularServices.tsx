@@ -20,7 +20,7 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
               Services for your home and work
             </h2>
             <p className="text-sm text-slate-500 mt-1">
-              Explore services, compare starting estimates, and choose the right professional for the job.
+              Explore services, compare starting estimates, and choose the right BrainWorker for the job.
             </p>
           </div>
           <Link

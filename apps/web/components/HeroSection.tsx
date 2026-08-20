@@ -325,7 +325,7 @@ export default function HeroSection({
           <source media="(max-width: 768px)" srcSet="/images/hero-mobile-1080.jpg" />
           <Image
             src="/images/hero-portrait-1920.png"
-            alt="Verified BukieBrainJobs artisans against the Lagos waterfront"
+            alt="BukieBrainJobs BrainWorkers at work in Lagos"
             fill
             priority
             className="object-cover"
@@ -340,8 +340,7 @@ export default function HeroSection({
         <div className="max-w-3xl text-left space-y-6">
           {/* Headline */}
           <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-[3rem] tracking-tight text-white leading-[1.15] sm:leading-[1.15]">
-            Book a skilled local or remote worker in minutes, or find flexible
-            work that pays what you are worth. Only on{' '}
+            Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on{' '}
             <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#ABEEC8] to-[#5FD8A5]">
               BukieBrainJobs
               <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-gradient-to-r from-[#ABEEC8] to-transparent" />

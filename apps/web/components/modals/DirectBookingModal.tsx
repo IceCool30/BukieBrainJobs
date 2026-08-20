@@ -240,7 +240,7 @@ export default function DirectBookingModal({
 
               <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-[#296A4B] shrink-0" />
-                <span>Your exact address is only shared with the assigned verified artisan.</span>
+                <span>Your exact address is only shared with the assigned verified BrainWorker.</span>
               </div>
             </div>
           )}
@@ -340,7 +340,7 @@ export default function DirectBookingModal({
                   <span>Escrow Hold: {startingPrice}</span>
                 </div>
                 <p className="text-[11px] text-slate-500">
-                  SMS & In-app confirmation sent. You will receive the artisan’s live arrival notification prior to dispatch.
+                  SMS & in-app confirmation sent. You will receive your BrainWorker’s arrival notification before dispatch.
                 </p>
               </div>
               <button

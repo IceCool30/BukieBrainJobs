@@ -231,7 +231,7 @@ export default function PwaHome({
       <section className="relative min-h-[340px] pb-6">
         <Image
           src="/images/hero-portrait-1920.png"
-          alt="BukieBrainJobs professionals at work"
+          alt="BukieBrainJobs BrainWorkers at work"
           fill
           priority
           className="object-cover object-[78%_52%]"
@@ -270,8 +270,7 @@ export default function PwaHome({
         {/* Hero Title & Mobile Search */}
         <div className="relative z-10 px-4 pt-8 text-left space-y-3">
           <h1 className="font-display font-extrabold text-[19px] leading-snug tracking-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.55)]">
-            Book a skilled local or remote worker in minutes, or find flexible
-            work that pays what you are worth. Only on{' '}
+            Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on{' '}
             <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#ABEEC8] to-[#5FD8A5]">
               BukieBrainJobs
               <span className="absolute inset-x-0 bottom-0 h-[2px] rounded-full bg-gradient-to-r from-[#ABEEC8] to-transparent" />
@@ -507,7 +506,7 @@ export default function PwaHome({
             )}
           </div>
           <p className="ml-auto max-w-[290px] pt-1 text-right text-[13px] font-bold leading-snug text-slate-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
-              Find a professional for the job, or use your skills to find work that values your time
+              Find a BrainWorker for the job, or use your skills to find work that values your time
             </p>
         </div>
       </section>

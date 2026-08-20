@@ -192,13 +192,13 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
 
         {/* Action Buttons */}
         <div className="hidden md:flex items-center gap-3">
-          {/* Level 2 Secondary: Join as Professional */}
+          {/* Secondary action: Become a BrainWorker */}
           <button
             onClick={onBecomeWorkerClick}
             className="motion-press px-3.5 py-2 text-xs font-semibold text-white hover:text-[#ABEEC8] rounded-full transition-colors flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
           >
             <UserCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
-            Join as a Professional
+            Become a BrainWorker
           </button>
 
           {/* Level 2 Secondary: Post a Job */}
@@ -316,7 +316,7 @@ function DrawerPanel({
                 onClick={() => { onClose(); onBecomeWorker?.(); }}
                 className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-white bg-white/10 hover:bg-white/15 active:bg-white/20 border border-white/15 rounded-xl transition-colors"
               >
-                Join as a Professional
+                Become a BrainWorker
               </button>
               <button
                 onClick={onClose}

@@ -31,7 +31,7 @@ export default function BukiePassportModal({ isOpen, onClose }: BukiePassportMod
             How Every BrainWorker is Vetted
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-            Nigeria&apos;s most rigorous artisan credentialing system. Every professional entering your home or office is verified through multi-tier biometric vetting.
+            Every BrainWorker entering your home or office completes the BukiePassport credentialing process.
           </p>
         </div>
 

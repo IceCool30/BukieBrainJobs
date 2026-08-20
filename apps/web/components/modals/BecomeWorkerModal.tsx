@@ -28,10 +28,10 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
             <div className="space-y-2">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5EEFF] text-[#001A41] text-xs font-bold">
                 <UserCheck className="w-3.5 h-3.5 text-[#296A4B]" />
-                Professional Registration
+                BrainWorker Registration
               </div>
               <h3 className="font-display font-bold text-xl sm:text-2xl text-[#0B1C30]">
-                Join as a Professional
+                Become a BrainWorker
               </h3>
               <p className="text-xs text-slate-500">
                 Submit your profile for comprehensive NIN and BVN verification and begin receiving service requests.

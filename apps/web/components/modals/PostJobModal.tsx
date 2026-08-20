@@ -34,7 +34,7 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
                 Post a Job Request
               </h3>
               <p className="text-xs text-slate-500">
-                Describe the service you need and receive competitive quotes from verified professionals in your area.
+                Describe the service you need and receive competitive quotes from verified BrainWorkers in your area.
               </p>
             </div>
 
@@ -107,7 +107,7 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
               Request Submitted Successfully!
             </h3>
             <p className="text-xs text-slate-600 max-w-sm mx-auto">
-              Verified professionals in your area are being notified. You will receive competitive quotes shortly via SMS and in-app notification.
+              Verified BrainWorkers in your area are being notified. You will receive competitive quotes shortly via SMS and in-app notification.
             </p>
             <button
               onClick={() => {

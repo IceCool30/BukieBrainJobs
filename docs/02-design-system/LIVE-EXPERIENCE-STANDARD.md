@@ -28,6 +28,10 @@ The bundled skill includes the companion BukieBrainJobs customer-content guide. 
 
 When sources conflict, do not silently choose an older document over the live approved result. Identify the conflict, preserve the live baseline, and record the decision before implementing a material visual or interaction change.
 
+## Official marketplace terminology
+
+**BrainWorker** is the official customer-facing name for every person who offers services through BukieBrainJobs. Use it consistently in calls to action, navigation, profiles, onboarding, booking, service discovery, trust copy, and public metadata. Do not substitute “professional,” “worker,” “provider,” “artisan,” “technician,” “freelancer,” or “vendor” as the role identity. Use a specific trade only where it adds necessary context.
+
 ## Non-negotiable outcomes
 
 Future work must preserve a premium, photo-led marketplace experience; clear service-first mobile discovery; restrained navy, mint, and green use; concise human content; accessible motion; verified claims; responsive layouts; and maintainable implementation.

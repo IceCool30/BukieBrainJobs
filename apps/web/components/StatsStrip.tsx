@@ -10,7 +10,7 @@ type StatDef =
 // Placeholder until real platform figures exist. Avoid publishing exact counts
 // we cannot verify; the guide forbids unsupported statistics and ratings.
 const STATS: StatDef[] = [
-  { icon: Users, kind: 'count', value: 0, suffix: '', label: 'Verified Professionals', shortLabel: 'Verified Professionals' },
+  { icon: Users, kind: 'count', value: 0, suffix: '', label: 'Verified BrainWorkers', shortLabel: 'Verified BrainWorkers' },
   { icon: Briefcase, kind: 'count', value: 0, suffix: '', label: 'Jobs Completed', shortLabel: 'Jobs Completed' },
   { icon: Star, kind: 'rating', value: 0, label: 'Customer Rating' },
   { icon: Globe2, kind: 'count', value: 0, suffix: '', label: 'Serving Your Area', shortLabel: 'Serving Your Area' },

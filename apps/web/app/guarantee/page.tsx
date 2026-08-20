@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ArrowLeft, ShieldCheck, CheckCircle2, AlertTriangle, Scale, Headphones } from 'lucide-react';
 
 const COVERAGE = [
-  'Accidental property damage caused by the professional during an eligible booking',
+  'Accidental property damage caused by the BrainWorker during an eligible booking',
   'Incomplete or abandoned work on eligible bookings',
   'Repairs needed to restore work that fails to meet the agreed scope',
 ];
@@ -23,13 +23,13 @@ const STEPS = [
   {
     n: '03',
     title: 'Fair resolution',
-    desc: 'Where the claim holds, the professional fixes the work at no cost to you, or the platform arranges a refund from escrow up to the coverage limit.',
+    desc: 'Where the claim holds, the BrainWorker fixes the work at no cost to you, or the platform arranges a refund from escrow up to the coverage limit.',
   },
 ];
 
 const EXCLUSIONS = [
   'Damage that existed before the booking or falls outside the agreed scope',
-  'Professional fees above the quoted and approved amount',
+  'BrainWorker fees above the quoted and approved amount',
   'Bookings arranged outside the platform to avoid escrow',
   'General wear and tear unrelated to the booked work',
 ];
@@ -126,7 +126,7 @@ export default function GuaranteePage() {
               Escrow works alongside the guarantee
             </h2>
             <p className="text-sm text-slate-500 leading-relaxed max-w-2xl">
-              Your payment never goes to the professional until you approve the work. The
+              Your payment never goes to the BrainWorker until you approve the work. The
               BukieGuarantee steps in after that, if something still goes wrong.
             </p>
           </div>
