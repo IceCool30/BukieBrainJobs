@@ -14,105 +14,178 @@ import {
   Truck,
   ArrowLeft,
   ArrowRight,
-  ShieldCheck,
   Search,
 } from 'lucide-react';
 import { SERVICE_CATEGORIES, ServiceCategory } from '../../lib/mock/homepage-data';
 import DirectBookingModal from '../../components/modals/DirectBookingModal';
 
 const ICONS: Record<string, React.ReactNode> = {
-  Zap: <Zap className="w-5 h-5 text-[#296A4B]" />,
-  Wind: <Wind className="w-5 h-5 text-[#296A4B]" />,
-  Wrench: <Wrench className="w-5 h-5 text-[#296A4B]" />,
-  Sun: <Sun className="w-5 h-5 text-[#296A4B]" />,
-  Sparkles: <Sparkles className="w-5 h-5 text-[#296A4B]" />,
-  Hammer: <Hammer className="w-5 h-5 text-[#296A4B]" />,
-  Tv: <Tv className="w-5 h-5 text-[#296A4B]" />,
-  Truck: <Truck className="w-5 h-5 text-[#296A4B]" />,
+  Zap: <Zap className="h-4 w-4" />,
+  Wind: <Wind className="h-4 w-4" />,
+  Wrench: <Wrench className="h-4 w-4" />,
+  Sun: <Sun className="h-4 w-4" />,
+  Sparkles: <Sparkles className="h-4 w-4" />,
+  Hammer: <Hammer className="h-4 w-4" />,
+  Tv: <Tv className="h-4 w-4" />,
+  Truck: <Truck className="h-4 w-4" />,
 };
+
+function matchesService(category: ServiceCategory, query: string) {
+  const term = query.toLowerCase();
+  return (
+    category.title.toLowerCase().includes(term) ||
+    category.description.toLowerCase().includes(term) ||
+    category.popularServices.some((service) => service.toLowerCase().includes(term))
+  );
+}
+
+function ServiceCard({ category, onBook }: { category: ServiceCategory; onBook: () => void }) {
+  return (
+    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_rgba(0,26,65,0.06)]">
+      <div className="relative aspect-[5/3] overflow-hidden bg-slate-100">
+        <Image
+          src={category.photoUrl}
+          alt=""
+          fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#001A41]/55 via-transparent to-transparent" />
+        <span className="absolute left-4 top-4 rounded-lg bg-white px-2.5 py-1 text-[11px] font-bold text-[#001A41] shadow-sm">
+          From {category.startingPrice}
+        </span>
+        <span className="absolute bottom-4 left-4 inline-flex items-center gap-1.5 text-xs font-semibold text-white">
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm">
+            {ICONS[category.iconName]}
+          </span>
+          {category.group}
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <div>
+          <h2 className="font-display text-lg font-bold tracking-tight text-[#001A41]">{category.title}</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-600">{category.description}</p>
+        </div>
+
+        <ul className="mt-5 space-y-2" aria-label={`Common ${category.title.toLowerCase()} jobs`}>
+          {category.popularServices.map((service) => (
+            <li key={service} className="flex items-center gap-2 text-xs font-medium text-slate-700">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#296A4B]" />
+              {service}
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-6 flex items-end justify-between gap-4 border-t border-slate-100 pt-4">
+          <div>
+            <span className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500">Starting from</span>
+            <span className="font-display text-lg font-extrabold text-[#001A41]">{category.startingPrice}</span>
+          </div>
+          <button
+            type="button"
+            onClick={onBook}
+            className="motion-press inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#001A41] px-4 text-xs font-bold text-white transition-colors hover:bg-[#000F2D] focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2"
+          >
+            Book service
+            <ArrowRight className="h-4 w-4 text-[#ABEEC8]" />
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+}
 
 export default function ServicesPage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedGroup, setSelectedGroup] = useState<string>('All');
+  const [selectedGroup, setSelectedGroup] = useState('All');
   const [selectedCategory, setSelectedCategory] = useState<ServiceCategory | null>(null);
-
-  const groups = ['All', ...Array.from(new Set(SERVICE_CATEGORIES.map((c) => c.group)))];
-
-  const filteredCategories = SERVICE_CATEGORIES.filter((cat) => {
-    const matchesGroup = selectedGroup === 'All' || cat.group === selectedGroup;
-    const matchesQuery =
-      cat.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      cat.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      cat.popularServices.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesGroup && matchesQuery;
-  });
+  const groups = ['All', ...Array.from(new Set(SERVICE_CATEGORIES.map((category) => category.group)))];
+  const filteredCategories = SERVICE_CATEGORIES.filter(
+    (category) => (selectedGroup === 'All' || category.group === selectedGroup) && matchesService(category, searchQuery),
+  );
+  const resultLabel = `${filteredCategories.length} service ${filteredCategories.length === 1 ? 'category' : 'categories'} available`;
 
   return (
     <main className="min-h-screen bg-[#F8F9FF]">
-      {/* Header */}
-      <div className="bg-[#001A41] text-white border-b border-[#1E3A60]">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-12 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#001A41]/95 to-[#001A41]/60" />
-          <div className="relative z-10 space-y-4">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Home
-            </Link>
-            <h1 className="font-display font-extrabold text-3xl sm:text-4xl tracking-tight">
-              All Marketplace Services & Starting Rates
+      <section className="relative isolate overflow-hidden bg-[#001A41] text-white">
+        <div className="absolute inset-y-0 right-0 w-full sm:w-3/5">
+          <Image
+            src="/images/service-electrical.jpg"
+            alt=""
+            fill
+            priority
+            sizes="(min-width: 640px) 60vw, 100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#001A41] via-[#001A41]/90 to-[#001A41]/35" />
+        </div>
+        <div className="relative mx-auto max-w-[1280px] px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-36 lg:px-8">
+          <Link
+            href="/"
+            className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-slate-200 transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 focus:ring-offset-[#001A41]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to home
+          </Link>
+          <div className="mt-6 max-w-2xl">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#ABEEC8]">Service directory</p>
+            <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-5xl">
+              Find the right service for the job.
             </h1>
-            <p className="text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
-              Start with a service and rate, then review the job price before you authorise a booking.
+            <p className="mt-4 max-w-xl text-sm leading-6 text-slate-200 sm:text-base">
+              Compare common services, review the starting price, and choose a time that works for you.
             </p>
+          </div>
+          <form className="mt-7 max-w-xl" onSubmit={(event) => event.preventDefault()}>
+            <label htmlFor="service-directory-search" className="sr-only">Search services</label>
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+              <input
+                id="service-directory-search"
+                type="search"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder="Search by service, trade, or job"
+                className="h-12 w-full rounded-xl border border-white/20 bg-white pl-11 pr-4 text-sm font-medium text-slate-900 shadow-[0_12px_30px_rgba(0,0,0,0.15)] outline-none transition focus:ring-2 focus:ring-[#ABEEC8]"
+              />
+            </div>
+          </form>
+        </div>
+      </section>
 
-            {/* Filter Search Bar */}
-            <div className="pt-2 max-w-xl">
-              <div className="relative">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <input
-                  aria-label="Filter services"
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Filter by service name, trade, or task..."
-                  className="w-full h-11 pl-10 pr-4 text-xs font-medium text-slate-900 bg-white rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
-                />
-              </div>
+      <section className="mx-auto max-w-[1280px] px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="font-display text-lg font-bold text-[#001A41]">Browse by category</h2>
+              <p className="mt-1 text-sm text-slate-600" role="status">{resultLabel}</p>
+            </div>
+            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1" aria-label="Filter service categories">
+              {groups.map((group) => (
+                <button
+                  key={group}
+                  type="button"
+                  onClick={() => setSelectedGroup(group)}
+                  aria-pressed={selectedGroup === group}
+                  className={`motion-press min-h-11 shrink-0 rounded-xl px-4 text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 ${
+                    selectedGroup === group
+                      ? 'bg-[#001A41] text-white'
+                      : 'border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50'
+                  }`}
+                >
+                  {group}
+                </button>
+              ))}
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Filter Tabs & Content */}
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
-        {/* Category Group Tabs */}
-        <div className="flex flex-wrap gap-2">
-          {groups.map((group) => (
-            <button
-              key={group}
-              type="button"
-              onClick={() => setSelectedGroup(group)}
-              aria-pressed={selectedGroup === group}
-              className={`motion-press px-4 py-2 rounded-full text-xs font-semibold transition-all ${
-                selectedGroup === group
-                  ? 'bg-[#001A41] text-white shadow-sm'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-              }`}
-            >
-              {group}
-            </button>
-          ))}
-        </div>
-
-        {/* Services Grid */}
         {filteredCategories.length === 0 ? (
-          <div className="rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm">
-            <h2 className="font-display text-lg font-bold text-[#001A41]">No services match that filter</h2>
-            <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-slate-500">
-              Try a broader service name, or reset the filters to view every available category.
+          <div className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm">
+            <h2 className="font-display text-xl font-bold text-[#001A41]">No services match that search</h2>
+            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
+              Try a broader service name, or reset the filters to explore every category.
             </p>
             <button
               type="button"
@@ -120,100 +193,51 @@ export default function ServicesPage() {
                 setSearchQuery('');
                 setSelectedGroup('All');
               }}
-              className="motion-press mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D]"
+              className="motion-press mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2"
             >
               Reset filters
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCategories.map((cat) => (
-            <div
-              key={cat.id}
-              className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4 flex flex-col justify-between hover:border-slate-300 transition-colors"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200/60 flex items-center justify-center">
-                    {ICONS[cat.iconName]}
-                  </div>
-                  <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
-                    {cat.group}
-                  </span>
-                </div>
-
-                <div>
-                  <h2 className="font-display font-bold text-base text-[#001A41]">{cat.title}</h2>
-                  <p className="text-xs text-slate-500 leading-relaxed mt-1">{cat.description}</p>
-                </div>
-
-                <div className="space-y-1.5 pt-1">
-                  <div className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
-                    Common tasks
-                  </div>
-                  <ul className="space-y-1">
-                    {cat.popularServices.map((s) => (
-                      <li key={s} className="text-xs text-slate-700 flex items-center gap-2">
-                        <span className="w-1 h-1 rounded-full bg-[#296A4B]" />
-                        {s}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                <div>
-                  <span className="text-[11px] text-slate-500 block">Starting from</span>
-                  <span className="font-bold text-[#001A41] text-base">{cat.startingPrice}</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCategory(cat)}
-                  className="motion-press inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#001A41] hover:bg-[#000F2D] text-white text-xs font-bold transition-colors shadow-sm"
-                >
-                  Book Service
-                  <ArrowRight className="w-3.5 h-3.5 text-[#ABEEC8]" />
-                </button>
-              </div>
-            </div>
+          <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+            {filteredCategories.map((category) => (
+              <ServiceCard key={category.id} category={category} onBook={() => setSelectedCategory(category)} />
             ))}
           </div>
         )}
 
-        {/* Reassurance Banner */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-5 shadow-sm">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0">
-            <ShieldCheck className="w-6 h-6 text-[#296A4B]" />
-          </div>
-          <div className="space-y-1">
-            <h2 className="font-display font-bold text-base text-[#001A41]">
-              The price agreed is the price held in escrow
-            </h2>
-            <p className="text-xs text-slate-500 leading-relaxed max-w-2xl">
-              If unexpected parts are needed on-site, review and approve the revised quote before work proceeds.
+        <aside className="mt-10 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Before you book</p>
+            <h2 className="mt-2 font-display text-xl font-bold tracking-tight text-[#001A41]">Review the quote before work begins.</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+              If the scope changes on-site, review and approve the revised quote before work proceeds.
             </p>
           </div>
-        </div>
-      </div>
+          <Link
+            href="/guarantee"
+            className="motion-press inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-[#001A41] px-4 text-sm font-bold text-[#001A41] transition-colors hover:bg-[#001A41] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2"
+          >
+            How escrow works
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </aside>
+      </section>
 
-      {/* Footer Branding */}
-      <div className="border-t border-slate-200 bg-white py-8">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <footer className="border-t border-slate-200 bg-white py-8">
+        <div className="mx-auto flex max-w-[1280px] items-center justify-center px-4 sm:px-6 lg:px-8">
           <Image
-            src="/images/wordmark-banner-tight.png?v=3"
+            src="/images/wordmark-banner-tight.png"
             alt="BukieBrainJobs"
             width={150}
             height={44}
-            priority={false}
             className="opacity-70"
           />
         </div>
-      </div>
+      </footer>
 
-      {/* Booking Modal */}
       <DirectBookingModal
-        isOpen={!!selectedCategory}
+        isOpen={Boolean(selectedCategory)}
         onClose={() => setSelectedCategory(null)}
         serviceCategory={selectedCategory}
       />
