@@ -14,13 +14,9 @@ export default function FAQSection() {
   return (
     <section id="faq" className="py-16 bg-[#F8F9FF] border-b border-slate-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Frequently Asked Questions
-          </div>
+        <div className="text-center max-w-2xl mx-auto">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
-            Clear Answers to Your Questions
+            Questions before you book
           </h2>
         </div>
 

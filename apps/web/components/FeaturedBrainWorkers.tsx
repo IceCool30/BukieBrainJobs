@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { Star, BadgeCheck, ArrowRight } from 'lucide-react';
+import { BadgeCheck } from 'lucide-react';
 import { MOCK_BRAINWORKERS, BrainWorker } from '../lib/mock/homepage-data';
 
 interface FeaturedBrainWorkersProps {
@@ -14,26 +13,10 @@ export default function FeaturedBrainWorkers({ onSelectWorker }: FeaturedBrainWo
   return (
     <section id="workers" className="py-16 bg-[#F8F9FF] border-b border-slate-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
-              Verified Professionals
-            </div>
-            <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
-              Featured Professionals
-            </h2>
-            <p className="text-sm text-slate-500 mt-1 max-w-md">
-              The same workers your neighbors in Lagos, Abuja, and Port Harcourt book again and again.
-            </p>
-          </div>
-          <Link
-            href="#"
-            className="inline-flex items-center gap-1 text-sm font-semibold text-[#296A4B] hover:text-[#1f5239] transition-colors"
-          >
-            View All Professionals
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+        <div>
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
+            Meet BrainWorkers
+          </h2>
         </div>
 
         {/* Professional Cards (Mockup: photo-top card, green verified badge, name, trade, star rating, Verified pill) */}
@@ -63,24 +46,14 @@ export default function FeaturedBrainWorkers({ onSelectWorker }: FeaturedBrainWo
                   {worker.name}
                 </h3>
                 <p className="text-sm text-slate-500">{worker.category}</p>
-                <div className="flex items-center gap-1.5 text-sm font-semibold text-[#0B1C30]">
-                  <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  <span>{worker.rating.toFixed(1)}</span>
-                  <span className="text-[13px] font-normal text-slate-500">({worker.reviewCount})</span>
-                </div>
               </div>
 
-              {/* Verified Pill + CTA */}
-              <div className="px-5 pb-5 pt-1 flex items-center justify-between">
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#ABEEC8]/40 text-[#2E6E4F] text-xs font-bold border border-[#296A4B]/30">
-                  <BadgeCheck className="w-3.5 h-3.5" />
-                  Verified
-                </span>
+              <div className="px-5 pb-5 pt-1">
                 <button
                   onClick={() => onSelectWorker?.(worker)}
                   className="text-xs font-semibold text-[#296A4B] hover:text-[#1f5239] underline-offset-4 hover:underline"
                 >
-                  View Full Profile
+                  View profile
                 </button>
               </div>
             </div>

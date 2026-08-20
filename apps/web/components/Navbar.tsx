@@ -7,7 +7,6 @@ import {
   Search,
   ShieldCheck,
   Briefcase,
-  PhoneCall,
   Menu,
   X,
   UserCheck,
@@ -146,30 +145,6 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           : 'bg-gradient-to-b from-[#001A41]/75 to-transparent border-b border-transparent'
       }`}
     >
-      {/* Compact escrow + contact strip, visible only once scrolled for contrast on light page sections */}
-      <div
-        className={`overflow-hidden transition-all duration-300 ${solid ? 'max-h-10 opacity-100' : 'max-h-0 opacity-0'}`}
-        aria-hidden={!solid}
-      >
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-2 text-slate-300 text-[11px] py-2">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#296A4B]/30 text-[#ABEEC8] text-[10px] font-semibold border border-[#296A4B]/40">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#ABEEC8] animate-pulse" />
-              Booking open
-            </span>
-            <span className="hidden sm:inline">
-              Available in Lagos, Abuja and Port Harcourt
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1 text-slate-300 hover:text-white transition-colors">
-              <PhoneCall className="w-3 h-3 text-[#ABEEC8]" />
-              +234 800-BUKIE-JOBS
-            </span>
-          </div>
-        </div>
-      </div>
-
       {/* Main Header Container */}
       <div
         className={`max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between transition-all duration-300 ${

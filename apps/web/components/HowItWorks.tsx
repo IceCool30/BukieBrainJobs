@@ -5,26 +5,26 @@ export default function HowItWorks() {
   const steps = [
     {
       num: '01',
-      title: 'Search for a Service',
-      desc: 'Choose a service and location, then review professionals, pricing information, and profile details.',
+      title: 'Find a service',
+      desc: 'Choose the service and location that fit the job.',
       icon: <Search className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '02',
-      title: 'Book or Post a Job',
-      desc: 'Book a professional when the work is clear, or post a job when you need tailored quotes.',
+      title: 'Choose how to book',
+      desc: 'Book a professional or post a job for tailored quotes.',
       icon: <UserCheck className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '03',
-      title: 'Agree the Details',
-      desc: 'Confirm the scope, price, and timing with your chosen professional before work begins.',
+      title: 'Agree the details',
+      desc: 'Confirm the scope, price, and timing before work begins.',
       icon: <ShieldCheck className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '04',
-      title: 'Pay Through Escrow',
-      desc: 'Pay through Escrow, inspect the completed work, then release payment when you are satisfied.',
+      title: 'Complete your booking',
+      desc: 'Keep the agreed details in one booking flow.',
       icon: <Lock className="w-5 h-5 text-slate-600" />,
     },
   ];
@@ -32,17 +32,10 @@ export default function HowItWorks() {
   return (
     <section id="how-it-works" className="py-16 bg-[#F8F9FF] border-b border-slate-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            How It Works
-          </div>
+        <div className="text-center max-w-2xl mx-auto">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
-            A clearer way to book
+            How booking works
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-            Search for a service, review your options, and book with confidence.
-          </p>
         </div>
 
         {/* 4 Steps Grid */}

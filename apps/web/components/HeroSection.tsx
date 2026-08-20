@@ -4,10 +4,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import {
   Search,
-  ShieldCheck,
-  Award,
-  Lock,
-  Star,
   MapPin,
   ChevronDown,
   ArrowRight,
@@ -342,12 +338,6 @@ export default function HeroSection({
 
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-3xl text-left space-y-6">
-          {/* Live Operational Signal */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#001A41]/85 backdrop-blur-md border border-[#ABEEC8]/50 text-xs font-semibold text-[#ABEEC8] shadow-[0_2px_10px_-3px_rgba(0,0,0,0.5)]">
-            <span className="w-2 h-2 rounded-full bg-[#ABEEC8] animate-pulse shrink-0" />
-            <span>Verified BrainWorkers active in {selectedLocation.name}</span>
-          </div>
-
           {/* Headline */}
           <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-[3rem] tracking-tight text-white leading-[1.15] sm:leading-[1.15]">
             Book a skilled local or remote worker in minutes, or find flexible
@@ -358,11 +348,6 @@ export default function HeroSection({
             </span>
             .
           </h1>
-
-          {/* Subtitle */}
-          <p className="text-base sm:text-lg font-bold text-slate-100 leading-relaxed max-w-2xl hidden md:block">
-            Find a professional for the job, or use your skills to find work that values your time.
-          </p>
 
           {/* Unified Dual Service + Location Search Bar */}
           <div ref={containerRef} className="pt-4 max-w-2xl w-full relative">
@@ -605,7 +590,6 @@ export default function HeroSection({
                             <span className="text-xs font-extrabold text-[#296A4B] block">
                               From {cat.startingPrice}
                             </span>
-                            <span className="text-[10px] text-slate-400">held in escrow</span>
                           </div>
                         </button>
                       ))
@@ -615,41 +599,6 @@ export default function HeroSection({
               </div>
             )}
 
-            {/* Quick search chips */}
-            <div className="flex flex-wrap items-center gap-2 pt-3">
-              <span className="text-xs text-slate-300 font-medium mr-1">Popular:</span>
-              {TRENDING_SEARCHES.map((term) => (
-                <button
-                  key={term}
-                  type="button"
-                  onClick={() => {
-                    setServiceQuery(term);
-                    executeSearch(term);
-                  }}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/10 hover:bg-white/20 text-slate-100 hover:text-white transition-colors border border-white/15 cursor-pointer"
-                >
-                  {term}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Trust line */}
-          <div className="pt-7 hidden md:flex flex-wrap items-center gap-x-6 sm:gap-x-8 gap-y-3">
-            <div className="flex items-center gap-2 text-sm text-slate-300">
-              <Star className="w-4 h-4 text-[#ABEEC8]" />
-              <span>Review profiles before you book</span>
-            </div>
-            <div className="flex items-center gap-x-2.5 gap-y-1 text-slate-400 flex-wrap">
-              <ShieldCheck className="w-4 h-4 text-[#ABEEC8]" />
-              <span className="text-xs sm:text-sm whitespace-nowrap">Profile Verification</span>
-              <span className="text-slate-600 hidden sm:inline">·</span>
-              <Award className="w-4 h-4 text-[#ABEEC8]" />
-              <span className="text-xs sm:text-sm whitespace-nowrap">Pay through Escrow</span>
-              <span className="text-slate-600 hidden sm:inline">·</span>
-              <Lock className="w-4 h-4 text-[#ABEEC8]" />
-              <span className="text-xs sm:text-sm whitespace-nowrap">Clear booking details</span>
-            </div>
           </div>
         </div>
       </div>

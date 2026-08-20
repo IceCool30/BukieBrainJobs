@@ -19,12 +19,6 @@ import {
   NIGERIAN_LOCATIONS,
   NigerianLocation,
 } from '../lib/mock/homepage-data';
-import PriceEstimator from './PriceEstimator';
-import FeaturedBrainWorkers from './FeaturedBrainWorkers';
-import HowItWorks from './HowItWorks';
-import TestimonialsSection from './TestimonialsSection';
-import MarketplacePaths from './MarketplacePaths';
-import FAQSection from './FAQSection';
 import PartnerBar from './PartnerBar';
 
 interface PwaHomeProps {
@@ -72,10 +66,6 @@ export default function PwaHome({
   onOpenSearch,
   onSearchSubmit,
   onSelectCategory,
-  onSelectWorker,
-  onBookEstimate,
-  onPostJobClick,
-  onBecomeWorkerClick,
   onSelectComingSoonLocation,
 }: PwaHomeProps) {
   const [query, setQuery] = useState('');
@@ -474,7 +464,7 @@ export default function PwaHome({
                 {query.trim() && (
                   <div className="space-y-1">
                     <div className="px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                      Matched Services ({matched.length})
+                      Services
                     </div>
                     {matched.length === 0 ? (
                       <div className="px-3 py-4 text-center text-xs text-slate-500">
@@ -507,7 +497,6 @@ export default function PwaHome({
                           </span>
                           <span className="shrink-0 text-right">
                             <span className="block text-xs font-extrabold text-[#296A4B]">From {category.startingPrice}</span>
-                            <span className="block text-[10px] text-slate-400">held in escrow</span>
                           </span>
                         </button>
                       ))
@@ -560,38 +549,6 @@ export default function PwaHome({
         </div>
       </div>
 
-      {/* Interactive Scope & Escrow Price Estimator (Mobile Enabled) */}
-      <div className="pt-8">
-        <PriceEstimator onBookEstimate={onBookEstimate} />
-      </div>
-
-      {/* Featured BrainWorkers (Vetted Nigerian Artisans) */}
-      <div className="pt-2">
-        <FeaturedBrainWorkers onSelectWorker={onSelectWorker} />
-      </div>
-
-      {/* How BukieBrainJobs Works */}
-      <div className="pt-2">
-        <HowItWorks />
-      </div>
-
-      {/* Customer Testimonials */}
-      <div className="pt-2">
-        <TestimonialsSection />
-      </div>
-
-      {/* Secondary Marketplace Pathways */}
-      <div className="pt-2">
-        <MarketplacePaths
-          onPostJobClick={onPostJobClick}
-          onBecomeWorkerClick={onBecomeWorkerClick}
-        />
-      </div>
-
-      {/* Frequently Asked Questions */}
-      <div className="pt-2">
-        <FAQSection />
-      </div>
     </div>
   );
 }

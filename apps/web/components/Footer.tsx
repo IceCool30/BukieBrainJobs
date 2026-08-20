@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { ShieldCheck, Lock, PhoneCall, Mail } from 'lucide-react';
+import { ShieldCheck, PhoneCall, Mail } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -19,20 +19,10 @@ export default function Footer() {
               />
             </div>
 
-            <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-              BukieBrainJobs helps customers find professionals and helps skilled people find work. Review the booking details before you proceed.
-            </p>
-
-            <div className="pt-2 flex flex-col gap-2 text-xs">
-              <div className="flex items-center gap-2 text-[#ABEEC8] font-mono">
-                <Lock className="w-3.5 h-3.5 text-[#296A4B]" />
-                Escrow is available for eligible bookings
-              </div>
-              <a href="/guarantee" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
-                Review BukieGuarantee terms
-              </a>
-            </div>
+            <a href="/guarantee" className="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
+              BukieGuarantee terms
+            </a>
           </div>
 
           {/* Column 1: Our Services */}
@@ -50,11 +40,9 @@ export default function Footer() {
 
           {/* Column 2: Trust and Safety */}
           <div>
-            <h3 className="font-display font-semibold text-white text-sm mb-4">Trust and Safety</h3>
+            <h3 className="font-display font-semibold text-white text-sm mb-4">Helpful links</h3>
             <ul className="space-y-2.5 text-xs text-slate-300">
-              <li><a href="#trust" className="hover:text-white transition-colors">Profile Verification</a></li>
-              <li><a href="#trust" className="hover:text-white transition-colors">Verification Process</a></li>
-              <li><a href="#how-it-works" className="hover:text-white transition-colors">Pay through Escrow</a></li>
+              <li><a href="#how-it-works" className="hover:text-white transition-colors">How booking works</a></li>
               <li><a href="/guarantee" className="hover:text-white transition-colors">BukieGuarantee</a></li>
               <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
             </ul>
@@ -86,8 +74,6 @@ export default function Footer() {
           <div className="flex gap-6">
             <span className="hover:text-white cursor-pointer transition-colors">Privacy Policy</span>
             <span className="hover:text-white cursor-pointer transition-colors">Terms of Service</span>
-            <span className="hover:text-white cursor-pointer transition-colors">Escrow information</span>
-            <span className="hover:text-white cursor-pointer transition-colors">Trust and safety</span>
           </div>
         </div>
       </div>

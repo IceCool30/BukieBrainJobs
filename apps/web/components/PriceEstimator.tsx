@@ -2,9 +2,6 @@
 
 import React, { useState } from 'react';
 import {
-  Calculator,
-  ShieldCheck,
-  Lock,
   ArrowRight,
   Zap,
   Wind,
@@ -267,17 +264,12 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
   return (
     <section id="estimator" className="py-16 sm:py-20 bg-[#F8F9FF] border-b border-slate-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
-        {/* Header with clear value proposition */}
-        <div className="text-center max-w-3xl mx-auto space-y-2.5">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-50 text-[#296A4B] text-xs font-bold border border-emerald-200 shadow-sm">
-            <Calculator className="w-3.5 h-3.5 text-[#296A4B]" />
-            <span>Interactive Scope & Escrow Calculator</span>
-          </div>
+        <div className="text-center max-w-2xl mx-auto space-y-2">
           <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-[#001A41]">
-            Know the exact cost breakdown before you book
+            Plan your service budget
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
-            Eliminate on-site price surprises. See verified labor benchmarks, typical spare parts ranges, and escrow protections tailored to your city.
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Choose a service, scope, and location to see an estimated range.
           </p>
         </div>
 
@@ -288,7 +280,7 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
             {/* Step 1: Trade Selector */}
             <div className="space-y-2">
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                1. Select Trade or Category
+                Service
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {TRADES_DATA.map((trade) => {
@@ -316,7 +308,7 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
             {/* Step 2: Job Scope Radio Cards */}
             <div className="space-y-2">
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                2. Choose Appliance Capacity & Work Scope
+                Work scope
               </label>
               <div className="space-y-2.5">
                 {currentTrade.scopes.map((scope) => {
@@ -364,12 +356,9 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
 
             {/* Step 3: City Benchmarker */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                  3. Service Location in Nigeria
-                </label>
-                <span className="text-[11px] text-slate-500">Hub: {cityData.popularHub}</span>
-              </div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Location
+              </label>
               <div className="grid grid-cols-3 gap-2">
                 {Object.keys(CITY_MULTIPLIERS).map((city) => (
                   <button
@@ -393,20 +382,13 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
           {/* Right Column: Interactive Escrow Breakdown Card (5 Cols) */}
           <div className="lg:col-span-5 bg-[#001A41] text-white rounded-2xl p-6 sm:p-7 flex flex-col justify-between space-y-6 shadow-xl border border-[#1E3A60]">
             <div className="space-y-5">
-              {/* Header pill */}
-              <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#ABEEC8] uppercase tracking-wider">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  Escrow Benchmark
-                </span>
-                <span className="text-[10px] text-slate-300 bg-white/10 px-2 py-0.5 rounded-full">
-                  {selectedCity}
-                </span>
-              </div>
+              <span className="text-[10px] text-slate-300 bg-white/10 px-2 py-0.5 rounded-full">
+                {selectedCity}
+              </span>
 
               {/* Total Price Range */}
               <div className="space-y-1">
-                <div className="text-xs text-slate-300">Total Estimated Escrow Hold</div>
+                <div className="text-xs text-slate-300">Estimated range</div>
                 <div className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight">
                   {formatNaira(totalMin)} – {formatNaira(totalMax)}
                 </div>
@@ -420,7 +402,7 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
                 <div className="flex justify-between items-center text-slate-300">
                   <span className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#ABEEC8]" />
-                    Artisan Labor & Diagnostic
+                    Labor
                   </span>
                   <span className="font-bold text-white">
                     {formatNaira(adjLaborMin)} - {formatNaira(adjLaborMax)}
@@ -430,7 +412,7 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
                 <div className="flex justify-between items-start text-slate-300">
                   <span className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#ABEEC8] shrink-0 mt-0.5" />
-                    <span>Est. Replacement Parts</span>
+                    <span>Estimated parts</span>
                   </span>
                   <span className="font-bold text-white shrink-0">
                     {formatNaira(adjPartsMin)} - {formatNaira(adjPartsMax)}
@@ -441,22 +423,8 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
                   Common parts: {currentScope.commonParts}
                 </div>
 
-                <div className="border-t border-white/10 pt-2 flex justify-between items-center text-slate-300">
-                  <span className="flex items-center gap-1.5">
-                    <Lock className="w-3.5 h-3.5 text-[#ABEEC8]" />
-                    BukieGuarantee Escrow Protection
-                  </span>
-                  <span className="font-bold text-[#ABEEC8]">FREE (₦0)</span>
-                </div>
               </div>
 
-              {/* Escrow Reassurance */}
-              <div className="flex items-start gap-2 text-[11px] text-slate-300 leading-relaxed">
-                <Lock className="w-3.5 h-3.5 text-[#ABEEC8] shrink-0 mt-0.5" />
-                <span>
-                  Funds are held safely in escrow. Your assigned professional is only paid after you test and approve the work.
-                </span>
-              </div>
             </div>
 
             {/* CTA Button prefilling booking modal */}
@@ -465,7 +433,7 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
               onClick={handleBook}
               className="motion-press w-full py-3.5 bg-[#296A4B] hover:bg-[#1F523A] active:bg-[#17402C] text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg"
             >
-              <span>Lock in Estimate & Book This Scope</span>
+              <span>Book this scope</span>
               <ArrowRight className="w-4 h-4 text-[#ABEEC8]" />
             </button>
           </div>

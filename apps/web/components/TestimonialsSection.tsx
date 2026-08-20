@@ -6,17 +6,10 @@ export default function TestimonialsSection() {
   return (
     <section className="py-16 bg-white border-b border-slate-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Booking feedback
-          </div>
+        <div className="text-center max-w-2xl mx-auto">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
-            Feedback that helps you choose
+            Customer feedback
           </h2>
-          <p className="text-sm text-slate-500 leading-relaxed">
-            Professional profiles bring together service details, booking history, and customer feedback.
-          </p>
         </div>
 
         {/* Typographic review grid, no boxes */}
@@ -45,9 +38,6 @@ export default function TestimonialsSection() {
           ))}
         </div>
 
-        <p className="text-center text-xs font-medium text-slate-600 pt-2">
-          Ratings and reviews are shown on professional profiles.
-        </p>
       </div>
     </section>
   );
