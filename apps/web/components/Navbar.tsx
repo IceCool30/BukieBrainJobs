@@ -156,8 +156,10 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           <Image
             src="/images/wordmark-banner-tight.png"
             alt="BukieBrainJobs"
-            width={210}
-            height={47}
+            width={228}
+            height={68}
+            quality={100}
+            sizes="133px"
             className="hidden sm:block object-contain h-10 w-auto transition-transform duration-[180ms] ease-[var(--ease-ui-out)] group-hover:scale-[1.03]"
             priority
           />

@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, ArrowRight, Search } from 'lucide-react';
 import { SERVICE_CATEGORIES, ServiceCategory } from '../../lib/mock/homepage-data';
-import DirectBookingModal from '../../components/modals/DirectBookingModal';
 import ServiceTaskIcon from '../../components/ServiceTaskIcon';
 
 const TASK_LABELS: Record<string, string> = {
@@ -83,11 +83,15 @@ function ServiceCard({ category, onBook }: { category: ServiceCategory; onBook: 
 export default function ServicesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGroup, setSelectedGroup] = useState('All');
-  const [selectedCategory, setSelectedCategory] = useState<ServiceCategory | null>(null);
+  const router = useRouter();
   const filteredCategories = SERVICE_CATEGORIES.filter(
     (category) => (selectedGroup === 'All' || category.id === selectedGroup) && matchesService(category, searchQuery),
   );
   const resultLabel = `${filteredCategories.length} service ${filteredCategories.length === 1 ? 'category' : 'categories'} available`;
+  const bookCategory = (category: ServiceCategory) => {
+    const params = new URLSearchParams({ service: category.title, price: category.startingPrice });
+    router.push(`/book?${params.toString()}`);
+  };
 
   return (
     <main className="min-h-screen bg-[#F8F9FF]">
@@ -201,7 +205,7 @@ className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-
         ) : (
           <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             {filteredCategories.map((category) => (
-              <ServiceCard key={category.id} category={category} onBook={() => setSelectedCategory(category)} />
+              <ServiceCard key={category.id} category={category} onBook={() => bookCategory(category)} />
             ))}
           </div>
         )}
@@ -230,17 +234,14 @@ className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-
             src="/images/wordmark-banner-tight.png"
             alt="BukieBrainJobs"
             width={150}
-            height={44}
+            height={45}
+            quality={100}
+            sizes="150px"
             className="opacity-70"
           />
         </div>
       </footer>
 
-      <DirectBookingModal
-        isOpen={Boolean(selectedCategory)}
-        onClose={() => setSelectedCategory(null)}
-        serviceCategory={selectedCategory}
-      />
     </main>
   );
 }

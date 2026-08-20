@@ -14,7 +14,9 @@ export default function Footer() {
                 src="/images/wordmark-banner-tight.png"
                 alt="BukieBrainJobs"
                 width={180}
-                height={40}
+                height={54}
+                quality={100}
+                sizes="107px"
                 className="object-contain h-8 w-auto"
               />
             </div>

@@ -176,7 +176,9 @@ export default function GuaranteePage() {
             src="/images/wordmark-banner-tight.png?v=3"
             alt="BukieBrainJobs"
             width={150}
-            height={44}
+            height={45}
+            quality={100}
+            sizes="150px"
             className="mx-auto opacity-70"
           />
         </div>

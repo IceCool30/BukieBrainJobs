@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import PwaHome from '../components/PwaHome';
 import { useIsPwa } from '../hooks/useIsPwa';
 import Footer from '../components/Footer';
 import HeroSection from '../components/HeroSection';
 import PopularServices from '../components/PopularServices';
-import PriceEstimator from '../components/PriceEstimator';
 import HowItWorks from '../components/HowItWorks';
 import FeaturedBrainWorkers from '../components/FeaturedBrainWorkers';
 import MarketplacePaths from '../components/MarketplacePaths';
@@ -20,7 +20,6 @@ import PostJobModal from '../components/modals/PostJobModal';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
 import BukiePassportModal from '../components/modals/BukiePassportModal';
 import BrainWorkerProfileModal from '../components/modals/BrainWorkerProfileModal';
-import DirectBookingModal from '../components/modals/DirectBookingModal';
 import LocationNoticeModal from '../components/modals/LocationNoticeModal';
 import {
   BrainWorker,
@@ -34,38 +33,28 @@ export default function CustomerHomepage() {
   const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
   const [passportModalOpen, setPassportModalOpen] = useState(false);
   const [selectedWorker, setSelectedWorker] = useState<BrainWorker | null>(null);
-  const [directBookingOpen, setDirectBookingOpen] = useState(false);
-  const [bookingWorker, setBookingWorker] = useState<BrainWorker | null>(null);
-  const [bookingCategory, setBookingCategory] = useState<ServiceCategory | null>(null);
   const [comingSoonLocation, setComingSoonLocation] = useState<NigerianLocation | null>(null);
-  const [bookingInitialDetails, setBookingInitialDetails] = useState<{
-    title?: string;
-    startingPrice?: string;
-    city?: string;
-    scopeNote?: string;
-  } | null>(null);
 
   const isPwa = useIsPwa();
+  const router = useRouter();
   const drawerRef = useRef<(() => void) | null>(null);
 
+  const startBooking = (details: { service: string; price?: string; city?: string; note?: string; worker?: string }) => {
+    const params = new URLSearchParams({ service: details.service, price: details.price || '₦10,000' });
+    if (details.city) params.set('city', details.city);
+    if (details.note) params.set('note', details.note);
+    if (details.worker) params.set('worker', details.worker);
+    router.push(`/book?${params.toString()}`);
+  };
+
   const handleSearchSubmit = (serviceQuery: string, location?: string) => {
-    const matched = SERVICE_CATEGORIES.find((c) =>
-      c.title.toLowerCase().includes(serviceQuery.toLowerCase())
-    );
+    const city = location || 'Lagos';
+    const matched = SERVICE_CATEGORIES.find((category) => category.title.toLowerCase().includes(serviceQuery.toLowerCase()));
     if (matched) {
-      setBookingCategory(matched);
-      setBookingWorker(null);
-      setBookingInitialDetails({
-        title: matched.title,
-        startingPrice: matched.startingPrice,
-        city: location || 'Lagos',
-        scopeNote: `Direct booking request for ${matched.title} in ${location || 'Lagos'}.`,
-      });
-      setDirectBookingOpen(true);
+      startBooking({ service: matched.title, price: matched.startingPrice, city, note: `Booking request for ${matched.title} in ${city}.` });
       return;
     }
-    const element = document.getElementById('services');
-    element?.scrollIntoView({ behavior: 'smooth' });
+    startBooking({ service: serviceQuery || 'Service booking', city });
   };
 
   const openSearch = () => {
@@ -75,10 +64,7 @@ export default function CustomerHomepage() {
   };
 
   const handleSelectCategory = (category: ServiceCategory) => {
-    setBookingCategory(category);
-    setBookingWorker(null);
-    setBookingInitialDetails(null);
-    setDirectBookingOpen(true);
+    startBooking({ service: category.title, price: category.startingPrice });
   };
 
   const handleSelectWorker = (worker: BrainWorker) => {
@@ -86,37 +72,12 @@ export default function CustomerHomepage() {
   };
 
   const handleBookWorker = (worker: BrainWorker) => {
-    setBookingWorker(worker);
-    setBookingCategory(null);
-    setBookingInitialDetails(null);
-    setDirectBookingOpen(true);
-  };
-
-  const handleBookEstimate = (
-    serviceName: string,
-    details?: {
-      scopeName: string;
-      city: string;
-      priceRange: string;
-      scopeNote: string;
-    }
-  ) => {
-    const matched = SERVICE_CATEGORIES.find((c) =>
-      c.title.toLowerCase().includes(serviceName.toLowerCase())
-    );
-    setBookingCategory(matched || null);
-    setBookingWorker(null);
-    if (details) {
-      setBookingInitialDetails({
-        title: `${serviceName} (${details.scopeName})`,
-        startingPrice: details.priceRange,
-        city: details.city,
-        scopeNote: details.scopeNote,
-      });
-    } else {
-      setBookingInitialDetails(null);
-    }
-    setDirectBookingOpen(true);
+    startBooking({
+      service: worker.category,
+      price: worker.startingRate,
+      city: worker.location.includes('Abuja') ? 'Abuja' : worker.location.includes('Port Harcourt') ? 'Port Harcourt' : 'Lagos',
+      worker: worker.name,
+    });
   };
 
   return (
@@ -136,7 +97,7 @@ export default function CustomerHomepage() {
             onOpenSearch={openSearch}
             onSelectCategory={handleSelectCategory}
             onSelectWorker={handleSelectWorker}
-            onBookEstimate={handleBookEstimate}
+            onSearchSubmit={handleSearchSubmit}
             onPostJobClick={() => setPostJobOpen(true)}
             onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}
             onSelectComingSoonLocation={(loc) => setComingSoonLocation(loc)}
@@ -154,9 +115,6 @@ export default function CustomerHomepage() {
 
             {/* Popular Service Categories */}
             <PopularServices onSelectCategory={handleSelectCategory} />
-
-            {/* Instant Price Estimator Benchmark */}
-            <PriceEstimator onBookEstimate={handleBookEstimate} />
 
             {/* Featured BrainWorkers (Vetted Nigerian Artisans) */}
             <FeaturedBrainWorkers onSelectWorker={handleSelectWorker} />
@@ -208,18 +166,6 @@ export default function CustomerHomepage() {
         isOpen={!!selectedWorker}
         onClose={() => setSelectedWorker(null)}
         onBookWorker={handleBookWorker}
-      />
-      <DirectBookingModal
-        isOpen={directBookingOpen}
-        onClose={() => {
-          setDirectBookingOpen(false);
-          setBookingWorker(null);
-          setBookingCategory(null);
-          setBookingInitialDetails(null);
-        }}
-        worker={bookingWorker}
-        serviceCategory={bookingCategory}
-        initialDetails={bookingInitialDetails}
       />
     </div>
   );

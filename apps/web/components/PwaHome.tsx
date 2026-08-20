@@ -20,7 +20,6 @@ import {
   NigerianLocation,
 } from '../lib/mock/homepage-data';
 import PartnerBar from './PartnerBar';
-import PriceEstimator from './PriceEstimator';
 import FeaturedBrainWorkers from './FeaturedBrainWorkers';
 import HowItWorks from './HowItWorks';
 import TestimonialsSection from './TestimonialsSection';
@@ -34,15 +33,6 @@ interface PwaHomeProps {
   onSearchSubmit?: (service: string, location: string) => void;
   onSelectCategory?: (category: ServiceCategory) => void;
   onSelectWorker?: (worker: BrainWorker) => void;
-  onBookEstimate?: (
-    serviceName: string,
-    details?: {
-      scopeName: string;
-      city: string;
-      priceRange: string;
-      scopeNote: string;
-    }
-  ) => void;
   onPostJobClick?: () => void;
   onBecomeWorkerClick?: () => void;
   onSelectComingSoonLocation?: (location: NigerianLocation) => void;
@@ -74,7 +64,6 @@ export default function PwaHome({
   onSearchSubmit,
   onSelectCategory,
   onSelectWorker,
-  onBookEstimate,
   onPostJobClick,
   onBecomeWorkerClick,
   onSelectComingSoonLocation,
@@ -587,7 +576,6 @@ export default function PwaHome({
         </div>
       </div>
 
-      <PriceEstimator onBookEstimate={onBookEstimate} />
       <FeaturedBrainWorkers onSelectWorker={onSelectWorker} />
       <HowItWorks />
       <TestimonialsSection />

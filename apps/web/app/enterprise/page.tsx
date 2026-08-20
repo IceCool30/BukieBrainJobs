@@ -128,7 +128,9 @@ export default function EnterprisePage() {
             src="/images/wordmark-banner-tight.png?v=3"
             alt="BukieBrainJobs"
             width={150}
-            height={44}
+            height={45}
+            quality={100}
+            sizes="150px"
             priority={false}
             className="opacity-70"
           />
