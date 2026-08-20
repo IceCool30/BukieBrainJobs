@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   X,
   Calendar,
@@ -40,7 +40,9 @@ export default function DirectBookingModal({
   const [selectedDate, setSelectedDate] = useState('Tomorrow, 10:00 AM');
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('Morning (9:00 AM - 12:00 PM)');
   const [address, setAddress] = useState('');
+  const [addressError, setAddressError] = useState('');
   const [landmark, setLandmark] = useState('');
+  const addressInputRef = useRef<HTMLInputElement>(null);
   const [city, setCity] = useState(
     initialDetails?.city ||
       (worker?.location.includes('Abuja')
@@ -55,6 +57,7 @@ export default function DirectBookingModal({
   useEffect(() => {
     if (!isOpen) {
       setStep(1);
+      setAddressError('');
       return;
     }
     if (initialDetails?.city) setCity(initialDetails.city);
@@ -86,9 +89,10 @@ export default function DirectBookingModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#001A41]/60 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#001A41]/60 p-4 animate-fadeIn"
       role="dialog"
       aria-modal="true"
+      aria-labelledby="booking-modal-title"
     >
       <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-slate-200 shadow-2xl relative flex flex-col">
         {/* Modal Header */}
@@ -97,7 +101,7 @@ export default function DirectBookingModal({
             <div className="text-[11px] font-bold text-[#ABEEC8] uppercase tracking-wider">
               {step < 4 ? `Step ${step} of 3` : 'Booking Confirmed'}
             </div>
-            <h2 className="font-display font-bold text-lg sm:text-xl text-white">
+            <h2 id="booking-modal-title" className="font-display font-bold text-lg sm:text-xl text-white">
               {step === 1 && 'Select Schedule & Details'}
               {step === 2 && 'Service Address in Nigeria'}
               {step === 3 && 'Escrow Payment Summary'}
@@ -106,7 +110,7 @@ export default function DirectBookingModal({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-300 hover:text-white rounded-full hover:bg-white/10 transition-colors"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
             aria-label="Close booking modal"
           >
             <X className="w-5 h-5" />
@@ -153,6 +157,7 @@ export default function DirectBookingModal({
                       key={d}
                       type="button"
                       onClick={() => setSelectedDate(d)}
+                      aria-pressed={selectedDate === d}
                       className={`p-2.5 rounded-xl text-xs font-medium text-left border transition-all ${
                         selectedDate === d
                           ? 'border-[#001A41] bg-[#001A41] text-white shadow-sm'
@@ -167,10 +172,11 @@ export default function DirectBookingModal({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Arrival Time Window
-                </label>
-                <select
+                  <label htmlFor="booking-arrival-time" className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Arrival Time Window
+                  </label>
+                  <select
+                  id="booking-arrival-time"
                   value={selectedTimeSlot}
                   onChange={(e) => setSelectedTimeSlot(e.target.value)}
                   className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#001A41]"
@@ -182,10 +188,11 @@ export default function DirectBookingModal({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Job Notes or Issue Description
-                </label>
-                <textarea
+                  <label htmlFor="booking-notes" className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Job Notes or Issue Description
+                  </label>
+                  <textarea
+                  id="booking-notes"
                   rows={2}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
@@ -199,8 +206,9 @@ export default function DirectBookingModal({
           {step === 2 && (
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">City / State</label>
+                <label htmlFor="booking-city" className="block text-xs font-semibold text-slate-700 mb-1.5">City / State</label>
                 <select
+                  id="booking-city"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#001A41]"
@@ -212,24 +220,37 @@ export default function DirectBookingModal({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                <label htmlFor="booking-address" className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Street Address & House / Flat Number
                 </label>
                 <input
+                  ref={addressInputRef}
+                  id="booking-address"
                   type="text"
                   required
+                  aria-invalid={Boolean(addressError)}
+                  aria-describedby={addressError ? 'booking-address-error' : undefined}
                   value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  onChange={(e) => {
+                    setAddress(e.target.value);
+                    if (addressError) setAddressError('');
+                  }}
                   placeholder="e.g. 14 Admiralty Way, Lekki Phase 1"
                   className="w-full text-xs p-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#001A41]"
                 />
+                {addressError && (
+                  <p id="booking-address-error" role="alert" className="mt-1.5 text-xs font-medium text-red-700">
+                    {addressError}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                <label htmlFor="booking-landmark" className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Closest Landmark or Estate Gate
                 </label>
                 <input
+                  id="booking-landmark"
                   type="text"
                   value={landmark}
                   onChange={(e) => setLandmark(e.target.value)}
@@ -267,9 +288,9 @@ export default function DirectBookingModal({
               <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex items-start gap-2.5">
                 <Lock className="w-4 h-4 text-[#296A4B] shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold block">100% Escrow Protected</span>
+                  <span className="font-bold block">Escrow protection</span>
                   <span className="text-[11px] text-emerald-800">
-                    Your money is held safely in escrow. The BrainWorker is only paid after you inspect and sign off on the job.
+                    Your payment is held through the booking flow until you review the completed job.
                   </span>
                 </div>
               </div>
@@ -283,6 +304,7 @@ export default function DirectBookingModal({
                   <button
                     type="button"
                     onClick={() => setPaymentMethod('card')}
+                    aria-pressed={paymentMethod === 'card'}
                     className={`p-3 rounded-xl text-xs font-semibold border flex flex-col items-center gap-1.5 transition-all ${
                       paymentMethod === 'card'
                         ? 'border-[#001A41] bg-[#001A41] text-white shadow-sm'
@@ -295,6 +317,7 @@ export default function DirectBookingModal({
                   <button
                     type="button"
                     onClick={() => setPaymentMethod('transfer')}
+                    aria-pressed={paymentMethod === 'transfer'}
                     className={`p-3 rounded-xl text-xs font-semibold border flex flex-col items-center gap-1.5 transition-all ${
                       paymentMethod === 'transfer'
                         ? 'border-[#001A41] bg-[#001A41] text-white shadow-sm'
@@ -307,6 +330,7 @@ export default function DirectBookingModal({
                   <button
                     type="button"
                     onClick={() => setPaymentMethod('ussd')}
+                    aria-pressed={paymentMethod === 'ussd'}
                     className={`p-3 rounded-xl text-xs font-semibold border flex flex-col items-center gap-1.5 transition-all ${
                       paymentMethod === 'ussd'
                         ? 'border-[#001A41] bg-[#001A41] text-white shadow-sm'
@@ -340,7 +364,7 @@ export default function DirectBookingModal({
                   <span>Escrow Hold: {startingPrice}</span>
                 </div>
                 <p className="text-[11px] text-slate-500">
-                  SMS & in-app confirmation sent. You will receive your BrainWorker’s arrival notification before dispatch.
+                  Booking updates and BrainWorker arrival details will appear here when dispatch is available.
                 </p>
               </div>
               <button
@@ -378,6 +402,11 @@ export default function DirectBookingModal({
             <button
               type="button"
               onClick={() => {
+                if (step === 2 && !address.trim()) {
+                  setAddressError('Enter the address where the BrainWorker should arrive.');
+                  addressInputRef.current?.focus();
+                  return;
+                }
                 if (step < 3) {
                   setStep((prev) => (prev + 1) as 1 | 2 | 3);
                 } else {

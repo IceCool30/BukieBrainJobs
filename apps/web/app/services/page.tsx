@@ -65,7 +65,7 @@ export default function ServicesPage() {
               All Marketplace Services & Starting Rates
             </h1>
             <p className="text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
-              Every service starts at the transparent rate shown. Your funds are secured in escrow until you inspect and approve the completed job.
+              Start with a service and rate, then review the job price before you authorise a booking.
             </p>
 
             {/* Filter Search Bar */}
@@ -73,6 +73,7 @@ export default function ServicesPage() {
               <div className="relative">
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
+                  aria-label="Filter services"
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -94,6 +95,7 @@ export default function ServicesPage() {
               key={group}
               type="button"
               onClick={() => setSelectedGroup(group)}
+              aria-pressed={selectedGroup === group}
               className={`motion-press px-4 py-2 rounded-full text-xs font-semibold transition-all ${
                 selectedGroup === group
                   ? 'bg-[#001A41] text-white shadow-sm'
@@ -106,8 +108,26 @@ export default function ServicesPage() {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCategories.map((cat) => (
+        {filteredCategories.length === 0 ? (
+          <div className="rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm">
+            <h2 className="font-display text-lg font-bold text-[#001A41]">No services match that filter</h2>
+            <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-slate-500">
+              Try a broader service name, or reset the filters to view every available category.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedGroup('All');
+              }}
+              className="motion-press mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D]"
+            >
+              Reset filters
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCategories.map((cat) => (
             <div
               key={cat.id}
               className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4 flex flex-col justify-between hover:border-slate-300 transition-colors"
@@ -157,8 +177,9 @@ export default function ServicesPage() {
                 </button>
               </div>
             </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Reassurance Banner */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-5 shadow-sm">
@@ -170,7 +191,7 @@ export default function ServicesPage() {
               The price agreed is the price held in escrow
             </h2>
             <p className="text-xs text-slate-500 leading-relaxed max-w-2xl">
-              Every BrainWorker quotes against verified trade standards. If unexpected parts are needed on-site, the quote must be approved by you before work proceeds.
+              If unexpected parts are needed on-site, review and approve the revised quote before work proceeds.
             </p>
           </div>
         </div>

@@ -154,7 +154,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
         {/* Brand Identity */}
         <Link href="/" className="flex items-center gap-3 group">
           <Image
-            src="/images/wordmark-banner-tight.png?v=3"
+            src="/images/wordmark-banner-tight.png"
             alt="BukieBrainJobs"
             width={210}
             height={47}
@@ -162,7 +162,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             priority
           />
           <Image
-            src="/images/logo-icon.png?v=3"
+            src="/images/logo-icon.png"
             alt="BukieBrainJobs"
             width={40}
             height={40}
@@ -273,7 +273,7 @@ function DrawerPanel({
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 h-20 border-b border-[#1E3A60]">
               <Image
-                src="/images/logo-icon.png?v=3"
+                src="/images/logo-icon.png"
                 alt="BukieBrainJobs"
                 width={36}
                 height={36}

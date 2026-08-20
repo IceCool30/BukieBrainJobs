@@ -321,7 +321,7 @@ export default function HeroSection({
     <section className="relative bg-[#001A41] text-white pt-28 sm:pt-32 pb-12 overflow-visible">
       {/* Hero portrait backdrop */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <picture>
+        <picture className="relative block h-full w-full">
           <source media="(max-width: 768px)" srcSet="/images/hero-mobile-1080.jpg" />
           <Image
             src="/images/hero-portrait-1920.png"
@@ -361,6 +361,13 @@ export default function HeroSection({
                   id="hero-service-input"
                   name="serviceQuery"
                   aria-label="Search for a service"
+                  aria-autocomplete="list"
+                  aria-controls={serviceQuery.trim() ? 'hero-service-suggestions' : undefined}
+                  aria-activedescendant={
+                    highlightedIndex >= 0 ? `hero-service-option-${matches[highlightedIndex]?.id}` : undefined
+                  }
+                  aria-expanded={showSuggestions && !showLocationDropdown}
+                  role="combobox"
                   type="text"
                   autoComplete="off"
                   value={serviceQuery}
@@ -387,7 +394,7 @@ export default function HeroSection({
                       setShowSuggestions(true);
                       inputRef.current?.focus();
                     }}
-                    className="absolute right-2.5 p-1 text-slate-400 hover:text-slate-600 rounded-full"
+                    className="absolute right-2 flex h-10 w-10 items-center justify-center rounded-full text-slate-400 hover:text-slate-600"
                     aria-label="Clear search"
                   >
                     <X className="w-3.5 h-3.5" />
@@ -403,6 +410,8 @@ export default function HeroSection({
                     setShowSuggestions(false);
                     setShowLocationDropdown((prev) => !prev);
                   }}
+                  aria-expanded={showLocationDropdown}
+                  aria-controls="hero-location-options"
                   className="motion-press flex h-12 w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 lg:h-14 lg:px-5 lg:text-base"
                 >
                   <MapPin className="h-4 w-4 shrink-0 text-[#296A4B]" />
@@ -414,7 +423,12 @@ export default function HeroSection({
 
                 {/* Location Selection Dropdown */}
                 {showLocationDropdown && (
-                  <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-fadeIn">
+                  <div
+                    id="hero-location-options"
+                    role="listbox"
+                    aria-label="Choose a location"
+                    className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-fadeIn"
+                  >
                     <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                       Active Nigerian Cities
                     </div>
@@ -423,6 +437,8 @@ export default function HeroSection({
                         key={loc.id}
                         type="button"
                         onClick={() => handleSelectLocation(loc)}
+                        role="option"
+                        aria-selected={selectedLocation.id === loc.id}
                         className={`w-full px-3 py-2 text-left text-xs font-medium flex items-center justify-between transition-colors ${
                           selectedLocation.id === loc.id
                             ? 'bg-[#EFF4FF] text-[#001A41] font-bold'
@@ -473,7 +489,12 @@ export default function HeroSection({
 
             {/* Rich Dropdown Suggestions (Zero State & Active State) */}
             {showSuggestions && !showLocationDropdown && (
-              <div className="motion-popover absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)] border border-slate-200 p-3 z-50 max-h-[380px] overflow-y-auto space-y-3">
+              <div
+                id="hero-service-suggestions"
+                role={serviceQuery.trim() ? 'listbox' : undefined}
+                aria-label={serviceQuery.trim() ? 'Service suggestions' : undefined}
+                className="motion-popover absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)] border border-slate-200 p-3 z-50 max-h-[380px] overflow-y-auto space-y-3"
+              >
                 {/* Zero State: Recent & Trending */}
                 {!serviceQuery.trim() && (
                   <div className="space-y-3">
@@ -561,6 +582,9 @@ export default function HeroSection({
                               executeSearch(cat.title);
                             }
                           }}
+                          id={`hero-service-option-${cat.id}`}
+                          role="option"
+                          aria-selected={highlightedIndex === idx}
                           className={`motion-press w-full px-3 py-2.5 rounded-xl text-left transition-colors flex items-center gap-3 ${
                             highlightedIndex === idx
                               ? 'bg-[#EFF4FF] text-[#001A41] font-semibold'

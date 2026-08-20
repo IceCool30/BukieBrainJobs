@@ -260,7 +260,7 @@ export default function PwaHome({
 
           <button
             onClick={onOpenDrawer}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-[#001A41] text-white shadow-sm transition-colors hover:bg-[#000F2D]"
             aria-label="Open menu"
           >
             <Menu className="h-5 w-5" />
@@ -290,6 +290,13 @@ export default function PwaHome({
                   id="pwa-search-input"
                   name="searchQuery"
                   aria-label="Search for a service"
+                  aria-autocomplete="list"
+                  aria-controls={query.trim() ? 'pwa-service-suggestions' : undefined}
+                  aria-activedescendant={
+                    highlightedIndex >= 0 ? `pwa-service-option-${matched[highlightedIndex]?.id}` : undefined
+                  }
+                  aria-expanded={searchOpen && !locationOpen}
+                  role="combobox"
                   type="text"
                   autoComplete="off"
                   value={query}
@@ -317,7 +324,7 @@ export default function PwaHome({
                       setSearchOpen(true);
                       searchInputRef.current?.focus();
                     }}
-                    className="absolute right-2.5 rounded-full p-1 text-slate-400 hover:text-slate-600"
+                    className="absolute right-1.5 flex h-9 w-9 items-center justify-center rounded-full text-slate-400 hover:text-slate-600"
                     aria-label="Clear search"
                   >
                     <X className="h-3.5 w-3.5" />
@@ -333,7 +340,9 @@ export default function PwaHome({
                       setSearchOpen(false);
                       setLocationOpen((open) => !open);
                     }}
-                    className="flex h-10 w-full items-center justify-between gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-100"
+                    aria-expanded={locationOpen}
+                    aria-controls="pwa-location-options"
+                    className="flex h-11 w-full items-center justify-between gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-100"
                   >
                     <MapPin className="h-3.5 w-3.5 shrink-0 text-[#296A4B]" />
                     <span className="truncate">{selectedLocation.name}</span>
@@ -341,7 +350,12 @@ export default function PwaHome({
                   </button>
 
                   {locationOpen && (
-                    <div className="absolute left-0 top-full z-[60] mt-2 w-64 rounded-xl border border-slate-200 bg-white py-2 shadow-xl">
+                      <div
+                        id="pwa-location-options"
+                        role="listbox"
+                        aria-label="Choose a location"
+                        className="absolute left-0 top-full z-[60] mt-2 w-64 rounded-xl border border-slate-200 bg-white py-2 shadow-xl"
+                      >
                       <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         Active Nigerian Cities
                       </div>
@@ -350,6 +364,8 @@ export default function PwaHome({
                           key={location.id}
                           type="button"
                           onClick={() => handleSelectLocation(location)}
+                          role="option"
+                          aria-selected={selectedLocation.id === location.id}
                           className={`flex w-full items-center justify-between px-3 py-2 text-left text-xs font-medium transition-colors ${
                             selectedLocation.id === location.id
                               ? 'bg-[#EFF4FF] font-bold text-[#001A41]'
@@ -390,7 +406,7 @@ export default function PwaHome({
 
                 <button
                   type="submit"
-                  className="motion-press flex h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#296A4B] px-5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-[#1F523A] active:bg-[#17402C]"
+                  className="motion-press flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#296A4B] px-5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-[#1F523A] active:bg-[#17402C]"
                 >
                   <span>Search</span>
                   <ArrowRight className="h-4 w-4 text-[#ABEEC8]" />
@@ -399,7 +415,12 @@ export default function PwaHome({
             </form>
 
             {searchOpen && !locationOpen && (
-              <div className="motion-popover absolute left-0 right-0 top-full z-50 mt-2 max-h-[320px] space-y-3 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)]">
+              <div
+                id="pwa-service-suggestions"
+                role={query.trim() ? 'listbox' : undefined}
+                aria-label={query.trim() ? 'Service suggestions' : undefined}
+                className="motion-popover absolute left-0 right-0 top-full z-50 mt-2 max-h-[320px] space-y-3 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)]"
+              >
                 {!query.trim() && (
                   <div className="space-y-3">
                     {recentSearches.length > 0 && (
@@ -479,6 +500,9 @@ export default function PwaHome({
                             setSearchOpen(false);
                             onSelectCategory?.(category);
                           }}
+                          id={`pwa-service-option-${category.id}`}
+                          role="option"
+                          aria-selected={highlightedIndex === index}
                           className={`motion-press flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${
                             highlightedIndex === index
                               ? 'bg-[#EFF4FF] font-semibold text-[#001A41]'

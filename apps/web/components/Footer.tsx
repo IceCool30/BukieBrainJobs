@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
               <Image
-                src="/images/wordmark-banner-tight.png?v=3"
+                src="/images/wordmark-banner-tight.png"
                 alt="BukieBrainJobs"
                 width={180}
                 height={40}
