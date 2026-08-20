@@ -1,9 +1,9 @@
 # WEB-001: Public Homepage
 
-**Version:** 1.0
-**Status:** Approved
-**Design status:** Design orchestration prepared
-**Implementation status:** Not started
+**Version:** 1.1
+**Status:** Approved and live
+**Design status:** Live-first experience standard approved
+**Implementation status:** Live on `feature/web-001-homepage-redesign` and continuously deployed through Vercel previews
 
 ## Objective
 
@@ -42,6 +42,8 @@ The primary interaction is a lightweight **Service + Location** search.
 Date and time are introduced later in the booking journey.
 
 The homepage must not become a full booking form.
+
+The live implementation uses a two-tier hero search: a full-width service query row followed by a location selector and search button row. Live suggestions open below the field and include real service imagery.
 
 ## Geographic model
 
@@ -132,7 +134,18 @@ The approved design brief covers:
 15. Community / newsletter
 16. Footer
 
-Exact visual composition remains governed by WEB-001A and the approved Stitch design.
+Exact visual composition is now governed by the live-first experience standard at `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md` and the bundled skill at `docs/02-design-system/skills/bukiebrainjobs-experience-standards/`.
+
+The live homepage includes:
+
+- A photo-led hero with navy vignettes controlling depth around the edges
+- The approved headline about booking skilled local or remote workers in minutes
+- Image-led service cards with starting-price labels
+- A three-brand trust strip: Paystack, Flutterwave, and Dojah
+- BrainWorker terminology standardized across all customer-facing copy
+- A compact, service-focused mobile PWA composition with a photo-governed hero and restrained motion
+
+All subsequent pages must follow the live-first experience standard.
 
 ## Responsive requirements
 
@@ -174,8 +187,11 @@ Do not:
 - Overload the hero with fields.
 - Use generic stock imagery.
 - Turn the homepage into a dashboard.
-- Introduce arbitrary design tokens.
+- Do not introduce arbitrary design tokens.
 - Expose sensitive verification information.
+- Use unsupported absolute claims such as exact counts, ratings, guarantees, or coverage amounts in customer-facing copy
+- Introduce a bottom navigation bar on the homepage
+- Place decorative statistics, heavy blur, or broad frosted-glass panels on any page
 
 ## Open operational decisions
 

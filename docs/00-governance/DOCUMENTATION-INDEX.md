@@ -1,8 +1,8 @@
 # BukieBrainJobs Documentation Index
 
 **Document ID:** GOV-005
-**Version:** 1.2
-**Status:** Foundation in progress
+**Version:** 1.3
+**Status:** Active
 
 This is the navigation map for the repository documentation. The repository is the canonical handoff point for humans and coding/design agents.
 
@@ -17,6 +17,10 @@ This is the navigation map for the repository documentation. The repository is t
 - `FOUNDATION-STATUS.md` — foundation gate and readiness status
 - `SOURCE-MATERIAL-REGISTER.md` — supplied source inventory and verification record
 - `CANONICALIZATION-PLAN.md` — consolidation rules and release gate
+- `FOUNDATION-FINAL-STATUS.md` — completed foundation record
+- `FOUNDATION-VERIFICATION-RECORD.md` — foundation verification record
+- `FOUNDATION-RELEASE-GATE.md` — released foundation gate
+- `FOUNDATION-CLOSEOUT.md` — foundation closeout
 
 ## 01 Product
 
@@ -47,6 +51,17 @@ Canonical visual source:
 
 The DS artifacts are the formal design-system records. Root `DESIGN.md` remains authoritative for the visual source material.
 
+Live-first authority:
+
+- `LIVE-EXPERIENCE-STANDARD.md` — approved live homepage baseline (primary visual authority)
+- `skills/bukiebrainjobs-experience-standards/` — reusable live-first experience skill and its references:
+  - `references/live-approved-experience.md` — visual and interaction baseline
+  - `references/BUKIEBRAINJOBS-CONTENT-GUIDE.md` — customer-facing content guide
+  - `references/quality-gates.md` — delivery quality gates
+  - `references/validation-examples.md` — quality-gate application examples
+
+All future pages and screens must follow the live-first experience standard.
+
 ## 03 Architecture
 
 - `README.md` — engineering architecture hub and implementation boundary
@@ -63,12 +78,11 @@ Future canonical documents include the site map, navigation model, role-based in
 
 ## 05 Public Website
 
-Current approved feature:
+Live approved feature:
 
-- `WEB-001` Homepage Product and UX Specification
-- `WEB-001A` Homepage Section-by-Section Design Brief
-- `WEB-001B` [DEPRECATED] Google Stitch Design Requirements
-- `WEB-001B-MCP` [DEPRECATED] Antigravity to Stitch MCP orchestration prompt
+- `WEB-001-HOMEPAGE.md` — homepage implementation status and history
+- `APPROVED-HOMEPAGE-ARTIFACTS.md` — approved homepage decisions
+- The homepage is live and approved on `feature/web-001-homepage-redesign` with a two-tier hero search, image-led service cards, a three-brand trust strip (Paystack, Flutterwave, Dojah), and BrainWorker terminology standardized across all customer-facing copy
 
 
 ## 06 Authentication
@@ -237,12 +251,7 @@ Every approved agent prompt belongs here and must reference the specification it
 
 - `AGENT-EXECUTION-POLICY.md` — rules for all design, coding and QA agents
 
-```text
-docs/20-prompts/
-├── stitch/ (Deprecated)
-├── antigravity/
-└── qa/
-```
+The `WEB-001B-MCP` orchestration prompt was removed as deprecated.
 
 ## 22 Decision Log
 
