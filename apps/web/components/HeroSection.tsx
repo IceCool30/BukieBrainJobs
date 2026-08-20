@@ -349,15 +349,14 @@ export default function HeroSection({
             .
           </h1>
 
-          {/* Unified Dual Service + Location Search Bar */}
-          <div ref={containerRef} className="pt-4 max-w-2xl w-full relative">
+          {/* Service and location search */}
+          <div ref={containerRef} className="relative w-full max-w-xl pt-4 lg:max-w-[46rem]">
             <form
               onSubmit={handleFormSubmit}
-              className="bg-white rounded-2xl p-1.5 sm:p-2 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)] flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 border border-slate-200"
+              className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]"
             >
-              {/* Service Input */}
-              <div className="relative flex-1 flex items-center">
-                <Search className="absolute left-3.5 w-4 h-4 text-slate-400 shrink-0" />
+              <div className="relative col-span-2 flex items-center border-b border-slate-100">
+                <Search className="absolute left-4 h-5 w-5 shrink-0 text-slate-400" />
                 <input
                   ref={inputRef}
                   id="hero-service-input"
@@ -378,7 +377,7 @@ export default function HeroSection({
                   }}
                   onKeyDown={handleKeyDownInput}
                   placeholder="What service do you need? (e.g. AC, Generator)"
-                  className="w-full h-11 sm:h-12 pl-10 pr-8 text-sm font-medium text-slate-900 bg-transparent rounded-xl focus:outline-none placeholder:text-slate-400"
+                  className="h-14 w-full rounded-xl bg-transparent pl-12 pr-10 text-base font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none lg:h-16 lg:text-xl"
                 />
                 {serviceQuery && (
                   <button
@@ -397,21 +396,21 @@ export default function HeroSection({
                 )}
               </div>
 
-              {/* Location Switcher Pill */}
-              <div ref={locationDropdownRef} className="relative shrink-0">
+              {/* Location switcher */}
+              <div ref={locationDropdownRef} className="relative min-w-0">
                 <button
                   type="button"
                   onClick={() => {
                     setShowSuggestions(false);
                     setShowLocationDropdown((prev) => !prev);
                   }}
-                  className="motion-press h-10 sm:h-12 px-3 sm:px-4 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold flex items-center justify-between sm:justify-center gap-1.5 border border-slate-200 w-full sm:w-auto transition-colors"
+                  className="motion-press flex h-12 w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 lg:h-14 lg:px-5 lg:text-base"
                 >
-                  <MapPin className="w-3.5 h-3.5 text-[#296A4B] shrink-0" />
-                  <span className="truncate max-w-[110px] sm:max-w-[130px]">
+                  <MapPin className="h-4 w-4 shrink-0 text-[#296A4B]" />
+                  <span className="max-w-[160px] truncate lg:max-w-[220px]">
                     {selectedLocation.name}
                   </span>
-                  <ChevronDown className="w-3 h-3 text-slate-400 shrink-0" />
+                  <ChevronDown className="h-4 w-4 shrink-0 text-slate-400" />
                 </button>
 
                 {/* Location Selection Dropdown */}
@@ -466,7 +465,7 @@ export default function HeroSection({
               {/* Submit CTA Button */}
               <button
                 type="submit"
-                className="motion-press h-10 sm:h-12 px-5 bg-[#296A4B] hover:bg-[#1F523A] active:bg-[#17402C] text-white text-xs sm:text-sm font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition-colors shrink-0"
+                className="motion-press flex h-12 min-w-36 items-center justify-center gap-2 rounded-xl bg-[#296A4B] px-6 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#1F523A] active:bg-[#17402C] lg:h-14 lg:min-w-40 lg:text-base"
               >
                 <span>Search</span>
                 <ArrowRight className="w-4 h-4 text-[#ABEEC8]" />
