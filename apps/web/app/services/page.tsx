@@ -15,20 +15,31 @@ import {
   ArrowLeft,
   ArrowRight,
   Search,
+  type LucideIcon,
 } from 'lucide-react';
 import { SERVICE_CATEGORIES, ServiceCategory } from '../../lib/mock/homepage-data';
 import DirectBookingModal from '../../components/modals/DirectBookingModal';
 
-const ICONS: Record<string, React.ReactNode> = {
-  Zap: <Zap className="h-4 w-4" />,
-  Wind: <Wind className="h-4 w-4" />,
-  Wrench: <Wrench className="h-4 w-4" />,
-  Sun: <Sun className="h-4 w-4" />,
-  Sparkles: <Sparkles className="h-4 w-4" />,
-  Hammer: <Hammer className="h-4 w-4" />,
-  Tv: <Tv className="h-4 w-4" />,
-  Truck: <Truck className="h-4 w-4" />,
+const ICONS: Record<string, LucideIcon> = {
+  Zap,
+  Wind,
+  Wrench,
+  Sun,
+  Sparkles,
+  Hammer,
+  Tv,
+  Truck,
 };
+
+function CategoryMark({ iconName }: { iconName: string }) {
+  const Icon = ICONS[iconName] ?? Wrench;
+
+  return (
+    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-[#001A41]/90 shadow-[0_8px_18px_rgba(0,26,65,0.28)]">
+      <Icon aria-hidden="true" className="h-[18px] w-[18px] text-[#ABEEC8]" strokeWidth={1.7} />
+    </span>
+  );
+}
 
 function matchesService(category: ServiceCategory, query: string) {
   const term = query.toLowerCase();
@@ -54,10 +65,8 @@ function ServiceCard({ category, onBook }: { category: ServiceCategory; onBook: 
         <span className="absolute left-4 top-4 rounded-lg bg-white px-2.5 py-1 text-[11px] font-bold text-[#001A41] shadow-sm">
           From {category.startingPrice}
         </span>
-        <span className="absolute bottom-4 left-4 inline-flex items-center gap-1.5 text-xs font-semibold text-white">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm">
-            {ICONS[category.iconName]}
-          </span>
+        <span className="absolute bottom-4 left-4 inline-flex items-center gap-2.5 rounded-2xl border border-white/15 bg-[#001A41]/80 py-1.5 pl-1.5 pr-3 text-xs font-bold text-white shadow-[0_10px_22px_rgba(0,26,65,0.24)]">
+          <CategoryMark iconName={category.iconName} />
           {category.group}
         </span>
       </div>
@@ -108,19 +117,19 @@ export default function ServicesPage() {
 
   return (
     <main className="min-h-screen bg-[#F8F9FF]">
-      <section className="relative isolate overflow-hidden bg-[#001A41] text-white">
-        <div className="absolute inset-y-0 right-0 w-full sm:w-3/5">
+      <section className="relative isolate min-h-[390px] overflow-hidden bg-[#001A41] text-white sm:min-h-[420px] lg:min-h-[432px]">
+        <div className="absolute inset-y-0 right-0 w-full sm:w-[64%] lg:w-[58%]">
           <Image
             src="/images/service-electrical.jpg"
             alt=""
             fill
             priority
-            sizes="(min-width: 640px) 60vw, 100vw"
-            className="object-cover object-center"
+            sizes="(min-width: 1024px) 58vw, (min-width: 640px) 64vw, 100vw"
+            className="object-cover object-[62%_center] lg:object-[56%_26%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#001A41] via-[#001A41]/90 to-[#001A41]/35" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#001A41] via-[#001A41]/88 to-[#001A41]/20" />
         </div>
-        <div className="relative mx-auto max-w-[1280px] px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-36 lg:px-8">
+        <div className="relative mx-auto flex min-h-[390px] max-w-[1280px] flex-col justify-center px-4 py-12 sm:min-h-[420px] sm:px-6 sm:py-14 lg:min-h-[432px] lg:px-8">
           <Link
             href="/"
             className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-slate-200 transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 focus:ring-offset-[#001A41]"
