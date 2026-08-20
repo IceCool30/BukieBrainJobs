@@ -11,6 +11,6 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@bukiebrainjobs/api-types": "workspace:*"
+    "@bukiebrainjobs/api-types": "*"
   }
 }
