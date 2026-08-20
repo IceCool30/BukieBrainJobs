@@ -18,7 +18,7 @@ This file defines the standards every contributor must follow when working in th
 
 Do not invent requirements when an approved project document already defines them.
 
-The approved live BukieBrainJobs experience governs the practical baseline for customer-facing visual hierarchy, imagery, interaction behavior, motion, responsive density, and mobile PWA restraint. `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md` and its bundled skill define how to preserve and extend that baseline.
+The approved live BukieBrainJobs experience governs the practical baseline for all customer-facing product work, including public pages, marketplace flows, booking, profiles, onboarding, customer and BrainWorker areas, PWA views, native-app screens, visual hierarchy, imagery, interaction behaviour, motion, responsive density, and customer-facing copy. `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md` and its bundled skill define how to preserve and extend that baseline.
 
 `DESIGN.md` governs supporting visual tokens and visual language. Its legacy product-language passages are governed by `docs/02-design-system/DESIGN-CANONICALIZATION.md`.
 

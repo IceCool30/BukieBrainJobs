@@ -1,40 +1,67 @@
-# Validation Examples From the Approved Live Experience
+# BukieBrainJobs Validation Examples
 
-These examples show how to apply the quality gates to the live BukieBrainJobs homepage. They are examples of reasoning, not layouts to duplicate.
+Use these examples to make a design-quality judgment. They are reasoning patterns, not layouts to copy. Start with the relevant live component or flow and apply the purpose, platform, accessibility, and content rules from the primary skill.
 
-## Example 1: Desktop Service Discovery
+## 1. Public Page Content Density
 
-The desktop service section passes the live-first review when it preserves the following.
-
-| Quality gate | Live evidence | Review conclusion |
+| Situation | Decision | Why it passes |
 |---|---|---|
-| Image-led card | The service card places a real service image above its concise title and contained starting-price label. | Use photos when a service is easier to recognize visually. |
-| Surface language | The card uses a white surface, rounded corners, a thin border, and controlled depth. | Do not replace it with a dense brand-colour block or generic icon tile. |
-| Pointer-specific feedback | The title colour and image feedback respond through the card group on hover. | Keep hover-only feedback inside pointer-capable media rules. |
-| Mobile independence | The desktop card treatment does not require hover information for comprehension. | A touch user can still understand and use the card without hover. |
+| A service section contains an eyebrow, broad headline, generic subtitle, trust sentence, and CTA above cards that already show a photo, service name, starting price, and destination. | Keep one purpose-led heading, retain a supporting line only if it changes the decision, and remove the redundant framing. | The cards and action already communicate the service-discovery task. Extra language delays the task without adding useful information. |
+| A public page needs to explain a real policy or process in depth. | Give a concise, truthful summary beside the relevant action and link to a clear deeper page or reveal detail at the relevant flow step. | The page stays focused while material detail remains available when it matters. |
+| A section claims broad safety, verification, availability, or outcome assurance. | Retain only a precise statement that reflects implemented behaviour. Otherwise remove it and flag the product fact. | Marketplace confidence must come from honest product behaviour, not repeated unsupported claims. |
 
-## Example 2: Mobile Service Discovery
+## 2. Service Search and Discovery
 
-The PWA service section passes the live-first review when it preserves the following.
-
-| Quality gate | Live evidence | Review conclusion |
+| Situation | Decision | Why it passes |
 |---|---|---|
-| Service-first hierarchy | The section begins with a direct action heading and a two-column service grid. | Do not insert a long informational block ahead of discovery. |
-| Perceptible but restrained discovery motion | The section uses `motion-reveal` and `motion-reveal-item` after entering the viewport. | Use a short discovery cue rather than constant movement. |
-| Touch feedback | Service cards use the shared `motion-press` pattern and visible focus treatment. | Touch feedback should be noticeable without moving the layout. |
-| Search focus | The mobile search uses the shared `motion-focus` pattern. | Focus must communicate that typing will produce service matches below the field. |
-| Reduced motion | Global rules leave the content visible when reduced motion is requested. | Never hide content behind an animation preference. |
+| A Customer types a service query. | Show matching services below the input with useful imagery and a tappable destination. Keep the query intact when the panel closes with Escape. | The result follows the input, remains discoverable, and supports both keyboard and touch use. |
+| A search suggestion panel appears behind a service grid, header, or scrim. | Correct the stacking and containment so suggestions are fully visible, selectable, and dismissible without changing the surrounding layout. | The primary discovery task remains usable and does not create an accidental dead-end. |
+| A filter row is too dense on mobile. | Show the most decision-relevant filters first and move advanced filtering into a clearly named, accessible sheet or screen. | The mobile screen supports direct discovery without hiding meaningful choice. |
 
-## Example 3: Mobile Header Without Blur
+## 3. Booking, Payment, and Trust Detail
 
-The PWA homepage passes the mobile header requirement when `Navbar` receives `hideOnPwa`.
-
-| Quality gate | Live evidence | Review conclusion |
+| Situation | Decision | Why it passes |
 |---|---|---|
-| Compact control | The PWA path renders only the fixed 44px menu control after scroll settlement. | Do not restore a wide header or information strip. |
-| Blur-free mobile behavior | The PWA-specific early return does not render the desktop scrolled header, which uses a separate backdrop treatment. | A desktop scrolled header treatment must not leak into the mobile PWA. |
-| Accessible drawer | The menu exposes an accessible label, opens a controlled drawer, closes with Escape, and restores page scrolling. | Preserve these behaviors in any navigation refactor. |
+| A booking screen needs to explain how payment, escrow, arrival, or privacy affects the next step. | Place a concise, truthful explanation beside the related choice, with a link to deeper detail where needed. | The information appears at the payment or confirmation decision rather than being repeated across discovery pages. |
+| A price estimate changes because scope or location changed. | Explain the updated input or calculation in direct language and present the next available action. | The state is understandable, actionable, and does not overstate price certainty. |
+| A user submits a booking form with missing information. | Preserve entered values, identify the relevant field or summary, state the recovery step, and move focus appropriately. | The person can recover without having to reconstruct their task. |
 
-## Example 4: Claim and Copy Review
+## 4. BrainWorker Profile and Onboarding
 
-A service-card title such as `Generator repair` needs no generic tagline below it. The imagery, title, contained price cue, and destination explain the task. If supporting text is added, it must answer a genuine decision question, follow the content guide, and avoid invented proof such as ratings, number of professionals, broad coverage, or guarantees.
+| Situation | Decision | Why it passes |
+|---|---|---|
+| A profile contains repeated badges, vague praise, and decorative skill labels. | Retain information that supports service selection, booking confidence, or a real verification state. Remove unsupported or duplicated profile decoration. | The Customer receives useful decision support without inflated proof. |
+| BrainWorker onboarding asks for information across several complex categories. | Lead with the current completion step, explain why it matters if that helps, and defer advanced detail until it becomes relevant. | The flow makes progress visible without overwhelming the BrainWorker. |
+| A screen labels a service provider as a professional, provider, artisan, or worker. | Use **BrainWorker** as the identity label. Use a precise trade only where it gives necessary context. | The marketplace uses one customer-facing identity consistently. |
+
+## 5. Mobile PWA and Native-App Adaptation
+
+| Situation | Decision | Why it passes |
+|---|---|---|
+| A desktop page contains profile cards, detailed testimonials, an estimator, and FAQs. | Do not automatically add every section to the mobile landing view. Retain the immediate service task and link or route to deeper information when it has a separate role. | Mobile is a focused product experience, not a smaller brochure. |
+| A native mobile screen uses a compact icon control. | Keep the visual icon compact while ensuring the target meets the platform minimum, has an accessible label, and does not collide with a safe area or system gesture. | The control is visually calm and functionally reliable. |
+| A sticky mobile header appears while scrolling. | Keep it compact, solid, and clear. Do not use a broad blurred overlay that distracts from content or hides focus. | The control supports navigation without competing with the task. |
+
+## 6. Modal, Drawer, and State Handling
+
+| Situation | Decision | Why it passes |
+|---|---|---|
+| A modal opens from a primary action. | Move focus into the modal, provide a clear title and dismissal route, prevent background interaction where appropriate, and restore focus on close. | The modal has an understandable and accessible interaction boundary. |
+| A transient message confirms an action. | State what happened and what comes next only when relevant. Do not rely solely on colour or motion. | The outcome remains understandable for all users. |
+| A screen has no matching services or a requested location is unavailable. | Explain the real condition and provide an available next action, such as changing the search, updating the location, posting a job, or contacting support where supported. | The empty state helps the person recover instead of ending the journey. |
+
+## 7. Motion and Visual Feedback
+
+| Situation | Decision | Why it passes |
+|---|---|---|
+| A service card needs feedback on pointer devices. | Use a small lift, contained image response, and directional cue inside a pointer-capable media query. | The card feels responsive without making hover necessary for comprehension. |
+| A mobile section enters view. | Use a restrained opacity and upward transform reveal, keep it short, and remove the animation under reduced-motion preferences. | Motion supports discovery without stealing attention or shifting layout. |
+| A search field gains focus. | Use the established focus treatment and slight scale while keeping text, suggestions, and adjacent controls stable. | The field becomes clear without creating a visual jump. |
+
+## 8. Implementation Review
+
+| Situation | Decision | Why it passes |
+|---|---|---|
+| A new screen needs visual polish. | Extend the existing colour tokens, type roles, surface patterns, motion variables, and components before adding a new dependency or utility layer. | The implementation stays coherent and maintainable. |
+| A component accumulates conditionals for different states. | Separate focused responsibilities, use early returns, and preserve one source of truth for visible state. | The code remains easier to test and adapt without premature abstraction. |
+| A change adds a reusable product pattern. | Validate it across its relevant states and platforms, obtain approval, then add it to the live baseline and examples. | Future contributors can extend an approved pattern rather than inventing alternatives. |

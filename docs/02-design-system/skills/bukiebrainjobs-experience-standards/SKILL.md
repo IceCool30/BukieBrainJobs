@@ -1,135 +1,180 @@
 ---
 name: bukiebrainjobs-experience-standards
-description: Preserve and extend the approved live BukieBrainJobs product experience. Use whenever creating, modifying, reviewing, or refactoring any customer-facing BukieBrainJobs web page, PWA view, native-app screen, component, visual asset usage, interaction, animation, or UI copy. Enforces the live visual system, motion language, accessibility, content standards, and maintainable implementation rules across desktop and mobile.
+description: Preserve and extend the approved live BukieBrainJobs product experience across every customer-facing website page, PWA view, native-app screen, marketplace flow, component, asset, interaction, animation, and copy change. Use for creation, modification, review, or refactoring work through launch. Enforces the live visual system, service-first decision architecture, content truth, accessibility, motion restraint, and maintainable implementation across all platforms.
 ---
 
 # BukieBrainJobs Experience Standards
 
 ## Purpose
 
-Use this skill to make every future BukieBrainJobs customer-facing screen feel like part of the currently approved product, not a separate design exercise. Treat the **live, verified homepage experience** as the primary authority for visual hierarchy, imagery, surfaces, spacing, motion, and mobile restraint.
+Use this skill to ensure every BukieBrainJobs experience feels like one product. It governs the full customer-facing journey, including public pages, search, service discovery, booking, job posting, BrainWorker profiles and onboarding, verification, escrow communication, customer and BrainWorker product areas, enterprise screens, support content, forms, drawers, modals, empty states, notifications, PWA views, and native-app screens.
 
-Read `references/live-approved-experience.md` before proposing or implementing UI work. Read `references/BUKIEBRAINJOBS-CONTENT-GUIDE.md` before creating or revising customer-facing copy. Read `references/quality-gates.md` before delivery.
+The approved live homepage is the strongest reference for the product’s visual restraint, image-led quality, information hierarchy, mobile focus, and motion language. It is not a layout to copy onto every screen. Each screen must serve its own task while belonging to the same system.
+
+> Every screen must make one real BukieBrainJobs task clearer, safer, and easier to complete. Retain operational content and the decision support required now. Remove promotional repetition, decorative framing, and duplicated explanation.
 
 ## Authority Order
 
-Resolve conflict in this order. Do not let older planning documents override the approved live result.
+Resolve conflicts in this order. Do not let a generic pattern, historical mockup, or old planning document override the approved product.
 
-1. The current approved, deployed BukieBrainJobs experience and the active feature-branch implementation.
-2. The user’s latest explicit direction.
-3. Documented, implemented product behavior, legal requirements, accessibility requirements, and security requirements.
-4. The bundled content guide for customer-facing language.
-5. Earlier design files and historical mockups, only when they agree with the current live result.
+1. The current approved, deployed BukieBrainJobs experience and active feature-branch implementation.
+2. Solomon Bukie’s latest explicit direction.
+3. Verified product requirements, implemented behaviour, legal requirements, security requirements, and accessibility requirements.
+4. The bundled BukieBrainJobs content guide for customer-facing language.
+5. Relevant general UX guidance, only where it does not conflict with BukieBrainJobs.
+6. Historical design files and mockups, only where they agree with the current live result.
 
-If sources conflict, identify the conflict and ask for a decision before changing the approved experience.
+If two approved sources conflict, identify the conflict and ask for a decision. Do not silently choose one or invent a new product rule.
+
+## Required Reading
+
+Read the relevant references before starting work. Do not load references that do not apply to the change.
+
+| Change type | Required reading |
+|---|---|
+| Any customer-facing visual, responsive, interaction, or motion work | `references/live-approved-experience.md` |
+| Any visible copy, label, error, notification, onboarding, trust, location, or marketplace terminology work | `references/BUKIEBRAINJOBS-CONTENT-GUIDE.md` |
+| Any page, section, flow, information architecture, or copy-density review | `references/content-density-and-decision-architecture.md` |
+| Any implementation review or delivery | `references/quality-gates.md` |
+| A comparable approved pattern is needed | `references/validation-examples.md` and the nearest existing live component |
 
 ## Required Workflow
 
-1. Inspect the nearest equivalent live component on both desktop and mobile before writing code.
-2. Identify the screen’s primary action, user type, and whether it is a website, PWA, or native-app context.
-3. Reuse the live visual and motion language. Do not invent a competing style or pattern.
-4. Read the bundled content guide when changing visible language.
-5. Build the smallest maintainable change that solves the screen’s core job.
-6. Test the experience at desktop and mobile widths, with keyboard navigation and reduced motion enabled.
-7. Compare the result with the quality gates before delivery. Flag any unresolved product or content fact.
+1. **Establish context.** Identify the user, task, primary action, decision risk, platform, and information the person truly needs now.
+2. **Inspect the product.** Review the nearest equivalent live component or flow on the relevant platform before introducing a new visual, copy, interaction, or navigation pattern.
+3. **Set the hierarchy.** Make the primary action obvious before secondary detail. Use progressive disclosure for real information that is not needed at the first decision.
+4. **Run the density pass.** Classify each visible heading, sentence, badge, image, statistic, reassurance, and CTA as operational, decision-supporting, legally required, or necessary for accessibility. Remove, consolidate, defer, or link everything else.
+5. **Build the smallest complete change.** Extend existing components, tokens, assets, and patterns before creating parallel systems.
+6. **Validate in context.** Test the relevant device sizes, input methods, states, keyboard path, and reduced-motion behaviour. Check the nearest customer journey, not only the changed component in isolation.
+7. **Document new standards.** When a new pattern is explicitly approved for reuse, record it in the live baseline and validation examples within the same change set.
 
-## Visual System
+## Product-Wide Decision Architecture
 
-Use the live experience as the pattern, not as a rigid collection of copied layouts.
+Every element must earn its place. Keep what helps a person discover, compare, act, recover, understand a real state, or meet a required obligation. Remove generic headings, duplicate assurance, status clutter, inflated proof, decorative labels, and explanatory layers that delay the task.
+
+Use this sequence when reviewing copy or layout:
+
+1. What does this mean?
+2. Why does it matter at this moment?
+3. What should the person do next?
+
+Rewrite or remove a line that does not answer those questions. Move useful deeper detail to the relevant step, profile area, help page, or dedicated screen rather than expanding every overview into a wall of content.
+
+## Shared Visual System
 
 | Element | Required direction |
 |---|---|
-| Page canvas | Use the quiet off-white base `#F8F9FF` for ordinary page surfaces. |
-| Primary brand colour | Use navy `#001A41` for headings, primary actions, focused states, and controlled hero depth. |
-| Supporting brand colour | Use green `#296A4B` for selected links and restrained secondary emphasis. |
-| Highlight colour | Use mint `#ABEEC8` for focus rings, short highlights, and limited accents. |
-| Colour restraint | Keep dense navy primarily in the header, hero, footer, and deliberate primary actions. Do not use full-brand-colour section backgrounds by default. |
-| Typography | Preserve the implemented display and body font roles. Use concise, high-contrast headings and readable body text. Do not introduce an unrelated typeface. |
-| Geometry | Use the live compact radius language, usually `rounded-xl` or `rounded-2xl` where the current components use it. Do not default to pills or over-rounded containers. |
-| Cards | Use honest white surfaces, thin neutral borders, restrained navy-tinted elevation, clear internal spacing, and real imagery when the service or person benefits from it. |
-| Imagery | Let photos carry visual interest. Keep artisan faces, key work, product context, and text unobscured. Use `object-cover` only with intentional focal positioning. |
-| Effects | Prefer clean layering, soft shadows, and contrast. Do not add broad glass effects, heavy gradients, decorative glow, or blur over operational content. |
+| Canvas | Use the quiet off-white `#F8F9FF` as the ordinary page surface. |
+| Navy | Use `#001A41` for structural depth, headings, primary actions, focused states, hero treatment, and footer. Do not use broad navy sections by default. |
+| Green | Use `#296A4B` for selected links and restrained secondary emphasis. |
+| Mint | Use `#ABEEC8` for short highlights, focus treatment, and limited accents. |
+| Typography | Preserve Hanken Grotesk for display and headings, and Inter for body and interface text. Keep headings concise, body text readable, and line lengths appropriate to the viewport. |
+| Geometry | Use the compact, slightly softened live radius language. Prefer `rounded-xl` and `rounded-2xl` where established components use them. Do not default to pills or excessive rounding. |
+| Surfaces | Use white cards, clear internal spacing, thin neutral borders, and controlled navy-tinted elevation. Surfaces must remain distinct from their background. |
+| Imagery | Use purposeful real imagery where services, people, practical work, or marketplace context benefit from it. Keep faces, work context, and adjacent text visible through intentional focal positioning. |
+| Brand assets | Use official brand and partner marks without recolouring, distortion, or invented substitutes. Preserve their proportions and clear space. |
+| Effects | Prefer contrast, clean layering, and controlled shadow. Use blur only when it meaningfully dismisses a background and contrast has been verified. Do not use broad glass, heavy gradients, ornamental glow, or blur over operational content. |
 
-Maintain a calm information hierarchy. Every screen should make the primary benefit, primary action, supporting information, and secondary actions easy to distinguish.
+Build hierarchy through size, spacing, contrast, grouping, and surface distinction. Do not depend on saturated colour, decorative effects, or excessive motion to make content seem important.
 
-## Desktop and Mobile Must Share a System, Not a Layout
+## Platform and Screen Rules
 
-Use the same brand, typography, card language, imagery quality, and trust standards on every platform. Adapt the density and interaction model for each context.
+Share one identity across platforms, but adapt density, navigation, inputs, and interaction to the actual context.
 
-| Context | Required behaviour |
+| Context | Required direction |
 |---|---|
-| Desktop website | Use generous but purposeful whitespace, richer supporting context, image-led service cards, and pointer-aware hover feedback. |
-| Mobile PWA or app | Prioritize service discovery, direct actions, compact hierarchy, and touch feedback. Remove supporting material that does not help the immediate task. |
-| Mobile homepage | Keep the hero compact and photo-led. Keep the fixed menu compact, solid navy, and blur-free. Do not add a bottom navigation bar to the homepage. |
-| Responsive behaviour | Recompose the hierarchy for the viewport. Do not merely shrink the desktop page. Protect tap targets, text wrapping, card readability, and horizontal overflow. |
+| Public website pages | Lead with a clear value, task, or route into the marketplace. Use imagery and proof purposefully. Do not stack generic marketing claims. |
+| Search and service discovery | Make service selection, location relevance, results, filters, and next actions obvious. Suggestions and results must be accessible, unclipped, and truthfully represented. |
+| Booking, payment, and escrow | Prioritize scope, selected BrainWorker or matching path, schedule, location, price information, current payment state, and recovery. Trust language must describe actual behaviour only. |
+| Job posting and matching | Make the required job details, current state, and next action clear. Reveal complex choices progressively so they do not block the primary task. |
+| BrainWorker profiles and onboarding | Preserve the official BrainWorker identity. Show information needed for a customer decision or an account-completion step. Do not add inflated proof or decorative profile metadata. |
+| Customer and BrainWorker areas | Surface the current task, status, and next action first. Use predictable navigation, clear empty states, and recovery-oriented errors. |
+| Enterprise and support | Prioritize the relevant audience, real capability, contact or action path, and appropriate depth. Do not convert operational guidance into generic promotion. |
+| Forms, sheets, modals, and notifications | Make the current action and recovery path unmistakable. Preserve entered state where appropriate, accessible dismissal, focus management, and semantic controls. |
+| Mobile PWA and native apps | Design for direct touch tasks, constrained viewports, safe areas, text scaling, device orientation, and platform conventions. Do not merely shrink a desktop layout. |
 
-## Motion and Interaction Language
+### Homepage-Specific Rules
 
-Use motion to explain state changes, improve touch confidence, and add premium polish. Never use it as decoration.
+Apply these rules only to the homepage unless an explicit approved pattern says otherwise:
 
-1. Reuse the existing shared motion tokens and utility classes before writing new animation CSS.
-2. Keep interaction transitions short and controlled. Use the existing easing and timing vocabulary.
-3. Use visible but restrained mobile section reveals only for meaningful discovery moments, such as a service grid entering the viewport.
-4. Use concise press feedback on touch controls. Use hover elevation, image response, and directional affordances only inside pointer-capable media queries.
-5. Animate opacity, transform, colour, shadow, and border colour. Do not animate layout dimensions, large page reflows, or scroll position for decoration.
-6. Keep search results appearing below the field. Preserve keyboard dismissal with `Escape` without clearing an entered query.
-7. Keep the mobile scroll header free of backdrop blur and broad translucent overlays.
-8. Honour `prefers-reduced-motion: reduce`. Content must remain visible and usable with motion removed.
+- Keep the desktop hero and search as the dominant first task. Search suggestions open below the field, show useful service context, remain tappable, and never clip behind adjacent content.
+- Preserve the approved homepage headline exactly as implemented:
 
-Do not add autoplaying media, perpetual loops, parallax that moves content independently of the user, bounce effects, large entrance animations, or animated backgrounds unless the user explicitly approves a specific product reason.
+  > Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on BukieBrainJobs
+
+  This is a named headline exception. It does not relax the mandatory use of **BrainWorker** as the customer-facing identity label elsewhere.
+- Keep the desktop homepage photo-led and editorial. Use image-led service discovery, useful price cues, concise decision support, and focused routes into booking or work.
+- Keep the mobile homepage compact and service-first: photo-governed hero, search, approved supporting line, partner strip, service grid, and footer. Do not restore desktop-style explainers, testimonials, profiles, calculators, FAQs, broad headers, or a bottom navigation bar without explicit approval.
+- Keep the mobile scrolled control compact, solid navy, and blur-free. Do not cover the hero image with a broad navy overlay. Faces and practical work must remain visible.
+
+## Interaction, Navigation, and Accessibility
+
+1. Use semantic controls, visible focus treatment, descriptive labels, meaningful image alternatives, logical heading order, and logical tab or screen-reader order.
+2. Keep keyboard focus fully visible. Sticky headers, banners, sheets, drawers, and overlays must not obscure a focused control.
+3. Ensure essential web controls are easy to select. Native controls must meet at least 44pt on iOS or 48dp on Android. Expand the hit area if the visual icon is smaller.
+4. Give touch and pointer controls prompt, stable press feedback. Feedback must not shift layout, create jitter, or obscure the action.
+5. Do not require hover, drag, swipe, colour, or gesture alone for a critical action. Provide a usable alternative.
+6. Keep navigation predictable. Do not mix drawers, tabs, sidebars, and bottom navigation at the same hierarchy level without an approved product reason. Preserve back behaviour and relevant screen state.
+7. Make search, filters, dropdowns, suggestion panels, cards, and overlays keyboard-safe, touch-safe, visible above surrounding content, and dismissible through an accessible route.
+8. Use visible input labels where needed, semantic input types, clear groups, specific inline errors, recovery guidance, and appropriate loading and success feedback. Do not rely on placeholder text alone.
+9. Test small phone, large phone, tablet, landscape, text scaling, keyboard, and reduced-motion behaviour whenever the changed screen or component makes those conditions relevant.
+10. Support `prefers-reduced-motion: reduce`. All content and essential state changes must remain visible, understandable, and usable when animation is removed.
+
+## Motion and Feedback
+
+Use motion to explain focus, selection, navigation, hierarchy, feedback, and state changes. Never use it as decoration.
+
+1. Reuse shared motion tokens and existing utility classes before adding animation code.
+2. Use composited properties such as opacity and transform. Do not animate layout dimensions, page reflow, or scroll position for decoration.
+3. Keep motion short, interruptible, and input-safe. A new action must cancel or replace an in-progress transition without leaving the interface in an incorrect state.
+4. Use mobile discovery reveals only at meaningful moments. Use pointer-only hover feedback only within pointer-capable media queries.
+5. Do not add autoplaying media, perpetual loops, parallax, bounce effects, animated backgrounds, or large entrance animations without a specific approved product reason.
+6. Keep search results appearing below the input. Preserve `Escape` dismissal without clearing a typed query where keyboard input is present.
 
 ## Customer-Facing Content
 
-Apply the bundled content guide as a mandatory companion standard. The guide governs visible copy, terminology, claims, trust language, microcopy, accessibility, and localization.
+Apply the bundled content guide as a mandatory companion standard. At minimum, every visible-language change must:
 
-At minimum, ensure that every customer-facing change:
+- Use clear, natural, professional, action-oriented language.
+- Use **BrainWorker** as the customer-facing identity for people who offer services. Do not use professional, worker, provider, artisan, technician, freelancer, talent, or vendor as a standalone substitute identity label. Use a trade or skill when it gives necessary context, such as electrician or plumber.
+- Use Customer, Job, Service, Profile, Verification, and Escrow accurately and consistently.
+- Use a single approved name for the same action or concept across the product.
+- Keep copy close to the action or decision it describes.
+- Avoid em dashes, generic AI-sounding filler, decorative punctuation, unsupported absolute claims, and invented availability, safety, verification, rating, coverage, payment, or outcome claims.
+- Use precise location and currency language when relevant. Do not imply availability in a market that is not active.
+- Use clear labels, descriptive links, understandable instructions, and error messages that tell the person how to recover.
 
-- Uses clear, human, professional, action-oriented language.
-- Uses `BrainWorker` as the mandatory customer-facing name for any person who offers services on the platform. Do not use `professional`, `worker`, `provider`, `artisan`, `technician`, `freelancer`, or `vendor` as a substitute identity label. Use a trade or skill only when it gives necessary context, such as “electrician” or “plumber.”
-- Uses `Customer`, `Job`, `Service`, `Profile`, `Verification`, and `Escrow` accurately.
-- Avoids em dashes, filler, generic AI-sounding descriptions, and unsupported absolute claims.
-- Does not invent availability, safety, verification, rating, coverage, payment, or outcome claims.
-- States the next action clearly and uses meaningful labels and link text.
-
-Preserve the approved homepage hero headline unless the user explicitly asks to change it:
-
-> Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on BukieBrainJobs
+If a product fact, legal statement, terminology choice, or trust claim is unclear, flag the ambiguity. Do not invent it.
 
 ## Implementation Standards
 
-Write pragmatic, minimal code that is safe to maintain as the product grows.
+Write pragmatic, minimal code that stays easy to maintain as the product grows.
 
-1. Prefer existing components, tokens, native platform capabilities, and straightforward composition.
-2. Avoid premature abstractions, design-pattern layers, duplicated styling systems, and one-off utility files.
-3. Keep functions focused. Split a function that grows beyond one clear responsibility or roughly 25 lines.
-4. Prefer early returns and flat control flow. Avoid deeply nested conditionals and state chains.
-5. Use semantic HTML, accessible names, visible focus states, and keyboard-safe interactions.
-6. Never solve a visual issue by hiding content, lowering contrast, or making an interaction inaccessible.
-7. Add comments only to explain non-obvious reasoning or product constraints. Do not narrate obvious code.
-8. Use real product data and assets where available. Do not leave customer-visible placeholders or invented social proof.
-9. Preserve Next.js, React, and Tailwind conventions already established in the application. Do not introduce a library solely for small interaction polish.
+1. Extend existing components, tokens, assets, and native platform capabilities before introducing a parallel system or dependency.
+2. Keep functions focused on one responsibility. Split logic that becomes difficult to understand or grows beyond roughly 25 lines.
+3. Prefer early returns and flat control flow. Avoid deep nesting, duplicate state, and premature abstractions.
+4. Preserve established Next.js, React, Tailwind, PWA, and native-app conventions. Do not add a library for small visual polish.
+5. Use semantic HTML and accessible names. Never solve a visual issue by hiding content, reducing contrast, or making an interaction inaccessible.
+6. Reserve space for media and asynchronous content so the primary task does not jump during loading.
+7. Use comments only for non-obvious reasoning, product constraints, or risk. Do not narrate obvious code.
+8. Do not leave customer-visible placeholders, mock claims, or invented social proof in the product.
 
-## Mandatory Quality Gates
+## Delivery and Change Control
 
-Before presenting work as complete, verify all relevant items below.
+Before delivery, read `references/quality-gates.md` and verify the relevant conditions. Record the active branch, commit, platforms and states tested, unresolved product facts, and preview URL where deployment occurred.
 
-| Area | Verify |
-|---|---|
-| Source authority | The implementation matches the current approved live experience and does not follow a conflicting historical mockup. |
-| Visual consistency | Colour, type, radii, imagery, surfaces, and spacing feel native to the approved homepage. |
-| Responsive quality | The desktop and mobile versions share a system but are each designed for their actual context. |
-| Motion | Motion clarifies interaction, respects reduced motion, and does not create blur, layout shift, or distraction. |
-| Accessibility | Keyboard paths, focus visibility, readable contrast, labels, and touch targets are preserved. |
-| Content | The content guide has been applied and no unsupported claims or generic filler remain. |
-| Engineering | Type checks pass, changed code is focused, and no avoidable duplication or spaghetti logic has been introduced. |
-| Verification | Inspect the deployed or local result on desktop and mobile before reporting completion. |
+When a new pattern is approved for reuse across the product, update `references/live-approved-experience.md` and, where useful, `references/validation-examples.md` in the same change set. Until then, treat it as local to the approved screen.
+
+Repository documentation is canonical. Synchronize the installed agent copy from the approved repository skill bundle after each accepted revision. Do not allow the two copies to diverge silently.
 
 ## Reference Map
 
 | Reference | Read when |
 |---|---|
-| `references/live-approved-experience.md` | Starting any visual, interaction, responsive, or motion work. |
-| `references/BUKIEBRAINJOBS-CONTENT-GUIDE.md` | Creating or revising visible copy, labels, notifications, onboarding, errors, or trust language. |
-| `references/quality-gates.md` | Performing implementation review or preparing delivery. |
+| `references/live-approved-experience.md` | Starting customer-facing visual, interaction, responsive, motion, asset, or platform work. |
+| `references/content-density-and-decision-architecture.md` | Creating or reviewing a page, section, flow, hierarchy, CTA, or customer-facing copy. |
+| `references/BUKIEBRAINJOBS-CONTENT-GUIDE.md` | Creating or revising visible copy, labels, notifications, onboarding, errors, legal-adjacent trust language, or localization. |
+| `references/quality-gates.md` | Reviewing implementation or preparing delivery. |
+| `references/validation-examples.md` | Selecting a comparable approved pattern or resolving a design-quality judgment. |
 
-Do not dilute the approved BukieBrainJobs experience to follow a trend. Make future pages clearer, more useful, and more coherent by extending the live system with the same restraint.
+Do not dilute the approved BukieBrainJobs experience to follow a trend. Extend the product with the same clarity, usefulness, restraint, and honest marketplace confidence.
