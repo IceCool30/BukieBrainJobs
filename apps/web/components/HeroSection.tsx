@@ -620,8 +620,11 @@ export default function HeroSection({
                 )}
               </div>
             )}
-
           </div>
+
+          <p className="max-w-xl text-sm font-bold leading-snug text-slate-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] sm:text-base lg:max-w-2xl">
+            Find a BrainWorker for the job, or use your skills to find work that values your time
+          </p>
         </div>
       </div>
     </section>

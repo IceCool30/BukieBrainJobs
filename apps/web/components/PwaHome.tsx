@@ -20,6 +20,12 @@ import {
   NigerianLocation,
 } from '../lib/mock/homepage-data';
 import PartnerBar from './PartnerBar';
+import PriceEstimator from './PriceEstimator';
+import FeaturedBrainWorkers from './FeaturedBrainWorkers';
+import HowItWorks from './HowItWorks';
+import TestimonialsSection from './TestimonialsSection';
+import MarketplacePaths from './MarketplacePaths';
+import FAQSection from './FAQSection';
 
 interface PwaHomeProps {
   onOpenDrawer: () => void;
@@ -66,6 +72,10 @@ export default function PwaHome({
   onOpenSearch,
   onSearchSubmit,
   onSelectCategory,
+  onSelectWorker,
+  onBookEstimate,
+  onPostJobClick,
+  onBecomeWorkerClick,
   onSelectComingSoonLocation,
 }: PwaHomeProps) {
   const [query, setQuery] = useState('');
@@ -572,6 +582,15 @@ export default function PwaHome({
         </div>
       </div>
 
+      <PriceEstimator onBookEstimate={onBookEstimate} />
+      <FeaturedBrainWorkers onSelectWorker={onSelectWorker} />
+      <HowItWorks />
+      <TestimonialsSection />
+      <MarketplacePaths
+        onPostJobClick={onPostJobClick}
+        onBecomeWorkerClick={onBecomeWorkerClick}
+      />
+      <FAQSection />
     </div>
   );
 }

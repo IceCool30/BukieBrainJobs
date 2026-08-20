@@ -262,8 +262,8 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
   };
 
   return (
-    <section id="estimator" className="py-16 sm:py-20 bg-[#F8F9FF] border-b border-slate-200">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
+    <section id="estimator" className="py-12 sm:py-20 bg-[#F8F9FF] border-b border-slate-200">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-[#001A41]">
             Plan your service budget
@@ -274,7 +274,7 @@ export default function PriceEstimator({ onBookEstimate }: PriceEstimatorProps) 
         </div>
 
         {/* Main Calculator Container */}
-        <div className="max-w-5xl mx-auto bg-white rounded-2xl p-6 sm:p-9 border border-slate-200 shadow-[0_4px_24px_-12px_rgba(0,26,65,0.12)] grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="max-w-5xl mx-auto bg-white rounded-2xl p-4 sm:p-9 border border-slate-200 shadow-[0_4px_24px_-12px_rgba(0,26,65,0.12)] grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           {/* Left Column: Scope Builder (7 Cols) */}
           <div className="lg:col-span-7 space-y-6">
             {/* Step 1: Trade Selector */}

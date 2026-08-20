@@ -30,8 +30,8 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-16 bg-[#F8F9FF] border-b border-slate-200">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <section id="how-it-works" className="py-12 sm:py-16 bg-[#F8F9FF] border-b border-slate-200">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
             How booking works
@@ -39,11 +39,11 @@ export default function HowItWorks() {
         </div>
 
         {/* 4 Steps Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {steps.map((s, idx) => (
             <div
               key={s.num}
-              className="bg-white p-7 rounded-xl border border-slate-200 shadow-[0_2px_8px_-4px_rgba(0,26,65,0.10)] relative flex flex-col justify-between space-y-4 hover:border-[#296A4B] hover:shadow-[0_12px_32px_-12px_rgba(0,26,65,0.18)] hover:-translate-y-1 transition-all"
+              className="bg-white p-5 sm:p-7 rounded-xl border border-slate-200 shadow-[0_2px_8px_-4px_rgba(0,26,65,0.10)] relative flex flex-col justify-between space-y-4 hover:border-[#296A4B] hover:shadow-[0_12px_32px_-12px_rgba(0,26,65,0.18)] hover:-translate-y-1 transition-all"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">

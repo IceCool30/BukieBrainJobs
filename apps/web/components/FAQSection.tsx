@@ -12,8 +12,8 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="py-16 bg-[#F8F9FF] border-b border-slate-200">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <section id="faq" className="py-12 sm:py-16 bg-[#F8F9FF] border-b border-slate-200">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
             Questions before you book
@@ -33,7 +33,7 @@ export default function FAQSection() {
                   type="button"
                   onClick={() => toggleFaq(faq.id)}
                   aria-expanded={isOpen}
-                  className="motion-press w-full px-6 py-4 text-left flex items-center justify-between gap-4 font-display font-semibold text-sm sm:text-base text-[#001A41] hover:text-[#001A41] transition-colors"
+                  className="motion-press flex min-h-12 w-full items-center justify-between gap-4 px-4 py-3.5 text-left font-display text-sm font-semibold text-[#001A41] transition-colors hover:text-[#001A41] sm:px-6 sm:py-4 sm:text-base"
                 >
                   <span className="flex items-center gap-2.5">
                     <HelpCircle className="w-4 h-4 text-slate-400 shrink-0" />
@@ -47,7 +47,7 @@ export default function FAQSection() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 border-t border-slate-100 leading-relaxed bg-slate-50/50">
+                  <div className="border-t border-slate-100 bg-slate-50/50 px-4 pb-4 pt-1 text-xs leading-relaxed text-slate-600 sm:px-6 sm:pb-5 sm:text-sm">
                     {faq.answer}
                   </div>
                 )}

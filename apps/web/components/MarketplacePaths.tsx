@@ -10,17 +10,17 @@ interface MarketplacePathsProps {
 
 export default function MarketplacePaths({ onPostJobClick, onBecomeWorkerClick }: MarketplacePathsProps) {
   return (
-    <section className="py-16 bg-[#F8F9FF] border-b border-slate-200">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <section className="py-12 sm:py-16 bg-[#F8F9FF] border-b border-slate-200">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
             Choose your path
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
           {/* Pathway A: Post a Job */}
-          <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-[0_2px_8px_-4px_rgba(0,26,65,0.10)] flex flex-col justify-between space-y-6 relative overflow-hidden">
+          <div className="bg-white rounded-xl p-6 sm:p-8 border border-slate-200 shadow-[0_2px_8px_-4px_rgba(0,26,65,0.10)] flex flex-col justify-between space-y-5 sm:space-y-6 relative overflow-hidden">
             <div className="space-y-3 relative z-10">
               <h3 className="font-display font-bold text-2xl text-[#001A41]">
                 Post a job
@@ -42,7 +42,7 @@ export default function MarketplacePaths({ onPostJobClick, onBecomeWorkerClick }
           </div>
 
           {/* Pathway B: Become a BrainWorker */}
-          <div className="bg-slate-50 text-slate-900 rounded-xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between space-y-6 relative overflow-hidden">
+          <div className="bg-slate-50 text-slate-900 rounded-xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col justify-between space-y-5 sm:space-y-6 relative overflow-hidden">
             <div className="space-y-3 relative z-10">
               <h3 className="font-display font-bold text-2xl text-[#001A41]">
                 Offer your skills

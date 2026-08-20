@@ -4,8 +4,8 @@ import { MOCK_TESTIMONIALS } from '../lib/mock/homepage-data';
 
 export default function TestimonialsSection() {
   return (
-    <section className="py-16 bg-white border-b border-slate-200">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <section className="py-12 sm:py-16 bg-white border-b border-slate-200">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
             Customer feedback
@@ -13,7 +13,7 @@ export default function TestimonialsSection() {
         </div>
 
         {/* Typographic review grid, no boxes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-x-10 md:gap-y-12 lg:grid-cols-3">
           {MOCK_TESTIMONIALS.map((item) => (
             <article key={item.id} className="flex flex-col space-y-4">
               <div className="flex gap-1">

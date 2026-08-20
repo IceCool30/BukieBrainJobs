@@ -282,7 +282,7 @@ function DrawerPanel({
               />
               <button
                 onClick={onClose}
-                className="p-2 -mr-2 text-slate-400 hover:text-white transition-colors"
+                className="-mr-2 flex h-11 w-11 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-white hover:bg-white/10"
                 aria-label="Close Navigation Menu"
               >
                 <X className="w-5 h-5" />
@@ -317,12 +317,6 @@ function DrawerPanel({
                 className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-white bg-white/10 hover:bg-white/15 active:bg-white/20 border border-white/15 rounded-xl transition-colors"
               >
                 Become a BrainWorker
-              </button>
-              <button
-                onClick={onClose}
-                className="w-full py-2 text-xs font-semibold text-slate-400 hover:text-white underline-offset-4 hover:underline"
-              >
-                Sign In
               </button>
             </div>
           </aside>
