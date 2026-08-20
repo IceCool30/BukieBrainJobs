@@ -144,18 +144,20 @@ export default function ServicesPage() {
               <h2 className="font-display text-lg font-bold text-[#001A41]">Browse by category</h2>
               <p className="mt-1 text-sm text-slate-600" role="status">{resultLabel}</p>
             </div>
-            <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1" aria-label="Filter service categories">
+            <div className="-mx-1 flex items-start gap-1 overflow-x-auto px-1 pb-1 sm:gap-2" aria-label="Filter service categories">
               <button
                 type="button"
                 onClick={() => setSelectedGroup('All')}
                 aria-pressed={selectedGroup === 'All'}
-                className={`motion-press flex min-h-[96px] min-w-[76px] shrink-0 flex-col items-center justify-center gap-1 rounded-xl px-1 text-[10px] font-bold leading-tight transition-colors focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 ${
+                className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
                   selectedGroup === 'All'
-                    ? 'bg-[#F2F8F4] text-[#001A41] shadow-[inset_0_-3px_0_#296A4B]'
-                    : 'text-slate-700 hover:bg-slate-50'
+                    ? 'border-[#296A4B] text-[#001A41]'
+                    : 'border-transparent text-slate-700 hover:border-slate-200 hover:text-[#001A41]'
                 }`}
               >
-                <ServiceTaskIcon categoryId="all" className="h-11 w-11 sm:h-12 sm:w-12" />
+                <span className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors sm:h-11 sm:w-11 ${selectedGroup === 'All' ? 'bg-[#E5F6EB]' : 'bg-slate-50'}`}>
+                  <ServiceTaskIcon categoryId="all" className="h-8 w-8 sm:h-9 sm:w-9" />
+                </span>
                 All services
               </button>
               {SERVICE_CATEGORIES.map((category) => (
@@ -164,13 +166,15 @@ export default function ServicesPage() {
                   type="button"
                   onClick={() => setSelectedGroup(category.id)}
                   aria-pressed={selectedGroup === category.id}
-                  className={`motion-press flex min-h-[96px] min-w-[76px] shrink-0 flex-col items-center justify-center gap-1 rounded-xl px-1 text-center text-[10px] font-bold leading-tight transition-colors focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 ${
+className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
                     selectedGroup === category.id
-                      ? 'bg-[#F2F8F4] text-[#001A41] shadow-[inset_0_-3px_0_#296A4B]'
-                      : 'text-slate-700 hover:bg-slate-50'
+                      ? 'border-[#296A4B] text-[#001A41]'
+                      : 'border-transparent text-slate-700 hover:border-slate-200 hover:text-[#001A41]'
                   }`}
                 >
-                  <ServiceTaskIcon categoryId={category.id} className="h-11 w-11 sm:h-12 sm:w-12" />
+                  <span className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors sm:h-11 sm:w-11 ${selectedGroup === category.id ? 'bg-[#E5F6EB]' : 'bg-slate-50'}`}>
+                    <ServiceTaskIcon categoryId={category.id} className="h-8 w-8 sm:h-9 sm:w-9" />
+                  </span>
                   {TASK_LABELS[category.id] ?? category.title}
                 </button>
               ))}
