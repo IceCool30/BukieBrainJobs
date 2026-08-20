@@ -3,43 +3,21 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  Zap,
-  Wind,
-  Wrench,
-  Sun,
-  Sparkles,
-  Hammer,
-  Tv,
-  Truck,
-  ArrowLeft,
-  ArrowRight,
-  Search,
-  type LucideIcon,
-} from 'lucide-react';
+import { ArrowLeft, ArrowRight, Search } from 'lucide-react';
 import { SERVICE_CATEGORIES, ServiceCategory } from '../../lib/mock/homepage-data';
 import DirectBookingModal from '../../components/modals/DirectBookingModal';
+import ServiceTaskIcon from '../../components/ServiceTaskIcon';
 
-const ICONS: Record<string, LucideIcon> = {
-  Zap,
-  Wind,
-  Wrench,
-  Sun,
-  Sparkles,
-  Hammer,
-  Tv,
-  Truck,
+const TASK_LABELS: Record<string, string> = {
+  generator: 'Generator',
+  ac: 'AC repair',
+  plumbing: 'Plumbing',
+  electrical: 'Electrical',
+  cleaning: 'Cleaning',
+  carpentry: 'Carpentry',
+  'tv-mounting': 'TV mounting',
+  moving: 'Moving',
 };
-
-function CategoryMark({ iconName }: { iconName: string }) {
-  const Icon = ICONS[iconName] ?? Wrench;
-
-  return (
-    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-[#001A41]/90 shadow-[0_8px_18px_rgba(0,26,65,0.28)]">
-      <Icon aria-hidden="true" className="h-[18px] w-[18px] text-[#ABEEC8]" strokeWidth={1.7} />
-    </span>
-  );
-}
 
 function matchesService(category: ServiceCategory, query: string) {
   const term = query.toLowerCase();
@@ -65,10 +43,7 @@ function ServiceCard({ category, onBook }: { category: ServiceCategory; onBook: 
         <span className="absolute left-4 top-4 rounded-lg bg-white px-2.5 py-1 text-[11px] font-bold text-[#001A41] shadow-sm">
           From {category.startingPrice}
         </span>
-        <span className="absolute bottom-4 left-4 inline-flex items-center gap-2.5 rounded-2xl border border-white/15 bg-[#001A41]/80 py-1.5 pl-1.5 pr-3 text-xs font-bold text-white shadow-[0_10px_22px_rgba(0,26,65,0.24)]">
-          <CategoryMark iconName={category.iconName} />
-          {category.group}
-        </span>
+
       </div>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
@@ -109,9 +84,8 @@ export default function ServicesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGroup, setSelectedGroup] = useState('All');
   const [selectedCategory, setSelectedCategory] = useState<ServiceCategory | null>(null);
-  const groups = ['All', ...Array.from(new Set(SERVICE_CATEGORIES.map((category) => category.group)))];
   const filteredCategories = SERVICE_CATEGORIES.filter(
-    (category) => (selectedGroup === 'All' || category.group === selectedGroup) && matchesService(category, searchQuery),
+    (category) => (selectedGroup === 'All' || category.id === selectedGroup) && matchesService(category, searchQuery),
   );
   const resultLabel = `${filteredCategories.length} service ${filteredCategories.length === 1 ? 'category' : 'categories'} available`;
 
@@ -170,20 +144,34 @@ export default function ServicesPage() {
               <h2 className="font-display text-lg font-bold text-[#001A41]">Browse by category</h2>
               <p className="mt-1 text-sm text-slate-600" role="status">{resultLabel}</p>
             </div>
-            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1" aria-label="Filter service categories">
-              {groups.map((group) => (
+            <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1" aria-label="Filter service categories">
+              <button
+                type="button"
+                onClick={() => setSelectedGroup('All')}
+                aria-pressed={selectedGroup === 'All'}
+                className={`motion-press flex min-h-[96px] min-w-[76px] shrink-0 flex-col items-center justify-center gap-1 rounded-xl px-1 text-[10px] font-bold leading-tight transition-colors focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 ${
+                  selectedGroup === 'All'
+                    ? 'bg-[#F2F8F4] text-[#001A41] shadow-[inset_0_-3px_0_#296A4B]'
+                    : 'text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                <ServiceTaskIcon categoryId="all" className="h-14 w-14" />
+                All services
+              </button>
+              {SERVICE_CATEGORIES.map((category) => (
                 <button
-                  key={group}
+                  key={category.id}
                   type="button"
-                  onClick={() => setSelectedGroup(group)}
-                  aria-pressed={selectedGroup === group}
-                  className={`motion-press min-h-11 shrink-0 rounded-xl px-4 text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 ${
-                    selectedGroup === group
-                      ? 'bg-[#001A41] text-white'
-                      : 'border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50'
+                  onClick={() => setSelectedGroup(category.id)}
+                  aria-pressed={selectedGroup === category.id}
+                  className={`motion-press flex min-h-[96px] min-w-[76px] shrink-0 flex-col items-center justify-center gap-1 rounded-xl px-1 text-center text-[10px] font-bold leading-tight transition-colors focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 ${
+                    selectedGroup === category.id
+                      ? 'bg-[#F2F8F4] text-[#001A41] shadow-[inset_0_-3px_0_#296A4B]'
+                      : 'text-slate-700 hover:bg-slate-50'
                   }`}
                 >
-                  {group}
+                  <ServiceTaskIcon categoryId={category.id} className="h-14 w-14" />
+                  {TASK_LABELS[category.id] ?? category.title}
                 </button>
               ))}
             </div>
