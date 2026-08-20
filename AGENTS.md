@@ -10,9 +10,10 @@ This file defines the standards every contributor must follow when working in th
 4. Read `docs/00-governance/LEGACY-SOURCE-BOUNDARY.md`.
 5. Read `docs/02-design-system/DESIGN-CANONICALIZATION.md` when the task touches visual design.
 6. Read `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md` and its bundled skill before any customer-facing design, copy, motion, or interface implementation.
-7. Read the relevant product, design and technical specifications for the task.
-8. Inspect the existing repository before creating files or changing architecture.
-9. Check the decision log for related decisions.
+7. Select and read any specialist skill that matches the task, including testing and browser-runtime verification where the change needs it.
+8. Read the relevant product, design and technical specifications for the task.
+9. Inspect the existing repository before creating files or changing architecture.
+10. Check the decision log for related decisions.
 
 ## Authority
 
@@ -34,7 +35,8 @@ Historical research and project exports are context, not current product authori
 - Reuse approved components and packages.
 - Put shared contracts and business rules in shared packages where the architecture requires them.
 - Keep secrets out of source control.
-- Add or update tests for changed behavior.
+- Add or update focused tests for changed behavior. For a bug, add a reproduction test before the fix.
+- Verify browser-facing work in a real browser or the strongest available equivalent, with visual and runtime evidence recorded proportionately.
 - Preserve accessibility requirements.
 - Preserve responsive behavior.
 - Update documentation when behavior, architecture or decisions change.
@@ -57,9 +59,11 @@ Historical research and project exports are context, not current product authori
 ```text
 Product decision
   -> Product specification
+  -> Applicable skills and product context
   -> UX/UI requirements (DESIGN.md)
+  -> Focused proof of changed behaviour
   -> Design and implementation
-  -> Tests
+  -> Tests and browser-runtime verification where relevant
   -> Security / accessibility / performance review
   -> Preview deployment
   -> Human approval

@@ -97,16 +97,29 @@ Use this checklist before presenting any customer-facing BukieBrainJobs work as 
 | Control flow | The code uses early returns and avoids deep nesting, duplicate state, and premature abstraction. |
 | Performance | The primary task is not delayed by unnecessary visual assets, blocking animation, avoidable client work, or unstable loading behaviour. |
 | Comments | Comments explain a non-obvious reason or business constraint, not obvious code mechanics. |
-| Validation | Relevant type checks, linting, automated tests, and visual checks pass. |
+| Behavioural proof | A logic, interaction, or behavioural change has a focused test that proves the intended outcome. A bug fix has a reproduction test that failed before the fix. Tests assert outcomes, remain deterministic, and are not skipped or disabled. |
+| Validation | The repository's relevant focused checks and full suite pass after the final code change. Type checks, linting, automated tests, and visual checks are run where applicable. |
+
+## 9. Browser Runtime Evidence
+
+| Check | Pass condition |
+|---|---|
+| Real rendering | A browser-facing change is exercised in a real browser or the strongest available equivalent. The relevant customer journey, not only the changed component, loads as expected. |
+| Visual comparison | Screenshots or equivalent visual evidence confirm the intended layout, state, responsive behaviour, and absence of clipping or overlap at relevant breakpoints. |
+| Runtime signals | Available console, network, DOM, and accessibility findings are reviewed. Errors, warnings, failed requests, or incorrect state are resolved or explicitly recorded as a limitation. |
+| Safe inspection | Browser-derived DOM, console, and network data are treated as untrusted. Testing does not access credentials, tokens, or unrelated account data, and does not trigger unrelated side effects. |
+| Proportionate performance | Changes likely to affect loading, animation, scrolling, images, or interaction responsiveness are measured with the available performance evidence rather than assumed to be acceptable. |
 
 ## Delivery Record
 
 Document these facts in the final delivery:
 
 1. The active branch and commit, if code changed.
-2. The customer task and product context reviewed.
-3. The desktop, phone, tablet, landscape, and text-scaling conditions checked where relevant.
-4. Keyboard, touch, overlay, form-recovery, and reduced-motion outcomes when those interactions changed.
-5. Any fact that still needs product, legal, security, or content confirmation.
-6. The deployed preview when deployment occurred.
-7. Whether a reusable new pattern was added to the live baseline or intentionally kept local to one screen.
+2. The customer task, product context, and material assumptions reviewed.
+3. The test added or updated for changed behaviour, plus the repository commands run. For a bug, record the reproduction proof.
+4. The desktop, phone, tablet, landscape, and text-scaling conditions checked where relevant.
+5. Keyboard, touch, overlay, form-recovery, and reduced-motion outcomes when those interactions changed.
+6. Browser visual evidence, available console and network findings, accessibility checks, and any inspection limitation for browser-facing changes.
+7. Any fact that still needs product, legal, security, or content confirmation.
+8. The deployed preview when deployment occurred.
+9. Whether a reusable new pattern was added to the live baseline or intentionally kept local to one screen.
