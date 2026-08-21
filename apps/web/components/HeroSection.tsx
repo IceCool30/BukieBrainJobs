@@ -427,7 +427,7 @@ export default function HeroSection({
                     id="hero-location-options"
                     role="listbox"
                     aria-label="Choose a location"
-                    className="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-fadeIn"
+                    className="absolute left-0 top-full mt-2 w-full min-w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-fadeIn"
                   >
                     <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                       Active Nigerian Cities

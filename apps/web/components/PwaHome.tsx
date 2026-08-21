@@ -353,7 +353,7 @@ export default function PwaHome({
                         id="pwa-location-options"
                         role="listbox"
                         aria-label="Choose a location"
-                        className="absolute left-0 top-full z-[60] mt-2 w-64 rounded-xl border border-slate-200 bg-white py-2 shadow-xl"
+                        className="absolute left-0 top-full z-[60] mt-2 w-full min-w-56 rounded-xl border border-slate-200 bg-white py-2 shadow-xl"
                       >
                       <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         Active Nigerian Cities
