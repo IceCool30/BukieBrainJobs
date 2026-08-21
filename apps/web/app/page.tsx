@@ -94,7 +94,6 @@ export default function CustomerHomepage() {
         {isPwa ? (
           <PwaHome
             onOpenDrawer={() => drawerRef.current?.()}
-            onOpenSearch={openSearch}
             onSelectCategory={handleSelectCategory}
             onSelectWorker={handleSelectWorker}
             onSearchSubmit={handleSearchSubmit}

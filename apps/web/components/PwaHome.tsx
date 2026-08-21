@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   Search,
   Menu,
@@ -29,7 +30,6 @@ import ServiceCategoryRail from './ServiceCategoryRail';
 
 interface PwaHomeProps {
   onOpenDrawer: () => void;
-  onOpenSearch: () => void;
   onSearchSubmit?: (service: string, location: string) => void;
   onSelectCategory?: (category: ServiceCategory) => void;
   onSelectWorker?: (worker: BrainWorker) => void;
@@ -60,7 +60,6 @@ const TRENDING_SEARCHES = [
 
 export default function PwaHome({
   onOpenDrawer,
-  onOpenSearch,
   onSearchSubmit,
   onSelectCategory,
   onSelectWorker,
@@ -530,7 +529,7 @@ export default function PwaHome({
             )}
           </div>
           <p className="ml-auto max-w-[290px] pt-1 text-right text-[13px] font-bold leading-snug text-slate-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
-              Find a BrainWorker for the job, or use your skills to find work that values your time
+              Find a professional for the job, or use your skills to find work that values your time
             </p>
         </div>
       </section>
@@ -539,15 +538,15 @@ export default function PwaHome({
 
       {/* Popular Services Grid */}
       <div ref={servicesRef} className={`motion-reveal px-4 pt-6${servicesVisible ? ' is-visible' : ''}`}>
-        <div className="motion-reveal-item flex items-baseline justify-between">
-          <h2 className="font-display font-bold text-[17px] text-[#001A41]">Browse services</h2>
-          <button onClick={onOpenSearch} className="motion-press text-[13px] font-semibold text-[#296A4B]">
-            View all
-          </button>
+        <div className="motion-reveal-item">
+          <ServiceCategoryRail onSelectCategory={onSelectCategory} />
         </div>
 
-        <div className="pt-2">
-          <ServiceCategoryRail onSelectCategory={onSelectCategory} />
+        <div className="motion-reveal-item flex items-baseline justify-between pt-5">
+          <h2 className="font-display font-bold text-[17px] text-[#001A41]">Browse services</h2>
+          <Link href="/services" className="motion-press text-[13px] font-semibold text-[#296A4B]">
+            View all
+          </Link>
         </div>
 
         <div className="grid grid-cols-2 gap-3 pt-4">

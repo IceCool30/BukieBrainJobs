@@ -15,9 +15,11 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
   return (
     <section id="services" className="bg-[#F8F9FF] py-16 border-b border-slate-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex items-end justify-between gap-4">
+        <ServiceCategoryRail onSelectCategory={onSelectCategory} />
+
+        <div className="flex items-end justify-between gap-4 pt-1">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
-            Services for your home and work
+            Browse services
           </h2>
           <Link
             href="/services"
@@ -27,8 +29,6 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
-
-        <ServiceCategoryRail onSelectCategory={onSelectCategory} />
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
           {SERVICE_CATEGORIES.map((cat) => (

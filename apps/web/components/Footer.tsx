@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ShieldCheck, PhoneCall, Mail } from 'lucide-react';
 
 export default function Footer() {
@@ -9,17 +10,22 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#1E3A60]/80">
           {/* Brand Overview Column */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2.5 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#06152B]"
+              aria-label="BukieBrainJobs home"
+            >
               <Image
-                src="/images/wordmark-banner-tight.png"
-                alt="BukieBrainJobs"
-                width={180}
-                height={54}
-                quality={100}
-                sizes="107px"
-                className="object-contain h-8 w-auto"
+                src="/images/logo-icon.png?v=3"
+                alt=""
+                width={36}
+                height={36}
+                className="h-9 w-9 rounded-xl object-contain"
               />
-            </div>
+              <span className="font-display text-xl font-bold tracking-[-0.035em] text-white">
+                Bukie<span className="text-[#ABEEC8]">BrainJobs</span>
+              </span>
+            </Link>
 
             <a href="/guarantee" className="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors">
               <ShieldCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
