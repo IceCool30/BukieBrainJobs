@@ -33,7 +33,7 @@ export default function CustomerHomepage() {
   const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
   const [passportModalOpen, setPassportModalOpen] = useState(false);
   const [selectedWorker, setSelectedWorker] = useState<BrainWorker | null>(null);
-  const [comingSoonLocation, setComingSoonLocationLocation] = useState<NigerianLocation | null>(null);
+  const [comingSoonLocation, setComingSoonLocation] = useState<NigerianLocation | null>(null);
 
   const isPwa = useIsPwa();
   const router = useRouter();
