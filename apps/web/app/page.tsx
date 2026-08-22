@@ -61,11 +61,10 @@ export default function CustomerHomepage() {
     const matched = SERVICE_CATEGORIES.find((category) =>
       category.title.toLowerCase().includes(serviceQuery.toLowerCase()),
     );
-    goToDiscovery({
-      service: serviceQuery || undefined,
-      city,
-      categoryId: matched?.id,
-    });
+    const details: { service?: string; city: string; categoryId?: string } = { city };
+    if (serviceQuery) details.service = serviceQuery;
+    if (matched) details.categoryId = matched.id;
+    goToDiscovery(details);
   };
 
   const openSearch = () => {
