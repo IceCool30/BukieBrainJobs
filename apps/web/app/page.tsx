@@ -17,7 +17,6 @@ import PartnerBar from '../components/PartnerBar';
 import PwaInstallBanner from '../components/PwaInstallBanner';
 import PostJobModal from '../components/modals/PostJobModal';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
-import BukiePassportModal from '../components/modals/BukiePassportModal';
 import BrainWorkerProfileModal from '../components/modals/BrainWorkerProfileModal';
 import LocationNoticeModal from '../components/modals/LocationNoticeModal';
 import {
@@ -30,7 +29,6 @@ import {
 export default function CustomerHomepage() {
   const [postJobOpen, setPostJobOpen] = useState(false);
   const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
-  const [passportModalOpen, setPassportModalOpen] = useState(false);
   const [selectedWorker, setSelectedWorker] = useState<BrainWorker | null>(null);
   const [comingSoonLocation, setComingSoonLocation] = useState<NigerianLocation | null>(null);
 
@@ -154,7 +152,6 @@ export default function CustomerHomepage() {
       {/* Modals & Drawers */}
       <PostJobModal isOpen={postJobOpen} onClose={() => setPostJobOpen(false)} />
       <BecomeWorkerModal isOpen={becomeWorkerOpen} onClose={() => setBecomeWorkerOpen(false)} />
-      <BukiePassportModal isOpen={passportModalOpen} onClose={() => setPassportModalOpen(false)} />
       <LocationNoticeModal
         location={comingSoonLocation}
         onClose={() => setComingSoonLocation(null)}
