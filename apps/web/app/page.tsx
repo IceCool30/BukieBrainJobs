@@ -33,11 +33,20 @@ export default function CustomerHomepage() {
   const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
   const [passportModalOpen, setPassportModalOpen] = useState(false);
   const [selectedWorker, setSelectedWorker] = useState<BrainWorker | null>(null);
-  const [comingSoonLocation, setComingSoonLocation] = useState<NigerianLocation | null>(null);
+  const [comingSoonLocation, setComingSoonLocationLocation] = useState<NigerianLocation | null>(null);
 
   const isPwa = useIsPwa();
   const router = useRouter();
   const drawerRef = useRef<(() => void) | null>(null);
+
+  const goToDiscovery = (details: { service?: string; city?: string; categoryId?: string }) => {
+    const params = new URLSearchParams();
+    if (details.service) params.set('q', details.service);
+    if (details.city) params.set('city', details.city);
+    if (details.categoryId) params.set('category', details.categoryId);
+    const query = params.toString();
+    router.push(query ? `/services?${query}` : '/services');
+  };
 
   const startBooking = (details: { service: string; price?: string; city?: string; note?: string; worker?: string }) => {
     const params = new URLSearchParams({ service: details.service, price: details.price || '₦10,000' });
@@ -49,12 +58,14 @@ export default function CustomerHomepage() {
 
   const handleSearchSubmit = (serviceQuery: string, location?: string) => {
     const city = location || 'Lagos';
-    const matched = SERVICE_CATEGORIES.find((category) => category.title.toLowerCase().includes(serviceQuery.toLowerCase()));
-    if (matched) {
-      startBooking({ service: matched.title, price: matched.startingPrice, city, note: `Booking request for ${matched.title} in ${city}.` });
-      return;
-    }
-    startBooking({ service: serviceQuery || 'Service booking', city });
+    const matched = SERVICE_CATEGORIES.find((category) =>
+      category.title.toLowerCase().includes(serviceQuery.toLowerCase()),
+    );
+    goToDiscovery({
+      service: serviceQuery || undefined,
+      city,
+      categoryId: matched?.id,
+    });
   };
 
   const openSearch = () => {
@@ -64,7 +75,7 @@ export default function CustomerHomepage() {
   };
 
   const handleSelectCategory = (category: ServiceCategory) => {
-    startBooking({ service: category.title, price: category.startingPrice });
+    goToDiscovery({ service: category.title, categoryId: category.id });
   };
 
   const handleSelectWorker = (worker: BrainWorker) => {
@@ -75,7 +86,11 @@ export default function CustomerHomepage() {
     startBooking({
       service: worker.category,
       price: worker.startingRate,
-      city: worker.location.includes('Abuja') ? 'Abuja' : worker.location.includes('Port Harcourt') ? 'Port Harcourt' : 'Lagos',
+      city: worker.location.includes('Abuja')
+        ? 'Abuja'
+        : worker.location.includes('Port Harcourt')
+          ? 'Port Harcourt'
+          : 'Lagos',
       worker: worker.name,
     });
   };

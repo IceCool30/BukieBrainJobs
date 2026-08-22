@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { Suspense, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, ArrowRight, Search } from 'lucide-react';
@@ -28,6 +28,13 @@ function matchesService(category: ServiceCategory, query: string) {
   );
 }
 
+function initialGroup(category: string | null) {
+  if (category && SERVICE_CATEGORIES.some((item) => item.id === category)) {
+    return category;
+  }
+  return 'All';
+}
+
 function ServiceCard({ category, onBook }: { category: ServiceCategory; onBook: () => void }) {
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_rgba(0,26,65,0.06)]">
@@ -43,7 +50,6 @@ function ServiceCard({ category, onBook }: { category: ServiceCategory; onBook: 
         <span className="absolute left-4 top-4 rounded-lg bg-white px-2.5 py-1 text-[11px] font-bold text-[#001A41] shadow-sm">
           From {category.startingPrice}
         </span>
-
       </div>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
@@ -80,9 +86,11 @@ function ServiceCard({ category, onBook }: { category: ServiceCategory; onBook: 
   );
 }
 
-export default function ServicesPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedGroup, setSelectedGroup] = useState('All');
+function ServicesDirectory() {
+  const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+  const [selectedGroup, setSelectedGroup] = useState(initialGroup(searchParams.get('category')));
+  const city = searchParams.get('city');
   const router = useRouter();
   const filteredCategories = SERVICE_CATEGORIES.filter(
     (category) => (selectedGroup === 'All' || category.id === selectedGroup) && matchesService(category, searchQuery),
@@ -90,6 +98,7 @@ export default function ServicesPage() {
   const resultLabel = `${filteredCategories.length} service ${filteredCategories.length === 1 ? 'category' : 'categories'} available`;
   const bookCategory = (category: ServiceCategory) => {
     const params = new URLSearchParams({ service: category.title, price: category.startingPrice });
+    if (city) params.set('city', city);
     router.push(`/book?${params.toString()}`);
   };
 
@@ -121,6 +130,7 @@ export default function ServicesPage() {
             </h1>
             <p className="mt-4 max-w-xl text-sm leading-6 text-slate-200 sm:text-base">
               Compare common services, review the starting price, and choose a time that works for you.
+              {city ? ` Showing results for ${city}.` : ''}
             </p>
           </div>
           <form className="mt-7 max-w-xl" onSubmit={(event) => event.preventDefault()}>
@@ -169,7 +179,7 @@ export default function ServicesPage() {
                   type="button"
                   onClick={() => setSelectedGroup(category.id)}
                   aria-pressed={selectedGroup === category.id}
-className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
+                  className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
                     selectedGroup === category.id
                       ? 'border-[#296A4B] text-[#001A41]'
                       : 'border-transparent text-slate-700 hover:border-slate-200 hover:text-[#001A41]'
@@ -241,7 +251,14 @@ className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-
           />
         </div>
       </footer>
-
     </main>
+  );
+}
+
+export default function ServicesPage() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-[#F8F9FF]" />}>
+      <ServicesDirectory />
+    </Suspense>
   );
 }
