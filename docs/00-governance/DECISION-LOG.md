@@ -1,7 +1,7 @@
 # Decision Log
 
 **Document ID:** GOV-004
-**Version:** 1.2
+**Version:** 1.3
 **Status:** Approved foundation
 
 This file is the index for material product, design and engineering decisions. Detailed decisions may later be split into individual ADR files under `docs/21-decision-log/`.
@@ -117,6 +117,34 @@ The public homepage is customer-first, supports three marketplace entry paths, s
 - README and product foundation document the shell rule
 
 **Affected areas:** `apps/web/hooks/useIsPwa.ts`, `apps/web/app/page.tsx`, README, product foundation, live experience standard
+
+### WEB-002: Enterprise / For Business is post-launch
+
+**Date:** 2026-08-22
+**Status:** Approved
+
+**Context:** The public `/enterprise` page previously described live-sounding enterprise capabilities (SLAs, account management, consolidated billing, API integration). The product is not ready to commit to that scope for the first public launch.
+
+**Decision:**
+
+1. Keep the `/enterprise` route and homepage navigation label so the direction remains visible.
+2. Replace sales-style enterprise content with a Coming Soon page.
+3. Enterprise / Corporate Portal is not part of the first public launch.
+4. First launch focus remains the consumer marketplace: discovery, booking, and trust.
+5. Do not present enterprise operational features as available until a later approved milestone.
+
+**Alternatives considered:**
+
+- Keep the full enterprise sales page (rejected; over-promises)
+- Remove the nav link and route (rejected; loses future-signal)
+
+**Consequences:**
+
+- `/enterprise` is informational only until Corporate Portal work is approved
+- Roadmap Milestone 7 remains the planning home for corporate capabilities
+- Public website copy must not imply live enterprise account operations
+
+**Affected areas:** `apps/web/app/enterprise/page.tsx`, roadmap, product foundation, homepage navigation
 
 ## Adding a decision
 
