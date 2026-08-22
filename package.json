@@ -1,16 +1,11 @@
 {
   "name": "bukiebrainjobs-monorepo",
   "private": true,
-  "packageManager": "npm@10.8.2",
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "services/*"
-  ],
+  "packageManager": "pnpm@9",
   "scripts": {
-    "dev": "npm run dev --workspace=@bukiebrainjobs/web",
-    "build": "npm run build --workspace=@bukiebrainjobs/web",
-    "lint": "npm run lint --workspace=@bukiebrainjobs/web",
+    "dev": "pnpm --filter @bukiebrainjobs/web dev",
+    "build": "pnpm --filter @bukiebrainjobs/web build",
+    "lint": "pnpm --filter @bukiebrainjobs/web lint",
     "type-check": "turbo run type-check",
     "test": "turbo run test"
   },
