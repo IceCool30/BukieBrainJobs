@@ -14,7 +14,6 @@ import MarketplacePaths from '../components/MarketplacePaths';
 import TestimonialsSection from '../components/TestimonialsSection';
 import FAQSection from '../components/FAQSection';
 import PartnerBar from '../components/PartnerBar';
-import BottomNav from '../components/BottomNav';
 import PwaInstallBanner from '../components/PwaInstallBanner';
 import PostJobModal from '../components/modals/PostJobModal';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
@@ -67,12 +66,6 @@ export default function CustomerHomepage() {
     goToDiscovery(details);
   };
 
-  const openSearch = () => {
-    const input = document.getElementById('hero-service-input') as HTMLInputElement | null;
-    input?.focus();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   const handleSelectCategory = (category: ServiceCategory) => {
     goToDiscovery({ service: category.title, categoryId: category.id });
   };
@@ -104,7 +97,7 @@ export default function CustomerHomepage() {
         hideOnPwa={isPwa}
       />
       {/* Main Homepage Flow */}
-      <main className="flex-grow pb-16 md:pb-0">
+      <main className="flex-grow">
         {isPwa ? (
           <PwaHome
             onOpenDrawer={() => drawerRef.current?.()}
@@ -153,15 +146,7 @@ export default function CustomerHomepage() {
       {/* Corporate Footer */}
       <Footer />
 
-      {/* Persistent Ergonomic Mobile Bottom Nav, absent on the home landing page */}
-      {!isPwa && (
-        <BottomNav
-          onExploreClick={openSearch}
-          onJobsClick={() => setPostJobOpen(true)}
-          onVerifyClick={() => setPassportModalOpen(true)}
-          onMenuClick={() => drawerRef.current?.()}
-        />
-      )}
+      {/* Homepage has no bottom navigation bar (live experience standard). */}
 
       {/* PWA Install Banner */}
       <PwaInstallBanner />
