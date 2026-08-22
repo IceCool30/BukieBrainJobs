@@ -4,6 +4,27 @@ BukieBrainJobs is a Nigerian two-sided services marketplace connecting customers
 
 This repository is the engineering and documentation source of truth for the product. Product decisions, design rules, architecture, implementation guidance, and development workflow are traceable to the documentation here.
 
+## Platform policy: full product on every surface
+
+BukieBrainJobs is one product delivered on three equal surfaces. Users choose how they access it. No surface is intentionally feature-limited.
+
+| Surface | Codebase | How users open it |
+|---|---|---|
+| Website (desktop and mobile browser) | `apps/web` | URL in a browser |
+| PWA (installed web app) | `apps/web` | Home-screen / install from the browser |
+| Native Android and iOS | `apps/mobile` (Expo) | App Store / Google Play |
+
+**Policy rules**
+
+1. Every core customer and BrainWorker journey must be available on website, PWA, and native.
+2. Desktop website is a first-class full product, not a reduced mobile site.
+3. PWA is a full product path for people who do not want store apps, not a demo shell.
+4. Native is a full product path for people who prefer store apps, with stronger OS tools where useful (push, camera, biometrics).
+5. Platform enhancements may improve delivery of the same feature. They must not remove the feature from other surfaces.
+6. PWA mode means installed or standalone display only. A narrow phone browser is still the website.
+
+Shared business rules, trust model, booking model, and design system stay one source of truth across all surfaces.
+
 ## Current repository status
 
 **Phase:** Active development, live public homepage
@@ -145,7 +166,7 @@ See `CONTRIBUTING.md` and `docs/00-governance/DEVELOPMENT-WORKFLOW.md`.
 
 ## Architecture baseline
 
-The approved technical baseline uses a pnpm workspace with Turborepo, TypeScript strict mode, and Node 24+. The application architecture includes a Next.js 15 web application, an Expo mobile application, and shared packages for contracts, validation, business logic and infrastructure concerns.
+The approved technical baseline uses a pnpm workspace with Turborepo, TypeScript strict mode, and Node 24+. The application architecture includes a Next.js 15 web application (website and PWA), an Expo native mobile application, and shared packages for contracts, validation, business logic and infrastructure concerns.
 
 Implementation must follow the approved technical specification rather than recreating requirements from memory.
 

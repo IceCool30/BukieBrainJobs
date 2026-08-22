@@ -18,6 +18,18 @@ Before designing, writing, reviewing, or implementing any customer-facing work, 
 
 The bundled skill defines the mandatory workflow, product-wide visual and interaction rules, content-density standards, quality gates, and reference map. Customer-facing copy must also follow its bundled BukieBrainJobs content guide.
 
+## Surface contexts
+
+BukieBrainJobs ships one product on three surfaces. Experience quality must remain high on all three.
+
+| Context | Meaning | UI expectation |
+|---|---|---|
+| Website | Desktop or mobile browser, not installed | Full responsive website. Phone browsers use the website layout, not the PWA shell. |
+| PWA | Installed or standalone web app only | Full product in a standalone shell. Detect with `display-mode: standalone` or iOS `navigator.standalone`. Never treat viewport width alone as PWA. |
+| Native | Expo Android and iOS apps | Full product with native navigation and OS capabilities. Same journeys and outcomes as web and PWA. |
+
+Do not build a reduced journey for any surface by policy. Layout and chrome may adapt. Core tasks must remain available.
+
 ## Authority Order
 
 | Priority | Authority | Use it for |

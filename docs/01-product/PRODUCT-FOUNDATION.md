@@ -1,7 +1,7 @@
 # BukieBrainJobs Product Foundation
 
 **Document ID:** PROD-001
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Approved foundation
 
 ## Product
@@ -9,6 +9,25 @@
 BukieBrainJobs is a Nigerian two-sided marketplace connecting customers with trusted local service professionals called BrainWorkers.
 
 The platform is intended to make service discovery, matching, booking, communication, payment and accountability safer and more reliable than informal referral channels.
+
+## Platform policy: full product on every surface
+
+BukieBrainJobs is one product. Users may complete the full product on any of these surfaces:
+
+1. **Website** in a desktop or mobile browser (`apps/web`)
+2. **PWA** installed from the browser as a standalone web app (`apps/web`)
+3. **Native Android and iOS** apps (`apps/mobile`, Expo)
+
+### Policy
+
+- No intentional feature lock-out by surface for core customer or BrainWorker journeys.
+- Desktop website is first-class, not a reduced experience.
+- PWA is a full alternative for people who do not want store apps.
+- Native is a full alternative for people who prefer store apps.
+- The same journeys and outcomes ship on all three. Platform tools may strengthen delivery (for example reliable push on native) without removing the journey elsewhere.
+- PWA detection means installed or standalone display only. A phone browser is the website, not the PWA shell.
+
+Shared trust rules, booking rules, identity rules, and design system apply across all surfaces.
 
 ## Core marketplace paths
 
@@ -94,6 +113,7 @@ It should not be loud, flashy, overly playful or coldly corporate.
 5. Trust first.
 6. Accessibility by default.
 7. Documentation is part of the product.
+8. Full product on website, PWA, and native.
 
 ## Product roles
 
@@ -121,3 +141,5 @@ It should not be loud, flashy, overly playful or coldly corporate.
 ## Definition of a complete feature
 
 A feature requires sufficient product, UX, UI, technical, accessibility, security and QA documentation before it is considered implementation-ready.
+
+Core marketplace features are incomplete until the same journey is planned for website, PWA, and native, even when delivery is sequenced over time.

@@ -1,7 +1,7 @@
 # Decision Log
 
 **Document ID:** GOV-004
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Approved foundation
 
 This file is the index for material product, design and engineering decisions. Detailed decisions may later be split into individual ADR files under `docs/21-decision-log/`.
@@ -38,8 +38,7 @@ The GitHub repository will contain the durable project guidance required for hum
 
 **Status:** Superseded / Updated
 
-ChatGPT defines product and technical specifications, Google Antigravity is responsible for UI design interpretation and implementation using the approved product specifications and DESIGN.md. Google Stitch is deprecated as a required design intermediary.
-
+Product defines requirements and technical specifications. Engineering interprets approved product specifications and DESIGN.md for UI design and implementation.
 
 ### GOV-004: Documentation before application code
 
@@ -64,6 +63,35 @@ The platform uses a semantic token architecture shared across web and mobile. De
 **Status:** Approved
 
 The public homepage is customer-first, supports three marketplace entry paths, supports guest discovery, and uses controlled activation across 36 Nigerian state capitals plus Abuja as the initial geographic architecture.
+
+### PLAT-001: Full product parity across website, PWA, and native
+
+**Date:** 2026-08-22
+**Status:** Approved
+
+**Context:** Users must be free to choose desktop website, installed PWA, or native Android/iOS without losing core marketplace capability.
+
+**Decision:**
+
+1. Website, PWA, and native each deliver the full product for core customer and BrainWorker journeys.
+2. Platform tools may improve delivery of the same feature (for example native push), but must not remove the feature from other surfaces.
+3. PWA means installed or standalone display only. Viewport width is not a PWA signal.
+4. Desktop website remains a first-class full product.
+
+**Alternatives considered:**
+
+- Web-only customer path with native reserved for BrainWorkers
+- PWA as a reduced mobile shell
+- Treating all phone browsers as PWA
+
+**Consequences:**
+
+- Shared contracts and business logic stay in packages
+- UI chrome may differ by surface
+- `useIsPwa` and similar detectors must use standalone signals only
+- Feature specs for core journeys must plan for all three surfaces
+
+**Affected areas:** README, product foundation, operating charter, live experience standard, technical baseline, `apps/web`, `apps/mobile`
 
 ## Adding a decision
 
