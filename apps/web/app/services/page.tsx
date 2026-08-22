@@ -237,20 +237,6 @@ function ServicesDirectory() {
           </Link>
         </aside>
       </section>
-
-      <footer className="border-t border-slate-200 bg-white py-8">
-        <div className="mx-auto flex max-w-[1280px] items-center justify-center px-4 sm:px-6 lg:px-8">
-          <Image
-            src="/images/wordmark-banner-tight.png"
-            alt="BukieBrainJobs"
-            width={150}
-            height={45}
-            quality={100}
-            sizes="150px"
-            className="opacity-70"
-          />
-        </div>
-      </footer>
     </main>
   );
 }
