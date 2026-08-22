@@ -10,18 +10,19 @@ BukieBrainJobs is one product delivered on three equal surfaces. Users choose ho
 
 | Surface | Codebase | How users open it |
 |---|---|---|
-| Website (desktop and mobile browser) | `apps/web` | URL in a browser |
-| PWA (installed web app) | `apps/web` | Home-screen / install from the browser |
+| Website (desktop browser) | `apps/web` | URL in a desktop browser |
+| Mobile web shell / PWA | `apps/web` | Phone browser, or home-screen install |
 | Native Android and iOS | `apps/mobile` (Expo) | App Store / Google Play |
 
 **Policy rules**
 
 1. Every core customer and BrainWorker journey must be available on website, PWA, and native.
 2. Desktop website is a first-class full product, not a reduced mobile site.
-3. PWA is a full product path for people who do not want store apps, not a demo shell.
-4. Native is a full product path for people who prefer store apps, with stronger OS tools where useful (push, camera, biometrics).
-5. Platform enhancements may improve delivery of the same feature. They must not remove the feature from other surfaces.
-6. PWA mode means installed or standalone display only. A narrow phone browser is still the website.
+3. Mobile browser and installed PWA share the compact mobile shell on the homepage. Desktop width keeps the full marketing homepage.
+4. PWA install remains a full product path for people who do not want store apps.
+5. Native is a full product path for people who prefer store apps, with stronger OS tools where useful (push, camera, biometrics).
+6. Platform enhancements may improve delivery of the same feature. They must not remove the feature from other surfaces.
+7. The homepage does not use a bottom navigation bar (live experience standard).
 
 Shared business rules, trust model, booking model, and design system stay one source of truth across all surfaces.
 
@@ -52,6 +53,7 @@ The live homepage establishes the product's visual identity:
 - Supported trust brands on the homepage are Paystack, Flutterwave, and Dojah
 - No unsupported absolute claims, exact counts, ratings, or guarantees appear in customer-facing copy
 - Motion explains interaction and never competes with service discovery or booking actions
+- Homepage has no bottom navigation bar
 
 ## Source-of-truth hierarchy
 
