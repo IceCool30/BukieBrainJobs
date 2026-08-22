@@ -1,7 +1,7 @@
 # Decision Log
 
 **Document ID:** GOV-004
-**Version:** 1.1
+**Version:** 1.2
 **Status:** Approved foundation
 
 This file is the index for material product, design and engineering decisions. Detailed decisions may later be split into individual ADR files under `docs/21-decision-log/`.
@@ -67,7 +67,7 @@ The public homepage is customer-first, supports three marketplace entry paths, s
 ### PLAT-001: Full product parity across website, PWA, and native
 
 **Date:** 2026-08-22
-**Status:** Approved
+**Status:** Approved (shell detection refined by PLAT-002)
 
 **Context:** Users must be free to choose desktop website, installed PWA, or native Android/iOS without losing core marketplace capability.
 
@@ -75,23 +75,48 @@ The public homepage is customer-first, supports three marketplace entry paths, s
 
 1. Website, PWA, and native each deliver the full product for core customer and BrainWorker journeys.
 2. Platform tools may improve delivery of the same feature (for example native push), but must not remove the feature from other surfaces.
-3. PWA means installed or standalone display only. Viewport width is not a PWA signal.
-4. Desktop website remains a first-class full product.
+3. Desktop website remains a first-class full product.
 
 **Alternatives considered:**
 
 - Web-only customer path with native reserved for BrainWorkers
 - PWA as a reduced mobile shell
-- Treating all phone browsers as PWA
 
 **Consequences:**
 
 - Shared contracts and business logic stay in packages
 - UI chrome may differ by surface
-- `useIsPwa` and similar detectors must use standalone signals only
 - Feature specs for core journeys must plan for all three surfaces
 
 **Affected areas:** README, product foundation, operating charter, live experience standard, technical baseline, `apps/web`, `apps/mobile`
+
+### PLAT-002: Homepage mobile shell and no bottom nav
+
+**Date:** 2026-08-22
+**Status:** Approved
+**Supersedes:** PLAT-001 detection clause that treated viewport as never-PWA
+
+**Context:** Product wants the compact mobile shell for phone browsers and for installed PWAs, while desktop keeps the full marketing homepage. The live experience standard forbids a bottom navigation bar on the homepage.
+
+**Decision:**
+
+1. Homepage uses the mobile shell when viewport is mobile width (below 768px) or when the session is installed/standalone (including iOS `navigator.standalone`).
+2. Desktop width keeps the full website homepage layout.
+3. The homepage never mounts a bottom navigation bar.
+4. Core journeys remain available on all surfaces; this decision only controls homepage chrome and layout choice.
+
+**Alternatives considered:**
+
+- Standalone-only shell (rejected; phone browser would stay on marketing layout)
+- Bottom nav on mobile homepage (rejected; conflicts with live experience standard)
+
+**Consequences:**
+
+- `useIsPwa` combines mobile viewport and standalone signals
+- `BottomNav` is not used on `/`
+- README and product foundation document the shell rule
+
+**Affected areas:** `apps/web/hooks/useIsPwa.ts`, `apps/web/app/page.tsx`, README, product foundation, live experience standard
 
 ## Adding a decision
 
@@ -170,4 +195,3 @@ Prisma 6.x (6.17.0) is the current stable major with performance improvements an
 **Status:** Approved
 
 Project runtime baseline standardized on Node.js 24 LTS to align local, CI, deployment, and Vercel environments. All `.nvmrc`, `package.json` engines, and GitHub Actions workflows updated to Node 24.
-
