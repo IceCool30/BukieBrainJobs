@@ -1,7 +1,7 @@
 # BukieBrainJobs Product Foundation
 
 **Document ID:** PROD-001
-**Version:** 1.2
+**Version:** 1.3
 **Status:** Approved foundation
 
 ## Product
@@ -56,6 +56,17 @@ Secondary marketplace paths:
 
 - Post a Job
 - Become a BrainWorker
+
+## Business / enterprise path
+
+Corporate and facility solutions are a planned later path for estates, facilities, and companies that need repeated maintenance across sites.
+
+Decision `WEB-002`:
+
+- Keep the public `/enterprise` route as a Coming Soon signal.
+- Do not treat enterprise operations as part of the first public launch.
+- Build the consumer marketplace first.
+- Corporate Portal work stays under the later roadmap milestone.
 
 ## Guest experience
 
@@ -133,7 +144,7 @@ It should not be loud, flashy, overly playful or coldly corporate.
 5. Customer Platform
 6. BrainWorker Platform
 7. Booking and Payments
-8. Corporate Portal
+8. Corporate Portal (post-launch)
 9. Admin Platform
 10. AI Features
 11. Production Readiness
