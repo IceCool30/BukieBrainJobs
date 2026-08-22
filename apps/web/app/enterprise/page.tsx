@@ -29,14 +29,14 @@ const FOCUS_POINTS = [
 export default function EnterprisePage() {
   return (
     <main className="min-h-screen bg-[#F8F9FF] text-[#001A41]">
-      <section className="relative isolate min-h-[540px] overflow-hidden border-b border-slate-200 sm:min-h-[580px]">
+      <section className="relative isolate min-h-[480px] overflow-hidden border-b border-slate-200 sm:min-h-[580px]">
         <Image
           src="/images/enterprise-cityscape-backdrop.jpg"
           alt="Modern business buildings in a city district"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[70%_center] sm:object-center"
+          className="object-cover object-[64%_48%] sm:object-center"
         />
 
         <div className="relative z-10 mx-auto max-w-[1280px] px-4 py-6 sm:px-6 lg:px-8">
@@ -56,16 +56,16 @@ export default function EnterprisePage() {
             </Link>
           </header>
 
-          <div className="flex min-h-[468px] items-end py-10 sm:min-h-[508px] sm:py-14">
-            <div className="max-w-xl rounded-2xl border border-white bg-white p-6 shadow-[0_20px_45px_rgba(0,26,65,0.16)] sm:p-8">
-              <div className="inline-flex items-center gap-2 rounded-xl border border-[#ABEEC8] bg-[#F1FAF4] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#296A4B]">
+          <div className="flex min-h-[408px] items-end py-8 sm:min-h-[508px] sm:py-14">
+            <div className="max-w-xl rounded-2xl border border-white/40 bg-black/45 p-5 shadow-[0_20px_45px_rgba(0,0,0,0.28)] sm:p-8">
+              <div className="inline-flex items-center gap-2 rounded-xl border border-white/40 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#ABEEC8]">
                 <Building2 className="h-3.5 w-3.5" />
                 Bukie for business
               </div>
-              <h1 className="mt-5 font-display text-4xl font-extrabold tracking-tight text-[#001A41] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.08]">
+              <h1 className="mt-5 font-display text-4xl font-extrabold tracking-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.45)] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.08]">
                 Business solutions are coming soon.
               </h1>
-              <p className="mt-5 max-w-lg text-base leading-7 text-slate-600 sm:text-lg">
+              <p className="mt-5 max-w-lg text-base leading-7 text-white/95 drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)] sm:text-lg">
                 We are preparing a dedicated experience for organisations that coordinate recurring maintenance across properties, teams, and locations.
               </p>
             </div>
