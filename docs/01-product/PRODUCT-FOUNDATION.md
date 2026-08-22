@@ -1,7 +1,7 @@
 # BukieBrainJobs Product Foundation
 
 **Document ID:** PROD-001
-**Version:** 1.1
+**Version:** 1.2
 **Status:** Approved foundation
 
 ## Product
@@ -14,18 +14,19 @@ The platform is intended to make service discovery, matching, booking, communica
 
 BukieBrainJobs is one product. Users may complete the full product on any of these surfaces:
 
-1. **Website** in a desktop or mobile browser (`apps/web`)
-2. **PWA** installed from the browser as a standalone web app (`apps/web`)
+1. **Website** in a desktop browser (`apps/web`)
+2. **Mobile web shell and PWA** in a phone browser or as an installed standalone web app (`apps/web`)
 3. **Native Android and iOS** apps (`apps/mobile`, Expo)
 
 ### Policy
 
 - No intentional feature lock-out by surface for core customer or BrainWorker journeys.
 - Desktop website is first-class, not a reduced experience.
-- PWA is a full alternative for people who do not want store apps.
+- On the homepage, mobile browser width and installed standalone PWA share the compact mobile shell. Desktop width keeps the full marketing homepage.
+- PWA install remains a full alternative for people who do not want store apps.
 - Native is a full alternative for people who prefer store apps.
 - The same journeys and outcomes ship on all three. Platform tools may strengthen delivery (for example reliable push on native) without removing the journey elsewhere.
-- PWA detection means installed or standalone display only. A phone browser is the website, not the PWA shell.
+- The homepage does not use a bottom navigation bar.
 
 Shared trust rules, booking rules, identity rules, and design system apply across all surfaces.
 
