@@ -4,7 +4,6 @@ import {
   ArrowRight,
   CheckCircle2,
   FileText,
-  Headphones,
   Lock,
   ShieldCheck,
   UserCheck,
@@ -40,15 +39,17 @@ export default function GuaranteePage() {
       <section className="bg-[#001A41] text-white">
         <div className="mx-auto grid max-w-[1280px] gap-6 px-4 pb-9 pt-20 sm:gap-8 sm:px-6 sm:pb-12 sm:pt-24 lg:grid-cols-[minmax(0,1fr)_320px] lg:px-8 lg:pb-14">
           <div className="max-w-2xl space-y-4 sm:space-y-5">
-            <Link
-              href="/"
-              className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-slate-200 transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 focus:ring-offset-[#001A41]"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to home
-            </Link>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#ABEEC8]/25 bg-white/5 px-2.5 py-1 text-[11px] font-bold text-[#ABEEC8]">
-              <ShieldCheck className="h-3.5 w-3.5" />
+            <div>
+              <Link
+                href="/"
+                className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-semibold text-slate-200 transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 focus:ring-offset-[#001A41]"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back to home
+              </Link>
+            </div>
+            <div className="flex items-center gap-2 text-sm font-semibold text-[#ABEEC8]">
+              <ShieldCheck className="h-4 w-4" />
               BukieGuarantee
             </div>
             <div className="space-y-4">
@@ -59,7 +60,7 @@ export default function GuaranteePage() {
                 Review the service, BrainWorker profile, payment details, and support options before you book.
               </p>
             </div>
-            <div className="flex flex-col gap-2.5 sm:flex-row">
+            <div>
               <Link
                 href="/services"
                 className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#ABEEC8] px-5 py-3 text-sm font-bold text-[#001A41] transition-colors hover:bg-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#001A41]"
@@ -67,13 +68,6 @@ export default function GuaranteePage() {
                 Find a service
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <a
-                href="mailto:support@bukiebrainjobs.ng"
-                className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/25 px-5 py-3 text-sm font-bold text-white transition-colors hover:border-white/50 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 focus:ring-offset-[#001A41]"
-              >
-                <Headphones className="h-4 w-4" />
-                Contact support
-              </a>
             </div>
           </div>
 
@@ -138,23 +132,14 @@ export default function GuaranteePage() {
 
       <section id="verification" className="mx-auto max-w-[1280px] px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-[0_8px_20px_-18px_rgba(0,26,65,0.28)] sm:p-7">
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-            <div className="max-w-2xl space-y-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ABEEC8]/70 bg-[#EAF7EF] text-[#296A4B]">
-                <UserCheck className="h-5 w-5" />
-              </div>
-              <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl">Review a profile before you decide.</h2>
-              <p className="text-sm leading-relaxed text-slate-600 sm:text-base">
-                Check a BrainWorker’s profile and verification status alongside the service details before you book.
-              </p>
+          <div className="max-w-2xl space-y-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ABEEC8]/70 bg-[#EAF7EF] text-[#296A4B]">
+              <UserCheck className="h-5 w-5" />
             </div>
-            <Link
-              href="/services"
-              className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#001A41] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2"
-            >
-              Browse services
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl">Review a profile before you decide.</h2>
+            <p className="text-sm leading-relaxed text-slate-600 sm:text-base">
+              Check a BrainWorker’s profile and verification status alongside the service details before you book.
+            </p>
           </div>
         </div>
       </section>
