@@ -69,7 +69,7 @@ export default function PwaInstallBanner() {
       <div className="flex items-center gap-3 min-w-0">
         <div className="w-11 h-11 relative rounded-xl overflow-hidden border border-[#296A4B] bg-white p-1 shrink-0">
           <Image
-            src="/images/logo-icon.png?v=3"
+            src="/images/logo-icon.png"
             alt="BukieBrainJobs App"
             width={44}
             height={44}

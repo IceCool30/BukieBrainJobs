@@ -153,16 +153,9 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
       >
         {/* Brand Identity */}
         <Link href="/" className="flex items-center gap-3 group">
-          <Image
-            src="/images/wordmark-banner-tight.png"
-            alt="BukieBrainJobs"
-            width={228}
-            height={68}
-            quality={100}
-            sizes="133px"
-            className="hidden sm:block object-contain h-10 w-auto transition-transform duration-[180ms] ease-[var(--ease-ui-out)] group-hover:scale-[1.03]"
-            priority
-          />
+          <span className="hidden sm:block font-display text-xl font-bold tracking-[-0.035em] text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)] transition-transform duration-[180ms] ease-[var(--ease-ui-out)] group-hover:scale-[1.03]">
+            Bukie<span className="text-[#ABEEC8]">BrainJobs</span>
+          </span>
           <Image
             src="/images/logo-icon.png"
             alt="BukieBrainJobs"

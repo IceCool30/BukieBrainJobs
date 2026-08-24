@@ -249,7 +249,7 @@ export default function PwaHome({
 
         <div className="relative z-10 flex items-center justify-between px-4 pt-3.5">
           <Image
-            src="/images/logo-icon.png?v=3"
+            src="/images/logo-icon.png"
             alt="BukieBrainJobs"
             width={32}
             height={32}
