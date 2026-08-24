@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   ArrowLeft,
   ArrowRight,
@@ -170,17 +169,6 @@ export default function GuaranteePage() {
             Contact support
             <ArrowRight className="h-4 w-4" />
           </a>
-        </div>
-        <div className="border-t border-slate-100 py-4 text-center">
-          <Image
-            src="/images/wordmark-banner-tight.png?v=3"
-            alt="BukieBrainJobs"
-            width={150}
-            height={45}
-            quality={100}
-            sizes="150px"
-            className="mx-auto opacity-70"
-          />
         </div>
       </footer>
     </main>
