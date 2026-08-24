@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ShieldCheck, PhoneCall, Mail } from 'lucide-react';
 
@@ -14,9 +15,14 @@ export default function Footer() {
               className="inline-flex items-center gap-2.5 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#06152B]"
               aria-label="BukieBrainJobs home"
             >
-              <span className="font-display text-xl font-bold tracking-[-0.035em] text-white">
-                Bukie<span className="text-[#ABEEC8]">BrainJobs</span>
-              </span>
+              <Image
+                src="/images/wordmark-banner-2280.png"
+                alt="BukieBrainJobs"
+                width={150}
+                height={45}
+                sizes="150px"
+                className="h-auto w-[150px] rounded-xl object-contain"
+              />
             </Link>
 
             <a href="/guarantee" className="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors">
