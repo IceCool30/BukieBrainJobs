@@ -8,6 +8,7 @@
 | WEB-001A | Homepage Section-by-Section Design Brief | Detailed UX/UI design brief | Approved | Yes |
 | WEB-001B | Google Stitch Design Requirements | Stitch visual-generation requirements | Deprecated | No |
 | WEB-001B-MCP | Antigravity → Stitch MCP Orchestration | Operational design orchestration | Deprecated | No |
+| WEB-004 | Public Service Detail | Public service review between discovery and booking preparation | Approved implementation contract | Yes |
 
 ## Locked homepage rules
 

@@ -96,10 +96,11 @@ function ServicesDirectory() {
     (category) => (selectedGroup === 'All' || category.id === selectedGroup) && matchesService(category, searchQuery),
   );
   const resultLabel = `${filteredCategories.length} ${filteredCategories.length === 1 ? 'service category' : 'service categories'} shown`;
-  const bookCategory = (category: ServiceCategory) => {
-    const params = new URLSearchParams({ service: category.title, price: category.startingPrice });
+  const reviewCategory = (category: ServiceCategory) => {
+    const params = new URLSearchParams();
     if (city) params.set('city', city);
-    router.push(`/book?${params.toString()}`);
+    const query = params.toString();
+    router.push(`/services/${category.id}${query ? `?${query}` : ''}`);
   };
 
   return (
@@ -215,7 +216,7 @@ function ServicesDirectory() {
         ) : (
           <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             {filteredCategories.map((category) => (
-              <ServiceCard key={category.id} category={category} onBook={() => bookCategory(category)} />
+              <ServiceCard key={category.id} category={category} onBook={() => reviewCategory(category)} />
             ))}
           </div>
         )}
