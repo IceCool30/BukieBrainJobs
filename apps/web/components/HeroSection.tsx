@@ -127,12 +127,12 @@ const SYNONYM_MAP: Record<string, string[]> = {
 };
 
 const TRENDING_SEARCHES = [
-  'Generator Servicing',
-  'AC Gas Recharge',
-  'Solar Inverter Setup',
-  'Plumbing & Water Tanks',
-  'Deep Cleaning',
-  'DSTV Dish Mounting',
+  'Generator servicing',
+  'AC repair and gas refill',
+  'Solar inverter setup',
+  'Plumbing and water tanks',
+  'Deep cleaning',
+  'DSTV dish alignment',
 ];
 
 export default function HeroSection({
@@ -429,7 +429,7 @@ export default function HeroSection({
                     className="absolute left-0 top-full mt-2 w-full min-w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-fadeIn"
                   >
                     <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      Active Nigerian Cities
+                      Available locations
                     </div>
                     {NIGERIAN_LOCATIONS.filter((l) => l.status === 'active').map((loc) => (
                       <button
@@ -453,8 +453,7 @@ export default function HeroSection({
                     ))}
 
                     <div className="border-t border-slate-100 my-1.5 pt-1.5 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                      <span>Coming Soon</span>
-                      <span className="text-[9px] text-[#296A4B] font-normal">Notify Me</span>
+                      <span>Coming soon</span>
                     </div>
                     {NIGERIAN_LOCATIONS.filter((l) => l.status === 'soon').map((loc) => (
                       <button
@@ -503,14 +502,14 @@ export default function HeroSection({
                         <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                           <span className="flex items-center gap-1.5">
                             <History className="w-3.5 h-3.5" />
-                            Recent Searches
+                            Recent searches
                           </span>
                           <button
                             type="button"
                             onClick={clearRecentSearches}
                             className="text-[10px] text-slate-400 hover:text-slate-600 lowercase cursor-pointer"
                           >
-                            clear
+                            Clear
                           </button>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
@@ -531,11 +530,11 @@ export default function HeroSection({
                       </div>
                     )}
 
-                    {/* Trending in City */}
+                    {/* Suggested services */}
                     <div className="space-y-1.5 pt-1 border-t border-slate-100">
                       <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
                         <TrendingUp className="w-3.5 h-3.5 text-[#296A4B]" />
-                        Popular in {selectedLocation.name}
+                        Services to explore
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                         {TRENDING_SEARCHES.slice(0, 4).map((term) => (
@@ -561,11 +560,11 @@ export default function HeroSection({
                 {serviceQuery.trim().length > 0 && (
                   <div className="space-y-1">
                     <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-2 py-1">
-                      Matched Services ({matches.length})
+                      Matching services ({matches.length})
                     </div>
                     {matches.length === 0 ? (
                       <div className="px-3 py-4 text-center text-xs text-slate-500">
-                        No exact match found for &quot;{serviceQuery}&quot;. Press Search to see all available categories.
+                        We couldn&apos;t find a close match for &quot;{serviceQuery}&quot;. Search to browse the services shown here.
                       </div>
                     ) : (
                       matches.map((cat, idx) => (
@@ -622,7 +621,7 @@ export default function HeroSection({
           </div>
 
           <p className="max-w-xl text-sm font-bold leading-snug text-slate-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] sm:text-base lg:max-w-2xl">
-            Find a BrainWorker for the job, or use your skills to find work that values your time
+            Find a BrainWorker for the job, or offer your skills for work that respects your time.
           </p>
         </div>
       </div>

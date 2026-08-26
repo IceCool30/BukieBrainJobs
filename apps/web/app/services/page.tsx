@@ -77,7 +77,7 @@ function ServiceCard({ category, onBook }: { category: ServiceCategory; onBook: 
             onClick={onBook}
             className="motion-press inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#001A41] px-4 text-xs font-bold text-white transition-colors hover:bg-[#000F2D] focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2"
           >
-            Book service
+            Review details
             <ArrowRight className="h-4 w-4 text-[#ABEEC8]" />
           </button>
         </div>
@@ -95,7 +95,7 @@ function ServicesDirectory() {
   const filteredCategories = SERVICE_CATEGORIES.filter(
     (category) => (selectedGroup === 'All' || category.id === selectedGroup) && matchesService(category, searchQuery),
   );
-  const resultLabel = `${filteredCategories.length} service ${filteredCategories.length === 1 ? 'category' : 'categories'} available`;
+  const resultLabel = `${filteredCategories.length} ${filteredCategories.length === 1 ? 'service category' : 'service categories'} shown`;
   const bookCategory = (category: ServiceCategory) => {
     const params = new URLSearchParams({ service: category.title, price: category.startingPrice });
     if (city) params.set('city', city);
@@ -129,8 +129,8 @@ function ServicesDirectory() {
               Find the right service for the job.
             </h1>
             <p className="mt-4 max-w-xl text-sm leading-6 text-slate-200 sm:text-base">
-              Compare common services, review the starting price, and choose a time that works for you.
-              {city ? ` Showing results for ${city}.` : ''}
+              Explore common services, review the starting price, and prepare the details you need before you continue.
+              {city ? ` Showing services for ${city}.` : ''}
             </p>
           </div>
           <form className="mt-7 max-w-xl" onSubmit={(event) => event.preventDefault()}>
@@ -199,7 +199,7 @@ function ServicesDirectory() {
           <div className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm">
             <h2 className="font-display text-xl font-bold text-[#001A41]">No services match that search</h2>
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
-              Try a broader service name, or reset the filters to explore every category.
+              Try a broader service name, or reset the filters to browse every category.
             </p>
             <button
               type="button"
@@ -222,17 +222,17 @@ function ServicesDirectory() {
 
         <aside className="mt-10 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Before you book</p>
-            <h2 className="mt-2 font-display text-xl font-bold tracking-tight text-[#001A41]">Review the quote before work begins.</h2>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Before you continue</p>
+            <h2 className="mt-2 font-display text-xl font-bold tracking-tight text-[#001A41]">Get clear on the job details.</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-              If the scope changes on-site, review and approve the revised quote before work proceeds.
+              Use the service details to prepare the scope, location, and budget for your booking review.
             </p>
           </div>
           <Link
             href="/guarantee"
             className="motion-press inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-[#001A41] px-4 text-sm font-bold text-[#001A41] transition-colors hover:bg-[#001A41] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2"
           >
-            How escrow works
+            Read BukieGuarantee
             <ArrowRight className="h-4 w-4" />
           </Link>
         </aside>

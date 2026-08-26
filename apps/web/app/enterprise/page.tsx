@@ -12,17 +12,17 @@ const FOCUS_POINTS = [
   {
     icon: Building2,
     title: 'Estates and facilities',
-    description: 'A business experience shaped around recurring work across buildings, units, and shared spaces.',
+    description: 'For recurring work across buildings, units, and shared spaces.',
   },
   {
     icon: Users,
     title: 'Teams and BrainWorkers',
-    description: 'A clearer route for organisations that coordinate service needs with people and teams.',
+    description: 'For teams that need a clearer way to coordinate service work with BrainWorkers.',
   },
   {
     icon: Layers,
-    title: 'Operational visibility',
-    description: 'More structure around requests, costs, and completion as the work develops.',
+    title: 'Clearer oversight',
+    description: 'A simpler view of requests, costs, and completed work as the service grows.',
   },
 ];
 
@@ -60,13 +60,13 @@ export default function EnterprisePage() {
             <div className="max-w-xl rounded-2xl border border-white/40 bg-black/45 p-5 shadow-[0_20px_45px_rgba(0,0,0,0.28)] sm:p-8">
               <div className="inline-flex items-center gap-2 rounded-xl border border-white/40 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#ABEEC8]">
                 <Building2 className="h-3.5 w-3.5" />
-                Bukie for business
+                BukieBrainJobs for business
               </div>
               <h1 className="mt-5 font-display text-4xl font-extrabold tracking-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.45)] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.08]">
-                Business solutions are coming soon.
+                Business services are coming soon.
               </h1>
               <p className="mt-5 max-w-lg text-base leading-7 text-white/95 drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)] sm:text-lg">
-                We are preparing a dedicated experience for organisations that coordinate recurring maintenance across properties, teams, and locations.
+                We are building a dedicated experience for organisations that coordinate recurring maintenance across properties, teams, and locations.
               </p>
             </div>
           </div>
@@ -76,13 +76,13 @@ export default function EnterprisePage() {
       <section className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-end lg:gap-16">
           <div className="max-w-xl">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">What we are preparing</p>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">What we are building</p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#001A41] sm:text-4xl">
-              A more considered way to manage recurring work.
+              A simpler way to manage recurring work.
             </h2>
           </div>
           <p className="max-w-2xl text-base leading-7 text-slate-600">
-            The future business experience is being designed for the realities of property operations, facility needs, and ongoing service coordination. We will share more when it is ready.
+            We are designing the business experience around property operations, facility needs, and ongoing service coordination. We will share more when it is ready.
           </p>
         </div>
 
@@ -105,9 +105,9 @@ export default function EnterprisePage() {
       <section className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-[1280px] flex-col gap-6 px-4 py-10 sm:px-6 sm:py-12 md:flex-row md:items-center md:justify-between lg:px-8">
           <div className="max-w-xl">
-            <h2 className="font-display text-2xl font-bold tracking-tight text-[#001A41]">Need a service today?</h2>
+            <h2 className="font-display text-2xl font-bold tracking-tight text-[#001A41]">Need a service now?</h2>
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              Explore the marketplace to find services for the work in front of you now.
+              Explore the services shown for the work you need done today.
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row md:shrink-0">

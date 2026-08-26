@@ -5,26 +5,26 @@ export default function HowItWorks() {
   const steps = [
     {
       num: '01',
-      title: 'Find a service',
-      desc: 'Choose the service and location that fit the job.',
+      title: 'Start with the service',
+      desc: 'Choose the service and location that fit what you need done.',
       icon: <Search className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '02',
-      title: 'Choose how to book',
-      desc: 'Book a BrainWorker or prepare the details for a custom job request.',
+      title: 'Choose your next step',
+      desc: 'Choose a BrainWorker, or prepare the details for a custom job.',
       icon: <UserCheck className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '03',
-      title: 'Agree the details',
-      desc: 'Confirm the scope, price, and timing before work begins.',
+      title: 'Get clear on the details',
+      desc: 'Review the scope, price, and timing before you move ahead.',
       icon: <ShieldCheck className="w-5 h-5 text-slate-600" />,
     },
     {
       num: '04',
-      title: 'Complete your booking',
-      desc: 'Keep the agreed details in one booking flow.',
+      title: 'Keep it together',
+      desc: 'Use the booking page to keep the details you have agreed in one place.',
       icon: <Lock className="w-5 h-5 text-slate-600" />,
     },
   ];
@@ -34,7 +34,7 @@ export default function HowItWorks() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
-            How booking works
+            Before you book
           </h2>
         </div>
 

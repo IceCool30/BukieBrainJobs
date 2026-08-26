@@ -33,7 +33,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
           onClick={onClose}
           className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
           type="button"
-          aria-label="Close BrainWorker application"
+          aria-label="Close BrainWorker details"
         >
           <X className="w-5 h-5" />
         </button>
@@ -43,13 +43,13 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
             <div className="space-y-2">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5EEFF] text-[#001A41] text-xs font-bold">
                 <UserCheck className="w-3.5 h-3.5 text-[#296A4B]" />
-                BrainWorker Registration
+                BrainWorker details
               </div>
               <h3 id="become-brainworker-title" className="font-display font-bold text-xl sm:text-2xl text-[#0B1C30]">
                 Become a BrainWorker
               </h3>
               <p className="text-xs text-slate-500">
-                Share your profile details so you can prepare for the BrainWorker onboarding process.
+                Share the main details about your service, then review them before the next onboarding step.
               </p>
             </div>
 
@@ -61,7 +61,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
               className="space-y-4"
             >
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Full Legal Name</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Full name</label>
                 <input
                   type="text"
                   required
@@ -72,7 +72,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Primary Trade or Service</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Service you offer</label>
                   <select className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-white">
                     <option>Generator Servicing</option>
                     <option>AC Repair and Gas Refill</option>
@@ -82,18 +82,18 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Operating City</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">City</label>
                   <select className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-white">
                     <option>Lagos State</option>
                     <option>Abuja FCT</option>
                     <option>Port Harcourt</option>
-                    <option>Ibadan Soon</option>
+                    <option>Ibadan (coming soon)</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Phone Number WhatsApp</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Phone number (WhatsApp)</label>
                 <input
                   type="tel"
                   required
@@ -104,14 +104,14 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
 
               <div className="p-3 rounded-xl bg-[#EFF4FF] border border-[#CBDBF5] text-[11px] text-[#0B1C30] flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#296A4B] shrink-0" />
-                <span>Profile verification may ask for identity and work details when onboarding is available.</span>
+                <span>When live onboarding is ready, we will explain which profile details may be needed.</span>
               </div>
 
               <button
                 type="submit"
                 className="w-full py-3.5 bg-[#296A4B] hover:bg-[#1F523A] text-white text-xs font-bold rounded-full transition-all shadow-md"
               >
-                Submit Application
+                Prepare my details
               </button>
             </form>
           </>
@@ -121,10 +121,10 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
               <CheckCircle2 className="w-7 h-7" />
             </div>
             <h3 className="font-display font-bold text-xl text-[#0B1C30]">
-              Application details are ready
+              Your details are ready to review
             </h3>
             <p className="text-xs text-slate-600 max-w-sm mx-auto">
-              Keep these details available for the next onboarding step.
+              Keep these details close while you decide what to do next.
             </p>
             <button
               onClick={() => {

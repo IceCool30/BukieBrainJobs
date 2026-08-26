@@ -33,7 +33,7 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
           onClick={onClose}
           className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
           type="button"
-          aria-label="Close job request"
+          aria-label="Close job details"
         >
           <X className="w-5 h-5" />
         </button>
@@ -43,13 +43,13 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
             <div className="space-y-2">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5EEFF] text-[#001A41] text-xs font-bold">
                 <Briefcase className="w-3.5 h-3.5 text-[#296A4B]" />
-                Service Request
+                Job details
               </div>
               <h3 id="post-job-title" className="font-display font-bold text-xl sm:text-2xl text-[#0B1C30]">
-                Post a Job Request
+                Prepare job details
               </h3>
               <p className="text-xs text-slate-500">
-                Describe the job you need so you can prepare the details for the next step.
+                Tell us what you need done, then review the details before you move ahead.
               </p>
             </div>
 
@@ -75,7 +75,7 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="post-job-city" className="mb-1 block text-xs font-semibold text-slate-700">City or location</label>
+                  <label htmlFor="post-job-city" className="mb-1 block text-xs font-semibold text-slate-700">City</label>
                   <select id="post-job-city" className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-white">
                     <option>Lagos State</option>
                     <option>Abuja FCT</option>
@@ -83,27 +83,27 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="post-job-budget" className="mb-1 block text-xs font-semibold text-slate-700">Estimated budget</label>
+                  <label htmlFor="post-job-budget" className="mb-1 block text-xs font-semibold text-slate-700">Budget range</label>
                   <input id="post-job-budget"
                     type="text"
-                    placeholder="e.g. N15,000 – N25,000"
+                    placeholder="e.g. ₦15,000 to ₦25,000"
                     className="w-full text-xs p-3 rounded-xl border border-slate-300 focus:outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="post-job-description" className="mb-1 block text-xs font-semibold text-slate-700">Job description</label>
+                <label htmlFor="post-job-description" className="mb-1 block text-xs font-semibold text-slate-700">What needs to be done?</label>
                 <textarea id="post-job-description"
                   rows={3}
-                  placeholder="Describe the issue or specific requirements..."
+                  placeholder="Describe the work, issue, and any useful requirements."
                   className="w-full text-xs p-3 rounded-xl border border-slate-300 focus:outline-none"
                 />
               </div>
 
               <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 flex items-center gap-2">
                 <Lock className="w-4 h-4 text-[#296A4B] shrink-0" />
-                <span>Review the payment details before you choose a payment method.</span>
+                <span>This page prepares your job details only. It does not post a job yet.</span>
               </div>
 
               <button
@@ -120,10 +120,10 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
               <CheckCircle2 className="w-7 h-7" />
             </div>
             <h3 className="font-display font-bold text-xl text-[#0B1C30]">
-              Job details are ready
+              Your job details are ready to review
             </h3>
             <p className="text-xs text-slate-600 max-w-sm mx-auto">
-              Keep these details available for the next job-posting step.
+              Keep these details close while you decide what to do next.
             </p>
             <button
               onClick={() => {

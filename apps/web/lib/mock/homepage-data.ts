@@ -64,7 +64,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: 'generator',
     title: 'Generator Servicing & Repair',
-    description: 'Diagnose diesel and petrol generators, AVR replacements, oil changes, and heavy rewinding.',
+    description: 'Servicing, repairs, AVR replacement, oil changes, and rewinding for petrol and diesel generators.',
     iconName: 'Zap',
     photoUrl: '/images/service-generator.jpg',
     startingPrice: '₦10,000',
@@ -74,7 +74,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: 'ac',
     title: 'AC Repair & Gas Refill',
-    description: 'Split unit installation, R22/R410 gas refilling, compressor diagnostics, and coil cleaning.',
+    description: 'Installation, repairs, gas refills, compressor checks, and coil cleaning for split-unit ACs.',
     iconName: 'Wind',
     photoUrl: '/images/service-ac.jpg',
     startingPrice: '₦12,000',
@@ -84,7 +84,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: 'plumbing',
     title: 'Plumbing & Pipe Fitting',
-    description: 'Fix water tank overflows, leak repairs, pressure pump setup, and bathroom fitting.',
+    description: 'Leak repairs, water tank work, pressure-pump setup, and bathroom fittings.',
     iconName: 'Wrench',
     photoUrl: '/images/service-plumbing.jpg',
     startingPrice: '₦8,000',
@@ -94,7 +94,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: 'electrical',
     title: 'Electrical & Solar Inverter',
-    description: 'Solar panel mounting, inverter battery setup, circuit breaker troubleshooting, and conduit wiring.',
+    description: 'Solar mounting, inverter and battery setup, circuit-breaker checks, and conduit wiring.',
     iconName: 'Sun',
     photoUrl: '/images/service-electrical.jpg',
     startingPrice: '₦15,000',
@@ -104,7 +104,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: 'cleaning',
     title: 'Deep Cleaning & Post-Construction',
-    description: 'Residential deep cleaning, post-tenant renovation scrubbing, sofa and carpet extraction.',
+    description: 'Deep cleaning for homes, move-ins, post-construction spaces, sofas, and carpets.',
     iconName: 'Sparkles',
     photoUrl: '/images/service-cleaning.jpg',
     startingPrice: '₦15,000',
@@ -114,7 +114,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: 'carpentry',
     title: 'Furniture & Carpentry Work',
-    description: 'Kitchen cabinet building, wardrobe repair, door lock installation, and bed frame assembly.',
+    description: 'Cabinet building, wardrobe repairs, door-lock fitting, and bed-frame assembly.',
     iconName: 'Hammer',
     photoUrl: '/images/service-carpentry.jpg',
     startingPrice: '₦10,000',
@@ -124,7 +124,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: 'tv-mounting',
     title: 'DSTV & TV Wall Mounting',
-    description: 'Full HD TV wall mounting, concealed trunking, DSTV dish alignment, and surround sound cabling.',
+    description: 'TV mounting, concealed cable trunking, DSTV dish alignment, and surround-sound cabling.',
     iconName: 'Tv',
     photoUrl: '/images/service-tv-mounting.jpg',
     startingPrice: '₦7,500',
@@ -134,7 +134,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: 'moving',
     title: 'Haulage & Home Relocation',
-    description: 'Covered truck hire, careful furniture packing, loading, and interstate relocation support.',
+    description: 'Covered trucks, careful furniture packing, loading, and relocation support.',
     iconName: 'Truck',
     photoUrl: '/images/service-moving.jpg',
     startingPrice: '₦25,000',
@@ -147,7 +147,7 @@ export const MOCK_BRAINWORKERS: BrainWorker[] = [
   {
     id: 'bw-1',
     name: 'Engr. Emeka Nwosu',
-    title: 'Senior Generator & Power Specialist',
+    title: 'Generator and Power Services',
     category: 'Generator Repair',
     location: 'Lekki Phase 1, Lagos',
     rating: 4.9,
@@ -161,7 +161,7 @@ export const MOCK_BRAINWORKERS: BrainWorker[] = [
   {
     id: 'bw-2',
     name: 'Babatunde Adebayo',
-    title: 'Certified HVAC & AC Specialist',
+    title: 'AC Service and Repair',
     category: 'AC Repair',
     location: 'Ikeja GRA, Lagos',
     rating: 4.95,
@@ -175,7 +175,7 @@ export const MOCK_BRAINWORKERS: BrainWorker[] = [
   {
     id: 'bw-3',
     name: 'Chinedu Eze',
-    title: 'Master Plumber & Pipe Fitter',
+    title: 'Plumbing and Pipe Fitting',
     category: 'Plumbing',
     location: 'Wuse Zone 4, Abuja',
     rating: 4.88,
@@ -189,7 +189,7 @@ export const MOCK_BRAINWORKERS: BrainWorker[] = [
   {
     id: 'bw-4',
     name: 'Tariq Olanrewaju',
-    title: 'Clean Energy & Solar Engineer',
+    title: 'Solar and Electrical Services',
     category: 'Solar & Electrical',
     location: 'GRA Phase 2, Port Harcourt',
     rating: 4.92,
@@ -268,38 +268,38 @@ export const MOCK_TESTIMONIALS: CustomerTestimonial[] = [
 export const MOCK_FAQS: FAQItem[] = [
   {
     id: 'faq-1',
-    question: 'What should I review before booking?',
-    answer: 'Review the service, job scope, starting price, location, and timing before you proceed.',
+    question: 'What should I check before I book?',
+    answer: 'Take a moment to check the service, the work you need done, the starting price, location, and timing.',
     category: 'Payments & Escrow',
   },
   {
     id: 'faq-2',
-    question: 'How do I review a BrainWorker before I book?',
-    answer: 'Open the BrainWorker profile to review the listed service information, location, rating, and customer-review count before you decide.',
+    question: 'What can I check on a BrainWorker profile?',
+    answer: 'Open the profile to look at the service focus and the details listed there before you decide.',
     category: 'Verification & Trust',
   },
   {
     id: 'faq-3',
     question: 'What is BukieGuarantee?',
-    answer: 'BukieGuarantee brings key booking information into one place. Review the terms page for the current details.',
+    answer: 'BukieGuarantee explains the details to review before you move ahead. Read the terms for the current information.',
     category: 'Verification & Trust',
   },
   {
     id: 'faq-4',
-    question: 'Can I prepare details for a custom job?',
-    answer: 'Yes. Gather the work, location, budget range, and requirements so you are ready for the next job-posting step.',
+    question: 'Can I prepare a custom job?',
+    answer: 'Yes. Write down the work you need, your location, your budget range, and any useful details before the job-posting step.',
     category: 'General',
   },
   {
     id: 'faq-5',
-    question: 'Where can I use BukieBrainJobs?',
-    answer: 'Search for a service and choose a location to explore the categories currently shown in BukieBrainJobs.',
+    question: 'Where is BukieBrainJobs available?',
+    answer: 'Choose a location when you search to see the services currently shown there.',
     category: 'General',
   },
   {
     id: 'faq-6',
-    question: 'How do I become a BrainWorker?',
-    answer: 'Prepare your service and profile details through the BrainWorker form. The live onboarding journey will be introduced with marketplace operations.',
+    question: 'How can I become a BrainWorker?',
+    answer: 'Use the BrainWorker form to prepare your service and profile details. Live onboarding will be introduced when marketplace operations are ready.',
     category: 'General',
   },
 ];

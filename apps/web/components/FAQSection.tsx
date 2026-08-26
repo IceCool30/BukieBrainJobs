@@ -16,7 +16,7 @@ export default function FAQSection() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
-            Questions before you book
+            Common questions
           </h2>
         </div>
 

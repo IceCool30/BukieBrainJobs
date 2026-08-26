@@ -63,8 +63,8 @@ export default function FeaturedBrainWorkers({ onSelectWorker }: FeaturedBrainWo
     <section id="workers" className="border-b border-slate-200 bg-[#F8F9FF] py-12 sm:py-16">
       <div className="mx-auto max-w-[1280px] space-y-6 px-4 sm:space-y-8 sm:px-6 lg:px-8">
         <div>
-          <h2 className="font-display text-2xl font-bold text-[#001A41] sm:text-3xl">Featured BrainWorkers</h2>
-          <p className="mt-1 text-sm text-slate-500">Selected using ratings, completed jobs, and customer reviews.</p>
+          <h2 className="font-display text-2xl font-bold text-[#001A41] sm:text-3xl">Meet the featured BrainWorkers</h2>
+          <p className="mt-1 text-sm text-slate-500">Take a closer look at the services and profile details shown for each BrainWorker.</p>
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
           {featuredWorkers.map((worker) => (

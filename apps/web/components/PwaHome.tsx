@@ -350,7 +350,7 @@ export default function PwaHome({
                         className="absolute left-0 top-full z-[60] mt-2 w-full min-w-56 rounded-xl border border-slate-200 bg-white py-2 shadow-xl"
                       >
                       <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                        Active Nigerian Cities
+                        Available locations
                       </div>
                       {NIGERIAN_LOCATIONS.filter((location) => location.status === 'active').map((location) => (
                         <button
@@ -373,9 +373,8 @@ export default function PwaHome({
                         </button>
                       ))}
 
-                      <div className="my-1.5 flex items-center justify-between border-t border-slate-100 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                        <span>Coming Soon</span>
-                        <span className="text-[9px] font-normal text-[#296A4B]">Notify Me</span>
+                      <div className="my-1.5 flex items-center border-t border-slate-100 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        <span>Coming soon</span>
                       </div>
                       {NIGERIAN_LOCATIONS.filter((location) => location.status === 'soon').map((location) => (
                         <button
@@ -421,14 +420,14 @@ export default function PwaHome({
                         <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-400">
                           <span className="flex items-center gap-1.5">
                             <History className="h-3.5 w-3.5" />
-                            Recent Searches
+                            Recent searches
                           </span>
                           <button
                             type="button"
                             onClick={clearRecentSearches}
                             className="text-[10px] lowercase text-slate-400 hover:text-slate-600 cursor-pointer"
                           >
-                            clear
+                            Clear
                           </button>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
@@ -452,7 +451,7 @@ export default function PwaHome({
                     <div className="space-y-1.5 border-t border-slate-100 pt-1">
                       <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400">
                         <TrendingUp className="h-3.5 w-3.5 text-[#296A4B]" />
-                        Popular in {selectedLocation.name}
+                        Services to explore
                       </div>
                       <div className="grid gap-1.5">
                         {TRENDING_SEARCHES.slice(0, 4).map((term) => (
@@ -477,11 +476,11 @@ export default function PwaHome({
                 {query.trim() && (
                   <div className="space-y-1">
                     <div className="px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                      Services
+                      Matching services
                     </div>
                     {matched.length === 0 ? (
                       <div className="px-3 py-4 text-center text-xs text-slate-500">
-                        No exact match found for &quot;{query}&quot;. Press Search to see all available categories.
+                        We couldn&apos;t find a close match for &quot;{query}&quot;. Search to browse the services shown here.
                       </div>
                     ) : (
                       matched.map((category, index) => (
@@ -523,7 +522,7 @@ export default function PwaHome({
             )}
           </div>
           <p className="ml-auto max-w-[290px] pt-1 text-right text-[13px] font-bold leading-snug text-slate-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
-              Find a professional for the job, or use your skills to find work that values your time
+              Find a BrainWorker for the job, or offer your skills for work that respects your time.
             </p>
         </div>
       </section>
