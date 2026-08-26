@@ -268,38 +268,38 @@ export const MOCK_TESTIMONIALS: CustomerTestimonial[] = [
 export const MOCK_FAQS: FAQItem[] = [
   {
     id: 'faq-1',
-    question: 'How does Escrow work for a booking?',
-    answer: 'For eligible bookings, you can pay through Escrow. Review the job details, inspect the completed work, then release payment when you are satisfied.',
+    question: 'What should I review before booking?',
+    answer: 'Review the service, job scope, starting price, location, and timing before you proceed.',
     category: 'Payments & Escrow',
   },
   {
     id: 'faq-2',
     question: 'How do I review a BrainWorker before I book?',
-    answer: 'Open the BrainWorker’s profile to review their service information, work history, availability, and verification status before you decide.',
+    answer: 'Open the BrainWorker profile to review the listed service information, location, rating, and customer-review count before you decide.',
     category: 'Verification & Trust',
   },
   {
     id: 'faq-3',
     question: 'What is BukieGuarantee?',
-    answer: 'BukieGuarantee may apply to qualifying bookings. Review the terms to understand eligibility, coverage, and how to raise a concern.',
+    answer: 'BukieGuarantee brings key booking information into one place. Review the terms page for the current details.',
     category: 'Verification & Trust',
   },
   {
     id: 'faq-4',
-    question: 'Can I request quotes by posting a job instead of booking directly?',
-    answer: 'Yes. For custom tasks or bigger projects, post a job with the work, location, and budget range. You can compare the responses you receive before choosing a BrainWorker.',
+    question: 'Can I prepare details for a custom job?',
+    answer: 'Yes. Gather the work, location, budget range, and requirements so you are ready for the next job-posting step.',
     category: 'General',
   },
   {
     id: 'faq-5',
     question: 'Where can I use BukieBrainJobs?',
-    answer: 'Service availability depends on the work you need and your location. Search for a service or post a job to see the options available to you.',
+    answer: 'Search for a service and choose a location to explore the categories currently shown in BukieBrainJobs.',
     category: 'General',
   },
   {
     id: 'faq-6',
     question: 'How do I become a BrainWorker?',
-    answer: 'Create a BrainWorker profile, add your service information, and complete the required verification steps. You can then respond to work that matches your skills and availability.',
+    answer: 'Prepare your service and profile details through the BrainWorker form. The live onboarding journey will be introduced with marketplace operations.',
     category: 'General',
   },
 ];

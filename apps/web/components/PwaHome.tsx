@@ -23,8 +23,6 @@ import {
 import PartnerBar from './PartnerBar';
 import FeaturedBrainWorkers from './FeaturedBrainWorkers';
 import HowItWorks from './HowItWorks';
-import TestimonialsSection from './TestimonialsSection';
-import MarketplacePaths from './MarketplacePaths';
 import FAQSection from './FAQSection';
 import ServiceCategoryRail from './ServiceCategoryRail';
 
@@ -33,8 +31,6 @@ interface PwaHomeProps {
   onSearchSubmit?: (service: string, location: string) => void;
   onSelectCategory?: (category: ServiceCategory) => void;
   onSelectWorker?: (worker: BrainWorker) => void;
-  onPostJobClick?: () => void;
-  onBecomeWorkerClick?: () => void;
   onSelectComingSoonLocation?: (location: NigerianLocation) => void;
 }
 
@@ -63,8 +59,6 @@ export default function PwaHome({
   onSearchSubmit,
   onSelectCategory,
   onSelectWorker,
-  onPostJobClick,
-  onBecomeWorkerClick,
   onSelectComingSoonLocation,
 }: PwaHomeProps) {
   const [query, setQuery] = useState('');
@@ -577,11 +571,6 @@ export default function PwaHome({
 
       <FeaturedBrainWorkers onSelectWorker={onSelectWorker} />
       <HowItWorks />
-      <TestimonialsSection />
-      <MarketplacePaths
-        onPostJobClick={onPostJobClick}
-        onBecomeWorkerClick={onBecomeWorkerClick}
-      />
       <FAQSection />
     </div>
   );

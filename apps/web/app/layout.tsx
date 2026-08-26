@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://bukie-brain-jobs.vercel.app'),
   title: 'BukieBrainJobs | Find trusted local BrainWorkers',
   description:
-    "Nigeria's verified marketplace connecting customers with BrainWorkers. Escrow-protected payments via Paystack and Flutterwave.",
+    "Explore local service categories, prepare booking details, and find flexible work with BukieBrainJobs.",
   alternates: {
     canonical: '/',
   },
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
   openGraph: {
     title: 'BukieBrainJobs | Find trusted local BrainWorkers',
-    description: "Nigeria's verified marketplace for BrainWorkers. Escrow-protected payments.",
+    description: "Explore local service categories and flexible work with BukieBrainJobs.",
     images: ['/images/og-banner-1200x630.png'],
     type: 'website',
     locale: 'en_NG',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'BukieBrainJobs | Find trusted local BrainWorkers',
-    description: "Nigeria's verified marketplace for BrainWorkers. Escrow-protected payments.",
+    description: "Explore local service categories and flexible work with BukieBrainJobs.",
     images: ['/images/og-banner-1200x630.png'],
   },
 };
@@ -48,7 +48,7 @@ const JSON_LD = {
       name: 'BukieBrainJobs',
       url: 'https://bukie-brain-jobs.vercel.app',
       logo: 'https://bukie-brain-jobs.vercel.app/images/logo-icon.png',
-      description: "Nigeria's verified marketplace for BrainWorkers with escrow-protected payments.",
+      description: "Explore local service categories and flexible work with BukieBrainJobs.",
       contactPoint: {
         '@type': 'ContactPoint',
         telephone: '+234-800-BUKIE-JOBS',

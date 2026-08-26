@@ -10,8 +10,6 @@ import HeroSection from '../components/HeroSection';
 import PopularServices from '../components/PopularServices';
 import HowItWorks from '../components/HowItWorks';
 import FeaturedBrainWorkers from '../components/FeaturedBrainWorkers';
-import MarketplacePaths from '../components/MarketplacePaths';
-import TestimonialsSection from '../components/TestimonialsSection';
 import FAQSection from '../components/FAQSection';
 import PartnerBar from '../components/PartnerBar';
 import PostJobModal from '../components/modals/PostJobModal';
@@ -101,8 +99,6 @@ export default function CustomerHomepage() {
             onSelectCategory={handleSelectCategory}
             onSelectWorker={handleSelectWorker}
             onSearchSubmit={handleSearchSubmit}
-            onPostJobClick={() => setPostJobOpen(true)}
-            onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}
             onSelectComingSoonLocation={(loc) => setComingSoonLocation(loc)}
           />
         ) : (
@@ -124,15 +120,6 @@ export default function CustomerHomepage() {
 
             {/* How BukieBrainJobs Works */}
             <HowItWorks />
-
-            {/* Verified Customer Testimonials */}
-            <TestimonialsSection />
-
-            {/* Secondary Marketplace Pathways */}
-            <MarketplacePaths
-              onPostJobClick={() => setPostJobOpen(true)}
-              onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}
-            />
 
             {/* Frequently Asked Questions */}
             <FAQSection />
