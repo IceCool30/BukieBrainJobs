@@ -1,7 +1,7 @@
 # BukieBrainJobs Roadmap
 
 **Document ID:** PROD-002
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Planning baseline
 
 This roadmap organizes the work into product milestones. It does not authorize implementation of every future feature immediately.
@@ -23,22 +23,25 @@ Includes:
 
 Status: In progress
 
-Core areas:
+Core areas for first public launch:
 
 - Homepage
 - Service categories
-- Search
+- Search and discovery
 - Service details
 - BrainWorker profiles
-- Corporate solutions
-- About
-- Help Center
-- Contact
+- About / trust pages (including BukieGuarantee)
+- Help and contact entry points
 - Authentication entry points
 
-Current approved feature:
+Public signal only (not launch capability):
 
-`WEB-001` Homepage
+- `/enterprise` Coming Soon page for future business solutions
+
+Current approved features:
+
+- `WEB-001` Homepage
+- `WEB-002` Enterprise route kept as Coming Soon (not launch scope)
 
 ## Milestone 3: Authentication
 
@@ -98,13 +101,17 @@ Planned:
 
 ## Milestone 7: Corporate Portal
 
-Planned:
+Status: Post-launch planning only
+
+Planned after the consumer marketplace is live:
 
 - Organization management
 - Team management
 - Recurring services
 - Billing
 - Reporting
+
+Public website note: `/enterprise` remains a Coming Soon signal until this milestone is approved for implementation.
 
 ## Milestone 8: Admin Platform
 
@@ -142,12 +149,14 @@ Includes:
 
 - Production deployment
 - App Store and Play Store readiness
-- Website readiness
+- Website readiness for the consumer marketplace
 - Analytics verification
 - Payment verification
 - Customer support readiness
 - Rollback plan
 - Post-launch monitoring
+
+Launch does not include Corporate Portal operations. Business solutions stay Coming Soon until Milestone 7 is approved and built.
 
 ## Sequencing rule
 

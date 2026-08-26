@@ -1,7 +1,7 @@
 # BukieBrainJobs Operating Charter v1.0
 
 **Document ID:** PROD-001
-**Version:** 1.1
+**Version:** 1.2
 **Status:** Approved
 
 ## Mission
@@ -17,6 +17,24 @@ Build a trusted, scalable services marketplace for Nigeria, with a product found
 5. Trust is a core product requirement.
 6. Accessibility is part of the design process.
 7. Documentation is part of the product.
+8. Full product parity across website, PWA, and native apps.
+
+## Platform access policy
+
+Users choose their surface. The product does not force a weaker path.
+
+| Surface | Intent |
+|---|---|
+| Desktop and mobile website | Complete product in the browser |
+| Installed PWA | Complete product without an app store |
+| Native Android and iOS | Complete product through the stores |
+
+Rules:
+
+- Core customer and BrainWorker journeys are available on all three surfaces.
+- Native may use stronger OS capabilities (push, camera, biometrics) for the same outcomes.
+- PWA is not a partial demo.
+- Website on a phone is still the website. Installed standalone mode is PWA.
 
 ## Responsibilities
 
@@ -55,6 +73,8 @@ Merge / Release
 ## Definition of Done
 
 A substantive feature is incomplete until its approved product, UX, UI, technical, API/data, acceptance, edge-case, accessibility, security and QA requirements are documented or explicitly referenced.
+
+For core marketplace features, Done also requires a clear plan for website, PWA, and native availability, even when native ships after web.
 
 ## Change Management
 

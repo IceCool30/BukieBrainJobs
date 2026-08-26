@@ -6,6 +6,7 @@ export * from './userSchemas'
 export * from './paymentSchemas'
 export * from './verificationSchemas'
 export * from './chatSchemas'
+export * from './prototypeFormValidation'
 
 // Re-export Zod for convenience
 export { z } from 'zod'

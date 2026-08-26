@@ -11,6 +11,14 @@ const nextConfig = {
   ],
   serverExternalPackages: ['@prisma/client', 'prisma'],
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
+  },
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },

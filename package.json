@@ -1,23 +1,35 @@
 {
   "name": "bukiebrainjobs-monorepo",
   "private": true,
-  "packageManager": "pnpm@9",
   "scripts": {
-    "dev": "pnpm --filter @bukiebrainjobs/web dev",
-    "build": "pnpm --filter @bukiebrainjobs/web build",
-    "lint": "pnpm --filter @bukiebrainjobs/web lint",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
     "type-check": "turbo run type-check",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "db:generate": "turbo run db:generate",
+    "db:migrate": "turbo run db:migrate",
+    "db:push": "turbo run db:push",
+    "web:dev": "pnpm --filter @bukiebrainjobs/web dev",
+    "mobile:start": "pnpm --filter @bukiebrainjobs/mobile start",
+    "mobile:tunnel": "pnpm --filter @bukiebrainjobs/mobile tunnel",
+    "mobile:web": "pnpm --filter @bukiebrainjobs/mobile web",
+    "mobile:android": "pnpm --filter @bukiebrainjobs/mobile android",
+    "mobile:ios": "pnpm --filter @bukiebrainjobs/mobile ios",
+    "clean": "turbo run clean && rm -rf node_modules && rm -rf apps/*/node_modules && rm -rf packages/*/node_modules && rm -rf services/*/node_modules"
   },
   "devDependencies": {
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
     "turbo": "^2.10.9",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
   },
-  "overrides": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
-    "postcss": "^8.5.3"
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=24.0.0",
+    "pnpm": ">=9.15.0"
   }
 }

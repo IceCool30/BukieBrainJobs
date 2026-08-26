@@ -10,6 +10,11 @@
     "incremental": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "react": ["./node_modules/@types/react"],
+      "react-dom": ["./node_modules/@types/react-dom"]
+    },
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,

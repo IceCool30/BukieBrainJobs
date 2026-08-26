@@ -1,58 +1,86 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
+import { ShieldCheck, PhoneCall, Mail } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0B1C30] text-slate-300 py-12 border-t border-slate-800 text-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <h3 className="font-display font-bold text-white text-lg mb-3">BukieBrainJobs</h3>
-          <p className="text-slate-400 text-xs leading-relaxed mb-4">
-            Connecting homeowners, businesses, and estate managers across Lagos, Abuja, Port Harcourt, and Nigeria with background-checked, top-rated artisans.
-          </p>
-          <div className="text-xs text-[#ABEEC8] font-mono">
-            Powered by Dual Paystack & Flutterwave Rails
+    <footer className="bg-[#06152B] text-slate-300 border-t border-[#1E3A60] pt-16 pb-12 text-sm">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#1E3A60]/80">
+          {/* Brand Overview Column */}
+          <div className="lg:col-span-2 space-y-4">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2.5 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#06152B]"
+              aria-label="BukieBrainJobs home"
+            >
+              <Image
+                src="/images/wordmark-banner-2280.png"
+                alt="BukieBrainJobs"
+                width={150}
+                height={45}
+                sizes="150px"
+                className="h-auto w-[150px] rounded-xl object-contain"
+              />
+            </Link>
+
+            <a href="/guarantee" className="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
+              Read BukieGuarantee terms
+            </a>
+          </div>
+
+          {/* Column 1: Our Services */}
+          <div>
+            <h3 className="font-display font-semibold text-white text-sm mb-4">Explore services</h3>
+            <ul className="space-y-2.5 text-xs text-slate-300">
+              <li><a href="/services" className="hover:text-white transition-colors">Generator services</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Air-conditioning services</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Plumbing services</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Electrical and solar services</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">TV and satellite services</a></li>
+              <li><a href="/services" className="hover:text-white transition-colors">Moving and relocation</a></li>
+            </ul>
+          </div>
+
+          {/* Column 2: Trust and Safety */}
+          <div>
+            <h3 className="font-display font-semibold text-white text-sm mb-4">Helpful links</h3>
+            <ul className="space-y-2.5 text-xs text-slate-300">
+              <li><a href="#how-it-works" className="hover:text-white transition-colors">How booking works</a></li>
+              <li><a href="/guarantee" className="hover:text-white transition-colors">BukieGuarantee</a></li>
+              <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
+            </ul>
+          </div>
+
+          {/* Column 3: Business and Support */}
+          <div>
+            <h3 className="font-display font-semibold text-white text-sm mb-4">Business and support</h3>
+            <ul className="space-y-2.5 text-xs text-slate-300">
+              <li><a href="/enterprise" className="hover:text-white transition-colors">For business</a></li>
+              <li><a href="mailto:support@bukiebrainjobs.ng" className="hover:text-white transition-colors">Contact support</a></li>
+              <li className="flex items-center gap-1.5 pt-1 text-slate-300">
+                <PhoneCall className="w-3.5 h-3.5 text-[#ABEEC8]" />
+                +234 800-BUKIE-JOBS
+              </li>
+              <li className="flex items-center gap-1.5 text-slate-300">
+                <Mail className="w-3.5 h-3.5 text-[#ABEEC8]" />
+                support@bukiebrainjobs.ng
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div>
-          <h4 className="font-bold text-white mb-3">Popular Services</h4>
-          <ul className="space-y-2 text-xs text-slate-400">
-            <li><Link href="/" className="hover:text-white">Air Conditioner (AC) Repair</Link></li>
-            <li><Link href="/" className="hover:text-white">TV & DSTV Wall Mounting</Link></li>
-            <li><Link href="/" className="hover:text-white">Plumbing & Water Tanks</Link></li>
-            <li><Link href="/" className="hover:text-white">Electrical & Solar Inverter</Link></li>
-            <li><Link href="/" className="hover:text-white">Generator Servicing</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="font-bold text-white mb-3">Artisans & Trust</h4>
-          <ul className="space-y-2 text-xs text-slate-400">
-            <li><Link href="/passport" className="hover:text-white">Tiered BukiePassport Vetting</Link></li>
-            <li><Link href="/passport" className="hover:text-white">NIN & BVN Biometric Verification</Link></li>
-            <li><Link href="/wallet" className="hover:text-white">Instant Artisan Bank Payouts</Link></li>
-            <li><Link href="/" className="hover:text-white">BukieGuarantee Protection (Up to ₦500k)</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="font-bold text-white mb-3">B2B & Retail Partnerships</h4>
-          <p className="text-xs text-slate-400 mb-3">
-            Electronics retailer or estate manager? Integrate our &quot;Book Installation at Checkout&quot; API.
-          </p>
-          <button className="bg-[#296A4B] text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-[#1f523a] transition-all">
-            Partner With Us
-          </button>
-        </div>
-      </div>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
-        <div>© 2026 BukieBrainJobs Platform. All rights reserved.</div>
-        <div className="flex gap-4 mt-2 sm:mt-0">
-          <span>Privacy Policy</span>
-          <span>Terms of Service</span>
-          <span>Security & Escrow Policy</span>
+        {/* Bottom Copyright and Legal Links */}
+        <div className="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-300 gap-4">
+          <div>
+            &copy; 2026 BukieBrainJobs Platform Limited. All rights reserved.
+          </div>
+          <div className="flex gap-6">
+            <span className="hover:text-white cursor-pointer transition-colors">Privacy Policy</span>
+            <span className="hover:text-white cursor-pointer transition-colors">Terms of Service</span>
+          </div>
         </div>
       </div>
     </footer>

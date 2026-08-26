@@ -1,8 +1,8 @@
 # Technical Architecture Baseline
 
 **Document ID:** TECH-000
-**Version:** 2.0
-**Status:** Approved baseline (updated by FOUNDATION-002)
+**Version:** 2.1
+**Status:** Approved baseline (updated by FOUNDATION-002 and PLAT-001)
 **Canonical detailed reference:** `BukieBrainJobs — Full-Stack Technical Specification.md`
 
 ## Non-negotiable principle
@@ -10,6 +10,18 @@
 **Write once, run everywhere, trust the type system.**
 
 API contracts, database models, shared state shapes and validation rules must be defined once in the shared package layer where the approved architecture requires them.
+
+## Platform surfaces
+
+BukieBrainJobs is one product on three clients:
+
+| Surface | App | Detection / distribution |
+|---|---|---|
+| Website | `apps/web` | Browser session (any viewport) |
+| PWA | `apps/web` | Installed standalone only (`display-mode: standalone` or iOS `navigator.standalone`) |
+| Native Android / iOS | `apps/mobile` | Expo store builds |
+
+Viewport width is a responsive concern, not a PWA signal. Core product journeys must be available on all three surfaces. Native may use stronger OS APIs for the same outcomes.
 
 ## Toolchain baseline
 
@@ -48,8 +60,8 @@ API contracts, database models, shared state shapes and validation rules must be
 
 The approved architecture includes:
 
-- `apps/web` for the Next.js web/PWA experience.
-- `apps/mobile` for the Expo mobile application.
+- `apps/web` for the Next.js website and PWA experience.
+- `apps/mobile` for the Expo native Android and iOS application.
 - Shared packages for UI, design tokens, types, validation, database, auth, configuration and utilities as the implementation matures.
 - A persistent Socket.io service for real-time messaging and job events.
 - PostgreSQL with PostGIS for transactional and geographic data.

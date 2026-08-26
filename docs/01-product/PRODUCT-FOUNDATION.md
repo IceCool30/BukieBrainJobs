@@ -1,7 +1,7 @@
 # BukieBrainJobs Product Foundation
 
 **Document ID:** PROD-001
-**Version:** 1.0
+**Version:** 1.3
 **Status:** Approved foundation
 
 ## Product
@@ -9,6 +9,26 @@
 BukieBrainJobs is a Nigerian two-sided marketplace connecting customers with trusted local service professionals called BrainWorkers.
 
 The platform is intended to make service discovery, matching, booking, communication, payment and accountability safer and more reliable than informal referral channels.
+
+## Platform policy: full product on every surface
+
+BukieBrainJobs is one product. Users may complete the full product on any of these surfaces:
+
+1. **Website** in a desktop browser (`apps/web`)
+2. **Mobile web shell and PWA** in a phone browser or as an installed standalone web app (`apps/web`)
+3. **Native Android and iOS** apps (`apps/mobile`, Expo)
+
+### Policy
+
+- No intentional feature lock-out by surface for core customer or BrainWorker journeys.
+- Desktop website is first-class, not a reduced experience.
+- On the homepage, mobile browser width and installed standalone PWA share the compact mobile shell. Desktop width keeps the full marketing homepage.
+- PWA install remains a full alternative for people who do not want store apps.
+- Native is a full alternative for people who prefer store apps.
+- The same journeys and outcomes ship on all three. Platform tools may strengthen delivery (for example reliable push on native) without removing the journey elsewhere.
+- The homepage does not use a bottom navigation bar.
+
+Shared trust rules, booking rules, identity rules, and design system apply across all surfaces.
 
 ## Core marketplace paths
 
@@ -36,6 +56,17 @@ Secondary marketplace paths:
 
 - Post a Job
 - Become a BrainWorker
+
+## Business / enterprise path
+
+Corporate and facility solutions are a planned later path for estates, facilities, and companies that need repeated maintenance across sites.
+
+Decision `WEB-002`:
+
+- Keep the public `/enterprise` route as a Coming Soon signal.
+- Do not treat enterprise operations as part of the first public launch.
+- Build the consumer marketplace first.
+- Corporate Portal work stays under the later roadmap milestone.
 
 ## Guest experience
 
@@ -94,6 +125,7 @@ It should not be loud, flashy, overly playful or coldly corporate.
 5. Trust first.
 6. Accessibility by default.
 7. Documentation is part of the product.
+8. Full product on website, PWA, and native.
 
 ## Product roles
 
@@ -112,7 +144,7 @@ It should not be loud, flashy, overly playful or coldly corporate.
 5. Customer Platform
 6. BrainWorker Platform
 7. Booking and Payments
-8. Corporate Portal
+8. Corporate Portal (post-launch)
 9. Admin Platform
 10. AI Features
 11. Production Readiness
@@ -121,3 +153,5 @@ It should not be loud, flashy, overly playful or coldly corporate.
 ## Definition of a complete feature
 
 A feature requires sufficient product, UX, UI, technical, accessibility, security and QA documentation before it is considered implementation-ready.
+
+Core marketplace features are incomplete until the same journey is planned for website, PWA, and native, even when delivery is sequenced over time.

@@ -1,7 +1,7 @@
 # Decision Log
 
 **Document ID:** GOV-004
-**Version:** 1.0
+**Version:** 1.3
 **Status:** Approved foundation
 
 This file is the index for material product, design and engineering decisions. Detailed decisions may later be split into individual ADR files under `docs/21-decision-log/`.
@@ -38,8 +38,7 @@ The GitHub repository will contain the durable project guidance required for hum
 
 **Status:** Superseded / Updated
 
-ChatGPT defines product and technical specifications, Google Antigravity is responsible for UI design interpretation and implementation using the approved product specifications and DESIGN.md. Google Stitch is deprecated as a required design intermediary.
-
+Product defines requirements and technical specifications. Engineering interprets approved product specifications and DESIGN.md for UI design and implementation.
 
 ### GOV-004: Documentation before application code
 
@@ -64,6 +63,120 @@ The platform uses a semantic token architecture shared across web and mobile. De
 **Status:** Approved
 
 The public homepage is customer-first, supports three marketplace entry paths, supports guest discovery, and uses controlled activation across 36 Nigerian state capitals plus Abuja as the initial geographic architecture.
+
+### PLAT-001: Full product parity across website, PWA, and native
+
+**Date:** 2026-08-22
+**Status:** Approved (shell detection refined by PLAT-002)
+
+**Context:** Users must be free to choose desktop website, installed PWA, or native Android/iOS without losing core marketplace capability.
+
+**Decision:**
+
+1. Website, PWA, and native each deliver the full product for core customer and BrainWorker journeys.
+2. Platform tools may improve delivery of the same feature (for example native push), but must not remove the feature from other surfaces.
+3. Desktop website remains a first-class full product.
+
+**Alternatives considered:**
+
+- Web-only customer path with native reserved for BrainWorkers
+- PWA as a reduced mobile shell
+
+**Consequences:**
+
+- Shared contracts and business logic stay in packages
+- UI chrome may differ by surface
+- Feature specs for core journeys must plan for all three surfaces
+
+**Affected areas:** README, product foundation, operating charter, live experience standard, technical baseline, `apps/web`, `apps/mobile`
+
+### PLAT-002: Homepage mobile shell and no bottom nav
+
+**Date:** 2026-08-22
+**Status:** Approved
+**Supersedes:** PLAT-001 detection clause that treated viewport as never-PWA
+
+**Context:** Product wants the compact mobile shell for phone browsers and for installed PWAs, while desktop keeps the full marketing homepage. The live experience standard forbids a bottom navigation bar on the homepage.
+
+**Decision:**
+
+1. Homepage uses the mobile shell when viewport is mobile width (below 768px) or when the session is installed/standalone (including iOS `navigator.standalone`).
+2. Desktop width keeps the full website homepage layout.
+3. The homepage never mounts a bottom navigation bar.
+4. Core journeys remain available on all surfaces; this decision only controls homepage chrome and layout choice.
+
+**Alternatives considered:**
+
+- Standalone-only shell (rejected; phone browser would stay on marketing layout)
+- Bottom nav on mobile homepage (rejected; conflicts with live experience standard)
+
+**Consequences:**
+
+- `useIsPwa` combines mobile viewport and standalone signals
+- `BottomNav` is not used on `/`
+- README and product foundation document the shell rule
+
+**Affected areas:** `apps/web/hooks/useIsPwa.ts`, `apps/web/app/page.tsx`, README, product foundation, live experience standard
+
+### WEB-002: Enterprise / For Business is post-launch
+
+**Date:** 2026-08-22
+**Status:** Approved
+
+**Context:** The public `/enterprise` page previously described live-sounding enterprise capabilities (SLAs, account management, consolidated billing, API integration). The product is not ready to commit to that scope for the first public launch.
+
+**Decision:**
+
+1. Keep the `/enterprise` route and homepage navigation label so the direction remains visible.
+2. Replace sales-style enterprise content with a Coming Soon page.
+3. Enterprise / Corporate Portal is not part of the first public launch.
+4. First launch focus remains the consumer marketplace: discovery, booking, and trust.
+5. Do not present enterprise operational features as available until a later approved milestone.
+
+**Alternatives considered:**
+
+- Keep the full enterprise sales page (rejected; over-promises)
+- Remove the nav link and route (rejected; loses future-signal)
+
+**Consequences:**
+
+- `/enterprise` is informational only until Corporate Portal work is approved
+- Roadmap Milestone 7 remains the planning home for corporate capabilities
+- Public website copy must not imply live enterprise account operations
+
+**Affected areas:** `apps/web/app/enterprise/page.tsx`, roadmap, product foundation, homepage navigation
+
+### WEB-003: Current approved live experience governs WEB-001 completion
+
+**Date:** 2026-08-26
+**Status:** Approved
+**Supersedes:** Conflicting public behavior in WEB-001 and WEB-002 only where it contradicts the current approved live experience.
+
+**Context:** The WEB-001 completion gate reconciled older planning documents with the current approved BukieBrainJobs customer experience. Earlier records contained public launch-state, controlled-activation, and trust-content assumptions that no longer match the approved product direction.
+
+**Decision:**
+
+1. The current approved live experience, then the latest explicit product direction, governs the WEB-001 completion gate.
+2. Do not restore public BukiePassport, unsupported verification, Escrow, payment, guarantee, dispute, or fabricated testimonial claims from historical material.
+3. Treat Lagos, Abuja, Port Harcourt, Ibadan, Enugu, Kano, and Benin City as the active locations shown in the current experience. Do not restore a public Notify Me flow or the former 36-capitals-plus-Abuja activation model.
+4. Keep `/enterprise` as the current launch-ready recurring-work page. The WEB-002 Coming Soon state is superseded for this route.
+5. Keep public journeys launch-ready and customer-facing. Internal mock implementation details must not appear as customer readiness notices.
+6. Deterministic mock data and client-only interaction states remain permitted for WEB-001. This decision does not authorize backend, payment, verification, or identity-document implementation.
+
+**Alternatives considered:**
+
+- Restore older requirements verbatim during completion review, rejected because it would contradict the approved customer experience.
+- Remove the enterprise route, rejected because the approved live experience retains it as a business-service entry point.
+
+**Consequences:**
+
+- Historical specifications remain useful only where they do not conflict with this decision and the live experience standard.
+- Completion review prioritizes usable discovery, booking preparation, BrainWorker profiles, client validation, accessibility, and deterministic recovery states.
+- Older public trust or launch-state copy must not silently re-enter the product.
+
+**Affected areas:** `apps/web`, homepage and supporting public routes, live experience standard, future WEB-001 audit work, historical WEB-001 and WEB-002 references.
+
+**Source references:** Explicit user-approved WEB-001 completion direction, `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md`, and the current approved web experience.
 
 ## Adding a decision
 
@@ -142,4 +255,3 @@ Prisma 6.x (6.17.0) is the current stable major with performance improvements an
 **Status:** Approved
 
 Project runtime baseline standardized on Node.js 24 LTS to align local, CI, deployment, and Vercel environments. All `.nvmrc`, `package.json` engines, and GitHub Actions workflows updated to Node 24.
-

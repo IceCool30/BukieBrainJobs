@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "BukieBrainJobs",
+    "slug": "bukiebrainjobs",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/logo-icon.png",
+    "scheme": "bukiebrainjobs",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#001A41"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bukiebrainjobs.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/logo-icon.png",
+        "backgroundColor": "#001A41"
+      },
+      "package": "com.bukiebrainjobs.app"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/images/logo-icon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

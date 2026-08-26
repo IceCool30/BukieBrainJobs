@@ -1,33 +1,72 @@
 # BukieBrainJobs
 
-BukieBrainJobs is a Nigerian two-sided services marketplace connecting customers with trusted local professionals called BrainWorkers.
+BukieBrainJobs is a Nigerian two-sided services marketplace connecting customers with skilled local and remote providers called BrainWorkers.
 
-This repository is the engineering and documentation source of truth for the product. Product decisions, design rules, architecture, implementation guidance, and development workflow must be traceable to the documentation in this repository.
+This repository is the engineering and documentation source of truth for the product. Product decisions, design rules, architecture, implementation guidance, and development workflow are traceable to the documentation here.
+
+## Platform policy: full product on every surface
+
+BukieBrainJobs is one product delivered on three equal surfaces. Users choose how they access it. No surface is intentionally feature-limited.
+
+| Surface | Codebase | How users open it |
+|---|---|---|
+| Website (desktop browser) | `apps/web` | URL in a desktop browser |
+| Mobile web shell / PWA | `apps/web` | Phone browser, or home-screen install |
+| Native Android and iOS | `apps/mobile` (Expo) | App Store / Google Play |
+
+**Policy rules**
+
+1. Every core customer and BrainWorker journey must be available on website, PWA, and native.
+2. Desktop website is a first-class full product, not a reduced mobile site.
+3. Mobile browser and installed PWA share the compact mobile shell on the homepage. Desktop width keeps the full marketing homepage.
+4. PWA install remains a full product path for people who do not want store apps.
+5. Native is a full product path for people who prefer store apps, with stronger OS tools where useful (push, camera, biometrics).
+6. Platform enhancements may improve delivery of the same feature. They must not remove the feature from other surfaces.
+7. The homepage does not use a bottom navigation bar (live experience standard).
+
+Shared business rules, trust model, booking model, and design system stay one source of truth across all surfaces.
 
 ## Current repository status
 
-**Phase:** Active development
+**Phase:** Active development, live public homepage
 
-**Code status:** Monorepo scaffold is in place.
+**Code status:** A public homepage is live and approved on the `feature/web-001-homepage-redesign` branch. The monorepo scaffold, design system, and product foundation are complete.
 
-- `apps/web` — Next.js web application
+- `apps/web` — Next.js 15 web application with the live public homepage and PWA support
 - `apps/mobile` — Expo mobile application
-- `packages/` — shared contracts, UI, validation, database, utilities
+- `packages/` — shared contracts, UI, validation, database, store, API types, utilities
 - `services/socket-server` — real-time messaging service
+- `docs/` — governance, product, design system, and feature specifications
 
-Feature work proceeds on short-lived branches. The public homepage redesign is the current focus area.
+The public homepage is the current focus area. New pages must follow the live-first experience standard described below.
+
+## Live-first experience standard
+
+The approved live homepage experience is the primary design authority for all future pages and screens. Before starting any customer-facing work, read `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md` and the bundled skill at `docs/02-design-system/skills/bukiebrainjobs-experience-standards/`.
+
+The live homepage establishes the product's visual identity:
+
+- Calm, photo-led, premium design with navy, green, mint, and off-white used with restraint
+- Hanken Grotesk for display text, Inter for body text
+- Image-led service cards, a two-tier search in the hero, and a compact three-brand trust strip
+- **BrainWorker** is the official customer-facing identity for service providers; the onboarding call to action is "Become a BrainWorker"
+- Supported trust brands on the homepage are Paystack, Flutterwave, and Dojah
+- No unsupported absolute claims, exact counts, ratings, or guarantees appear in customer-facing copy
+- Motion explains interaction and never competes with service discovery or booking actions
+- Homepage has no bottom navigation bar
 
 ## Source-of-truth hierarchy
 
 When documents conflict, use this order unless a documented decision explicitly changes it:
 
 1. `docs/00-governance/SOURCE-OF-TRUTH.md`
-2. Approved product requirements and decisions
-3. `DESIGN.md` for visual and interaction rules
-4. Approved design-system artifacts
-5. Approved feature and screen specifications
-6. Technical architecture and implementation specifications
-7. Implementation that follows the approved specifications
+2. The approved live experience standard and skill
+3. Approved product requirements and decisions
+4. `DESIGN.md` for visual and interaction rules
+5. Approved design-system artifacts
+6. Approved feature and screen specifications
+7. Technical architecture and implementation specifications
+8. Implementation that follows the approved specifications
 
 Never silently resolve a material conflict by inventing a requirement.
 
@@ -129,7 +168,7 @@ See `CONTRIBUTING.md` and `docs/00-governance/DEVELOPMENT-WORKFLOW.md`.
 
 ## Architecture baseline
 
-The approved technical baseline uses a pnpm workspace with Turborepo, TypeScript strict mode, and Node 24+. The application architecture includes a Next.js web application, an Expo mobile application, and shared packages for contracts, validation, business logic and infrastructure concerns.
+The approved technical baseline uses a pnpm workspace with Turborepo, TypeScript strict mode, and Node 24+. The application architecture includes a Next.js 15 web application (website and PWA), an Expo native mobile application, and shared packages for contracts, validation, business logic and infrastructure concerns.
 
 Implementation must follow the approved technical specification rather than recreating requirements from memory.
 
@@ -141,4 +180,4 @@ Do not introduce arbitrary colors, typography, spacing, radii, motion or compone
 
 ## Status
 
-The product foundation, design system, and monorepo scaffold are in place. Feature implementation proceeds through approved specifications, short-lived branches, review, and merge to main.
+The product foundation, design system, live-first experience standard, and monorepo scaffold are in place. The public homepage is live, approved, and continuously deployed through Vercel previews on the feature branch. Feature implementation proceeds through approved specifications, short-lived branches, review, and merge to main.

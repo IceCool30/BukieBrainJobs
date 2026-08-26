@@ -19,7 +19,7 @@
     },
     "test": {
       "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
+      "outputs": []
     },
     "db:generate": { "cache": false },
     "db:migrate": { "cache": false },

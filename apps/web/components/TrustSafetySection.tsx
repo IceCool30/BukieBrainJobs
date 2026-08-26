@@ -1,0 +1,83 @@
+import React from 'react';
+import Link from 'next/link';
+import { ShieldCheck, Lock, UserCheck, Headphones, ArrowRight } from 'lucide-react';
+
+export default function TrustSafetySection() {
+  const trustPillars = [
+    {
+      title: 'Profile Verification',
+      desc: 'Review a BrainWorker’s profile and verification status before you decide who to book.',
+      icon: <UserCheck className="w-5 h-5 text-[#296A4B]" />,
+    },
+    {
+      title: 'Pay Through Escrow',
+      desc: 'Use Escrow for eligible bookings, inspect the completed work, then release payment when you are satisfied.',
+      icon: <Lock className="w-5 h-5 text-[#296A4B]" />,
+    },
+    {
+      title: 'BukieGuarantee',
+      desc: 'Qualifying bookings may include BukieGuarantee coverage. Review the terms before you book.',
+      icon: <ShieldCheck className="w-5 h-5 text-[#296A4B]" />,
+    },
+    {
+      title: 'Clear Support',
+      desc: 'Use the booking record and support options to raise a concern when something needs attention.',
+      icon: <Headphones className="w-5 h-5 text-[#296A4B]" />,
+    },
+  ];
+
+  return (
+    <section id="trust" className="py-16 bg-white border-b border-slate-200">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="text-center max-w-2xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EAF7EF] border border-[#ABEEC8]/70 text-xs font-semibold text-[#296A4B]">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>Book with clearer information</span>
+          </div>
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#001A41]">
+            Know what to expect before you book
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+            Review profiles and pricing information, then use Escrow for eligible bookings.
+          </p>
+        </div>
+
+        <div className="relative rounded-xl border border-[#ABEEC8]/70 bg-white p-8 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 shadow-[0_2px_8px_-4px_rgba(0,26,65,0.10)]">
+          <div className="shrink-0">
+            <div className="w-14 h-14 rounded-xl bg-[#296A4B] border border-[#ABEEC8]/40 flex items-center justify-center">
+              <ShieldCheck className="w-7 h-7 text-[#ABEEC8]" />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <h3 className="font-display font-bold text-xl sm:text-2xl text-[#001A41]">
+              BukieGuarantee for qualifying bookings
+            </h3>
+            <p className="text-sm sm:text-base text-slate-500 leading-relaxed max-w-2xl">
+              BukieGuarantee may apply to qualifying bookings. Review the terms to understand eligibility, coverage, and how to raise a concern.
+            </p>
+            <Link href="/guarantee" className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#296A4B] hover:underline pt-1">
+              Review BukieGuarantee terms
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {trustPillars.slice(0, 2).concat(trustPillars.slice(3, 4)).map((p, idx) => (
+            <div key={idx} className="space-y-4 bg-white rounded-xl border border-slate-200 p-6 shadow-[0_2px_8px_-4px_rgba(0,26,65,0.10)]">
+              <div className="w-10 h-10 rounded-lg bg-[#EAF7EF] border border-[#ABEEC8]/70 flex items-center justify-center">
+                {p.icon}
+              </div>
+              <h3 className="font-display font-bold text-base text-[#001A41]">
+                {p.title}
+              </h3>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                {p.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

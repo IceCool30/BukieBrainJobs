@@ -174,6 +174,7 @@ The shape language is **Organic and Friendly**. A 1rem (16px) base radius is app
 - **Standard (1rem):** Checkboxes, small buttons, input fields.
 - **Large (2rem):** Cards, modals, feature containers.
 - **Pill-shaped:** Used for status "Chips", "Tags", and primary buttons to provide a distinct, modern look.
+- **Wordmark container (~13% of height):** The BukieBrainJobs wordmark banner (`wordmark-banner-tight.png`) uses a subtle corner radius of approximately 13% of its height (60px on the 454px asset), matching the glassy button treatment used for primary CTAs. Do not restyle this asset to a sharper box or a fuller pill.
 
 The high roundedness level (Pill-shaped) reinforces a modern, fluid aesthetic that balances the rigid professional typography.
 
