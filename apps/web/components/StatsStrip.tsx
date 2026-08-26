@@ -58,17 +58,6 @@ function StatCell({ stat }: { stat: StatDef }) {
   );
 }
 
-const CATEGORY_STATS: { label: string; value: string }[] = [
-  { label: 'Generator repairs', value: 'Coming soon' },
-  { label: 'AC services', value: 'Coming soon' },
-  { label: 'Plumbing jobs', value: 'Coming soon' },
-  { label: 'Electrical & solar', value: 'Coming soon' },
-  { label: 'Cleaning jobs', value: 'Coming soon' },
-  { label: 'Carpentry jobs', value: 'Coming soon' },
-  { label: 'TV & DSTV installs', value: 'Coming soon' },
-  { label: 'Relocations', value: 'Coming soon' },
-];
-
 export default function StatsStrip() {
   return (
     <section aria-label="Platform statistics" className="py-16 bg-white border-b border-slate-200">
@@ -77,19 +66,6 @@ export default function StatsStrip() {
           {STATS.map((stat) => (
             <StatCell key={stat.label} stat={stat} />
           ))}
-        </div>
-        <div className="border-t border-slate-100 pt-5">
-          <p className="text-center text-xs font-semibold uppercase tracking-[0.15em] text-slate-600 mb-3">
-            Platform activity by category
-          </p>
-          <div className="flex flex-wrap justify-center gap-x-7 gap-y-2">
-            {CATEGORY_STATS.map((cs) => (
-              <div key={cs.label} className="flex items-baseline gap-1.5">
-                <span className="text-base font-display font-bold text-slate-700">{cs.value}</span>
-                <span className="text-sm font-medium text-slate-600">{cs.label}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

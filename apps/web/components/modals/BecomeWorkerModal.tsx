@@ -49,7 +49,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
                 Become a BrainWorker
               </h3>
               <p className="text-xs text-slate-500">
-                Share the main details about your service, then review them before the next onboarding step.
+                Start with the service you offer and where you work.
               </p>
             </div>
 
@@ -87,7 +87,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
                     <option>Lagos State</option>
                     <option>Abuja FCT</option>
                     <option>Port Harcourt</option>
-                    <option>Ibadan (coming soon)</option>
+                    <option>Ibadan</option>
                   </select>
                 </div>
               </div>
@@ -104,14 +104,14 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
 
               <div className="p-3 rounded-xl bg-[#EFF4FF] border border-[#CBDBF5] text-[11px] text-[#0B1C30] flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#296A4B] shrink-0" />
-                <span>When live onboarding is ready, we will explain which profile details may be needed.</span>
+                <span>A clear profile helps customers understand your service and location.</span>
               </div>
 
               <button
                 type="submit"
                 className="w-full py-3.5 bg-[#296A4B] hover:bg-[#1F523A] text-white text-xs font-bold rounded-full transition-all shadow-md"
               >
-                Prepare my details
+                Create my profile
               </button>
             </form>
           </>
@@ -121,10 +121,10 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
               <CheckCircle2 className="w-7 h-7" />
             </div>
             <h3 className="font-display font-bold text-xl text-[#0B1C30]">
-              Your details are ready to review
+              Your profile is ready
             </h3>
             <p className="text-xs text-slate-600 max-w-sm mx-auto">
-              Keep these details close while you decide what to do next.
+              Review your details, then continue to the next step.
             </p>
             <button
               onClick={() => {

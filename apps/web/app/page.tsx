@@ -15,19 +15,16 @@ import PartnerBar from '../components/PartnerBar';
 import PostJobModal from '../components/modals/PostJobModal';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
 import BrainWorkerProfileModal from '../components/modals/BrainWorkerProfileModal';
-import LocationNoticeModal from '../components/modals/LocationNoticeModal';
 import {
   BrainWorker,
   ServiceCategory,
   SERVICE_CATEGORIES,
-  NigerianLocation,
 } from '../lib/mock/homepage-data';
 
 export default function CustomerHomepage() {
   const [postJobOpen, setPostJobOpen] = useState(false);
   const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
   const [selectedWorker, setSelectedWorker] = useState<BrainWorker | null>(null);
-  const [comingSoonLocation, setComingSoonLocation] = useState<NigerianLocation | null>(null);
 
   const isPwa = useIsPwa();
   const router = useRouter();
@@ -99,7 +96,6 @@ export default function CustomerHomepage() {
             onSelectCategory={handleSelectCategory}
             onSelectWorker={handleSelectWorker}
             onSearchSubmit={handleSearchSubmit}
-            onSelectComingSoonLocation={(loc) => setComingSoonLocation(loc)}
           />
         ) : (
           <>
@@ -135,10 +131,6 @@ export default function CustomerHomepage() {
       {/* Modals & Drawers */}
       <PostJobModal isOpen={postJobOpen} onClose={() => setPostJobOpen(false)} />
       <BecomeWorkerModal isOpen={becomeWorkerOpen} onClose={() => setBecomeWorkerOpen(false)} />
-      <LocationNoticeModal
-        location={comingSoonLocation}
-        onClose={() => setComingSoonLocation(null)}
-      />
       <BrainWorkerProfileModal
         worker={selectedWorker}
         isOpen={!!selectedWorker}

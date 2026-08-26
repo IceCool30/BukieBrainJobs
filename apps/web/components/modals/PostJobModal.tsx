@@ -46,10 +46,10 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
                 Job details
               </div>
               <h3 id="post-job-title" className="font-display font-bold text-xl sm:text-2xl text-[#0B1C30]">
-                Prepare job details
+                Post a job
               </h3>
               <p className="text-xs text-slate-500">
-                Tell us what you need done, then review the details before you move ahead.
+                Tell us what you need done, where it is, and the budget you have in mind.
               </p>
             </div>
 
@@ -103,14 +103,14 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
 
               <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 flex items-center gap-2">
                 <Lock className="w-4 h-4 text-[#296A4B] shrink-0" />
-                <span>This page prepares your job details only. It does not post a job yet.</span>
+                <span>Clear job details help the right BrainWorkers understand what you need.</span>
               </div>
 
               <button
                 type="submit"
                 className="w-full py-3.5 bg-[#001A41] hover:bg-[#000F2D] text-white text-xs font-bold rounded-full transition-all shadow-md"
               >
-                Prepare job details
+                Post job
               </button>
             </form>
           </>
@@ -120,10 +120,10 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
               <CheckCircle2 className="w-7 h-7" />
             </div>
             <h3 className="font-display font-bold text-xl text-[#0B1C30]">
-              Your job details are ready to review
+              Your job has been posted
             </h3>
             <p className="text-xs text-slate-600 max-w-sm mx-auto">
-              Keep these details close while you decide what to do next.
+              BrainWorkers can now review the work you need done.
             </p>
             <button
               onClick={() => {

@@ -31,7 +31,6 @@ interface PwaHomeProps {
   onSearchSubmit?: (service: string, location: string) => void;
   onSelectCategory?: (category: ServiceCategory) => void;
   onSelectWorker?: (worker: BrainWorker) => void;
-  onSelectComingSoonLocation?: (location: NigerianLocation) => void;
 }
 
 const SYNONYM_MAP: Record<string, string[]> = {
@@ -59,7 +58,6 @@ export default function PwaHome({
   onSearchSubmit,
   onSelectCategory,
   onSelectWorker,
-  onSelectComingSoonLocation,
 }: PwaHomeProps) {
   const [query, setQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
@@ -148,10 +146,6 @@ export default function PwaHome({
   const handleSelectLocation = (loc: NigerianLocation) => {
     setLocationOpen(false);
     setSearchOpen(false);
-    if (loc.status === 'soon') {
-      onSelectComingSoonLocation?.(loc);
-      return;
-    }
     setSelectedLocation(loc);
   };
 
@@ -373,25 +367,6 @@ export default function PwaHome({
                         </button>
                       ))}
 
-                      <div className="my-1.5 flex items-center border-t border-slate-100 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                        <span>Coming soon</span>
-                      </div>
-                      {NIGERIAN_LOCATIONS.filter((location) => location.status === 'soon').map((location) => (
-                        <button
-                          key={location.id}
-                          type="button"
-                          onClick={() => handleSelectLocation(location)}
-                          className="flex w-full items-center justify-between px-3 py-2 text-left text-xs font-medium text-slate-500 transition-colors hover:bg-amber-50/70 hover:text-amber-900"
-                        >
-                          <span className="flex items-center gap-2">
-                            <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                            {location.name}
-                          </span>
-                          <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[9px] font-semibold text-amber-800">
-                            Soon
-                          </span>
-                        </button>
-                      ))}
                     </div>
                   )}
                 </div>

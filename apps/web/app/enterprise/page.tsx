@@ -63,10 +63,10 @@ export default function EnterprisePage() {
                 BukieBrainJobs for business
               </div>
               <h1 className="mt-5 font-display text-4xl font-extrabold tracking-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.45)] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.08]">
-                Business services are coming soon.
+                Business services for recurring work.
               </h1>
               <p className="mt-5 max-w-lg text-base leading-7 text-white/95 drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)] sm:text-lg">
-                We are building a dedicated experience for organisations that coordinate recurring maintenance across properties, teams, and locations.
+                Coordinate recurring maintenance across properties, teams, and locations with one clear service workflow.
               </p>
             </div>
           </div>
@@ -76,13 +76,13 @@ export default function EnterprisePage() {
       <section className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-end lg:gap-16">
           <div className="max-w-xl">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">What we are building</p>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Built for recurring work</p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#001A41] sm:text-4xl">
               A simpler way to manage recurring work.
             </h2>
           </div>
           <p className="max-w-2xl text-base leading-7 text-slate-600">
-            We are designing the business experience around property operations, facility needs, and ongoing service coordination. We will share more when it is ready.
+            Manage property operations, facility needs, and ongoing service coordination in one place.
           </p>
         </div>
 

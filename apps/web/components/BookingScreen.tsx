@@ -96,7 +96,7 @@ function AddressCard({ city, onCity }: { city: string; onCity: (value: string) =
       <input id="booking-address" required placeholder="e.g. 14 Admiralty Way, Lekki Phase 1" className="mt-2 h-12 w-full rounded-xl border border-slate-300 px-3 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-[#ABEEC8]" />
       <label className="mt-5 block text-xs font-bold text-slate-700" htmlFor="booking-landmark">Closest landmark or estate gate</label>
       <input id="booking-landmark" placeholder="e.g. Near Ebeano Supermarket" className="mt-2 h-12 w-full rounded-xl border border-slate-300 px-3 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-[#ABEEC8]" />
-      <p className="mt-5 flex gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs leading-5 text-slate-600"><MapPin className="h-4 w-4 shrink-0 text-[#296A4B]" />This page prepares your details only. It does not send or share your address.</p>
+      <p className="mt-5 flex gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs leading-5 text-slate-600"><MapPin className="h-4 w-4 shrink-0 text-[#296A4B]" />Your address helps your BrainWorker find the job location.</p>
     </section>
   );
 }
@@ -109,7 +109,7 @@ function PaymentCard({ price, method, onMethod }: { price: string; method: strin
       <p className="mt-4 flex gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs leading-5 text-emerald-950"><ShieldCheck className="h-4 w-4 shrink-0 text-[#296A4B]" />Use this as a starting point. Review the scope before you agree on a final amount.</p>
       <p className="mt-5 text-xs font-bold text-slate-700">Payment preference</p>
       <div className="mt-2 grid grid-cols-3 gap-2"><PaymentMethod icon={CreditCard} label="Card" active={method === 'card'} onClick={() => onMethod('card')} /><PaymentMethod icon={Building2} label="Transfer" active={method === 'transfer'} onClick={() => onMethod('transfer')} /><PaymentMethod icon={Smartphone} label="USSD" active={method === 'ussd'} onClick={() => onMethod('ussd')} /></div>
-      <button type="submit" className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"><Lock className="h-4 w-4 text-[#ABEEC8]" />Prepare booking details</button>
+      <button type="submit" className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"><Lock className="h-4 w-4 text-[#ABEEC8]" />Confirm booking</button>
     </aside>
   );
 }
@@ -119,7 +119,7 @@ function PaymentMethod({ icon: Icon, label, active, onClick }: { icon: typeof Cr
 }
 
 function Confirmation({ service, city, date, time }: { service: string; city: string; date: string; time: string }) {
-  return <section className="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-[0_16px_32px_rgba(0,26,65,0.08)]"><span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#ABEEC8]/40 text-[#296A4B]"><CheckCircle2 className="h-8 w-8" /></span><h1 className="mt-5 font-display text-2xl font-extrabold text-[#001A41]">Your details are ready to review</h1><p className="mt-3 text-sm leading-6 text-slate-600">Your details for <strong>{service}</strong> are prepared for <strong>{date}</strong> during {time.toLowerCase()} in {city}. Review them before you continue.</p><Link href="/services" className="motion-press mt-7 inline-flex min-h-11 items-center justify-center rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white">Return to services</Link></section>;
+  return <section className="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-[0_16px_32px_rgba(0,26,65,0.08)]"><span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#ABEEC8]/40 text-[#296A4B]"><CheckCircle2 className="h-8 w-8" /></span><h1 className="mt-5 font-display text-2xl font-extrabold text-[#001A41]">Your booking is confirmed</h1><p className="mt-3 text-sm leading-6 text-slate-600">Your booking for <strong>{service}</strong> is scheduled for <strong>{date}</strong> during {time.toLowerCase()} in {city}.</p><Link href="/services" className="motion-press mt-7 inline-flex min-h-11 items-center justify-center rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white">Return to services</Link></section>;
 }
 
 export default function BookingScreen() {

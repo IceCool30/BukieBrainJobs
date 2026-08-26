@@ -21,7 +21,6 @@ import {
 interface HeroSectionProps {
   onSearchSubmit?: (service: string, location: string) => void;
   onSelectCategory?: (category: ServiceCategory) => void;
-  onSelectComingSoonLocation?: (location: NigerianLocation) => void;
 }
 
 const SYNONYM_MAP: Record<string, string[]> = {
@@ -138,7 +137,6 @@ const TRENDING_SEARCHES = [
 export default function HeroSection({
   onSearchSubmit,
   onSelectCategory,
-  onSelectComingSoonLocation,
 }: HeroSectionProps) {
   const [serviceQuery, setServiceQuery] = useState('');
   const [selectedLocation, setSelectedLocation] = useState<NigerianLocation>(
@@ -243,10 +241,6 @@ export default function HeroSection({
   const handleSelectLocation = (loc: NigerianLocation) => {
     setShowLocationDropdown(false);
     setShowSuggestions(false);
-    if (loc.status === 'soon') {
-      onSelectComingSoonLocation?.(loc);
-      return;
-    }
     setSelectedLocation(loc);
   };
 
@@ -452,25 +446,6 @@ export default function HeroSection({
                       </button>
                     ))}
 
-                    <div className="border-t border-slate-100 my-1.5 pt-1.5 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                      <span>Coming soon</span>
-                    </div>
-                    {NIGERIAN_LOCATIONS.filter((l) => l.status === 'soon').map((loc) => (
-                      <button
-                        key={loc.id}
-                        type="button"
-                        onClick={() => handleSelectLocation(loc)}
-                        className="w-full px-3 py-2 text-left text-xs font-medium text-slate-500 hover:bg-amber-50/70 hover:text-amber-900 flex items-center justify-between transition-colors"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                          <span>{loc.name}</span>
-                        </div>
-                        <span className="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-semibold text-[9px]">
-                          Soon
-                        </span>
-                      </button>
-                    ))}
                   </div>
                 )}
               </div>

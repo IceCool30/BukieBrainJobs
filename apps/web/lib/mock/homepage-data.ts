@@ -54,10 +54,10 @@ export const NIGERIAN_LOCATIONS: NigerianLocation[] = [
   { id: 'lagos', name: 'Lagos', state: 'Lagos State', status: 'active', popularArea: 'Ikeja / Lekki / VI' },
   { id: 'abuja', name: 'Abuja (FCT)', state: 'Federal Capital Territory', status: 'active', popularArea: 'Maitama / Wuse 2' },
   { id: 'ph', name: 'Port Harcourt', state: 'Rivers State', status: 'active', popularArea: 'GRA Phase 2 / Trans-Amadi' },
-  { id: 'ibadan', name: 'Ibadan', state: 'Oyo State', status: 'soon', popularArea: 'Bodija / Oluyole' },
-  { id: 'enugu', name: 'Enugu', state: 'Enugu State', status: 'soon', popularArea: 'Independence Layout' },
-  { id: 'kano', name: 'Kano', state: 'Kano State', status: 'soon', popularArea: 'Nassarawa GRA' },
-  { id: 'benin', name: 'Benin City', state: 'Edo State', status: 'soon', popularArea: 'GRA Benin' },
+  { id: 'ibadan', name: 'Ibadan', state: 'Oyo State', status: 'active', popularArea: 'Bodija / Oluyole' },
+  { id: 'enugu', name: 'Enugu', state: 'Enugu State', status: 'active', popularArea: 'Independence Layout' },
+  { id: 'kano', name: 'Kano', state: 'Kano State', status: 'active', popularArea: 'Nassarawa GRA' },
+  { id: 'benin', name: 'Benin City', state: 'Edo State', status: 'active', popularArea: 'GRA Benin' },
 ];
 
 export const SERVICE_CATEGORIES: ServiceCategory[] = [
@@ -299,7 +299,7 @@ export const MOCK_FAQS: FAQItem[] = [
   {
     id: 'faq-6',
     question: 'How can I become a BrainWorker?',
-    answer: 'Use the BrainWorker form to prepare your service and profile details. Live onboarding will be introduced when marketplace operations are ready.',
+    answer: 'Create your profile, add your service and location, then complete verification to start receiving relevant jobs.',
     category: 'General',
   },
 ];
