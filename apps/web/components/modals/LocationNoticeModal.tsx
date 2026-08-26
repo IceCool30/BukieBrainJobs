@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { X, MapPin, Bell, CheckCircle2 } from 'lucide-react';
+import { useEffect } from 'react';
+import { MapPin, X } from 'lucide-react';
 import { NigerianLocation } from '../../lib/mock/homepage-data';
 
 interface LocationNoticeModalProps {
@@ -10,89 +10,52 @@ interface LocationNoticeModalProps {
 }
 
 export default function LocationNoticeModal({ location, onClose }: LocationNoticeModalProps) {
-  const [notified, setNotified] = useState(false);
+  useEffect(() => {
+    if (!location) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [location, onClose]);
 
   if (!location) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#001A41]/60 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 border border-slate-200 shadow-2xl relative space-y-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#001A41]/65 p-4" role="dialog" aria-modal="true" aria-labelledby="location-notice-title">
+      <section className="relative w-full max-w-md space-y-5 rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-2xl sm:p-8">
         <button
+          type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100"
+          aria-label="Close availability notice"
+          className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
         >
-          <X className="w-5 h-5" />
+          <X className="h-5 w-5" />
         </button>
 
-        {!notified ? (
-          <>
-            <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center mx-auto">
-              <MapPin className="w-6 h-6" />
-            </div>
+        <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-800">
+          <MapPin className="h-6 w-6" />
+        </span>
 
-            <div className="text-center space-y-2">
-              <span className="text-[10px] bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                Service Availability
-              </span>
-              <h3 className="font-display font-bold text-xl text-[#0B1C30]">
-                Coming Soon to {location.name}
-              </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                We are currently onboarding and verifying BrainWorkers in {location.name}, {location.state}. Full service will be available shortly.
-              </p>
-            </div>
+        <div className="space-y-2">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-amber-800">Service availability</p>
+          <h3 id="location-notice-title" className="font-display text-xl font-bold text-[#0B1C30]">Coming soon to {location.name}</h3>
+          <p className="text-sm leading-relaxed text-slate-600">We are preparing service availability in {location.name}, {location.state}.</p>
+          <p className="text-sm leading-relaxed text-slate-600">You can currently browse services in Lagos, Abuja, and Port Harcourt.</p>
+        </div>
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setNotified(true);
-              }}
-              className="space-y-3 pt-2"
-            >
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Get Notified When We Launch in {location.name}
-                </label>
-                <input
-                  type="email"
-                  required
-                  placeholder="Enter your email address"
-                  className="w-full text-xs p-3 rounded-xl border border-slate-300 focus:outline-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 bg-[#001A41] hover:bg-[#000F2D] text-white text-xs font-bold rounded-full transition-all flex items-center justify-center gap-2"
-              >
-                <Bell className="w-4 h-4 text-[#ABEEC8]" />
-                <span>Notify Me When Available</span>
-              </button>
-            </form>
-          </>
-        ) : (
-          <div className="text-center py-6 space-y-4">
-            <div className="w-12 h-12 bg-[#ABEEC8]/40 text-[#2E6E4F] rounded-full flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-7 h-7" />
-            </div>
-            <h3 className="font-display font-bold text-xl text-[#0B1C30]">
-              You are on the Priority List!
-            </h3>
-            <p className="text-xs text-slate-600 max-w-xs mx-auto">
-              We will notify you as soon as verified BrainWorkers become available in {location.name}.
-            </p>
-            <button
-              onClick={() => {
-                setNotified(false);
-                onClose();
-              }}
-              className="px-6 py-2 bg-[#001A41] text-white text-xs font-bold rounded-full"
-            >
-              Close
-            </button>
-          </div>
-        )}
-      </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="motion-press inline-flex min-h-11 items-center justify-center rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+        >
+          Choose another location
+        </button>
+      </section>
     </div>
   );
 }

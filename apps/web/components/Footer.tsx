@@ -59,7 +59,7 @@ export default function Footer() {
             <h3 className="font-display font-semibold text-white text-sm mb-4">For businesses and support</h3>
             <ul className="space-y-2.5 text-xs text-slate-300">
               <li><a href="/enterprise" className="hover:text-white transition-colors">Business services</a></li>
-              <li><a href="/enterprise" className="hover:text-white transition-colors">Contact support</a></li>
+              <li><a href="mailto:support@bukiebrainjobs.ng" className="hover:text-white transition-colors">Contact support</a></li>
               <li className="flex items-center gap-1.5 pt-1 text-slate-300">
                 <PhoneCall className="w-3.5 h-3.5 text-[#ABEEC8]" />
                 +234 800-BUKIE-JOBS

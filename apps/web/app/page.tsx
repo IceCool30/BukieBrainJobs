@@ -14,7 +14,6 @@ import MarketplacePaths from '../components/MarketplacePaths';
 import TestimonialsSection from '../components/TestimonialsSection';
 import FAQSection from '../components/FAQSection';
 import PartnerBar from '../components/PartnerBar';
-import PwaInstallBanner from '../components/PwaInstallBanner';
 import PostJobModal from '../components/modals/PostJobModal';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
 import BrainWorkerProfileModal from '../components/modals/BrainWorkerProfileModal';
@@ -145,9 +144,6 @@ export default function CustomerHomepage() {
       <Footer />
 
       {/* Homepage has no bottom navigation bar (live experience standard). */}
-
-      {/* PWA Install Banner */}
-      <PwaInstallBanner />
 
       {/* Modals & Drawers */}
       <PostJobModal isOpen={postJobOpen} onClose={() => setPostJobOpen(false)} />

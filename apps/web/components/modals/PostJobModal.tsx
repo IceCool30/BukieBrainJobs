@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Briefcase, CheckCircle2, Lock } from 'lucide-react';
 
 interface PostJobModalProps {
@@ -11,14 +11,29 @@ interface PostJobModalProps {
 export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
   const [submitted, setSubmitted] = useState(false);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#001A41]/60 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 border border-slate-200 shadow-2xl relative space-y-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#001A41]/65 p-4" role="dialog" aria-modal="true" aria-labelledby="post-job-title">
+      <div className="relative w-full max-w-lg space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl sm:p-8">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100"
+          className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
+          type="button"
+          aria-label="Close job request"
         >
           <X className="w-5 h-5" />
         </button>
@@ -30,11 +45,11 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
                 <Briefcase className="w-3.5 h-3.5 text-[#296A4B]" />
                 Service Request
               </div>
-              <h3 className="font-display font-bold text-xl sm:text-2xl text-[#0B1C30]">
+              <h3 id="post-job-title" className="font-display font-bold text-xl sm:text-2xl text-[#0B1C30]">
                 Post a Job Request
               </h3>
               <p className="text-xs text-slate-500">
-                Describe the service you need and receive competitive quotes from verified BrainWorkers in your area.
+                Describe the job you need so you can prepare the details for the next step.
               </p>
             </div>
 
@@ -46,10 +61,11 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
               className="space-y-4"
             >
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Service or Task Title
+                <label htmlFor="post-job-title-input" className="mb-1 block text-xs font-semibold text-slate-700">
+                  Service or job title
                 </label>
                 <input
+                  id="post-job-title-input"
                   type="text"
                   required
                   placeholder="e.g. 50kVA Generator Maintenance and Oil Change"
@@ -59,16 +75,16 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">City or Location</label>
-                  <select className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-white">
+                  <label htmlFor="post-job-city" className="mb-1 block text-xs font-semibold text-slate-700">City or location</label>
+                  <select id="post-job-city" className="w-full text-xs p-3 rounded-xl border border-slate-300 bg-white">
                     <option>Lagos State</option>
                     <option>Abuja FCT</option>
                     <option>Port Harcourt</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Estimated Budget</label>
-                  <input
+                  <label htmlFor="post-job-budget" className="mb-1 block text-xs font-semibold text-slate-700">Estimated budget</label>
+                  <input id="post-job-budget"
                     type="text"
                     placeholder="e.g. N15,000 – N25,000"
                     className="w-full text-xs p-3 rounded-xl border border-slate-300 focus:outline-none"
@@ -77,8 +93,8 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Job Description</label>
-                <textarea
+                <label htmlFor="post-job-description" className="mb-1 block text-xs font-semibold text-slate-700">Job description</label>
+                <textarea id="post-job-description"
                   rows={3}
                   placeholder="Describe the issue or specific requirements..."
                   className="w-full text-xs p-3 rounded-xl border border-slate-300 focus:outline-none"
@@ -87,14 +103,14 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
 
               <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 flex items-center gap-2">
                 <Lock className="w-4 h-4 text-[#296A4B] shrink-0" />
-                <span>Secure Escrow: No upfront payment required until you accept a quote.</span>
+                <span>Review the payment details before you choose a payment method.</span>
               </div>
 
               <button
                 type="submit"
                 className="w-full py-3.5 bg-[#001A41] hover:bg-[#000F2D] text-white text-xs font-bold rounded-full transition-all shadow-md"
               >
-                Submit Request
+                Prepare job details
               </button>
             </form>
           </>
@@ -104,10 +120,10 @@ export default function PostJobModal({ isOpen, onClose }: PostJobModalProps) {
               <CheckCircle2 className="w-7 h-7" />
             </div>
             <h3 className="font-display font-bold text-xl text-[#0B1C30]">
-              Request Submitted Successfully!
+              Job details are ready
             </h3>
             <p className="text-xs text-slate-600 max-w-sm mx-auto">
-              Verified BrainWorkers in your area are being notified. You will receive competitive quotes shortly via SMS and in-app notification.
+              Keep these details available for the next job-posting step.
             </p>
             <button
               onClick={() => {

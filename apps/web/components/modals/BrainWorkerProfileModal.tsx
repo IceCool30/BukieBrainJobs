@@ -35,7 +35,7 @@ export default function BrainWorkerProfileModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#001A41]/60 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#001A41]/65 p-4 animate-fadeIn"
       role="dialog"
       aria-modal="true"
       aria-labelledby="worker-modal-title"
@@ -66,7 +66,7 @@ export default function BrainWorkerProfileModal({
             <div className="space-y-1.5 flex-1">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ABEEC8]/20 text-[#ABEEC8] text-xs font-semibold border border-[#ABEEC8]/30">
                 <BadgeCheck className="w-3.5 h-3.5" />
-                <span>BukiePassport {worker.passportTier} Verified</span>
+                <span>Profile verification</span>
               </div>
               <h2 id="worker-modal-title" className="font-display font-bold text-xl sm:text-2xl text-white">
                 {worker.name}
@@ -95,22 +95,22 @@ export default function BrainWorkerProfileModal({
             <div className="flex items-center gap-2.5">
               <ShieldCheck className="w-5 h-5 text-[#296A4B] shrink-0" />
               <div>
-                <div className="text-xs font-bold text-[#001A41]">ID Verified</div>
-                <div className="text-[11px] text-slate-500">Government ID & NIN</div>
+                <div className="text-xs font-bold text-[#001A41]">Profile details</div>
+                <div className="text-[11px] text-slate-500">Review before you book</div>
               </div>
             </div>
             <div className="flex items-center gap-2.5">
               <Award className="w-5 h-5 text-[#296A4B] shrink-0" />
               <div>
-                <div className="text-xs font-bold text-[#001A41]">Trade Certified</div>
-                <div className="text-[11px] text-slate-500">Skills & Vetting Passed</div>
+                <div className="text-xs font-bold text-[#001A41]">Service details</div>
+                <div className="text-[11px] text-slate-500">Check the listed skills</div>
               </div>
             </div>
             <div className="flex items-center gap-2.5">
               <Wrench className="w-5 h-5 text-[#296A4B] shrink-0" />
               <div>
-                <div className="text-xs font-bold text-[#001A41]">Tools Inspected</div>
-                <div className="text-[11px] text-slate-500">Commercial Standard</div>
+                <div className="text-xs font-bold text-[#001A41]">Booking details</div>
+                <div className="text-[11px] text-slate-500">Confirm the job scope first</div>
               </div>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function BrainWorkerProfileModal({
           {/* Skills & Specialties */}
           <div className="space-y-2.5">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              Specialized Skills & Equipment
+              Skills listed on this profile
             </h3>
             <div className="flex flex-wrap gap-2">
               {worker.skills.map((skill) => (
@@ -144,9 +144,9 @@ export default function BrainWorkerProfileModal({
               <div className="text-right">
                 <span className="inline-flex items-center gap-1 text-xs font-bold text-[#296A4B]">
                   <ShieldCheck className="w-4 h-4" />
-                  Escrow Protected
+                  Payment details
                 </span>
-                <p className="text-[11px] text-slate-500">No payment release until work approved</p>
+                <p className="text-[11px] text-slate-500">Review payment terms before booking</p>
               </div>
             </div>
           </div>
@@ -155,7 +155,7 @@ export default function BrainWorkerProfileModal({
         {/* Footer Actions */}
         <div className="p-6 border-t border-slate-200 bg-slate-50/70 rounded-b-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="text-xs text-slate-500 text-center sm:text-left">
-            Quotes are verified and locked before on-site arrival.
+            Review the service details before booking.
           </div>
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <button

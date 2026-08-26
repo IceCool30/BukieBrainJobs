@@ -104,12 +104,12 @@ function AddressCard({ city, onCity }: { city: string; onCity: (value: string) =
 function PaymentCard({ price, method, onMethod }: { price: string; method: string; onMethod: (value: string) => void }) {
   return (
     <aside className="h-fit rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6 lg:sticky lg:top-6">
-      <h2 className="font-display text-lg font-bold text-[#001A41]">Review and book</h2>
-      <div className="mt-5 space-y-3 rounded-xl bg-[#F8F9FF] p-4 text-sm"><div className="flex justify-between text-slate-600"><span>Starting service quote</span><span className="font-bold text-[#001A41]">{price}</span></div><div className="flex justify-between border-t border-slate-200 pt-3 font-bold text-[#001A41]"><span>Amount held in escrow</span><span>{price}</span></div></div>
-      <p className="mt-4 flex gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs leading-5 text-emerald-950"><ShieldCheck className="h-4 w-4 shrink-0 text-[#296A4B]" />Your payment is held while you review the completed job.</p>
+      <h2 className="font-display text-lg font-bold text-[#001A41]">Review booking details</h2>
+      <div className="mt-5 space-y-3 rounded-xl bg-[#F8F9FF] p-4 text-sm"><div className="flex justify-between text-slate-600"><span>Starting service price</span><span className="font-bold text-[#001A41]">{price}</span></div><div className="flex justify-between border-t border-slate-200 pt-3 font-bold text-[#001A41]"><span>Estimated booking total</span><span>{price}</span></div></div>
+      <p className="mt-4 flex gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs leading-5 text-emerald-950"><ShieldCheck className="h-4 w-4 shrink-0 text-[#296A4B]" />Review the payment terms before you confirm a booking.</p>
       <p className="mt-5 text-xs font-bold text-slate-700">Payment method</p>
       <div className="mt-2 grid grid-cols-3 gap-2"><PaymentMethod icon={CreditCard} label="Card" active={method === 'card'} onClick={() => onMethod('card')} /><PaymentMethod icon={Building2} label="Transfer" active={method === 'transfer'} onClick={() => onMethod('transfer')} /><PaymentMethod icon={Smartphone} label="USSD" active={method === 'ussd'} onClick={() => onMethod('ussd')} /></div>
-      <button type="submit" className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"><Lock className="h-4 w-4 text-[#ABEEC8]" />Authorize escrow and book</button>
+      <button type="submit" className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"><Lock className="h-4 w-4 text-[#ABEEC8]" />Prepare booking details</button>
     </aside>
   );
 }

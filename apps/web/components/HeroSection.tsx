@@ -322,14 +322,13 @@ export default function HeroSection({
       {/* Hero portrait backdrop */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <picture className="relative block h-full w-full">
-          <source media="(max-width: 768px)" srcSet="/images/hero-mobile-1080.jpg" />
+          <source media="(max-width: 767px)" srcSet="/images/hero-mobile-1080.jpg" />
           <Image
             src="/images/hero-portrait-1920.png"
             alt="BukieBrainJobs BrainWorkers at work in Lagos"
             fill
             priority
-            className="object-cover"
-            style={{ objectPosition: '50% 50%' }}
+            className="object-cover md:object-[64%_50%] lg:object-center"
           />
         </picture>
         <div className="absolute inset-y-0 left-0 w-[38%] hidden md:block bg-gradient-to-r from-[#001A41]/60 to-[#001A41]/0" />
@@ -339,7 +338,7 @@ export default function HeroSection({
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-3xl text-left space-y-6">
           {/* Headline */}
-          <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-[3rem] tracking-tight text-white leading-[1.15] sm:leading-[1.15]">
+          <h1 className="max-w-[380px] font-display text-3xl font-extrabold leading-[1.15] tracking-tight text-white sm:max-w-[430px] sm:text-4xl lg:max-w-none lg:text-[3rem]">
             Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on{' '}
             <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#ABEEC8] to-[#5FD8A5]">
               BukieBrainJobs
@@ -493,7 +492,7 @@ export default function HeroSection({
                 id="hero-service-suggestions"
                 role={serviceQuery.trim() ? 'listbox' : undefined}
                 aria-label={serviceQuery.trim() ? 'Service suggestions' : undefined}
-                className="motion-popover absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)] border border-slate-200 p-3 z-50 max-h-[380px] overflow-y-auto space-y-3"
+                className="motion-popover relative z-50 mt-2 max-h-[380px] space-y-3 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)]"
               >
                 {/* Zero State: Recent & Trending */}
                 {!serviceQuery.trim() && (

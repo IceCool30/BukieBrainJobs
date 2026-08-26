@@ -310,7 +310,7 @@ export default function PwaHome({
                     setSearchOpen(true);
                   }}
                   onKeyDown={handleSearchKeyDown}
-                  placeholder="What service do you need? (e.g. AC, Generator)"
+                  placeholder="What service do you need?"
                   className="h-11 w-full rounded-xl bg-transparent pl-10 pr-8 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none"
                 />
                 {query && (
@@ -418,7 +418,7 @@ export default function PwaHome({
                 id="pwa-service-suggestions"
                 role={query.trim() ? 'listbox' : undefined}
                 aria-label={query.trim() ? 'Service suggestions' : undefined}
-                className="motion-popover absolute left-0 right-0 top-full z-50 mt-2 max-h-[320px] space-y-3 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)]"
+                className="motion-popover relative z-50 mt-2 max-h-[320px] space-y-3 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)]"
               >
                 {!query.trim() && (
                   <div className="space-y-3">

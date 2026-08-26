@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, UserCheck, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 interface BecomeWorkerModalProps {
@@ -11,14 +11,29 @@ interface BecomeWorkerModalProps {
 export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModalProps) {
   const [submitted, setSubmitted] = useState(false);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#001A41]/60 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 border border-slate-200 shadow-2xl relative space-y-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#001A41]/65 p-4" role="dialog" aria-modal="true" aria-labelledby="become-brainworker-title">
+      <div className="relative w-full max-w-lg space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl sm:p-8">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100"
+          className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
+          type="button"
+          aria-label="Close BrainWorker application"
         >
           <X className="w-5 h-5" />
         </button>
@@ -30,11 +45,11 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
                 <UserCheck className="w-3.5 h-3.5 text-[#296A4B]" />
                 BrainWorker Registration
               </div>
-              <h3 className="font-display font-bold text-xl sm:text-2xl text-[#0B1C30]">
+              <h3 id="become-brainworker-title" className="font-display font-bold text-xl sm:text-2xl text-[#0B1C30]">
                 Become a BrainWorker
               </h3>
               <p className="text-xs text-slate-500">
-                Submit your profile for comprehensive NIN and BVN verification and begin receiving service requests.
+                Share your profile details so you can prepare for the BrainWorker onboarding process.
               </p>
             </div>
 
@@ -89,7 +104,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
 
               <div className="p-3 rounded-xl bg-[#EFF4FF] border border-[#CBDBF5] text-[11px] text-[#0B1C30] flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#296A4B] shrink-0" />
-                <span>BukiePassport verification includes government photo ID and BVN confirmation.</span>
+                <span>Profile verification may ask for identity and work details when onboarding is available.</span>
               </div>
 
               <button
@@ -106,10 +121,10 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
               <CheckCircle2 className="w-7 h-7" />
             </div>
             <h3 className="font-display font-bold text-xl text-[#0B1C30]">
-              Application Received!
+              Application details are ready
             </h3>
             <p className="text-xs text-slate-600 max-w-sm mx-auto">
-              Our verification team will review your submission and contact you via WhatsApp to schedule your BukiePassport verification.
+              Keep these details available for the next onboarding step.
             </p>
             <button
               onClick={() => {
