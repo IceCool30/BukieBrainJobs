@@ -35,12 +35,12 @@ export default function Footer() {
           <div>
             <h3 className="font-display font-semibold text-white text-sm mb-4">Explore services</h3>
             <ul className="space-y-2.5 text-xs text-slate-300">
-              <li><a href="/services" className="hover:text-white transition-colors">Generator services</a></li>
-              <li><a href="/services" className="hover:text-white transition-colors">Air-conditioning services</a></li>
-              <li><a href="/services" className="hover:text-white transition-colors">Plumbing services</a></li>
-              <li><a href="/services" className="hover:text-white transition-colors">Electrical and solar services</a></li>
-              <li><a href="/services" className="hover:text-white transition-colors">TV and satellite services</a></li>
-              <li><a href="/services" className="hover:text-white transition-colors">Moving and relocation</a></li>
+              <li><Link href="/services" className="hover:text-white transition-colors">Generator services</Link></li>
+              <li><Link href="/services" className="hover:text-white transition-colors">Air-conditioning services</Link></li>
+              <li><Link href="/services" className="hover:text-white transition-colors">Plumbing services</Link></li>
+              <li><Link href="/services" className="hover:text-white transition-colors">Electrical and solar services</Link></li>
+              <li><Link href="/services" className="hover:text-white transition-colors">TV and satellite services</Link></li>
+              <li><Link href="/services" className="hover:text-white transition-colors">Moving and relocation</Link></li>
             </ul>
           </div>
 

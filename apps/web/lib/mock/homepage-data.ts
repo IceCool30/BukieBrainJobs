@@ -143,6 +143,10 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   },
 ];
 
+export function getServiceCategory(serviceId: string) {
+  return SERVICE_CATEGORIES.find((category) => category.id === serviceId);
+}
+
 export const MOCK_BRAINWORKERS: BrainWorker[] = [
   {
     id: 'bw-1',

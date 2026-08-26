@@ -178,6 +178,29 @@ The public homepage is customer-first, supports three marketplace entry paths, s
 
 **Source references:** Explicit user-approved WEB-001 completion direction, `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md`, and the current approved web experience.
 
+### WEB-004: Public service detail between discovery and booking preparation
+
+**Date:** 2026-08-26
+**Status:** Approved implementation contract
+
+**Context:** The current public discovery flow moves from homepage search or `/services` category discovery directly to booking preparation. The services directory labels its action `Review details`, but no dedicated service-detail route exists. The active public-website roadmap identifies service details as remaining scope, and the current homepage mock boundary already provides factual service data.
+
+**Decision:**
+
+1. Add a deterministic public route at `/services/[serviceId]` for existing public service categories.
+2. Use only the current public `SERVICE_CATEGORIES` and active `NIGERIAN_LOCATIONS` mock data to present a concise service review.
+3. Keep the page a guest-accessible information and booking-preparation step. It may link to the existing booking route with the selected service and starting price.
+4. Do not add backend, authentication, payment, Escrow, verification, profile, availability, testimonial, review, matching, location-activation, or corporate behavior.
+5. Follow the live approved experience and WEB-003. Do not restore historical public trust claims or activation flows.
+
+**Consequences:**
+
+- `Review details` actions must route to the service-detail page rather than directly to booking preparation.
+- Existing discovery and booking code remains the source for entry and exit behavior.
+- A focused mock-data lookup helper and tests are required to keep invalid routes deterministic.
+
+**Affected areas:** `apps/web/app/services`, `apps/web/lib/mock/homepage-data.ts`, `docs/04-public-website/WEB-004-SERVICE-DETAIL.md`, and public service discovery.
+
 ## Adding a decision
 
 Do not edit a historical decision to hide a change. If a decision changes, create a new decision, link the superseded decision and explain the reason.
