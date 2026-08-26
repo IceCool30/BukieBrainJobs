@@ -1,0 +1,6 @@
+{
+  "name": "BukieBrainJobs",
+  "description": "Nigeria's on-demand hybrid service marketplace connecting verified artisans with homeowners and businesses for generator servicing, AC repair, plumbing, and home tasks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
