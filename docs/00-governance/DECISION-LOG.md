@@ -146,6 +146,38 @@ The public homepage is customer-first, supports three marketplace entry paths, s
 
 **Affected areas:** `apps/web/app/enterprise/page.tsx`, roadmap, product foundation, homepage navigation
 
+### WEB-003: Current approved live experience governs WEB-001 completion
+
+**Date:** 2026-08-26
+**Status:** Approved
+**Supersedes:** Conflicting public behavior in WEB-001 and WEB-002 only where it contradicts the current approved live experience.
+
+**Context:** The WEB-001 completion gate reconciled older planning documents with the current approved BukieBrainJobs customer experience. Earlier records contained public launch-state, controlled-activation, and trust-content assumptions that no longer match the approved product direction.
+
+**Decision:**
+
+1. The current approved live experience, then the latest explicit product direction, governs the WEB-001 completion gate.
+2. Do not restore public BukiePassport, unsupported verification, Escrow, payment, guarantee, dispute, or fabricated testimonial claims from historical material.
+3. Treat Lagos, Abuja, Port Harcourt, Ibadan, Enugu, Kano, and Benin City as the active locations shown in the current experience. Do not restore a public Notify Me flow or the former 36-capitals-plus-Abuja activation model.
+4. Keep `/enterprise` as the current launch-ready recurring-work page. The WEB-002 Coming Soon state is superseded for this route.
+5. Keep public journeys launch-ready and customer-facing. Internal mock implementation details must not appear as customer readiness notices.
+6. Deterministic mock data and client-only interaction states remain permitted for WEB-001. This decision does not authorize backend, payment, verification, or identity-document implementation.
+
+**Alternatives considered:**
+
+- Restore older requirements verbatim during completion review, rejected because it would contradict the approved customer experience.
+- Remove the enterprise route, rejected because the approved live experience retains it as a business-service entry point.
+
+**Consequences:**
+
+- Historical specifications remain useful only where they do not conflict with this decision and the live experience standard.
+- Completion review prioritizes usable discovery, booking preparation, BrainWorker profiles, client validation, accessibility, and deterministic recovery states.
+- Older public trust or launch-state copy must not silently re-enter the product.
+
+**Affected areas:** `apps/web`, homepage and supporting public routes, live experience standard, future WEB-001 audit work, historical WEB-001 and WEB-002 references.
+
+**Source references:** Explicit user-approved WEB-001 completion direction, `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md`, and the current approved web experience.
+
 ## Adding a decision
 
 Do not edit a historical decision to hide a change. If a decision changes, create a new decision, link the superseded decision and explain the reason.
