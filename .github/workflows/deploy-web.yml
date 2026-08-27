@@ -25,6 +25,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Run database migrations
+        if: ${{ vars.RUN_DATABASE_MIGRATIONS == 'true' }}
         run: pnpm --filter @bukiebrainjobs/db exec prisma migrate deploy
         env:
           DIRECT_URL: ${{ secrets.DIRECT_URL }}

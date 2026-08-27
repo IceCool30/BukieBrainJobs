@@ -40,6 +40,12 @@ Pull requests should validate:
 
 Production deployment requires review and approval according to repository governance.
 
+### UI-only deployment phase
+
+Until the user explicitly approves backend and database integration, frontend deployments must not connect to a database or run migrations. The `Deploy Web` workflow therefore runs Prisma migrations only when the repository variable `RUN_DATABASE_MIGRATIONS` is explicitly set to `true`.
+
+Before enabling that variable for the first backend release, configure a valid production `DIRECT_URL` GitHub Actions secret, verify the direct connection is appropriate for Prisma migrations, and complete the database release checks. Do not enable migrations merely because a frontend deployment is ready.
+
 ## Secrets
 
 CI secrets belong in GitHub Actions secret storage. Application deployment secrets belong in the appropriate hosting environment. Never commit secret values.
