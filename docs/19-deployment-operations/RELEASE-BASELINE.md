@@ -44,7 +44,9 @@ Production deployment requires review and approval according to repository gover
 
 Until the user explicitly approves backend and database integration, frontend deployments must not connect to a database or run migrations. The `Deploy Web` workflow therefore runs Prisma migrations only when the repository variable `RUN_DATABASE_MIGRATIONS` is explicitly set to `true`.
 
-Before enabling that variable for the first backend release, configure a valid production `DIRECT_URL` GitHub Actions secret, verify the direct connection is appropriate for Prisma migrations, and complete the database release checks. Do not enable migrations merely because a frontend deployment is ready.
+Vercel Git integration is the production deployment path during this phase. The workflow's manual Vercel CLI deployment is deliberately disabled unless `RUN_CLI_VERCEL_DEPLOY` is explicitly set to `true`, preventing duplicate deployments and unconfigured Vercel credentials from blocking frontend releases.
+
+Before enabling database migrations for the first backend release, configure a valid production `DIRECT_URL` GitHub Actions secret, verify the direct connection is appropriate for Prisma migrations, and complete the database release checks. Before enabling the manual Vercel CLI gate, configure valid `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` GitHub Actions secrets. Do not enable either gate merely because a frontend deployment is ready.
 
 ## Secrets
 

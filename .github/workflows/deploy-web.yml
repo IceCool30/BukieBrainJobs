@@ -31,6 +31,7 @@ jobs:
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
 
       - name: Deploy to Vercel
+        if: ${{ vars.RUN_CLI_VERCEL_DEPLOY == 'true' }}
         run: pnpm dlx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes
         env:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
