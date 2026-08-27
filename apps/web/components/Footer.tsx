@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShieldCheck, PhoneCall, Mail } from 'lucide-react';
+import { PhoneCall, Mail } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -24,11 +24,6 @@ export default function Footer() {
                 className="h-auto w-[150px] rounded-xl object-contain"
               />
             </Link>
-
-            <a href="/guarantee" className="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
-              Read BukieGuarantee terms
-            </a>
           </div>
 
           {/* Column 1: Our Services */}
