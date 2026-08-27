@@ -14,9 +14,7 @@ import FAQSection from '../components/FAQSection';
 import PartnerBar from '../components/PartnerBar';
 import PostJobModal from '../components/modals/PostJobModal';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
-import BrainWorkerProfileModal from '../components/modals/BrainWorkerProfileModal';
 import {
-  BrainWorker,
   ServiceCategory,
   SERVICE_CATEGORIES,
 } from '../lib/mock/homepage-data';
@@ -24,7 +22,6 @@ import {
 export default function CustomerHomepage() {
   const [postJobOpen, setPostJobOpen] = useState(false);
   const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
-  const [selectedWorker, setSelectedWorker] = useState<BrainWorker | null>(null);
 
   const isPwa = useIsPwa();
   const router = useRouter();
@@ -39,13 +36,6 @@ export default function CustomerHomepage() {
     router.push(query ? `/services?${query}` : '/services');
   };
 
-  const startBooking = (details: { service: string; price?: string; city?: string; note?: string; worker?: string }) => {
-    const params = new URLSearchParams({ service: details.service, price: details.price || '₦10,000' });
-    if (details.city) params.set('city', details.city);
-    if (details.note) params.set('note', details.note);
-    if (details.worker) params.set('worker', details.worker);
-    router.push(`/book?${params.toString()}`);
-  };
 
   const handleSearchSubmit = (serviceQuery: string, location?: string) => {
     const city = location || 'Lagos';
@@ -62,22 +52,6 @@ export default function CustomerHomepage() {
     goToDiscovery({ service: category.title, categoryId: category.id });
   };
 
-  const handleSelectWorker = (worker: BrainWorker) => {
-    setSelectedWorker(worker);
-  };
-
-  const handleBookWorker = (worker: BrainWorker) => {
-    startBooking({
-      service: worker.category,
-      price: worker.startingRate,
-      city: worker.location.includes('Abuja')
-        ? 'Abuja'
-        : worker.location.includes('Port Harcourt')
-          ? 'Port Harcourt'
-          : 'Lagos',
-      worker: worker.name,
-    });
-  };
 
   return (
     <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans selection:bg-[#ABEEC8] selection:text-[#001A41]">
@@ -94,7 +68,6 @@ export default function CustomerHomepage() {
           <PwaHome
             onOpenDrawer={() => drawerRef.current?.()}
             onSelectCategory={handleSelectCategory}
-            onSelectWorker={handleSelectWorker}
             onSearchSubmit={handleSearchSubmit}
           />
         ) : (
@@ -112,7 +85,7 @@ export default function CustomerHomepage() {
             <PopularServices onSelectCategory={handleSelectCategory} />
 
             {/* Featured BrainWorkers (Vetted Nigerian Artisans) */}
-            <FeaturedBrainWorkers onSelectWorker={handleSelectWorker} />
+            <FeaturedBrainWorkers />
 
             {/* How BukieBrainJobs Works */}
             <HowItWorks />
@@ -131,12 +104,6 @@ export default function CustomerHomepage() {
       {/* Modals & Drawers */}
       <PostJobModal isOpen={postJobOpen} onClose={() => setPostJobOpen(false)} />
       <BecomeWorkerModal isOpen={becomeWorkerOpen} onClose={() => setBecomeWorkerOpen(false)} />
-      <BrainWorkerProfileModal
-        worker={selectedWorker}
-        isOpen={!!selectedWorker}
-        onClose={() => setSelectedWorker(null)}
-        onBookWorker={handleBookWorker}
-      />
     </div>
   );
 }

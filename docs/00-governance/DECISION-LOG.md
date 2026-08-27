@@ -201,6 +201,40 @@ The public homepage is customer-first, supports three marketplace entry paths, s
 
 **Affected areas:** `apps/web/app/services`, `apps/web/lib/mock/homepage-data.ts`, `docs/04-public-website/WEB-004-SERVICE-DETAIL.md`, and public service discovery.
 
+### WEB-005: Public BrainWorker profile
+
+**Date:** 2026-08-27
+**Status:** Approved implementation contract
+
+**Context:** The public homepage already presents four featured BrainWorker records, but the existing profile entry point is a modal that exposes trust and performance fields and does not provide a durable route or safe booking context.
+
+**Decision:**
+
+1. Add the guest-accessible route `/brainworkers/[brainworkerId]` for exactly `bw-1`, `bw-2`, `bw-3`, and `bw-4`.
+2. Define and consume a separate `PublicBrainWorker` projection containing only id, name, title, category, location, starting rate, portrait, and listed skills.
+3. Accept only exact canonical `serviceId` values from `SERVICE_CATEGORIES` and active city values from `NIGERIAN_LOCATIONS`. Ignore arbitrary incoming `service` display strings.
+4. Require explicit service and city selection before the booking handoff. Do not infer the selected service from the BrainWorker category.
+5. Return to canonical Services context when both values are valid. Otherwise return to `/#workers`.
+6. Delete the former profile modal after confirming that no active import, render, state, or callback path remains.
+7. Keep the implementation frontend-only and deterministic. Do not add a directory, backend, authentication, payments, Escrow, verification, availability, matching, messaging, or native-app work.
+8. Apply PLAT-002 for homepage shell behavior below 768px and in standalone mode. The homepage has no bottom navigation.
+
+**Alternatives considered:**
+
+- Keep the modal as the public profile journey, rejected because it exposes prohibited fields and has no durable route.
+- Auto-select a service from the BrainWorker category, rejected because the customer must explicitly choose the service.
+- Build a full BrainWorker directory, deferred because v1 inventory is limited to the existing four featured records.
+
+**Consequences:**
+
+- Featured homepage cards now route to a shared public profile page.
+- The profile page can safely prepare a canonical booking handoff without exposing richer mock-record fields.
+- Remote CI, preview, and browser evidence remain required before merge approval.
+
+**Affected areas:** `apps/web`, public website documentation, live experience wording, and the public artifact matrix.
+
+**Source references:** `docs/04-public-website/WEB-005-PUBLIC-BRAINWORKER-PROFILE.md`, `docs/04-public-website/WEB-005-PHASE-1-AUDIT.md`, `docs/04-public-website/WEB-004-SERVICE-DETAIL.md`, and `PLAT-002`.
+
 ## Adding a decision
 
 Do not edit a historical decision to hide a change. If a decision changes, create a new decision, link the superseded decision and explain the reason.

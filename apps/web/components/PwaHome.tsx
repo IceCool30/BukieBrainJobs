@@ -16,7 +16,6 @@ import {
 import {
   SERVICE_CATEGORIES,
   ServiceCategory,
-  BrainWorker,
   NIGERIAN_LOCATIONS,
   NigerianLocation,
 } from '../lib/mock/homepage-data';
@@ -30,7 +29,6 @@ interface PwaHomeProps {
   onOpenDrawer: () => void;
   onSearchSubmit?: (service: string, location: string) => void;
   onSelectCategory?: (category: ServiceCategory) => void;
-  onSelectWorker?: (worker: BrainWorker) => void;
 }
 
 const SYNONYM_MAP: Record<string, string[]> = {
@@ -57,7 +55,6 @@ export default function PwaHome({
   onOpenDrawer,
   onSearchSubmit,
   onSelectCategory,
-  onSelectWorker,
 }: PwaHomeProps) {
   const [query, setQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
@@ -543,7 +540,7 @@ export default function PwaHome({
         </div>
       </div>
 
-      <FeaturedBrainWorkers onSelectWorker={onSelectWorker} />
+      <FeaturedBrainWorkers profileCity={selectedLocation.name} />
       <HowItWorks />
       <FAQSection />
     </div>

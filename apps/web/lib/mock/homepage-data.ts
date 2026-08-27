@@ -32,6 +32,28 @@ export interface BrainWorker {
   skills: string[];
 }
 
+export interface PublicBrainWorker {
+  id: string;
+  name: string;
+  title: string;
+  category: string;
+  location: string;
+  startingRate: string;
+  avatarUrl: string;
+  skills: string[];
+}
+
+export interface PublicBrainWorkerContext {
+  service?: ServiceCategory;
+  city?: string;
+}
+
+export interface PublicBrainWorkerContextQuery {
+  serviceId?: string | string[];
+  city?: string | string[];
+  service?: string | string[];
+}
+
 export interface CustomerTestimonial {
   id: string;
   author: string;
@@ -147,6 +169,25 @@ export function getServiceCategory(serviceId: string) {
   return SERVICE_CATEGORIES.find((category) => category.id === serviceId);
 }
 
+export const PUBLIC_BRAINWORKER_IDS = ['bw-1', 'bw-2', 'bw-3', 'bw-4'] as const;
+
+function getSingleQueryValue(value: string | string[] | undefined) {
+  return typeof value === 'string' ? value : undefined;
+}
+
+export function resolvePublicBrainWorkerContext(
+  query: PublicBrainWorkerContextQuery,
+): PublicBrainWorkerContext {
+  const serviceId = getSingleQueryValue(query.serviceId);
+  const city = getSingleQueryValue(query.city);
+
+  const context: PublicBrainWorkerContext = {};
+  const service = serviceId ? getServiceCategory(serviceId) : undefined;
+  if (service) context.service = service;
+  if (city && NIGERIAN_LOCATIONS.some((location) => location.name === city && location.status === 'active')) context.city = city;
+  return context;
+}
+
 export const MOCK_BRAINWORKERS: BrainWorker[] = [
   {
     id: 'bw-1',
@@ -205,6 +246,52 @@ export const MOCK_BRAINWORKERS: BrainWorker[] = [
     skills: ['Lithium Battery Bank Design', 'Felicity & Must Inverters', 'Smart Prepaid Meters'],
   },
 ];
+
+export function getPublicBrainWorker(id: string): PublicBrainWorker | undefined {
+  if (!PUBLIC_BRAINWORKER_IDS.includes(id as (typeof PUBLIC_BRAINWORKER_IDS)[number])) return undefined;
+  const worker = MOCK_BRAINWORKERS.find((candidate) => candidate.id === id);
+  if (!worker) return undefined;
+
+  return {
+    id: worker.id,
+    name: worker.name,
+    title: worker.title,
+    category: worker.category,
+    location: worker.location,
+    startingRate: worker.startingRate,
+    avatarUrl: worker.avatarUrl,
+    skills: worker.skills,
+  };
+}
+
+export function getPublicBrainWorkers() {
+  return PUBLIC_BRAINWORKER_IDS.flatMap((id) => {
+    const worker = getPublicBrainWorker(id);
+    return worker ? [worker] : [];
+  });
+}
+
+export function buildPublicBrainWorkerServicesUrl(context: PublicBrainWorkerContext) {
+  if (!context.service || !context.city) return undefined;
+  return `/services?${new URLSearchParams({
+    category: context.service.id,
+    q: context.service.title,
+    city: context.city,
+  }).toString()}`;
+}
+
+export function buildPublicBrainWorkerBookingUrl(
+  profile: PublicBrainWorker,
+  context: PublicBrainWorkerContext,
+) {
+  if (!context.service || !context.city) return undefined;
+  return `/book?${new URLSearchParams({
+    service: context.service.title,
+    price: profile.startingRate,
+    city: context.city,
+    worker: profile.name,
+  }).toString()}`;
+}
 
 export const MOCK_TESTIMONIALS: CustomerTestimonial[] = [
   {
