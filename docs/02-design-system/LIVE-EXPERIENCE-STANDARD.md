@@ -24,8 +24,8 @@ BukieBrainJobs ships one product on three surfaces. Experience quality must rema
 
 | Context | Meaning | UI expectation |
 |---|---|---|
-| Website | Desktop or mobile browser, not installed | Full responsive website. Phone browsers use the website layout, not the PWA shell. |
-| PWA | Installed or standalone web app only | Full product in a standalone shell. Detect with `display-mode: standalone` or iOS `navigator.standalone`. Never treat viewport width alone as PWA. |
+| Website | Desktop or mobile browser, not installed | Full responsive website. The homepage uses the compact shell below 768px and the full layout at desktop widths. |
+| PWA | Installed or standalone web app only | Full product in a standalone shell. The homepage uses the compact shell in standalone mode. Detect standalone with `display-mode: standalone` or iOS `navigator.standalone`; viewport width is a separate PLAT-002 homepage-shell signal. |
 | Native | Expo Android and iOS apps | Full product with native navigation and OS capabilities. Same journeys and outcomes as web and PWA. |
 
 Do not build a reduced journey for any surface by policy. Layout and chrome may adapt. Core tasks must remain available.

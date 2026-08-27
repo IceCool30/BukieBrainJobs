@@ -9,6 +9,7 @@
 | WEB-001B | Google Stitch Design Requirements | Stitch visual-generation requirements | Deprecated | No |
 | WEB-001B-MCP | Antigravity → Stitch MCP Orchestration | Operational design orchestration | Deprecated | No |
 | WEB-004 | Public Service Detail | Public service review between discovery and booking preparation | Approved implementation contract | Yes |
+| WEB-005 | Public BrainWorker Profile | Guest-accessible profile review for the four featured BrainWorkers with canonical booking context | Approved implementation contract | Yes |
 
 ## Locked homepage rules
 
