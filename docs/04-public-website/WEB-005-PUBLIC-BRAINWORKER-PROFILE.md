@@ -1,6 +1,6 @@
 # WEB-005: Public BrainWorker Profile
 
-**Status:** Implemented locally, pending CI, preview, and browser verification
+**Status:** Implemented, remote CI and preview verified, merge review pending
 **Scope:** Frontend-only, deterministic mock-data public website route
 **Route:** `/brainworkers/[brainworkerId]`
 **Depends on:** Current approved live experience, `WEB-003`, `WEB-004`, `PLAT-002`, existing homepage discovery, services directory, and booking preparation
@@ -81,7 +81,7 @@ The page uses sequential semantic headings, meaningful portrait alternatives, vi
 
 - [ ] Focused contract tests cover valid and invalid context, public inventory, safe projection, route identity, return URL, booking handoff, and arbitrary-service rejection.
 - [ ] Repository quality commands pass independently.
-- [ ] GitHub Actions, Vercel preview, and browser-runtime evidence are recorded before merge approval.
+- [x] GitHub Actions, Vercel preview, and browser-runtime evidence are recorded. Standalone remote build and diff-check commands are not separate workflow steps and remain reported explicitly.
 
 ## Non-goals
 

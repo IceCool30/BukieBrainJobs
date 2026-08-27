@@ -1,6 +1,6 @@
 # WEB-005 Phase 1 Audit: Public BrainWorker Profile
 
-**Status:** Implemented locally, pending executable remote verification
+**Status:** Remote CI, Vercel preview, and browser verification completed; merge review pending
 **Decision:** WEB-005 approved for a frontend-only deterministic mock-data implementation
 **Platform decision:** PLAT-002 governs the compact homepage shell below 768px and in installed or standalone mode. The homepage has no bottom navigation.
 
@@ -40,7 +40,9 @@ The local sandbox is not evidence of GitHub Actions execution, Vercel preview re
 | Approved contract implemented locally | PASS |
 | Focused deterministic tests | PASS |
 | Local web type-check and lint | PASS |
-| Remote quality-gate commands | NOT RUN pending branch push |
-| Vercel preview | NOT RUN pending branch push |
-| Browser-runtime verification | NOT RUN pending preview URL |
+| Remote CI install, generation, type-check, lint, and test steps | PASS |
+| Standalone remote web build command | NOT RUN; Vercel preview build passed |
+| Standalone remote git diff check | NOT RUN; local diff check passed |
+| Vercel preview | PASS |
+| Browser-runtime verification | PASS for exercised route, context, responsive, console, network, and navigation cases |
 | Merge approval | NOT REQUESTED |
