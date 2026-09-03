@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#001A41"
+      "backgroundColor": "#FFFFFF"
     },
     "ios": {
       "supportsTablet": true,
@@ -19,7 +19,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo-icon.png",
-        "backgroundColor": "#001A41"
+        "backgroundColor": "#FFFFFF"
       },
       "package": "com.bukiebrainjobs.app"
     },

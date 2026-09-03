@@ -8,9 +8,9 @@ This document governs all brand asset usage across the web app, mobile app, docu
 
 | Variant | Files | When to Use |
 |---|---|---|
-| **3D Glossy Badge (PRIMARY)** | `logo-appicon-3d-2048.png`, `logo-appicon-3d-1024.png`, `logo-appicon-3d-512.png`, `logo-appicon-3d.svg` | App icons, favicons, PWA icons, splash screens, social profile pictures, store listings |
+| **White Rounded B App Icon (PRIMARY)** | `logo-appicon-3d-2048.png` | App icons, favicons, PWA icons, splash screens, social profile pictures, store listings |
 | **Landscape Wordmark (PREFERRED FOR BRANDING)** | `wordmark-banner-tight.png` (web), `wordmark-banner-2280.png` (print/OG master) | Navbar, hero section, footer brand column, OpenGraph/social sharing, email headers, any place where the full company name should appear |
-| Flat 2D mark (fallback) | `logo-appicon-1200.png`, `logo-mark-384.png` | Only as a fallback when the 3D version cannot render |
+| Flat 2D mark (fallback, legacy) | `logo-appicon-1200.png`, `logo-mark-384.png` | Only as a fallback when the 3D version cannot render |
 
 ## Master Assets
 
@@ -18,7 +18,7 @@ The masters live in `docs/06-brand/assets/`. They are the highest-resolution ori
 
 | File | Description | Dimensions | Primary Use |
 |---|---|---|---|
-| `logo-appicon-3d-2048.png` | 3D glossy badge: navy "B" with green swoosh on white tile | 2048x2048 | Source for all icons and derived sizes |
+| `logo-appicon-3d-2048.png` | White strongly rounded-square tile containing the navy B and green swoosh, with transparent outer edges | 2048x2048 | Source for all icons and derived sizes |
 | `logo-appicon-3d.svg` | Vector version of the 3D badge | vector | Future-proofing; scaling to any size losslessly |
 | `wordmark-banner-tight.png` | Tight wordmark: 3D badge tile + "BukieBrainJobs" navy text on an independent white container with a subtle corner radius (~60px), no surrounding background or canvas | 1888x454 | Canonical wordmark across the website (Navbar, Footer, Hero) and master export for other developers |
 | `wordmark-banner-2280.png` | Master export of the landscape wordmark on a full canvas (includes soft shadow band) | 2280x684 | Print, OpenGraph/social sharing, source for future derivations |
@@ -37,10 +37,10 @@ The masters live in `docs/06-brand/assets/`. They are the highest-resolution ori
 ## Usage Rules
 
 1. **Preferred lockup:** the landscape wordmark (`wordmark-banner-tight.png`) is preferred wherever the brand appears prominently on the website. It contains the full company name and should not be cropped.
-2. **Icons and favicons:** always generated from `logo-appicon-3d-2048.png`, never from the flat variants.
+2. **Icons and favicons:** always generated from `logo-appicon-3d-2048.png` using `generate-assets.py`, never from the flat variants. Reusable logo images retain transparency outside the white rounded tile. Installed web, PWA, Apple, and Windows icons use an opaque white canvas so platforms do not add an unintended dark or coloured background.
 3. **Wordmark container radius:** the canonical wordmark container uses a subtle corner radius of ~13% of its height (60px on the 454px asset), matching the glassy button treatment. Do not restyle it to a sharper box or a fuller pill. This radius is fixed in `DESIGN.md` under Shapes.
 4. **Independent white container:** the canonical `wordmark-banner-tight.png` is the white container with the badge and text only. It has no surrounding background or baked canvas. When placed on navy surfaces (Navbar, Footer), let the component's own background show around it; do not wrap it in an extra white box. Older versions that include a large baked white or shadowed canvas must not be used.
-5. **Dark background alternative:** if a fully transparent badge on navy is needed without the wordmark text, use the flat `logo-mark-384.png` as a fallback.
+5. **Dark background alternative:** do not introduce a separate coloured field around the B. Use the approved rounded white tile and let the surrounding surface remain visible through its transparent outer edges.
 6. **Social sharing / OpenGraph:** use `og-banner-1200x630.png` (1200x630, the minimum OG size), built from the landscape wordmark on a white canvas.
 7. **No re-creation:** if a size not listed here is needed, add it via `generate-assets.py`, then update this table.
 8. **Cleanup rule:** only the canonical sizes listed above should exist in `public/` and `assets/images/`. Older unused sizes should be deleted, and duplicated uploads should never be committed.
