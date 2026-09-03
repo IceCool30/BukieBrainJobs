@@ -1,115 +1,82 @@
 #!/usr/bin/env python3
-"""Generate the canonical BukieBrainJobs brand asset set from master logos.
+"""Generate the canonical BukieBrainJobs brand assets from the approved B master.
 
-PRIMARY MASTER (3D glossy badge):
-  docs/06-brand/assets/logo-appicon-3d-2048.png   highest-res source
-  docs/06-brand/assets/logo-appicon-3d.svg        vector source (future-proofing)
-
-SECONDARY MASTERS:
-  docs/06-brand/assets/wordmark-banner-2280.png   landscape wordmark (BukieBrainJobs text)
-  docs/06-brand/assets/logo-mark-384.png          flat transparent mark (fallback variant)
-
-Outputs (canonical set, nothing more):
-  apps/web/public/favicon.ico                     root favicon
-  apps/web/public/icons/                          PWA icons (64..512, maskable 192/512, win11)
-  apps/web/public/icons/apple-touch-icon-180x180.png
-  apps/web/public/images/logo-icon.png            (wordmark banner, small) - kept? NO.
-  apps/web/public/images/logo-mark-384.png        (3D badge)
-  apps/web/public/images/wordmark-banner-2280.png (landscape wordmark)
-  apps/web/public/images/og-banner-1200x630.png   (open graph)
-  apps/mobile/assets/images/                      mobile equivalents
-
-Deletes: any leftover sizes not in the canonical set are left untouched (do not
-delete other people's files). Duplicates in /uploads stay in /uploads only.
+The reusable logo keeps transparent pixels outside the white rounded tile. Installed
+web, PWA, Apple, and Windows icons use an opaque white canvas so platform masks do
+not introduce an unintended dark or coloured background.
 """
-import os
-import shutil
+from base64 import b64encode
+from io import BytesIO
+from pathlib import Path
 from PIL import Image
 
-Image.MAX_IMAGE_PIXELS = None
-
-HERE = os.path.dirname(os.path.abspath(__file__))
-MOUNT = "/mnt/f848e474-3d7d-4728-8c9f-cff0d29d3ff5/bukiebrainjobs"
-ASSETS = os.path.join(MOUNT, "docs/06-brand/assets")
-
-BADGE3D = os.path.join(ASSETS, "logo-appicon-3d-2048.png")
-BANNER = os.path.join(ASSETS, "wordmark-banner-2280.png")
-
-WEB_IMG = os.path.join(MOUNT, "apps/web/public/images")
-WEB_ICONS = os.path.join(MOUNT, "apps/web/public/icons")
-WEB_ROOT = os.path.join(MOUNT, "apps/web/public")
-MOBILE = os.path.join(MOUNT, "apps/mobile/assets/images")
+ROOT = Path(__file__).resolve().parents[2]
+ASSETS = ROOT / "docs/06-brand/assets"
+SOURCE = ASSETS / "logo-appicon-3d-2048.png"
+BANNER = ASSETS / "wordmark-banner-2280.png"
+WEB_ROOT = ROOT / "apps/web/public"
+WEB_IMG = WEB_ROOT / "images"
+WEB_ICONS = WEB_ROOT / "icons"
+MOBILE = ROOT / "apps/mobile/assets/images"
 
 
-def save(im, path, size=None):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    if size:
-        im = im.resize(size, Image.LANCZOS)
-    im.save(path, optimize=True)
-    print(f"  {os.path.basename(path)} {im.size}")
+def opaque(image):
+    canvas = Image.new("RGBA", image.size, "#FFFFFF")
+    canvas.alpha_composite(image)
+    return canvas
+
+
+def save(image, path):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(path, optimize=True)
+    print(f"  {path.relative_to(ROOT)} {image.size}")
+
+
+def resized(image, size):
+    return image.resize((size, size), Image.Resampling.LANCZOS)
 
 
 def main():
-    badge = Image.open(BADGE3D).convert("RGBA")
-
-    print("=== web: /public/icons/ ===")
-    for s in (64, 128, 192, 256, 384, 512):
-        save(badge, os.path.join(WEB_ICONS, f"icon-{s}x{s}.png"), (s, s))
-    for s in (192, 512):
-        # maskable: keep badge inside 60% safe zone
-        canvas = Image.new("RGBA", (s, s), (0, 0, 0, 0))
-        icon = badge.resize((int(s * 0.6), int(s * 0.6)), Image.LANCZOS)
-        canvas.paste(icon, ((s - icon.width) // 2, (s - icon.height) // 2), icon)
-        save(canvas, os.path.join(WEB_ICONS, f"icon-maskable-{s}x{s}.png"))
-    save(badge, os.path.join(WEB_ICONS, "apple-touch-icon-180x180.png"), (180, 180))
-    save(badge, os.path.join(WEB_ICONS, "windows11/SmallTile.scale-100.png"), (71, 71))
-    save(badge, os.path.join(WEB_ICONS, "windows11/Square150x150Logo.scale-100.png"), (150, 150))
-    save(badge, os.path.join(WEB_ICONS, "windows11/Square44x44Logo.scale-100.png"), (44, 44))
-    save(badge, os.path.join(WEB_ICONS, "windows11/LargeTile.scale-100.png"), (310, 310))
-
-    print("=== web: favicon.ico ===")
-    badge.resize((256, 256), Image.LANCZOS).save(
-        os.path.join(WEB_ROOT, "favicon.ico"),
-        sizes=[(16, 16), (32, 32), (48, 48), (64, 64)],
-    )
-    print("  favicon.ico multi-size")
-
-    print("=== web: /public/images/ (canonical images) ===")
-    save(badge, os.path.join(WEB_IMG, "logo-icon.png"), (192, 192))
-    save(badge, os.path.join(WEB_IMG, "logo-mark-384.png"), (384, 384))
-    save(badge, os.path.join(WEB_IMG, "logo-badge-512.png"), (512, 512))
+    badge = Image.open(SOURCE).convert("RGBA")
     banner = Image.open(BANNER).convert("RGBA")
-    save(banner, os.path.join(WEB_IMG, "wordmark-banner-2280.png"), banner.size)
-    # OG banner: 1200x630 white canvas with the landscape wordmark centered
-    og = banner.resize((1200, int(banner.height * 1200 / banner.width)), Image.LANCZOS)
-    og_canvas = Image.new("RGB", (1200, 630), "#FFFFFF")
-    og_canvas.paste(og.convert("RGB"), (0, (630 - og.height) // 2))
-    save(og_canvas, os.path.join(WEB_IMG, "og-banner-1200x630.png"))
 
-    print("=== mobile: /assets/images/ ===")
-    save(badge, os.path.join(MOBILE, "logo-icon.png"), (192, 192))
-    save(badge, os.path.join(MOBILE, "logo-main.png"), (512, 512))
-    save(badge, os.path.join(MOBILE, "logo-hero.png"), (600, 600))
-    save(banner, os.path.join(MOBILE, "wordmark-banner.png"), banner.size)
-    splash = Image.new("RGB", (1024, 1024), "#FFFFFF")
-    icon = badge.resize((512, 512), Image.LANCZOS)
-    splash.paste(icon, (256, 256), icon)
-    save(splash, os.path.join(MOBILE, "splash-icon.png"))
+    for size in (64, 128, 192, 256, 384, 512):
+        save(opaque(resized(badge, size)), WEB_ICONS / f"icon-{size}x{size}.png")
+    for size in (192, 512):
+        save(opaque(resized(badge, size)), WEB_ICONS / f"icon-maskable-{size}x{size}.png")
+    save(opaque(resized(badge, 180)), WEB_ICONS / "apple-touch-icon-180x180.png")
+    for size, name in ((71, "SmallTile.scale-100.png"), (150, "Square150x150Logo.scale-100.png"), (44, "Square44x44Logo.scale-100.png"), (310, "LargeTile.scale-100.png")):
+        save(opaque(resized(badge, size)), WEB_ICONS / "windows11" / name)
 
-    print("=== cleanup: remove superseded derived sizes no longer in canonical set ===")
-    remove_candidates = [
-        # old sizes generated from flat master that the 3D badge now replaces
-        os.path.join(WEB_ICONS, "icon-72x72.png"),
-        os.path.join(WEB_ICONS, "icon-96x96.png"),
-        os.path.join(WEB_ICONS, "icon-144x144.png"),
-        os.path.join(WEB_ICONS, "icon-152x152.png"),
-    ]
-    for p in remove_candidates:
-        if os.path.exists(p):
-            os.remove(p)
-            print(f"  removed {p}")
+    favicon = opaque(resized(badge, 256))
+    favicon.save(WEB_ROOT / "favicon.ico", sizes=((16, 16), (32, 32), (48, 48), (64, 64)))
+    png = BytesIO()
+    opaque(resized(badge, 512)).save(png, format="PNG", optimize=True)
+    encoded = b64encode(png.getvalue()).decode()
+    (WEB_ROOT / "favicon.svg").write_text(
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><image width="512" height="512" href="data:image/png;base64,{encoded}"/></svg>\n'
+    )
 
-    print("Done.")
+    for size, name in ((192, "logo-icon.png"), (384, "logo-mark-384.png"), (512, "logo-badge-512.png")):
+        save(resized(badge, size), WEB_IMG / name)
+    save(banner, WEB_IMG / "wordmark-banner-2280.png")
+    og = banner.resize((1200, round(banner.height * 1200 / banner.width)), Image.Resampling.LANCZOS)
+    canvas = Image.new("RGB", (1200, 630), "#FFFFFF")
+    canvas.paste(og.convert("RGB"), (0, (630 - og.height) // 2))
+    save(canvas, WEB_IMG / "og-banner-1200x630.png")
+
+    for size, name in ((192, "logo-icon.png"), (512, "logo-main.png"), (600, "logo-hero.png")):
+        save(resized(badge, size), MOBILE / name)
+    save(banner, MOBILE / "wordmark-banner.png")
+    splash = Image.new("RGBA", (1024, 1024), "#FFFFFF")
+    splash.alpha_composite(resized(badge, 512), (256, 256))
+    save(splash, MOBILE / "splash-icon.png")
+
+    for name in ("icon-72x72.png", "icon-96x96.png", "icon-144x144.png", "icon-152x152.png"):
+        path = WEB_ICONS / name
+        if path.exists():
+            path.unlink()
+            print(f"  removed {path.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
