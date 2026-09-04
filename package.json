@@ -43,7 +43,8 @@
       "deepmerge-ts": "^8.0.0",
       "image-size": "^2.0.2",
       "uuid": "^11.1.1",
-      "sharp": "^0.34.4"
+      "sharp": "^0.34.4",
+      "browserslist": "^4.28.7"
     }
   }
 }
