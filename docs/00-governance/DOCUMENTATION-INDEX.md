@@ -82,6 +82,10 @@ Future canonical documents include the site map, navigation model, role-based in
 Live approved feature:
 
 - `WEB-001-HOMEPAGE.md`: homepage implementation status and history
+- `WEB-004-SERVICE-DETAIL.md`: public service detail specification and implementation contract
+- `WEB-005-PUBLIC-BRAINWORKER-PROFILE.md`: public BrainWorker profile specification and return contract
+- `WEB-006-SERVICES-DISCOVERY.md`: public services discovery and query synchronization specification
+- `WEB-006-DESIGN-SPECIFICATION.md`: public services discovery design specification and state matrix
 - `APPROVED-HOMEPAGE-ARTIFACTS.md`: approved homepage decisions
 - The homepage is live and approved on `feature/web-001-homepage-redesign` with a two-tier hero search, image-led service cards, a three-brand trust strip (Paystack, Flutterwave, Dojah), and BrainWorker terminology standardized across all customer-facing copy
 

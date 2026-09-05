@@ -235,6 +235,38 @@ The public homepage is customer-first, supports three marketplace entry paths, s
 
 **Source references:** `docs/04-public-website/WEB-005-PUBLIC-BRAINWORKER-PROFILE.md`, `docs/04-public-website/WEB-005-PHASE-1-AUDIT.md`, `docs/04-public-website/WEB-004-SERVICE-DETAIL.md`, and `PLAT-002`.
 
+### WEB-006: Public services discovery and query synchronization baseline
+
+**Date:** 2026-09-05
+**Status:** Approved Product & UX Specification (Ready for Design)
+
+**Context:** The `/services` route previously existed as an initial client-side prototype. It lacked URL query parameter synchronization, active-city validation, resilient handling of invalid query parameters, and bidirectional return context with `/services/[serviceId]`. Additionally, WEB-005 established an explicit return URL contract (`/services?category=<id>&q=<title>&city=<city>`) that `/services` must reliably support.
+
+**Decision:**
+
+1. Formalize `/services` as the canonical public Services Discovery catalog for Milestone 2, scoped strictly to the 8 canonical categories in `SERVICE_CATEGORIES`.
+2. Enforce bidirectional URL query parameter synchronization for `q`, `category`, and `city`, debouncing search inputs and updating browser URL state cleanly without disruptive reloads.
+3. Validate incoming `city` parameters strictly against the 7 active cities in `NIGERIAN_LOCATIONS` (`status: 'active'`). Inactive or unknown cities fallback gracefully to nationwide scope with an informational notice rather than throwing an error or redirecting.
+4. Maintain a strict architectural boundary: `/services` is purely for service category exploration and job scoping. BrainWorker matching, ranking, and availability scheduling remain deferred to post-booking milestones.
+5. Standardize directory-to-service-detail return context so customer filter states are preserved across navigation between `/services` and `/services/[serviceId]`.
+6. Consume exclusively the public mock boundaries in `apps/web/lib/mock/homepage-data.ts`. No backend APIs, database models, auth, payments, or Escrow logic are permitted.
+
+**Alternatives considered:**
+
+- Full BrainWorker directory with worker search on `/services` (rejected; out of scope for Milestone 2 and breaches the public data boundary).
+- Silent redirect on invalid city or category query parameters (rejected; confusing to users and degrades deep-link reliability).
+- Pure client-side state without URL synchronization (rejected; prevents shareable search links and breaks back-navigation from service details).
+
+**Consequences:**
+
+- UI design and component implementation can proceed on a dedicated `feature/web-006-services-discovery` branch once authorized.
+- Clear contract established for search, category filtering, city selection, empty states, and detail navigation.
+- Preserves full compatibility with incoming links from `WEB-001` homepage and `WEB-005` BrainWorker profiles.
+
+**Affected areas:** `apps/web/app/services`, `docs/04-public-website/WEB-006-SERVICES-DISCOVERY.md`, public website navigation.
+
+**Source references:** `docs/04-public-website/WEB-006-SERVICES-DISCOVERY.md`, `docs/04-public-website/WEB-004-SERVICE-DETAIL.md`, `docs/04-public-website/WEB-005-PUBLIC-BRAINWORKER-PROFILE.md`, `PLAT-002`, and `DESIGN.md`.
+
 ## Adding a decision
 
 Do not edit a historical decision to hide a change. If a decision changes, create a new decision, link the superseded decision and explain the reason.
