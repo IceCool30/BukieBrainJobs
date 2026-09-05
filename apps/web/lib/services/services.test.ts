@@ -1,9 +1,11 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   buildServiceDetailUrl,
   buildServicesUrl,
+  createDebouncedScheduler,
   filterServices,
   matchesService,
+  normalizeCategory,
   validateCategory,
   validateCity,
 } from './index';
@@ -54,6 +56,34 @@ describe('validateCategory', () => {
   });
 });
 
+describe('normalizeCategory', () => {
+  it('normalizes "all", "All", and "ALL" to "All" unconstrained category state', () => {
+    expect(normalizeCategory('all')).toBe('All');
+    expect(normalizeCategory('All')).toBe('All');
+    expect(normalizeCategory('ALL')).toBe('All');
+    expect(normalizeCategory('  all  ')).toBe('All');
+  });
+
+  it('preserves canonical category IDs unchanged', () => {
+    expect(normalizeCategory('generator')).toBe('generator');
+    expect(normalizeCategory('ac')).toBe('ac');
+    expect(normalizeCategory('plumbing')).toBe('plumbing');
+    expect(normalizeCategory('electrical')).toBe('electrical');
+    expect(normalizeCategory('cleaning')).toBe('cleaning');
+    expect(normalizeCategory('carpentry')).toBe('carpentry');
+    expect(normalizeCategory('tv-mounting')).toBe('tv-mounting');
+    expect(normalizeCategory('moving')).toBe('moving');
+  });
+
+  it('returns undefined for invalid or unknown categories', () => {
+    expect(normalizeCategory('spaceship')).toBeUndefined();
+    expect(normalizeCategory('random')).toBeUndefined();
+    expect(normalizeCategory('')).toBeUndefined();
+    expect(normalizeCategory(null)).toBeUndefined();
+    expect(normalizeCategory(undefined)).toBeUndefined();
+  });
+});
+
 describe('matchesService', () => {
   const generatorCategory = SERVICE_CATEGORIES.find((c) => c.id === 'generator')!;
 
@@ -89,6 +119,11 @@ describe('filterServices', () => {
     expect(results).toHaveLength(8);
   });
 
+  it('normalizes lowercase "all" category to unconstrained state', () => {
+    const results = filterServices(SERVICE_CATEGORIES, { category: 'all' });
+    expect(results).toHaveLength(8);
+  });
+
   it('filters by category ID', () => {
     const results = filterServices(SERVICE_CATEGORIES, { category: 'ac' });
     expect(results).toHaveLength(1);
@@ -117,6 +152,14 @@ describe('buildServicesUrl', () => {
   it('returns /services when all parameters are empty or default', () => {
     expect(buildServicesUrl({})).toBe('/services');
     expect(buildServicesUrl({ category: 'All', q: '', city: null })).toBe('/services');
+    expect(buildServicesUrl({ category: 'all', q: '', city: null })).toBe('/services');
+  });
+
+  it('omits category from query string when category is all or All', () => {
+    expect(buildServicesUrl({ category: 'all' })).toBe('/services');
+    expect(buildServicesUrl({ category: 'All' })).toBe('/services');
+    expect(buildServicesUrl({ category: 'all', city: 'Lagos' })).toBe('/services?city=Lagos');
+    expect(buildServicesUrl({ category: 'all', q: 'generator' })).toBe('/services?q=generator');
   });
 
   it('includes only active parameters in query string', () => {
@@ -149,5 +192,65 @@ describe('buildServiceDetailUrl', () => {
         returnQ: 'diesel',
       }),
     ).toBe('/services/generator?city=Lagos&returnCategory=generator&returnQ=diesel');
+  });
+});
+
+describe('createDebouncedScheduler', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('executes scheduled action after specified delay', () => {
+    const scheduler = createDebouncedScheduler();
+    const action = vi.fn();
+
+    scheduler.schedule(action, 300);
+    expect(scheduler.isPending()).toBe(true);
+    expect(action).not.toHaveBeenCalled();
+
+    vi.advanceTimersByTime(299);
+    expect(action).not.toHaveBeenCalled();
+
+    vi.advanceTimersByTime(1);
+    expect(action).toHaveBeenCalledTimes(1);
+    expect(scheduler.isPending()).toBe(false);
+  });
+
+  it('cancels pending action so it never executes', () => {
+    const scheduler = createDebouncedScheduler();
+    const action = vi.fn();
+
+    scheduler.schedule(action, 300);
+    expect(scheduler.isPending()).toBe(true);
+
+    scheduler.cancel();
+    expect(scheduler.isPending()).toBe(false);
+
+    vi.advanceTimersByTime(500);
+    expect(action).not.toHaveBeenCalled();
+  });
+
+  it('resets timer when a new action is scheduled before previous fires', () => {
+    const scheduler = createDebouncedScheduler();
+    const action1 = vi.fn();
+    const action2 = vi.fn();
+
+    scheduler.schedule(action1, 300);
+    vi.advanceTimersByTime(200);
+
+    // Reschedule with action2
+    scheduler.schedule(action2, 300);
+    vi.advanceTimersByTime(200); // 400ms total from start, but 200ms from reschedule
+    expect(action1).not.toHaveBeenCalled();
+    expect(action2).not.toHaveBeenCalled();
+
+    vi.advanceTimersByTime(100); // 300ms from reschedule
+    expect(action1).not.toHaveBeenCalled();
+    expect(action2).toHaveBeenCalledTimes(1);
+    expect(scheduler.isPending()).toBe(false);
   });
 });

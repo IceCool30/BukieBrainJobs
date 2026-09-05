@@ -56,17 +56,19 @@ The route must maintain bidirectional synchronization between React component st
 | Parameter | Type | Validation & Canonical Rule | Default / Omitted Value |
 |---|---|---|---|
 | `q` | `string` | Trimmed, URL-decoded string. Case-insensitive text match against `category.title`, `category.description`, and `category.popularServices`. | If empty or whitespace-only, omitted from URL query string. |
-| `category` | `string` | Must strictly match one of the 8 canonical `id`s in `SERVICE_CATEGORIES` (`generator`, `ac`, `plumbing`, `electrical`, `cleaning`, `carpentry`, `tv-mounting`, `moving`). | If `'all'`, absent, or invalid, omitted from URL (treated as `'all'`). |
+| `category` | `string` | Must strictly match one of the 8 canonical `id`s in `SERVICE_CATEGORIES` (`generator`, `ac`, `plumbing`, `electrical`, `cleaning`, `carpentry`, `tv-mounting`, `moving`), or `'all'`. | If `'all'` (case-insensitive) or absent, omitted from URL (treated as unconstrained 'All' state; does not display invalid notice). If unrecognized, falls back to 'All' with a non-blocking recovery notice. |
 | `city` | `string` | Must strictly match one of the 7 active cities in `NIGERIAN_LOCATIONS` (`status: 'active'`). | If absent or invalid, omitted from URL (treated as nationwide/all active cities). |
 
 #### Synchronization Rules:
 1. **Initial Load / Deep Link:** Component state is seeded directly from the incoming URL search parameters.
 2. **User Interaction:**
    - **Search input:** Updates local input immediately; updates URL search parameters via debounced router replacement (`300ms`) using `router.replace` with `scroll: false` so browser history remains clean.
+   - **Debounce cancellation:** Any pending search debounce timer must be cancelled immediately prior to competing filter mutations (category selection, city selection, filter reset), navigation away (clicking "Review details"), and component unmount.
    - **Category selection:** Updates immediately upon clicking a category tab/pill; updates URL with `category=<id>`. Clicking "All services" deletes the `category` parameter from the URL.
    - **City selection:** Updates immediately upon selecting an active city; updates URL with `city=<active-city>`. Selecting "All cities" deletes `city` from the URL.
 3. **Browser Navigation:** Popstate events (Browser Back / Forward) re-synchronize local React state with updated URL parameters without infinite re-render loops.
 4. **Clean URLs:** When all parameters are at defaults (`q=""`, `category="all"`, `city=undefined`), the URL is normalized cleanly to `/services`.
+
 
 ### 2.3 Directory-to-Service-Detail Return Context
 
@@ -206,7 +208,7 @@ apps/web/app/services/
 
 ## 6. Customer-Facing Terminology & Copy Rules
 
-Governed by `.agents/skills/bukiebrainjobs-experience-standards/references/BUKIEBRAINJOBS-CONTENT-GUIDE.md`.
+Governed by `docs/02-design-system/skills/bukiebrainjobs-experience-standards/references/BUKIEBRAINJOBS-CONTENT-GUIDE.md`.
 
 | Entity | Required Term | Prohibited Terms |
 |---|---|---|

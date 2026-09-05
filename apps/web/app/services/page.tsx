@@ -22,8 +22,9 @@ import {
 import {
   buildServiceDetailUrl,
   buildServicesUrl,
+  createDebouncedScheduler,
   filterServices,
-  validateCategory,
+  normalizeCategory,
   validateCity,
 } from '../../lib/services';
 import ServiceTaskIcon from '../../components/ServiceTaskIcon';
@@ -115,11 +116,11 @@ function ServicesDirectory() {
   const rawCategory = searchParams.get("category");
   const rawCity = searchParams.get("city");
 
-  const validCategory = useMemo(() => validateCategory(rawCategory), [rawCategory]);
+  const normalizedCategory = useMemo(() => normalizeCategory(rawCategory), [rawCategory]);
   const validCity = useMemo(() => validateCity(rawCity), [rawCity]);
 
   const [searchQuery, setSearchQuery] = useState(rawQ);
-  const [selectedCategory, setSelectedCategory] = useState(validCategory || "All");
+  const [selectedCategory, setSelectedCategory] = useState(normalizedCategory || "All");
   const [selectedCity, setSelectedCity] = useState<string | undefined>(validCity);
 
   const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
@@ -127,7 +128,8 @@ function ServicesDirectory() {
   const [dismissedCategoryNotice, setDismissedCategoryNotice] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const scheduler = useMemo(() => createDebouncedScheduler(), []);
+  const isNavigatingRef = useRef(false);
 
   // Synchronize state on browser Back / Forward popstate
   useEffect(() => {
@@ -135,12 +137,19 @@ function ServicesDirectory() {
   }, [rawQ]);
 
   useEffect(() => {
-    setSelectedCategory(validCategory || "All");
-  }, [validCategory]);
+    setSelectedCategory(normalizedCategory || "All");
+  }, [normalizedCategory]);
 
   useEffect(() => {
     setSelectedCity(validCity);
   }, [validCity]);
+
+  // Cancel pending search debounce on unmount
+  useEffect(() => {
+    return () => {
+      scheduler.cancel();
+    };
+  }, [scheduler]);
 
   // Handle outside click for city dropdown
   useEffect(() => {
@@ -156,10 +165,8 @@ function ServicesDirectory() {
   // 300ms Debounced URL synchronization for search input
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
-    debounceTimerRef.current = setTimeout(() => {
+    scheduler.schedule(() => {
+      if (isNavigatingRef.current) return;
       const url = buildServicesUrl({
         q: value,
         category: selectedCategory,
@@ -171,10 +178,8 @@ function ServicesDirectory() {
 
   // Immediate clear of search input
   const handleClearSearch = () => {
+    scheduler.cancel();
     setSearchQuery("");
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
     const url = buildServicesUrl({
       q: "",
       category: selectedCategory,
@@ -185,6 +190,7 @@ function ServicesDirectory() {
 
   // Immediate category filter change
   const handleSelectCategory = (categoryId: string) => {
+    scheduler.cancel();
     setSelectedCategory(categoryId);
     const url = buildServicesUrl({
       q: searchQuery,
@@ -196,6 +202,7 @@ function ServicesDirectory() {
 
   // Immediate city selection change
   const handleSelectCity = (cityName: string | undefined) => {
+    scheduler.cancel();
     setSelectedCity(cityName);
     setCityDropdownOpen(false);
     const url = buildServicesUrl({
@@ -208,14 +215,12 @@ function ServicesDirectory() {
 
   // Reset all filters
   const handleResetFilters = () => {
+    scheduler.cancel();
     setSearchQuery("");
     setSelectedCategory("All");
     setSelectedCity(undefined);
     setDismissedCityNotice(true);
     setDismissedCategoryNotice(true);
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
     router.replace("/services", { scroll: false });
   };
 
@@ -235,6 +240,8 @@ function ServicesDirectory() {
 
   // Navigate to service detail with return context
   const reviewCategory = (category: ServiceCategory) => {
+    isNavigatingRef.current = true;
+    scheduler.cancel();
     const detailUrl = buildServiceDetailUrl(category.id, {
       city: selectedCity,
       returnCategory: selectedCategory,
@@ -246,7 +253,7 @@ function ServicesDirectory() {
   const activeCities = NIGERIAN_LOCATIONS.filter((loc) => loc.status === "active");
   const showInvalidCityNotice = Boolean(rawCity && !validCity && !dismissedCityNotice);
   const showInvalidCategoryNotice = Boolean(
-    rawCategory && rawCategory !== "All" && !validCategory && !dismissedCategoryNotice,
+    rawCategory && !normalizedCategory && !dismissedCategoryNotice,
   );
 
   return (
@@ -297,14 +304,14 @@ function ServicesDirectory() {
                 value={searchQuery}
                 onChange={(event) => handleSearchChange(event.target.value)}
                 placeholder="Search by service, trade, or job"
-                className="h-12 w-full rounded-xl border border-white/20 bg-white pl-11 pr-11 text-sm font-medium text-slate-900 shadow-[0_12px_30px_rgba(0,0,0,0.15)] outline-none transition focus:ring-2 focus:ring-[#ABEEC8]"
+                className="h-12 w-full rounded-xl border border-white/20 bg-white pl-11 pr-12 text-sm font-medium text-slate-900 shadow-[0_12px_30px_rgba(0,0,0,0.15)] outline-none transition focus:ring-2 focus:ring-[#ABEEC8]"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={handleClearSearch}
                   aria-label="Clear search"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1 text-slate-400 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 inline-flex h-11 w-11 items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
                 >
                   <X className="h-4 w-4" aria-hidden="true" />
                 </button>
