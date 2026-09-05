@@ -40,6 +40,7 @@ Thumbs.db
 .vercel
 gh_cli/
 BukieBrainJobs_PWA_Icons.zip
+attached_assets/
 
 # Agent execution state
 .agents/
