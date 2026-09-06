@@ -30,6 +30,55 @@ describe('validateBookingDraft', () => {
       notes: 'The generator needs servicing before the weekend.',
     })).toEqual({});
   });
+
+  it('rejects whitespace-only address and notes', () => {
+    expect(validateBookingDraft({
+      address: '     ',
+      city: 'Lagos',
+      notes: '                   ',
+    })).toEqual({
+      address: 'Enter a complete street address.',
+      notes: 'Add a few details about the work you need done.',
+    });
+  });
+
+  it('validates date, arrivalWindow, and paymentPreference when provided in WEB-007 draft', () => {
+    expect(validateBookingDraft({
+      address: '14 Admiralty Way, Lekki Phase 1',
+      city: 'Lagos',
+      notes: 'The generator needs servicing before the weekend.',
+      date: '',
+      arrivalWindow: '',
+      paymentPreference: '',
+    })).toEqual({
+      date: 'Choose a preferred service date.',
+      arrivalWindow: 'Choose a preferred arrival window.',
+      paymentPreference: 'Choose a preferred payment method.',
+    });
+  });
+
+  it('rejects past dates for scheduled bookings', () => {
+    expect(validateBookingDraft({
+      address: '14 Admiralty Way, Lekki Phase 1',
+      city: 'Lagos',
+      notes: 'The generator needs servicing before the weekend.',
+      date: '2020-01-01',
+    })).toEqual({
+      date: 'Choose a date that is today or in the future.',
+    });
+  });
+
+  it('accepts valid schedule and payment preference in WEB-007 draft', () => {
+    expect(validateBookingDraft({
+      address: '14 Admiralty Way, Lekki Phase 1',
+      city: 'Lagos',
+      notes: 'The generator needs servicing before the weekend.',
+      date: 'Tomorrow',
+      arrivalWindow: 'Morning (9:00 AM - 12:00 PM)',
+      paymentPreference: 'card',
+      landmark: 'Near Ebeano Supermarket',
+    })).toEqual({});
+  });
 });
 
 describe('validatePostJobDraft', () => {
