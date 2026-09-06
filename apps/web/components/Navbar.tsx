@@ -204,13 +204,23 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           </button>
 
           {/* Level 2 Secondary: Post a Job */}
-          <button
-            onClick={onPostJobClick}
-            className="motion-press px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/70 bg-[#001A41]/55 backdrop-blur-sm hover:bg-[#296A4B]/60 rounded-full transition-colors flex items-center gap-1.5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.45)]"
-          >
-            <Briefcase className="w-3.5 h-3.5" />
-            Post a Job
-          </button>
+          {onPostJobClick ? (
+            <button
+              onClick={onPostJobClick}
+              className="motion-press px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/70 bg-[#001A41]/55 backdrop-blur-sm hover:bg-[#296A4B]/60 rounded-full transition-colors flex items-center gap-1.5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.45)]"
+            >
+              <Briefcase className="w-3.5 h-3.5" />
+              Post a Job
+            </button>
+          ) : (
+            <Link
+              href="/post-job"
+              className="motion-press px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/70 bg-[#001A41]/55 backdrop-blur-sm hover:bg-[#296A4B]/60 rounded-full transition-colors flex items-center gap-1.5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.45)]"
+            >
+              <Briefcase className="w-3.5 h-3.5" />
+              Post a Job
+            </Link>
+          )}
 
           {/* Sign In CTA */}
           <Link
