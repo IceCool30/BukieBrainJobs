@@ -16,6 +16,7 @@
 | WEB-008 | Authentication & Account Access | Unified authentication, role selection, phone OTP, social login, password recovery, and booking draft handoff | Approved implementation contract | Yes |
 | WEB-008A | Authentication Design Brief | Screen-level visual and interaction design brief for authentication | Approved implementation contract | Yes |
 | WEB-009 | Customer Job Posting & Request Creation | Customer-led job posting, request intake, validation, authentication handoff, mock submission, and confirmation | Approved product specification | Yes |
+| WEB-009A | Customer Job Posting Design Brief | Screen-level visual and interaction design brief for customer job posting | Approved implementation contract | Yes |
 
 ## Locked homepage rules
 
@@ -60,9 +61,9 @@
 
 ## Design workflow
 
-`Product & UX Specification → Design Brief → Human design approval → Antigravity UI design & implementation → QA → Human review & approval`
+`Product & UX Specification → Design Brief → Agent design review → Antigravity UI design & implementation → QA → Human review & approval`
 
-No implementation artifact should bypass the human approval gate.
+No implementation artifact should bypass the design review and implementation authorization gates.
 
 > [!NOTE]
 > Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
