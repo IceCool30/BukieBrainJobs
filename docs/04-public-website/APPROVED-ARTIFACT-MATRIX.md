@@ -10,6 +10,8 @@
 | WEB-001B-MCP | Antigravity → Stitch MCP Orchestration | Operational design orchestration | Deprecated | No |
 | WEB-004 | Public Service Detail | Public service review between discovery and booking preparation | Approved implementation contract | Yes |
 | WEB-005 | Public BrainWorker Profile | Guest-accessible profile review for the four featured BrainWorkers with canonical booking context | Approved implementation contract | Yes |
+| WEB-006 | Public Services Discovery | Public service discovery, filtering, query synchronization, and recovery | Approved implementation contract | Yes |
+| WEB-007 | Public Booking Preparation & Intake Flow | Booking preparation, customer intake, validation, mock submission, and confirmation | Approved for Design Brief | Yes |
 
 ## Locked homepage rules
 
@@ -21,11 +23,22 @@
 - Trust messaging must communicate verification and protection without exposing sensitive identity information.
 - The homepage is not the complete booking workflow.
 
+## WEB-007 rules
+
+- `/book` is the public booking preparation route.
+- WEB-004, WEB-005, and WEB-006 are upstream journey dependencies.
+- Starting price is contextual and must not be represented as a final guaranteed price.
+- Preferred BrainWorker context must not imply assignment.
+- Payment choices are preferences only. No transaction occurs in WEB-007.
+- The slice is mock-first. No production booking record, matching, payment, or authentication enforcement is introduced.
+- Query parameters are untrusted input and must be validated safely.
+- Human design approval is required before implementation.
+
 ## Design workflow
 
-`WEB-001 → WEB-001A → Antigravity UI design & implementation → Human review & approval`
+`Product & UX Specification → Design Brief → Human design approval → Antigravity UI design & implementation → QA → Human review & approval`
 
 No implementation artifact should bypass the human approval gate.
 
 > [!NOTE]
-> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
+> Google Stitch was previously used as an intermediate visual design tool. It is no longer a required part of the production workflow. Current UI design and implementation are performed directly by Google Antigravity using the approved project specifications and DESIGN.md.
