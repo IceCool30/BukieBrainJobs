@@ -10,11 +10,21 @@ import {
 
 interface PageProps {
   params: Promise<{ serviceId: string }>;
-  searchParams: Promise<{ city?: string | string[] }>;
+  searchParams: Promise<{
+    city?: string | string[];
+    returnCategory?: string | string[];
+    returnQ?: string | string[];
+    category?: string | string[];
+    q?: string | string[];
+  }>;
 }
 
 export function generateStaticParams() {
   return SERVICE_CATEGORIES.map(({ id }) => ({ serviceId: id }));
+}
+
+function getSingleQueryValue(value: string | string[] | undefined) {
+  return typeof value === 'string' ? value : undefined;
 }
 
 function getCity(value: string | string[] | undefined) {
@@ -29,6 +39,16 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
   if (!service) notFound();
 
   const city = getCity(query.city);
+  const returnCategory = getSingleQueryValue(query.returnCategory) || getSingleQueryValue(query.category);
+  const returnQ = getSingleQueryValue(query.returnQ) || getSingleQueryValue(query.q);
+
+  const backParams = new URLSearchParams();
+  if (returnCategory && returnCategory !== 'All') backParams.set('category', returnCategory);
+  if (city) backParams.set('city', city);
+  if (returnQ && returnQ.trim()) backParams.set('q', returnQ.trim());
+  const backQuery = backParams.toString();
+  const backToServicesHref = backQuery ? `/services?${backQuery}` : '/services';
+
   const booking = new URLSearchParams({ service: service.title, price: service.startingPrice });
   if (city) booking.set('city', city);
   const locations = NIGERIAN_LOCATIONS.filter((location) => location.status === 'active');
@@ -50,7 +70,7 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
 
         <div className="relative mx-auto max-w-[1280px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
           <Link
-            href={city ? `/services?city=${encodeURIComponent(city)}` : '/services'}
+            href={backToServicesHref}
             className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-slate-200 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#ABEEC8]"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
