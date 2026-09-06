@@ -15,6 +15,7 @@
 | WEB-007A | Booking Preparation Design Brief | Section-by-section booking preparation UX/UI design brief | Approved implementation contract | Yes |
 | WEB-008 | Authentication & Account Access | Unified authentication, role selection, phone OTP, social login, password recovery, and booking draft handoff | Approved implementation contract | Yes |
 | WEB-008A | Authentication Design Brief | Screen-level visual and interaction design brief for authentication | Approved implementation contract | Yes |
+| WEB-009 | Customer Job Posting & Request Creation | Customer-led job posting, request intake, validation, authentication handoff, mock submission, and confirmation | Approved product specification | Yes |
 
 ## Locked homepage rules
 
@@ -35,6 +36,26 @@
 - Payment choices are preferences only. No transaction occurs in WEB-007.
 - The slice is mock-first. No production booking record, matching, payment, or authentication enforcement is introduced.
 - Query parameters are untrusted input and must be validated safely.
+- Human design approval is required before implementation.
+
+## WEB-009 rules
+
+- `/post-job` is the public customer job-posting route.
+- WEB-009 supports both specific service requests and broader projects.
+- Category selection is encouraged but not mandatory.
+- `I'm not sure` is a valid category path.
+- Job title and free-form description are the v1 job-description model.
+- Preferred BrainWorker is an optional preference only and never implies assignment.
+- Successful submission produces a `Request received` state with honest next-step messaging.
+- Budget is optional/flexible in v1 and is not a final marketplace quote.
+- City is required and must use an active marketplace location.
+- Street address is required for submission; landmark is optional but encouraged.
+- Customer contact information is obtained through authentication rather than duplicated in the job form.
+- Attachments/media uploads remain out of scope for v1.
+- A simulated request reference code may be shown on confirmation.
+- The slice is mock-first. No production matching, dispatch, notification, payment, booking, KYC, or database persistence is introduced.
+- Authentication occurs at the protected commitment point and must preserve the complete job draft.
+- Query parameters, saved drafts, and preferred-worker identifiers are untrusted input and must be validated safely.
 - Human design approval is required before implementation.
 
 ## Design workflow
