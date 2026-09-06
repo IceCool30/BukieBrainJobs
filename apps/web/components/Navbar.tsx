@@ -25,6 +25,7 @@ const DRAWER_LINKS = [
   { href: '/#how-it-works', label: 'How It Works', icon: Briefcase, tint: '#296A4B' },
   { href: '/guarantee#verification', label: 'Verification', icon: UserCheck, tint: '#296A4B' },
   { href: '/enterprise', label: 'For Business', icon: Briefcase, tint: '#ABEEC8' },
+  { href: '/login', label: 'Sign In', icon: UserCheck, tint: '#ABEEC8' },
 ];
 
 export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpenRef, hideOnPwa }: NavbarProps) {
@@ -211,6 +212,13 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             Post a Job
           </button>
 
+          {/* Sign In CTA */}
+          <Link
+            href="/login"
+            className="motion-press px-4 py-2 text-xs font-semibold text-white hover:text-[#ABEEC8] rounded-full transition-colors flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
+          >
+            Sign In
+          </Link>
         </div>
 
         {/* Mobile Hamburger Toggle */}

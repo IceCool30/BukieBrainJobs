@@ -2,7 +2,7 @@
 
 import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ArrowLeft,
   Building2,
@@ -33,6 +33,11 @@ import {
   buildBookingReturnUrl,
   resolveBookingContext,
 } from '../lib/booking';
+import {
+  getPreservedBookingDraft,
+  savePreservedBookingDraft,
+  PreservedBookingDraft,
+} from '../lib/auth';
 
 type SubmitStatus = 'idle' | 'pending' | 'error' | 'success';
 
@@ -79,8 +84,11 @@ function FieldError({ id, message }: { id: string; message?: string | undefined 
 }
 
 export default function BookingScreen() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const context = useMemo(() => resolveBookingContext(searchParams), [searchParams]);
+  const isContinuation = searchParams.get('bookingContinuation') === '1';
+  const [restoredBanner, setRestoredBanner] = useState(false);
 
   const activeLocations = useMemo(
     () => NIGERIAN_LOCATIONS.filter((loc) => loc.status === 'active'),
@@ -97,6 +105,52 @@ export default function BookingScreen() {
     jobDetails: context.note || '',
     paymentPreference: 'card',
   }));
+
+  useEffect(() => {
+    const draft = getPreservedBookingDraft();
+    if (draft) {
+      setFormData((prev) => ({
+        city: draft.city || prev.city,
+        streetAddress: draft.streetAddress || prev.streetAddress,
+        landmark: draft.landmark || prev.landmark,
+        dateOption: (draft.date as DateOption) || prev.dateOption,
+        customDate:
+          draft.date && /^\d{4}-\d{2}-\d{2}$/.test(draft.date)
+            ? draft.date
+            : prev.customDate,
+        arrivalWindow: (draft.arrivalWindow as TimeOption) || prev.arrivalWindow,
+        jobDetails: draft.jobDescription || prev.jobDetails,
+        paymentPreference:
+          (draft.paymentPreference as PaymentPreference) || prev.paymentPreference,
+      }));
+      if (isContinuation) {
+        setRestoredBanner(true);
+      }
+    }
+  }, [isContinuation]);
+
+  const handleSaveAndSignIn = () => {
+    const effectiveDate =
+      formData.dateOption === 'Specific Date'
+        ? formData.customDate
+        : formData.dateOption;
+
+    const draftToSave: PreservedBookingDraft = {
+      service: context.service?.title || context.rawService,
+      priceContext: context.price,
+      city: formData.city || context.city,
+      worker: context.worker,
+      streetAddress: formData.streetAddress,
+      landmark: formData.landmark,
+      date: effectiveDate,
+      arrivalWindow: formData.arrivalWindow,
+      jobDescription: formData.jobDetails,
+      paymentPreference: formData.paymentPreference,
+    };
+
+    savePreservedBookingDraft(draftToSave);
+    router.push('/login?returnUrl=/book&handoff=1');
+  };
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<SubmitStatus>('idle');
@@ -378,6 +432,22 @@ export default function BookingScreen() {
             Review the service details, provide your location, and set your schedule preferences before submitting your request.
           </p>
         </div>
+
+        {/* Restored Booking Details Banner */}
+        {restoredBanner && (
+          <div
+            role="status"
+            className="mt-6 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-5 text-emerald-950 shadow-sm"
+          >
+            <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#059669]" aria-hidden="true" />
+            <div>
+              <p className="font-bold">Your booking details have been restored</p>
+              <p className="mt-0.5 text-xs text-emerald-900">
+                All your location, scheduling, and job details have been retained from your account login. You can now finalize your request below.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Global Submission Error Alert */}
         {status === 'error' && (
@@ -777,6 +847,14 @@ export default function BookingScreen() {
                   className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] disabled:cursor-wait disabled:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
                 >
                   {isPending ? 'Submitting request...' : 'Submit service request'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSaveAndSignIn}
+                  className="motion-press mt-3 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+                >
+                  Save & sign in with account
                 </button>
 
                 <div className="mt-4 text-center">
