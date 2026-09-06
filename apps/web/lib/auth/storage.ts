@@ -1,6 +1,7 @@
-import { AuthUser, PreservedBookingDraft } from './types';
+import { AuthUser, PreservedBookingDraft, PreservedJobDraft } from './types';
 
 const BOOKING_DRAFT_KEY = 'bukiebrainjobs_booking_draft';
+const JOB_DRAFT_KEY = 'bukiebrainjobs_job_draft';
 const AUTH_USER_KEY = 'bukiebrainjobs_auth_user';
 
 const memoryStore = new Map<string, string>();
@@ -45,6 +46,36 @@ export function getPreservedBookingDraft(): PreservedBookingDraft | null {
 export function clearPreservedBookingDraft(): void {
   try {
     getStorage().removeItem(BOOKING_DRAFT_KEY);
+  } catch {
+    // Fail safely
+  }
+}
+
+export function savePreservedJobDraft(draft: PreservedJobDraft): void {
+  try {
+    getStorage().setItem(JOB_DRAFT_KEY, JSON.stringify(draft));
+  } catch {
+    // Storage access may fail in private mode; fail safely
+  }
+}
+
+export function getPreservedJobDraft(): PreservedJobDraft | null {
+  try {
+    const raw = getStorage().getItem(JOB_DRAFT_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object') {
+      return parsed as PreservedJobDraft;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export function clearPreservedJobDraft(): void {
+  try {
+    getStorage().removeItem(JOB_DRAFT_KEY);
   } catch {
     // Fail safely
   }

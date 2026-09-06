@@ -40,6 +40,23 @@ export interface PreservedBookingDraft {
   paymentPreference?: string | undefined;
 }
 
+export interface PreservedJobDraft {
+  jobType?: 'specific_service' | 'broader_project' | undefined;
+  category?: string | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
+  city?: string | undefined;
+  streetAddress?: string | undefined;
+  landmark?: string | undefined;
+  urgency?: 'urgent' | 'tomorrow' | 'flexible' | 'specific_date' | undefined;
+  preferredDate?: string | undefined;
+  arrivalWindow?: string | undefined;
+  budget?: string | undefined;
+  budgetType?: 'fixed' | 'negotiable' | 'unspecified' | undefined;
+  preferredWorkerId?: string | undefined;
+  preferredWorkerName?: string | undefined;
+}
+
 export interface AuthState {
   user: AuthUser | null;
   mode: AuthMode;
@@ -50,5 +67,6 @@ export interface AuthState {
   error?: string | undefined;
   successMessage?: string | undefined;
   preservedBooking: PreservedBookingDraft | null;
+  preservedJob?: PreservedJobDraft | null | undefined;
   returnUrl: string;
 }
