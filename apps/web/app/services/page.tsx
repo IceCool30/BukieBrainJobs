@@ -27,6 +27,7 @@ import {
   createDebouncedScheduler,
   filterServices,
   normalizeCategory,
+  normalizeSearchQuery,
   validateCity,
 } from '../../lib/services';
 import ServiceTaskIcon from '../../components/ServiceTaskIcon';
@@ -114,7 +115,7 @@ function ServicesDirectory() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const rawQ = capSearchQuery(searchParams.get("q") || "");
+  const rawQ = normalizeSearchQuery(searchParams.get("q"));
   const rawCategory = searchParams.get("category");
   const rawCity = searchParams.get("city");
 
@@ -130,6 +131,7 @@ function ServicesDirectory() {
   const [dismissedCategoryNotice, setDismissedCategoryNotice] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const cityTriggerRef = useRef<HTMLButtonElement>(null);
   const scheduler = useMemo(() => createDebouncedScheduler(), []);
   const isNavigatingRef = useRef(false);
 
@@ -146,15 +148,42 @@ function ServicesDirectory() {
     setSelectedCity(validCity);
   }, [validCity]);
 
-  // Ensure deep-linked search query exceeding 100 characters is capped in the URL
+  // Ensure deep-linked search query is normalized (whitespace-only removed, trimmed, capped at 100 chars)
   useEffect(() => {
     const unconstrainedQ = searchParams.get("q");
-    if (unconstrainedQ && unconstrainedQ.length > MAX_SEARCH_QUERY_LENGTH) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("q", rawQ);
-      router.replace(`/services?${params.toString()}`, { scroll: false });
+    if (unconstrainedQ !== null) {
+      const trimmedQ = unconstrainedQ.trim();
+      if (!trimmedQ) {
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete("q");
+        const newQuery = params.toString();
+        router.replace(newQuery ? `/services?${newQuery}` : "/services", { scroll: false });
+      } else if (unconstrainedQ !== rawQ) {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("q", rawQ);
+        router.replace(`/services?${params.toString()}`, { scroll: false });
+      }
     }
   }, [searchParams, rawQ, router]);
+
+  // Close city dropdown on Escape key and return focus to trigger button
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape" && cityDropdownOpen) {
+        event.preventDefault();
+        setCityDropdownOpen(false);
+        cityTriggerRef.current?.focus();
+      }
+    }
+    if (cityDropdownOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("keydown", handleKeyDown);
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }
+  }, [cityDropdownOpen]);
 
   // Cancel pending search debounce on unmount
   useEffect(() => {
@@ -201,8 +230,22 @@ function ServicesDirectory() {
     router.replace(url, { scroll: false });
   };
 
-  // Immediate category filter change
+  // Blur handler to clean whitespace-only search queries
+  const handleSearchBlur = () => {
+    if (searchQuery.trim() === "" && searchQuery !== "") {
+      setSearchQuery("");
+      const url = buildServicesUrl({
+        q: "",
+        category: selectedCategory,
+        city: selectedCity,
+      });
+      router.replace(url, { scroll: false });
+    }
+  };
+
+  // Immediate category filter change (preserves discrete filter state in history)
   const handleSelectCategory = (categoryId: string) => {
+    if (categoryId === selectedCategory) return;
     scheduler.cancel();
     setSelectedCategory(categoryId);
     const url = buildServicesUrl({
@@ -210,11 +253,15 @@ function ServicesDirectory() {
       category: categoryId,
       city: selectedCity,
     });
-    router.replace(url, { scroll: false });
+    router.push(url, { scroll: false });
   };
 
-  // Immediate city selection change
+  // Immediate city selection change (preserves discrete filter state in history)
   const handleSelectCity = (cityName: string | undefined) => {
+    if (cityName === selectedCity) {
+      setCityDropdownOpen(false);
+      return;
+    }
     scheduler.cancel();
     setSelectedCity(cityName);
     setCityDropdownOpen(false);
@@ -223,10 +270,10 @@ function ServicesDirectory() {
       category: selectedCategory,
       city: cityName,
     });
-    router.replace(url, { scroll: false });
+    router.push(url, { scroll: false });
   };
 
-  // Reset all filters
+  // Reset all filters (preserves reset state in history)
   const handleResetFilters = () => {
     scheduler.cancel();
     setSearchQuery("");
@@ -234,7 +281,7 @@ function ServicesDirectory() {
     setSelectedCity(undefined);
     setDismissedCityNotice(true);
     setDismissedCategoryNotice(true);
-    router.replace("/services", { scroll: false });
+    router.push("/services", { scroll: false });
   };
 
   // Filtered categories
@@ -316,6 +363,7 @@ function ServicesDirectory() {
                 type="search"
                 value={searchQuery}
                 onChange={(event) => handleSearchChange(event.target.value)}
+                onBlur={handleSearchBlur}
                 maxLength={MAX_SEARCH_QUERY_LENGTH}
                 placeholder="Search by service, trade, or job"
                 className="h-12 w-full rounded-xl border border-white/20 bg-white pl-11 pr-12 text-sm font-medium text-slate-900 shadow-[0_12px_30px_rgba(0,0,0,0.15)] outline-none transition focus:ring-2 focus:ring-[#ABEEC8]"
@@ -402,8 +450,20 @@ function ServicesDirectory() {
             </div>
 
             {/* City Dropdown Filter */}
-            <div className="relative self-start sm:self-auto" ref={dropdownRef}>
+            <div
+              className="relative self-start sm:self-auto"
+              ref={dropdownRef}
+              onKeyDown={(e) => {
+                if (e.key === "Escape" && cityDropdownOpen) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setCityDropdownOpen(false);
+                  cityTriggerRef.current?.focus();
+                }
+              }}
+            >
               <button
+                ref={cityTriggerRef}
                 type="button"
                 onClick={() => setCityDropdownOpen((prev) => !prev)}
                 aria-haspopup="listbox"

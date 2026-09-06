@@ -221,7 +221,7 @@ The 8 canonical categories are displayed with their authentic assets, pricing, a
 - **Hero Subtitle:** Displays: "...Showing services in Lagos."
 - **Detail Handoff:** Clicking "Review details" on any card passes `?city=Lagos` forward to `/services/[serviceId]?city=Lagos`.
 
-### 4.6 State 6: Combined Filter State (`/services?category=power&city=Abuja+%28FCT%29&q=diesel`)
+### 4.6 State 6: Combined Filter State (`/services?category=generator&city=Abuja+%28FCT%29&q=diesel`)
 - **Trigger:** Category set to `generator`, city set to `Abuja (FCT)`, search term set to `diesel`.
 - **Evaluation:** Evaluates intersection of active filters. Shows `generator` card matching "Mikano Diesel Service".
 - **Results Count:** "1 service category shown".

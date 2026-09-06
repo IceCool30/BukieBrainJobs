@@ -8,19 +8,36 @@ import {
   filterServices,
   matchesService,
   normalizeCategory,
+  normalizeSearchQuery,
   validateCategory,
   validateCity,
 } from './index';
 import { SERVICE_CATEGORIES } from '../mock/homepage-data';
 
 describe('validateCity', () => {
-  it('accepts valid active cities with case-insensitive matching', () => {
+  it('accepts valid active cities with exact canonical casing', () => {
     expect(validateCity('Lagos')).toBe('Lagos');
-    expect(validateCity('lagos')).toBe('Lagos');
     expect(validateCity('Abuja (FCT)')).toBe('Abuja (FCT)');
-    expect(validateCity('abuja (fct)')).toBe('Abuja (FCT)');
     expect(validateCity('Port Harcourt')).toBe('Port Harcourt');
+    expect(validateCity('Ibadan')).toBe('Ibadan');
+    expect(validateCity('Enugu')).toBe('Enugu');
+    expect(validateCity('Kano')).toBe('Kano');
     expect(validateCity('Benin City')).toBe('Benin City');
+  });
+
+  it('rejects non-canonical casing of valid active cities', () => {
+    expect(validateCity('lagos')).toBeUndefined();
+    expect(validateCity('LAGOS')).toBeUndefined();
+    expect(validateCity('Lagos ')).toBe('Lagos'); // trimmed
+    expect(validateCity('abuja (fct)')).toBeUndefined();
+    expect(validateCity('ABUJA (FCT)')).toBeUndefined();
+    expect(validateCity('Abuja (fct)')).toBeUndefined();
+    expect(validateCity('port harcourt')).toBeUndefined();
+    expect(validateCity('PORT HARCOURT')).toBeUndefined();
+    expect(validateCity('ibadan')).toBeUndefined();
+    expect(validateCity('enugu')).toBeUndefined();
+    expect(validateCity('kano')).toBeUndefined();
+    expect(validateCity('benin city')).toBeUndefined();
   });
 
   it('rejects unlisted or inactive cities', () => {
@@ -260,6 +277,40 @@ describe('buildServicesUrl', () => {
     const url = buildServicesUrl({ q: longQuery, category: 'ac', city: 'Lagos' });
     expect(url).toBe(`/services?category=ac&city=Lagos&q=${'x'.repeat(100)}`);
   });
+
+  it('omits whitespace-only search query from URL', () => {
+    expect(buildServicesUrl({ q: '   ' })).toBe('/services');
+    expect(buildServicesUrl({ q: '\t\n  ' })).toBe('/services');
+    expect(buildServicesUrl({ q: '   ', category: 'ac', city: 'Lagos' })).toBe(
+      '/services?category=ac&city=Lagos',
+    );
+  });
+});
+
+describe('normalizeSearchQuery', () => {
+  it('returns empty string for empty, null, undefined, or non-string inputs', () => {
+    expect(normalizeSearchQuery('')).toBe('');
+    expect(normalizeSearchQuery(null)).toBe('');
+    expect(normalizeSearchQuery(undefined)).toBe('');
+  });
+
+  it('normalizes whitespace-only queries to empty string', () => {
+    expect(normalizeSearchQuery('   ')).toBe('');
+    expect(normalizeSearchQuery(' \t\n ')).toBe('');
+    expect(normalizeSearchQuery('        ')).toBe('');
+  });
+
+  it('trims leading and trailing whitespace from query', () => {
+    expect(normalizeSearchQuery('  solar  ')).toBe('solar');
+    expect(normalizeSearchQuery('\tinverter repair\n')).toBe('inverter repair');
+  });
+
+  it('caps long queries at 100 characters after trimming', () => {
+    const longWithSpaces = '   ' + 'a'.repeat(150) + '   ';
+    const normalized = normalizeSearchQuery(longWithSpaces);
+    expect(normalized).toHaveLength(100);
+    expect(normalized).toBe('a'.repeat(100));
+  });
 });
 
 describe('capSearchQuery', () => {
@@ -304,6 +355,12 @@ describe('buildServiceDetailUrl', () => {
         returnQ: 'diesel',
       }),
     ).toBe('/services/generator?city=Lagos&returnCategory=generator&returnQ=diesel');
+  });
+
+  it('omits whitespace-only returnQ from detail URL', () => {
+    expect(buildServiceDetailUrl('ac', { city: 'Lagos', returnQ: '   ' })).toBe(
+      '/services/ac?city=Lagos',
+    );
   });
 
   it('caps returnQ at 100 characters', () => {

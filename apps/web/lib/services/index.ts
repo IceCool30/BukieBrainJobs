@@ -21,6 +21,17 @@ export function capSearchQuery(query: string): string {
   return query.slice(0, MAX_SEARCH_QUERY_LENGTH);
 }
 
+/**
+ * Normalizes a search query at the input or deep-link boundary.
+ * Trims leading/trailing whitespace, returns empty string for whitespace-only
+ * inputs, and caps length at MAX_SEARCH_QUERY_LENGTH.
+ */
+export function normalizeSearchQuery(query: string | null | undefined): string {
+  if (!query || typeof query !== 'string') return '';
+  const trimmed = query.trim();
+  return trimmed ? capSearchQuery(trimmed) : '';
+}
+
 export const mockService = {
   isMock: true,
 };
@@ -28,12 +39,14 @@ export const mockService = {
 /**
  * Validates a city name against active Nigerian locations.
  * Returns the canonical city name if active, otherwise undefined.
+ * Canonical city names must match exactly (case-sensitive).
+ * Non-canonical casing (e.g. "lagos", "LAGOS") is rejected.
  */
 export function validateCity(city: string | null | undefined): string | undefined {
   if (!city || typeof city !== 'string') return undefined;
   const trimmed = city.trim();
   return NIGERIAN_LOCATIONS.find(
-    (location) => location.name.toLowerCase() === trimmed.toLowerCase() && location.status === 'active',
+    (location) => location.name === trimmed && location.status === 'active',
   )?.name;
 }
 
@@ -117,8 +130,9 @@ export function buildServicesUrl(options: {
   if (options.city) {
     params.set('city', options.city);
   }
-  if (options.q && options.q.trim()) {
-    params.set('q', capSearchQuery(options.q.trim()));
+  const normalizedQ = normalizeSearchQuery(options.q);
+  if (normalizedQ) {
+    params.set('q', normalizedQ);
   }
 
   const queryString = params.toString();
@@ -180,8 +194,9 @@ export function buildServiceDetailUrl(
   if (options?.returnCategory && options.returnCategory !== 'All') {
     params.set('returnCategory', options.returnCategory);
   }
-  if (options?.returnQ && options.returnQ.trim()) {
-    params.set('returnQ', capSearchQuery(options.returnQ.trim()));
+  const normalizedReturnQ = normalizeSearchQuery(options?.returnQ);
+  if (normalizedReturnQ) {
+    params.set('returnQ', normalizedReturnQ);
   }
 
   const queryString = params.toString();
