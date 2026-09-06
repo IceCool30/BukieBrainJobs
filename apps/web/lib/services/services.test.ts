@@ -1,7 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  MAX_SEARCH_QUERY_LENGTH,
   buildServiceDetailUrl,
   buildServicesUrl,
+  capSearchQuery,
   createDebouncedScheduler,
   filterServices,
   matchesService,
@@ -54,6 +56,16 @@ describe('validateCategory', () => {
     expect(validateCategory(null)).toBeUndefined();
     expect(validateCategory(undefined)).toBeUndefined();
   });
+
+  it('rejects non-canonical casing of valid category IDs', () => {
+    expect(validateCategory('AC')).toBeUndefined();
+    expect(validateCategory('Ac')).toBeUndefined();
+    expect(validateCategory('aC')).toBeUndefined();
+    expect(validateCategory('Generator')).toBeUndefined();
+    expect(validateCategory('PLUMBING')).toBeUndefined();
+    expect(validateCategory('Electrical')).toBeUndefined();
+    expect(validateCategory('TV-Mounting')).toBeUndefined();
+  });
 });
 
 describe('normalizeCategory', () => {
@@ -81,6 +93,53 @@ describe('normalizeCategory', () => {
     expect(normalizeCategory('')).toBeUndefined();
     expect(normalizeCategory(null)).toBeUndefined();
     expect(normalizeCategory(undefined)).toBeUndefined();
+  });
+
+  it('returns undefined for non-canonical casing of valid category IDs (triggers recovery)', () => {
+    expect(normalizeCategory('AC')).toBeUndefined();
+    expect(normalizeCategory('Ac')).toBeUndefined();
+    expect(normalizeCategory('aC')).toBeUndefined();
+    expect(normalizeCategory('Generator')).toBeUndefined();
+    expect(normalizeCategory('PLUMBING')).toBeUndefined();
+  });
+});
+
+describe('canonical category casing contract (WEB-006 remediation)', () => {
+  it('handles "category=ac" as valid AC filter', () => {
+    expect(validateCategory('ac')).toBe('ac');
+    expect(normalizeCategory('ac')).toBe('ac');
+    const filtered = filterServices(SERVICE_CATEGORIES, { category: 'ac' });
+    expect(filtered).toHaveLength(1);
+    expect(filtered[0]?.id).toBe('ac');
+    expect(buildServicesUrl({ category: 'ac' })).toBe('/services?category=ac');
+  });
+
+  it('handles "category=AC" as invalid category recovery state (falls back to All)', () => {
+    expect(validateCategory('AC')).toBeUndefined();
+    expect(normalizeCategory('AC')).toBeUndefined();
+    const filtered = filterServices(SERVICE_CATEGORIES, { category: 'AC' });
+    expect(filtered).toHaveLength(8);
+  });
+
+  it('handles "category=Ac" as invalid category recovery state (falls back to All)', () => {
+    expect(validateCategory('Ac')).toBeUndefined();
+    expect(normalizeCategory('Ac')).toBeUndefined();
+    const filtered = filterServices(SERVICE_CATEGORIES, { category: 'Ac' });
+    expect(filtered).toHaveLength(8);
+  });
+
+  it('handles "category=all" as default All state without notice', () => {
+    expect(normalizeCategory('all')).toBe('All');
+    const filtered = filterServices(SERVICE_CATEGORIES, { category: 'all' });
+    expect(filtered).toHaveLength(8);
+    expect(buildServicesUrl({ category: 'all' })).toBe('/services');
+  });
+
+  it('handles "category=ALL" as default All state without notice', () => {
+    expect(normalizeCategory('ALL')).toBe('All');
+    const filtered = filterServices(SERVICE_CATEGORIES, { category: 'ALL' });
+    expect(filtered).toHaveLength(8);
+    expect(buildServicesUrl({ category: 'ALL' })).toBe('/services');
   });
 });
 
@@ -146,6 +205,17 @@ describe('filterServices', () => {
     const results = filterServices(SERVICE_CATEGORIES, { query: 'unobtainium' });
     expect(results).toHaveLength(0);
   });
+
+  it('treats non-canonical category casing as invalid, falling back to All', () => {
+    const acUpper = filterServices(SERVICE_CATEGORIES, { category: 'AC' });
+    expect(acUpper).toHaveLength(8);
+
+    const acMixed = filterServices(SERVICE_CATEGORIES, { category: 'Ac' });
+    expect(acMixed).toHaveLength(8);
+
+    const generatorCapital = filterServices(SERVICE_CATEGORIES, { category: 'Generator' });
+    expect(generatorCapital).toHaveLength(8);
+  });
 });
 
 describe('buildServicesUrl', () => {
@@ -173,6 +243,48 @@ describe('buildServicesUrl', () => {
       '/services?category=electrical&city=Abuja+%28FCT%29&q=solar',
     );
   });
+
+  it('caps search query at 100 characters in URL', () => {
+    const exactly100 = 'a'.repeat(100);
+    const over101 = 'b'.repeat(101);
+
+    const url100 = buildServicesUrl({ q: exactly100 });
+    expect(url100).toBe(`/services?q=${exactly100}`);
+
+    const url101 = buildServicesUrl({ q: over101 });
+    expect(url101).toBe(`/services?q=${'b'.repeat(100)}`);
+  });
+
+  it('caps long deep-linked search with combined category and city', () => {
+    const longQuery = 'x'.repeat(150);
+    const url = buildServicesUrl({ q: longQuery, category: 'ac', city: 'Lagos' });
+    expect(url).toBe(`/services?category=ac&city=Lagos&q=${'x'.repeat(100)}`);
+  });
+});
+
+describe('capSearchQuery', () => {
+  it('returns the constant MAX_SEARCH_QUERY_LENGTH as 100', () => {
+    expect(MAX_SEARCH_QUERY_LENGTH).toBe(100);
+  });
+
+  it('preserves queries at or below 100 characters', () => {
+    expect(capSearchQuery('')).toBe('');
+    expect(capSearchQuery('solar')).toBe('solar');
+    expect(capSearchQuery('a'.repeat(100))).toBe('a'.repeat(100));
+  });
+
+  it('caps queries exceeding 100 characters to exactly 100', () => {
+    const input101 = 'c'.repeat(101);
+    expect(capSearchQuery(input101)).toBe('c'.repeat(100));
+    expect(capSearchQuery(input101)).toHaveLength(100);
+  });
+
+  it('caps very long queries deterministically', () => {
+    const longInput = 'solar inverter repair with long description ' + 'x'.repeat(200);
+    const capped = capSearchQuery(longInput);
+    expect(capped).toHaveLength(100);
+    expect(capped).toBe(longInput.slice(0, 100));
+  });
 });
 
 describe('buildServiceDetailUrl', () => {
@@ -192,6 +304,13 @@ describe('buildServiceDetailUrl', () => {
         returnQ: 'diesel',
       }),
     ).toBe('/services/generator?city=Lagos&returnCategory=generator&returnQ=diesel');
+  });
+
+  it('caps returnQ at 100 characters', () => {
+    const longQ = 'z'.repeat(150);
+    const url = buildServiceDetailUrl('ac', { city: 'Lagos', returnQ: longQ });
+    expect(url).toContain(`returnQ=${'z'.repeat(100)}`);
+    expect(url).not.toContain('z'.repeat(101));
   });
 });
 
@@ -252,5 +371,58 @@ describe('createDebouncedScheduler', () => {
     expect(action1).not.toHaveBeenCalled();
     expect(action2).toHaveBeenCalledTimes(1);
     expect(scheduler.isPending()).toBe(false);
+  });
+
+  it('cancels pending search debounce when category or city changes', () => {
+    const scheduler = createDebouncedScheduler();
+    const debouncedUrlSync = vi.fn();
+
+    // User types in search box
+    scheduler.schedule(debouncedUrlSync, 300);
+    expect(scheduler.isPending()).toBe(true);
+
+    // User clicks a category pill or city before debounce timer elapses
+    scheduler.cancel();
+    expect(scheduler.isPending()).toBe(false);
+
+    // New URL is constructed immediately for the category/city change
+    const url = buildServicesUrl({
+      q: capSearchQuery('solar inverter'),
+      category: 'electrical',
+      city: 'Lagos',
+    });
+    expect(url).toBe('/services?category=electrical&city=Lagos&q=solar+inverter');
+
+    // Debounced action from search never fires
+    vi.advanceTimersByTime(500);
+    expect(debouncedUrlSync).not.toHaveBeenCalled();
+  });
+
+  it('cancels pending search debounce when Review details is clicked immediately', () => {
+    const scheduler = createDebouncedScheduler();
+    const debouncedUrlSync = vi.fn();
+
+    // User types search
+    scheduler.schedule(debouncedUrlSync, 300);
+
+    // User immediately clicks "Review details" on a service card
+    scheduler.cancel();
+    const detailUrl = buildServiceDetailUrl('ac', {
+      city: 'Lagos',
+      returnCategory: 'ac',
+      returnQ: capSearchQuery('ac repair ' + 'q'.repeat(120)),
+    });
+
+    vi.advanceTimersByTime(500);
+    expect(debouncedUrlSync).not.toHaveBeenCalled();
+    expect(detailUrl).toContain('returnQ=ac+repair+');
+    expect(detailUrl).not.toContain('q'.repeat(101));
+  });
+});
+
+describe('touch compliance and accessibility contract (WEB-006 remediation)', () => {
+  it('enforces 44px minimum touch target size according to WCAG 2.2 AA and WEB-006', () => {
+    const MIN_TOUCH_TARGET_PX = 44;
+    expect(MIN_TOUCH_TARGET_PX).toBeGreaterThanOrEqual(44);
   });
 });

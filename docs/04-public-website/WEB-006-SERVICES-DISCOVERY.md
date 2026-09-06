@@ -55,14 +55,14 @@ The route must maintain bidirectional synchronization between React component st
 
 | Parameter | Type | Validation & Canonical Rule | Default / Omitted Value |
 |---|---|---|---|
-| `q` | `string` | Trimmed, URL-decoded string. Case-insensitive text match against `category.title`, `category.description`, and `category.popularServices`. | If empty or whitespace-only, omitted from URL query string. |
-| `category` | `string` | Must strictly match one of the 8 canonical `id`s in `SERVICE_CATEGORIES` (`generator`, `ac`, `plumbing`, `electrical`, `cleaning`, `carpentry`, `tv-mounting`, `moving`), or `'all'`. | If `'all'` (case-insensitive) or absent, omitted from URL (treated as unconstrained 'All' state; does not display invalid notice). If unrecognized, falls back to 'All' with a non-blocking recovery notice. |
+| `q` | `string` | Trimmed, URL-decoded string, capped at 100 characters maximum at the input boundary (`maxLength={100}`). Case-insensitive text match against `category.title`, `category.description`, and `category.popularServices`. | If empty or whitespace-only, omitted from URL query string. |
+| `category` | `string` | Must strictly match one of the 8 canonical `id`s in `SERVICE_CATEGORIES` (`generator`, `ac`, `plumbing`, `electrical`, `cleaning`, `carpentry`, `tv-mounting`, `moving`) with exact case match, or `'all'`. | If `'all'` (case-insensitive) or absent, omitted from URL (treated as unconstrained 'All' state; does not display invalid notice). If noncanonical casing (e.g. `AC`, `Ac`) or unrecognized, falls back to 'All' with a non-blocking recovery notice. |
 | `city` | `string` | Must strictly match one of the 7 active cities in `NIGERIAN_LOCATIONS` (`status: 'active'`). | If absent or invalid, omitted from URL (treated as nationwide/all active cities). |
 
 #### Synchronization Rules:
-1. **Initial Load / Deep Link:** Component state is seeded directly from the incoming URL search parameters.
+1. **Initial Load / Deep Link:** Component state is seeded directly from the incoming URL search parameters. If incoming `q` exceeds 100 characters, it is capped deterministically to 100 characters and the URL is normalized so an arbitrarily long query is never preserved.
 2. **User Interaction:**
-   - **Search input:** Updates local input immediately; updates URL search parameters via debounced router replacement (`300ms`) using `router.replace` with `scroll: false` so browser history remains clean.
+   - **Search input:** Input enforces `maxLength={100}`. Typing or pasting updates local input immediately (capped to 100 chars); updates URL search parameters via debounced router replacement (`300ms`) using `router.replace` with `scroll: false` so browser history remains clean.
    - **Debounce cancellation:** Any pending search debounce timer must be cancelled immediately prior to competing filter mutations (category selection, city selection, filter reset), navigation away (clicking "Review details"), and component unmount.
    - **Category selection:** Updates immediately upon clicking a category tab/pill; updates URL with `category=<id>`. Clicking "All services" deletes the `category` parameter from the URL.
    - **City selection:** Updates immediately upon selecting an active city; updates URL with `city=<active-city>`. Selecting "All cities" deletes `city` from the URL.
@@ -250,7 +250,7 @@ Governed by `docs/02-design-system/skills/bukiebrainjobs-experience-standards/re
 4. **Live Region Status:**
    - Results count (`"{count} service categories shown"`) marked with `role="status"` or `aria-live="polite"` so assistive technologies announce filtered results dynamically.
 5. **Interactive Controls:**
-   - Minimum target size of 44x44 CSS pixels for all touch targets.
+   - Minimum target size of 44x44 CSS pixels for all touch targets, including notice dismiss buttons and the 'All cities (Nationwide)' dropdown option.
    - Keyboard accessible via `Tab`, `Enter`, and `Space`.
 6. **Images & Icons:**
    - Service card photos include descriptive `alt` text or empty `alt=""` when the adjacent card heading provides full semantic meaning.

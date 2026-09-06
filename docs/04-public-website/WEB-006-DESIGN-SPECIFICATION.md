@@ -131,7 +131,7 @@ WEB-006 defines the complete visual, interactive, responsive, and accessible exp
   - Absolute positioning, z-index 40, top full + 8px, right-aligned, width 240px.
   - White surface, `rounded-xl border border-slate-200 shadow-[0_16px_32px_rgba(0,26,65,0.14)]`.
   - Options list:
-    1. "All active cities" (clears city filter)
+    1. "All cities (Nationwide)" (clears city filter; min-height 44px `min-h-11 min-h-[44px]` for touch compliance)
     2. Lagos (State: Lagos State)
     3. Abuja (FCT) (State: Federal Capital Territory)
     4. Port Harcourt (State: Rivers State)
@@ -173,8 +173,9 @@ WEB-006 defines the complete visual, interactive, responsive, and accessible exp
 ### 3.6 Component 6: `InformationalNoticeBanner`
 - **Visual Style:** Light blue/emerald neutral banner `bg-[#EFF6FF] border border-[#BFDBFE] rounded-xl p-4 flex items-start gap-3 text-slate-800`.
 - **Icon:** `Info` icon (20px) in `#1D4ED8` or `#296A4B`.
+- **Dismiss Control:** Accessible dismiss button with minimum 44x44 CSS pixels hit area (`inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center`), keeping the visual `X` icon compact (`h-4 w-4`).
 - **Copy for Invalid City:** "We currently operate in 7 active Nigerian cities. Location \"{input}\" is not active yet, so we're displaying services available nationwide."
-- **Copy for Invalid Category:** "The requested category was not recognized. Showing all available service categories."
+- **Copy for Invalid Category:** "The requested category \"{rawCategory}\" was not recognized. Showing all available service categories."
 
 ---
 
@@ -237,10 +238,10 @@ The 8 canonical categories are displayed with their authentic assets, pricing, a
 - **UI Behavior:** Does NOT crash or redirect. Displays `InformationalNoticeBanner`: "We currently operate in 7 active Nigerian cities. Location 'Atlantis' is not active yet, so we're displaying services available nationwide."
 - **Grid:** All services shown under nationwide scope. URL cleaned on subsequent user filter change.
 
-### 4.9 State 9: Invalid Category State (`/services?category=spaceship`)
-- **Trigger:** User loads URL with an invalid category parameter.
-- **Sanitization:** Category ID is checked against `SERVICE_CATEGORIES.some(c => c.id === id)`. Fails validation.
-- **UI Behavior:** Category tab falls back to "All services". Displays `InformationalNoticeBanner`: "The requested category was not recognized. Showing all available service categories."
+### 4.9 State 9: Invalid or Non-Canonical Category State (`/services?category=AC` or `?category=spaceship`)
+- **Trigger:** User loads URL with an unrecognized or non-canonically cased category parameter (e.g. `category=AC`, `category=Ac`, `category=spaceship`).
+- **Sanitization:** Category ID must strictly match one of the 8 canonical IDs (exact lowercase match). `'all'` is case-insensitive. Non-canonical casing is rejected.
+- **UI Behavior:** Category tab falls back to "All services". Displays `InformationalNoticeBanner`: "The requested category \"{rawCategory}\" was not recognized. Showing all available service categories."
 - **Grid:** All 8 services rendered.
 
 ### 4.10 State 10: Unknown Service State (`/services/invalid-id`)

@@ -7,6 +7,20 @@ import {
   ServiceCategory,
 } from '../mock/homepage-data';
 
+/**
+ * Maximum accepted search query length.
+ * Enforced at the input boundary before state/URL synchronization.
+ */
+export const MAX_SEARCH_QUERY_LENGTH = 100;
+
+/**
+ * Caps a search query to MAX_SEARCH_QUERY_LENGTH characters.
+ * Returns the deterministically truncated string.
+ */
+export function capSearchQuery(query: string): string {
+  return query.slice(0, MAX_SEARCH_QUERY_LENGTH);
+}
+
 export const mockService = {
   isMock: true,
 };
@@ -25,12 +39,14 @@ export function validateCity(city: string | null | undefined): string | undefine
 
 /**
  * Validates a category ID against canonical SERVICE_CATEGORIES.
- * Returns the category ID if found, otherwise undefined.
+ * Canonical category IDs must match exactly (case-sensitive).
+ * "all" is handled separately by normalizeCategory (case-insensitive).
+ * Non-canonical casing (e.g. "AC", "Ac") is rejected.
  */
 export function validateCategory(category: string | null | undefined): string | undefined {
   if (!category || typeof category !== 'string') return undefined;
-  const trimmed = category.trim().toLowerCase();
-  return SERVICE_CATEGORIES.find((cat) => cat.id.toLowerCase() === trimmed)?.id;
+  const trimmed = category.trim();
+  return SERVICE_CATEGORIES.find((cat) => cat.id === trimmed)?.id;
 }
 
 /**
@@ -102,7 +118,7 @@ export function buildServicesUrl(options: {
     params.set('city', options.city);
   }
   if (options.q && options.q.trim()) {
-    params.set('q', options.q.trim());
+    params.set('q', capSearchQuery(options.q.trim()));
   }
 
   const queryString = params.toString();
@@ -165,7 +181,7 @@ export function buildServiceDetailUrl(
     params.set('returnCategory', options.returnCategory);
   }
   if (options?.returnQ && options.returnQ.trim()) {
-    params.set('returnQ', options.returnQ.trim());
+    params.set('returnQ', capSearchQuery(options.returnQ.trim()));
   }
 
   const queryString = params.toString();

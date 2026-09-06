@@ -20,8 +20,10 @@ import {
   ServiceCategory,
 } from '../../lib/mock/homepage-data';
 import {
+  MAX_SEARCH_QUERY_LENGTH,
   buildServiceDetailUrl,
   buildServicesUrl,
+  capSearchQuery,
   createDebouncedScheduler,
   filterServices,
   normalizeCategory,
@@ -112,7 +114,7 @@ function ServicesDirectory() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const rawQ = searchParams.get("q") || "";
+  const rawQ = capSearchQuery(searchParams.get("q") || "");
   const rawCategory = searchParams.get("category");
   const rawCity = searchParams.get("city");
 
@@ -144,6 +146,16 @@ function ServicesDirectory() {
     setSelectedCity(validCity);
   }, [validCity]);
 
+  // Ensure deep-linked search query exceeding 100 characters is capped in the URL
+  useEffect(() => {
+    const unconstrainedQ = searchParams.get("q");
+    if (unconstrainedQ && unconstrainedQ.length > MAX_SEARCH_QUERY_LENGTH) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("q", rawQ);
+      router.replace(`/services?${params.toString()}`, { scroll: false });
+    }
+  }, [searchParams, rawQ, router]);
+
   // Cancel pending search debounce on unmount
   useEffect(() => {
     return () => {
@@ -164,11 +176,12 @@ function ServicesDirectory() {
 
   // 300ms Debounced URL synchronization for search input
   const handleSearchChange = (value: string) => {
-    setSearchQuery(value);
+    const capped = capSearchQuery(value);
+    setSearchQuery(capped);
     scheduler.schedule(() => {
       if (isNavigatingRef.current) return;
       const url = buildServicesUrl({
-        q: value,
+        q: capped,
         category: selectedCategory,
         city: selectedCity,
       });
@@ -303,6 +316,7 @@ function ServicesDirectory() {
                 type="search"
                 value={searchQuery}
                 onChange={(event) => handleSearchChange(event.target.value)}
+                maxLength={MAX_SEARCH_QUERY_LENGTH}
                 placeholder="Search by service, trade, or job"
                 className="h-12 w-full rounded-xl border border-white/20 bg-white pl-11 pr-12 text-sm font-medium text-slate-900 shadow-[0_12px_30px_rgba(0,0,0,0.15)] outline-none transition focus:ring-2 focus:ring-[#ABEEC8]"
               />
@@ -343,7 +357,7 @@ function ServicesDirectory() {
               type="button"
               onClick={() => setDismissedCityNotice(true)}
               aria-label="Dismiss notice"
-              className="rounded-lg p-1 text-slate-500 hover:bg-blue-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#296A4B]"
+              className="inline-flex h-11 w-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-blue-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#296A4B]"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -370,7 +384,7 @@ function ServicesDirectory() {
               type="button"
               onClick={() => setDismissedCategoryNotice(true)}
               aria-label="Dismiss notice"
-              className="rounded-lg p-1 text-slate-500 hover:bg-blue-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#296A4B]"
+              className="inline-flex h-11 w-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-blue-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#296A4B]"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -417,7 +431,7 @@ function ServicesDirectory() {
                     role="option"
                     aria-selected={!selectedCity}
                     onClick={() => handleSelectCity(undefined)}
-                    className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-xs font-semibold transition-colors hover:bg-slate-50 ${
+                    className={`flex min-h-11 min-h-[44px] w-full items-center justify-between px-4 py-2.5 text-left text-xs font-semibold transition-colors hover:bg-slate-50 ${
                       !selectedCity ? "bg-[#EAF7EF] text-[#296A4B]" : "text-slate-700"
                     }`}
                   >
