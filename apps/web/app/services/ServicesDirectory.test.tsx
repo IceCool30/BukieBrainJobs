@@ -17,14 +17,15 @@ import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useRouter, useSearchParams } from 'next/navigation';
+import type { ReadonlyURLSearchParams } from 'next/navigation';
 import ServicesPage from './page';
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
-function makeSearchParams(params: Record<string, string> = {}): URLSearchParams {
-  return new URLSearchParams(params);
+function makeSearchParams(params: Record<string, string> = {}): ReadonlyURLSearchParams {
+  return new URLSearchParams(params) as unknown as ReadonlyURLSearchParams;
 }
 
 function makeRouter() {
@@ -136,7 +137,7 @@ describe('ServicesPage — search input', () => {
 
     const cards = screen.getAllByRole('article');
     expect(cards).toHaveLength(1);
-    expect(within(cards[0]).getByRole('heading', { name: /generator/i })).toBeInTheDocument();
+    expect(within(cards[0]!).getByRole('heading', { name: /generator/i })).toBeInTheDocument();
   });
 
   it('shows the empty state when no categories match the search', async () => {
@@ -195,7 +196,7 @@ describe('ServicesPage — category button filters', () => {
 
     const cards = screen.getAllByRole('article');
     expect(cards).toHaveLength(1);
-    expect(within(cards[0]).getByRole('heading', { name: /ac/i })).toBeInTheDocument();
+    expect(within(cards[0]!).getByRole('heading', { name: /ac/i })).toBeInTheDocument();
   });
 
   it('calls router.push with the correct category param when a category button is clicked', async () => {
@@ -327,7 +328,8 @@ describe('ServicesPage — Review details navigation', () => {
     const user = userEvent.setup({ delay: null });
     render(<ServicesPage />);
 
-    await user.click(screen.getAllByRole('button', { name: /review details/i })[0]);
+    const buttons = screen.getAllByRole('button', { name: /review details/i });
+    await user.click(buttons[0]!);
 
     expect(router.push).toHaveBeenCalledWith(
       expect.stringMatching(/^\/services\//),
@@ -339,7 +341,8 @@ describe('ServicesPage — Review details navigation', () => {
     const user = userEvent.setup({ delay: null });
     render(<ServicesPage />);
 
-    await user.click(screen.getAllByRole('button', { name: /review details/i })[0]);
+    const buttons = screen.getAllByRole('button', { name: /review details/i });
+    await user.click(buttons[0]!);
 
     expect(router.push).toHaveBeenCalledWith(
       expect.stringContaining('city=Lagos'),
@@ -353,10 +356,11 @@ describe('ServicesPage — Review details navigation', () => {
     await user.type(screen.getByRole('searchbox'), 'repair');
 
     const reviewButtons = screen.getAllByRole('button', { name: /review details/i });
-    await user.click(reviewButtons[0]);
+    await user.click(reviewButtons[0]!);
 
-    const lastPushArg: string =
-      router.push.mock.calls[router.push.mock.calls.length - 1][0];
+    const calls = router.push.mock.calls;
+    const lastCall = calls[calls.length - 1];
+    const lastPushArg = String(lastCall?.[0] ?? '');
     expect(lastPushArg).toContain('returnQ=repair');
   });
 });

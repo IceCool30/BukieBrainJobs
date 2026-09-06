@@ -4,6 +4,8 @@
 // to supply the specific router and searchParams state they need.
 import { vi } from 'vitest';
 
+import type { ReadonlyURLSearchParams } from 'next/navigation';
+
 export const useRouter = vi.fn(() => ({
   push: vi.fn(),
   replace: vi.fn(),
@@ -13,7 +15,9 @@ export const useRouter = vi.fn(() => ({
   prefetch: vi.fn(),
 }));
 
-export const useSearchParams = vi.fn(() => new URLSearchParams());
+export const useSearchParams = vi.fn(
+  () => new URLSearchParams() as unknown as ReadonlyURLSearchParams,
+);
 
 export const usePathname = vi.fn(() => '/services');
 
