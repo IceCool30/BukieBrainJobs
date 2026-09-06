@@ -2,6 +2,19 @@
 
 This file defines the standards every contributor must follow when working in this repository.
 
+## Mandatory Skills — Load and Apply on Every Task
+
+These four skills are required for all work in this repository without exception. Load each one at the start of every session and apply it whenever the task falls within its domain. Do not skip, defer, or partially apply these skills.
+
+| Skill | Path | Apply when |
+|---|---|---|
+| `bukiebrainjobs-experience-standards` | `.agents/skills/bukiebrainjobs-experience-standards/SKILL.md` | Any customer-facing UI, copy, motion, responsive layout, component, accessibility, or interaction work. |
+| `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Any visual design decision, page structure, component quality review, typography, color, animation, or UX pattern. |
+| `agent-skills-test-driven-development` | `.agents/skills/agent-skills-test-driven-development/SKILL.md` | Any logic change, bug fix, behavior modification, or new feature implementation. |
+| `mr-solomon-natural-voice` | `.agents/skills/mr-solomon-natural-voice/SKILL.md` | Any message, copy, reply, argument, or communication written on behalf of the user or in the user's voice. |
+
+All four skills must be read before work begins on any substantive task. If a task spans multiple domains, apply all relevant skills together.
+
 ## Before changing anything
 
 1. Read `README.md`.
