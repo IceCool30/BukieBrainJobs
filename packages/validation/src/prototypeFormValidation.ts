@@ -90,3 +90,127 @@ export function validateBrainWorkerDraft(draft: BrainWorkerDraft): FormErrors {
   if (!hasText(draft.service)) errors.service = 'Choose the service you offer.';
   return errors;
 }
+
+export interface NormalizedPhoneResult {
+  valid: boolean;
+  normalized: string;
+  formatted: string;
+  masked: string;
+  error?: string | undefined;
+}
+
+export function normalizeNigerianPhone(input: string): NormalizedPhoneResult {
+  if (!input || typeof input !== 'string') {
+    return {
+      valid: false,
+      normalized: '',
+      formatted: '',
+      masked: '',
+      error: 'Enter your phone number.',
+    };
+  }
+
+  const cleaned = input.trim().replace(/[\s\-().]/g, '');
+  let national10 = '';
+
+  if (cleaned.startsWith('+234')) {
+    national10 = cleaned.slice(4);
+  } else if (cleaned.startsWith('234')) {
+    national10 = cleaned.slice(3);
+  } else if (cleaned.startsWith('0')) {
+    national10 = cleaned.slice(1);
+  } else if (cleaned.length === 10 && /^[789]\d{9}$/.test(cleaned)) {
+    national10 = cleaned;
+  }
+
+  if (!/^[789]\d{9}$/.test(national10)) {
+    return {
+      valid: false,
+      normalized: '',
+      formatted: '',
+      masked: '',
+      error: 'Enter a valid Nigerian phone number (e.g. 08012345678 or +2348012345678).',
+    };
+  }
+
+  const normalized = `+234${national10}`;
+  const prefix = national10.slice(0, 3);
+  const mid = national10.slice(3, 6);
+  const end = national10.slice(6);
+  const formatted = `+234 ${prefix} ${mid} ${end}`;
+  const masked = `+234 ${prefix} ••• ••${end.slice(2)}`;
+
+  return {
+    valid: true,
+    normalized,
+    formatted,
+    masked,
+  };
+}
+
+export function validatePhoneOtp(otp: string): { valid: boolean; error?: string | undefined } {
+  if (!otp || typeof otp !== 'string') {
+    return { valid: false, error: 'Enter the 6-digit code sent to your phone.' };
+  }
+  const trimmed = otp.trim();
+  if (trimmed.length === 0) {
+    return { valid: false, error: 'Enter the 6-digit code sent to your phone.' };
+  }
+  if (!/^\d+$/.test(trimmed)) {
+    return { valid: false, error: 'The verification code must contain 6 numbers.' };
+  }
+  if (trimmed.length !== 6) {
+    return { valid: false, error: 'Enter the 6-digit code sent to your phone.' };
+  }
+  return { valid: true };
+}
+
+export function validateEmailAddress(email: string): { valid: boolean; error?: string | undefined } {
+  if (!email || typeof email !== 'string') {
+    return { valid: false, error: 'Enter your email address.' };
+  }
+  const trimmed = email.trim();
+  if (trimmed.length === 0) {
+    return { valid: false, error: 'Enter your email address.' };
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+    return { valid: false, error: 'Enter a valid email address.' };
+  }
+  return { valid: true };
+}
+
+export function validatePassword(password: string): { valid: boolean; error?: string | undefined } {
+  if (!password || typeof password !== 'string') {
+    return { valid: false, error: 'Enter your password.' };
+  }
+  if (password.length < 8) {
+    return { valid: false, error: 'Password must be at least 8 characters long.' };
+  }
+  return { valid: true };
+}
+
+export function validateReturnDestination(url?: string | null | undefined): string {
+  if (!url || typeof url !== 'string') {
+    return '/';
+  }
+  const trimmed = url.trim();
+  if (!trimmed.startsWith('/') || trimmed.startsWith('//') || trimmed.includes('\\')) {
+    return '/';
+  }
+  return trimmed;
+}
+
+export function validateRoleSelection(role?: string | null | undefined): {
+  valid: boolean;
+  role?: 'customer' | 'brainworker' | undefined;
+  error?: string | undefined;
+} {
+  if (role === 'customer' || role === 'brainworker') {
+    return { valid: true, role };
+  }
+  return {
+    valid: false,
+    error: 'Please select whether you are a Customer or BrainWorker.',
+  };
+}
+

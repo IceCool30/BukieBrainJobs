@@ -11,7 +11,10 @@
 | WEB-004 | Public Service Detail | Public service review between discovery and booking preparation | Approved implementation contract | Yes |
 | WEB-005 | Public BrainWorker Profile | Guest-accessible profile review for the four featured BrainWorkers with canonical booking context | Approved implementation contract | Yes |
 | WEB-006 | Public Services Discovery | Public service discovery, filtering, query synchronization, and recovery | Approved implementation contract | Yes |
-| WEB-007 | Public Booking Preparation & Intake Flow | Booking preparation, customer intake, validation, mock submission, and confirmation | Approved for Design Brief | Yes |
+| WEB-007 | Public Booking Preparation & Intake Flow | Booking preparation, customer intake, validation, mock submission, and confirmation | Approved implementation contract | Yes |
+| WEB-007A | Booking Preparation Design Brief | Section-by-section booking preparation UX/UI design brief | Approved implementation contract | Yes |
+| WEB-008 | Authentication & Account Access | Unified authentication, role selection, phone OTP, social login, password recovery, and booking draft handoff | Approved implementation contract | Yes |
+| WEB-008A | Authentication Design Brief | Screen-level visual and interaction design brief for authentication | Approved implementation contract | Yes |
 
 ## Locked homepage rules
 

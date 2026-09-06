@@ -2,7 +2,7 @@
 
 **Document ID:** WEB-008A  
 **Version:** 1.0  
-**Status:** In Review  
+**Status:** Approved  
 **Product Area:** Public Website / Authentication  
 **Primary User:** Customer and BrainWorker  
 **Experience:** Responsive web, mobile-first  
