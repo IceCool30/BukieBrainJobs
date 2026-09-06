@@ -12,6 +12,48 @@ export type BookingDraft = {
   landmark?: string;
   service?: string;
 };
+export type JobType = 'specific_service' | 'broader_project';
+export type JobScheduleUrgency = 'urgent' | 'tomorrow' | 'flexible' | 'specific_date';
+export type JobArrivalWindow = 'morning' | 'afternoon' | 'evening' | 'anytime' | string;
+export type JobBudgetType = 'fixed' | 'negotiable' | 'unspecified';
+
+export interface CustomerJobDraft {
+  jobType?: JobType | undefined;
+  category?: string | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
+  city?: string | undefined;
+  streetAddress?: string | undefined;
+  landmark?: string | undefined;
+  urgency?: JobScheduleUrgency | undefined;
+  preferredDate?: string | undefined;
+  arrivalWindow?: JobArrivalWindow | undefined;
+  budget?: string | undefined;
+  budgetType?: JobBudgetType | undefined;
+  preferredWorkerId?: string | undefined;
+  preferredWorkerName?: string | undefined;
+}
+
+export const ACTIVE_MARKETPLACE_CITIES = [
+  'lagos',
+  'abuja',
+  'abuja (fct)',
+  'port harcourt',
+  'ibadan',
+  'enugu',
+  'kano',
+  'benin city',
+  'benin',
+] as const;
+
+export function isActiveMarketplaceCity(city: string): boolean {
+  if (!city || typeof city !== 'string') return false;
+  const normalized = city.trim().toLowerCase();
+  return ACTIVE_MARKETPLACE_CITIES.some(
+    (c) => c === normalized || normalized.includes(c) || c.includes(normalized),
+  );
+}
+
 type PostJobDraft = { budget: string; city: string; description: string; title: string };
 type BrainWorkerDraft = { city: string; fullName: string; phone: string; service: string };
 
@@ -81,6 +123,73 @@ export function validatePostJobDraft(draft: PostJobDraft): FormErrors {
   if (!hasText(draft.title, 10)) errors.title = 'Use at least 10 characters to describe the job.';
   return errors;
 }
+
+export function validateCustomerJobDraft(draft: CustomerJobDraft): FormErrors {
+  const errors: FormErrors = {};
+
+  if (!draft.jobType || (draft.jobType !== 'specific_service' && draft.jobType !== 'broader_project')) {
+    errors.jobType = 'Select a job type (specific service or broader project).';
+  }
+
+  const title = draft.title ?? '';
+  if (!hasText(title)) {
+    errors.title = 'Enter a title for your job request.';
+  } else if (title.trim().length < 10) {
+    errors.title = 'Use at least 10 characters to describe the job.';
+  } else if (title.trim().length > 100) {
+    errors.title = 'Job title must be 100 characters or less.';
+  }
+
+  const description = draft.description ?? '';
+  if (!hasText(description)) {
+    errors.description = 'Describe the work you need done.';
+  } else if (description.trim().length < 20) {
+    errors.description = 'Add enough detail for BrainWorkers to understand the job (at least 20 characters).';
+  } else if (description.trim().length > 1000) {
+    errors.description = 'Description must be 1,000 characters or less.';
+  }
+
+  const city = draft.city ?? '';
+  if (!hasText(city)) {
+    errors.city = 'Choose a city for your job.';
+  } else if (!isActiveMarketplaceCity(city)) {
+    errors.city = 'Please select an active marketplace city (e.g. Lagos, Abuja, Port Harcourt, Ibadan, Enugu, Kano, Benin City).';
+  }
+
+  const streetAddress = draft.streetAddress ?? '';
+  if (!hasText(streetAddress, 5)) {
+    errors.streetAddress = 'Enter a complete street address.';
+  }
+
+  if (draft.landmark && draft.landmark.trim().length > 100) {
+    errors.landmark = 'Landmark must be 100 characters or less.';
+  }
+
+  const urgency = draft.urgency;
+  if (!urgency || !['urgent', 'tomorrow', 'flexible', 'specific_date'].includes(urgency)) {
+    errors.urgency = 'Choose a schedule preference.';
+  } else if (urgency === 'specific_date') {
+    const preferredDate = draft.preferredDate ?? '';
+    if (!hasText(preferredDate)) {
+      errors.preferredDate = 'Choose a preferred service date.';
+    } else {
+      const trimmedDate = preferredDate.trim();
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(trimmedDate)) {
+        errors.preferredDate = 'Choose a valid date.';
+      } else {
+        const today = new Date();
+        const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        if (trimmedDate < todayStr) {
+          errors.preferredDate = 'Choose a date that is today or in the future.';
+        }
+      }
+    }
+  }
+
+  return errors;
+}
+
+export const validateJobDraft = validateCustomerJobDraft;
 
 export function validateBrainWorkerDraft(draft: BrainWorkerDraft): FormErrors {
   const errors: FormErrors = {};
