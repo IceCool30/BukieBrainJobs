@@ -1,6 +1,17 @@
 export type FormErrors = Record<string, string>;
 
-type BookingDraft = { address: string; city: string; notes: string };
+export type BookingDraft = {
+  address?: string;
+  streetAddress?: string;
+  city: string;
+  notes?: string;
+  jobDescription?: string;
+  date?: string;
+  arrivalWindow?: string;
+  paymentPreference?: string;
+  landmark?: string;
+  service?: string;
+};
 type PostJobDraft = { budget: string; city: string; description: string; title: string };
 type BrainWorkerDraft = { city: string; fullName: string; phone: string; service: string };
 
@@ -12,9 +23,53 @@ export function getPrototypeSubmissionOutcome({ mockError, online }: { mockError
 
 export function validateBookingDraft(draft: BookingDraft): FormErrors {
   const errors: FormErrors = {};
-  if (!hasText(draft.address, 5)) errors.address = 'Enter a complete street address.';
-  if (!hasText(draft.city)) errors.city = 'Choose a location for the job.';
-  if (!hasText(draft.notes, 20)) errors.notes = 'Add a few details about the work you need done.';
+  const address = draft.streetAddress ?? draft.address ?? '';
+  if (!hasText(address, 5)) {
+    if (draft.streetAddress !== undefined) {
+      errors.streetAddress = 'Enter a complete street address.';
+    }
+    if (draft.address !== undefined || draft.streetAddress === undefined) {
+      errors.address = 'Enter a complete street address.';
+    }
+  }
+
+  if (!hasText(draft.city)) {
+    errors.city = 'Choose a location for the job.';
+  }
+
+  const notes = draft.jobDescription ?? draft.notes ?? '';
+  if (!hasText(notes, 20)) {
+    if (draft.jobDescription !== undefined) {
+      errors.jobDescription = 'Add a few details about the work you need done.';
+    }
+    if (draft.notes !== undefined || draft.jobDescription === undefined) {
+      errors.notes = 'Add a few details about the work you need done.';
+    }
+  }
+
+  if (draft.date !== undefined) {
+    if (!hasText(draft.date)) {
+      errors.date = 'Choose a preferred service date.';
+    } else {
+      const trimmedDate = draft.date.trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(trimmedDate)) {
+        const today = new Date();
+        const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        if (trimmedDate < todayStr) {
+          errors.date = 'Choose a date that is today or in the future.';
+        }
+      }
+    }
+  }
+
+  if (draft.arrivalWindow !== undefined && !hasText(draft.arrivalWindow)) {
+    errors.arrivalWindow = 'Choose a preferred arrival window.';
+  }
+
+  if (draft.paymentPreference !== undefined && !hasText(draft.paymentPreference)) {
+    errors.paymentPreference = 'Choose a preferred payment method.';
+  }
+
   return errors;
 }
 

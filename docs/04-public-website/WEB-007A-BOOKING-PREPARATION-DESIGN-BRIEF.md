@@ -2,7 +2,7 @@
 
 **Document ID:** WEB-007A  
 **Version:** 1.0  
-**Status:** In Review  
+**Status:** Approved  
 **Product Area:** Public Website  
 **Route:** `/book`  
 **Primary User:** Customer  
