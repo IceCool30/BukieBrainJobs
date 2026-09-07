@@ -345,7 +345,7 @@ export default function HeroSection({
           <div ref={containerRef} className="relative w-full max-w-xl pt-4 lg:max-w-[46rem]">
             <form
               onSubmit={handleFormSubmit}
-              className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]"
+              className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-2xl border border-slate-200/90 bg-white p-2 ring-4 ring-white/10 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.6)] transition-all"
             >
               <div className="relative col-span-2 flex items-center border-b border-slate-100">
                 <Search className="absolute left-4 h-5 w-5 shrink-0 text-slate-400" />

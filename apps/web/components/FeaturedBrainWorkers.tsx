@@ -17,7 +17,7 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
   return (
     <Link
       href={href}
-      className="service-card-motion motion-press group block overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left shadow-[0_2px_10px_-6px_rgba(0,26,65,0.18)] transition-[transform,box-shadow,border-color] duration-[180ms] ease-[var(--ease-ui-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
+      className="bbj-card-interactive service-card-motion motion-press group block overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left transition-[transform,box-shadow,border-color] duration-[180ms] ease-[var(--ease-ui-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
       aria-label={`View ${worker.name}'s profile`}
     >
       <div className="relative aspect-[5/4] overflow-hidden bg-slate-100">
@@ -28,9 +28,13 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="service-card-image object-cover"
         />
-        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-[#001A41] shadow-sm">
+        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full border border-slate-200/80 bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-[#001A41] shadow-xs backdrop-blur-xs">
           <BadgeCheck className="h-3.5 w-3.5 text-[#296A4B]" aria-hidden="true" />
           Featured
+        </span>
+        <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#001A41]/85 px-2.5 py-1 text-[10px] font-semibold text-[#ABEEC8] shadow-xs backdrop-blur-xs">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#ABEEC8]" aria-hidden="true" />
+          Available today
         </span>
         <span className="service-card-arrow absolute right-3 top-3 flex h-8 w-8 translate-x-1 items-center justify-center rounded-full bg-[#001A41] text-white opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">
           <ArrowRight className="h-4 w-4" />

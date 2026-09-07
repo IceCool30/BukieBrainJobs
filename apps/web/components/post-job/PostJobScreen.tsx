@@ -501,6 +501,45 @@ export default function PostJobScreen() {
           </p>
         </div>
 
+        {/* Step Progress Navigation */}
+        <nav aria-label="Job request steps" className="mb-6 hidden sm:flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+          <button
+            type="button"
+            onClick={() => scrollToField('section-requirement')}
+            className="flex items-center gap-1.5 rounded-full border border-slate-200/90 bg-white px-3 py-1.5 font-semibold text-[#001A41] shadow-xs hover:border-[#296A4B] transition-colors"
+          >
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#001A41] text-[10px] text-white">1</span>
+            <span>Requirement</span>
+          </button>
+          <div className="h-0.5 w-3 bg-slate-200" />
+          <button
+            type="button"
+            onClick={() => scrollToField('section-location')}
+            className="flex items-center gap-1.5 rounded-full border border-slate-200/90 bg-white px-3 py-1.5 font-semibold text-[#001A41] shadow-xs hover:border-[#296A4B] transition-colors"
+          >
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#001A41] text-[10px] text-white">2</span>
+            <span>Location</span>
+          </button>
+          <div className="h-0.5 w-3 bg-slate-200" />
+          <button
+            type="button"
+            onClick={() => scrollToField('section-schedule')}
+            className="flex items-center gap-1.5 rounded-full border border-slate-200/90 bg-white px-3 py-1.5 font-semibold text-[#001A41] shadow-xs hover:border-[#296A4B] transition-colors"
+          >
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#001A41] text-[10px] text-white">3</span>
+            <span>Schedule</span>
+          </button>
+          <div className="h-0.5 w-3 bg-slate-200" />
+          <button
+            type="button"
+            onClick={() => scrollToField('section-budget')}
+            className="flex items-center gap-1.5 rounded-full border border-slate-200/90 bg-white px-3 py-1.5 font-semibold text-[#001A41] shadow-xs hover:border-[#296A4B] transition-colors"
+          >
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#001A41] text-[10px] text-white">4</span>
+            <span>Budget & Review</span>
+          </button>
+        </nav>
+
         {/* Form & Review Grid Layout */}
         <form ref={formRef} onSubmit={handleSubmit} noValidate className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
           {/* Left Column: Intake Form (7 cols on desktop) */}
@@ -509,7 +548,7 @@ export default function PostJobScreen() {
               <section
                 id="section-requirement"
                 aria-labelledby="heading-requirement"
-                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs sm:p-6"
+                className="bbj-card-interactive rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6"
               >
                 <div className="flex items-center gap-2 mb-4">
                   <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#001A41] text-xs font-bold text-white">

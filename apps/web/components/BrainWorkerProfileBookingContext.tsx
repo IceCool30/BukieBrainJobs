@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, Clock, MapPin, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 import {
   buildPublicBrainWorkerBookingUrl,
@@ -29,7 +29,7 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
   const suggestion = !hasInitialService && profile.category ? `Suggested service focus: ${profile.category}` : undefined;
 
   return (
-    <aside className="h-fit rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-6 lg:sticky lg:top-6">
+    <aside className="bbj-card-interactive h-fit rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 lg:sticky lg:top-6">
       <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Book this BrainWorker</p>
       <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-[#001A41]">Confirm the service and location.</h2>
       <p className="mt-3 text-sm leading-6 text-slate-600">Choose the service you need and the active city for your job.</p>
@@ -69,6 +69,17 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
           {suggestion}. Select the service that matches your job before continuing.
         </p>
       )}
+
+      <div className="mt-5 space-y-2 rounded-xl border border-slate-100 bg-[#F8F9FF] p-3 text-xs text-slate-600">
+        <div className="flex items-center gap-2 font-medium">
+          <Clock className="h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
+          <span>Typically completed in 2 to 4 hours</span>
+        </div>
+        <div className="flex items-center gap-2 font-medium">
+          <ShieldCheck className="h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
+          <span>Protected by BukieGuarantee escrow</span>
+        </div>
+      </div>
 
       {bookingUrl ? (
         <Link

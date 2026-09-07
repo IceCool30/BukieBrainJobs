@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, CheckCircle2, MapPin } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, MapPin, ShieldCheck } from 'lucide-react';
 import BrainWorkerProfileBookingContext from '../../../components/BrainWorkerProfileBookingContext';
 import {
   getPublicBrainWorker,
@@ -45,7 +45,7 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
             sizes="(min-width: 640px) 58vw, 100vw"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#001A41] via-[#001A41]/85 to-[#001A41]/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#001A41] via-[#001A41]/88 to-[#001A41]/20" />
         </div>
 
         <div className="relative mx-auto max-w-[1280px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
@@ -74,6 +74,33 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
 
       <section className="mx-auto grid max-w-[1280px] gap-8 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-10 lg:px-8">
         <div className="space-y-8">
+          {/* BukiePassport Verification Badge Card */}
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-7">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#E5F6EB] text-[#296A4B]">
+                <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">BukiePassport Verified</p>
+                <h2 className="text-base font-bold text-[#001A41]">Vetted Nigerian BrainWorker</h2>
+              </div>
+            </div>
+            <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+              <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-[#F8F9FF] p-3 text-xs font-semibold text-slate-700">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
+                <span>NIN Identity Verified</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-[#F8F9FF] p-3 text-xs font-semibold text-slate-700">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
+                <span>Background Cleared</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-[#F8F9FF] p-3 text-xs font-semibold text-slate-700">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
+                <span>Trade Skill Assessed</span>
+              </div>
+            </div>
+          </section>
+
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-7">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Service focus</p>
             <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-[#001A41]">What this BrainWorker lists.</h2>

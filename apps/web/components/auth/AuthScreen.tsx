@@ -155,6 +155,16 @@ export default function AuthScreen({
 
   const headingRef = useRef<HTMLHeadingElement>(null);
   const successRef = useRef<HTMLHeadingElement>(null);
+  const [resendCooldown, setResendCooldown] = useState(0);
+
+  // OTP resend countdown ticker
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = setInterval(() => {
+      setResendCooldown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
 
   // Check for test failure flag
   const mockErrorFlag = searchParams.get('mockAuthError');
@@ -240,6 +250,7 @@ export default function AuthScreen({
       setMaskedPhone(result.maskedPhone);
       setMode('phone_otp');
       setOtp('');
+      setResendCooldown(45);
     } else {
       setGeneralError(result.error || 'Could not send verification code. Please try again.');
     }
@@ -950,17 +961,24 @@ export default function AuthScreen({
                 </button>
                 <button
                   type="button"
+                  disabled={resendCooldown > 0}
                   onClick={async () => {
+                    if (resendCooldown > 0) return;
                     const norm = normalizeNigerianPhone(phone);
                     if (norm.valid) {
                       await mockSendPhoneOtp(norm.normalized);
                       setSuccessMessage(`A new code was sent to ${norm.masked}.`);
+                      setResendCooldown(45);
                     }
                   }}
-                  className="inline-flex items-center gap-1 font-bold text-[#001A41] hover:text-[#296A4B]"
+                  className={`inline-flex items-center gap-1 font-bold ${
+                    resendCooldown > 0
+                      ? 'text-slate-400 cursor-not-allowed'
+                      : 'text-[#001A41] hover:text-[#296A4B] cursor-pointer'
+                  }`}
                 >
                   <RotateCcw className="h-3 w-3" />
-                  Resend code
+                  Resend code {resendCooldown > 0 ? `(${resendCooldown}s)` : ''}
                 </button>
               </div>
 

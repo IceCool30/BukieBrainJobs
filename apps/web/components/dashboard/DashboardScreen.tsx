@@ -499,6 +499,19 @@ export default function DashboardScreen() {
                                 </span>
                               )}
                             </div>
+
+                            {/* Visual Progress Stepper */}
+                            <div className="pt-2 border-t border-slate-100">
+                              <div className="flex items-center justify-between text-[10px] font-semibold text-slate-500 max-w-sm">
+                                <span className="text-[#296A4B] font-bold">1. Confirmed</span>
+                                <span className="h-0.5 w-6 bg-[#296A4B]" />
+                                <span className="text-[#296A4B] font-bold">2. Matching</span>
+                                <span className="h-0.5 w-6 bg-slate-200" />
+                                <span>3. En Route</span>
+                                <span className="h-0.5 w-6 bg-slate-200" />
+                                <span>4. Completed</span>
+                              </div>
+                            </div>
                           </div>
 
                           <Link
@@ -523,8 +536,23 @@ export default function DashboardScreen() {
                             className="object-contain"
                           />
                         </div>
-                        <p className="relative z-10 font-medium">No active job requests at this moment.</p>
-                        <p className="relative z-10 text-[11px] text-slate-400 mt-1">Click &quot;Post a Job&quot; to begin your first request.</p>
+                        <p className="relative z-10 font-bold text-sm text-[#001A41]">No active job requests at this moment.</p>
+                        <p className="relative z-10 text-xs text-slate-500 mt-1 mb-4">Post a custom project or book a verified BrainWorker directly.</p>
+                        <div className="relative z-10 flex flex-wrap items-center justify-center gap-3">
+                          <Link
+                            href="/post-job"
+                            className="motion-press inline-flex items-center gap-1.5 rounded-xl bg-[#001A41] px-4 py-2 text-xs font-bold text-white hover:bg-[#00265E] transition-colors"
+                          >
+                            <PlusCircle className="h-3.5 w-3.5" />
+                            Post a Job
+                          </Link>
+                          <Link
+                            href="/services"
+                            className="motion-press inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-[#001A41] hover:bg-slate-50 transition-colors"
+                          >
+                            Browse Services
+                          </Link>
+                        </div>
                       </div>
                     )}
                   </div>

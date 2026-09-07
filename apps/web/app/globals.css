@@ -112,9 +112,12 @@
 
   --shadow-ambient: 0 4px 20px rgba(0, 26, 65, 0.08);
   --shadow-ambient-hover: 0 4px 20px rgba(0, 26, 65, 0.15);
+  --shadow-card: 0 1px 3px rgba(0, 26, 65, 0.04), 0 10px 24px -6px rgba(0, 26, 65, 0.08);
+  --shadow-card-hover: 0 4px 12px rgba(0, 26, 65, 0.06), 0 18px 36px -8px rgba(0, 26, 65, 0.14);
 
   --ease-ui-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-ui-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body {
@@ -250,6 +253,28 @@ body {
     border-radius: 4px;
     transform: rotate(-1deg);
     z-index: -1;
+  }
+  .skeleton-shimmer {
+    background: linear-gradient(90deg, #eff4ff 0%, #dce9ff 50%, #eff4ff 100%);
+    background-size: 200% 100%;
+    animation: bbj-shimmer 1.8s ease-in-out infinite;
+  }
+  .bbj-card-interactive {
+    box-shadow: var(--shadow-card);
+    transition: transform 180ms var(--ease-spring), box-shadow 180ms var(--ease-spring), border-color 180ms ease;
+  }
+  .bbj-card-interactive:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes bbj-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
 

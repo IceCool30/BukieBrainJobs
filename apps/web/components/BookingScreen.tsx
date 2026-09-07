@@ -815,15 +815,39 @@ export default function BookingScreen() {
                     );
                   })}
                 </div>
+
+                {/* BukieGuarantee Escrow Assurance */}
+                <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-emerald-200 bg-[#EAF7EF]/70 p-3 text-xs text-[#296A4B]">
+                  <ShieldCheck className="h-4 w-4 shrink-0 text-[#296A4B] mt-0.5" aria-hidden="true" />
+                  <div>
+                    <span className="font-bold">BukieGuarantee Escrow Protection:</span>
+                    <span className="ml-1 text-slate-600">Your funds stay secure and are only released after you confirm the work is completed satisfactorily.</span>
+                  </div>
+                </div>
               </section>
             </div>
 
             {/* Right Summary & Submit Column */}
             <div className="space-y-6">
-              <aside className="h-fit rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6 lg:sticky lg:top-6">
-                <h2 className="font-display text-lg font-bold text-[#001A41]">
-                  Review your request
-                </h2>
+              <aside className="bbj-card-interactive relative overflow-hidden h-fit rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 lg:sticky lg:top-6">
+                {/* Security Watermark */}
+                <div
+                  className="pointer-events-none absolute -right-6 -bottom-8 opacity-[0.03] select-none"
+                  aria-hidden="true"
+                >
+                  <Image
+                    src="/images/logo-badge-512.png"
+                    alt=""
+                    width={200}
+                    height={200}
+                    className="object-contain"
+                  />
+                </div>
+
+                <div className="relative z-10">
+                  <h2 className="font-display text-lg font-bold text-[#001A41]">
+                    Review your request
+                  </h2>
 
                 <div className="mt-4 space-y-3 rounded-xl bg-[#F8F9FF] p-4 text-xs sm:text-sm">
                   <div className="flex justify-between text-slate-600">
@@ -887,13 +911,14 @@ export default function BookingScreen() {
                   Save & sign in with account
                 </button>
 
-                <div className="mt-4 text-center">
-                  <Link
-                    href={returnUrl}
-                    className="inline-flex min-h-10 items-center text-xs font-semibold text-slate-600 transition-colors hover:text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
-                  >
-                    Return to services
-                  </Link>
+                  <div className="mt-4 text-center">
+                    <Link
+                      href={returnUrl}
+                      className="inline-flex min-h-10 items-center text-xs font-semibold text-slate-600 transition-colors hover:text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
+                    >
+                      Return to services
+                    </Link>
+                  </div>
                 </div>
               </aside>
             </div>

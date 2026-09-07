@@ -51,17 +51,17 @@ function ServiceCard({
   onReview: () => void;
 }) {
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_rgba(0,26,65,0.06)] transition-all hover:shadow-[0_16px_36px_rgba(0,26,65,0.12)]">
+    <article className="bbj-card-interactive flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white transition-all">
       <div className="relative aspect-[5/3] overflow-hidden bg-slate-100">
         <Image
           src={category.photoUrl}
           alt={`Service photo for ${category.title}`}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-          className="object-cover"
+          className="object-cover transition-transform duration-300 hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#001A41]/60 via-transparent to-transparent" />
-        <span className="absolute left-4 top-4 rounded-lg bg-white px-2.5 py-1 text-[11px] font-bold text-[#001A41] shadow-sm">
+        <span className="absolute left-4 top-4 inline-flex items-center rounded-full border border-slate-200/80 bg-white/95 px-2.5 py-1 text-[11px] font-bold text-[#001A41] shadow-xs backdrop-blur-xs">
           From {category.startingPrice}
         </span>
         <span className="absolute right-4 top-4 rounded-md bg-[#001A41]/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#ABEEC8] backdrop-blur-sm">
@@ -579,6 +579,60 @@ function ServicesDirectory() {
               );
             })}
           </div>
+
+          {/* Active Filters Bar */}
+          {(selectedCategory !== "All" || selectedCity || searchQuery) && (
+            <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3 text-xs">
+              <span className="font-semibold text-slate-500">Active filters:</span>
+              {selectedCategory !== "All" && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E5F6EB] px-3 py-1 font-semibold text-[#296A4B]">
+                  {TASK_LABELS[selectedCategory] ?? selectedCategory}
+                  <button
+                    type="button"
+                    onClick={() => handleSelectCategory("All")}
+                    aria-label="Remove category filter"
+                    className="hover:text-emerald-900 cursor-pointer"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              )}
+              {selectedCity && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#EAF7EF] px-3 py-1 font-semibold text-[#296A4B]">
+                  <MapPin className="h-3 w-3" />
+                  {selectedCity}
+                  <button
+                    type="button"
+                    onClick={() => handleSelectCity(undefined)}
+                    aria-label="Remove city filter"
+                    className="hover:text-emerald-900 cursor-pointer"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              )}
+              {searchQuery && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-700">
+                  &quot;{searchQuery}&quot;
+                  <button
+                    type="button"
+                    onClick={handleClearSearch}
+                    aria-label="Remove search filter"
+                    className="hover:text-slate-900 cursor-pointer"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={handleResetFilters}
+                className="ml-auto text-xs font-semibold text-[#296A4B] hover:text-[#1F523A] underline cursor-pointer"
+              >
+                Clear all filters
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Results Grid or Empty State */}

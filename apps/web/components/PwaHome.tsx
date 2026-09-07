@@ -270,7 +270,7 @@ export default function PwaHome({
           <div ref={searchContainerRef} className="relative">
             <form
               onSubmit={handleSearchSubmit}
-              className="flex flex-col items-stretch gap-1.5 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]"
+              className="flex flex-col items-stretch gap-1.5 rounded-2xl border border-slate-200/90 bg-white p-1.5 ring-4 ring-white/10 shadow-[0_24px_50px_-15px_rgba(0,0,0,0.6)]"
             >
               <div className="relative flex items-center">
                 <Search className="absolute left-3.5 h-4 w-4 shrink-0 text-slate-400" />
