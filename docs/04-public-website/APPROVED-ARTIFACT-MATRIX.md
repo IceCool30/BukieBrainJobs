@@ -17,6 +17,8 @@
 | WEB-008A | Authentication Design Brief | Screen-level visual and interaction design brief for authentication | Approved implementation contract | Yes |
 | WEB-009 | Customer Job Posting & Request Creation | Customer-led job posting, request intake, validation, authentication handoff, mock submission, and confirmation | Approved product specification | Yes |
 | WEB-009A | Customer Job Posting Design Brief | Screen-level visual and interaction design brief for customer job posting | Approved implementation contract | Yes |
+| WEB-010 | Customer Dashboard & Authenticated Home Product & UX Specification | Authenticated customer home, hierarchy, navigation, activity states, and integration requirements | Approved product specification | Yes |
+| WEB-010A | Customer Dashboard & Authenticated Home Design Brief | Screen-level visual and interaction design brief for the authenticated customer dashboard | Approved implementation contract | Yes |
 
 ## Locked homepage rules
 
@@ -57,6 +59,24 @@
 - The slice is mock-first. No production matching, dispatch, notification, payment, booking, KYC, or database persistence is introduced.
 - Authentication occurs at the protected commitment point and must preserve the complete job draft.
 - Query parameters, saved drafts, and preferred-worker identifiers are untrusted input and must be validated safely.
+- Human design approval is required before implementation.
+
+## WEB-010 rules
+
+- WEB-010 is the authenticated customer operational home, not a second marketing homepage.
+- `Find a Service` is the primary dashboard action and routes to `/services`.
+- `Post a Job` is the secondary dashboard action and routes to `/post-job`.
+- Active and upcoming customer work receives priority when present; recent activity remains subordinate.
+- First-run customers must see an honest no-activity experience without fabricated bookings, requests, metrics, or activity.
+- Desktop authenticated navigation uses a persistent sidebar; mobile/PWA authenticated navigation uses persistent bottom navigation.
+- Initial authenticated destinations are Home, Jobs / Bookings, Messages, Notifications, and Profile.
+- Wallet is deferred until underlying wallet/payment capability exists; Settings remains within Profile.
+- Messages and Notifications must not imply live capability when their underlying functionality is unavailable.
+- Required dashboard states include first-run/no activity, active work, upcoming work, recent activity, mixed activity, loading, partial failure, individual section empty, authentication/session failure, and offline/degraded mode.
+- The dashboard integrates with existing marketplace journeys and must not duplicate service discovery, service detail, booking preparation, or job posting workflows.
+- The slice is mock-first. No new production matching, dispatch, chat infrastructure, push infrastructure, payment processing, wallet transactions, booking lifecycle, review system, KYC workflow, AI recommendations, or analytics-heavy personalization is introduced.
+- The Design System v1.0 remains authoritative, including Deep Navy `#001A41` as primary action treatment, Emerald as strategic accent, Hanken Grotesk headlines, Inter body text and labels, approved spacing/radii/components, and WCAG 2.2 AA intent.
+- No dashboard-specific foundational visual system may be introduced without an explicit Design System revision.
 - Human design approval is required before implementation.
 
 ## Design workflow
