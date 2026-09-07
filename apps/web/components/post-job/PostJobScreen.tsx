@@ -2,6 +2,7 @@
 
 import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   AlertCircle,
@@ -235,9 +236,18 @@ export default function PostJobScreen() {
           <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
             <Link
               href="/"
-              className="inline-flex min-h-11 items-center font-display text-base font-extrabold tracking-tight text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
+              className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] rounded-lg"
             >
-              BukieBrainJobs
+              <Image
+                src="/images/logo-icon.png"
+                alt="BukieBrainJobs"
+                width={32}
+                height={32}
+                className="h-8 w-8 rounded-lg object-contain"
+              />
+              <span>
+                Bukie<span className="text-[#296A4B]">BrainJobs</span>
+              </span>
             </Link>
             <Link
               href="/services"
@@ -282,17 +292,31 @@ export default function PostJobScreen() {
                 <li>Vetted BrainWorkers matching your category and city will review your scope.</li>
                 <li>Interested professionals will provide availability and pricing proposals.</li>
                 <li>
-                  <span className="font-semibold text-slate-800">No payment has occurred:</span> Pricing and terms are finalized directly with your chosen artisan under the BukieGuarantee.
+                  <span className="font-semibold text-slate-800">No payment has occurred:</span> Pricing and terms are finalized directly with your chosen BrainWorker under the BukieGuarantee.
                 </li>
                 <li>
-                  <span className="font-semibold text-slate-800">No worker dispatched yet:</span> Service begins only after mutual agreement and schedule confirmation.
+                  <span className="font-semibold text-slate-800">No BrainWorker dispatched yet:</span> Service begins only after mutual agreement and schedule confirmation.
                 </li>
               </ul>
             </div>
 
             {/* Request Summary Card */}
-            <div className="mt-6 rounded-xl border border-slate-200 bg-white p-4 text-left">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
+            <div className="relative overflow-hidden mt-6 rounded-xl border border-slate-200 bg-white p-4 text-left">
+              {/* Trademark Security Watermark */}
+              <div
+                className="pointer-events-none absolute -right-6 -bottom-8 opacity-[0.04] select-none"
+                aria-hidden="true"
+              >
+                <Image
+                  src="/images/logo-badge-512.png"
+                  alt=""
+                  width={220}
+                  height={220}
+                  className="object-contain"
+                />
+              </div>
+
+              <h2 className="relative z-10 text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
                 Job Request Summary
               </h2>
               <dl className="grid grid-cols-1 gap-y-2.5 sm:grid-cols-2 text-xs">
@@ -384,9 +408,18 @@ export default function PostJobScreen() {
           </Link>
           <Link
             href="/"
-            className="inline-flex min-h-11 items-center font-display text-base font-extrabold tracking-tight text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
+            className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] rounded-lg"
           >
-            BukieBrainJobs
+            <Image
+              src="/images/logo-icon.png"
+              alt="BukieBrainJobs"
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-lg object-contain"
+            />
+            <span>
+              Bukie<span className="text-[#296A4B]">BrainJobs</span>
+            </span>
           </Link>
         </div>
       </header>
@@ -687,7 +720,7 @@ export default function PostJobScreen() {
                     <div className="mt-2 flex items-start gap-2 rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900">
                       <Info className="h-4 w-4 text-amber-700 shrink-0 mt-0.5" />
                       <div>
-                        <span className="font-semibold">Service in {context.rawCity} coming soon:</span> We currently operate active artisan hubs in Lagos, Abuja, Port Harcourt, Ibadan, Enugu, Kano, and Benin City. Please select an active city.
+                        <span className="font-semibold">Service in {context.rawCity} coming soon:</span> We currently operate active BrainWorker hubs in Lagos, Abuja, Port Harcourt, Ibadan, Enugu, Kano, and Benin City. Please select an active city.
                       </div>
                     </div>
                   )}
@@ -742,7 +775,7 @@ export default function PostJobScreen() {
                   />
                   <FieldError id="post-job-landmark-error" message={errors.landmark} />
                   <p className="mt-1 text-xs text-slate-500">
-                    Landmarks ensure artisans reach your job site without confusion or delayed dispatch.
+                    Landmarks ensure BrainWorkers reach your job site without confusion or delayed dispatch.
                   </p>
                 </div>
 
@@ -974,13 +1007,13 @@ export default function PostJobScreen() {
                     <div className="mt-3 text-xs text-slate-600 flex items-start gap-1.5 border-t border-emerald-100 pt-2.5">
                       <Info className="h-4 w-4 text-[#059669] shrink-0 mt-0.5" />
                       <span>
-                        <strong className="text-slate-800">Preference only:</strong> This artisan will be notified first, but this request remains an open post. No worker is assigned until proposal review.
+                        <strong className="text-slate-800">Preference only:</strong> This BrainWorker will be notified first, but this request remains an open post. No BrainWorker is assigned until proposal review.
                       </span>
                     </div>
                   </div>
                 ) : (
                   <p className="text-xs text-slate-600">
-                    No specific worker requested. Your job will be open to all verified BrainWorkers matching your category in {formData.city || 'your city'}.
+                    No specific BrainWorker requested. Your job will be open to all verified BrainWorkers matching your category in {formData.city || 'your city'}.
                   </p>
                 )}
               </section>
@@ -1020,8 +1053,22 @@ export default function PostJobScreen() {
 
           {/* Right Column: Sticky Live Review Summary Card (PJ-06 on desktop) */}
           <div className="lg:col-span-5">
-            <div className="sticky top-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+            <div className="relative overflow-hidden sticky top-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+              {/* Trademark Security Watermark */}
+              <div
+                className="pointer-events-none absolute -right-8 -bottom-10 opacity-[0.03] select-none"
+                aria-hidden="true"
+              >
+                <Image
+                  src="/images/logo-badge-512.png"
+                  alt=""
+                  width={240}
+                  height={240}
+                  className="object-contain"
+                />
+              </div>
+
+              <div className="relative z-10 flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
                 <h2 className="font-display text-base font-bold text-[#001A41]">
                   Request Preview
                 </h2>
@@ -1126,7 +1173,7 @@ export default function PostJobScreen() {
                 {selectedWorker && (
                   <div className="flex items-start justify-between border-t border-slate-100 pt-3">
                     <div>
-                      <span className="text-slate-500 font-medium">Preferred Artisan:</span>
+                      <span className="text-slate-500 font-medium">Preferred BrainWorker:</span>
                       <p className="font-bold text-[#001A41] mt-0.5">
                         {selectedWorker.name}
                       </p>

@@ -12,7 +12,6 @@ import HowItWorks from '../components/HowItWorks';
 import FeaturedBrainWorkers from '../components/FeaturedBrainWorkers';
 import FAQSection from '../components/FAQSection';
 import PartnerBar from '../components/PartnerBar';
-import PostJobModal from '../components/modals/PostJobModal';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
 import {
   ServiceCategory,
@@ -20,7 +19,6 @@ import {
 } from '../lib/mock/homepage-data';
 
 export default function CustomerHomepage() {
-  const [postJobOpen, setPostJobOpen] = useState(false);
   const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
 
   const isPwa = useIsPwa();
@@ -57,7 +55,6 @@ export default function CustomerHomepage() {
     <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans selection:bg-[#ABEEC8] selection:text-[#001A41]">
       {/* Navigation Header */}
       <Navbar
-        onPostJobClick={() => setPostJobOpen(true)}
         onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}
         drawerOpenRef={drawerRef}
         hideOnPwa={isPwa}
@@ -102,7 +99,6 @@ export default function CustomerHomepage() {
       {/* Homepage has no bottom navigation bar (live experience standard). */}
 
       {/* Modals & Drawers */}
-      <PostJobModal isOpen={postJobOpen} onClose={() => setPostJobOpen(false)} />
       <BecomeWorkerModal isOpen={becomeWorkerOpen} onClose={() => setBecomeWorkerOpen(false)} />
     </div>
   );

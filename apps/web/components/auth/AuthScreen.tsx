@@ -2,6 +2,7 @@
 
 import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   AlertCircle,
@@ -91,11 +92,15 @@ export default function AuthScreen({
   const searchParams = useSearchParams();
 
   // Determine return URL with fallback and open redirect validation
-  const rawReturnUrl = initialReturnUrl ?? searchParams.get('returnUrl') ?? '/';
-  const validatedReturnUrl = useMemo(
-    () => validateReturnDestination(rawReturnUrl),
-    [rawReturnUrl],
-  );
+  const returnParam = searchParams.get('returnUrl');
+  const rawReturnUrl = initialReturnUrl ?? returnParam ?? '/dashboard';
+  const validatedReturnUrl = useMemo(() => {
+    // If no explicit return destination was provided, default authenticated users to their dashboard
+    if (!initialReturnUrl && !returnParam) {
+      return '/dashboard';
+    }
+    return validateReturnDestination(rawReturnUrl);
+  }, [rawReturnUrl, initialReturnUrl, returnParam]);
 
   // Check if handoff came from booking or job posting
   const isBookingHandoff =
@@ -522,9 +527,18 @@ export default function AuthScreen({
           </Link>
           <Link
             href="/"
-            className="inline-flex min-h-11 items-center font-display text-base font-extrabold tracking-tight text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
+            className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] rounded-lg"
           >
-            BukieBrainJobs
+            <Image
+              src="/images/logo-icon.png"
+              alt="BukieBrainJobs"
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-lg object-contain"
+            />
+            <span>
+              Bukie<span className="text-[#296A4B]">BrainJobs</span>
+            </span>
           </Link>
         </div>
       </header>
@@ -619,10 +633,35 @@ export default function AuthScreen({
         {/* Main Authentication Card */}
         <section
           aria-labelledby="auth-heading"
-          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8"
+          className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8"
         >
+          {/* Subtle Trademark Watermark */}
+          <div
+            className="pointer-events-none absolute -right-8 -bottom-10 opacity-[0.03] select-none"
+            aria-hidden="true"
+          >
+            <Image
+              src="/images/logo-badge-512.png"
+              alt=""
+              width={240}
+              height={240}
+              className="object-contain"
+            />
+          </div>
+
+          {/* Top Brand Icon Anchor */}
+          <div className="relative z-10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#001A41]/5 p-2 border border-slate-100 shadow-xs">
+            <Image
+              src="/images/logo-icon.png"
+              alt="BukieBrainJobs Logo"
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-xl object-contain"
+            />
+          </div>
+
           {/* Top Title & Subtitle */}
-          <div className="text-center">
+          <div className="relative z-10 text-center">
             <h1
               id="auth-heading"
               ref={headingRef}

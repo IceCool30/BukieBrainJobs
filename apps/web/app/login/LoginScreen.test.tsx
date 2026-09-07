@@ -188,6 +188,10 @@ describe('AuthScreen — Email/Password & Social Mock Providers', () => {
     await waitFor(() => {
       expect(screen.getByRole('heading', { name: /authentication successful/i })).toBeInTheDocument();
     });
+
+    await waitFor(() => {
+      expect(routerMock.push).toHaveBeenCalledWith('/dashboard');
+    }, { timeout: 2000 });
   });
 
   it('authenticates with Google mock provider', async () => {

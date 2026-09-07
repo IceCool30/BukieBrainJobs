@@ -233,14 +233,19 @@ export default function PwaHome({
         <div className="absolute inset-y-0 right-0 w-[34%] bg-gradient-to-l from-[#001A41]/65 to-[#001A41]/0" />
 
         <div className="relative z-10 flex items-center justify-between px-4 pt-3.5">
-          <Image
-            src="/images/logo-icon.png"
-            alt="BukieBrainJobs"
-            width={32}
-            height={32}
-            className="h-8 w-8 rounded-xl object-contain"
-            priority
-          />
+          <div className="flex items-center gap-2">
+            <Image
+              src="/images/logo-icon.png"
+              alt="BukieBrainJobs"
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-xl object-contain shadow-xs"
+              priority
+            />
+            <span className="font-display font-extrabold text-sm tracking-tight text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
+              Bukie<span className="text-[#ABEEC8]">BrainJobs</span>
+            </span>
+          </div>
 
           <button
             onClick={onOpenDrawer}

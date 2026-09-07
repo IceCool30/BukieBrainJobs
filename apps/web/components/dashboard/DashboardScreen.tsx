@@ -361,7 +361,7 @@ export default function DashboardScreen() {
                 <span>BukieGuarantee Terms</span>
               </div>
               <p className="text-slate-600 leading-relaxed">
-                All services booked through BukieBrainJobs include dispute resolution and verified artisan standards.
+                All services booked through BukieBrainJobs include dispute resolution and verified BrainWorker standards.
               </p>
               <Link href="/guarantee" className="inline-flex items-center gap-1 text-[#296A4B] font-semibold hover:underline">
                 Read full policy
@@ -420,6 +420,239 @@ export default function DashboardScreen() {
               </div>
             </div>
 
+            {activeTab === 'jobs' ? (
+              <div className="space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200/80">
+                  <div>
+                    <h2 className="text-xl font-bold font-display text-[#001A41]">Your Jobs & Bookings</h2>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Manage your ongoing requests, active services, and scheduled appointments.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href="/post-job"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#001A41] text-white text-xs font-semibold hover:bg-[#00265E] transition-colors shadow-sm"
+                    >
+                      <PlusCircle className="h-3.5 w-3.5 text-[#ABEEC8]" />
+                      Post a Job
+                    </Link>
+                    <Link
+                      href="/services"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-[#001A41] text-xs font-semibold hover:bg-slate-50 transition-colors shadow-sm"
+                    >
+                      <Search className="h-3.5 w-3.5 text-[#296A4B]" />
+                      Find Service
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Active Work Section */}
+                <section aria-labelledby="jobs-tab-active-heading" className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <h3 id="jobs-tab-active-heading" className="text-base font-bold font-display text-[#001A41]">
+                        Active Requests
+                      </h3>
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200">
+                        {viewModel.activeWork.length}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    {viewModel.activeWork.length > 0 ? (
+                      viewModel.activeWork.map((item) => (
+                        <div
+                          key={item.id}
+                          className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-slate-300 transition-colors"
+                        >
+                          <div className="space-y-2 flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                                {item.id}
+                              </span>
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200">
+                                {item.statusLabel}
+                              </span>
+                              {item.preferredWorkerName && (
+                                <span className="text-xs font-medium text-slate-500">
+                                  {item.preferredWorkerName}
+                                </span>
+                              )}
+                            </div>
+
+                            <h4 className="font-display font-bold text-base text-[#001A41]">{item.title}</h4>
+
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500">
+                              <span className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3 text-slate-400" />
+                                {item.location}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-3 w-3 text-slate-400" />
+                                {item.scheduleContext}
+                              </span>
+                              {item.budget && (
+                                <span className="font-semibold text-slate-700">
+                                  Budget: {item.budget}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          <Link
+                            href={item.actionUrl}
+                            className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-[#001A41] text-white text-xs font-semibold hover:bg-[#00265E] transition-colors shrink-0 shadow-sm"
+                          >
+                            {item.actionLabel}
+                          </Link>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="relative overflow-hidden bg-white rounded-2xl p-8 border border-slate-200/80 text-center text-xs text-slate-500">
+                        <div
+                          className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.04] select-none"
+                          aria-hidden="true"
+                        >
+                          <Image
+                            src="/images/logo-badge-512.png"
+                            alt=""
+                            width={160}
+                            height={160}
+                            className="object-contain"
+                          />
+                        </div>
+                        <p className="relative z-10 font-medium">No active job requests at this moment.</p>
+                        <p className="relative z-10 text-[11px] text-slate-400 mt-1">Click &quot;Post a Job&quot; to begin your first request.</p>
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+                {/* Upcoming Scheduled Work Section */}
+                <section aria-labelledby="jobs-tab-upcoming-heading" className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <h3 id="jobs-tab-upcoming-heading" className="text-base font-bold font-display text-[#001A41]">
+                        Scheduled Bookings
+                      </h3>
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-900 border border-blue-200">
+                        {viewModel.upcomingWork.length}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    {viewModel.upcomingWork.length > 0 ? (
+                      viewModel.upcomingWork.map((item) => (
+                        <div
+                          key={item.id}
+                          className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                        >
+                          <div className="space-y-2 flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                                {item.id}
+                              </span>
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
+                                Scheduled
+                              </span>
+                            </div>
+
+                            <h4 className="font-display font-bold text-base text-[#001A41]">{item.serviceTitle}</h4>
+
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600">
+                              <span className="font-semibold text-slate-800 flex items-center gap-1">
+                                <ShieldCheck className="h-3.5 w-3.5 text-[#296A4B]" />
+                                {item.workerName}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3 text-slate-400" />
+                                {item.date}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-3 w-3 text-slate-400" />
+                                {item.arrivalWindow}
+                              </span>
+                            </div>
+
+                            {item.preparationTip && (
+                              <div className="text-xs bg-slate-50 text-slate-600 p-2.5 rounded-xl border border-slate-100 flex items-start gap-1.5">
+                                <Info className="h-3.5 w-3.5 text-[#296A4B] shrink-0 mt-0.5" />
+                                <span>{item.preparationTip}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          <Link
+                            href={item.actionUrl}
+                            className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-xs font-semibold text-[#001A41] transition-colors shrink-0 shadow-sm"
+                          >
+                            {item.actionLabel}
+                          </Link>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="relative overflow-hidden bg-white rounded-2xl p-8 border border-slate-200/80 text-center text-xs text-slate-500">
+                        <div
+                          className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.04] select-none"
+                          aria-hidden="true"
+                        >
+                          <Image
+                            src="/images/logo-badge-512.png"
+                            alt=""
+                            width={160}
+                            height={160}
+                            className="object-contain"
+                          />
+                        </div>
+                        <p className="relative z-10 font-medium">No upcoming bookings scheduled.</p>
+                        <p className="relative z-10 text-[11px] text-slate-400 mt-1">Bookings through the directory or job posts will appear here.</p>
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+                {/* Past Activity */}
+                {viewModel.recentActivity.length > 0 && (
+                  <section aria-labelledby="jobs-tab-past-heading" className="space-y-3">
+                    <h3 id="jobs-tab-past-heading" className="text-base font-bold font-display text-[#001A41]">
+                      Past Completed Work
+                    </h3>
+                    <div className="space-y-2">
+                      {viewModel.recentActivity.map((item) => (
+                        <div
+                          key={item.id}
+                          className="bg-white rounded-xl p-4 border border-slate-200/80 flex items-center justify-between gap-4 text-xs"
+                        >
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold text-slate-900">{item.title}</span>
+                              <span className="text-slate-400">•</span>
+                              <span className="text-slate-600">{item.workerName}</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-slate-500">
+                              <span>{item.completedDate}</span>
+                              {item.amount && <span>{item.amount}</span>}
+                              <span>{item.location}</span>
+                            </div>
+                          </div>
+
+                          <Link
+                            href={item.actionUrl}
+                            className="text-xs font-semibold text-[#296A4B] hover:underline shrink-0"
+                          >
+                            {item.actionLabel}
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )}
+              </div>
+            ) : (
+              <>
             {/* Primary Marketplace Actions */}
             <section aria-labelledby="marketplace-actions-heading">
               <div className="flex items-center justify-between mb-3">
@@ -474,7 +707,7 @@ export default function DashboardScreen() {
                       Post a Job
                     </h3>
                     <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                      Describe your custom task or broader project to get proposals from qualified local pros.
+                      Describe your custom task or broader project to get proposals from qualified local BrainWorkers.
                     </p>
                   </div>
                   <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-[#001A41] group-hover:text-[#296A4B]">
@@ -498,7 +731,7 @@ export default function DashboardScreen() {
                     Welcome to your account home
                   </h3>
                   <p className="text-sm text-slate-600 mt-1.5 max-w-xl leading-relaxed">
-                    You do not have any active requests or scheduled work right now. When you book an artisan or post a
+                    You do not have any active requests or scheduled work right now. When you book a BrainWorker or post a
                     job, all status updates, proposals, and schedules will be tracked right here.
                   </p>
                 </div>
@@ -806,6 +1039,8 @@ export default function DashboardScreen() {
                 ))}
               </div>
             </section>
+            </>
+          )}
           </main>
         </div>
       </div>

@@ -203,4 +203,25 @@ describe('WEB-010 DashboardScreen Component', () => {
     const loginLink = screen.getByRole('link', { name: /Sign In Now/i });
     expect(loginLink).toHaveAttribute('href', '/login?returnUrl=%2Fdashboard');
   });
+
+  it('renders dedicated Jobs & Bookings view when Jobs tab is selected', () => {
+    mockSearchParams = new URLSearchParams('tab=jobs');
+    render(<DashboardScreen />);
+
+    expect(screen.getByRole('heading', { level: 2, name: /Your Jobs & Bookings/i })).toBeInTheDocument();
+    expect(screen.getByText(/Inverter Backup & Battery Inspection/i)).toBeInTheDocument();
+    // In dedicated Jobs tab, the generic homepage-like 'Explore Popular Services' continuation is not rendered
+    expect(screen.queryByText(/Explore Popular Services/i)).not.toBeInTheDocument();
+  });
+
+  it('enforces BrainWorker terminology without artisan or pros leaks in customer copy', () => {
+    mockSearchParams = new URLSearchParams('state=first_run');
+    render(<DashboardScreen />);
+
+    const dashboardText = document.body.textContent || '';
+    expect(dashboardText).not.toMatch(/qualified local pros/i);
+    expect(dashboardText).not.toMatch(/book an artisan/i);
+    expect(dashboardText).toMatch(/qualified local BrainWorkers/i);
+    expect(dashboardText).toMatch(/book a BrainWorker/i);
+  });
 });

@@ -2,6 +2,7 @@
 
 import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ArrowLeft,
@@ -65,9 +66,18 @@ function BookingHeader({ returnUrl }: { returnUrl: string }) {
         </Link>
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center font-display text-base font-extrabold tracking-tight text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
+          className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] rounded-lg"
         >
-          BukieBrainJobs
+          <Image
+            src="/images/logo-icon.png"
+            alt="BukieBrainJobs"
+            width={32}
+            height={32}
+            className="h-8 w-8 rounded-lg object-contain"
+          />
+          <span>
+            Bukie<span className="text-[#296A4B]">BrainJobs</span>
+          </span>
         </Link>
       </div>
     </header>
@@ -337,13 +347,27 @@ export default function BookingScreen() {
                 Service request prepared
               </h1>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                This is a mock preparation step — no payment was taken and no BrainWorker has been dispatched.
+                This is a mock preparation step. No payment was taken and no BrainWorker has been dispatched.
               </p>
             </div>
 
             {/* Request Summary */}
-            <div className="mt-8 rounded-xl border border-slate-200 bg-[#F8F9FF] p-5">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-600">
+            <div className="relative overflow-hidden mt-8 rounded-xl border border-slate-200 bg-[#F8F9FF] p-5">
+              {/* Trademark Security Watermark */}
+              <div
+                className="pointer-events-none absolute -right-6 -bottom-8 opacity-[0.04] select-none"
+                aria-hidden="true"
+              >
+                <Image
+                  src="/images/logo-badge-512.png"
+                  alt=""
+                  width={220}
+                  height={220}
+                  className="object-contain"
+                />
+              </div>
+
+              <h2 className="relative z-10 text-xs font-bold uppercase tracking-wider text-slate-600">
                 Prepared Request Summary
               </h2>
               <dl className="mt-4 divide-y divide-slate-200 text-sm">
@@ -357,7 +381,7 @@ export default function BookingScreen() {
                 </div>
                 {context.worker && (
                   <div className="flex justify-between py-2.5">
-                    <dt className="text-slate-600">Preferred worker</dt>
+                    <dt className="text-slate-600">Preferred BrainWorker</dt>
                     <dd className="font-semibold text-slate-800">{context.worker}</dd>
                   </div>
                 )}
@@ -402,8 +426,14 @@ export default function BookingScreen() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link
-                href={returnUrl}
+                href="/dashboard"
                 className="motion-press inline-flex min-h-12 items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+              >
+                View on Dashboard
+              </Link>
+              <Link
+                href={returnUrl}
+                className="motion-press inline-flex min-h-12 items-center justify-center rounded-full border border-slate-200 bg-white px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
               >
                 Return to services
               </Link>

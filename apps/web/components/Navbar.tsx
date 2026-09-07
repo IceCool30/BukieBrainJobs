@@ -107,7 +107,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
   const solid = scrolled || mobileMenuOpen || (hideOnPwa && chipShown);
   const drawerOnly = hideOnPwa && mobileMenuOpen;
   const noop = () => {};
-  const doPostJob = onPostJobClick ?? noop;
+  const doPostJob = onPostJobClick ?? (() => navigateTo('/post-job'));
   const doBecomeWorker = onBecomeWorkerClick ?? noop;
 
   if (hideOnPwa) {
@@ -311,14 +311,19 @@ function DrawerPanel({
           >
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 h-20 border-b border-[#1E3A60]">
-              <Image
-                src="/images/logo-icon.png"
-                alt="BukieBrainJobs"
-                width={36}
-                height={36}
-                className="object-contain h-9 w-9 rounded-xl"
-                priority
-              />
+              <div className="flex items-center gap-2.5">
+                <Image
+                  src="/images/logo-icon.png"
+                  alt="BukieBrainJobs"
+                  width={36}
+                  height={36}
+                  className="object-contain h-9 w-9 rounded-xl"
+                  priority
+                />
+                <span className="font-display font-extrabold text-base tracking-tight text-white">
+                  Bukie<span className="text-[#ABEEC8]">BrainJobs</span>
+                </span>
+              </div>
               <button
                 onClick={onClose}
                 className="-mr-2 flex h-11 w-11 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-white hover:bg-white/10"

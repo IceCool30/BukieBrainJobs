@@ -77,7 +77,7 @@ describe('PostJobScreen: Initial Render & Defaults', () => {
 
     // Section 5: Preferred BrainWorker
     expect(screen.getByRole('heading', { level: 2, name: /preferred brainworker/i })).toBeInTheDocument();
-    expect(screen.getByText(/no specific worker requested/i)).toBeInTheDocument();
+    expect(screen.getByText(/no specific brainworker requested/i)).toBeInTheDocument();
 
     // Desktop live summary card
     expect(screen.getByRole('heading', { level: 2, name: /request preview/i })).toBeInTheDocument();
@@ -132,7 +132,7 @@ describe('PostJobScreen: URL Query Parameter Context Hydration', () => {
     await user.click(removeBtn);
 
     // Cleared from form and preview
-    expect(screen.getByText(/no specific worker requested/i)).toBeInTheDocument();
+    expect(screen.getByText(/no specific BrainWorker requested/i)).toBeInTheDocument();
     expect(screen.queryByText(/informational preference only/i)).not.toBeInTheDocument();
   });
 
@@ -447,7 +447,7 @@ describe('PostJobScreen: Authenticated Submission & Success View', () => {
     // Honest next steps
     expect(screen.getByText(/what happens next/i)).toBeInTheDocument();
     expect(screen.getByText(/no payment has occurred/i)).toBeInTheDocument();
-    expect(screen.getByText(/no worker dispatched yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/no brainworker dispatched yet/i)).toBeInTheDocument();
 
     // Job summary details
     expect(screen.getByText('Split AC installation in bedroom')).toBeInTheDocument();

@@ -251,6 +251,13 @@ describe('BookingScreen — Submission lifecycle & error recovery', () => {
     const returnBtn = screen.getByRole('link', { name: /return to services/i });
     expect(returnBtn).toBeInTheDocument();
     expect(returnBtn).toHaveAttribute('href', '/services?category=generator&city=Lagos');
+
+    const dashboardBtn = screen.getByRole('link', { name: /view on dashboard/i });
+    expect(dashboardBtn).toBeInTheDocument();
+    expect(dashboardBtn).toHaveAttribute('href', '/dashboard');
+
+    // Customer copy must not contain em dashes
+    expect(document.body.textContent).not.toContain('—');
   });
 
   it('handles mockError=1 failure state and preserves user input for retry', async () => {
