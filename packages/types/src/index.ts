@@ -141,3 +141,93 @@ export interface AdminDispute {
   status: 'Open Review' | 'Under Investigation' | 'Resolved Refund' | 'Resolved Pay Artisan' | 'BukieGuarantee Paid';
   createdAt: string;
 }
+
+// WEB-010: Customer Dashboard Contracts
+export type DashboardStateMode =
+  | 'first_run'
+  | 'active'
+  | 'upcoming'
+  | 'recent'
+  | 'mixed'
+  | 'loading'
+  | 'partial_failure'
+  | 'offline'
+  | 'auth_failure';
+
+export interface DashboardCustomer {
+  id: string;
+  name: string;
+  email?: string | undefined;
+  phone?: string | undefined;
+  role: string;
+}
+
+export interface DashboardActiveWorkItem {
+  id: string;
+  type: 'job_request' | 'booking';
+  title: string;
+  category?: string | undefined;
+  status: 'reviewing_proposals' | 'artisan_responding' | 'awaiting_confirmation';
+  statusLabel: string;
+  location: string;
+  scheduleContext: string;
+  createdAt: string;
+  budget?: string | undefined;
+  preferredWorkerName?: string | undefined;
+  actionUrl: string;
+  actionLabel: string;
+}
+
+export interface DashboardUpcomingWorkItem {
+  id: string;
+  serviceTitle: string;
+  workerName: string;
+  workerAvatar?: string | undefined;
+  workerVerified: boolean;
+  date: string;
+  arrivalWindow: string;
+  location: string;
+  status: 'confirmed' | 'scheduled';
+  preparationTip?: string | undefined;
+  actionUrl: string;
+  actionLabel: string;
+}
+
+export interface DashboardRecentActivityItem {
+  id: string;
+  title: string;
+  workerName: string;
+  completedDate: string;
+  status: 'completed' | 'cancelled';
+  amount?: string | undefined;
+  location: string;
+  actionUrl: string;
+  actionLabel: string;
+}
+
+export interface DashboardMarketplaceItem {
+  id: string;
+  title: string;
+  description: string;
+  startingPrice: string;
+  categorySlug: string;
+  href: string;
+  iconName?: string | undefined;
+}
+
+export interface DashboardViewModel {
+  customer: DashboardCustomer;
+  stateMode: DashboardStateMode;
+  activeWork: DashboardActiveWorkItem[];
+  upcomingWork: DashboardUpcomingWorkItem[];
+  recentActivity: DashboardRecentActivityItem[];
+  marketplaceContinuation: DashboardMarketplaceItem[];
+  newJobNotice?: {
+    reference: string;
+    title: string;
+  } | undefined;
+  isOffline?: boolean | undefined;
+  hasPartialFailure?: boolean | undefined;
+  failedSection?: string | undefined;
+}
+

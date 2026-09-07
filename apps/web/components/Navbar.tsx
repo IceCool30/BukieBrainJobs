@@ -10,7 +10,9 @@ import {
   Menu,
   X,
   UserCheck,
+  LayoutDashboard,
 } from 'lucide-react';
+import { getMockAuthenticatedUser } from '../lib/auth/storage';
 
 interface NavbarProps {
   onPostJobClick?: () => void;
@@ -29,12 +31,20 @@ const DRAWER_LINKS = [
 ];
 
 export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpenRef, hideOnPwa }: NavbarProps) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [chipShown, setChipShown] = useState(false);
   const [visible, setVisible] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const settledTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const user = getMockAuthenticatedUser();
+    if (user) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const openDrawer = useCallback(() => {
     setMobileMenuOpen(true);
@@ -129,6 +139,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
               onNavigate={navigateTo}
               onPostJob={doPostJob}
               onBecomeWorker={doBecomeWorker}
+              isAuthenticated={isAuthenticated}
             />
           </>
         )}
@@ -222,13 +233,23 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             </Link>
           )}
 
-          {/* Sign In CTA */}
-          <Link
-            href="/login"
-            className="motion-press px-4 py-2 text-xs font-semibold text-white hover:text-[#ABEEC8] rounded-full transition-colors flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
-          >
-            Sign In
-          </Link>
+          {/* Sign In or Dashboard CTA */}
+          {isAuthenticated ? (
+            <Link
+              href="/dashboard"
+              className="motion-press px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/50 hover:bg-[#ABEEC8]/10 rounded-full transition-colors flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5" />
+              Dashboard
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="motion-press px-4 py-2 text-xs font-semibold text-white hover:text-[#ABEEC8] rounded-full transition-colors flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
+            >
+              Sign In
+            </Link>
+          )}
         </div>
 
         {/* Mobile Hamburger Toggle */}
@@ -257,6 +278,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             onNavigate={navigateTo}
             onPostJob={doPostJob}
             onBecomeWorker={doBecomeWorker}
+            isAuthenticated={isAuthenticated}
           />
         </>
       )}
@@ -271,12 +293,14 @@ function DrawerPanel({
   onNavigate,
   onPostJob,
   onBecomeWorker,
+  isAuthenticated,
 }: {
   visible: boolean;
   onClose: () => void;
   onNavigate: (href: string) => void;
   onPostJob: () => void;
   onBecomeWorker: () => void;
+  isAuthenticated?: boolean;
 }) {
   return (
           <aside
@@ -306,6 +330,15 @@ function DrawerPanel({
 
             {/* Link zone */}
             <nav className="flex flex-col gap-1 px-4 py-5 overflow-y-auto">
+              {isAuthenticated && (
+                <button
+                  onClick={() => onNavigate('/dashboard')}
+                  className="motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-bold text-[#ABEEC8] bg-[#ABEEC8]/10 hover:bg-[#ABEEC8]/20 transition-colors mb-1"
+                >
+                  <LayoutDashboard className="w-[18px] h-[18px] text-[#ABEEC8]" />
+                  Customer Dashboard
+                </button>
+              )}
               {DRAWER_LINKS.map(({ href, label, icon: Icon, tint }) => (
                 <button
                   key={label}
