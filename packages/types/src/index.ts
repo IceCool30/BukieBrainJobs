@@ -231,3 +231,83 @@ export interface DashboardViewModel {
   failedSection?: string | undefined;
 }
 
+// WEB-011: Customer Jobs & Bookings Contracts
+export type CustomerActivityType = 'job_request' | 'booking';
+
+export type CustomerActivityStatus =
+  | 'request_received'
+  | 'awaiting_progress'
+  | 'scheduled'
+  | 'in_progress'
+  | 'completed'
+  | 'cancelled';
+
+export type ActivityFilterView = 'all' | 'active' | 'upcoming' | 'past';
+
+export interface CustomerActivityPreferredWorker {
+  name: string;
+  avatar?: string | undefined;
+  verified?: boolean | undefined;
+}
+
+export interface CustomerActivityNextAction {
+  label: string;
+  url: string;
+  primary?: boolean | undefined;
+}
+
+export interface CustomerActivityItem {
+  id: string;
+  type: CustomerActivityType;
+  title: string;
+  status: CustomerActivityStatus;
+  statusLabel: string;
+  service?: string | undefined;
+  category?: string | undefined;
+  location: string;
+  schedule: string;
+  budgetOrPrice?: string | undefined;
+  description?: string | undefined;
+  preferredWorker?: CustomerActivityPreferredWorker | undefined;
+  referenceCode?: string | undefined;
+  nextAction?: CustomerActivityNextAction | undefined;
+  createdAt: string;
+}
+
+export interface CustomerActivityCustomer {
+  id: string;
+  name: string;
+  email?: string | undefined;
+  phone?: string | undefined;
+  role: string;
+}
+
+export interface CustomerActivityViewModel {
+  customer: CustomerActivityCustomer;
+  activities: CustomerActivityItem[];
+  activeActivities: CustomerActivityItem[];
+  upcomingActivities: CustomerActivityItem[];
+  pastActivities: CustomerActivityItem[];
+  availableFilters: ActivityFilterView[];
+  currentFilter: ActivityFilterView;
+  selectedActivityId?: string | undefined;
+  selectedActivity?: CustomerActivityItem | undefined;
+  stateMode:
+    | 'first_run'
+    | 'active'
+    | 'upcoming'
+    | 'recent'
+    | 'mixed'
+    | 'loading'
+    | 'partial_failure'
+    | 'offline'
+    | 'auth_failure';
+  newJobNotice?: {
+    reference: string;
+    title: string;
+  } | undefined;
+  isOffline?: boolean | undefined;
+  hasPartialFailure?: boolean | undefined;
+  failedSection?: string | undefined;
+}
+

@@ -295,7 +295,7 @@ export default function DashboardScreen() {
               </button>
 
               <button
-                onClick={() => setActiveTab('jobs')}
+                onClick={() => router.push('/jobs')}
                 className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition-colors ${
                   activeTab === 'jobs'
                     ? 'bg-[#001A41] text-white shadow-sm'
@@ -816,10 +816,16 @@ export default function DashboardScreen() {
                       {viewModel.activeWork.length}
                     </span>
                   </div>
-                  <Link href="/post-job" className="text-xs font-semibold text-[#296A4B] hover:underline flex items-center gap-1">
-                    <PlusCircle className="h-3.5 w-3.5" />
-                    New Request
-                  </Link>
+                  <div className="flex items-center gap-3">
+                    <Link href="/jobs?view=active" className="text-xs font-semibold text-[#001A41] hover:underline flex items-center gap-1">
+                      <span>View in Jobs</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                    <Link href="/post-job" className="text-xs font-semibold text-[#296A4B] hover:underline flex items-center gap-1">
+                      <PlusCircle className="h-3.5 w-3.5" />
+                      New Request
+                    </Link>
+                  </div>
                 </div>
 
                 {/* Partial Failure State for Active Work */}
@@ -923,6 +929,10 @@ export default function DashboardScreen() {
                       {viewModel.upcomingWork.length}
                     </span>
                   </div>
+                  <Link href="/jobs?view=upcoming" className="text-xs font-semibold text-[#001A41] hover:underline flex items-center gap-1">
+                    <span>View in Jobs</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </Link>
                 </div>
 
                 <div className="space-y-3">
@@ -991,9 +1001,15 @@ export default function DashboardScreen() {
               viewModel.stateMode !== 'active' &&
               viewModel.stateMode !== 'upcoming' && (
                 <section aria-labelledby="recent-activity-heading" className="space-y-3">
-                  <h2 id="recent-activity-heading" className="text-base font-bold font-display text-[#001A41]">
-                    Recent Activity
-                  </h2>
+                  <div className="flex items-center justify-between">
+                    <h2 id="recent-activity-heading" className="text-base font-bold font-display text-[#001A41]">
+                      Recent Activity
+                    </h2>
+                    <Link href="/jobs?view=past" className="text-xs font-semibold text-[#001A41] hover:underline flex items-center gap-1">
+                      <span>View in Jobs</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  </div>
 
                   <div className="space-y-2">
                     {viewModel.recentActivity.length > 0 ? (
@@ -1091,7 +1107,7 @@ export default function DashboardScreen() {
         </button>
 
         <button
-          onClick={() => setActiveTab('jobs')}
+          onClick={() => router.push('/jobs')}
           className={`flex flex-col items-center justify-center min-h-[48px] px-3 py-1 text-[11px] font-semibold transition-colors ${
             activeTab === 'jobs' ? 'text-[#ABEEC8]' : 'text-slate-400 hover:text-white'
           }`}
