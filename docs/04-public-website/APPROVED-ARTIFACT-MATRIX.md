@@ -19,6 +19,8 @@
 | WEB-009A | Customer Job Posting Design Brief | Screen-level visual and interaction design brief for customer job posting | Approved implementation contract | Yes |
 | WEB-010 | Customer Dashboard & Authenticated Home Product & UX Specification | Authenticated customer home, hierarchy, navigation, activity states, and integration requirements | Approved product specification | Yes |
 | WEB-010A | Customer Dashboard & Authenticated Home Design Brief | Screen-level visual and interaction design brief for the authenticated customer dashboard | Approved implementation contract | Yes |
+| WEB-011 | Customer Jobs & Bookings Product & UX Specification | Unified customer activity management, request tracking, and booking history | Approved product specification | Yes |
+| WEB-011A | Customer Jobs & Bookings Design Brief | Screen-level visual and interaction design brief for customer jobs and bookings | Approved implementation contract | Yes |
 
 ## Locked homepage rules
 
@@ -77,6 +79,27 @@
 - The slice is mock-first. No new production matching, dispatch, chat infrastructure, push infrastructure, payment processing, wallet transactions, booking lifecycle, review system, KYC workflow, AI recommendations, or analytics-heavy personalization is introduced.
 - The Design System v1.0 remains authoritative, including Deep Navy `#001A41` as primary action treatment, Emerald as strategic accent, Hanken Grotesk headlines, Inter body text and labels, approved spacing/radii/components, and WCAG 2.2 AA intent.
 - No dashboard-specific foundational visual system may be introduced without an explicit Design System revision.
+- Human design approval is required before implementation.
+
+## WEB-011 rules
+
+- `/jobs` is the canonical customer activity route; dashboard navigation item points directly to `/jobs`.
+- Legacy `/dashboard?tab=jobs` query safely resolves to `/jobs`.
+- Jobs and Bookings are unified into a single customer activity management surface.
+- Activity Type (Job Request vs Booking) and Activity Status (Request received, Awaiting progress, Scheduled, In progress, Completed, Cancelled) must never be visually conflated.
+- Information prioritization: current/active activity requiring attention, upcoming activity, requests awaiting progress, recent/completed activity, secondary actions.
+- Honest marketplace messaging: "Request received" rather than "BrainWorker assigned"; "Booking request prepared" rather than "Service confirmed".
+- Desktop uses a 12-column master-detail layout (approx 5/7 columns or 5/1/6) with authenticated sidebar.
+- Mobile/PWA uses a dedicated full-screen detail view with 48px minimum touch targets on navigation controls and persistent bottom navigation.
+- Initial filters: All, Active, Upcoming, Past, with bidirectional URL query synchronization (`/jobs?view=active`).
+- Activity deep linking supported via `/jobs?id=REQ-72941` with customer data scoping, validation, safe not-found handling, and natural browser back/forward history.
+- Subtle logo watermark (`/images/logo-badge-512.png` at 3-4% opacity) inside the activity detail container as a non-interactive decorative brand signature without impairing text contrast.
+- Primary actions: View details, Return to Dashboard, Continue supported flow, Find a Service, Post a Job. No operational controls for dispatch, payment, live tracking, or messaging.
+- First-run experience provides an honest empty state with "Find a Service" and "Post a Job" CTAs, with no fabricated history or metrics.
+- Required states: first-run, all activity, active, upcoming, past, job request, booking, selected activity, preferred worker presence/absence, budget presence/absence, reference code presence/absence, filtered empty, loading skeleton, partial failure, full failure, offline/degraded, invalid activity, unknown status, expired session, mobile detail, desktop detail, and reduced motion.
+- Continuity preserved across WEB-007 booking preparation, WEB-008 authentication, WEB-009 customer job posting, and WEB-010 customer dashboard.
+- The slice is mock-first; no production backend, database persistence, payment processing, or live dispatch is introduced.
+- Design System v1.0 remains authoritative: Deep Navy `#001A41` primary/action, Emerald `#296A4B` strategic emphasis, Hanken Grotesk headings, Inter body/UI, approved spacing/radii, and WCAG 2.2 AA intent.
 - Human design approval is required before implementation.
 
 ## Design workflow
