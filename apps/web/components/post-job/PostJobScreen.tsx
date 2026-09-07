@@ -345,8 +345,14 @@ export default function PostJobScreen() {
             {/* Actions */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link
-                href="/services"
+                href={`/dashboard?jobCreated=${encodeURIComponent(submittedReference || 'REQ-72941')}&jobTitle=${encodeURIComponent(formData.title || 'Job Request')}`}
                 className="motion-press inline-flex min-h-12 items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8]"
+              >
+                View on Dashboard
+              </Link>
+              <Link
+                href="/services"
+                className="motion-press inline-flex min-h-12 items-center justify-center rounded-full border border-slate-200 bg-white px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
               >
                 Browse Services Directory
               </Link>
