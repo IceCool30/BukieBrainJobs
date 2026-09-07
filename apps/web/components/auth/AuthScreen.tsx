@@ -31,8 +31,10 @@ import {
   AuthProvider,
   AuthUser,
   PreservedBookingDraft,
+  PreservedJobDraft,
   UserRole,
   getPreservedBookingDraft,
+  getPreservedJobDraft,
   mockEmailRegister,
   mockEmailSignIn,
   mockForgotPassword,
@@ -95,21 +97,35 @@ export default function AuthScreen({
     [rawReturnUrl],
   );
 
-  // Check if handoff came from booking
+  // Check if handoff came from booking or job posting
   const isBookingHandoff =
-    searchParams.get('handoff') === '1' ||
+    (searchParams.get('handoff') === '1' && validatedReturnUrl.startsWith('/book')) ||
     validatedReturnUrl.startsWith('/book');
 
-  // Load preserved booking draft if present
+  const isJobHandoff =
+    (searchParams.get('handoff') === '1' && validatedReturnUrl.startsWith('/post-job')) ||
+    validatedReturnUrl.startsWith('/post-job');
+
+  // Load preserved drafts if present
   const [preservedBooking, setPreservedBooking] =
     useState<PreservedBookingDraft | null>(null);
+  const [preservedJob, setPreservedJob] =
+    useState<PreservedJobDraft | null>(null);
 
   useEffect(() => {
-    const draft = getPreservedBookingDraft();
-    if (draft) {
-      setPreservedBooking(draft);
+    if (isBookingHandoff) {
+      const draft = getPreservedBookingDraft();
+      if (draft) {
+        setPreservedBooking(draft);
+      }
     }
-  }, []);
+    if (isJobHandoff) {
+      const jobDraft = getPreservedJobDraft();
+      if (jobDraft) {
+        setPreservedJob(jobDraft);
+      }
+    }
+  }, [isBookingHandoff, isJobHandoff]);
 
   // UI state
   const [mode, setMode] = useState<AuthMode>(initialMode);
@@ -449,6 +465,19 @@ export default function AuthScreen({
                   Returning you automatically to complete your request...
                 </p>
               </div>
+            ) : isJobHandoff ? (
+              <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 text-left">
+                <p className="text-xs font-bold uppercase tracking-wider text-[#296A4B]">
+                  Job request preserved
+                </p>
+                <p className="mt-1 text-sm text-slate-700">
+                  {preservedJob?.title || 'Your job post'} in{' '}
+                  <span className="font-semibold">{preservedJob?.city || 'selected city'}</span> is ready.
+                </p>
+                <p className="mt-2 text-xs text-slate-500">
+                  Returning you automatically to finalize your job request...
+                </p>
+              </div>
             ) : (
               <p className="mt-3 text-sm text-slate-600">
                 You are now signed in to your account.
@@ -460,7 +489,9 @@ export default function AuthScreen({
                 href={
                   isBookingHandoff
                     ? `${validatedReturnUrl}${validatedReturnUrl.includes('?') ? '&' : '?'}bookingContinuation=1`
-                    : validatedReturnUrl
+                    : isJobHandoff
+                      ? `${validatedReturnUrl}${validatedReturnUrl.includes('?') ? '&' : '?'}jobContinuation=1`
+                      : validatedReturnUrl
                 }
                 className="motion-press inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
               >
@@ -483,7 +514,11 @@ export default function AuthScreen({
             className="motion-press inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#001A41] transition-colors hover:text-[#296A4B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            {isBookingHandoff ? 'Back to booking' : 'Back to previous page'}
+            {isBookingHandoff
+              ? 'Back to booking'
+              : isJobHandoff
+                ? 'Back to job request'
+                : 'Back to previous page'}
           </Link>
           <Link
             href="/"
@@ -495,6 +530,49 @@ export default function AuthScreen({
       </header>
 
       <div className="mx-auto max-w-lg px-4 py-8 sm:px-6 sm:py-12">
+        {/* Job Handoff Context Banner */}
+        {isJobHandoff && (
+          <aside
+            aria-label="Job posting context"
+            className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 shadow-sm sm:p-5"
+          >
+            <div className="flex items-start gap-3">
+              <ShieldCheck className="h-5 w-5 shrink-0 text-[#059669]" aria-hidden="true" />
+              <div>
+                <h2 className="text-sm font-bold text-[#001A41]">
+                  Sign in or create an account to post your job request
+                </h2>
+                <p className="mt-1 text-xs text-slate-600">
+                  Your job request details have been saved and will be restored immediately after account access.
+                </p>
+
+                {preservedJob && (
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+                    {preservedJob.title && (
+                      <span className="inline-flex items-center gap-1 rounded-md bg-white/90 px-2.5 py-1 border border-emerald-100 shadow-xs">
+                        <Briefcase className="h-3 w-3 text-[#059669]" />
+                        {preservedJob.title.length > 35 ? `${preservedJob.title.slice(0, 35)}...` : preservedJob.title}
+                      </span>
+                    )}
+                    {preservedJob.city && (
+                      <span className="inline-flex items-center gap-1 rounded-md bg-white/90 px-2.5 py-1 border border-emerald-100 shadow-xs">
+                        <MapPin className="h-3 w-3 text-[#059669]" />
+                        {preservedJob.city}
+                      </span>
+                    )}
+                    {preservedJob.urgency && (
+                      <span className="inline-flex items-center gap-1 rounded-md bg-white/90 px-2.5 py-1 border border-emerald-100 shadow-xs capitalize">
+                        <Clock className="h-3 w-3 text-[#059669]" />
+                        {preservedJob.urgency.replace('_', ' ')}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </aside>
+        )}
+
         {/* Booking Handoff Context Banner */}
         {isBookingHandoff && (
           <aside

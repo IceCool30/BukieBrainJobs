@@ -7,7 +7,10 @@ import AuthScreen from '../../components/auth/AuthScreen';
 import {
   savePreservedBookingDraft,
   clearPreservedBookingDraft,
+  savePreservedJobDraft,
+  clearPreservedJobDraft,
   PreservedBookingDraft,
+  PreservedJobDraft,
 } from '../../lib/auth';
 
 function makeSearchParams(params: Record<string, string> = {}): ReadonlyURLSearchParams {
@@ -28,6 +31,7 @@ function makeRouter() {
 afterEach(() => {
   cleanup();
   clearPreservedBookingDraft();
+  clearPreservedJobDraft();
   vi.clearAllMocks();
 });
 
@@ -280,6 +284,34 @@ describe('AuthScreen — Booking Handoff & Return Destination Safety', () => {
 
     const backLink = screen.getByRole('link', { name: /back to booking/i });
     expect(backLink).toHaveAttribute('href', '/book');
+  });
+
+  it('displays preserved job draft context and explanation when entered from /post-job', () => {
+    const jobDraft: PreservedJobDraft = {
+      jobType: 'specific_service',
+      category: 'generator',
+      title: 'Generator Carburetor Overhaul and Wiring',
+      city: 'Abuja',
+      streetAddress: '12 Gana Street, Maitama',
+      urgency: 'urgent',
+    };
+    savePreservedJobDraft(jobDraft);
+
+    vi.mocked(useSearchParams).mockReturnValue(
+      makeSearchParams({ returnUrl: '/post-job', handoff: '1' }),
+    );
+
+    render(<AuthScreen initialMode="signin" />);
+
+    expect(
+      screen.getByText(/sign in or create an account to post your job request/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/generator carburetor overhaul/i)).toBeInTheDocument();
+    expect(screen.getByText('Abuja')).toBeInTheDocument();
+    expect(screen.getByText(/urgent/i)).toBeInTheDocument();
+
+    const backLink = screen.getByRole('link', { name: /back to job request/i });
+    expect(backLink).toHaveAttribute('href', '/post-job');
   });
 
   it('neutralizes open redirect attempts in returnUrl query parameter', () => {

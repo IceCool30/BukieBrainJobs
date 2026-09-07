@@ -3,6 +3,10 @@ import {
   validateBookingDraft,
   validateBrainWorkerDraft,
   validatePostJobDraft,
+  validateCustomerJobDraft,
+  validateJobDraft,
+  isActiveMarketplaceCity,
+  CustomerJobDraft,
   getPrototypeSubmissionOutcome,
   normalizeNigerianPhone,
   validatePhoneOtp,
@@ -228,5 +232,156 @@ describe('validateRoleSelection', () => {
   it('rejects invalid or missing role selection', () => {
     expect(validateRoleSelection(null).valid).toBe(false);
     expect(validateRoleSelection('admin').valid).toBe(false);
+  });
+});
+
+describe('isActiveMarketplaceCity', () => {
+  it('recognizes active Nigerian marketplace cities', () => {
+    expect(isActiveMarketplaceCity('Lagos')).toBe(true);
+    expect(isActiveMarketplaceCity('Abuja')).toBe(true);
+    expect(isActiveMarketplaceCity('Abuja (FCT)')).toBe(true);
+    expect(isActiveMarketplaceCity('Port Harcourt')).toBe(true);
+    expect(isActiveMarketplaceCity('Ibadan')).toBe(true);
+    expect(isActiveMarketplaceCity('Enugu')).toBe(true);
+    expect(isActiveMarketplaceCity('Kano')).toBe(true);
+    expect(isActiveMarketplaceCity('Benin City')).toBe(true);
+  });
+
+  it('rejects inactive or unrecognized cities', () => {
+    expect(isActiveMarketplaceCity('London')).toBe(false);
+    expect(isActiveMarketplaceCity('New York')).toBe(false);
+    expect(isActiveMarketplaceCity('')).toBe(false);
+    expect(isActiveMarketplaceCity('Accra')).toBe(false);
+  });
+});
+
+describe('validateCustomerJobDraft (WEB-009 / WEB-009A)', () => {
+  const validDraft: CustomerJobDraft = {
+    jobType: 'specific_service',
+    category: 'generator',
+    title: 'Mikano 20kVA Diesel Generator Annual Service',
+    description: 'The generator needs a full oil filter change and electrical diagnostic before the rainy season.',
+    city: 'Lagos',
+    streetAddress: '15 Adeola Odeku Street, Victoria Island',
+    landmark: 'Opposite Ebeano Supermarket',
+    urgency: 'tomorrow',
+    budget: '₦45,000',
+    budgetType: 'negotiable',
+  };
+
+  it('passes completely for valid customer job posting draft', () => {
+    expect(validateCustomerJobDraft(validDraft)).toEqual({});
+    expect(validateJobDraft(validDraft)).toEqual({});
+  });
+
+  it('supports both specific_service and broader_project job types', () => {
+    const projectDraft: CustomerJobDraft = {
+      ...validDraft,
+      jobType: 'broader_project',
+      category: 'not_sure',
+      title: 'Full 3-Bedroom Apartment Renovation and Rewiring',
+      description: 'Need electrical rewiring, bathroom plumbing replacement, and complete interior wall repainting.',
+    };
+    expect(validateCustomerJobDraft(projectDraft)).toEqual({});
+  });
+
+  it('allows category to be empty or "not_sure" or "unspecified"', () => {
+    expect(validateCustomerJobDraft({ ...validDraft, category: undefined })).toEqual({});
+    expect(validateCustomerJobDraft({ ...validDraft, category: 'not_sure' })).toEqual({});
+    expect(validateCustomerJobDraft({ ...validDraft, category: '' })).toEqual({});
+  });
+
+  it('allows budget to be omitted, empty, or flexible without validation errors', () => {
+    expect(validateCustomerJobDraft({ ...validDraft, budget: undefined, budgetType: undefined })).toEqual({});
+    expect(validateCustomerJobDraft({ ...validDraft, budget: '', budgetType: 'unspecified' })).toEqual({});
+  });
+
+  it('allows optional preferredBrainWorker without validation errors', () => {
+    expect(validateCustomerJobDraft({
+      ...validDraft,
+      preferredWorkerId: 'bw-1',
+      preferredWorkerName: 'Engr. Emeka Nwosu',
+    })).toEqual({});
+  });
+
+  it('returns actionable errors for missing required fields', () => {
+    const emptyDraft: CustomerJobDraft = {
+      title: '',
+      description: '',
+      city: '',
+      streetAddress: '',
+      urgency: undefined as unknown as 'urgent',
+    };
+    const errors = validateCustomerJobDraft(emptyDraft);
+    expect(errors.jobType).toBe('Select a job type (specific service or broader project).');
+    expect(errors.title).toBe('Enter a title for your job request.');
+    expect(errors.description).toBe('Describe the work you need done.');
+    expect(errors.city).toBe('Choose a city for your job.');
+    expect(errors.streetAddress).toBe('Enter a complete street address.');
+    expect(errors.urgency).toBe('Choose a schedule preference.');
+  });
+
+  it('enforces minimum length and non-whitespace on title and description', () => {
+    const shortDraft: CustomerJobDraft = {
+      ...validDraft,
+      title: '   Fix   ',
+      description: '   Too short   ',
+    };
+    const errors = validateCustomerJobDraft(shortDraft);
+    expect(errors.title).toBe('Use at least 10 characters to describe the job.');
+    expect(errors.description).toBe('Add enough detail for BrainWorkers to understand the job (at least 20 characters).');
+  });
+
+  it('enforces maximum length bounds on title, description, and landmark', () => {
+    const excessiveDraft: CustomerJobDraft = {
+      ...validDraft,
+      title: 'A'.repeat(101),
+      description: 'D'.repeat(1001),
+      landmark: 'L'.repeat(101),
+    };
+    const errors = validateCustomerJobDraft(excessiveDraft);
+    expect(errors.title).toBe('Job title must be 100 characters or less.');
+    expect(errors.description).toBe('Description must be 1,000 characters or less.');
+    expect(errors.landmark).toBe('Landmark must be 100 characters or less.');
+  });
+
+  it('rejects inactive or unverified cities', () => {
+    const inactiveCityDraft: CustomerJobDraft = {
+      ...validDraft,
+      city: 'Calabar',
+    };
+    const errors = validateCustomerJobDraft(inactiveCityDraft);
+    expect(errors.city).toContain('Please select an active marketplace city');
+  });
+
+  it('validates specific_date schedule selection', () => {
+    const noDateDraft: CustomerJobDraft = {
+      ...validDraft,
+      urgency: 'specific_date',
+      preferredDate: '',
+    };
+    expect(validateCustomerJobDraft(noDateDraft).preferredDate).toBe('Choose a preferred service date.');
+
+    const invalidDateDraft: CustomerJobDraft = {
+      ...validDraft,
+      urgency: 'specific_date',
+      preferredDate: 'not-a-date',
+    };
+    expect(validateCustomerJobDraft(invalidDateDraft).preferredDate).toBe('Choose a valid date.');
+
+    const pastDateDraft: CustomerJobDraft = {
+      ...validDraft,
+      urgency: 'specific_date',
+      preferredDate: '2020-01-01',
+    };
+    expect(validateCustomerJobDraft(pastDateDraft).preferredDate).toBe('Choose a date that is today or in the future.');
+
+    // Future date passes
+    const futureDateDraft: CustomerJobDraft = {
+      ...validDraft,
+      urgency: 'specific_date',
+      preferredDate: '2099-12-31',
+    };
+    expect(validateCustomerJobDraft(futureDateDraft).preferredDate).toBeUndefined();
   });
 });

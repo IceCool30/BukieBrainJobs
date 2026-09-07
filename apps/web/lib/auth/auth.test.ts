@@ -11,9 +11,13 @@ import {
   savePreservedBookingDraft,
   getPreservedBookingDraft,
   clearPreservedBookingDraft,
+  savePreservedJobDraft,
+  getPreservedJobDraft,
+  clearPreservedJobDraft,
   setMockAuthenticatedUser,
   getMockAuthenticatedUser,
   PreservedBookingDraft,
+  PreservedJobDraft,
 } from './index';
 
 describe('WEB-008 Authentication Logic & Services', () => {
@@ -150,6 +154,48 @@ describe('WEB-008 Authentication Logic & Services', () => {
 
       clearPreservedBookingDraft();
       expect(getPreservedBookingDraft()).toBeNull();
+    });
+
+    it('preserves and restores all JobDraft fields through authentication boundary (WEB-009)', () => {
+      clearPreservedJobDraft();
+      expect(getPreservedJobDraft()).toBeNull();
+
+      const jobDraft: PreservedJobDraft = {
+        jobType: 'specific_service',
+        category: 'generator',
+        title: 'Generator Carburetor Overhaul and Wiring',
+        description: 'The generator shuts off after 10 minutes under heavy load.',
+        city: 'Abuja',
+        streetAddress: '12 Gana Street, Maitama',
+        landmark: 'Near Transcorp Hilton',
+        urgency: 'urgent',
+        arrivalWindow: 'Morning (9am - 12pm)',
+        budget: '₦35,000',
+        budgetType: 'fixed',
+        preferredWorkerId: 'bw-1',
+        preferredWorkerName: 'Engr. Emeka Nwosu',
+      };
+
+      savePreservedJobDraft(jobDraft);
+      const restored = getPreservedJobDraft();
+
+      expect(restored).not.toBeNull();
+      expect(restored?.jobType).toBe('specific_service');
+      expect(restored?.category).toBe('generator');
+      expect(restored?.title).toBe('Generator Carburetor Overhaul and Wiring');
+      expect(restored?.description).toBe('The generator shuts off after 10 minutes under heavy load.');
+      expect(restored?.city).toBe('Abuja');
+      expect(restored?.streetAddress).toBe('12 Gana Street, Maitama');
+      expect(restored?.landmark).toBe('Near Transcorp Hilton');
+      expect(restored?.urgency).toBe('urgent');
+      expect(restored?.arrivalWindow).toBe('Morning (9am - 12pm)');
+      expect(restored?.budget).toBe('₦35,000');
+      expect(restored?.budgetType).toBe('fixed');
+      expect(restored?.preferredWorkerId).toBe('bw-1');
+      expect(restored?.preferredWorkerName).toBe('Engr. Emeka Nwosu');
+
+      clearPreservedJobDraft();
+      expect(getPreservedJobDraft()).toBeNull();
     });
 
     it('persists and clears mock authenticated user session', () => {
