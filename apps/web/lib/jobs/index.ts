@@ -374,12 +374,16 @@ export function resolveJobsContext(
     ? baseActivities.find((act) => act.id === selectedActivityId)
     : undefined;
 
+  const allActivities = [...activeActivities, ...upcomingActivities, ...pastActivities];
+
   return {
     customer,
     activities: presentedActivities,
+    allActivities,
     activeActivities,
     upcomingActivities,
     pastActivities,
+    totalCount: allActivities.length,
     availableFilters: VALID_FILTERS,
     currentFilter,
     selectedActivityId,

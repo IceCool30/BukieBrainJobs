@@ -285,9 +285,11 @@ export interface CustomerActivityCustomer {
 export interface CustomerActivityViewModel {
   customer: CustomerActivityCustomer;
   activities: CustomerActivityItem[];
+  allActivities: CustomerActivityItem[];
   activeActivities: CustomerActivityItem[];
   upcomingActivities: CustomerActivityItem[];
   pastActivities: CustomerActivityItem[];
+  totalCount: number;
   availableFilters: ActivityFilterView[];
   currentFilter: ActivityFilterView;
   selectedActivityId?: string | undefined;

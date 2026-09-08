@@ -98,18 +98,22 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
       expect(vm.currentFilter).toBe('all');
       expect(vm.customer.name).toBe(DEFAULT_JOBS_CUSTOMER.name);
       expect(vm.activities.length).toBe(MOCK_CUSTOMER_ACTIVITIES.length);
+      expect(vm.allActivities.length).toBe(MOCK_CUSTOMER_ACTIVITIES.length);
+      expect(vm.totalCount).toBe(MOCK_CUSTOMER_ACTIVITIES.length);
       expect(vm.activeActivities.length).toBeGreaterThan(0);
       expect(vm.upcomingActivities.length).toBeGreaterThan(0);
       expect(vm.pastActivities.length).toBeGreaterThan(0);
       expect(vm.availableFilters).toEqual(['all', 'active', 'upcoming', 'past']);
     });
 
-    it('resolves "active" filter returning active work only', () => {
+    it('resolves "active" filter returning active work while preserving totalCount and allActivities', () => {
       const searchParams = new URLSearchParams('view=active');
       const vm = resolveJobsContext(searchParams, null, null);
 
       expect(vm.currentFilter).toBe('active');
       expect(vm.activities.length).toBe(vm.activeActivities.length);
+      expect(vm.totalCount).toBe(MOCK_CUSTOMER_ACTIVITIES.length);
+      expect(vm.allActivities.length).toBe(MOCK_CUSTOMER_ACTIVITIES.length);
       vm.activities.forEach((act) => {
         expect(['in_progress', 'awaiting_progress', 'request_received']).toContain(act.status);
       });

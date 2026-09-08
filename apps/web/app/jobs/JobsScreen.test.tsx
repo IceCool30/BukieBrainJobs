@@ -95,6 +95,25 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
     expect(mockPush).toHaveBeenCalledWith('/jobs?view=active');
   });
 
+  it('preserves accurate filter counts across tab selection (All count remains total count)', () => {
+    render(<JobsScreen />);
+
+    const filterNav = screen.getByRole('navigation', { name: /Activity Filters/i });
+    const allTab = within(filterNav).getByRole('button', { name: /All/i });
+    const activeTab = within(filterNav).getByRole('button', { name: /Active/i });
+
+    // Initial counts
+    expect(within(allTab).getByText('7')).toBeInTheDocument();
+    expect(within(activeTab).getByText('3')).toBeInTheDocument();
+
+    // Click Active filter
+    fireEvent.click(activeTab);
+
+    // Verify All tab count STILL displays the total count 7, not 3
+    expect(within(allTab).getByText('7')).toBeInTheDocument();
+    expect(within(activeTab).getByText('3')).toBeInTheDocument();
+  });
+
   it('separates Activity Type and Activity Status visually on each card', () => {
     render(<JobsScreen />);
 
