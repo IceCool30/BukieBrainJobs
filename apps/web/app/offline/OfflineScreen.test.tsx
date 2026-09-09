@@ -47,14 +47,15 @@ describe('PWA Offline Fallback Page', () => {
     expect(window.location.reload).toHaveBeenCalled();
   });
 
-  it('displays connection checking feedback when retry button is clicked while still offline', () => {
+  it('displays connection checking feedback when retry button is clicked while still offline', async () => {
     vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
 
     render(<OfflinePage />);
     const retryBtn = screen.getByRole('button', { name: /Retry Connection/i });
     fireEvent.click(retryBtn);
 
-    expect(screen.getByRole('status')).toBeInTheDocument();
+    const statusNotice = await screen.findByRole('status');
+    expect(statusNotice).toBeInTheDocument();
     expect(screen.getByText(/Still offline\. Please check your internet or mobile data connection\./i)).toBeInTheDocument();
   });
 });
