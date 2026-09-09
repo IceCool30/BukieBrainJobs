@@ -10,12 +10,17 @@ describe('PWA Offline Fallback Page', () => {
     // Mock window.location.reload
     Object.defineProperty(window, 'location', {
       writable: true,
+      configurable: true,
       value: { ...originalLocation, reload: vi.fn(), href: 'http://localhost:3000/offline' },
     });
   });
 
   afterEach(() => {
-    window.location = originalLocation;
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      configurable: true,
+      value: originalLocation,
+    });
     vi.restoreAllMocks();
   });
 
