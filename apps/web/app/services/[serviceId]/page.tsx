@@ -71,7 +71,7 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
         <div className="relative mx-auto max-w-[1280px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
           <Link
             href={backToServicesHref}
-            className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-slate-200 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#ABEEC8]"
+            className="inline-flex min-h-12 items-center gap-2 text-sm font-bold text-slate-200 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#ABEEC8]"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back to services

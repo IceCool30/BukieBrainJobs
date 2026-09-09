@@ -24,6 +24,9 @@ coverage/
 lh-report*/
 playwright-report/
 test-results/
+apps/web/public/sw.js
+apps/web/public/sw.js.map
+apps/web/public/swe-worker*
 
 # OS / editor
 .DS_Store

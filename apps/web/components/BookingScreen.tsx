@@ -59,7 +59,7 @@ function BookingHeader({ returnUrl }: { returnUrl: string }) {
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href={returnUrl}
-          className="motion-press inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#001A41] transition-colors hover:text-[#296A4B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B]"
+          className="motion-press inline-flex min-h-12 items-center gap-2 text-sm font-bold text-[#001A41] transition-colors hover:text-[#296A4B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Back to services

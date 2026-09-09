@@ -100,7 +100,7 @@ function ServiceCard({
           <button
             type="button"
             onClick={onReview}
-            className="motion-press inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#001A41] px-4 text-xs font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+            className="motion-press inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#001A41] px-4 text-xs font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
           >
             Review details
             <ArrowRight className="h-4 w-4 text-[#ABEEC8]" aria-hidden="true" />
@@ -334,7 +334,7 @@ function ServicesDirectory() {
         <div className="relative mx-auto flex min-h-[390px] max-w-[1280px] flex-col justify-center px-4 py-12 sm:min-h-[420px] sm:px-6 sm:py-14 lg:min-h-[432px] lg:px-8">
           <Link
             href="/"
-            className="inline-flex self-start min-h-11 items-center gap-2 text-xs font-semibold text-slate-200 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#ABEEC8]"
+            className="inline-flex self-start min-h-12 items-center gap-2 text-xs font-semibold text-slate-200 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#ABEEC8]"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back to home
@@ -405,7 +405,7 @@ function ServicesDirectory() {
               type="button"
               onClick={() => setDismissedCityNotice(true)}
               aria-label="Dismiss notice"
-              className="inline-flex h-11 w-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-blue-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#296A4B]"
+              className="inline-flex h-12 w-12 min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-blue-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#296A4B]"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -432,7 +432,7 @@ function ServicesDirectory() {
               type="button"
               onClick={() => setDismissedCategoryNotice(true)}
               aria-label="Dismiss notice"
-              className="inline-flex h-11 w-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-blue-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#296A4B]"
+              className="inline-flex h-12 w-12 min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-blue-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#296A4B]"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
