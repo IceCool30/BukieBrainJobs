@@ -10,6 +10,7 @@ import {
   getPreservedJobDraft,
   setMockAuthenticatedUser,
 } from '../../lib/auth';
+import { getCustomerActivityRepository } from '../../lib/jobs';
 
 function makeSearchParams(params: Record<string, string> = {}): ReadonlyURLSearchParams {
   return new URLSearchParams(params) as unknown as ReadonlyURLSearchParams;
@@ -494,6 +495,42 @@ describe('PostJobScreen: Authenticated Submission & Success View', () => {
     );
 
     // Try again button exists
+    expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
+  });
+
+  it('enters error state and preserves form input when repository.createJob rejects without false success fallback', async () => {
+    const user = userEvent.setup();
+    const repo = getCustomerActivityRepository();
+    vi.spyOn(repo, 'createJob').mockRejectedValueOnce(new Error('Persistence failed'));
+
+    render(<PostJobScreen />);
+
+    await user.type(screen.getByLabelText(/job title/i), 'Fix water heater leakage');
+    await user.type(
+      screen.getByLabelText(/job description/i),
+      'Water heater in master bath is leaking from base connection continuously.',
+    );
+    await user.type(screen.getByLabelText(/street address/i), '8 Victoria Island Close');
+
+    const submitBtn = screen.getAllByRole('button', { name: /submit job request/i })[0]!;
+    await user.click(submitBtn);
+
+    await waitFor(
+      () => {
+        expect(
+          screen.getByRole('heading', { level: 2, name: /submission could not be completed right now/i }),
+        ).toBeInTheDocument();
+      },
+      { timeout: 2000 },
+    );
+
+    // Form inputs preserved for retry
+    expect((screen.getByLabelText(/job title/i) as HTMLInputElement).value).toBe(
+      'Fix water heater leakage',
+    );
+
+    // Never transitioned to false success
+    expect(screen.queryByRole('heading', { level: 1, name: /request received/i })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
   });
 });

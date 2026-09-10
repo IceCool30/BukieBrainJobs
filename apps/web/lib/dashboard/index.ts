@@ -6,13 +6,14 @@ import {
   DashboardViewModel,
   DashboardStateMode,
   DashboardCustomer,
+  normalizeUserRole,
 } from '@bukiebrainjobs/types';
 import { AuthUser, PreservedJobDraft } from '../auth/types';
 
 export const DEFAULT_DASHBOARD_CUSTOMER: DashboardCustomer = {
   id: 'usr-customer-default',
   name: 'Valued Customer',
-  role: 'customer',
+  role: 'CLIENT',
 };
 
 export const MOCK_ACTIVE_WORK: DashboardActiveWorkItem[] = [
@@ -175,7 +176,7 @@ export function resolveDashboardContext(
         name: currentUser.name || 'Valued Customer',
         email: currentUser.email,
         phone: currentUser.phone,
-        role: currentUser.role || 'customer',
+        role: normalizeUserRole(currentUser.role),
       }
     : DEFAULT_DASHBOARD_CUSTOMER;
 

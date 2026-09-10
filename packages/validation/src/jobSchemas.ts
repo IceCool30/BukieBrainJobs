@@ -7,6 +7,7 @@ import { JobStatus, JobType } from '@bukiebrainjobs/api-types'
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 export const CreateJobSchema = z.object({
+  referenceCode: z.string().optional(),
   title: z.string()
     .min(10, 'Title must be at least 10 characters')
     .max(100, 'Title must be at most 100 characters'),
@@ -38,6 +39,48 @@ export const CreateJobSchema = z.object({
   
   // Skills
   skillIds: z.array(z.string().uuid()).min(1, 'At least one skill is required'),
+  
+  // Evidence URLs
+  beforePhotoUrls: z.array(z.string().url()).default([]),
+})
+
+/**
+ * ARCH-002 Customer Job Creation Schema.
+ * Models customer-known intake input at the shared boundary:
+ * - Does NOT require taskerRateKobo or estimatedTotalKobo
+ * - Allows empty selectedSkillIds for "I'm not sure" flows
+ * - Does NOT require geographic coordinates upfront (staged location resolution)
+ * - Supports optional landmark and optional integer customerBudgetKobo
+ */
+export const CustomerJobCreationSchema = z.object({
+  title: z.string()
+    .min(10, 'Title must be at least 10 characters')
+    .max(100, 'Title must be at most 100 characters'),
+  description: z.string()
+    .min(20, 'Description must be at least 20 characters')
+    .max(2000, 'Description must be at most 2000 characters'),
+  jobType: z.enum(['TASK', 'PROJECT', 'RECURRING']).default('TASK'),
+  
+  // Location
+  address: z.string().min(5, 'Address must be at least 5 characters'),
+  city: z.string().min(2, 'City must be at least 2 characters'),
+  landmark: z.string().max(200).optional(),
+  
+  // Scheduling
+  scheduledStartAt: z.string().datetime(),
+  scheduledEndAt: z.string().datetime().optional(),
+  estimatedHours: z.number().min(0.5).max(24).optional(),
+  
+  // Customer Budget (integer kobo) - optional, NOT worker rate
+  customerBudgetKobo: z.number().int().min(100, 'Budget must be at least N1.00').optional(),
+  
+  // Skills - optional, empty array allowed for "I'm not sure"
+  selectedSkillIds: z.array(z.string().uuid()).default([]),
+  
+  // Recurring
+  isRecurring: z.boolean().default(false),
+  recurringFrequency: z.enum(['weekly', 'biweekly', 'monthly']).optional(),
+  recurringEndsAt: z.string().datetime().optional(),
   
   // Evidence URLs
   beforePhotoUrls: z.array(z.string().url()).default([]),

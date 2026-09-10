@@ -4,3 +4,6 @@
 export * from './matching'
 export * from './pricing'
 export * from './formatting'
+export * from './location'
+export * from './referenceCode'
+export * from './jobResolution'

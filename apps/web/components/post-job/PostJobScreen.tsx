@@ -33,7 +33,6 @@ import {
   ArrivalWindow,
   ARRIVAL_WINDOWS,
   resolveJobPostingContext,
-  generateJobReference,
 } from '../../lib/post-job';
 import {
   getMockAuthenticatedUser,
@@ -42,6 +41,9 @@ import {
   clearPreservedJobDraft,
   AuthUser,
 } from '../../lib/auth';
+import { getCustomerActivityRepository } from '../../lib/jobs';
+import { CustomerJobCreationInput } from '@bukiebrainjobs/types';
+import { parseNairaToKobo } from '@bukiebrainjobs/utils';
 
 type SubmitStatus = 'idle' | 'pending' | 'error' | 'success';
 
@@ -175,7 +177,7 @@ export default function PostJobScreen() {
     }
   };
 
-  // Submission execution (mock boundary)
+  // Submission execution (ARCH-002 repository boundary)
   const finishSubmission = () => {
     setStatus('pending');
     const isMockError = context.mockError || searchParams.get('mockError') === '1';
@@ -184,10 +186,34 @@ export default function PostJobScreen() {
 
     window.setTimeout(() => {
       if (outcome === 'success') {
-        const ref = generateJobReference();
-        setSubmittedReference(ref);
-        clearPreservedJobDraft();
-        setStatus('success');
+        const repo = getCustomerActivityRepository();
+        const budgetKobo = parseNairaToKobo(formData.budget);
+        const creationInput: CustomerJobCreationInput = {
+          title: formData.title || '',
+          description: formData.description || '',
+          jobType: formData.jobType === 'broader_project' ? 'PROJECT' : 'TASK',
+          address: formData.streetAddress || '',
+          city: formData.city || '',
+          landmark: formData.landmark || undefined,
+          scheduledStartAt: formData.preferredDate
+            ? `${formData.preferredDate}T09:00:00Z`
+            : new Date().toISOString(),
+          customerBudgetKobo: budgetKobo > 0 ? budgetKobo : undefined,
+          selectedSkillIds: [],
+        };
+
+        repo
+          .createJob(authenticatedUser?.id || 'usr-customer-default', creationInput)
+          .then((activity) => {
+            setSubmittedReference(activity.referenceCode || activity.id);
+            clearPreservedJobDraft();
+            setStatus('success');
+          })
+          .catch(() => {
+            // A failed persistence operation must never be presented as a successful request.
+            // Enter the existing error state, preserve the draft, and allow retry.
+            setStatus('error');
+          });
       } else {
         setStatus('error');
       }
@@ -273,7 +299,7 @@ export default function PostJobScreen() {
             </h1>
 
             <p className="mt-2 text-sm text-slate-600">
-              Your customer job request has been recorded. Matched BrainWorkers will review your details and respond.
+              Your customer job request has been recorded in your activity history.
             </p>
 
             {/* Reference Badge */}
@@ -289,13 +315,15 @@ export default function PostJobScreen() {
                 What happens next
               </p>
               <ul className="list-disc pl-5 space-y-1 text-slate-600">
-                <li>Vetted BrainWorkers matching your category and city will review your scope.</li>
-                <li>Interested professionals will provide availability and pricing proposals.</li>
+                <li>Your request details have been saved to your customer activity record.</li>
                 <li>
-                  <span className="font-semibold text-slate-800">No payment has occurred:</span> Pricing and terms are finalized directly with your chosen BrainWorker under the BukieGuarantee.
+                  <span className="font-semibold text-slate-800">Matching and responses:</span> Automated worker matching, notifications, and worker quote responses are planned backend capabilities not active in this development phase.
                 </li>
                 <li>
-                  <span className="font-semibold text-slate-800">No BrainWorker dispatched yet:</span> Service begins only after mutual agreement and schedule confirmation.
+                  <span className="font-semibold text-slate-800">No payment has occurred:</span> No payment or escrow transaction has taken place. Payment processing and pricing finalization will connect during backend integration.
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-800">No BrainWorker dispatched yet:</span> Live scheduling, dispatch, and messaging are pending backend connectivity.
                 </li>
               </ul>
             </div>

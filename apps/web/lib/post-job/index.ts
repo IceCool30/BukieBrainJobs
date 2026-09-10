@@ -5,6 +5,7 @@ import {
   ServiceCategory,
   BrainWorker,
 } from '../mock/homepage-data';
+import { generateJobReferenceCode } from '@bukiebrainjobs/utils';
 
 export const JOB_TYPES = ['specific_service', 'broader_project'] as const;
 export type JobType = (typeof JOB_TYPES)[number];
@@ -55,8 +56,7 @@ export function isValidSpecificDate(dateStr: string): boolean {
 }
 
 export function generateJobReference(): string {
-  const code = Math.floor(10000 + Math.random() * 90000);
-  return `REQ-${code}`;
+  return generateJobReferenceCode();
 }
 
 type QuerySource =

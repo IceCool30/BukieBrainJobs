@@ -176,9 +176,9 @@ export function ActivityDetail({
             <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100 flex items-start gap-3">
               <ShieldCheck className="h-4 w-4 text-[#296A4B] shrink-0 mt-0.5" />
               <div className="text-xs">
-                <span className="block text-slate-400 font-medium">Platform Trust</span>
+                <span className="block text-slate-400 font-medium">Safety Standard</span>
                 <span className="font-semibold text-slate-900 mt-0.5 block">
-                  Bukie Escrow & Verification
+                  Verified Identity & Community Standards
                 </span>
               </div>
             </div>

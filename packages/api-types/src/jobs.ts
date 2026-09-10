@@ -63,6 +63,7 @@ export class InvalidTransitionError extends Error {
 
 export interface Job {
   id: string
+  referenceCode: string
   title: string
   description: string
   status: JobStatus
@@ -115,24 +116,49 @@ export interface JobQueryParams {
 }
 
 export interface CreateJobRequest {
+  referenceCode?: string | undefined
   title: string
   description: string
-  jobType?: JobType
+  jobType?: JobType | undefined
   address: string
   city: string
   state: string
   latitude: number
   longitude: number
   scheduledStartAt: string
-  scheduledEndAt?: string
-  estimatedHours?: number
+  scheduledEndAt?: string | undefined
+  estimatedHours?: number | undefined
   taskerRateKobo: number
   estimatedTotalKobo: number
   skillIds: string[]
-  isRecurring?: boolean
-  recurringFrequency?: string
-  recurringEndsAt?: string
-  beforePhotoUrls?: string[]
+  isRecurring?: boolean | undefined
+  recurringFrequency?: string | undefined
+  recurringEndsAt?: string | undefined
+  beforePhotoUrls?: string[] | undefined
+}
+
+/**
+ * ARCH-002 Customer Job Creation Contract.
+ * Represents customer-known input at intake.
+ * Does NOT require marketplace pricing (taskerRateKobo), pre-assigned workers,
+ * fabricated coordinates, or mandatory skill selection ("I'm not sure" allowed).
+ */
+export interface CustomerJobCreationInput {
+  title: string
+  description: string
+  jobType?: JobType | undefined
+  address: string
+  city: string
+  landmark?: string | undefined
+  scheduledStartAt: string
+  scheduledEndAt?: string | undefined
+  estimatedHours?: number | undefined
+  customerBudgetKobo?: number | undefined
+  selectedSkillIds?: string[] | undefined
+  isRecurring?: boolean | undefined
+  recurringFrequency?: string | undefined
+  recurringEndsAt?: string | undefined
+  beforePhotoUrls?: string[] | undefined
 }
 
 export interface UpdateJobRequest {

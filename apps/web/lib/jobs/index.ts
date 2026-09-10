@@ -3,13 +3,16 @@ import {
   CustomerActivityViewModel,
   ActivityFilterView,
   CustomerActivityCustomer,
+  normalizeUserRole,
 } from '@bukiebrainjobs/types';
 import { AuthUser, PreservedJobDraft } from '../auth/types';
+
+export * from './repository';
 
 export const DEFAULT_JOBS_CUSTOMER: CustomerActivityCustomer = {
   id: 'usr-customer-default',
   name: 'Valued Customer',
-  role: 'customer',
+  role: 'CLIENT',
 };
 
 export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
@@ -224,7 +227,7 @@ export function resolveJobsContext(
         name: user.name,
         email: user.email,
         phone: user.phone,
-        role: user.role,
+        role: normalizeUserRole(user.role),
       }
     : DEFAULT_JOBS_CUSTOMER;
 
