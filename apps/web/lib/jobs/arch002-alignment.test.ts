@@ -7,15 +7,12 @@ import {
   mapJobStatusToPresentation,
   UserRole,
   JobStatus,
-  CreateJobRequest,
   CustomerJobCreationInput,
 } from '@bukiebrainjobs/types';
 import {
   deriveStateFromCity,
   isValidCoordinate,
   resolveJobLocation,
-  formatCurrency,
-  koboToNaira,
   formatNairaFromKobo,
   parseNairaToKobo,
   generateJobReferenceCode,
@@ -25,7 +22,6 @@ import {
 import { CustomerJobCreationSchema } from '@bukiebrainjobs/validation';
 import {
   MockCustomerActivityRepository,
-  getCustomerActivityRepository,
   resetCustomerActivityRepository,
 } from './repository';
 import { resolveJobsContext } from './index';
