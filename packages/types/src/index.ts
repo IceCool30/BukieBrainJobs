@@ -1,4 +1,39 @@
-export type UserRole = 'client' | 'artisan' | 'admin';
+import type {
+  UserRole as CanonicalUserRole,
+  JobStatus,
+  CreateJobRequest,
+} from '@bukiebrainjobs/api-types';
+
+export type UserRole = CanonicalUserRole;
+export type { JobStatus, CreateJobRequest };
+
+export const ROLE_DISPLAY_LABELS: Record<UserRole, string> = {
+  CLIENT: 'Customer',
+  TASKER: 'BrainWorker',
+  ADMIN: 'Administrator',
+  CORPORATE_CLIENT: 'Corporate Partner',
+};
+
+export function getRoleDisplayLabel(role: UserRole): string {
+  const label = ROLE_DISPLAY_LABELS[role];
+  if (!label) {
+    throw new Error(
+      `[Security/Auth] Unknown or corrupted user role encountered: "${role as string}". Silent fallback prohibited.`
+    );
+  }
+  return label;
+}
+
+export function normalizeUserRole(input: string): UserRole {
+  const upper = input.toUpperCase().trim();
+  if (upper === 'CLIENT' || upper === 'CUSTOMER') return 'CLIENT';
+  if (upper === 'TASKER' || upper === 'BRAINWORKER' || upper === 'ARTISAN') return 'TASKER';
+  if (upper === 'ADMIN') return 'ADMIN';
+  if (upper === 'CORPORATE_CLIENT' || upper === 'CORPORATE') return 'CORPORATE_CLIENT';
+  throw new Error(
+    `[Security/Auth] Unknown or corrupted user role encountered: "${input}". Silent fallback prohibited.`
+  );
+}
 
 export type TaskCategorySlug = 
   | 'ac-repair'
@@ -159,7 +194,7 @@ export interface DashboardCustomer {
   name: string;
   email?: string | undefined;
   phone?: string | undefined;
-  role: string;
+  role: UserRole;
 }
 
 export interface DashboardActiveWorkItem {
@@ -242,6 +277,65 @@ export type CustomerActivityStatus =
   | 'completed'
   | 'cancelled';
 
+export interface StatusPresentationModel {
+  status: CustomerActivityStatus;
+  label: string;
+  badgeVariant: 'neutral' | 'info' | 'success' | 'warning' | 'destructive';
+}
+
+/**
+ * Deterministic presentation adapter from canonical production JobStatus to customer-facing presentation model.
+ * Directional: UI must not directly mutate presentation statuses; mutations must invoke canonical transition rules.
+ */
+export function mapJobStatusToPresentation(
+  status: JobStatus,
+  options?: { isDirectBooking?: boolean; hasAssignedTasker?: boolean }
+): StatusPresentationModel {
+  switch (status) {
+    case 'OPEN':
+      return options?.hasAssignedTasker || options?.isDirectBooking
+        ? { status: 'awaiting_progress', label: 'Awaiting Acceptance', badgeVariant: 'info' }
+        : { status: 'request_received', label: 'Request Received', badgeVariant: 'neutral' };
+
+    case 'PENDING_ACCEPTANCE':
+      return { status: 'awaiting_progress', label: 'BrainWorker Responding', badgeVariant: 'info' };
+
+    case 'CONFIRMED':
+      return { status: 'scheduled', label: 'Scheduled', badgeVariant: 'info' };
+
+    case 'IN_PROGRESS':
+      return { status: 'in_progress', label: 'In Progress', badgeVariant: 'warning' };
+
+    case 'PENDING_COMPLETION':
+      return { status: 'in_progress', label: 'Pending Completion Review', badgeVariant: 'warning' };
+
+    case 'COMPLETED':
+      return { status: 'completed', label: 'Completed', badgeVariant: 'success' };
+
+    case 'PAID':
+      return { status: 'completed', label: 'Completed & Paid', badgeVariant: 'success' };
+
+    case 'CANCELLED':
+      return { status: 'cancelled', label: 'Cancelled', badgeVariant: 'destructive' };
+
+    case 'EXPIRED':
+      return { status: 'cancelled', label: 'Expired', badgeVariant: 'destructive' };
+
+    case 'DISPUTED':
+      return { status: 'awaiting_progress', label: 'Dispute Open', badgeVariant: 'destructive' };
+
+    case 'RESOLVED':
+      // Distinct customer presentation semantics:
+      // Neutral label without unconfirmed assumptions regarding pending settlement or payouts.
+      return { status: 'awaiting_progress', label: 'Dispute Resolved', badgeVariant: 'info' };
+
+    default: {
+      const _exhaustiveCheck: never = status;
+      throw new Error(`[Lifecycle] Unhandled JobStatus encountered: ${_exhaustiveCheck}`);
+    }
+  }
+}
+
 export type ActivityFilterView = 'all' | 'active' | 'upcoming' | 'past';
 
 export interface CustomerActivityPreferredWorker {
@@ -267,6 +361,9 @@ export interface CustomerActivityItem {
   location: string;
   schedule: string;
   budgetOrPrice?: string | undefined;
+  budgetKobo?: number | undefined;
+  priceKobo?: number | undefined;
+  jobStatus?: JobStatus | undefined;
   description?: string | undefined;
   preferredWorker?: CustomerActivityPreferredWorker | undefined;
   referenceCode?: string | undefined;
@@ -279,7 +376,7 @@ export interface CustomerActivityCustomer {
   name: string;
   email?: string | undefined;
   phone?: string | undefined;
-  role: string;
+  role: UserRole;
 }
 
 export interface CustomerActivityViewModel {
@@ -311,5 +408,53 @@ export interface CustomerActivityViewModel {
   isOffline?: boolean | undefined;
   hasPartialFailure?: boolean | undefined;
   failedSection?: string | undefined;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Location Resolution Contracts (ARCH-002 Staged Resolution)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface CustomerLocationInput {
+  streetAddress: string;
+  city: string;
+  landmark?: string | undefined;
+}
+
+export interface ResolvedJobLocation {
+  address: string;
+  city: string;
+  state: string;
+  latitude: number;
+  longitude: number;
+  landmark?: string | undefined;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Customer Activity Repository Boundary (ARCH-002 Replaceable Data Layer)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export type JobLifecycleAction =
+  | { type: 'CANCEL'; reason: string }
+  | { type: 'CONFIRM_COMPLETION' }
+  | { type: 'OPEN_DISPUTE'; reason: string };
+
+export interface CustomerActivityFilter {
+  view?: ActivityFilterView | undefined;
+  status?: JobStatus | undefined;
+  limit?: number | undefined;
+}
+
+export interface ICustomerActivityRepository {
+  /** Retrieves customer activity presentation items for the authenticated customer */
+  getActivities(customerId: string, filter?: CustomerActivityFilter): Promise<CustomerActivityItem[]>;
+
+  /** Retrieves a single activity presentation item by ID or human-facing reference */
+  getActivityById(customerId: string, identifier: string): Promise<CustomerActivityItem | null>;
+
+  /** Submits a validated CreateJobRequest and returns the resulting customer activity presentation item */
+  createJob(customerId: string, payload: CreateJobRequest): Promise<CustomerActivityItem>;
+
+  /** Generic production-aligned lifecycle mutation boundary validated against canonical state machine */
+  mutateJobStatus(customerId: string, jobId: string, action: JobLifecycleAction): Promise<CustomerActivityItem>;
 }
 

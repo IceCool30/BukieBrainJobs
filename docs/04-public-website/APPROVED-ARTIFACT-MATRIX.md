@@ -39,7 +39,7 @@
 - Starting price is contextual and must not be represented as a final guaranteed price.
 - Preferred BrainWorker context must not imply assignment.
 - Payment choices are preferences only. No transaction occurs in WEB-007.
-- The slice is mock-first. No production booking record, matching, payment, or authentication enforcement is introduced.
+- The slice is implemented under the ARCH-002 Phase 1 mock boundary. The booking intake contract models a production-ready Job entity (jobType: TASK). Production database persistence, automated matching, payment processing, and escrow are deferred backend capabilities, not product omissions. Form submission interacts with the customer activity repository interface.
 - Query parameters are untrusted input and must be validated safely.
 - Human design approval is required before implementation.
 
@@ -58,7 +58,7 @@
 - Customer contact information is obtained through authentication rather than duplicated in the job form.
 - Attachments/media uploads remain out of scope for v1.
 - A simulated request reference code may be shown on confirmation.
-- The slice is mock-first. No production matching, dispatch, notification, payment, booking, KYC, or database persistence is introduced.
+- The slice is implemented under the ARCH-002 Phase 1 mock boundary. The customer job posting contract models a production-ready CreateJobRequest entity. Matching, dispatch, notifications, payments, and KYC are deferred backend capabilities. Form submission dispatches to the customer activity repository to preserve cross-flow continuity with the Dashboard and Jobs views.
 - Authentication occurs at the protected commitment point and must preserve the complete job draft.
 - Query parameters, saved drafts, and preferred-worker identifiers are untrusted input and must be validated safely.
 - Human design approval is required before implementation.
@@ -72,11 +72,11 @@
 - First-run customers must see an honest no-activity experience without fabricated bookings, requests, metrics, or activity.
 - Desktop authenticated navigation uses a persistent sidebar; mobile/PWA authenticated navigation uses persistent bottom navigation.
 - Initial authenticated destinations are Home, Jobs / Bookings, Messages, Notifications, and Profile.
-- Wallet is deferred until underlying wallet/payment capability exists; Settings remains within Profile.
+- Wallet, Messages, and Notifications are planned production destinations currently pending backend connectivity. Per ARCH-002 Rule 4, the UI provides honest, non-fabricated capability notices and empty states without removing these modules from product scope. Dashboard data is supplied through the customer activity repository; Settings remains within Profile.
 - Messages and Notifications must not imply live capability when their underlying functionality is unavailable.
 - Required dashboard states include first-run/no activity, active work, upcoming work, recent activity, mixed activity, loading, partial failure, individual section empty, authentication/session failure, and offline/degraded mode.
 - The dashboard integrates with existing marketplace journeys and must not duplicate service discovery, service detail, booking preparation, or job posting workflows.
-- The slice is mock-first. No new production matching, dispatch, chat infrastructure, push infrastructure, payment processing, wallet transactions, booking lifecycle, review system, KYC workflow, AI recommendations, or analytics-heavy personalization is introduced.
+- The slice is implemented under the ARCH-002 Phase 1 mock boundary. Production matching, dispatch, chat infrastructure, push infrastructure, payment processing, wallet transactions, booking lifecycle, review system, KYC workflow, AI recommendations, and analytics-heavy personalization are deferred backend capabilities.
 - The Design System v1.0 remains authoritative, including Deep Navy `#001A41` as primary action treatment, Emerald as strategic accent, Hanken Grotesk headlines, Inter body text and labels, approved spacing/radii/components, and WCAG 2.2 AA intent.
 - No dashboard-specific foundational visual system may be introduced without an explicit Design System revision.
 - Human design approval is required before implementation.
@@ -94,11 +94,11 @@
 - Initial filters: All, Active, Upcoming, Past, with bidirectional URL query synchronization (`/jobs?view=active`).
 - Activity deep linking supported via `/jobs?id=REQ-72941` with customer data scoping, validation, safe not-found handling, and natural browser back/forward history.
 - Subtle logo watermark (`/images/logo-badge-512.png` at 3-4% opacity) inside the activity detail container as a non-interactive decorative brand signature without impairing text contrast.
-- Primary actions: View details, Return to Dashboard, Continue supported flow, Find a Service, Post a Job. No operational controls for dispatch, payment, live tracking, or messaging.
+- Primary actions support customer activity inspection. Detail views incorporate reserved action slots for production lifecycle transitions (payment, messaging, dispute, completion confirmation). Under the Phase 1 boundary, these slots display inactive or capability-pending states so that introducing the real backend does not require UX or layout reconstruction.
 - First-run experience provides an honest empty state with "Find a Service" and "Post a Job" CTAs, with no fabricated history or metrics.
 - Required states: first-run, all activity, active, upcoming, past, job request, booking, selected activity, preferred worker presence/absence, budget presence/absence, reference code presence/absence, filtered empty, loading skeleton, partial failure, full failure, offline/degraded, invalid activity, unknown status, expired session, mobile detail, desktop detail, and reduced motion.
 - Continuity preserved across WEB-007 booking preparation, WEB-008 authentication, WEB-009 customer job posting, and WEB-010 customer dashboard.
-- The slice is mock-first; no production backend, database persistence, payment processing, or live dispatch is introduced.
+- The slice is implemented under the ARCH-002 Phase 1 mock boundary. Backend database persistence, payment processing, live dispatch, chat, and live escrow operations are deferred backend capabilities whose domain contracts are modeled without live execution.
 - Design System v1.0 remains authoritative: Deep Navy `#001A41` primary/action, Emerald `#296A4B` strategic emphasis, Hanken Grotesk headings, Inter body/UI, approved spacing/radii, and WCAG 2.2 AA intent.
 - Human design approval is required before implementation.
 
