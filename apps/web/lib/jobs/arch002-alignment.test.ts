@@ -34,6 +34,11 @@ describe('ARCH-002: Production-First Contract Alignment Suite', () => {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   describe('Canonical UserRole & Display Mapping', () => {
     it('maps all 4 canonical production roles to authoritative display labels', () => {
+      expect(ROLE_DISPLAY_LABELS.CLIENT).toBe('Customer');
+      expect(ROLE_DISPLAY_LABELS.TASKER).toBe('BrainWorker');
+      expect(ROLE_DISPLAY_LABELS.ADMIN).toBe('Administrator');
+      expect(ROLE_DISPLAY_LABELS.CORPORATE_CLIENT).toBe('Corporate Partner');
+
       expect(getRoleDisplayLabel('CLIENT')).toBe('Customer');
       expect(getRoleDisplayLabel('TASKER')).toBe('BrainWorker');
       expect(getRoleDisplayLabel('ADMIN')).toBe('Administrator');
