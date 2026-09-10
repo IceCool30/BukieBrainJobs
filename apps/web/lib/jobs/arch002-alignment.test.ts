@@ -283,7 +283,7 @@ describe('ARCH-002: Production-First Contract Alignment Suite', () => {
       expect(created.id).not.toBe(created.referenceCode);
 
       // Deep link action URL targets referenceCode for clean human-facing URLs
-      expect(created.nextAction.url).toBe(`/jobs?id=${created.referenceCode}`);
+      expect(created.nextAction?.url).toBe(`/jobs?id=${created.referenceCode}`);
 
       // Retrieval by technical UUID
       const byUuid = await repo.getActivityById('usr-1', created.id);

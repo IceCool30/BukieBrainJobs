@@ -53,7 +53,7 @@ export function resolveCustomerJobToProductionRequest(
 
   const referenceCode = marketplace.referenceCode || generateJobReferenceCode();
 
-  return {
+  const result: CreateJobRequest = {
     referenceCode,
     title: input.title.trim(),
     description: input.description.trim(),
@@ -64,14 +64,25 @@ export function resolveCustomerJobToProductionRequest(
     latitude: location.latitude,
     longitude: location.longitude,
     scheduledStartAt: input.scheduledStartAt,
-    scheduledEndAt: input.scheduledEndAt,
-    estimatedHours: input.estimatedHours,
     taskerRateKobo: Math.round(marketplace.taskerRateKobo),
     estimatedTotalKobo: Math.round(estimatedTotalKobo),
     skillIds: finalSkillIds,
     isRecurring: input.isRecurring ?? false,
-    recurringFrequency: input.recurringFrequency,
-    recurringEndsAt: input.recurringEndsAt,
     beforePhotoUrls: input.beforePhotoUrls || [],
   };
+
+  if (input.scheduledEndAt !== undefined) {
+    result.scheduledEndAt = input.scheduledEndAt;
+  }
+  if (input.estimatedHours !== undefined) {
+    result.estimatedHours = input.estimatedHours;
+  }
+  if (input.recurringFrequency !== undefined) {
+    result.recurringFrequency = input.recurringFrequency;
+  }
+  if (input.recurringEndsAt !== undefined) {
+    result.recurringEndsAt = input.recurringEndsAt;
+  }
+
+  return result;
 }

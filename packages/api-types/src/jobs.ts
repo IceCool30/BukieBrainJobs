@@ -116,25 +116,25 @@ export interface JobQueryParams {
 }
 
 export interface CreateJobRequest {
-  referenceCode?: string
+  referenceCode?: string | undefined
   title: string
   description: string
-  jobType?: JobType
+  jobType?: JobType | undefined
   address: string
   city: string
   state: string
   latitude: number
   longitude: number
   scheduledStartAt: string
-  scheduledEndAt?: string
-  estimatedHours?: number
+  scheduledEndAt?: string | undefined
+  estimatedHours?: number | undefined
   taskerRateKobo: number
   estimatedTotalKobo: number
   skillIds: string[]
-  isRecurring?: boolean
-  recurringFrequency?: string
-  recurringEndsAt?: string
-  beforePhotoUrls?: string[]
+  isRecurring?: boolean | undefined
+  recurringFrequency?: string | undefined
+  recurringEndsAt?: string | undefined
+  beforePhotoUrls?: string[] | undefined
 }
 
 /**
@@ -146,19 +146,19 @@ export interface CreateJobRequest {
 export interface CustomerJobCreationInput {
   title: string
   description: string
-  jobType?: JobType
+  jobType?: JobType | undefined
   address: string
   city: string
-  landmark?: string
+  landmark?: string | undefined
   scheduledStartAt: string
-  scheduledEndAt?: string
-  estimatedHours?: number
-  customerBudgetKobo?: number
-  selectedSkillIds?: string[]
-  isRecurring?: boolean
-  recurringFrequency?: string
-  recurringEndsAt?: string
-  beforePhotoUrls?: string[]
+  scheduledEndAt?: string | undefined
+  estimatedHours?: number | undefined
+  customerBudgetKobo?: number | undefined
+  selectedSkillIds?: string[] | undefined
+  isRecurring?: boolean | undefined
+  recurringFrequency?: string | undefined
+  recurringEndsAt?: string | undefined
+  beforePhotoUrls?: string[] | undefined
 }
 
 export interface UpdateJobRequest {

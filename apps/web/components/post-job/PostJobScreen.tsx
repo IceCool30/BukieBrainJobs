@@ -190,11 +190,11 @@ export default function PostJobScreen() {
         const repo = getCustomerActivityRepository();
         const budgetKobo = parseNairaToKobo(formData.budget);
         const creationInput: CustomerJobCreationInput = {
-          title: formData.title,
-          description: formData.description,
+          title: formData.title || '',
+          description: formData.description || '',
           jobType: formData.jobType === 'broader_project' ? 'PROJECT' : 'TASK',
-          address: formData.streetAddress,
-          city: formData.city,
+          address: formData.streetAddress || '',
+          city: formData.city || '',
           landmark: formData.landmark || undefined,
           scheduledStartAt: formData.preferredDate
             ? `${formData.preferredDate}T09:00:00Z`
