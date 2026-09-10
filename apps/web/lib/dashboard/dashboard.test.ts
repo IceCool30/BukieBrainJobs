@@ -7,6 +7,7 @@ import {
   MOCK_MARKETPLACE_CONTINUATION,
   DEFAULT_DASHBOARD_CUSTOMER,
 } from './index';
+import { getRoleDisplayLabel } from '@bukiebrainjobs/types';
 import { AuthUser } from '../auth/types';
 
 describe('WEB-010 Dashboard Domain Logic & State Resolution', () => {
@@ -52,7 +53,8 @@ describe('WEB-010 Dashboard Domain Logic & State Resolution', () => {
 
     expect(vm.stateMode).toBe('mixed');
     expect(vm.customer.name).toBe('Olumide Adebayo');
-    expect(vm.customer.role).toBe('customer');
+    expect(vm.customer.role).toBe('CLIENT');
+    expect(getRoleDisplayLabel(vm.customer.role)).toBe('Customer');
 
     // Hierarchy check: Active work, Upcoming work, and Recent activity are all present
     expect(vm.activeWork.length).toBeGreaterThan(0);

@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import {
   DashboardViewModel,
+  getRoleDisplayLabel,
 } from '@bukiebrainjobs/types';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser, getPreservedJobDraft } from '../../lib/auth/storage';
 import { AuthUser } from '../../lib/auth/types';
@@ -1236,7 +1237,7 @@ export default function DashboardScreen() {
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
                 <span className="text-slate-500">Role</span>
                 <span className="font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                  {viewModel.customer.role}
+                  {getRoleDisplayLabel(viewModel.customer.role)}
                 </span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
