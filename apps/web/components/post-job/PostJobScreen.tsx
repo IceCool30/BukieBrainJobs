@@ -33,7 +33,6 @@ import {
   ArrivalWindow,
   ARRIVAL_WINDOWS,
   resolveJobPostingContext,
-  generateJobReference,
 } from '../../lib/post-job';
 import {
   getMockAuthenticatedUser,
