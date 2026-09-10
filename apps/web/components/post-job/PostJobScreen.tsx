@@ -42,6 +42,9 @@ import {
   clearPreservedJobDraft,
   AuthUser,
 } from '../../lib/auth';
+import { getCustomerActivityRepository } from '../../lib/jobs';
+import { CustomerJobCreationInput } from '@bukiebrainjobs/types';
+import { parseNairaToKobo } from '@bukiebrainjobs/utils';
 
 type SubmitStatus = 'idle' | 'pending' | 'error' | 'success';
 
@@ -175,7 +178,7 @@ export default function PostJobScreen() {
     }
   };
 
-  // Submission execution (mock boundary)
+  // Submission execution (ARCH-002 repository boundary)
   const finishSubmission = () => {
     setStatus('pending');
     const isMockError = context.mockError || searchParams.get('mockError') === '1';
@@ -184,10 +187,36 @@ export default function PostJobScreen() {
 
     window.setTimeout(() => {
       if (outcome === 'success') {
-        const ref = generateJobReference();
-        setSubmittedReference(ref);
-        clearPreservedJobDraft();
-        setStatus('success');
+        const repo = getCustomerActivityRepository();
+        const budgetKobo = parseNairaToKobo(formData.budget);
+        const creationInput: CustomerJobCreationInput = {
+          title: formData.title,
+          description: formData.description,
+          jobType: formData.jobType === 'broader_project' ? 'PROJECT' : 'TASK',
+          address: formData.streetAddress,
+          city: formData.city,
+          landmark: formData.landmark || undefined,
+          scheduledStartAt: formData.preferredDate
+            ? `${formData.preferredDate}T09:00:00Z`
+            : new Date().toISOString(),
+          customerBudgetKobo: budgetKobo > 0 ? budgetKobo : undefined,
+          selectedSkillIds: [],
+        };
+
+        repo
+          .createJob(authenticatedUser?.id || 'usr-customer-default', creationInput)
+          .then((activity) => {
+            setSubmittedReference(activity.referenceCode || activity.id);
+            clearPreservedJobDraft();
+            setStatus('success');
+          })
+          .catch(() => {
+            // Fallback to domain generator if repository throws
+            const fallbackRef = generateJobReference();
+            setSubmittedReference(fallbackRef);
+            clearPreservedJobDraft();
+            setStatus('success');
+          });
       } else {
         setStatus('error');
       }

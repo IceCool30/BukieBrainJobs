@@ -2,10 +2,12 @@ import type {
   UserRole as CanonicalUserRole,
   JobStatus,
   CreateJobRequest,
+  CustomerJobCreationInput,
+  Job,
 } from '@bukiebrainjobs/api-types';
 
 export type UserRole = CanonicalUserRole;
-export type { JobStatus, CreateJobRequest };
+export type { JobStatus, CreateJobRequest, CustomerJobCreationInput, Job };
 
 export const ROLE_DISPLAY_LABELS: Record<UserRole, string> = {
   CLIENT: 'Customer',
@@ -451,8 +453,8 @@ export interface ICustomerActivityRepository {
   /** Retrieves a single activity presentation item by ID or human-facing reference */
   getActivityById(customerId: string, identifier: string): Promise<CustomerActivityItem | null>;
 
-  /** Submits a validated CreateJobRequest and returns the resulting customer activity presentation item */
-  createJob(customerId: string, payload: CreateJobRequest): Promise<CustomerActivityItem>;
+  /** Submits a validated CustomerJobCreationInput or CreateJobRequest and returns the resulting customer activity presentation item */
+  createJob(customerId: string, payload: CustomerJobCreationInput | CreateJobRequest): Promise<CustomerActivityItem>;
 
   /** Generic production-aligned lifecycle mutation boundary validated against canonical state machine */
   mutateJobStatus(customerId: string, jobId: string, action: JobLifecycleAction): Promise<CustomerActivityItem>;

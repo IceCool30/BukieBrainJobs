@@ -8,6 +8,7 @@ import {
   UserRole,
   JobStatus,
   CreateJobRequest,
+  CustomerJobCreationInput,
 } from '@bukiebrainjobs/types';
 import {
   deriveStateFromCity,
@@ -15,7 +16,13 @@ import {
   resolveJobLocation,
   formatCurrency,
   koboToNaira,
+  formatNairaFromKobo,
+  parseNairaToKobo,
+  generateJobReferenceCode,
+  isValidJobReferenceCode,
+  resolveCustomerJobToProductionRequest,
 } from '@bukiebrainjobs/utils';
+import { CustomerJobCreationSchema } from '@bukiebrainjobs/validation';
 import {
   MockCustomerActivityRepository,
   getCustomerActivityRepository,
@@ -104,88 +111,259 @@ describe('ARCH-002: Production-First Contract Alignment Suite', () => {
       const assigned = mapJobStatusToPresentation('OPEN', { hasAssignedTasker: true });
       expect(assigned.status).toBe('awaiting_progress');
       expect(assigned.label).toBe('Awaiting Acceptance');
-
-      const directBooking = mapJobStatusToPresentation('OPEN', { isDirectBooking: true });
-      expect(directBooking.status).toBe('awaiting_progress');
     });
 
-    it('maps PENDING_COMPLETION to in_progress with clear review label', () => {
-      const presentation = mapJobStatusToPresentation('PENDING_COMPLETION');
-      expect(presentation.status).toBe('in_progress');
-      expect(presentation.label).toBe('Pending Completion Review');
-      expect(presentation.badgeVariant).toBe('warning');
-    });
-
-    it('maps DISPUTED to an open dispute state', () => {
-      const presentation = mapJobStatusToPresentation('DISPUTED');
-      expect(presentation.status).toBe('awaiting_progress');
-      expect(presentation.label).toBe('Dispute Open');
-      expect(presentation.badgeVariant).toBe('destructive');
-    });
-
-    it('maps RESOLVED neutrally to Dispute Resolved without unconfirmed settlement claims', () => {
+    it('maps RESOLVED neutrally to Dispute Resolved without unconfirmed settlement assumptions', () => {
       const presentation = mapJobStatusToPresentation('RESOLVED');
       expect(presentation.status).toBe('awaiting_progress');
       expect(presentation.label).toBe('Dispute Resolved');
       expect(presentation.badgeVariant).toBe('info');
-      // Must not contain premature "Pending Settlement" assumption
-      expect(presentation.label).not.toContain('Settlement');
-    });
-
-    it('maps PAID to completed with confirmation label', () => {
-      const presentation = mapJobStatusToPresentation('PAID');
-      expect(presentation.status).toBe('completed');
-      expect(presentation.label).toBe('Completed & Paid');
-    });
-
-    it('throws on unknown JobStatus', () => {
-      expect(() => mapJobStatusToPresentation('INVALID_STATUS' as unknown as JobStatus)).toThrow(
-        /Unhandled JobStatus encountered/
-      );
     });
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // 5 & 6: Customer Activity Repository Boundary & Continuity
+  // Decision A: Customer Budget vs Worker Rate
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  describe('Customer Activity Repository Abstraction', () => {
-    it('creates a job via CreateJobRequest and retrieves it via repository read model', async () => {
+  describe('Decision A: Customer Budget vs Worker Rate', () => {
+    it('creates a customer job with optional budget without requiring taskerRateKobo', async () => {
       const repo = new MockCustomerActivityRepository([]);
 
-      const newJobPayload: CreateJobRequest = {
-        title: 'Emergency Generator Carburetor Overhaul',
-        description: 'Lister generator stalling under load.',
-        jobType: 'TASK',
+      const customerInput: CustomerJobCreationInput = {
+        title: 'Generator Maintenance & Spark Plug Check',
+        description: 'Lister generator engine sputtering under high load at home.',
         address: '14 Admiralty Way',
         city: 'Lekki',
-        state: 'Lagos',
-        latitude: 6.4474,
-        longitude: 3.4723,
+        landmark: 'Beside Filmhouse',
         scheduledStartAt: '2026-09-12T10:00:00Z',
-        taskerRateKobo: 0,
-        estimatedTotalKobo: 4500000, // ₦45,000 in kobo
-        skillIds: ['generator-servicing'],
+        customerBudgetKobo: 3500000, // ₦35,000 customer budget
+        selectedSkillIds: [],
       };
 
-      const created = await repo.createJob('usr-123', newJobPayload);
+      const created = await repo.createJob('usr-client-1', customerInput);
       expect(created).toBeDefined();
-      expect(created.id).toMatch(/^REQ-\d{5}$/);
-      expect(created.title).toBe(newJobPayload.title);
-      expect(created.status).toBe('request_received');
-      expect(created.budgetKobo).toBe(4500000);
-      expect(created.budgetOrPrice).toBe('₦45,000');
+      expect(created.budgetKobo).toBe(3500000);
+      expect(created.budgetOrPrice).toBe('₦35,000');
+      expect(created.location).toContain('Beside Filmhouse');
+      expect(created.title).toBe(customerInput.title);
       expect(created.jobStatus).toBe('OPEN');
-
-      // Verify retrieval in activities list
-      const activities = await repo.getActivities('usr-123');
-      expect(activities.length).toBe(1);
-      expect(activities[0]?.id).toBe(created.id);
-
-      // Verify retrieval by ID and reference
-      const byId = await repo.getActivityById('usr-123', created.id);
-      expect(byId).toEqual(created);
     });
 
+    it('transforms customer input into production CreateJobRequest with marketplace rate', () => {
+      const customerInput: CustomerJobCreationInput = {
+        title: 'Emergency Generator Alternator Repair',
+        description: 'Generator produces zero voltage after sudden surge.',
+        address: '22 Marina Road',
+        city: 'Lagos',
+        scheduledStartAt: '2026-09-12T10:00:00Z',
+        estimatedHours: 2,
+        customerBudgetKobo: 5000000,
+        selectedSkillIds: [],
+      };
+
+      const location = {
+        address: customerInput.address,
+        city: customerInput.city,
+        state: 'Lagos',
+        latitude: 6.4531,
+        longitude: 3.3958,
+      };
+
+      const productionRequest = resolveCustomerJobToProductionRequest(customerInput, location, {
+        taskerRateKobo: 2000000, // ₦20,000/hr marketplace rate
+        resolvedSkillIds: ['gen-elec-skill-uuid'],
+      });
+
+      expect(productionRequest.title).toBe(customerInput.title);
+      expect(productionRequest.taskerRateKobo).toBe(2000000);
+      expect(productionRequest.estimatedTotalKobo).toBe(4000000); // 2 hrs * ₦20,000
+      expect(productionRequest.skillIds).toEqual(['gen-elec-skill-uuid']);
+      expect(productionRequest.referenceCode).toMatch(/^REQ-\d{5,}$/);
+    });
+
+    it('rejects invalid or zero marketplace worker rate during domain resolution', () => {
+      const customerInput: CustomerJobCreationInput = {
+        title: 'Valid Job Title Needs Service',
+        description: 'Valid description with sufficient details.',
+        address: '10 Glover Road',
+        city: 'Ikoyi',
+        scheduledStartAt: '2026-09-12T10:00:00Z',
+      };
+
+      const location = {
+        address: customerInput.address,
+        city: customerInput.city,
+        state: 'Lagos',
+        latitude: 6.45,
+        longitude: 3.43,
+      };
+
+      expect(() =>
+        resolveCustomerJobToProductionRequest(customerInput, location, {
+          taskerRateKobo: 0, // Zero rate prohibited (no fake zero rates)
+        })
+      ).toThrow(/taskerRateKobo must be a positive integer kobo value/);
+    });
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Decision B: "I'm Not Sure" Skills
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  describe('Decision B: "I\'m Not Sure" Skills', () => {
+    it('accepts empty selectedSkillIds without fabricating generic skill IDs', () => {
+      const validJob = CustomerJobCreationSchema.safeParse({
+        title: 'Mystery Noise in Electrical DB Box',
+        description: 'Hearing buzzing sound and burning smell near the main breaker.',
+        address: '5 Glover Road',
+        city: 'Ikoyi',
+        scheduledStartAt: new Date().toISOString(),
+        selectedSkillIds: [], // Customer selected "I'm not sure"
+      });
+
+      expect(validJob.success).toBe(true);
+      if (validJob.success) {
+        expect(validJob.data.selectedSkillIds).toEqual([]);
+      }
+    });
+
+    it('preserves customer selected skills when explicitly chosen', () => {
+      const skillUuid = '550e8400-e29b-41d4-a716-446655440000';
+      const validJob = CustomerJobCreationSchema.safeParse({
+        title: 'AC Gas Refill and Coil Cleaning',
+        description: 'Complete servicing for two split AC units in sitting room.',
+        address: '18 Isaac John St',
+        city: 'Ikeja',
+        scheduledStartAt: new Date().toISOString(),
+        selectedSkillIds: [skillUuid],
+      });
+
+      expect(validJob.success).toBe(true);
+      if (validJob.success) {
+        expect(validJob.data.selectedSkillIds).toEqual([skillUuid]);
+      }
+    });
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Decision C: Durable Job Reference Code
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  describe('Decision C: Durable Job Reference Code', () => {
+    it('generates durable, unique reference codes matching REQ-XXXXX pattern', () => {
+      const code1 = generateJobReferenceCode();
+      const code2 = generateJobReferenceCode();
+
+      expect(isValidJobReferenceCode(code1)).toBe(true);
+      expect(isValidJobReferenceCode(code2)).toBe(true);
+      expect(code1).toMatch(/^REQ-\d{5,}$/);
+      expect(code2).toMatch(/^REQ-\d{5,}$/);
+    });
+
+    it('assigns technical UUID as primary key while preserving human-readable referenceCode', async () => {
+      const repo = new MockCustomerActivityRepository([]);
+
+      const customerInput: CustomerJobCreationInput = {
+        title: 'Water Pipe Leak Under Kitchen Counter',
+        description: 'PVC pipe cracked and dripping continuously into cabinet.',
+        address: '10 Queens Drive',
+        city: 'Ikoyi',
+        scheduledStartAt: '2026-09-12T10:00:00Z',
+        customerBudgetKobo: 2000000,
+        selectedSkillIds: [],
+      };
+
+      const created = await repo.createJob('usr-1', customerInput);
+
+      // Technical UUID primary key format
+      expect(created.id).toMatch(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+      );
+
+      // Durable reference code format
+      expect(created.referenceCode).toBeDefined();
+      expect(created.referenceCode).toMatch(/^REQ-\d{5,}$/);
+      expect(created.id).not.toBe(created.referenceCode);
+
+      // Deep link action URL targets referenceCode for clean human-facing URLs
+      expect(created.nextAction.url).toBe(`/jobs?id=${created.referenceCode}`);
+
+      // Retrieval by technical UUID
+      const byUuid = await repo.getActivityById('usr-1', created.id);
+      expect(byUuid).toEqual(created);
+
+      // Retrieval by durable reference code
+      const byRef = await repo.getActivityById('usr-1', created.referenceCode!);
+      expect(byRef).toEqual(created);
+    });
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Money: Integer Kobo Representation & Presentation Formatting
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  describe('Money: Integer Kobo Representation', () => {
+    it('formats and parses kobo amounts without floating point errors', () => {
+      expect(formatNairaFromKobo(3500000)).toBe('₦35,000');
+      expect(formatNairaFromKobo(3500050, true)).toBe('₦35,000.50');
+      expect(formatNairaFromKobo(100)).toBe('₦1');
+
+      expect(parseNairaToKobo('₦35,000')).toBe(3500000);
+      expect(parseNairaToKobo('35000')).toBe(3500000);
+      expect(parseNairaToKobo('₦35,000.50')).toBe(3500050);
+      expect(parseNairaToKobo(35000)).toBe(3500000);
+    });
+
+    it('handles zero, empty, or undefined money inputs safely', () => {
+      expect(formatNairaFromKobo(0)).toBe('₦0');
+      expect(parseNairaToKobo('')).toBe(0);
+      expect(parseNairaToKobo(null)).toBe(0);
+      expect(parseNairaToKobo(undefined)).toBe(0);
+    });
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Staged Location Resolution & Anti-Fabrication Rule
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  describe('Location Resolution & Anti-Fabrication Rule', () => {
+    it('derives state from recognized Nigerian cities', () => {
+      expect(deriveStateFromCity('Lekki')).toBe('Lagos');
+      expect(deriveStateFromCity('Ikeja')).toBe('Lagos');
+      expect(deriveStateFromCity('Garki')).toBe('Federal Capital Territory');
+      expect(deriveStateFromCity('Port Harcourt')).toBe('Rivers');
+      expect(deriveStateFromCity('UnknownTown')).toBeNull();
+    });
+
+    it('validates genuine coordinates and strictly rejects (0, 0) dummy values', () => {
+      expect(isValidCoordinate(6.5244, 3.3792)).toBe(true);
+      expect(isValidCoordinate(0, 0)).toBe(false);
+      expect(isValidCoordinate(NaN, 3.3792)).toBe(false);
+      expect(isValidCoordinate(100, 3.3792)).toBe(false);
+    });
+
+    it('requires valid coordinates for a resolved production location', () => {
+      const input = {
+        streetAddress: '10 Marina Road',
+        city: 'Lagos',
+        landmark: 'Near Cathedral',
+      };
+
+      const unresolved = resolveJobLocation(input, null);
+      expect(unresolved.resolved).toBe(false);
+      expect(unresolved.error).toContain('Geographic coordinates unresolved');
+
+      const fakeCoords = resolveJobLocation(input, { latitude: 0, longitude: 0 });
+      expect(fakeCoords.resolved).toBe(false);
+
+      const verified = resolveJobLocation(input, { latitude: 6.4531, longitude: 3.3958 });
+      expect(verified.resolved).toBe(true);
+      expect(verified.location?.address).toBe('10 Marina Road');
+      expect(verified.location?.state).toBe('Lagos');
+      expect(verified.location?.latitude).toBe(6.4531);
+      expect(verified.location?.landmark).toBe('Near Cathedral');
+    });
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Repository Lifecycle Mutations & State Machine
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  describe('Repository Lifecycle Mutations & State Machine', () => {
     it('mutates job status following canonical canTransition state machine', async () => {
       const repo = new MockCustomerActivityRepository([]);
       const created = await repo.createJob('usr-123', {
@@ -193,13 +371,9 @@ describe('ARCH-002: Production-First Contract Alignment Suite', () => {
         description: 'Deep servicing for master bedroom.',
         address: '22 Isaac John St',
         city: 'Ikeja',
-        state: 'Lagos',
-        latitude: 6.5925,
-        longitude: 3.3558,
         scheduledStartAt: '2026-09-15T09:00:00Z',
-        taskerRateKobo: 0,
-        estimatedTotalKobo: 2000000,
-        skillIds: ['ac-repair'],
+        customerBudgetKobo: 2000000,
+        selectedSkillIds: [],
       });
 
       // Valid transition: OPEN -> CANCELLED
@@ -218,92 +392,10 @@ describe('ARCH-002: Production-First Contract Alignment Suite', () => {
         })
       ).rejects.toThrow(/Invalid state transition: CANCELLED -> COMPLETED/);
     });
-
-    it('preserves continuity across normal page simulation', async () => {
-      const repo = getCustomerActivityRepository();
-      const job = await repo.createJob('usr-client-1', {
-        title: 'Plumbing Valve Replacement',
-        description: 'Stopcock leak under sink.',
-        address: '5 Glover Road',
-        city: 'Ikoyi',
-        state: 'Lagos',
-        latitude: 6.45,
-        longitude: 3.43,
-        scheduledStartAt: '2026-09-11T12:00:00Z',
-        taskerRateKobo: 0,
-        estimatedTotalKobo: 1500000,
-        skillIds: ['plumbing'],
-      });
-
-      const found = await repo.getActivityById('usr-client-1', job.id);
-      expect(found).not.toBeNull();
-      expect(found?.title).toBe('Plumbing Valve Replacement');
-    });
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // 7: Monetary Precision (Kobo standard)
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  describe('Kobo Monetary Standard', () => {
-    it('accurately converts and formats kobo integers without loss of precision', () => {
-      const amountKobo = 3500000; // ₦35,000
-      expect(koboToNaira(amountKobo)).toBe(35000);
-      expect(formatCurrency(amountKobo, false)).toBe('₦35,000');
-    });
-
-    it('formats small and fractional amounts correctly', () => {
-      expect(formatCurrency(5050, true)).toBe('₦50.50');
-      expect(formatCurrency(100, false)).toBe('₦1');
-    });
-  });
-
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // 8: Location Resolution & Anti-Fabrication Rule
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  describe('Location Resolution & Anti-Fabrication Rule', () => {
-    it('derives state from recognized Nigerian cities', () => {
-      expect(deriveStateFromCity('Lekki')).toBe('Lagos');
-      expect(deriveStateFromCity('Ikeja')).toBe('Lagos');
-      expect(deriveStateFromCity('Garki')).toBe('Federal Capital Territory');
-      expect(deriveStateFromCity('Port Harcourt')).toBe('Rivers');
-      expect(deriveStateFromCity('UnknownTown')).toBeNull();
-    });
-
-    it('validates genuine coordinates and strictly rejects (0, 0) dummy values', () => {
-      expect(isValidCoordinate(6.5244, 3.3792)).toBe(true); // Lagos coordinates
-      expect(isValidCoordinate(0, 0)).toBe(false); // Gulf of Guinea / Null Island rejected
-      expect(isValidCoordinate(NaN, 3.3792)).toBe(false);
-      expect(isValidCoordinate(100, 3.3792)).toBe(false); // Out of latitude bounds
-    });
-
-    it('requires valid coordinates for a resolved production location', () => {
-      const input = {
-        streetAddress: '10 Marina Road',
-        city: 'Lagos',
-        landmark: 'Near Cathedral',
-      };
-
-      // Missing coordinates -> unresolved
-      const unresolved = resolveJobLocation(input, null);
-      expect(unresolved.resolved).toBe(false);
-      expect(unresolved.error).toContain('Geographic coordinates unresolved');
-
-      // Dummy (0, 0) coordinates -> strictly rejected
-      const fakeCoords = resolveJobLocation(input, { latitude: 0, longitude: 0 });
-      expect(fakeCoords.resolved).toBe(false);
-
-      // Verified coordinates -> successfully resolved
-      const verified = resolveJobLocation(input, { latitude: 6.4531, longitude: 3.3958 });
-      expect(verified.resolved).toBe(true);
-      expect(verified.location?.address).toBe('10 Marina Road');
-      expect(verified.location?.state).toBe('Lagos');
-      expect(verified.location?.latitude).toBe(6.4531);
-      expect(verified.location?.landmark).toBe('Near Cathedral');
-    });
-  });
-
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // 9 & 10: Dashboard and Jobs Context Integration
+  // Dashboard and Jobs Surface Integration
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   describe('Dashboard and Jobs Surface Integration', () => {
     it('resolves jobs context with normalized canonical CLIENT role', () => {

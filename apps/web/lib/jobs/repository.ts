@@ -5,9 +5,11 @@ import {
   JobLifecycleAction,
   mapJobStatusToPresentation,
   CreateJobRequest,
+  CustomerJobCreationInput,
   JobStatus,
 } from '@bukiebrainjobs/types';
 import { canTransition, InvalidTransitionError } from '@bukiebrainjobs/api-types';
+import { generateJobReferenceCode, formatNairaFromKobo } from '@bukiebrainjobs/utils';
 import { MOCK_CUSTOMER_ACTIVITIES } from './index';
 
 const STORAGE_KEY = 'bukiebrainjobs_mock_customer_activities_v1';
@@ -104,18 +106,45 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
 
   async createJob(
     _customerId: string,
-    payload: CreateJobRequest
+    payload: CustomerJobCreationInput | CreateJobRequest
   ): Promise<CustomerActivityItem> {
-    const randomCode = `REQ-${Math.floor(10000 + Math.random() * 90000)}`;
+    // Technical UUID primary key
+    const id =
+      typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+        ? crypto.randomUUID()
+        : '00000000-0000-4000-8000-' + Math.floor(100000000000 + Math.random() * 900000000000);
+
+    // Authoritative durable human-readable reference code
+    const referenceCode =
+      'referenceCode' in payload && payload.referenceCode
+        ? payload.referenceCode
+        : generateJobReferenceCode();
+
     const presentation = mapJobStatusToPresentation('OPEN');
 
-    const formattedBudget =
+    // Decision A: Customer budget vs worker rate (integer kobo representation)
+    let budgetKobo: number | undefined;
+    if ('customerBudgetKobo' in payload && typeof payload.customerBudgetKobo === 'number') {
+      budgetKobo = payload.customerBudgetKobo;
+    } else if (
+      'estimatedTotalKobo' in payload &&
+      typeof payload.estimatedTotalKobo === 'number' &&
       payload.estimatedTotalKobo > 0
-        ? `₦${(payload.estimatedTotalKobo / 100).toLocaleString('en-NG')}`
+    ) {
+      budgetKobo = payload.estimatedTotalKobo;
+    }
+
+    const formattedBudget =
+      budgetKobo && budgetKobo > 0
+        ? formatNairaFromKobo(budgetKobo)
         : 'Estimate Provided';
 
+    // Staged location: address, optional landmark, city
+    const landmarkStr = 'landmark' in payload && payload.landmark ? ` (${payload.landmark})` : '';
+    const locationDisplay = `${payload.address}${landmarkStr}, ${payload.city}`;
+
     const newActivity: CustomerActivityItem = {
-      id: randomCode,
+      id,
       type: 'job_request',
       title: payload.title,
       description: payload.description,
@@ -123,16 +152,16 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
       statusLabel: presentation.label,
       service: payload.title,
       category: 'general',
-      location: `${payload.address}, ${payload.city}`,
+      location: locationDisplay,
       schedule: payload.scheduledStartAt ? 'Scheduled Window' : 'Flexible / Recently Posted',
       budgetOrPrice: formattedBudget,
-      budgetKobo: payload.estimatedTotalKobo,
+      budgetKobo,
       jobStatus: 'OPEN',
-      referenceCode: randomCode,
+      referenceCode,
       createdAt: 'Just now',
       nextAction: {
         label: 'View Request Details',
-        url: `/jobs?id=${randomCode}`,
+        url: `/jobs?id=${referenceCode}`,
         primary: true,
       },
     };

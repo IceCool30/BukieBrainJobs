@@ -63,6 +63,7 @@ export class InvalidTransitionError extends Error {
 
 export interface Job {
   id: string
+  referenceCode: string
   title: string
   description: string
   status: JobStatus
@@ -115,6 +116,7 @@ export interface JobQueryParams {
 }
 
 export interface CreateJobRequest {
+  referenceCode?: string
   title: string
   description: string
   jobType?: JobType
@@ -129,6 +131,30 @@ export interface CreateJobRequest {
   taskerRateKobo: number
   estimatedTotalKobo: number
   skillIds: string[]
+  isRecurring?: boolean
+  recurringFrequency?: string
+  recurringEndsAt?: string
+  beforePhotoUrls?: string[]
+}
+
+/**
+ * ARCH-002 Customer Job Creation Contract.
+ * Represents customer-known input at intake.
+ * Does NOT require marketplace pricing (taskerRateKobo), pre-assigned workers,
+ * fabricated coordinates, or mandatory skill selection ("I'm not sure" allowed).
+ */
+export interface CustomerJobCreationInput {
+  title: string
+  description: string
+  jobType?: JobType
+  address: string
+  city: string
+  landmark?: string
+  scheduledStartAt: string
+  scheduledEndAt?: string
+  estimatedHours?: number
+  customerBudgetKobo?: number
+  selectedSkillIds?: string[]
   isRecurring?: boolean
   recurringFrequency?: string
   recurringEndsAt?: string

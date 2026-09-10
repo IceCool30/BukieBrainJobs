@@ -300,6 +300,7 @@ model SavedTasker {
 
 model Job {
   id                   String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  referenceCode        String         @unique
   createdAt            DateTime       @default(now())
   updatedAt            DateTime       @updatedAt
 

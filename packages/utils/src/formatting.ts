@@ -603,5 +603,40 @@ export function formatLocationShort(city?: string, state?: string): string {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Export all functions for easy importing
+// Currency & Money Formatting (ARCH-002 Integer Kobo Representation)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+/**
+ * Formats an integer kobo value to a Nigerian Naira currency presentation string.
+ * Strictly integer kobo input to avoid floating point imprecision.
+ * Example: 3500000 -> "₦35,000"
+ */
+export function formatNairaFromKobo(kobo: number, includeDecimals = false): string {
+  if (typeof kobo !== 'number' || isNaN(kobo)) return '₦0';
+  const integerKobo = Math.round(kobo);
+  const naira = Math.floor(integerKobo / 100);
+  const remainingKobo = Math.abs(integerKobo % 100);
+
+  if (includeDecimals || remainingKobo > 0) {
+    return `₦${naira.toLocaleString('en-NG')}.${String(remainingKobo).padStart(2, '0')}`;
+  }
+  return `₦${naira.toLocaleString('en-NG')}`;
+}
+
+/**
+ * Parses a user input string (e.g., "₦35,000" or "35000") into integer kobo.
+ * Rejects or strips non-numeric characters and returns integer kobo without floating-point errors.
+ */
+export function parseNairaToKobo(input?: string | number | null): number {
+  if (typeof input === 'number') {
+    return isNaN(input) ? 0 : Math.round(input * 100);
+  }
+  if (!input || typeof input !== 'string') return 0;
+  const clean = input.replace(/[^0-9.]/g, '');
+  if (!clean) return 0;
+  const parts = clean.split('.');
+  const whole = parseInt(parts[0] || '0', 10);
+  const fraction = parts[1] ? parts[1].slice(0, 2).padEnd(2, '0') : '00';
+  const kobo = whole * 100 + parseInt(fraction, 10);
+  return isNaN(kobo) ? 0 : kobo;
+}
