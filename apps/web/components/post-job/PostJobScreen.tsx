@@ -211,11 +211,9 @@ export default function PostJobScreen() {
             setStatus('success');
           })
           .catch(() => {
-            // Fallback to domain generator if repository throws
-            const fallbackRef = generateJobReference();
-            setSubmittedReference(fallbackRef);
-            clearPreservedJobDraft();
-            setStatus('success');
+            // A failed persistence operation must never be presented as a successful request.
+            // Enter the existing error state, preserve the draft, and allow retry.
+            setStatus('error');
           });
       } else {
         setStatus('error');
@@ -302,7 +300,7 @@ export default function PostJobScreen() {
             </h1>
 
             <p className="mt-2 text-sm text-slate-600">
-              Your customer job request has been recorded. Matched BrainWorkers will review your details and respond.
+              Your customer job request has been recorded in your activity history.
             </p>
 
             {/* Reference Badge */}
@@ -318,13 +316,15 @@ export default function PostJobScreen() {
                 What happens next
               </p>
               <ul className="list-disc pl-5 space-y-1 text-slate-600">
-                <li>Vetted BrainWorkers matching your category and city will review your scope.</li>
-                <li>Interested professionals will provide availability and pricing proposals.</li>
+                <li>Your request details have been saved to your customer activity record.</li>
                 <li>
-                  <span className="font-semibold text-slate-800">No payment has occurred:</span> Pricing and terms are finalized directly with your chosen BrainWorker under the BukieGuarantee.
+                  <span className="font-semibold text-slate-800">Matching and responses:</span> Automated worker matching, notifications, and worker quote responses are planned backend capabilities not active in this development phase.
                 </li>
                 <li>
-                  <span className="font-semibold text-slate-800">No BrainWorker dispatched yet:</span> Service begins only after mutual agreement and schedule confirmation.
+                  <span className="font-semibold text-slate-800">No payment has occurred:</span> No payment or escrow transaction has taken place. Payment processing and pricing finalization will connect during backend integration.
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-800">No BrainWorker dispatched yet:</span> Live scheduling, dispatch, and messaging are pending backend connectivity.
                 </li>
               </ul>
             </div>
