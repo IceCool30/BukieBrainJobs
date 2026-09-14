@@ -25,7 +25,7 @@
     "react-dom": "19.2.8",
     "turbo": "^2.10.9",
     "typescript": "^5.7.3",
-    "vitest": "^3.0.5"
+    "vitest": "^4.1.11"
   },
   "packageManager": "pnpm@9.15.9",
   "engines": {
@@ -42,7 +42,7 @@
       "deepmerge-ts": "^8.0.0",
       "image-size": "^2.0.2",
       "uuid": "^11.1.1",
-      "sharp": "^0.34.4",
+      "sharp": "^0.35.4",
       "browserslist": "^4.28.7"
     }
   }
