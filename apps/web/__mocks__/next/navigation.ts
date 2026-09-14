@@ -4,9 +4,11 @@
 // to supply the specific router and searchParams state they need.
 import { vi } from 'vitest';
 
-import type { ReadonlyURLSearchParams } from 'next/navigation';
+import type { AppRouterInstance, ReadonlyURLSearchParams } from 'next/navigation';
 
-export const useRouter = vi.fn(() => ({
+// Explicit return type annotation prevents TS2742 ("cannot be named without a
+// reference to @vitest/spy") introduced by the Vitest v4 type changes.
+export const useRouter = vi.fn((): Partial<AppRouterInstance> => ({
   push: vi.fn(),
   replace: vi.fn(),
   back: vi.fn(),
