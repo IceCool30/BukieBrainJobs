@@ -4,11 +4,22 @@
 // to supply the specific router and searchParams state they need.
 import { vi } from 'vitest';
 
-import type { AppRouterInstance, ReadonlyURLSearchParams } from 'next/navigation';
+import type { ReadonlyURLSearchParams } from 'next/navigation';
 
-// Explicit return type annotation prevents TS2742 ("cannot be named without a
-// reference to @vitest/spy") introduced by the Vitest v4 type changes.
-export const useRouter = vi.fn((): Partial<AppRouterInstance> => ({
+// Local router shape — avoids importing AppRouterInstance (not exported by
+// all Next.js versions) and prevents TS2742 portability errors from Vitest v4
+// inferring an un-nameable @vitest/spy type on the exported symbol.
+type RouterMock = {
+  push: (href: string, options?: object) => void;
+  replace: (href: string, options?: object) => void;
+  back: () => void;
+  forward: () => void;
+  refresh: () => void;
+  prefetch: (href: string, options?: object) => void;
+};
+
+// Explicit declared type hides the Mock<RouterMock> internals from tsc.
+export const useRouter: () => RouterMock = vi.fn(() => ({
   push: vi.fn(),
   replace: vi.fn(),
   back: vi.fn(),
@@ -17,10 +28,10 @@ export const useRouter = vi.fn((): Partial<AppRouterInstance> => ({
   prefetch: vi.fn(),
 }));
 
-export const useSearchParams = vi.fn(
+export const useSearchParams: () => ReadonlyURLSearchParams = vi.fn(
   () => new URLSearchParams() as unknown as ReadonlyURLSearchParams,
 );
 
-export const usePathname = vi.fn(() => '/services');
+export const usePathname: () => string = vi.fn(() => '/services');
 
-export const useParams = vi.fn(() => ({}));
+export const useParams: () => Record<string, string> = vi.fn(() => ({}));
