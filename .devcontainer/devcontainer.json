@@ -1,0 +1,17 @@
+{
+  "name": "BukieBrainJobs",
+  "postStartCommand": "bash .devcontainer/scripts/start-tailscale.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "prisma.prisma"
+      ]
+    }
+  },
+  "remoteEnv": {
+    "PNPM_HOME": "/home/codespace/.local/share/pnpm"
+  }
+}
