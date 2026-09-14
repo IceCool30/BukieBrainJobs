@@ -21,14 +21,17 @@ The experience must make one distinction unmistakable:
 
 ## 2. Source Authority
 
-Use this hierarchy:
+Apply the repository's canonical authority model with the following feature-specific distinction:
 
-1. `DESIGN.md`
-2. Approved WEB-012 Product & UX Specification
-3. This WEB-012A Design Brief
-4. Existing approved customer patterns from WEB-008, WEB-009, WEB-010, and WEB-011
+1. Approved live BukieBrainJobs experience and bundled experience standards govern practical visual and interaction behavior.
+2. `DESIGN.md` governs foundational visual tokens and rules.
+3. Approved WEB-012 Product & UX Specification governs product behavior, terminology, claims, and user journeys.
+4. This WEB-012A Design Brief translates those authorities into feature-specific design requirements.
+5. Existing approved customer patterns from WEB-008, WEB-009, WEB-010, and WEB-011 provide supporting continuity where they do not conflict with the higher authorities above.
 
-`DESIGN.md` is authoritative for color, typography, spacing, grid, shape, elevation, components, motion, and accessibility. The current system uses Deep Navy `#001A41`, restrained Emerald signaling, Hanken Grotesk headlines, Inter interface/body text, a 1280px desktop container, 24px gutters, 20px mobile margins, and an 8px base spacing unit. fileciteturn293file0L2-L2
+The live approved experience and bundled experience standards are the practical source for how the product should behave and feel. `DESIGN.md` remains authoritative for foundational color, typography, spacing, grid, shape, elevation, components, motion, and accessibility rules. The current system uses Deep Navy `#001A41`, restrained Emerald signaling, Hanken Grotesk headlines, Inter interface/body text, a 1280px desktop container, 24px gutters, 20px mobile margins, and an 8px base spacing unit.
+
+WEB-012 remains authoritative for matching behavior, terminology, customer-safe claims, lifecycle semantics, and journey requirements. This brief must not override those product decisions.
 
 Do not introduce competing visual tokens or redesign the foundation.
 
@@ -263,13 +266,14 @@ Avoid technical matching jargon, unsupported guarantees, “guaranteed match” 
 ### Tablet
 - Use the approved tablet grid and spacing system.
 - Preserve result scanning and context hierarchy.
+- Treat tablet as an explicit responsive variant within the design set, not merely as an intermediate breakpoint.
 
 ### Desktop
 - Maximum content width 1280px.
 - 12-column layout where appropriate.
 - Generous whitespace and strong editorial hierarchy.
 
-Follow existing tokens rather than screen-specific spacing values. fileciteturn293file0L2-L2
+Follow existing tokens rather than screen-specific spacing values.
 
 ## 14. Visual Direction
 
@@ -320,8 +324,12 @@ Do not design around fake operational side effects such as real notifications, d
 13. Selection/interest success state
 14. Selection/interest failure state
 15. Invalid/expired job context
-16. Mobile and desktop variants
-17. Accessibility-focused interaction states
+16. Mobile variants
+17. Tablet variants
+18. Desktop variants
+19. Accessibility-focused interaction states
+
+The mobile, tablet, and desktop variants together form the responsive design set for the feature.
 
 ## 18. Independent Design Review Checklist
 
