@@ -127,7 +127,7 @@ describe('BookingScreen — Form validation & interaction', () => {
   });
 
   it('displays inline validation errors when required fields are empty', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<BookingScreen />);
 
     const submitButton = screen.getByRole('button', { name: /submit service request/i });
@@ -144,7 +144,7 @@ describe('BookingScreen — Form validation & interaction', () => {
   });
 
   it('rejects whitespace-only address and notes input', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<BookingScreen />);
 
     const addressInput = screen.getByLabelText(/street address/i);
@@ -163,7 +163,7 @@ describe('BookingScreen — Form validation & interaction', () => {
   });
 
   it('clears field validation error on user input', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<BookingScreen />);
 
     const submitButton = screen.getByRole('button', { name: /submit service request/i });
@@ -178,7 +178,7 @@ describe('BookingScreen — Form validation & interaction', () => {
   });
 
   it('allows selecting date options and switches to custom date input when Specific Date is clicked', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<BookingScreen />);
 
     const todayButton = screen.getByRole('button', { name: 'Today' });
@@ -194,7 +194,7 @@ describe('BookingScreen — Form validation & interaction', () => {
   });
 
   it('allows switching payment preference options', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<BookingScreen />);
 
     const transferButton = screen.getByRole('radio', { name: /bank transfer/i });
@@ -216,7 +216,7 @@ describe('BookingScreen — Submission lifecycle & error recovery', () => {
         city: 'Lagos',
       }),
     );
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<BookingScreen />);
 
     const addressInput = screen.getByLabelText(/street address/i);
@@ -280,7 +280,7 @@ describe('BookingScreen — Submission lifecycle & error recovery', () => {
         mockError: '1',
       }),
     );
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<BookingScreen />);
 
     const addressInput = screen.getByLabelText(/street address/i) as HTMLInputElement;

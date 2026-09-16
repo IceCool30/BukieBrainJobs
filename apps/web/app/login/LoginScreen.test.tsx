@@ -55,7 +55,7 @@ describe('AuthScreen — Initial Render & Provider Discovery', () => {
   });
 
   it('allows switching between Sign In and Create Account and preserves entered contact input', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<AuthScreen initialMode="signin" />);
 
     // Switch to email method and enter an email
@@ -74,7 +74,7 @@ describe('AuthScreen — Initial Render & Provider Discovery', () => {
   });
 
   it('renders explicit role selection with BrainWorker non-approval notice in registration mode', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<AuthScreen initialMode="register" />);
 
     expect(screen.getByRole('heading', { level: 1, name: /create your account/i })).toBeInTheDocument();
@@ -102,7 +102,7 @@ describe('AuthScreen — Phone OTP Authentication', () => {
   });
 
   it('accepts 080... format, displays masked phone, and verifies valid OTP code', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<AuthScreen initialMode="signin" />);
 
     const phoneInput = screen.getByLabelText(/nigerian phone number/i);
@@ -130,7 +130,7 @@ describe('AuthScreen — Phone OTP Authentication', () => {
   });
 
   it('rejects invalid phone numbers with clear inline error', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<AuthScreen initialMode="signin" />);
 
     const phoneInput = screen.getByLabelText(/nigerian phone number/i);
@@ -143,7 +143,7 @@ describe('AuthScreen — Phone OTP Authentication', () => {
   });
 
   it('rejects invalid OTP code with clear error feedback', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<AuthScreen initialMode="signin" />);
 
     const phoneInput = screen.getByLabelText(/nigerian phone number/i);
@@ -176,7 +176,7 @@ describe('AuthScreen — Email/Password & Social Mock Providers', () => {
   });
 
   it('authenticates with valid email and password', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<AuthScreen initialMode="signin" />);
 
     await user.click(screen.getByRole('button', { name: /email & password/i }));
@@ -195,7 +195,7 @@ describe('AuthScreen — Email/Password & Social Mock Providers', () => {
   });
 
   it('authenticates with Google mock provider', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<AuthScreen initialMode="signin" />);
 
     const googleBtn = screen.getByRole('button', { name: /continue with google/i });
@@ -209,7 +209,7 @@ describe('AuthScreen — Email/Password & Social Mock Providers', () => {
 
   it('handles simulated Google failure when mockAuthError=google is passed', async () => {
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ mockAuthError: 'google' }));
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<AuthScreen initialMode="signin" />);
 
     const googleBtn = screen.getByRole('button', { name: /continue with google/i });
@@ -221,7 +221,7 @@ describe('AuthScreen — Email/Password & Social Mock Providers', () => {
   });
 
   it('authenticates with Apple mock provider', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<AuthScreen initialMode="signin" />);
 
     const appleBtn = screen.getByRole('button', { name: /continue with apple/i });
@@ -234,7 +234,7 @@ describe('AuthScreen — Email/Password & Social Mock Providers', () => {
   });
 
   it('handles forgot password flow without exposing account enumeration', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<AuthScreen initialMode="forgot_password" />);
 
     expect(screen.getByRole('heading', { name: /reset your password/i })).toBeInTheDocument();

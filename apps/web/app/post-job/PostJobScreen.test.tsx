@@ -112,7 +112,7 @@ describe('PostJobScreen: URL Query Parameter Context Hydration', () => {
   });
 
   it('hydrates preferred BrainWorker from query param and allows removing preference', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     vi.mocked(useSearchParams).mockReturnValue(
       makeSearchParams({
         worker: 'bw-1',
@@ -125,7 +125,7 @@ describe('PostJobScreen: URL Query Parameter Context Hydration', () => {
     expect(screen.getAllByText(/engr\. emeka nwosu/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/preference only:/i)).toBeInTheDocument();
 
-    // Review card displays preferred artisan
+    // Review card displays preferred BrainWorker
     expect(screen.getByText(/informational preference only/i)).toBeInTheDocument();
 
     // Remove preference button
@@ -159,7 +159,7 @@ describe('PostJobScreen: Form Interactions & Live Preview Synchronization', () =
   });
 
   it('synchronizes title and category selection with the live review summary card', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<PostJobScreen />);
 
     const titleInput = screen.getByLabelText(/job title/i);
@@ -175,7 +175,7 @@ describe('PostJobScreen: Form Interactions & Live Preview Synchronization', () =
   });
 
   it('handles "I am not sure" category and reflects in preview', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<PostJobScreen />);
 
     const categorySelect = screen.getByLabelText(/category/i);
@@ -185,7 +185,7 @@ describe('PostJobScreen: Form Interactions & Live Preview Synchronization', () =
   });
 
   it('reveals date picker when specific date is selected and rejects past dates via min attribute', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<PostJobScreen />);
 
     // Date picker initially hidden
@@ -206,7 +206,7 @@ describe('PostJobScreen: Form Interactions & Live Preview Synchronization', () =
   });
 
   it('updates budget and budget type in preview', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<PostJobScreen />);
 
     const budgetInput = screen.getByLabelText(/estimated budget/i);
@@ -226,7 +226,7 @@ describe('PostJobScreen: Validation Behavior', () => {
   });
 
   it('shows required field validation errors when submitting with empty fields', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<PostJobScreen />);
 
     // Submit without filling title, description, address
@@ -243,7 +243,7 @@ describe('PostJobScreen: Validation Behavior', () => {
   });
 
   it('validates minimum lengths for title and description', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<PostJobScreen />);
 
     await user.type(screen.getByLabelText(/job title/i), 'Fix pipe');
@@ -261,7 +261,7 @@ describe('PostJobScreen: Validation Behavior', () => {
   });
 
   it('requires preferredDate when urgency is specific_date', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<PostJobScreen />);
 
     // Fill valid title, description, address
@@ -280,7 +280,7 @@ describe('PostJobScreen: Validation Behavior', () => {
   });
 
   it('clears field errors as user types valid content', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<PostJobScreen />);
 
     const submitBtn = screen.getAllByRole('button', { name: /save & sign in to post job/i })[0]!;
@@ -305,7 +305,7 @@ describe('PostJobScreen: Guest Authentication Handoff', () => {
   });
 
   it('saves draft to storage and navigates to login with returnUrl and handoff parameters', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<PostJobScreen />);
 
     // Fill valid form
@@ -341,7 +341,7 @@ describe('PostJobScreen: Draft Restoration (?jobContinuation=1)', () => {
   });
 
   it('restores draft data and displays the emerald restoration banner with dismiss action', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
 
     // Pre-populate storage
     savePreservedJobDraft({
@@ -416,7 +416,7 @@ describe('PostJobScreen: Authenticated Submission & Success View', () => {
   });
 
   it('submits successfully and transitions to the Request Received confirmation view', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<PostJobScreen />);
 
     // Fill valid form
@@ -461,7 +461,7 @@ describe('PostJobScreen: Authenticated Submission & Success View', () => {
   });
 
   it('handles simulated submission error without losing user form input', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     vi.mocked(useSearchParams).mockReturnValue(
       makeSearchParams({
         mockError: '1',
@@ -499,7 +499,7 @@ describe('PostJobScreen: Authenticated Submission & Success View', () => {
   });
 
   it('enters error state and preserves form input when repository.createJob rejects without false success fallback', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     const repo = getCustomerActivityRepository();
     vi.spyOn(repo, 'createJob').mockRejectedValueOnce(new Error('Persistence failed'));
 
