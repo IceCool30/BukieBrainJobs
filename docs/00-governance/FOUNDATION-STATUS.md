@@ -45,7 +45,7 @@ DS-001 through DS-012 are recorded as approved and locked for v1.0. The reposito
 
 ## Public Website Foundation
 
-WEB-001 is approved. WEB-001A, WEB-001B and WEB-001B-MCP are approved project artifacts for the homepage design workflow. WEB-001C remains intentionally deferred until the Stitch design is human-approved.
+WEB-001 is approved. WEB-001A is an approved project artifact for the homepage design workflow. WEB-001B and WEB-001B-MCP (Google Stitch design and MCP orchestration) are deprecated per the approved artifact matrix; UI design and implementation are performed directly by Google Antigravity using approved project specifications and DESIGN.md.
 
 ## Repository Rule
 

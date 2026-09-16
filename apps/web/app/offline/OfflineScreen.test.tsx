@@ -38,7 +38,7 @@ describe('PWA Offline Fallback Page', () => {
     render(<OfflinePage />);
 
     expect(screen.getByText(/Your drafts and prepared booking requests are safely stored on this device/i)).toBeInTheDocument();
-    expect(screen.getByText(/Direct artisan phone calls and SMS remain available/i)).toBeInTheDocument();
+    expect(screen.getByText(/Direct BrainWorker phone calls and SMS remain available/i)).toBeInTheDocument();
   });
 
   it('triggers window reload when clicking Retry Connection while online', () => {

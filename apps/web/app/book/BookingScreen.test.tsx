@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { ReadonlyURLSearchParams } from 'next/navigation';
 import BookingScreen from '../../components/BookingScreen';
+import { getCustomerActivityRepository } from '../../lib/jobs';
 
 function makeSearchParams(params: Record<string, string> = {}): ReadonlyURLSearchParams {
   return new URLSearchParams(params) as unknown as ReadonlyURLSearchParams;
@@ -254,7 +255,18 @@ describe('BookingScreen — Submission lifecycle & error recovery', () => {
 
     const dashboardBtn = screen.getByRole('link', { name: /view on dashboard/i });
     expect(dashboardBtn).toBeInTheDocument();
-    expect(dashboardBtn).toHaveAttribute('href', '/dashboard');
+    expect(dashboardBtn.getAttribute('href')).toMatch(/^\/dashboard\?jobCreated=REQ-[0-9A-Z]+/);
+
+    const detailsBtn = screen.getByRole('link', { name: /view request details/i });
+    expect(detailsBtn).toBeInTheDocument();
+    expect(detailsBtn.getAttribute('href')).toMatch(/^\/jobs\?id=REQ-[0-9A-Z]+/);
+
+    // Verify activity persisted to repository
+    const repo = getCustomerActivityRepository();
+    const activities = await repo.getActivities('usr-customer-default');
+    const matched = activities.find((a) => a.location?.includes('14 Admiralty Way'));
+    expect(matched).toBeDefined();
+    expect(matched?.service).toBe('Generator Servicing & Repair Booking');
 
     // Customer copy must not contain em dashes
     expect(document.body.textContent).not.toContain('—');

@@ -37,8 +37,14 @@ import {
 import {
   getPreservedBookingDraft,
   savePreservedBookingDraft,
+  clearPreservedBookingDraft,
+  getMockAuthenticatedUser,
   PreservedBookingDraft,
+  AuthUser,
 } from '../lib/auth';
+import { getCustomerActivityRepository } from '../lib/jobs';
+import { CustomerJobCreationInput } from '@bukiebrainjobs/types';
+import { parseNairaToKobo } from '@bukiebrainjobs/utils';
 
 type SubmitStatus = 'idle' | 'pending' | 'error' | 'success';
 
@@ -164,6 +170,13 @@ export default function BookingScreen() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<SubmitStatus>('idle');
+  const [submittedReference, setSubmittedReference] = useState<string>('');
+  const [authenticatedUser, setAuthenticatedUser] = useState<AuthUser | null>(null);
+
+  useEffect(() => {
+    const user = getMockAuthenticatedUser();
+    setAuthenticatedUser(user);
+  }, []);
 
   const confirmationRef = useRef<HTMLHeadingElement>(null);
   const isPending = status === 'pending';
@@ -211,12 +224,56 @@ export default function BookingScreen() {
 
   const executeSubmission = () => {
     setStatus('pending');
+    const isMockError = context.mockError || searchParams.get('mockError') === '1';
+    const isOnline = typeof navigator !== 'undefined' ? navigator.onLine : true;
+    const outcome = getPrototypeSubmissionOutcome({
+      mockError: isMockError,
+      online: isOnline,
+    });
+
     window.setTimeout(() => {
-      const outcome = getPrototypeSubmissionOutcome({
-        mockError: context.mockError,
-        online: typeof navigator !== 'undefined' ? navigator.onLine : true,
-      });
-      setStatus(outcome);
+      if (outcome === 'success') {
+        const repo = getCustomerActivityRepository();
+        const budgetKobo = parseNairaToKobo(context.price);
+
+        const scheduledDate =
+          formData.dateOption === 'Specific Date' && formData.customDate
+            ? `${formData.customDate}T09:00:00Z`
+            : formData.dateOption === 'Today'
+              ? `${todayStr}T12:00:00Z`
+              : new Date(Date.now() + 86400000).toISOString();
+
+        const serviceTitle = context.service?.title || 'Service';
+        const baseDescription = formData.jobDetails || `Direct booking request for ${serviceTitle}`;
+        const descriptionWithWorker = context.worker
+          ? `${baseDescription}\nPreferred BrainWorker: ${context.worker}`
+          : baseDescription;
+
+        const creationInput: CustomerJobCreationInput = {
+          title: `${serviceTitle} Booking`,
+          description: descriptionWithWorker,
+          jobType: 'TASK',
+          address: formData.streetAddress || '',
+          city: formData.city || '',
+          landmark: formData.landmark || undefined,
+          scheduledStartAt: scheduledDate,
+          customerBudgetKobo: budgetKobo > 0 ? budgetKobo : undefined,
+          selectedSkillIds: [],
+        };
+
+        repo
+          .createJob(authenticatedUser?.id || 'usr-customer-default', creationInput)
+          .then((activity) => {
+            setSubmittedReference(activity.referenceCode || activity.id);
+            clearPreservedBookingDraft();
+            setStatus('success');
+          })
+          .catch(() => {
+            setStatus('error');
+          });
+      } else {
+        setStatus('error');
+      }
     }, 450);
   };
 
@@ -349,6 +406,14 @@ export default function BookingScreen() {
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 This is a mock preparation step. No payment was taken and no BrainWorker has been dispatched.
               </p>
+
+              {/* Reference Badge */}
+              {submittedReference && (
+                <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 text-xs font-mono font-bold text-[#001A41]">
+                  <span>Reference:</span>
+                  <span className="text-[#296A4B]">{submittedReference}</span>
+                </div>
+              )}
             </div>
 
             {/* Request Summary */}
@@ -371,6 +436,12 @@ export default function BookingScreen() {
                 Prepared Request Summary
               </h2>
               <dl className="mt-4 divide-y divide-slate-200 text-sm">
+                {submittedReference && (
+                  <div className="flex justify-between py-2.5">
+                    <dt className="text-slate-600">Reference</dt>
+                    <dd className="font-mono font-bold text-[#296A4B]">{submittedReference}</dd>
+                  </div>
+                )}
                 <div className="flex justify-between py-2.5">
                   <dt className="text-slate-600">Service</dt>
                   <dd className="font-bold text-[#001A41]">{service.title}</dd>
@@ -426,11 +497,23 @@ export default function BookingScreen() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link
-                href="/dashboard"
+                href={
+                  submittedReference
+                    ? `/dashboard?jobCreated=${encodeURIComponent(submittedReference)}&jobTitle=${encodeURIComponent(service.title)}`
+                    : '/dashboard'
+                }
                 className="motion-press inline-flex min-h-12 items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
               >
                 View on Dashboard
               </Link>
+              {submittedReference && (
+                <Link
+                  href={`/jobs?id=${encodeURIComponent(submittedReference)}`}
+                  className="motion-press inline-flex min-h-12 items-center justify-center rounded-full border border-[#001A41] bg-white px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2"
+                >
+                  View Request Details
+                </Link>
+              )}
               <Link
                 href={returnUrl}
                 className="motion-press inline-flex min-h-12 items-center justify-center rounded-full border border-slate-200 bg-white px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
