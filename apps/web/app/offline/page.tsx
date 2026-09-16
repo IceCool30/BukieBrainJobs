@@ -110,7 +110,7 @@ export default function OfflinePage() {
               <div className="flex items-start gap-2.5">
                 <PhoneCall className="h-4 w-4 text-[#296A4B] mt-0.5 shrink-0" aria-hidden="true" />
                 <p>
-                  Direct artisan phone calls and SMS remain available via your phone carrier network.
+                  Direct BrainWorker phone calls and SMS remain available via your phone carrier network.
                 </p>
               </div>
               <div className="flex items-start gap-2.5">

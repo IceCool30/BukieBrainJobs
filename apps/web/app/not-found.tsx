@@ -38,8 +38,8 @@ export default function NotFound() {
       {/* Main Content */}
       <main className="flex-1 flex items-center justify-center px-4 py-16 sm:py-24">
         <div className="mx-auto max-w-lg text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50/80 px-3.5 py-1 text-xs font-bold text-[#059669]">
-            <span className="h-2 w-2 rounded-full bg-[#059669]" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#296A4B]/20 bg-[#296A4B]/10 px-3.5 py-1 text-xs font-bold text-[#296A4B]">
+            <span className="h-2 w-2 rounded-full bg-[#296A4B]" />
             Status 404: Page not found
           </div>
 

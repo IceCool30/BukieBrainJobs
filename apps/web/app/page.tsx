@@ -81,7 +81,7 @@ export default function CustomerHomepage() {
             {/* Popular Service Categories */}
             <PopularServices onSelectCategory={handleSelectCategory} />
 
-            {/* Featured BrainWorkers (Vetted Nigerian Artisans) */}
+            {/* Featured BrainWorkers (Vetted Nigerian BrainWorkers) */}
             <FeaturedBrainWorkers />
 
             {/* How BukieBrainJobs Works */}

@@ -21,6 +21,7 @@
 | WEB-010A | Customer Dashboard & Authenticated Home Design Brief | Screen-level visual and interaction design brief for the authenticated customer dashboard | Approved implementation contract | Yes |
 | WEB-011 | Customer Jobs & Bookings Product & UX Specification | Unified customer activity management, request tracking, and booking history | Approved product specification | Yes |
 | WEB-011A | Customer Jobs & Bookings Design Brief | Screen-level visual and interaction design brief for customer jobs and bookings | Approved implementation contract | Yes |
+| WEB-012 | Customer Job Matching & Proposal Review Product & UX Specification | Candidate discovery, algorithmic match evaluation, proposal review, and BrainWorker selection | Approved Product & UX Specification; Implementation Authorization Withheld | Yes |
 
 ## Locked homepage rules
 
@@ -101,6 +102,12 @@
 - The slice is implemented under the ARCH-002 Phase 1 mock boundary. Backend database persistence, payment processing, live dispatch, chat, and live escrow operations are deferred backend capabilities whose domain contracts are modeled without live execution.
 - Design System v1.0 remains authoritative: Deep Navy `#001A41` primary/action, Emerald `#296A4B` strategic emphasis, Hanken Grotesk headings, Inter body/UI, approved spacing/radii, and WCAG 2.2 AA intent.
 - Human design approval is required before implementation.
+
+## WEB-012 rules
+
+- WEB-012 specifies customer job matching and proposal review.
+- Implementation authorization is explicitly withheld pending formal approval of WEB-012A Design Brief.
+- No production or prototype implementation files may be merged to main until implementation authorization is granted.
 
 ## Design workflow
 
