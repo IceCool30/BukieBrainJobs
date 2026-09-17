@@ -244,8 +244,8 @@ describe('MockMatchingRepository.recordSelection', () => {
     const resultOtherCust = await r.getMatchesForJob('customer-test-1', 'REQ-84920');
     expect(resultOtherCust.candidates.find((c) => c.candidateId === 'bw-tunde-bakare')?.selectionState).toBe('none');
 
-    // Customer-1 on a different job (REQ-51829) does NOT see interest_expressed
-    const resultOtherJob = await r.getMatchesForJob('customer-1', 'REQ-51829');
+    // Customer-1 on a different job (REQ-STALE) where Tunde is also a candidate does NOT see interest_expressed
+    const resultOtherJob = await r.getMatchesForJob('customer-1', 'REQ-STALE');
     expect(resultOtherJob.candidates.find((c) => c.candidateId === 'bw-tunde-bakare')?.selectionState).toBe('none');
   });
 

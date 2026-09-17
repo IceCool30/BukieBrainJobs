@@ -401,9 +401,6 @@ export function getMatchingRepository(): IMatchingRepository {
 }
 
 export function resetMatchingRepository(): void {
-  if (_defaultRepository instanceof MockMatchingRepository) {
-    _defaultRepository.resetSelections();
-  } else {
-    _defaultRepository = new MockMatchingRepository();
-  }
+  selectionStore.clear();
+  _defaultRepository = new MockMatchingRepository();
 }
