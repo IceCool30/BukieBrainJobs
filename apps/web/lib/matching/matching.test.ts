@@ -131,19 +131,27 @@ describe('MockMatchingRepository.getMatchesForJob', () => {
 
   // ─── ARCH-002: data integrity rules ────────────────────────────────────────
 
-  it('never fabricates a rating for a candidate where none is available', async () => {
-    const partial = await repo().getMatchesForJob('customer-1', 'REQ-PARTIAL');
-    const candidateWithoutRating = partial.candidates.find(
-      (c) => c.profile.publicRating === undefined
-    );
-    // At least one candidate in partial fixture must have no rating
-    expect(candidateWithoutRating).toBeDefined();
+  it('does not expose unsupported operational claims in candidate profiles', async () => {
+    const result = await repo().getMatchesForJob('customer-1', 'REQ-84920');
+    for (const c of result.candidates) {
+      expect(c.profile.publicRating).toBeUndefined();
+      expect(c.profile.completedJobCount).toBeUndefined();
+      expect(c.profile.rateLabel).toBeUndefined();
+      expect(c.profile.identityVerified).toBeUndefined();
+      expect(c.profile.availabilityLabel).toBeUndefined();
+    }
   });
 
-  it('never fabricates a rateLabel for a candidate where none is available', async () => {
-    const partial = await repo().getMatchesForJob('customer-1', 'REQ-PARTIAL');
-    const noRate = partial.candidates.find((c) => c.profile.rateLabel === undefined);
-    expect(noRate).toBeDefined();
+  it('exposes only truthful, deterministic match explanations', async () => {
+    const result = await repo().getMatchesForJob('customer-1', 'REQ-84920');
+    const allowedTags = ['service_match', 'location_match'];
+    for (const c of result.candidates) {
+      if (c.explanations) {
+        for (const tag of c.explanations) {
+          expect(allowedTags).toContain(tag);
+        }
+      }
+    }
   });
 
   it('never claims a candidate has been accepted or booked', async () => {
@@ -280,6 +288,96 @@ describe('MockMatchingRepository.recordSelection', () => {
         jobReferenceCode: '',
       })
     ).rejects.toThrow();
+  });
+
+  it('authorized customer + owned job + valid candidate succeeds', async () => {
+    const r = repo();
+    const result = await r.recordSelection('customer-1', {
+      type: 'EXPRESS_INTEREST',
+      candidateId: 'bw-tunde-bakare',
+      jobReferenceCode: 'REQ-84920',
+    });
+    expect(result.newSelectionState).toBe('interest_expressed');
+  });
+
+  it('wrong customer is denied', async () => {
+    const r = repo();
+    // customer-1 does not own REQ-OTHER-CUST (owned exclusively by customer-2)
+    await expect(
+      r.recordSelection('customer-1', {
+        type: 'EXPRESS_INTEREST',
+        candidateId: 'bw-tunde-bakare',
+        jobReferenceCode: 'REQ-OTHER-CUST',
+      })
+    ).rejects.toThrow(/unauthorized/i);
+  });
+
+  it('candidate not belonging to the job is denied', async () => {
+    const r = repo();
+    // Emeka Obi belongs to REQ-51829, not to REQ-84920
+    await expect(
+      r.recordSelection('customer-1', {
+        type: 'EXPRESS_INTEREST',
+        candidateId: 'bw-emeka-obi',
+        jobReferenceCode: 'REQ-84920',
+      })
+    ).rejects.toThrow(/does not belong/i);
+  });
+
+  it('withdrawal follows the same authorization boundary', async () => {
+    const r = repo();
+    // Wrong customer on withdrawal
+    await expect(
+      r.recordSelection('customer-1', {
+        type: 'WITHDRAW_INTEREST',
+        candidateId: 'bw-tunde-bakare',
+        jobReferenceCode: 'REQ-OTHER-CUST',
+      })
+    ).rejects.toThrow(/unauthorized/i);
+
+    // Wrong candidate on withdrawal
+    await expect(
+      r.recordSelection('customer-1', {
+        type: 'WITHDRAW_INTEREST',
+        candidateId: 'bw-emeka-obi',
+        jobReferenceCode: 'REQ-84920',
+      })
+    ).rejects.toThrow(/does not belong/i);
+
+    // Authorized customer + owned job + valid candidate succeeds on withdrawal
+    const result = await r.recordSelection('customer-1', {
+      type: 'WITHDRAW_INTEREST',
+      candidateId: 'bw-tunde-bakare',
+      jobReferenceCode: 'REQ-84920',
+    });
+    expect(result.newSelectionState).toBe('none');
+  });
+
+  it('no cross-customer mutation is possible', async () => {
+    const r = repo();
+    // customer-1 expresses interest
+    await r.recordSelection('customer-1', {
+      type: 'EXPRESS_INTEREST',
+      candidateId: 'bw-tunde-bakare',
+      jobReferenceCode: 'REQ-84920',
+    });
+
+    // customer-test-1 also owns REQ-84920, but cannot see or mutate customer-1's selection
+    const cust1MatchesBefore = await r.getMatchesForJob('customer-1', 'REQ-84920');
+    expect(cust1MatchesBefore.candidates.find((c) => c.candidateId === 'bw-tunde-bakare')?.selectionState).toBe('interest_expressed');
+
+    const custTest1Matches = await r.getMatchesForJob('customer-test-1', 'REQ-84920');
+    expect(custTest1Matches.candidates.find((c) => c.candidateId === 'bw-tunde-bakare')?.selectionState).toBe('none');
+
+    // customer-test-1 withdrawing does not alter customer-1's state
+    await r.recordSelection('customer-test-1', {
+      type: 'WITHDRAW_INTEREST',
+      candidateId: 'bw-tunde-bakare',
+      jobReferenceCode: 'REQ-84920',
+    });
+
+    const cust1MatchesAfter = await r.getMatchesForJob('customer-1', 'REQ-84920');
+    expect(cust1MatchesAfter.candidates.find((c) => c.candidateId === 'bw-tunde-bakare')?.selectionState).toBe('interest_expressed');
   });
 });
 

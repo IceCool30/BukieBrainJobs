@@ -11,7 +11,7 @@ import React from 'react';
 import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import MatchResultsScreen from '../../components/matching/MatchResultsScreen';
-import { resetMatchingRepository } from '../../lib/matching';
+import { resetMatchingRepository, getMatchingRepository } from '../../lib/matching';
 import * as authStorage from '../../lib/auth/storage';
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
@@ -144,6 +144,77 @@ describe('MatchResultsScreen', () => {
     });
     expect(screen.getByRole('button', { name: /refresh matches/i })).toBeInTheDocument();
     expect(screen.getByText('Tunde Bakare')).toBeInTheDocument();
+  });
+
+  it('covers stale results -> refresh -> refresh pending -> refreshed result', async () => {
+    let resolveRefresh: ((value: any) => void) | null = null;
+    const repoInstance = getMatchingRepository();
+    const originalGetMatches = repoInstance.getMatchesForJob.bind(repoInstance);
+
+    let callCount = 0;
+    vi.spyOn(repoInstance, 'getMatchesForJob').mockImplementation(async (custId, refCode) => {
+      callCount++;
+      if (callCount === 1) {
+        return originalGetMatches(custId, refCode);
+      }
+      return new Promise((resolve) => {
+        resolveRefresh = resolve;
+      });
+    });
+
+    renderScreen('REQ-STALE');
+
+    // 1. Initial stale results state rendered
+    await waitFor(() => {
+      expect(screen.getByText(/these match results may no longer be current/i)).toBeInTheDocument();
+    });
+    expect(screen.getByText('Tunde Bakare')).toBeInTheDocument();
+    const refreshBtn = screen.getByRole('button', { name: /refresh matches/i });
+    expect(refreshBtn).not.toBeDisabled();
+
+    // 2. Click refresh
+    await act(async () => {
+      fireEvent.click(refreshBtn);
+    });
+
+    // 3. Refresh pending state is displayed
+    expect(screen.getByText(/refreshing match results\.\.\./i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /refreshing\.\.\./i })).toBeDisabled();
+    // Candidates are preserved, not wiped out or replaced with full skeleton
+    expect(screen.getByText('Tunde Bakare')).toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: /loading match results/i })).not.toBeInTheDocument();
+
+    // 4. Complete the refresh with refreshed result
+    await act(async () => {
+      resolveRefresh!({
+        jobReferenceCode: 'REQ-STALE',
+        jobTitle: 'Generator Soundproof Canopy Repair',
+        state: 'matches_available',
+        candidates: [
+          {
+            candidateId: 'bw-tunde-bakare',
+            rank: 1,
+            eligibility: 'eligible',
+            profile: {
+              brainWorkerId: 'bw-tunde-bakare',
+              displayName: 'Tunde Bakare (Refreshed)',
+              serviceAreaLabel: 'Victoria Island, Lagos',
+              servicesLabel: 'Generator Maintenance',
+            },
+            explanations: ['service_match'],
+            selectionState: 'none',
+          },
+        ],
+        totalCandidateCount: 1,
+      });
+    });
+
+    // 5. Refreshed result is displayed and stale notice is gone
+    await waitFor(() => {
+      expect(screen.getByText('Tunde Bakare (Refreshed)')).toBeInTheDocument();
+    });
+    expect(screen.queryByText(/these match results may no longer be current/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/refreshing\.\.\./i)).not.toBeInTheDocument();
   });
 
   it('renders partial_results notice alongside candidates for REQ-PARTIAL', async () => {

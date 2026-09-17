@@ -267,26 +267,50 @@ export function InvalidContextState() {
 
 // ─── Stale results notice ───────────────────────────────────────────────────────
 
-export function StaleResultsNotice({ onRefresh }: { onRefresh: () => void }) {
+export function StaleResultsNotice({
+  onRefresh,
+  isRefreshing = false,
+}: {
+  onRefresh: () => void;
+  isRefreshing?: boolean;
+}) {
   return (
     <div
       role="status"
       aria-live="polite"
+      aria-busy={isRefreshing}
       className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-6 text-sm text-amber-900"
     >
       <div className="flex items-start gap-2">
-        <Clock className="h-4 w-4 shrink-0 mt-0.5 text-amber-600" aria-hidden="true" />
+        {isRefreshing ? (
+          <Loader2 className="h-4 w-4 shrink-0 mt-0.5 text-amber-600 animate-spin" aria-hidden="true" />
+        ) : (
+          <Clock className="h-4 w-4 shrink-0 mt-0.5 text-amber-600" aria-hidden="true" />
+        )}
         <p>
-          These match results may no longer be current. Availability and rates may have changed since they were generated.
+          {isRefreshing
+            ? 'Refreshing match results...'
+            : 'These match results may no longer be current. Matches and availability may have changed since they were generated.'}
         </p>
       </div>
       <button
         type="button"
         onClick={onRefresh}
-        className="shrink-0 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[#001A41] bg-white border border-amber-300 rounded-lg py-1.5 px-3 hover:bg-amber-100/50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+        disabled={isRefreshing}
+        aria-busy={isRefreshing}
+        className="shrink-0 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[#001A41] bg-white border border-amber-300 rounded-lg py-1.5 px-3 hover:bg-amber-100/50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-        Refresh matches
+        {isRefreshing ? (
+          <>
+            <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+            <span>Refreshing...</span>
+          </>
+        ) : (
+          <>
+            <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Refresh matches</span>
+          </>
+        )}
       </button>
     </div>
   );
@@ -297,30 +321,54 @@ export function StaleResultsNotice({ onRefresh }: { onRefresh: () => void }) {
 export function StaleResultsState({
   jobReferenceCode,
   onRefresh,
+  isRefreshing = false,
 }: {
   jobReferenceCode: string;
   onRefresh: () => void;
+  isRefreshing?: boolean;
 }) {
   return (
-    <div role="status" className="py-14 flex flex-col items-center text-center">
+    <div
+      role="status"
+      aria-live="polite"
+      aria-busy={isRefreshing}
+      className="py-14 flex flex-col items-center text-center"
+    >
       <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mb-5">
-        <Clock className="h-8 w-8 text-amber-600" aria-hidden="true" />
+        {isRefreshing ? (
+          <Loader2 className="h-8 w-8 text-amber-600 animate-spin" aria-hidden="true" />
+        ) : (
+          <Clock className="h-8 w-8 text-amber-600" aria-hidden="true" />
+        )}
       </div>
       <h2 className="font-display font-bold text-xl text-[#001A41] mb-2">
-        Match results may no longer be current
+        {isRefreshing ? 'Refreshing match results' : 'Match results may no longer be current'}
       </h2>
       <p className="text-slate-500 text-sm max-w-xs mb-2">
-        These results were generated earlier. Availability, rates, and matches may have changed since then.
+        {isRefreshing
+          ? 'Checking for current BrainWorker matches. This will only take a moment.'
+          : 'These results were generated earlier. Matches and availability may have changed since then.'}
       </p>
       <p className="text-slate-400 text-xs mb-6">Reference: {jobReferenceCode}</p>
       <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
         <button
           type="button"
           onClick={onRefresh}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-white bg-[#001A41] rounded-xl py-2.5 px-4 hover:bg-[#002661] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+          disabled={isRefreshing}
+          aria-busy={isRefreshing}
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-white bg-[#001A41] rounded-xl py-2.5 px-4 hover:bg-[#002661] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          <RotateCcw className="h-4 w-4" aria-hidden="true" />
-          Refresh matches
+          {isRefreshing ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+              <span>Refreshing...</span>
+            </>
+          ) : (
+            <>
+              <RotateCcw className="h-4 w-4" aria-hidden="true" />
+              <span>Refresh matches</span>
+            </>
+          )}
         </button>
         <Link
           href="/jobs"
@@ -382,12 +430,16 @@ export function MatchStatePanel({
   jobReferenceCode,
   constraintLabel,
   onRetry,
+  onRefresh,
+  isRefreshing = false,
   returnPath,
 }: {
   state: MatchingState;
   jobReferenceCode: string;
   constraintLabel?: string;
   onRetry: () => void;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
   returnPath: string;
 }) {
   switch (state) {
@@ -403,7 +455,13 @@ export function MatchStatePanel({
         />
       );
     case 'stale_results':
-      return <StaleResultsState jobReferenceCode={jobReferenceCode} onRefresh={onRetry} />;
+      return (
+        <StaleResultsState
+          jobReferenceCode={jobReferenceCode}
+          onRefresh={onRefresh ?? onRetry}
+          isRefreshing={isRefreshing}
+        />
+      );
     case 'failed':
       return <MatchingFailedState onRetry={onRetry} />;
     case 'offline':

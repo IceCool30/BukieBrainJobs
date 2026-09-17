@@ -33,13 +33,8 @@ const CANDIDATE_TUNDE: MatchCandidate = {
     displayName: 'Tunde Bakare',
     serviceAreaLabel: 'Lekki, Victoria Island, Ikoyi',
     servicesLabel: 'Inverter & Solar Installation, Electrical Services',
-    publicRating: 4.9,
-    completedJobCount: 87,
-    rateLabel: '₦15,000 to ₦45,000 / visit',
-    identityVerified: true,
-    availabilityLabel: 'Available today',
   },
-  explanations: ['service_match', 'location_match', 'schedule_available', 'verified_identity', 'highly_rated'],
+  explanations: ['service_match', 'location_match'],
   selectionState: 'none',
 };
 
@@ -52,13 +47,8 @@ const CANDIDATE_AMAKA: MatchCandidate = {
     displayName: 'Amaka Osei',
     serviceAreaLabel: 'Lekki Phase 1 & 2, Ajah',
     servicesLabel: 'Inverter & Solar Installation, Generator Maintenance',
-    publicRating: 4.7,
-    completedJobCount: 52,
-    rateLabel: '₦12,000 to ₦35,000 / visit',
-    identityVerified: true,
-    availabilityLabel: 'Available this week',
   },
-  explanations: ['service_match', 'location_match', 'budget_compatible', 'strong_track_record'],
+  explanations: ['service_match', 'location_match'],
   selectionState: 'none',
 };
 
@@ -71,17 +61,12 @@ const CANDIDATE_EMEKA: MatchCandidate = {
     displayName: 'Emeka Obi',
     serviceAreaLabel: 'Lagos Mainland, Surulere, Yaba',
     servicesLabel: 'Plumbing & Pipefitting, Drainage Systems',
-    publicRating: 4.8,
-    completedJobCount: 114,
-    rateLabel: '₦10,000 to ₦28,000 / visit',
-    identityVerified: true,
-    availabilityLabel: 'Available this week',
   },
-  explanations: ['service_match', 'strong_track_record', 'highly_rated', 'verified_identity'],
+  explanations: ['service_match'],
   selectionState: 'none',
 };
 
-// Candidate with partial data: completedJobCount and rateLabel intentionally absent
+// Candidate with partial data: profile fields omitted
 const CANDIDATE_FOLAKE: MatchCandidate = {
   candidateId: 'bw-folake-adeyemi',
   rank: 4,
@@ -91,10 +76,8 @@ const CANDIDATE_FOLAKE: MatchCandidate = {
     displayName: 'Folake Adeyemi',
     serviceAreaLabel: 'Ikeja, Maryland, Ojota',
     servicesLabel: 'Electrical Services, Ceiling Works',
-    identityVerified: false,
-    // publicRating, completedJobCount, rateLabel intentionally omitted: unavailable, not fabricated
   },
-  explanations: ['service_match', 'location_match'],
+  explanations: ['service_match'],
   selectionState: 'none',
 };
 
@@ -351,13 +334,48 @@ export class MockMatchingRepository implements IMatchingRepository {
     if (!customerId || typeof customerId !== 'string' || !customerId.trim()) {
       throw new Error('[MockMatchingRepository] customerId is required');
     }
-    if (!action.candidateId || !action.jobReferenceCode) {
-      throw new Error('[MockMatchingRepository] candidateId and jobReferenceCode are required');
+    if (!action || typeof action !== 'object') {
+      throw new Error('[MockMatchingRepository] action is required');
+    }
+    if (!action.candidateId || typeof action.candidateId !== 'string' || !action.candidateId.trim()) {
+      throw new Error('[MockMatchingRepository] candidateId is required');
+    }
+    if (!action.jobReferenceCode || typeof action.jobReferenceCode !== 'string' || !action.jobReferenceCode.trim()) {
+      throw new Error('[MockMatchingRepository] jobReferenceCode is required');
+    }
+
+    const custId = customerId.trim();
+    const ref = action.jobReferenceCode.trim().toUpperCase();
+
+    // 1. Enforce that customer owns the supplied jobReferenceCode
+    const authorizedOwners = JOB_OWNERSHIP[ref] ?? [];
+    if (!authorizedOwners.includes(custId)) {
+      throw new Error(`[MockMatchingRepository] Unauthorized: customer '${custId}' does not own job '${ref}'`);
+    }
+
+    // 2. Enforce that job fixture exists and candidate belongs to that job's match context
+    const fixture = FIXTURE_MAP[ref];
+    if (!fixture) {
+      throw new Error(`[MockMatchingRepository] Job '${ref}' not found`);
+    }
+
+    const candidate = fixture.candidates.find((c) => c.candidateId === action.candidateId);
+    if (!candidate) {
+      throw new Error(
+        `[MockMatchingRepository] Candidate '${action.candidateId}' does not belong to job '${ref}' match context`
+      );
+    }
+
+    // 3. Enforce candidate eligibility
+    if (candidate.eligibility !== 'eligible') {
+      throw new Error(
+        `[MockMatchingRepository] Candidate '${action.candidateId}' is not eligible for selection`
+      );
     }
 
     await new Promise((resolve) => setTimeout(resolve, 60));
 
-    const key = makeSelectionKey(customerId, action.jobReferenceCode, action.candidateId);
+    const key = makeSelectionKey(custId, ref, action.candidateId);
 
     if (action.type === 'EXPRESS_INTEREST') {
       selectionStore.set(key, 'interest_expressed');

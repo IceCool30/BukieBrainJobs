@@ -62,6 +62,8 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
   const [processingCandidateId, setProcessingCandidateId] = useState<string | null>(null);
   // Track toast-style confirmation message
   const [selectionMessage, setSelectionMessage] = useState<string | null>(null);
+  // Track refresh in progress
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // ── Fetch matching results ──────────────────────────────────────────────────
   const fetchMatches = useCallback(async () => {
@@ -82,6 +84,25 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
       setIsLoading(false);
     }
   }, [customerId, referenceCode]);
+
+  // ── Refresh handler (retains existing results without full loading skeleton) ─
+  const handleRefresh = useCallback(async () => {
+    if (!customerId || isRefreshing) return;
+
+    setIsRefreshing(true);
+    setLoadError(false);
+
+    try {
+      const repo = getMatchingRepository();
+      const data = await repo.getMatchesForJob(customerId, referenceCode);
+      setResult(data);
+    } catch (err) {
+      console.error('[WEB-012] Unexpected repository error during refresh:', err);
+      setLoadError(true);
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [customerId, referenceCode, isRefreshing]);
 
   useEffect(() => {
     if (authChecked && customerId) {
@@ -267,7 +288,10 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
 
             {/* Stale results notice */}
             {result.state === 'stale_results' && sortedCandidates.length > 0 && (
-              <StaleResultsNotice onRefresh={fetchMatches} />
+              <StaleResultsNotice
+                onRefresh={handleRefresh}
+                isRefreshing={isRefreshing}
+              />
             )}
 
             {/* State panel for non-candidate states */}
@@ -277,6 +301,8 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
                 jobReferenceCode={result.jobReferenceCode}
                 {...(result.constraintLabel !== undefined ? { constraintLabel: result.constraintLabel } : {})}
                 onRetry={fetchMatches}
+                onRefresh={handleRefresh}
+                isRefreshing={isRefreshing}
                 returnPath={returnPath}
               />
             )}
