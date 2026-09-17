@@ -115,15 +115,35 @@ describe('MatchResultsScreen', () => {
     });
   });
 
-  it('renders invalid_context state for unknown reference code', async () => {
+  it('renders invalid_context state for unknown reference code without job context panel', async () => {
     renderScreen('REQ-UNKNOWN-XYZ');
     await waitFor(() => {
       expect(screen.getByText(/job not found/i)).toBeInTheDocument();
     });
-    // Multiple "Back to jobs" links may render, ensure at least one exists pointing to /jobs
+    expect(screen.queryByRole('heading', { name: /inverter/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/unknown job/i)).not.toBeInTheDocument();
     const backLinks = screen.getAllByRole('link', { name: /back to jobs/i });
     expect(backLinks.length).toBeGreaterThanOrEqual(1);
     expect(backLinks[0]).toHaveAttribute('href', '/jobs');
+  });
+
+  it('renders invalid_context without leaking job details when accessed by unauthorized customer', async () => {
+    // Current test customer is customer-test-1; REQ-OTHER-CUST is owned exclusively by customer-2
+    renderScreen('REQ-OTHER-CUST');
+    await waitFor(() => {
+      expect(screen.getByText(/job not found/i)).toBeInTheDocument();
+    });
+    expect(screen.queryByText(/private commercial hvac/i)).not.toBeInTheDocument();
+    expect(screen.queryByText('Tunde Bakare')).not.toBeInTheDocument();
+  });
+
+  it('renders stale_results notice and refresh action for REQ-STALE', async () => {
+    renderScreen('REQ-STALE');
+    await waitFor(() => {
+      expect(screen.getByText(/these match results may no longer be current/i)).toBeInTheDocument();
+    });
+    expect(screen.getByRole('button', { name: /refresh matches/i })).toBeInTheDocument();
+    expect(screen.getByText('Tunde Bakare')).toBeInTheDocument();
   });
 
   it('renders partial_results notice alongside candidates for REQ-PARTIAL', async () => {
@@ -157,17 +177,17 @@ describe('MatchResultsScreen', () => {
     });
   });
 
-  it('select button changes to "Withdraw interest" after clicking', async () => {
+  it('express interest button changes to "Withdraw interest" after clicking', async () => {
     renderScreen('REQ-84920');
     await waitFor(() => {
       expect(screen.getByText('Tunde Bakare')).toBeInTheDocument();
     });
 
-    const selectBtns = screen.getAllByRole('button', { name: /select this brainworker: tunde bakare/i });
-    expect(selectBtns.length).toBeGreaterThan(0);
+    const interestBtns = screen.getAllByRole('button', { name: /express interest: tunde bakare/i });
+    expect(interestBtns.length).toBeGreaterThan(0);
 
     await act(async () => {
-      fireEvent.click(selectBtns[0]!);
+      fireEvent.click(interestBtns[0]!);
     });
 
     await waitFor(() => {
@@ -175,16 +195,16 @@ describe('MatchResultsScreen', () => {
     });
   });
 
-  it('shows confirmation message after selection (not a booking claim)', async () => {
+  it('shows confirmation message after expressing interest (not a booking claim)', async () => {
     renderScreen('REQ-84920');
     await waitFor(() => {
       expect(screen.getByText('Tunde Bakare')).toBeInTheDocument();
     });
 
-    const selectBtns = screen.getAllByRole('button', { name: /select this brainworker: tunde bakare/i });
+    const interestBtns = screen.getAllByRole('button', { name: /express interest: tunde bakare/i });
 
     await act(async () => {
-      fireEvent.click(selectBtns[0]!);
+      fireEvent.click(interestBtns[0]!);
     });
 
     await waitFor(() => {

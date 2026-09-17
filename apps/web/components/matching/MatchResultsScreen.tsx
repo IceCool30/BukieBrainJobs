@@ -13,6 +13,7 @@ import {
   MatchingLoadingSkeleton,
   MatchStatePanel,
   PartialResultsNotice,
+  StaleResultsNotice,
 } from './MatchStates';
 
 // ─── Props ─────────────────────────────────────────────────────────────────────
@@ -204,8 +205,35 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
   // ── Render: result available ────────────────────────────────────────────────
   if (!result) return null;
 
+  // Invalid / unowned context: render isolated notice without job context panel
+  if (result.state === 'invalid_context') {
+    return (
+      <div className="min-h-screen bg-[#f8f9ff]">
+        <ScreenShell referenceCode={referenceCode} maxWidth="narrow">
+          <MatchStatePanel
+            state="invalid_context"
+            jobReferenceCode={referenceCode}
+            onRetry={fetchMatches}
+            returnPath={returnPath}
+          />
+          <div className="mt-8 pt-6 border-t border-slate-200">
+            <Link
+              href="/jobs"
+              className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-[#001A41] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] rounded"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              Back to jobs
+            </Link>
+          </div>
+        </ScreenShell>
+      </div>
+    );
+  }
+
   const showCandidates =
-    result.state === 'matches_available' || result.state === 'partial_results';
+    result.state === 'matches_available' ||
+    result.state === 'partial_results' ||
+    (result.state === 'stale_results' && result.candidates.length > 0);
 
   const sortedCandidates: MatchCandidate[] = [...result.candidates].sort(
     (a, b) => a.rank - b.rank
@@ -214,67 +242,79 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
   return (
     <div className="min-h-screen bg-[#f8f9ff]">
       <ScreenShell referenceCode={referenceCode}>
-        {/* Job context summary */}
-        <JobContextPanel result={result} />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Job context summary: persistent sticky panel on desktop */}
+          <aside className="lg:col-span-4 lg:sticky lg:top-6 self-start">
+            <JobContextPanel result={result} />
+          </aside>
 
-        {/* Selection confirmation message */}
-        {selectionMessage && (
-          <div
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
-            className="mb-4 px-4 py-3 bg-[#abeec8]/20 border border-[#abeec8] rounded-xl text-sm text-[#075135]"
-          >
-            {selectionMessage}
-          </div>
-        )}
-
-        {/* Partial results notice */}
-        {result.state === 'partial_results' && <PartialResultsNotice />}
-
-        {/* State panel for non-candidate states */}
-        {!showCandidates && (
-          <MatchStatePanel
-            state={result.state}
-            jobReferenceCode={result.jobReferenceCode}
-            {...(result.constraintLabel !== undefined ? { constraintLabel: result.constraintLabel } : {})}
-            onRetry={fetchMatches}
-            returnPath={returnPath}
-          />
-        )}
-
-        {/* Candidates */}
-        {showCandidates && sortedCandidates.length > 0 && (
-          <section aria-labelledby={headingId}>
-            <header className="flex items-center gap-2 mb-4">
-              <Users className="h-5 w-5 text-[#001A41]" aria-hidden="true" />
-              <h2
-                id={headingId}
-                className="font-display font-bold text-[#001A41] text-base"
+          {/* Matches column */}
+          <div className="lg:col-span-8 space-y-6">
+            {/* Selection confirmation message */}
+            {selectionMessage && (
+              <div
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className="px-4 py-3 bg-[#abeec8]/20 border border-[#abeec8] rounded-xl text-sm text-[#075135]"
               >
-                {sortedCandidates.length === 1
-                  ? '1 BrainWorker found'
-                  : `${sortedCandidates.length} BrainWorkers found`}
-              </h2>
-            </header>
-            <p className="text-xs text-slate-500 mb-5">
-              We found BrainWorkers who may be a good fit for your request. Selecting one is not
-              a booking or a guarantee of availability.
-            </p>
-            <ul className="space-y-4" role="list" aria-label="Match results">
-              {sortedCandidates.map((candidate) => (
-                <li key={candidate.candidateId} role="listitem">
-                  <MatchCard
-                    candidate={candidate}
-                    onSelect={handleSelect}
-                    onViewProfile={handleViewProfile}
-                    isProcessing={processingCandidateId === candidate.candidateId}
-                  />
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+                {selectionMessage}
+              </div>
+            )}
+
+            {/* Partial results notice */}
+            {result.state === 'partial_results' && <PartialResultsNotice />}
+
+            {/* Stale results notice */}
+            {result.state === 'stale_results' && sortedCandidates.length > 0 && (
+              <StaleResultsNotice onRefresh={fetchMatches} />
+            )}
+
+            {/* State panel for non-candidate states */}
+            {!showCandidates && (
+              <MatchStatePanel
+                state={result.state}
+                jobReferenceCode={result.jobReferenceCode}
+                {...(result.constraintLabel !== undefined ? { constraintLabel: result.constraintLabel } : {})}
+                onRetry={fetchMatches}
+                returnPath={returnPath}
+              />
+            )}
+
+            {/* Candidates */}
+            {showCandidates && sortedCandidates.length > 0 && (
+              <section aria-labelledby={headingId}>
+                <header className="flex items-center gap-2 mb-4">
+                  <Users className="h-5 w-5 text-[#001A41]" aria-hidden="true" />
+                  <h2
+                    id={headingId}
+                    className="font-display font-bold text-[#001A41] text-base"
+                  >
+                    {sortedCandidates.length === 1
+                      ? '1 BrainWorker found'
+                      : `${sortedCandidates.length} BrainWorkers found`}
+                  </h2>
+                </header>
+                <p className="text-xs text-slate-500 mb-5">
+                  We found BrainWorkers who may be a good fit for your request. Expressing interest does not
+                  confirm a booking or assign a BrainWorker.
+                </p>
+                <ul className="space-y-4" role="list" aria-label="Match results">
+                  {sortedCandidates.map((candidate) => (
+                    <li key={candidate.candidateId} role="listitem">
+                      <MatchCard
+                        candidate={candidate}
+                        onSelect={handleSelect}
+                        onViewProfile={handleViewProfile}
+                        isProcessing={processingCandidateId === candidate.candidateId}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </div>
+        </div>
 
         {/* Bottom return link */}
         <div className="mt-8 pt-6 border-t border-slate-200">
@@ -296,12 +336,19 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
 function ScreenShell({
   referenceCode,
   children,
+  maxWidth = 'standard',
 }: {
   referenceCode: string;
   children: React.ReactNode;
+  maxWidth?: 'standard' | 'narrow';
 }) {
+  const containerClass =
+    maxWidth === 'narrow'
+      ? 'max-w-2xl mx-auto px-4 sm:px-6 py-6 sm:py-8'
+      : 'max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8';
+
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+    <div className={containerClass}>
       {/* Top nav */}
       <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-6 text-sm">
         <Link

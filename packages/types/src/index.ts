@@ -476,6 +476,7 @@ export type MatchingState =
   | 'no_matches'         // Completed; zero eligible results
   | 'constraint_limited' // A specific constraint is blocking results
   | 'partial_results'    // Some candidates available; some data unavailable
+  | 'stale_results'      // Prior results available; requires refresh for current status
   | 'failed'             // Matching operation could not complete technically
   | 'offline'            // Client cannot reach the matching service
   | 'invalid_context'    // Job context cannot be safely resolved

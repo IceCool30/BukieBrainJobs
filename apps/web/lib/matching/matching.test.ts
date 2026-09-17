@@ -89,10 +89,35 @@ describe('MockMatchingRepository.getMatchesForJob', () => {
     expect(result.state).toBe('offline');
   });
 
-  it('returns invalid_context for an unknown reference code', async () => {
+  it('returns stale_results state with candidate context for REQ-STALE', async () => {
+    const result = await repo().getMatchesForJob('customer-1', 'REQ-STALE');
+    expect(result.state).toBe('stale_results');
+    expect(result.candidates.length).toBeGreaterThanOrEqual(1);
+    expect(result.resultGeneratedAt).toBe('2026-09-10T09:00:00Z');
+  });
+
+  it('throws a programming error when customerId is empty', async () => {
+    await expect(repo().getMatchesForJob('', 'REQ-84920')).rejects.toThrow();
+  });
+
+  it('enforces customer ownership boundary for REQ-OTHER-CUST', async () => {
+    // customer-1 is not authorized for REQ-OTHER-CUST
+    const unauthorizedResult = await repo().getMatchesForJob('customer-1', 'REQ-OTHER-CUST');
+    expect(unauthorizedResult.state).toBe('invalid_context');
+    expect(unauthorizedResult.candidates).toHaveLength(0);
+    expect(unauthorizedResult.jobTitle).toBe('');
+
+    // customer-2 is the authorized owner
+    const authorizedResult = await repo().getMatchesForJob('customer-2', 'REQ-OTHER-CUST');
+    expect(authorizedResult.state).toBe('matches_available');
+    expect(authorizedResult.candidates.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('returns invalid_context for an unknown reference code with empty job title', async () => {
     const result = await repo().getMatchesForJob('customer-1', 'REQ-UNKNOWN-XYZ');
     expect(result.state).toBe('invalid_context');
     expect(result.candidates).toHaveLength(0);
+    expect(result.jobTitle).toBe('');
   });
 
   it('throws a programming error when jobReferenceCode is empty', async () => {
@@ -201,6 +226,38 @@ describe('MockMatchingRepository.recordSelection', () => {
     const result = await r.getMatchesForJob('customer-1', 'REQ-84920');
     const candidate = result.candidates.find((c) => c.candidateId === 'bw-tunde-bakare');
     expect(candidate?.selectionState).toBe('interest_expressed');
+  });
+
+  it('scopes selection state to customer and job', async () => {
+    const r = repo();
+    await r.recordSelection('customer-1', {
+      type: 'EXPRESS_INTEREST',
+      candidateId: 'bw-tunde-bakare',
+      jobReferenceCode: 'REQ-84920',
+    });
+
+    // Customer-1 on the same job sees interest_expressed
+    const resultCust1 = await r.getMatchesForJob('customer-1', 'REQ-84920');
+    expect(resultCust1.candidates.find((c) => c.candidateId === 'bw-tunde-bakare')?.selectionState).toBe('interest_expressed');
+
+    // Customer-test-1 on the same job does NOT see interest_expressed
+    const resultOtherCust = await r.getMatchesForJob('customer-test-1', 'REQ-84920');
+    expect(resultOtherCust.candidates.find((c) => c.candidateId === 'bw-tunde-bakare')?.selectionState).toBe('none');
+
+    // Customer-1 on a different job (REQ-51829) does NOT see interest_expressed
+    const resultOtherJob = await r.getMatchesForJob('customer-1', 'REQ-51829');
+    expect(resultOtherJob.candidates.find((c) => c.candidateId === 'bw-tunde-bakare')?.selectionState).toBe('none');
+  });
+
+  it('throws when customerId is missing', async () => {
+    const r = repo();
+    await expect(
+      r.recordSelection('', {
+        type: 'EXPRESS_INTEREST',
+        candidateId: 'bw-tunde-bakare',
+        jobReferenceCode: 'REQ-84920',
+      })
+    ).rejects.toThrow();
   });
 
   it('throws when candidateId is missing', async () => {

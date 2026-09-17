@@ -13,6 +13,7 @@ import {
   MapPin,
   FileText,
   Plus,
+  Clock,
 } from 'lucide-react';
 import type { MatchingState } from '@bukiebrainjobs/types';
 
@@ -264,6 +265,75 @@ export function InvalidContextState() {
   );
 }
 
+// ─── Stale results notice ───────────────────────────────────────────────────────
+
+export function StaleResultsNotice({ onRefresh }: { onRefresh: () => void }) {
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-6 text-sm text-amber-900"
+    >
+      <div className="flex items-start gap-2">
+        <Clock className="h-4 w-4 shrink-0 mt-0.5 text-amber-600" aria-hidden="true" />
+        <p>
+          These match results may no longer be current. Availability and rates may have changed since they were generated.
+        </p>
+      </div>
+      <button
+        type="button"
+        onClick={onRefresh}
+        className="shrink-0 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[#001A41] bg-white border border-amber-300 rounded-lg py-1.5 px-3 hover:bg-amber-100/50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+      >
+        <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+        Refresh matches
+      </button>
+    </div>
+  );
+}
+
+// ─── Stale results state ────────────────────────────────────────────────────────
+
+export function StaleResultsState({
+  jobReferenceCode,
+  onRefresh,
+}: {
+  jobReferenceCode: string;
+  onRefresh: () => void;
+}) {
+  return (
+    <div role="status" className="py-14 flex flex-col items-center text-center">
+      <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mb-5">
+        <Clock className="h-8 w-8 text-amber-600" aria-hidden="true" />
+      </div>
+      <h2 className="font-display font-bold text-xl text-[#001A41] mb-2">
+        Match results may no longer be current
+      </h2>
+      <p className="text-slate-500 text-sm max-w-xs mb-2">
+        These results were generated earlier. Availability, rates, and matches may have changed since then.
+      </p>
+      <p className="text-slate-400 text-xs mb-6">Reference: {jobReferenceCode}</p>
+      <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
+        <button
+          type="button"
+          onClick={onRefresh}
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-white bg-[#001A41] rounded-xl py-2.5 px-4 hover:bg-[#002661] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+        >
+          <RotateCcw className="h-4 w-4" aria-hidden="true" />
+          Refresh matches
+        </button>
+        <Link
+          href="/jobs"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-[#001A41] border border-[#001A41] rounded-xl py-2.5 px-4 hover:bg-slate-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          Back to jobs
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 // ─── Partial results notice ────────────────────────────────────────────────────
 
 export function PartialResultsNotice() {
@@ -332,6 +402,8 @@ export function MatchStatePanel({
           jobReferenceCode={jobReferenceCode}
         />
       );
+    case 'stale_results':
+      return <StaleResultsState jobReferenceCode={jobReferenceCode} onRefresh={onRetry} />;
     case 'failed':
       return <MatchingFailedState onRetry={onRetry} />;
     case 'offline':

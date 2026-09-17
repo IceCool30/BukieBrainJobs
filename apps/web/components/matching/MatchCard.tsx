@@ -109,7 +109,7 @@ export function MatchCard({
   const isInterested = selectionState === 'interest_expressed';
   const isPending = selectionState === 'pending' || isProcessing;
 
-  const selectLabel = isInterested ? 'Withdraw interest' : 'Select this BrainWorker';
+  const selectLabel = isInterested ? 'Withdraw interest' : 'Express interest';
   const selectAriaLabel = `${selectLabel}: ${profile.displayName}`;
 
   return (
@@ -240,12 +240,12 @@ export function MatchCard({
                 className="h-3.5 w-3.5 rounded-full border-2 border-current border-t-transparent animate-spin"
                 aria-hidden="true"
               />
-              Processing…
+              Processing...
             </span>
           ) : isInterested ? (
             'Withdraw interest'
           ) : (
-            'Select this BrainWorker'
+            'Express interest'
           )}
         </button>
       </div>

@@ -306,7 +306,7 @@ export function ActivityDetail({
                   activity.status === 'awaiting_progress') && (
                   <Link
                     href={`/job/${encodeURIComponent(activity.referenceCode)}/matches`}
-                    className="px-4 py-2 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition bg-[#001A41] text-white hover:bg-[#002661] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+                    className="px-4 py-2 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition border border-[#001A41] text-[#001A41] hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
                     aria-label={`View BrainWorker matches for ${activity.title}`}
                   >
                     <span>View BrainWorker matches</span>
@@ -318,7 +318,7 @@ export function ActivityDetail({
                   href={activity.nextAction.url}
                   className={`px-4 py-2 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] ${
                     activity.nextAction.primary
-                      ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      ? 'bg-[#001A41] text-white hover:bg-[#002661]'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
                 >

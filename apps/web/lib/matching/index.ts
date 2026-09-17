@@ -35,7 +35,7 @@ const CANDIDATE_TUNDE: MatchCandidate = {
     servicesLabel: 'Inverter & Solar Installation, Electrical Services',
     publicRating: 4.9,
     completedJobCount: 87,
-    rateLabel: '₦15,000–₦45,000 / visit',
+    rateLabel: '₦15,000 to ₦45,000 / visit',
     identityVerified: true,
     availabilityLabel: 'Available today',
   },
@@ -54,7 +54,7 @@ const CANDIDATE_AMAKA: MatchCandidate = {
     servicesLabel: 'Inverter & Solar Installation, Generator Maintenance',
     publicRating: 4.7,
     completedJobCount: 52,
-    rateLabel: '₦12,000–₦35,000 / visit',
+    rateLabel: '₦12,000 to ₦35,000 / visit',
     identityVerified: true,
     availabilityLabel: 'Available this week',
   },
@@ -73,7 +73,7 @@ const CANDIDATE_EMEKA: MatchCandidate = {
     servicesLabel: 'Plumbing & Pipefitting, Drainage Systems',
     publicRating: 4.8,
     completedJobCount: 114,
-    rateLabel: '₦10,000–₦28,000 / visit',
+    rateLabel: '₦10,000 to ₦28,000 / visit',
     identityVerified: true,
     availabilityLabel: 'Available this week',
   },
@@ -138,7 +138,6 @@ const FIXTURE_MAP: Record<string, RankedMatchResult> = {
       'Solar inverter requires complete system health check and deep-cycle battery bank load testing following frequent trip switch issues.',
     state: 'matches_available',
     candidates: [CANDIDATE_TUNDE, CANDIDATE_AMAKA],
-    resultGeneratedAt: new Date().toISOString(),
     totalCandidateCount: 2,
   }),
 
@@ -154,7 +153,6 @@ const FIXTURE_MAP: Record<string, RankedMatchResult> = {
       'Realign four soft-close cabinet doors in the pantry and replace worn drawer ball-bearing slides.',
     state: 'matches_available',
     candidates: [CANDIDATE_EMEKA],
-    resultGeneratedAt: new Date().toISOString(),
     totalCandidateCount: 1,
   }),
 
@@ -179,7 +177,6 @@ const FIXTURE_MAP: Record<string, RankedMatchResult> = {
     jobBudgetLabel: '₦12,000',
     state: 'no_matches',
     candidates: [],
-    resultGeneratedAt: new Date().toISOString(),
     totalCandidateCount: 0,
   }),
 
@@ -193,7 +190,6 @@ const FIXTURE_MAP: Record<string, RankedMatchResult> = {
     state: 'constraint_limited',
     constraintLabel: 'This location is outside the current active service area.',
     candidates: [],
-    resultGeneratedAt: new Date().toISOString(),
     totalCandidateCount: 0,
   }),
 
@@ -206,7 +202,19 @@ const FIXTURE_MAP: Record<string, RankedMatchResult> = {
     jobSchedule: 'Next week',
     state: 'partial_results',
     candidates: [CANDIDATE_FOLAKE],
-    resultGeneratedAt: new Date().toISOString(),
+    totalCandidateCount: 1,
+  }),
+
+  // ── Stale results ───────────────────────────────────────────────────────────
+  'REQ-STALE': makeResult({
+    jobReferenceCode: 'REQ-STALE',
+    jobTitle: 'Generator Soundproof Canopy Repair',
+    jobServiceLabel: 'Generator Maintenance',
+    jobLocation: 'Victoria Island, Lagos',
+    jobSchedule: 'Completed earlier',
+    state: 'stale_results',
+    candidates: [CANDIDATE_TUNDE],
+    resultGeneratedAt: '2026-09-10T09:00:00Z',
     totalCandidateCount: 1,
   }),
 
@@ -231,33 +239,80 @@ const FIXTURE_MAP: Record<string, RankedMatchResult> = {
     state: 'offline',
     candidates: [],
   }),
+
+  // ── Cross-customer boundary fixture ─────────────────────────────────────────
+  'REQ-OTHER-CUST': makeResult({
+    jobReferenceCode: 'REQ-OTHER-CUST',
+    jobTitle: 'Private Commercial HVAC Service',
+    jobServiceLabel: 'AC Repair & Installation',
+    jobLocation: 'Ikoyi, Lagos',
+    state: 'matches_available',
+    candidates: [CANDIDATE_TUNDE],
+    totalCandidateCount: 1,
+  }),
 };
 
-// ─── Selection state store (in-memory, session-scoped) ────────────────────────
+// ─── Customer Job Ownership Mapping (Mock Authorization Boundary) ─────────────
+// Models: authenticated customer -> owned job -> matching context.
+// Prevents cross-customer job or match data leakage.
+const JOB_OWNERSHIP: Record<string, string[]> = {
+  'REQ-84920': ['customer-1', 'customer-test-1', 'usr-customer-default'],
+  'REQ-51829': ['customer-1', 'customer-test-1', 'usr-customer-default'],
+  'REQ-INPROG': ['customer-1', 'customer-test-1', 'usr-customer-default'],
+  'REQ-NOMATCH': ['customer-1', 'customer-test-1', 'usr-customer-default'],
+  'REQ-CONSTRAINED': ['customer-1', 'customer-test-1', 'usr-customer-default'],
+  'REQ-PARTIAL': ['customer-1', 'customer-test-1', 'usr-customer-default'],
+  'REQ-STALE': ['customer-1', 'customer-test-1', 'usr-customer-default'],
+  'REQ-FAILED': ['customer-1', 'customer-test-1', 'usr-customer-default'],
+  'REQ-OFFLINE': ['customer-1', 'customer-test-1', 'usr-customer-default'],
+  // Owned exclusively by customer-2 for boundary tests
+  'REQ-OTHER-CUST': ['customer-2'],
+};
 
-// Maps candidateId → selection state, resets on page reload (correct for mock phase)
+// ─── Selection state store (in-memory, customer- and job-scoped) ───────────────
+// Key format: `${customerId}:${jobReferenceCode}:${candidateId}`
+function makeSelectionKey(customerId: string, jobReferenceCode: string, candidateId: string): string {
+  return `${customerId.trim().toLowerCase()}:${jobReferenceCode.trim().toUpperCase()}:${candidateId.trim().toLowerCase()}`;
+}
+
 const selectionStore = new Map<string, 'interest_expressed' | 'none'>();
 
-// ─── Helper: resolve a result from the fixture map or MOCK_CUSTOMER_ACTIVITIES ─
+// ─── Helper: resolve a result with ownership and scoped selection state ───────
 
-function resolveResult(jobReferenceCode: string): RankedMatchResult {
+function resolveResult(customerId: string, jobReferenceCode: string): RankedMatchResult {
   const fixture = FIXTURE_MAP[jobReferenceCode];
-  if (fixture) {
-    // Merge current selection state into candidates
-    const candidates = fixture.candidates.map((c) => ({
-      ...c,
-      selectionState: selectionStore.get(c.candidateId) ?? c.selectionState ?? 'none',
-    }));
-    return { ...fixture, candidates };
+  if (!fixture) {
+    return makeResult({
+      jobReferenceCode,
+      jobTitle: '',
+      state: 'invalid_context',
+      candidates: [],
+    });
   }
 
-  // Unknown reference code: invalid context
-  return makeResult({
-    jobReferenceCode,
-    jobTitle: 'Unknown Job',
-    state: 'invalid_context',
-    candidates: [],
+  // Enforce customer ownership boundary
+  const authorizedOwners = JOB_OWNERSHIP[jobReferenceCode] ?? [];
+  if (!authorizedOwners.includes(customerId.trim())) {
+    // Reference code is valid in system, but requesting customer is not the owner.
+    // Return invalid_context without exposing job details or match data.
+    return makeResult({
+      jobReferenceCode,
+      jobTitle: '',
+      state: 'invalid_context',
+      candidates: [],
+    });
+  }
+
+  // Merge customer- and job-scoped selection state into candidates
+  const candidates = fixture.candidates.map((c) => {
+    const key = makeSelectionKey(customerId, jobReferenceCode, c.candidateId);
+    return {
+      ...c,
+      selectionState: selectionStore.get(key) ?? c.selectionState ?? 'none',
+    };
   });
+
+  return { ...fixture, candidates };
 }
 
 // ─── Mock Repository Implementation ───────────────────────────────────────────
@@ -265,39 +320,47 @@ function resolveResult(jobReferenceCode: string): RankedMatchResult {
 export class MockMatchingRepository implements IMatchingRepository {
   /**
    * Returns a deterministic RankedMatchResult for the given job reference.
+   * Enforces customer/job ownership boundary.
    * Simulates realistic async latency without network I/O.
    */
   async getMatchesForJob(
-    _customerId: string,
+    customerId: string,
     jobReferenceCode: string
   ): Promise<RankedMatchResult> {
-    if (!jobReferenceCode || typeof jobReferenceCode !== 'string') {
-      // Programming error: throw, do not silently return invalid_context
+    if (!customerId || typeof customerId !== 'string' || !customerId.trim()) {
+      throw new Error('[MockMatchingRepository] customerId is required');
+    }
+    if (!jobReferenceCode || typeof jobReferenceCode !== 'string' || !jobReferenceCode.trim()) {
       throw new Error('[MockMatchingRepository] jobReferenceCode is required');
     }
 
     // Minimal deterministic delay to represent async boundary
     await new Promise((resolve) => setTimeout(resolve, 80));
 
-    return resolveResult(jobReferenceCode.trim().toUpperCase());
+    return resolveResult(customerId.trim(), jobReferenceCode.trim().toUpperCase());
   }
 
   /**
-   * Records customer interest in a candidate.
+   * Records customer interest in a candidate, scoped to customer and job.
    * Returns honest pending/simulated state, does not claim booking or acceptance.
    */
   async recordSelection(
-    _customerId: string,
+    customerId: string,
     action: MatchSelectionAction
   ): Promise<MatchSelectionResult> {
+    if (!customerId || typeof customerId !== 'string' || !customerId.trim()) {
+      throw new Error('[MockMatchingRepository] customerId is required');
+    }
     if (!action.candidateId || !action.jobReferenceCode) {
       throw new Error('[MockMatchingRepository] candidateId and jobReferenceCode are required');
     }
 
     await new Promise((resolve) => setTimeout(resolve, 60));
 
+    const key = makeSelectionKey(customerId, action.jobReferenceCode, action.candidateId);
+
     if (action.type === 'EXPRESS_INTEREST') {
-      selectionStore.set(action.candidateId, 'interest_expressed');
+      selectionStore.set(key, 'interest_expressed');
       return {
         candidateId: action.candidateId,
         newSelectionState: 'interest_expressed',
@@ -307,7 +370,7 @@ export class MockMatchingRepository implements IMatchingRepository {
     }
 
     if (action.type === 'WITHDRAW_INTEREST') {
-      selectionStore.set(action.candidateId, 'none');
+      selectionStore.set(key, 'none');
       return {
         candidateId: action.candidateId,
         newSelectionState: 'none',
