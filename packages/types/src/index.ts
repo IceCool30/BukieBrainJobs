@@ -460,3 +460,149 @@ export interface ICustomerActivityRepository {
   mutateJobStatus(customerId: string, jobId: string, action: JobLifecycleAction): Promise<CustomerActivityItem>;
 }
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// WEB-012: Customer Job Matching Domain Contracts
+// Production-first interface boundary. Replace MockMatchingRepository
+// with ApiMatchingRepository in production without UI redesign.
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+/**
+ * Operational matching state from the customer's perspective.
+ * Distinct from HTTP errors and job lifecycle state.
+ */
+export type MatchingState =
+  | 'in_progress'        // Matching operation is still running
+  | 'matches_available'  // At least one eligible candidate exists
+  | 'no_matches'         // Completed; zero eligible results
+  | 'constraint_limited' // A specific constraint is blocking results
+  | 'partial_results'    // Some candidates available; some data unavailable
+  | 'failed'             // Matching operation could not complete technically
+  | 'offline'            // Client cannot reach the matching service
+  | 'invalid_context'    // Job context cannot be safely resolved
+  | 'auth_required';     // Session expired mid-flow
+
+/**
+ * Customer-safe explanation tag for why a BrainWorker matches.
+ * Never expose internal ranking weights or risk signals.
+ */
+export type MatchExplanationTag =
+  | 'service_match'       // Matches the requested service category
+  | 'schedule_available'  // Available for the requested time window
+  | 'location_match'      // Serves the requested area
+  | 'budget_compatible'   // Fits the customer's stated budget
+  | 'strong_track_record' // Solid completed-work history
+  | 'highly_rated'        // Strong public rating where supported
+  | 'verified_identity';  // Identity verification supported publicly
+
+/** Eligibility result for a candidate: pass/fail only, no internal signals */
+export type MatchEligibilityOutcome = 'eligible' | 'ineligible' | 'pending';
+
+/**
+ * Public BrainWorker information safe to display in a match context.
+ * Mirrors approved WEB-005 public profile fields only, no private data.
+ */
+export interface MatchCandidateProfile {
+  /** Durable BrainWorker identifier */
+  brainWorkerId: string;
+  displayName: string;
+  avatarUrl?: string | undefined;
+  /** Public service-area description, not precise coordinates */
+  serviceAreaLabel?: string | undefined;
+  /** Supported public services / skills summary */
+  servicesLabel?: string | undefined;
+  /** Rating is omitted entirely when unavailable, never fabricated */
+  publicRating?: number | undefined;
+  completedJobCount?: number | undefined;
+  /** Human-readable pricing context e.g. "₦8,000 to ₦15,000 / visit" */
+  rateLabel?: string | undefined;
+  /** Whether identity verification is publicly supported */
+  identityVerified?: boolean | undefined;
+  /** Availability context where supported, never fabricated */
+  availabilityLabel?: string | undefined;
+}
+
+/**
+ * A single ranked BrainWorker candidate within a match result.
+ * Rank is supplied by the matching domain; the UI must not reorder.
+ */
+export interface MatchCandidate {
+  /** Stable candidate ID within this result set */
+  candidateId: string;
+  rank: number;
+  eligibility: MatchEligibilityOutcome;
+  profile: MatchCandidateProfile;
+  /** Customer-readable reasons for the match, omit if none available */
+  explanations?: MatchExplanationTag[] | undefined;
+  /** Whether the customer has expressed interest in this candidate */
+  selectionState?: 'none' | 'interest_expressed' | 'pending' | undefined;
+}
+
+/**
+ * The full result delivered to the customer for a matching request.
+ * Carries matching state, ranked candidates, and recovery information.
+ */
+export interface RankedMatchResult {
+  /** Durable job reference code: human-facing, not raw UUID */
+  jobReferenceCode: string;
+  /** Job title displayed for context */
+  jobTitle: string;
+  jobServiceLabel?: string | undefined;
+  /** Customer's submitted location string */
+  jobLocation?: string | undefined;
+  /** Customer's submitted schedule string */
+  jobSchedule?: string | undefined;
+  /** Customer's budget display or undefined if not specified */
+  jobBudgetLabel?: string | undefined;
+  /** Customer description: safely rendered, never treated as markup */
+  jobDescription?: string | undefined;
+  state: MatchingState;
+  candidates: MatchCandidate[];
+  /** Constraint description when state is 'constraint_limited': category only */
+  constraintLabel?: string | undefined;
+  /** ISO timestamp when result was generated, omit if not reliable */
+  resultGeneratedAt?: string | undefined;
+  totalCandidateCount?: number | undefined;
+}
+
+/** Customer action on a match candidate: selection is not booking confirmation */
+export type MatchSelectionActionType = 'EXPRESS_INTEREST' | 'WITHDRAW_INTEREST';
+
+export interface MatchSelectionAction {
+  type: MatchSelectionActionType;
+  candidateId: string;
+  jobReferenceCode: string;
+}
+
+export interface MatchSelectionResult {
+  candidateId: string;
+  newSelectionState: 'interest_expressed' | 'none' | 'pending';
+  /** Honest label: never claims booking, acceptance, payment, or dispatch */
+  confirmationLabel: string;
+}
+
+/**
+ * Stable repository interface for matching.
+ * MockMatchingRepository → ApiMatchingRepository in production
+ * without changing the customer-facing information architecture.
+ */
+export interface IMatchingRepository {
+  /**
+   * Fetch ranked match results for a customer's job request.
+   * Always returns a RankedMatchResult, never throws for domain conditions.
+   * Throws only for programming errors (missing required parameters etc.).
+   */
+  getMatchesForJob(
+    customerId: string,
+    jobReferenceCode: string
+  ): Promise<RankedMatchResult>;
+
+  /**
+   * Record customer interest in a specific match candidate.
+   * Must not claim BrainWorker has accepted or that a booking was created.
+   */
+  recordSelection(
+    customerId: string,
+    action: MatchSelectionAction
+  ): Promise<MatchSelectionResult>;
+}
+
