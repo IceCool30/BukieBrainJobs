@@ -13,6 +13,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import MatchResultsScreen from '../../components/matching/MatchResultsScreen';
 import { resetMatchingRepository, getMatchingRepository } from '../../lib/matching';
 import * as authStorage from '../../lib/auth/storage';
+import type { RankedMatchResult } from '@bukiebrainjobs/types';
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
@@ -147,7 +148,7 @@ describe('MatchResultsScreen', () => {
   });
 
   it('covers stale results -> refresh -> refresh pending -> refreshed result', async () => {
-    let resolveRefresh: ((value: any) => void) | null = null;
+    let resolveRefresh: ((value: RankedMatchResult) => void) | null = null;
     const repoInstance = getMatchingRepository();
     const originalGetMatches = repoInstance.getMatchesForJob.bind(repoInstance);
 
