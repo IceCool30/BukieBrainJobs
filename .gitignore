@@ -49,7 +49,7 @@ BukieBrainJobs_PWA_Icons.zip
 .agents/*
 !.agents/skills/
 .agents/skills/*
-!.agents/skills/nine-command-engineering-loop/
+!.agents/skills/mr-solomon-nine-command-engineering-loop/
 !.agents/skills/bukiebrainjobs-experience-standards/
 !.agents/skills/ui-ux-pro-max/
 !.agents/skills/agent-skills-test-driven-development/
