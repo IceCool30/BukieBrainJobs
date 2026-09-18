@@ -394,7 +394,7 @@ Support these states where the underlying domain can represent them:
 | State | Customer meaning | Typical action |
 |---|---|---|
 | Awaiting response | BrainWorker has not responded | Wait, cancel/withdraw if permitted |
-| Accepted / confirmed | Booking reached `CONFIRMED` | View confirmed details |
+| Accepted / confirmed | Acceptance succeeded and the authoritative booking state is `CONFIRMED` | View confirmed details |
 | Declined | Explicit acceptance response declined | Review alternatives / return to Jobs |
 | Expired | Request expired/no response | Return, retry/recreate where supported |
 | Schedule proposed/changed | A supported schedule proposal/change exists | Review supported action |
