@@ -8,7 +8,7 @@ These five skills are required for all work in this repository without exception
 
 | Skill | Path | Apply when |
 |---|---|---|
-| `nine-command-engineering-loop` | `.agents/skills/nine-command-engineering-loop/SKILL.md` | Any task lifecycle, planning, architecture spec, development loop, verification, documentation, or debugging phase. |
+| `mr-solomon-nine-command-engineering-loop` | `.agents/skills/mr-solomon-nine-command-engineering-loop/SKILL.md` | Any task lifecycle, planning, architecture spec, development loop, verification, documentation, or debugging phase. |
 | `bukiebrainjobs-experience-standards` | `.agents/skills/bukiebrainjobs-experience-standards/SKILL.md` | Any customer-facing UI, copy, motion, responsive layout, component, accessibility, or interaction work. |
 | `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Any visual design decision, page structure, component quality review, typography, color, animation, or UX pattern. |
 | `agent-skills-test-driven-development` | `.agents/skills/agent-skills-test-driven-development/SKILL.md` | Any logic change, bug fix, behavior modification, or new feature implementation. |
