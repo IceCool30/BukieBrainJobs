@@ -1,6 +1,61 @@
-# BukieBrainJobs Development Standards
+# BukieBrainJobs Development Standards & Context Map
 
-This file defines the standards every contributor must follow when working in this repository.
+This file defines the standards and operational map every contributor must follow when working in this repository.
+
+## Repository Overview
+- **Project Name**: BukieBrainJobs
+- **Architecture**: Monorepo managed with Turborepo and pnpm workspaces
+- **Primary Languages and Runtimes**: TypeScript 5.7, Node.js 24 LTS, Next.js 15.5, React 19, React Native / Expo SDK 52, Tailwind CSS v4, Prisma v6, Zustand v5, Vitest v4
+- **Workspaces Layout**:
+  - `apps/web`: Next.js 15 App Router web application and PWA
+  - `apps/mobile`: Expo / React Native mobile application
+  - `packages/types`: Shared domain types and TypeScript contracts
+  - `packages/validation`: Shared Zod validation schemas
+  - `packages/ui`: Shared design tokens, UI primitives, and components
+  - `packages/db`: Prisma database client, schema, and migrations
+  - `packages/store`: Zustand client state management
+  - `packages/utils`: Shared utilities and formatting helpers
+  - `packages/api-types`: Shared network API contracts
+  - `services/socket-server`: Real-time socket service
+
+## Core Commands
+- **Install**: `pnpm install`
+- **Dev (Web)**: `pnpm web:dev`
+- **Dev (Mobile)**: `pnpm mobile:start`
+- **Build**: `pnpm build` (execute on cloud Codespace)
+- **Typecheck**: `pnpm type-check` (execute on cloud Codespace)
+- **Lint**: `pnpm lint` (execute on cloud Codespace)
+- **Test**: `pnpm test` (execute on cloud Codespace)
+- **Database Generate**: `pnpm db:generate` (execute on cloud Codespace)
+- **Loop Status**: `bash scripts/nine-status.sh` or `pnpm run loop:status`
+
+## Environment & Execution Constraints
+- **Local Environment**: Termux on Android. Strict physical RAM limits and aggressive Android Low Memory Killer (LMK).
+- **Remote Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (4 cores, 16 GB RAM, Ubuntu 22.04 LTS).
+- **Execution Pipeline**:
+  - Never run heavy commands locally on Termux (`pnpm test`, `turbo run test`, `pnpm build`).
+  - Always dispatch builds, full test suites, and database migrations to the cloud Codespace over SSH:
+    `gh codespace ssh -c effective-fishstick-x5qwp6wrrp64fxwx -- "cd /workspaces/BukieBrainJobs && <COMMAND>"`
+  - Synchronization Pipeline:
+    1. Commit and push from Termux (`git push origin <branch>`).
+    2. Sync the Codespace (`gh codespace ssh -c effective-fishstick-x5qwp6wrrp64fxwx -- "cd /workspaces/BukieBrainJobs && git checkout <branch> && git pull origin <branch>"`).
+    3. Run verification commands on the Codespace.
+- **Safety Protocols**: Never delete, move, or reorganize files or directories without explicit user confirmation.
+
+## Conventions & Standards
+- **Voice**: Mr. Solomon Natural Voice across all copy, commits, PRs, and documentation. Never use em dashes.
+- **Visual**: Design tokens extracted directly from code and `globals.css` `@theme`; no arbitrary hex values. Deep Navy is primary, Emerald is strategic emphasis/success.
+- **Quality**: Anti-generic guardrails strictly enforced (zero slop: no generic icons, taglines, captions, explainers, subheadlines, fake cheerleading, or unsupported absolute claims).
+- **Data Integrity**: Production-first architecture with deterministic mock data. Never fabricate rates, coordinates, ratings, verification results, or booking confirmations.
+
+## Engineering Loop State (The 9 Commands)
+- **Active Phase**: Baseline Realignment (`/sync` [REALIGN])
+- **Loop State Files**:
+  - Scope: `docs/scope.md`
+  - Context Map: `AGENTS.md`
+  - Specifications: `docs/specs/`
+  - Verification Log: `docs/check-log.md`
+  - Changelog: `CHANGELOG.md`
 
 ## Mandatory Skills: Load and Apply on Every Task
 

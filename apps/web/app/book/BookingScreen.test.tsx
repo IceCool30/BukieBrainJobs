@@ -26,7 +26,7 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe('BookingScreen — Initial render & query context hydration', () => {
+describe('BookingScreen: Initial render and query context hydration', () => {
   beforeEach(() => {
     vi.mocked(useRouter).mockReturnValue(makeRouter());
   });
@@ -115,7 +115,7 @@ describe('BookingScreen — Initial render & query context hydration', () => {
   });
 });
 
-describe('BookingScreen — Form validation & interaction', () => {
+describe('BookingScreen: Form validation and interaction', () => {
   beforeEach(() => {
     vi.mocked(useRouter).mockReturnValue(makeRouter());
     vi.mocked(useSearchParams).mockReturnValue(
@@ -203,7 +203,7 @@ describe('BookingScreen — Form validation & interaction', () => {
   });
 });
 
-describe('BookingScreen — Submission lifecycle & error recovery', () => {
+describe('BookingScreen: Submission lifecycle and error recovery', () => {
   beforeEach(() => {
     vi.mocked(useRouter).mockReturnValue(makeRouter());
   });

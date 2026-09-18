@@ -16,6 +16,7 @@
     "mobile:web": "pnpm --filter @bukiebrainjobs/mobile web",
     "mobile:android": "pnpm --filter @bukiebrainjobs/mobile android",
     "mobile:ios": "pnpm --filter @bukiebrainjobs/mobile ios",
+    "loop:status": "bash scripts/nine-status.sh",
     "clean": "turbo run clean && rm -rf node_modules && rm -rf apps/*/node_modules && rm -rf packages/*/node_modules && rm -rf services/*/node_modules"
   },
   "devDependencies": {

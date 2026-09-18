@@ -1,5 +1,5 @@
 /**
- * ServicesDirectory component tests — WEB-006
+ * ServicesDirectory component tests: WEB-006
  *
  * Tests observable behavior of the public services discovery page:
  * - Page renders with expected heading, search input, and service cards
@@ -48,7 +48,7 @@ afterEach(() => {
 // Initial render
 // ---------------------------------------------------------------------------
 
-describe('ServicesPage — initial render', () => {
+describe('ServicesPage: initial render', () => {
   beforeEach(() => {
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
     vi.mocked(useRouter).mockReturnValue(makeRouter());
@@ -94,7 +94,7 @@ describe('ServicesPage — initial render', () => {
 // Search input behaviour
 // ---------------------------------------------------------------------------
 
-describe('ServicesPage — search input', () => {
+describe('ServicesPage: search input', () => {
   let router: ReturnType<typeof makeRouter>;
 
   beforeEach(() => {
@@ -168,7 +168,7 @@ describe('ServicesPage — search input', () => {
 // Category button filter behaviour
 // ---------------------------------------------------------------------------
 
-describe('ServicesPage — category button filters', () => {
+describe('ServicesPage: category button filters', () => {
   let router: ReturnType<typeof makeRouter>;
 
   beforeEach(() => {
@@ -221,7 +221,7 @@ describe('ServicesPage — category button filters', () => {
 // Invalid URL parameter notices (role="status")
 // ---------------------------------------------------------------------------
 
-describe('ServicesPage — invalid URL parameter notices', () => {
+describe('ServicesPage: invalid URL parameter notices', () => {
   beforeEach(() => {
     vi.mocked(useRouter).mockReturnValue(makeRouter());
   });
@@ -270,7 +270,7 @@ describe('ServicesPage — invalid URL parameter notices', () => {
 // Empty state and Reset filters
 // ---------------------------------------------------------------------------
 
-describe('ServicesPage — empty state and reset filters', () => {
+describe('ServicesPage: empty state and reset filters', () => {
   let router: ReturnType<typeof makeRouter>;
 
   beforeEach(() => {
@@ -315,7 +315,7 @@ describe('ServicesPage — empty state and reset filters', () => {
 // "Review details" navigation
 // ---------------------------------------------------------------------------
 
-describe('ServicesPage — Review details navigation', () => {
+describe('ServicesPage: Review details navigation', () => {
   let router: ReturnType<typeof makeRouter>;
 
   beforeEach(() => {
@@ -369,7 +369,7 @@ describe('ServicesPage — Review details navigation', () => {
 // Accessibility contract
 // ---------------------------------------------------------------------------
 
-describe('ServicesPage — accessibility', () => {
+describe('ServicesPage: accessibility', () => {
   beforeEach(() => {
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
     vi.mocked(useRouter).mockReturnValue(makeRouter());

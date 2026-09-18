@@ -35,7 +35,7 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe('AuthScreen — Initial Render & Provider Discovery', () => {
+describe('AuthScreen: Initial Render and Provider Discovery', () => {
   let routerMock: ReturnType<typeof makeRouter>;
 
   beforeEach(() => {
@@ -92,7 +92,7 @@ describe('AuthScreen — Initial Render & Provider Discovery', () => {
   });
 });
 
-describe('AuthScreen — Phone OTP Authentication', () => {
+describe('AuthScreen: Phone OTP Authentication', () => {
   let routerMock: ReturnType<typeof makeRouter>;
 
   beforeEach(() => {
@@ -166,7 +166,7 @@ describe('AuthScreen — Phone OTP Authentication', () => {
   });
 });
 
-describe('AuthScreen — Email/Password & Social Mock Providers', () => {
+describe('AuthScreen: Email/Password and Social Mock Providers', () => {
   let routerMock: ReturnType<typeof makeRouter>;
 
   beforeEach(() => {
@@ -250,7 +250,7 @@ describe('AuthScreen — Email/Password & Social Mock Providers', () => {
   });
 });
 
-describe('AuthScreen — Booking Handoff & Return Destination Safety', () => {
+describe('AuthScreen: Booking Handoff and Return Destination Safety', () => {
   let routerMock: ReturnType<typeof makeRouter>;
 
   beforeEach(() => {
