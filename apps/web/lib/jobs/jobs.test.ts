@@ -6,7 +6,7 @@ import {
   MOCK_CUSTOMER_ACTIVITIES,
   DEFAULT_JOBS_CUSTOMER,
 } from './index';
-import { PreservedJobDraft } from '../auth/types';
+import { PreservedJobDraft, AuthUser } from '../auth/types';
 
 describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
   describe('normalizeFilterView', () => {
@@ -91,12 +91,58 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
   });
 
   describe('resolveJobsContext view model generation', () => {
-    it('resolves default view model with "all" filter', () => {
+    const mockCustomerUser: AuthUser = {
+      id: DEFAULT_JOBS_CUSTOMER.id,
+      name: DEFAULT_JOBS_CUSTOMER.name,
+      email: DEFAULT_JOBS_CUSTOMER.email,
+      phone: DEFAULT_JOBS_CUSTOMER.phone,
+      role: 'customer',
+    };
+
+    const mockOtherCustomerUser: AuthUser = {
+      id: 'usr-customer-different',
+      name: 'Different Customer',
+      email: 'different@example.com',
+      phone: '+2348099999999',
+      role: 'customer',
+    };
+
+    it('fails closed when unauthenticated (null user)', () => {
       const searchParams = new URLSearchParams();
       const vm = resolveJobsContext(searchParams, null, null);
 
+      expect(vm.customer).toBeNull();
+      expect(vm.activities).toEqual([]);
+      expect(vm.allActivities).toEqual([]);
+      expect(vm.totalCount).toBe(0);
+    });
+
+    it('enforces customer isolation: empty activities override does not fall back to global mock dataset', () => {
+      const searchParams = new URLSearchParams();
+      const vm = resolveJobsContext(searchParams, mockCustomerUser, null, []);
+
+      expect(vm.customer?.id).toBe(mockCustomerUser.id);
+      expect(vm.activities).toEqual([]);
+      expect(vm.allActivities).toEqual([]);
+      expect(vm.totalCount).toBe(0);
+    });
+
+    it('enforces customer isolation: non-default customer without override receives empty activity list', () => {
+      const searchParams = new URLSearchParams();
+      const vm = resolveJobsContext(searchParams, mockOtherCustomerUser, null);
+
+      expect(vm.customer?.id).toBe(mockOtherCustomerUser.id);
+      expect(vm.activities).toEqual([]);
+      expect(vm.allActivities).toEqual([]);
+      expect(vm.totalCount).toBe(0);
+    });
+
+    it('resolves default view model with "all" filter for authenticated customer', () => {
+      const searchParams = new URLSearchParams();
+      const vm = resolveJobsContext(searchParams, mockCustomerUser, null);
+
       expect(vm.currentFilter).toBe('all');
-      expect(vm.customer.name).toBe(DEFAULT_JOBS_CUSTOMER.name);
+      expect(vm.customer?.name).toBe(DEFAULT_JOBS_CUSTOMER.name);
       expect(vm.activities.length).toBe(MOCK_CUSTOMER_ACTIVITIES.length);
       expect(vm.allActivities.length).toBe(MOCK_CUSTOMER_ACTIVITIES.length);
       expect(vm.totalCount).toBe(MOCK_CUSTOMER_ACTIVITIES.length);
@@ -108,7 +154,7 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
 
     it('resolves "active" filter returning active work while preserving totalCount and allActivities', () => {
       const searchParams = new URLSearchParams('view=active');
-      const vm = resolveJobsContext(searchParams, null, null);
+      const vm = resolveJobsContext(searchParams, mockCustomerUser, null);
 
       expect(vm.currentFilter).toBe('active');
       expect(vm.activities.length).toBe(vm.activeActivities.length);
@@ -121,7 +167,7 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
 
     it('resolves "upcoming" filter returning upcoming work only', () => {
       const searchParams = new URLSearchParams('view=upcoming');
-      const vm = resolveJobsContext(searchParams, null, null);
+      const vm = resolveJobsContext(searchParams, mockCustomerUser, null);
 
       expect(vm.currentFilter).toBe('upcoming');
       expect(vm.activities.length).toBe(vm.upcomingActivities.length);
@@ -132,7 +178,7 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
 
     it('resolves "past" filter returning completed and cancelled work only', () => {
       const searchParams = new URLSearchParams('view=past');
-      const vm = resolveJobsContext(searchParams, null, null);
+      const vm = resolveJobsContext(searchParams, mockCustomerUser, null);
 
       expect(vm.currentFilter).toBe('past');
       expect(vm.activities.length).toBe(vm.pastActivities.length);
@@ -143,7 +189,7 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
 
     it('deep links to selected activity by valid id', () => {
       const searchParams = new URLSearchParams('id=REQ-84920');
-      const vm = resolveJobsContext(searchParams, null, null);
+      const vm = resolveJobsContext(searchParams, mockCustomerUser, null);
 
       expect(vm.selectedActivityId).toBe('REQ-84920');
       expect(vm.selectedActivity).toBeDefined();
@@ -151,9 +197,9 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
       expect(vm.selectedActivity?.title).toContain('Inverter');
     });
 
-    it('handles unknown or invalid id gracefully without crashing', () => {
+    it('handles unknown or invalid id gracefully with selectedActivity undefined and no fallback', () => {
       const searchParams = new URLSearchParams('id=NON-EXISTENT-9999');
-      const vm = resolveJobsContext(searchParams, null, null);
+      const vm = resolveJobsContext(searchParams, mockCustomerUser, null);
 
       expect(vm.selectedActivityId).toBe('NON-EXISTENT-9999');
       expect(vm.selectedActivity).toBeUndefined();
@@ -161,7 +207,7 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
 
     it('supports combined view filter and selected id', () => {
       const searchParams = new URLSearchParams('view=upcoming&id=BKG-63102');
-      const vm = resolveJobsContext(searchParams, null, null);
+      const vm = resolveJobsContext(searchParams, mockCustomerUser, null);
 
       expect(vm.currentFilter).toBe('upcoming');
       expect(vm.selectedActivityId).toBe('BKG-63102');
@@ -181,7 +227,7 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
       };
 
       const searchParams = new URLSearchParams();
-      const vm = resolveJobsContext(searchParams, null, preservedDraft);
+      const vm = resolveJobsContext(searchParams, mockCustomerUser, preservedDraft);
 
       expect(vm.newJobNotice).toBeDefined();
       expect(vm.newJobNotice?.reference).toBe('REQ-DRAFT');
@@ -193,22 +239,22 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
 
     it('handles deterministic state overrides (first_run, partial_failure, offline, auth_failure)', () => {
       const firstRunParams = new URLSearchParams('state=first_run');
-      const firstRunVm = resolveJobsContext(firstRunParams, null, null);
+      const firstRunVm = resolveJobsContext(firstRunParams, mockCustomerUser, null);
       expect(firstRunVm.stateMode).toBe('first_run');
       expect(firstRunVm.activities).toEqual([]);
 
       const partialParams = new URLSearchParams('state=partial_failure');
-      const partialVm = resolveJobsContext(partialParams, null, null);
+      const partialVm = resolveJobsContext(partialParams, mockCustomerUser, null);
       expect(partialVm.hasPartialFailure).toBe(true);
       expect(partialVm.failedSection).toBe('activeActivities');
 
       const offlineParams = new URLSearchParams('state=offline');
-      const offlineVm = resolveJobsContext(offlineParams, null, null);
+      const offlineVm = resolveJobsContext(offlineParams, mockCustomerUser, null);
       expect(offlineVm.isOffline).toBe(true);
       expect(offlineVm.stateMode).toBe('offline');
 
       const authParams = new URLSearchParams('state=auth_failure');
-      const authVm = resolveJobsContext(authParams, null, null);
+      const authVm = resolveJobsContext(authParams, mockCustomerUser, null);
       expect(authVm.stateMode).toBe('auth_failure');
     });
   });

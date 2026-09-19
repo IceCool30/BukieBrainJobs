@@ -29,8 +29,12 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
     this.loadFromStorage();
   }
 
-  getSynchronousActivities(): CustomerActivityItem[] {
-    return [...this.inMemoryActivities];
+  getSynchronousActivities(customerId?: string): CustomerActivityItem[] {
+    const custId = (customerId || '').trim();
+    if (!custId) {
+      return [];
+    }
+    return this.inMemoryActivities.filter((a) => a.customerId === custId);
   }
 
   private loadFromStorage(): void {

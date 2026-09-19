@@ -22,7 +22,6 @@ import { AuthUser } from '../../lib/auth/types';
 import {
   resolveJobsContext,
   normalizeFilterView,
-  normalizeActivityId,
   MOCK_CUSTOMER_ACTIVITIES,
   getCustomerActivityRepository,
   MockCustomerActivityRepository,
@@ -59,11 +58,15 @@ export default function JobsScreen() {
 
   // Activities state backed by repository
   const [activitiesList, setActivitiesList] = useState<CustomerActivityItem[]>(() => {
+    const user = getMockAuthenticatedUser();
+    if (!user || !user.id) {
+      return [];
+    }
     const repo = getCustomerActivityRepository();
     if (repo instanceof MockCustomerActivityRepository) {
-      return repo.getSynchronousActivities();
+      return repo.getSynchronousActivities(user.id);
     }
-    return [...MOCK_CUSTOMER_ACTIVITIES];
+    return [];
   });
   const [isMutating, setIsMutating] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
@@ -83,9 +86,12 @@ export default function JobsScreen() {
 
   // Sync with repository on user change
   useEffect(() => {
+    if (!currentUser || !currentUser.id) {
+      setActivitiesList([]);
+      return;
+    }
     const repo = getCustomerActivityRepository();
-    const customerId = currentUser?.id || 'usr-customer-default';
-    repo.getActivities(customerId).then((items) => {
+    repo.getActivities(currentUser.id).then((items) => {
       setActivitiesList(items);
     });
   }, [currentUser]);
@@ -95,11 +101,10 @@ export default function JobsScreen() {
     const viewParam = searchParams.get('view');
     setActiveFilter(normalizeFilterView(viewParam));
 
-    const idParam = searchParams.get('id');
+    const idParam = searchParams.get('id')?.trim();
     if (idParam) {
-      const normalizedId = normalizeActivityId(idParam);
-      setSelectedId(normalizedId);
-      setMobileDetailOpen(Boolean(normalizedId));
+      setSelectedId(idParam);
+      setMobileDetailOpen(true);
     } else {
       setSelectedId(null);
       setMobileDetailOpen(false);
@@ -109,12 +114,15 @@ export default function JobsScreen() {
   // Mutation Handlers
   const handleCancelActivity = useCallback(
     async (activityId: string, reason: string) => {
+      if (!currentUser || !currentUser.id) {
+        setMutationError('Authentication required to cancel activity');
+        return;
+      }
       setIsMutating(true);
       setMutationError(null);
       try {
         const repo = getCustomerActivityRepository();
-        const customerId = currentUser?.id || 'usr-customer-default';
-        const updated = await repo.mutateJobStatus(customerId, activityId, {
+        const updated = await repo.mutateJobStatus(currentUser.id, activityId, {
           type: 'CANCEL',
           reason,
         });
@@ -180,20 +188,23 @@ export default function JobsScreen() {
     };
   }, [searchParams, currentUser, activeFilter, partialFailureCleared, activitiesList]);
 
+  const rawIdParam = searchParams.get('id')?.trim();
+  const targetId = rawIdParam || selectedId;
+
   // Auto-select first activity if none selected and on desktop
   const activeSelectedActivity = useMemo(() => {
-    if (selectedId) {
+    if (targetId) {
       return (
         viewModel.activities.find(
-          (a) => a.id === selectedId || a.referenceCode === selectedId
+          (a) => a.id === targetId || a.referenceCode === targetId
         ) ||
         viewModel.allActivities.find(
-          (a) => a.id === selectedId || a.referenceCode === selectedId
+          (a) => a.id === targetId || a.referenceCode === targetId
         )
       );
     }
     return viewModel.activities[0] || viewModel.allActivities[0];
-  }, [selectedId, viewModel.activities, viewModel.allActivities]);
+  }, [targetId, viewModel.activities, viewModel.allActivities]);
 
   // Navigation handlers
   const handleFilterChange = useCallback(
@@ -358,11 +369,13 @@ export default function JobsScreen() {
           {viewModel.stateMode === 'loading' && <JobsLoadingSkeleton />}
 
           {/* First-Run Empty State */}
-          {viewModel.stateMode === 'first_run' && <JobsFirstRunEmptyState />}
+          {(viewModel.stateMode === 'first_run' || viewModel.totalCount === 0) &&
+            viewModel.stateMode !== 'loading' && <JobsFirstRunEmptyState />}
 
           {/* Filtered Empty State */}
           {viewModel.stateMode !== 'first_run' &&
             viewModel.stateMode !== 'loading' &&
+            viewModel.totalCount > 0 &&
             viewModel.activities.length === 0 && (
               <JobsFilteredEmptyState
                 filter={activeFilter}
@@ -373,7 +386,8 @@ export default function JobsScreen() {
           {/* Master-Detail 12-Column Layout */}
           {viewModel.stateMode !== 'loading' &&
             viewModel.stateMode !== 'first_run' &&
-            viewModel.activities.length > 0 && (
+            viewModel.totalCount > 0 &&
+            (viewModel.activities.length > 0 || Boolean(targetId)) && (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 {/* Master List (5 columns on desktop) */}
                 <div
@@ -381,11 +395,15 @@ export default function JobsScreen() {
                   role="feed"
                   aria-label="Activity list"
                 >
-                  {viewModel.activities.map((activity) => (
+                  {viewModel.activities.map((activity, index) => (
                     <ActivityCard
                       key={activity.id}
                       activity={activity}
-                      isSelected={activeSelectedActivity?.id === activity.id}
+                      isSelected={
+                        !targetId
+                          ? index === 0
+                          : (activity.id === targetId || activity.referenceCode === targetId)
+                      }
                       onSelect={() => handleSelectActivity(activity.id)}
                     />
                   ))}
@@ -394,8 +412,8 @@ export default function JobsScreen() {
                 {/* Detail Pane (7 columns on desktop, full-screen on mobile) */}
                 <ActivityDetail
                   activity={activeSelectedActivity}
-                  requestedId={selectedId}
-                  isMobileOpen={mobileDetailOpen}
+                  requestedId={targetId}
+                  isMobileOpen={mobileDetailOpen || Boolean(rawIdParam)}
                   onCloseMobile={handleCloseMobileDetail}
                   onResetSelected={() => {
                     setSelectedId(null);
