@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useId } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import {
   MapPin,
@@ -149,7 +149,6 @@ export function LifecycleStateSurface({
 }: LifecycleStateSurfaceProps) {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [localActionPending, setLocalActionPending] = useState(false);
-  const liveRegionId = useId();
 
   const isDeclined = Boolean(
     activity.declineResponse ||
@@ -213,11 +212,6 @@ export function LifecycleStateSurface({
       aria-label="Booking Lifecycle Surface"
       aria-busy={isPending}
     >
-      {/* Live Region for Screen Readers */}
-      <div id={liveRegionId} className="sr-only" aria-live="polite" aria-atomic="true">
-        {stateCopy.meaningLine}
-      </div>
-
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       {/* BLOCK 1: Current State Block                                    */}
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
@@ -266,7 +260,10 @@ export function LifecycleStateSurface({
         </div>
 
         <div className="mt-3">
-          <p className="text-sm sm:text-base font-semibold text-[#001A41] font-display">
+          <p
+            className="text-sm sm:text-base font-semibold text-[#001A41] font-display"
+            aria-live="polite"
+          >
             {stateCopy.meaningLine}
           </p>
           {isDeclined && activity.declineResponse?.declineReason && (
