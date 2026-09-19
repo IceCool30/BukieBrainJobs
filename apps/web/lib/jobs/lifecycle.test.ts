@@ -384,8 +384,8 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
     });
 
     it('ensures MockCustomerActivityRepository class does not expose dispatchInvitationInternal or sendInvitation', () => {
-      expect((MockCustomerActivityRepository.prototype as Record<string, unknown>).dispatchInvitationInternal).toBeUndefined();
-      expect((MockCustomerActivityRepository.prototype as Record<string, unknown>).sendInvitation).toBeUndefined();
+      expect((MockCustomerActivityRepository.prototype as unknown as Record<string, unknown>).dispatchInvitationInternal).toBeUndefined();
+      expect((MockCustomerActivityRepository.prototype as unknown as Record<string, unknown>).sendInvitation).toBeUndefined();
     });
 
     it('allows standalone domain function to dispatch invitation and transition OPEN to PENDING_ACCEPTANCE', () => {
