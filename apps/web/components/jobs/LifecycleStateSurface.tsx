@@ -362,7 +362,7 @@ export function LifecycleStateSurface({
               {currentJobStatus === 'CONFIRMED' ||
               currentJobStatus === 'IN_PROGRESS' ||
               currentJobStatus === 'COMPLETED'
-                ? 'Assigned Professional'
+                ? 'Confirmed Professional'
                 : 'Preferred Professional'}
             </h4>
             <div className="bg-blue-50/40 rounded-xl p-4 border border-blue-100/80 flex items-center justify-between gap-4">
