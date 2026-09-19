@@ -115,6 +115,23 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 forbidden corporate phrases; state-honest customer copy
 - **Status**: PASS
 
-
-
-
+## 2026-09-19: WEB-011 Audit Remediation (Customer Isolation, Deep-Link Fallback, Auth Boundary)
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-011-customer-jobs-and-bookings`
+- **Trigger**: Remediation of three independent audit blockers identified on PR #49
+- **Items Remediated & Verified**:
+  1. Customer Isolation Regression: An authenticated customer with legitimate empty activity results (`activitiesOverride: []`) preserves the empty array and no longer falls back to global mock activities (`MOCK_CUSTOMER_ACTIVITIES`).
+  2. Invalid Deep-Link Fall-Through Bug: Visiting an unknown or invalid identifier (such as `/jobs?id=NON-EXISTENT-999`) returns `undefined` for `selectedActivity` instead of falling through to the first item in the list. The detail pane renders "Activity not found" with the requested identifier and a reset button.
+  3. Synthetic Customer Identity & Fail-Closed Boundary: Removed `usr-customer-default` fallbacks from activity queries and cancel mutations. `resolveJobsContext` sets `customer: null` and returns an empty activity list when unauthenticated. UI renders the sign-in boundary immediately without synthesizing an identity.
+  4. Repository & Domain Alignment: `MockCustomerActivityRepository.getSynchronousActivities` scopes to `customerId` when provided by UI components while permitting unscoped retrieval for internal domain methods (`dispatchDomainInvitation`).
+  5. Regression Test Coverage: Added dedicated test cases in `apps/web/lib/jobs/jobs.test.ts` and `apps/web/app/jobs/JobsScreen.test.tsx` verifying customer isolation, unauthenticated fail-closed state, and invalid deep-link handling.
+- **Commands Executed on Codespace**:
+  - `pnpm run type-check`: Passed across all packages with 0 errors
+  - `pnpm test`: Passed (21 test files passed, 387 tests passed in `apps/web`, 436 total monorepo tests, 0 failures)
+  - `pnpm run lint`: Passed with 0 errors and 0 warnings
+  - `pnpm run build`: Production Next.js build compiled all 29 routes successfully
+- **CI & Deployment Status**:
+  - GitHub Actions CI (Run 35470899879): SUCCESS
+  - Vercel Preview Deployment: SUCCESS
+- **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 corporate filler terms; state-honest copy
+- **Status**: PASS
