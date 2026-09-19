@@ -111,7 +111,12 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
   ];
 
   beforeEach(() => {
-    repository = new MockCustomerActivityRepository(mockTestActivities);
+    if (typeof window !== 'undefined') {
+      window.localStorage.clear();
+    }
+    repository = new MockCustomerActivityRepository(
+      JSON.parse(JSON.stringify(mockTestActivities))
+    );
   });
 
   describe('Section 1: Booking Acceptance Boundary', () => {
@@ -257,8 +262,24 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
     });
 
     it('rejects decline if no invitation exists on the job (cannot manufacture invitation)', async () => {
+      const pendingWithoutInv: CustomerActivityItem = {
+        id: 'REQ-PENDING-NO-INV',
+        type: 'job_request',
+        title: 'Generator Maintenance',
+        service: 'Generator Maintenance',
+        status: 'awaiting_progress',
+        statusLabel: 'BrainWorker Responding',
+        jobStatus: 'PENDING_ACCEPTANCE',
+        customerId: 'usr-cust-1',
+        location: 'Ikeja, Lagos',
+        schedule: 'Friday 2:00 PM',
+        referenceCode: 'REQ-PENDING-NO-INV',
+        createdAt: 'Today, 11:00 AM',
+      };
+      repository = new MockCustomerActivityRepository([pendingWithoutInv]);
+
       await expect(
-        repository.mutateJobStatus('usr-cust-1', 'REQ-OPEN-TEST', {
+        repository.mutateJobStatus('usr-cust-1', 'REQ-PENDING-NO-INV', {
           type: 'DECLINE_INVITATION',
           invitationId: 'inv-manufactured',
           taskerProfileId: 'bw-gen-expert',
