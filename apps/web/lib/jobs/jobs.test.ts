@@ -97,6 +97,8 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
       email: DEFAULT_JOBS_CUSTOMER.email,
       phone: DEFAULT_JOBS_CUSTOMER.phone,
       role: 'customer',
+      provider: 'email',
+      isBrainWorkerApproved: false,
     };
 
     const mockOtherCustomerUser: AuthUser = {
@@ -105,6 +107,8 @@ describe('WEB-011 Customer Jobs & Bookings Domain & Filtering (TDD)', () => {
       email: 'different@example.com',
       phone: '+2348099999999',
       role: 'customer',
+      provider: 'email',
+      isBrainWorkerApproved: false,
     };
 
     it('fails closed when unauthenticated (null user)', () => {
