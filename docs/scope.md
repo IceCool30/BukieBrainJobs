@@ -5,19 +5,21 @@ Establish, verify, and expand the BukieBrainJobs customer marketplace across web
 
 ## Active Work Slice
 
-- [ ] **13. WEB-013 Customer Booking Acceptance & Booking Lifecycle**
-  - **Spec**: `docs/specs/WEB-013-customer-booking-lifecycle.md`
-  - **Acceptance Criteria**:
-    - [ ] Formalize acceptance response boundary and transition to CONFIRMED via canTransition()
-    - [ ] Decline recorded on invitation without creating a DECLINED JobStatus
-    - [ ] Cancellation derived strictly from canTransition(status, 'CANCELLED') with authorization
-    - [ ] Requested schedule rendered as context without schedule negotiation or SCHEDULED status
-    - [ ] Booking confirmation strictly separated from payment (zero payment claims)
-    - [ ] Distinct UI states: awaiting response, confirmed, declined, expired, cancelled, and mutations
-    - [ ] Full TDD suite covering acceptance, decline, cancellation, schedule, and authorization
-  - **Verification Command**: `pnpm test && pnpm type-check`
+_No active slice. Work is complete._
 
 ## Completed & Verified Slices
+
+- [x] **13. WEB-013 Customer Booking Acceptance & Booking Lifecycle**
+  - **Spec**: `docs/specs/WEB-013-customer-booking-lifecycle.md`
+  - **Acceptance Criteria**:
+    - [x] Formalize acceptance response boundary and transition to CONFIRMED via canTransition()
+    - [x] Decline recorded on invitation without creating a DECLINED JobStatus
+    - [x] Cancellation derived strictly from canTransition(status, 'CANCELLED') with authorization
+    - [x] Requested schedule rendered as context without schedule negotiation or SCHEDULED status
+    - [x] Booking confirmation strictly separated from payment (zero payment claims)
+    - [x] Distinct UI states: awaiting response, confirmed, declined, expired, cancelled, and mutations
+    - [x] Full TDD suite covering acceptance, decline, cancellation, schedule, and authorization
+  - **Verification Command**: `pnpm test && pnpm type-check`
 
 - [x] **0. Mr. Solomon 9-Command Loop Baseline Realignment**
   - **Spec**: `docs/specs/00-engineering-loop.md`

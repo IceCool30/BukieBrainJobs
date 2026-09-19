@@ -17,7 +17,17 @@ The format follows practical release notes written plainly in engineering langua
 - Expanded `AGENTS.md` to conform to the canonical NINE context map schema, recording Termux environment limits and cloud Codespace execution requirements.
 - Standardized test suite describe block titles across `apps/web` to eliminate em dashes.
 
-## [1.0.0-web-012] - 2026-09-17
+## [1.0.0-web-013] - 2026-09-19
+
+### Added
+- WEB-013 Customer Booking Acceptance and Lifecycle on canonical `/jobs` surface.
+- `LifecycleStateSurface.tsx` implementing the 5-block structure: current state, lifecycle position, context, actions, and recovery.
+- `LifecycleStepIndicator.tsx` supporting desktop horizontal layout and mobile compact vertical progress.
+- `CancellationModal.tsx` modal for safe cancellation confirmation with reason selection and transient pending state.
+- Extended domain types in `@bukiebrainjobs/types` (`JobLifecycleAction`, `CustomerActivityItem`, `JobInvitation`).
+- Mock repository methods supporting invitation responses (accept, decline) and customer-authorized cancellations with `canTransition()` enforcement.
+- Deterministic mock activity fixtures covering awaiting response, explicit decline, confirmed booking, expiration, and cancellation.
+- 15 new automated tests in `apps/web` (9 lifecycle domain tests in `lib/jobs/lifecycle.test.ts` and 6 integration tests in `app/jobs/JobsScreen.test.tsx`), bringing total monorepo test coverage to 414 passing tests.
 
 ### Added
 - WEB-012 customer job matching at `/job/[referenceCode]/matches`.
