@@ -75,6 +75,12 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
       schedule: 'Last week',
       referenceCode: 'BKG-COMPLETED-TEST',
       createdAt: 'Last week',
+      invitation: {
+        id: 'inv-completed-1',
+        jobId: 'BKG-COMPLETED-TEST',
+        taskerProfileId: 'bw-completed-tech',
+        sentAt: 'Last week',
+      },
     },
     {
       id: 'REQ-OPEN-TEST',
@@ -148,8 +154,8 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
       await expect(
         repository.mutateJobStatus('usr-cust-1', 'BKG-COMPLETED-TEST', {
           type: 'ACCEPT_INVITATION',
-          invitationId: 'any-inv',
-          taskerProfileId: 'any-worker',
+          invitationId: 'inv-completed-1',
+          taskerProfileId: 'bw-completed-tech',
         })
       ).rejects.toThrow(InvalidTransitionError);
     });

@@ -4,6 +4,7 @@ import { render, screen, fireEvent, within } from '@testing-library/react';
 import JobsScreen from '../../components/jobs/JobsScreen';
 import * as authStorage from '../../lib/auth/storage';
 import { AuthUser } from '../../lib/auth/types';
+import { resetCustomerActivityRepository } from '../../lib/jobs/repository';
 
 // Mock Next.js navigation
 const mockPush = vi.fn();
@@ -37,6 +38,7 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    resetCustomerActivityRepository();
     mockSearchParams = new URLSearchParams();
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockCustomerUser);
     vi.spyOn(authStorage, 'setMockAuthenticatedUser').mockImplementation(() => {});
