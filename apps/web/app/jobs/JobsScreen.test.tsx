@@ -4,6 +4,7 @@ import { render, screen, fireEvent, within } from '@testing-library/react';
 import JobsScreen from '../../components/jobs/JobsScreen';
 import * as authStorage from '../../lib/auth/storage';
 import { AuthUser } from '../../lib/auth/types';
+import { resetCustomerActivityRepository } from '../../lib/jobs/repository';
 
 // Mock Next.js navigation
 const mockPush = vi.fn();
@@ -26,7 +27,7 @@ vi.mock('next/image', () => ({
 
 describe('WEB-011 JobsScreen Component (TDD)', () => {
   const mockCustomerUser: AuthUser = {
-    id: 'usr-customer-88',
+    id: 'usr-customer-default',
     name: 'Babajide Adeleke',
     email: 'babajide@example.com',
     phone: '+2348031234567',
@@ -37,6 +38,7 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    resetCustomerActivityRepository();
     mockSearchParams = new URLSearchParams();
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockCustomerUser);
     vi.spyOn(authStorage, 'setMockAuthenticatedUser').mockImplementation(() => {});
@@ -103,15 +105,15 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
     const activeTab = within(filterNav).getByRole('button', { name: /Active/i });
 
     // Initial counts
-    expect(within(allTab).getByText('7')).toBeInTheDocument();
-    expect(within(activeTab).getByText('3')).toBeInTheDocument();
+    expect(within(allTab).getByText('9')).toBeInTheDocument();
+    expect(within(activeTab).getByText('4')).toBeInTheDocument();
 
     // Click Active filter
     fireEvent.click(activeTab);
 
-    // Verify All tab count STILL displays the total count 7, not 3
-    expect(within(allTab).getByText('7')).toBeInTheDocument();
-    expect(within(activeTab).getByText('3')).toBeInTheDocument();
+    // Verify All tab count STILL displays the total count 9, not 4
+    expect(within(allTab).getByText('9')).toBeInTheDocument();
+    expect(within(activeTab).getByText('4')).toBeInTheDocument();
   });
 
   it('separates Activity Type and Activity Status visually on each card', () => {
@@ -226,5 +228,149 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
     expect(screen.getByText(/Sign in to view your activity/i)).toBeInTheDocument();
     const signInLink = screen.getByRole('link', { name: /Sign In/i });
     expect(signInLink).toHaveAttribute('href', '/login?redirect=/jobs');
+  });
+
+  it('renders WEB-013 lifecycle step indicator and honest meaning line for awaiting response', () => {
+    mockSearchParams = new URLSearchParams('id=REQ-84920');
+    render(<JobsScreen />);
+
+    expect(screen.getByText('Waiting for the BrainWorker to respond.')).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /Booking lifecycle progression/i })).toBeInTheDocument();
+  });
+
+  it('renders WEB-013 confirmed booking state with confirmation headline', () => {
+    mockSearchParams = new URLSearchParams('id=BKG-63102');
+    render(<JobsScreen />);
+
+    expect(screen.getByText('Your booking is confirmed.')).toBeInTheDocument();
+    expect(screen.getByText('Confirmed Professional')).toBeInTheDocument();
+    expect(screen.getByText('Emeka Obi')).toBeInTheDocument();
+  });
+
+  it('renders WEB-013 decline state with honest wording and alternatives CTA', () => {
+    mockSearchParams = new URLSearchParams('id=REQ-72941');
+    render(<JobsScreen />);
+
+    expect(screen.getByText('The BrainWorker declined the request.')).toBeInTheDocument();
+    const alternativesLink = screen.getByRole('link', { name: /Review Alternatives/i });
+    expect(alternativesLink).toBeInTheDocument();
+    expect(alternativesLink).toHaveAttribute('href', '/job/REQ-72941/matches');
+  });
+
+  it('renders WEB-013 expired state with recreate CTA', () => {
+    mockSearchParams = new URLSearchParams('id=REQ-22019');
+    render(<JobsScreen />);
+
+    expect(screen.getByText('The request expired without a response.')).toBeInTheDocument();
+    const recreateLink = screen.getByRole('link', { name: /Recreate Request/i });
+    expect(recreateLink).toBeInTheDocument();
+    expect(recreateLink).toHaveAttribute('href', '/post-job');
+  });
+
+  it('allows opening CancellationModal and cancelling an open request', async () => {
+    mockSearchParams = new URLSearchParams('id=REQ-51829');
+    render(<JobsScreen />);
+
+    const cancelBtn = screen.getByRole('button', { name: /Cancel Request/i });
+    expect(cancelBtn).toBeInTheDocument();
+
+    fireEvent.click(cancelBtn);
+
+    // Modal opens
+    expect(screen.getByRole('dialog', { name: /Cancel Service Request/i })).toBeInTheDocument();
+    expect(screen.getByText(/Are you sure you want to cancel request/i)).toBeInTheDocument();
+
+    // Confirm cancellation
+    const confirmBtn = screen.getByRole('button', { name: /Confirm Cancellation/i });
+    fireEvent.click(confirmBtn);
+
+    // After cancellation, status updates to cancelled
+    expect(await screen.findByText('Your booking was cancelled.')).toBeInTheDocument();
+  });
+
+  it('does not render mock acceptance or decline controls in customer UI', () => {
+    mockSearchParams = new URLSearchParams('id=REQ-84920');
+    render(<JobsScreen />);
+
+    expect(screen.getByText('Waiting for the BrainWorker to respond.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Simulate Acceptance/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Simulate Decline/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/Simulate Worker Response/i)).not.toBeInTheDocument();
+  });
+
+  it('renders booking-specific cancellation modal title and text when cancelling confirmed booking', async () => {
+    mockSearchParams = new URLSearchParams('id=BKG-63102');
+    render(<JobsScreen />);
+
+    expect(screen.getByText('Your booking is confirmed.')).toBeInTheDocument();
+
+    const cancelBtn = screen.getByRole('button', { name: /Cancel Booking/i });
+    expect(cancelBtn).toBeInTheDocument();
+
+    fireEvent.click(cancelBtn);
+
+    expect(screen.getByRole('dialog', { name: /Cancel Booking/i })).toBeInTheDocument();
+    expect(screen.getByText(/Are you sure you want to cancel booking/i)).toBeInTheDocument();
+    expect(screen.getByText(/This action will update the status to Cancelled\./i)).toBeInTheDocument();
+    expect(screen.queryByText(/stop further processing/i)).not.toBeInTheDocument();
+  });
+
+  it('does not display decline state when authoritative jobStatus is CONFIRMED despite stale decline response', () => {
+    resetCustomerActivityRepository([
+      {
+        id: 'BKG-STALE-DECLINE',
+        type: 'booking',
+        title: 'Generator Maintenance',
+        service: 'Generator Maintenance',
+        status: 'scheduled',
+        statusLabel: 'Scheduled',
+        jobStatus: 'CONFIRMED',
+        customerId: 'usr-customer-default',
+        location: 'Lekki Phase 1, Lagos',
+        schedule: 'Tomorrow morning',
+        referenceCode: 'BKG-STALE-DECLINE',
+        createdAt: 'Today, 9:00 AM',
+        invitation: {
+          id: 'inv-stale-1',
+          jobId: 'BKG-STALE-DECLINE',
+          taskerProfileId: 'bw-prior-worker',
+          sentAt: 'Yesterday',
+          accepted: false,
+        },
+        declineResponse: {
+          respondedAt: 'Yesterday',
+          declineReason: 'Worker was busy yesterday',
+        },
+      },
+    ]);
+
+    mockSearchParams = new URLSearchParams('id=BKG-STALE-DECLINE');
+    render(<JobsScreen />);
+
+    // Authoritative status must win:
+    expect(screen.getByText('Your booking is confirmed.')).toBeInTheDocument();
+    expect(screen.queryByText('The BrainWorker declined the request.')).not.toBeInTheDocument();
+    expect(screen.queryByText('BrainWorker Declined')).not.toBeInTheDocument();
+  });
+
+  it('traps focus and restores focus upon modal dismissal', async () => {
+    mockSearchParams = new URLSearchParams('id=REQ-51829');
+    render(<JobsScreen />);
+
+    const cancelBtn = screen.getByRole('button', { name: /Cancel Request/i });
+    cancelBtn.focus();
+    expect(document.activeElement).toBe(cancelBtn);
+
+    fireEvent.click(cancelBtn);
+
+    const dialog = screen.getByRole('dialog', { name: /Cancel Service Request/i });
+    expect(dialog).toBeInTheDocument();
+
+    // Dismiss with Escape key
+    fireEvent.keyDown(window, { key: 'Escape' });
+
+    // Modal closes and focus is restored to the trigger button
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(document.activeElement).toBe(cancelBtn);
   });
 });

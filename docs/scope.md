@@ -5,6 +5,22 @@ Establish, verify, and expand the BukieBrainJobs customer marketplace across web
 
 ## Active Work Slice
 
+_No active slice. Work is complete._
+
+## Completed & Verified Slices
+
+- [x] **13. WEB-013 Customer Booking Acceptance & Booking Lifecycle**
+  - **Spec**: `docs/specs/WEB-013-customer-booking-lifecycle.md`
+  - **Acceptance Criteria**:
+    - [x] Formalize acceptance response boundary and transition to CONFIRMED via canTransition()
+    - [x] Decline recorded on invitation without creating a DECLINED JobStatus
+    - [x] Cancellation derived strictly from canTransition(status, 'CANCELLED') with authorization
+    - [x] Requested schedule rendered as context without schedule negotiation or SCHEDULED status
+    - [x] Booking confirmation strictly separated from payment (zero payment claims)
+    - [x] Distinct UI states: awaiting response, confirmed, declined, expired, cancelled, and mutations
+    - [x] Full TDD suite covering acceptance, decline, cancellation, schedule, and authorization
+  - **Verification Command**: `pnpm test && pnpm type-check`
+
 - [x] **0. Mr. Solomon 9-Command Loop Baseline Realignment**
   - **Spec**: `docs/specs/00-engineering-loop.md`
   - **Acceptance Criteria**:
@@ -16,8 +32,6 @@ Establish, verify, and expand the BukieBrainJobs customer marketplace across web
     - [x] Status script loop:status wired to package.json
     - [x] Test suite describe titles cleaned of em dashes
   - **Verification Command**: `bash scripts/nine-status.sh`
-
-## Completed & Verified Slices
 
 - [x] **1. Foundation & Repository Baseline Upgrade**
   - **Spec**: `docs/specs/FOUND-001-baseline.md`
@@ -118,14 +132,6 @@ Establish, verify, and expand the BukieBrainJobs customer marketplace across web
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test app/job/MatchResultsScreen.test.tsx lib/matching/matching.test.ts`
 
 ## Upcoming Planned Slices
-
-- [ ] **13. Customer Job Lifecycle & Booking Transition**
-  - **Spec**: `docs/specs/WEB-013-job-lifecycle.md`
-  - **Acceptance Criteria**:
-    - [ ] Formalize customer match selection transition into booking request
-    - [ ] BrainWorker response simulation and status advancement
-    - [ ] Booking confirmation handoff
-  - **Verification Command**: `pnpm test`
 
 - [ ] **14. BrainWorker Platform Onboarding & Verification**
   - **Spec**: `docs/specs/BW-001-onboarding.md`

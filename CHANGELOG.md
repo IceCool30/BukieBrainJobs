@@ -17,7 +17,33 @@ The format follows practical release notes written plainly in engineering langua
 - Expanded `AGENTS.md` to conform to the canonical NINE context map schema, recording Termux environment limits and cloud Codespace execution requirements.
 - Standardized test suite describe block titles across `apps/web` to eliminate em dashes.
 
-## [1.0.0-web-012] - 2026-09-17
+## [1.0.0-web-013] - 2026-09-19
+
+### Added
+- WEB-013 Customer Booking Acceptance and Lifecycle on canonical `/jobs` surface.
+- `LifecycleStateSurface.tsx` implementing the 5-block structure: current state, lifecycle position, context, actions, and recovery.
+- `LifecycleStepIndicator.tsx` supporting desktop horizontal layout and mobile compact vertical progress.
+- `CancellationModal.tsx` modal for safe cancellation confirmation with reason selection and transient pending state.
+- Extended domain types in `@bukiebrainjobs/types` (`JobLifecycleAction`, `CustomerActivityItem`, `JobInvitation`).
+- Mock repository methods supporting invitation responses (accept, decline) and customer-authorized cancellations with `canTransition()` enforcement.
+- Deterministic mock activity fixtures covering awaiting response, explicit decline, confirmed booking, expiration, and cancellation.
+- 21 automated tests in `apps/web` (14 lifecycle domain tests in `lib/jobs/lifecycle.test.ts` and 7 integration tests in `app/jobs/JobsScreen.test.tsx`), bringing total monorepo test coverage to 420 passing tests.
+
+### Fixed
+- Enforced strict customer data isolation in `MockCustomerActivityRepository.getActivities()` and `getActivityById()`.
+- Enforced fail-closed authorization in `mutateJobStatus()`: missing ownership or mismatched customerId is rejected.
+- Prevented manufactured invitations: acceptance and decline strictly require an active invitation on the job.
+- Removed payment-result copy ("Completed & Paid", "payment settled") from `LifecycleStateSurface.tsx` to preserve the payment boundary.
+- Removed mock acceptance and decline simulation controls from the customer lifecycle UI.
+- Bound decline presentation strictly to `PENDING_ACCEPTANCE`, preventing stale or contradictory invitation data from overriding authoritative states (`CONFIRMED`, `CANCELLED`, `EXPIRED`).
+- Eliminated overclaiming copy from `CancellationModal.tsx`: removed unverified "stop further processing" language and aligned titles and body text dynamically between service requests and confirmed bookings.
+- Decoupled invitation dispatch from the exported `MockCustomerActivityRepository` class, replacing it with a standalone `dispatchDomainInvitation()` service function.
+- Eliminated confirmed schedule fabrication: `confirmedSchedule` is retained solely from authoritative contracts and remains undefined otherwise; requested schedule is displayed separately.
+- Enforced `PENDING_ACCEPTANCE` boundary on decline mutations: `DECLINE_INVITATION` now rejects operations outside that lifecycle state.
+- Hardened invitation creation boundary: removed `SEND_INVITATION` from customer-facing `JobLifecycleAction` and `mutateJobStatus`, separating invitation dispatch into an internal domain operation.
+- Removed synthetic fallback identifiers (`inv-...-sim`, `bw-simulated-artisan`) from simulation controls and guarded controls with active invitation check.
+- Implemented accessible focus trap and focus restoration to the trigger button in `CancellationModal.tsx`.
+- Removed unsupported verification trust claims ("Verified Identity & Community Standards" safety standard card and preferred worker verified badge) from customer lifecycle surface until backed by authoritative verification contracts.
 
 ### Added
 - WEB-012 customer job matching at `/job/[referenceCode]/matches`.
