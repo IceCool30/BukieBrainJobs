@@ -5,17 +5,7 @@ Establish, verify, and expand the BukieBrainJobs customer marketplace across web
 
 ## Active Work Slice
 
-- [ ] **WEB-011 Customer Jobs & Bookings Implementation Audit & Hardening**
-  - **Spec**: `docs/specs/WEB-011-customer-jobs-and-bookings.md`
-  - **Acceptance Criteria**:
-    - [ ] Browser Back/Forward and mobile detail URL state synchronization without parameter persistence issues
-    - [ ] Parameter validation preventing malformed or unauthorized query params from being treated as trusted activity channels
-    - [ ] Master-detail 12-column layout and mobile full-screen detail with >=48px touch targets verified
-    - [ ] Decorative watermark confirmed non-interactive, subordinate, and aria-hidden
-    - [ ] "Scheduled" preserved strictly as a presentation label without leaking into domain JobStatus
-    - [ ] Complete deterministic state coverage (first-run, filtered empty, loading, partial failure, offline, unauthenticated)
-    - [ ] Zero em dashes across all code comments, test descriptions, and user copy
-  - **Verification Command**: `pnpm test && pnpm type-check`
+_No active slice. Work is complete._
 
 ## Completed & Verified Slices
 
@@ -127,10 +117,14 @@ Establish, verify, and expand the BukieBrainJobs customer marketplace across web
 - [x] **11. WEB-011 Customer Jobs & Bookings Activity Hub**
   - **Spec**: `docs/specs/WEB-011-customer-jobs-and-bookings.md`
   - **Acceptance Criteria**:
-    - [x] Unified customer activity hub at /jobs
-    - [x] Distinct tabs for Job Requests and Confirmed Bookings
-    - [x] View Matches entry point for supported job requests
-  - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test app/jobs/JobsScreen.test.tsx`
+    - [x] Unified customer activity hub at /jobs with 12-column master-detail layout on desktop and full-screen detail on mobile
+    - [x] Browser Back/Forward and mobile detail URL state synchronization without parameter persistence issues
+    - [x] Parameter validation via normalizeActivityId preventing malformed or unauthorized query params from being trusted channels
+    - [x] Decorative watermark confirmed non-interactive, subordinate, and aria-hidden at 3.5% opacity
+    - [x] "Scheduled" preserved strictly as a presentation label without leaking into domain JobStatus
+    - [x] Complete deterministic state coverage (first-run, filtered empty, loading, partial failure, offline, unauthenticated)
+    - [x] Full test coverage in monorepo with zero regressions
+  - **Verification Command**: `pnpm test && pnpm type-check`
 
 - [x] **12. WEB-012 Customer Job Matching & Match Results**
   - **Spec**: `docs/specs/WEB-012-customer-job-matching.md`

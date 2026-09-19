@@ -94,5 +94,27 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 forbidden corporate phrases; state-honest presentation of BrainWorker preferences
 - **Status**: PASS
 
+## 2026-09-19: WEB-011 Build Specification & Navigation Hardening
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-011-customer-jobs-and-bookings`
+- **Trigger**: Implementation authorization following approved WEB-011A Independent Design Review
+- **Items Verified & Hardened**:
+  1. Established canonical build spec in `docs/specs/WEB-011-customer-jobs-and-bookings.md` covering all 5 design review notes.
+  2. Hardened URL state synchronization: closing mobile detail cleans up the `id` parameter, and browser Back/Forward navigation resets detail and mobile view states when `id` is removed.
+  3. Sanitized query parameters using `normalizeActivityId` to prevent untrusted inputs from becoming authorization channels.
+  4. Preserved active filter view (`view=`) when resetting invalid activity IDs via not-found state.
+  5. Verified decorative watermark compliance (`aria-hidden="true"`, 3.5% opacity, `pointer-events-none`).
+  6. Verified "Scheduled" status presentation strictly reflects supported activities without contaminating domain `JobStatus`.
+  7. Verified 12-column master-detail layout on desktop and mobile full-screen detail with >=48px touch targets.
+  8. Added 2 regression tests in `apps/web/app/jobs/JobsScreen.test.tsx` verifying URL parameter cleanup and filter preservation.
+- **Commands Executed**:
+  - `pnpm run type-check`: Passed across 6 packages with 0 errors
+  - `pnpm test`: Passed across monorepo (381 tests passed in `apps/web` across 21 suites, 42 in `validation`, 7 in `utils`, 430 tests total, 0 failures)
+  - `pnpm run lint`: Passed with 0 errors and 0 warnings
+  - `pnpm run build`: Passed with Next.js compiling all 29 static and dynamic routes
+- **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 forbidden corporate phrases; state-honest customer copy
+- **Status**: PASS
+
+
 
 
