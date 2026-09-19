@@ -33,23 +33,29 @@ Implement the customer-facing booking acceptance and lifecycle surface within th
    - Zero payment execution, payment CTAs, escrow states, or funds-secured messaging in WEB-013.
    - Booking confirmation is not payment confirmation.
 
-7. **Authorization and Ownership**:
-   - Enforce customer ownership on every mutation.
+7. **Authorization, Data Isolation, and Anti-Manufacturing**:
+   - Enforce customer data isolation in `getActivities()` and `getActivityById()`: never return or leak another customer's activities.
+   - Fail closed: if an activity has missing ownership (no `customerId`), mutations must be rejected.
    - Reject cross-customer mutations and unauthorized worker associations.
-   - Do not leak existence of other customers' requests.
+   - Acceptance and decline strictly require an active invitation on the job. Customer actions cannot manufacture invitations.
+   - Confirmed schedule is derived from established request context, never from customer action payload.
 
 8. **Design and Accessibility**:
    - Deep Navy `#001A41` as primary; Emerald `#296A4B` used strategically for confirmed/completed indicators.
    - 5-block lifecycle layout in activity detail: Current state block, Lifecycle position, Context block, Action block, Recovery block.
+   - Modal focus management: `CancellationModal` must implement genuine focus containment (Tab/Shift-Tab focus trap) and restore focus to trigger element on dismissal.
    - Semantic headings, WCAG 2.2 AA contrast, visible focus, reduced motion support.
-   - Zero em dashes across all user-facing copy and code comments.
+   - Zero em dashes across all user-facing copy, test titles, and code comments.
 
 ## Acceptance Criteria
 1. Valid acceptance transitions job from `PENDING_ACCEPTANCE` to `CONFIRMED` and renders "Your booking is confirmed."
-2. Unauthorized customer or invalid transition rejects mutation and preserves prior state.
-3. Decline response records `accepted: false` and renders "The BrainWorker declined the request." while `jobStatus` remains valid.
-4. Cancellation from permitted state succeeds and transitions to `CANCELLED`. Cancellation from non-permitted state (e.g. `COMPLETED`, `PAID`) rejects.
-5. All tests in monorepo pass without regressions.
+2. Unauthorized customer, missing activity ownership, or invalid transition rejects mutation and preserves prior state.
+3. Acceptance or decline requires an existing invitation; operations without an active invitation fail without manufacturing one.
+4. Decline response records `accepted: false` and renders "The BrainWorker declined the request." while `jobStatus` remains valid.
+5. Cancellation from permitted state succeeds and transitions to `CANCELLED`. Cancellation from non-permitted state (e.g. `COMPLETED`, `PAID`) rejects.
+6. `CancellationModal` traps focus inside the dialog and restores focus to the trigger button when closed.
+7. Customer activity queries strictly isolate results by `customerId`.
+8. All tests in monorepo pass without regressions.
 
 ## Build Plan
 - **Step 1: Domain Contracts (`packages/types` & `packages/api-types`)**:

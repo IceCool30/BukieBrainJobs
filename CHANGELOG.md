@@ -27,7 +27,16 @@ The format follows practical release notes written plainly in engineering langua
 - Extended domain types in `@bukiebrainjobs/types` (`JobLifecycleAction`, `CustomerActivityItem`, `JobInvitation`).
 - Mock repository methods supporting invitation responses (accept, decline) and customer-authorized cancellations with `canTransition()` enforcement.
 - Deterministic mock activity fixtures covering awaiting response, explicit decline, confirmed booking, expiration, and cancellation.
-- 15 new automated tests in `apps/web` (9 lifecycle domain tests in `lib/jobs/lifecycle.test.ts` and 6 integration tests in `app/jobs/JobsScreen.test.tsx`), bringing total monorepo test coverage to 414 passing tests.
+- 21 automated tests in `apps/web` (14 lifecycle domain tests in `lib/jobs/lifecycle.test.ts` and 7 integration tests in `app/jobs/JobsScreen.test.tsx`), bringing total monorepo test coverage to 420 passing tests.
+
+### Fixed
+- Enforced strict customer data isolation in `MockCustomerActivityRepository.getActivities()` and `getActivityById()`.
+- Enforced fail-closed authorization in `mutateJobStatus()`: missing ownership or mismatched customerId is rejected.
+- Prevented manufactured invitations: acceptance and decline strictly require an active invitation on the job.
+- Removed payment-result copy ("Completed & Paid", "payment settled") from `LifecycleStateSurface.tsx` to preserve the payment boundary.
+- Removed `confirmedSchedule` from the customer acceptance action payload; schedule is derived from activity context.
+- Removed synthetic fallback identifiers (`inv-...-sim`, `bw-simulated-artisan`) from simulation controls and guarded controls with active invitation check.
+- Implemented accessible focus trap and focus restoration to the trigger button in `CancellationModal.tsx`.
 
 ### Added
 - WEB-012 customer job matching at `/job/[referenceCode]/matches`.
