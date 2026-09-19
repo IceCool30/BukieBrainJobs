@@ -5,7 +5,17 @@ Establish, verify, and expand the BukieBrainJobs customer marketplace across web
 
 ## Active Work Slice
 
-_No active slice. Work is complete._
+- [ ] **WEB-011 Customer Jobs & Bookings Implementation Audit & Hardening**
+  - **Spec**: `docs/specs/WEB-011-customer-jobs-and-bookings.md`
+  - **Acceptance Criteria**:
+    - [ ] Browser Back/Forward and mobile detail URL state synchronization without parameter persistence issues
+    - [ ] Parameter validation preventing malformed or unauthorized query params from being treated as trusted activity channels
+    - [ ] Master-detail 12-column layout and mobile full-screen detail with >=48px touch targets verified
+    - [ ] Decorative watermark confirmed non-interactive, subordinate, and aria-hidden
+    - [ ] "Scheduled" preserved strictly as a presentation label without leaking into domain JobStatus
+    - [ ] Complete deterministic state coverage (first-run, filtered empty, loading, partial failure, offline, unauthenticated)
+    - [ ] Zero em dashes across all code comments, test descriptions, and user copy
+  - **Verification Command**: `pnpm test && pnpm type-check`
 
 ## Completed & Verified Slices
 

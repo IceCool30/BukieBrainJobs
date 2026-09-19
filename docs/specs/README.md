@@ -23,6 +23,6 @@ Detailed product UX briefs continue to be archived under `docs/04-public-website
 | `WEB-008` | Customer Authentication & Verification | Accepted | `docs/04-public-website/WEB-008A-AUTHENTICATION-DESIGN-BRIEF.md` |
 | `WEB-009` | Customer Job Posting | Accepted | `docs/04-public-website/WEB-009A-CUSTOMER-JOB-POSTING-DESIGN-BRIEF.md` |
 | `WEB-010` | Customer Dashboard | Accepted | `docs/04-public-website/WEB-010A-CUSTOMER-DASHBOARD-DESIGN-BRIEF.md` |
-| `WEB-011` | Customer Jobs & Bookings Activity Hub | Accepted | `docs/04-public-website/WEB-011A-CUSTOMER-JOBS-AND-BOOKINGS-DESIGN-BRIEF.md` |
+| `WEB-011` | Customer Jobs & Bookings Activity Hub | Accepted | `docs/specs/WEB-011-customer-jobs-and-bookings.md` |
 | `WEB-012` | Customer Job Matching & Match Results | Accepted | `docs/04-public-website/WEB-012-CUSTOMER-JOB-MATCHING-PRODUCT-UX-SPECIFICATION.md` |
 | `WEB-013` | Customer Booking Acceptance & Lifecycle | Accepted | `docs/specs/WEB-013-customer-booking-lifecycle.md` |

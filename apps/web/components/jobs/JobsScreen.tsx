@@ -22,6 +22,7 @@ import { AuthUser } from '../../lib/auth/types';
 import {
   resolveJobsContext,
   normalizeFilterView,
+  normalizeActivityId,
   MOCK_CUSTOMER_ACTIVITIES,
   getCustomerActivityRepository,
   MockCustomerActivityRepository,
@@ -96,8 +97,12 @@ export default function JobsScreen() {
 
     const idParam = searchParams.get('id');
     if (idParam) {
-      setSelectedId(idParam);
-      setMobileDetailOpen(true);
+      const normalizedId = normalizeActivityId(idParam);
+      setSelectedId(normalizedId);
+      setMobileDetailOpen(Boolean(normalizedId));
+    } else {
+      setSelectedId(null);
+      setMobileDetailOpen(false);
     }
   }, [searchParams]);
 
@@ -218,7 +223,12 @@ export default function JobsScreen() {
 
   const handleCloseMobileDetail = useCallback(() => {
     setMobileDetailOpen(false);
-  }, []);
+    setSelectedId(null);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('id');
+    const queryString = params.toString();
+    router.push(queryString ? `/jobs?${queryString}` : '/jobs');
+  }, [router, searchParams]);
 
   const handleSignOut = useCallback(() => {
     setMockAuthenticatedUser(null);
@@ -389,7 +399,11 @@ export default function JobsScreen() {
                   onCloseMobile={handleCloseMobileDetail}
                   onResetSelected={() => {
                     setSelectedId(null);
-                    router.push('/jobs');
+                    setMobileDetailOpen(false);
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.delete('id');
+                    const queryString = params.toString();
+                    router.push(queryString ? `/jobs?${queryString}` : '/jobs');
                   }}
                   onCancel={handleCancelActivity}
                   isMutating={isMutating}

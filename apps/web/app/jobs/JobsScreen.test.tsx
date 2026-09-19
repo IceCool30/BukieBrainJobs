@@ -373,4 +373,29 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(document.activeElement).toBe(cancelBtn);
   });
+
+  it('closing mobile detail view cleanly removes id parameter from URL and closes view', () => {
+    mockSearchParams = new URLSearchParams('id=REQ-84920&view=active');
+    render(<JobsScreen />);
+
+    const backBtn = screen.getByLabelText(/Back to activity list/i);
+    expect(backBtn).toBeInTheDocument();
+
+    fireEvent.click(backBtn);
+
+    expect(mockPush).toHaveBeenCalledWith('/jobs?view=active');
+  });
+
+  it('not-found reset control clears invalid ID and preserves active filter view', () => {
+    mockSearchParams = new URLSearchParams('view=active&id=NON-EXISTENT-999');
+    render(<JobsScreen />);
+
+    expect(screen.getByText('Activity not found')).toBeInTheDocument();
+
+    const resetBtn = screen.getByRole('button', { name: /View all activity/i });
+    fireEvent.click(resetBtn);
+
+    expect(mockPush).toHaveBeenCalledWith('/jobs?view=active');
+  });
 });
+
