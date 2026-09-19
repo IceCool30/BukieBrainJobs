@@ -24,21 +24,68 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     category: 'inverter-solar',
     status: 'awaiting_progress',
     statusLabel: 'Awaiting Progress',
+    jobStatus: 'PENDING_ACCEPTANCE',
     location: 'Lekki Phase 1, Lagos',
     schedule: 'Urgent / Today',
     budgetOrPrice: '₦35,000 (Open to discussion)',
     description:
       'Solar inverter requires complete system health check and deep-cycle battery bank load testing following frequent trip switch issues.',
     preferredWorker: {
-      name: 'Tunde Bakare (Preference)',
+      name: 'Tunde Bakare',
+      verified: true,
     },
     referenceCode: 'REQ-84920',
+    invitation: {
+      id: 'inv-req-84920-1',
+      jobId: 'REQ-84920',
+      taskerProfileId: 'bw-tunde-bakare',
+      sentAt: 'Today, 10:30 AM',
+    },
     nextAction: {
       label: 'View Request Details',
-      url: '/post-job?reference=REQ-84920',
+      url: '/jobs?id=REQ-84920',
       primary: true,
     },
     createdAt: 'Today, 10:30 AM',
+  },
+  {
+    id: 'REQ-72941',
+    type: 'job_request',
+    title: 'Generator Servicing & Carburetor Clean',
+    service: 'Generator Servicing & Repair',
+    category: 'generator-repair',
+    status: 'awaiting_progress',
+    statusLabel: 'BrainWorker Responding',
+    jobStatus: 'PENDING_ACCEPTANCE',
+    location: 'Surulere, Lagos',
+    schedule: 'Tomorrow morning',
+    budgetOrPrice: '₦15,000',
+    description:
+      'Carburetor cleaning and spark plug replacement for 5.5kVA Elepaq generator.',
+    preferredWorker: {
+      name: 'Folake Adeyemi',
+      verified: true,
+    },
+    referenceCode: 'REQ-72941',
+    invitation: {
+      id: 'inv-req-72941-1',
+      jobId: 'REQ-72941',
+      taskerProfileId: 'bw-folake-adeyemi',
+      sentAt: 'Yesterday, 2:00 PM',
+      respondedAt: 'Yesterday, 3:30 PM',
+      accepted: false,
+      declineReason: 'Currently fully committed on another service engagement.',
+    },
+    declineResponse: {
+      respondedAt: 'Yesterday, 3:30 PM',
+      declineReason: 'Currently fully committed on another service engagement.',
+    },
+    nextAction: {
+      label: 'Review Alternatives',
+      url: '/job/REQ-72941/matches',
+      primary: true,
+    },
+    createdAt: 'Yesterday, 2:00 PM',
   },
   {
     id: 'REQ-51829',
@@ -48,6 +95,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     category: 'carpentry',
     status: 'request_received',
     statusLabel: 'Request Received',
+    jobStatus: 'OPEN',
     location: 'Ikeja, Lagos',
     schedule: 'Flexible / Within a week',
     budgetOrPrice: 'Negotiable',
@@ -56,7 +104,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     referenceCode: 'REQ-51829',
     nextAction: {
       label: 'Review Request',
-      url: '/post-job?reference=REQ-51829',
+      url: '/jobs?id=REQ-51829',
       primary: true,
     },
     createdAt: 'Yesterday, 3:15 PM',
@@ -69,6 +117,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     category: 'ac-repair',
     status: 'in_progress',
     statusLabel: 'In Progress',
+    jobStatus: 'IN_PROGRESS',
     location: 'Victoria Island, Lagos',
     schedule: 'Today / Scheduled Window (9:00 AM - 12:00 PM)',
     budgetOrPrice: '₦18,000',
@@ -82,7 +131,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     referenceCode: 'BKG-77210',
     nextAction: {
       label: 'View Booking Details',
-      url: '/services/ac-repair',
+      url: '/jobs?id=BKG-77210',
       primary: true,
     },
     createdAt: 'Sep 6, 2026',
@@ -95,8 +144,10 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     category: 'plumbing',
     status: 'scheduled',
     statusLabel: 'Scheduled',
+    jobStatus: 'CONFIRMED',
     location: 'Ikeja GRA, Lagos',
     schedule: 'Thursday, Sep 10, 2026 (1:00 PM - 4:00 PM)',
+    confirmedSchedule: 'Thursday, Sep 10, 2026 (1:00 PM - 4:00 PM)',
     budgetOrPrice: '₦25,000',
     description:
       'Conduct static and dynamic water pressure tests on underground drain pipes to diagnose persistent drainage backup.',
@@ -106,9 +157,17 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
       verified: true,
     },
     referenceCode: 'BKG-63102',
+    invitation: {
+      id: 'inv-bkg-63102-1',
+      jobId: 'BKG-63102',
+      taskerProfileId: 'bw-emeka-obi',
+      sentAt: 'Sep 5, 2026',
+      respondedAt: 'Sep 5, 2026',
+      accepted: true,
+    },
     nextAction: {
       label: 'View Booking Schedule',
-      url: '/services/plumbing',
+      url: '/jobs?id=BKG-63102',
       primary: true,
     },
     createdAt: 'Sep 5, 2026',
@@ -121,6 +180,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     category: 'plumbing',
     status: 'completed',
     statusLabel: 'Completed',
+    jobStatus: 'COMPLETED',
     location: 'Surulere, Lagos',
     schedule: 'Aug 29, 2026',
     budgetOrPrice: '₦22,000',
@@ -146,6 +206,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     category: 'electrical',
     status: 'completed',
     statusLabel: 'Completed',
+    jobStatus: 'COMPLETED',
     location: 'Yaba, Lagos',
     schedule: 'Aug 15, 2026',
     budgetOrPrice: '₦18,500',
@@ -164,6 +225,27 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     createdAt: 'Aug 15, 2026',
   },
   {
+    id: 'REQ-22019',
+    type: 'job_request',
+    title: 'Deep House Cleaning & Window Washing',
+    service: 'Deep House Cleaning',
+    category: 'cleaning',
+    status: 'cancelled',
+    statusLabel: 'Expired',
+    jobStatus: 'EXPIRED',
+    location: 'Yaba, Lagos',
+    schedule: 'Last week',
+    budgetOrPrice: '₦20,000',
+    description: 'Full house post-renovation dust cleaning.',
+    referenceCode: 'REQ-22019',
+    nextAction: {
+      label: 'Recreate Request',
+      url: '/post-job',
+      primary: true,
+    },
+    createdAt: 'Sep 1, 2026',
+  },
+  {
     id: 'REQ-19024',
     type: 'job_request',
     title: 'Generator Carburetor Rebuild',
@@ -171,11 +253,13 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     category: 'generator-repair',
     status: 'cancelled',
     statusLabel: 'Cancelled',
+    jobStatus: 'CANCELLED',
     location: 'Gbagada, Lagos',
     schedule: 'Aug 02, 2026',
     budgetOrPrice: '₦12,000',
     description:
       'Cancelled by customer prior to technician dispatch. No service fees assessed.',
+    cancellationReason: 'Cancelled by customer prior to technician dispatch. No service fees assessed.',
     referenceCode: 'REQ-19024',
     nextAction: {
       label: 'Post a New Job',
@@ -219,7 +303,8 @@ export function normalizeActivityId(idParam: string | null | undefined): string 
 export function resolveJobsContext(
   searchParams: { get: (key: string) => string | null },
   user: AuthUser | null,
-  preservedDraft: PreservedJobDraft | null
+  preservedDraft: PreservedJobDraft | null,
+  activitiesOverride?: CustomerActivityItem[]
 ): CustomerActivityViewModel {
   const customer: CustomerActivityCustomer = user
     ? {
@@ -248,7 +333,9 @@ export function resolveJobsContext(
       : 'mixed';
 
   // Base list
-  let baseActivities = [...MOCK_CUSTOMER_ACTIVITIES];
+  let baseActivities = activitiesOverride && activitiesOverride.length > 0
+    ? [...activitiesOverride]
+    : [...MOCK_CUSTOMER_ACTIVITIES];
   let newJobNotice: CustomerActivityViewModel['newJobNotice'] = undefined;
 
   // Check URL handoff from /post-job
@@ -374,7 +461,9 @@ export function resolveJobsContext(
   // Selected Activity Deep Link resolution
   const selectedActivityId = normalizeActivityId(searchParams.get('id')) ?? undefined;
   const selectedActivity = selectedActivityId
-    ? baseActivities.find((act) => act.id === selectedActivityId)
+    ? baseActivities.find(
+        (act) => act.id === selectedActivityId || act.referenceCode === selectedActivityId
+      )
     : undefined;
 
   const allActivities = [...activeActivities, ...upcomingActivities, ...pastActivities];

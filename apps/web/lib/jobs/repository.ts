@@ -7,6 +7,7 @@ import {
   CreateJobRequest,
   CustomerJobCreationInput,
   JobStatus,
+  JobInvitation,
 } from '@bukiebrainjobs/types';
 import { canTransition, InvalidTransitionError } from '@bukiebrainjobs/api-types';
 import { generateJobReferenceCode, formatNairaFromKobo } from '@bukiebrainjobs/utils';
@@ -26,6 +27,10 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
   constructor(initialActivities: CustomerActivityItem[] = MOCK_CUSTOMER_ACTIVITIES) {
     this.inMemoryActivities = [...initialActivities];
     this.loadFromStorage();
+  }
+
+  getSynchronousActivities(): CustomerActivityItem[] {
+    return [...this.inMemoryActivities];
   }
 
   private loadFromStorage(): void {
@@ -172,10 +177,15 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
   }
 
   async mutateJobStatus(
-    _customerId: string,
+    customerId: string,
     jobId: string,
     action: JobLifecycleAction
   ): Promise<CustomerActivityItem> {
+    const custId = (customerId || '').trim();
+    if (!custId) {
+      throw new Error('[Repository] Unauthorized: customerId is required');
+    }
+
     const activityIndex = this.inMemoryActivities.findIndex(
       (a) => a.id === jobId || a.referenceCode === jobId
     );
@@ -185,12 +195,91 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
     }
 
     const currentActivity = this.inMemoryActivities[activityIndex]!;
+
+    // Enforce customer ownership authorization
+    if (currentActivity.customerId && currentActivity.customerId !== custId) {
+      throw new Error(`[Repository] Unauthorized: customer '${custId}' does not own job '${jobId}'`);
+    }
+
     const currentJobStatus: JobStatus = currentActivity.jobStatus ?? 'OPEN';
 
+    if (action.type === 'DECLINE_INVITATION') {
+      // Decline is recorded as an acceptance response on the invitation
+      // It does NOT create a "DECLINED" JobStatus, and does NOT cancel the job
+      if (currentActivity.invitation && currentActivity.invitation.id !== action.invitationId) {
+        throw new Error(`[Repository] Invitation '${action.invitationId}' does not belong to job '${jobId}'`);
+      }
+      if (currentActivity.invitation && currentActivity.invitation.taskerProfileId !== action.taskerProfileId) {
+        throw new Error(`[Repository] BrainWorker '${action.taskerProfileId}' does not match invitation`);
+      }
+
+      const updatedInvitation: JobInvitation = {
+        id: action.invitationId,
+        jobId: currentActivity.id,
+        taskerProfileId: action.taskerProfileId,
+        sentAt: currentActivity.invitation?.sentAt || currentActivity.createdAt,
+        respondedAt: new Date().toISOString(),
+        accepted: false,
+        declineReason: action.declineReason,
+      };
+
+      const updated: CustomerActivityItem = {
+        ...currentActivity,
+        customerId: currentActivity.customerId || custId,
+        invitation: updatedInvitation,
+        declineResponse: {
+          respondedAt: updatedInvitation.respondedAt!,
+          declineReason: action.declineReason,
+        },
+      };
+
+      this.inMemoryActivities[activityIndex] = updated;
+      this.persistToStorage();
+      return { ...updated };
+    }
+
     let targetJobStatus: JobStatus;
+    let updatedInvitation = currentActivity.invitation;
+    let confirmedSchedule = currentActivity.confirmedSchedule;
+    let cancellationReason = currentActivity.cancellationReason;
+    let cancelledBy = currentActivity.cancelledBy;
+
     switch (action.type) {
+      case 'SEND_INVITATION': {
+        targetJobStatus = 'PENDING_ACCEPTANCE';
+        updatedInvitation = {
+          id: `inv-${currentActivity.id}-${Date.now()}`,
+          jobId: currentActivity.id,
+          taskerProfileId: action.taskerProfileId,
+          sentAt: new Date().toISOString(),
+        };
+        break;
+      }
+      case 'ACCEPT_INVITATION': {
+        if (currentActivity.invitation && currentActivity.invitation.id !== action.invitationId) {
+          throw new Error(`[Repository] Invitation '${action.invitationId}' does not belong to job '${jobId}'`);
+        }
+        if (currentActivity.invitation && currentActivity.invitation.taskerProfileId !== action.taskerProfileId) {
+          throw new Error(`[Repository] BrainWorker '${action.taskerProfileId}' does not match invitation`);
+        }
+        targetJobStatus = 'CONFIRMED';
+        updatedInvitation = {
+          id: action.invitationId,
+          jobId: currentActivity.id,
+          taskerProfileId: action.taskerProfileId,
+          sentAt: currentActivity.invitation?.sentAt || currentActivity.createdAt,
+          respondedAt: new Date().toISOString(),
+          accepted: true,
+        };
+        if (action.confirmedSchedule) {
+          confirmedSchedule = action.confirmedSchedule;
+        }
+        break;
+      }
       case 'CANCEL':
         targetJobStatus = 'CANCELLED';
+        cancellationReason = action.reason;
+        cancelledBy = custId;
         break;
       case 'CONFIRM_COMPLETION':
         targetJobStatus = 'COMPLETED';
@@ -212,9 +301,22 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
     const presentation = mapJobStatusToPresentation(targetJobStatus);
     const updated: CustomerActivityItem = {
       ...currentActivity,
+      customerId: currentActivity.customerId || custId,
       jobStatus: targetJobStatus,
       status: presentation.status,
       statusLabel: presentation.label,
+      invitation: updatedInvitation,
+      confirmedSchedule,
+      cancellationReason,
+      cancelledBy,
+      nextAction:
+        targetJobStatus === 'CONFIRMED'
+          ? {
+              label: 'View Booking Details',
+              url: `/jobs?id=${currentActivity.referenceCode || currentActivity.id}`,
+              primary: true,
+            }
+          : currentActivity.nextAction,
     };
 
     this.inMemoryActivities[activityIndex] = updated;

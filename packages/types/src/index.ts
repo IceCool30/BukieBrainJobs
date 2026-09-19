@@ -4,10 +4,11 @@ import type {
   CreateJobRequest,
   CustomerJobCreationInput,
   Job,
+  JobInvitation,
 } from '@bukiebrainjobs/api-types';
 
 export type UserRole = CanonicalUserRole;
-export type { JobStatus, CreateJobRequest, CustomerJobCreationInput, Job };
+export type { JobStatus, CreateJobRequest, CustomerJobCreationInput, Job, JobInvitation };
 
 export const ROLE_DISPLAY_LABELS: Record<UserRole, string> = {
   CLIENT: 'Customer',
@@ -371,6 +372,12 @@ export interface CustomerActivityItem {
   referenceCode?: string | undefined;
   nextAction?: CustomerActivityNextAction | undefined;
   createdAt: string;
+  customerId?: string | undefined;
+  invitation?: JobInvitation | undefined;
+  confirmedSchedule?: string | undefined;
+  cancellationReason?: string | undefined;
+  cancelledBy?: string | undefined;
+  declineResponse?: { respondedAt: string; declineReason?: string | undefined } | undefined;
 }
 
 export interface CustomerActivityCustomer {
@@ -438,7 +445,10 @@ export interface ResolvedJobLocation {
 export type JobLifecycleAction =
   | { type: 'CANCEL'; reason: string }
   | { type: 'CONFIRM_COMPLETION' }
-  | { type: 'OPEN_DISPUTE'; reason: string };
+  | { type: 'OPEN_DISPUTE'; reason: string }
+  | { type: 'SEND_INVITATION'; taskerProfileId: string; taskerName?: string }
+  | { type: 'ACCEPT_INVITATION'; invitationId: string; taskerProfileId: string; confirmedSchedule?: string }
+  | { type: 'DECLINE_INVITATION'; invitationId: string; taskerProfileId: string; declineReason?: string };
 
 export interface CustomerActivityFilter {
   view?: ActivityFilterView | undefined;
