@@ -288,18 +288,69 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
     expect(await screen.findByText('Your booking was cancelled.')).toBeInTheDocument();
   });
 
-  it('simulates BrainWorker acceptance and transitions to confirmed booking', async () => {
+  it('does not render mock acceptance or decline controls in customer UI', () => {
     mockSearchParams = new URLSearchParams('id=REQ-84920');
     render(<JobsScreen />);
 
     expect(screen.getByText('Waiting for the BrainWorker to respond.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Simulate Acceptance/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Simulate Decline/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/Simulate Worker Response/i)).not.toBeInTheDocument();
+  });
 
-    const acceptBtn = screen.getByRole('button', { name: /Simulate Acceptance/i });
-    expect(acceptBtn).toBeInTheDocument();
+  it('renders booking-specific cancellation modal title and text when cancelling confirmed booking', async () => {
+    mockSearchParams = new URLSearchParams('id=BKG-63102');
+    render(<JobsScreen />);
 
-    fireEvent.click(acceptBtn);
+    expect(screen.getByText('Your booking is confirmed.')).toBeInTheDocument();
 
-    expect(await screen.findByText('Your booking is confirmed.')).toBeInTheDocument();
+    const cancelBtn = screen.getByRole('button', { name: /Cancel Booking/i });
+    expect(cancelBtn).toBeInTheDocument();
+
+    fireEvent.click(cancelBtn);
+
+    expect(screen.getByRole('dialog', { name: /Cancel Booking/i })).toBeInTheDocument();
+    expect(screen.getByText(/Are you sure you want to cancel booking/i)).toBeInTheDocument();
+    expect(screen.getByText(/This action will update the status to Cancelled\./i)).toBeInTheDocument();
+    expect(screen.queryByText(/stop further processing/i)).not.toBeInTheDocument();
+  });
+
+  it('does not display decline state when authoritative jobStatus is CONFIRMED despite stale decline response', () => {
+    resetCustomerActivityRepository([
+      {
+        id: 'BKG-STALE-DECLINE',
+        type: 'booking',
+        title: 'Generator Maintenance',
+        service: 'Generator Maintenance',
+        status: 'scheduled',
+        statusLabel: 'Scheduled',
+        jobStatus: 'CONFIRMED',
+        customerId: 'usr-customer-default',
+        location: 'Lekki Phase 1, Lagos',
+        schedule: 'Tomorrow morning',
+        referenceCode: 'BKG-STALE-DECLINE',
+        createdAt: 'Today, 9:00 AM',
+        invitation: {
+          id: 'inv-stale-1',
+          jobId: 'BKG-STALE-DECLINE',
+          taskerProfileId: 'bw-prior-worker',
+          sentAt: 'Yesterday',
+          accepted: false,
+        },
+        declineResponse: {
+          respondedAt: 'Yesterday',
+          declineReason: 'Worker was busy yesterday',
+        },
+      },
+    ]);
+
+    mockSearchParams = new URLSearchParams('id=BKG-STALE-DECLINE');
+    render(<JobsScreen />);
+
+    // Authoritative status must win:
+    expect(screen.getByText('Your booking is confirmed.')).toBeInTheDocument();
+    expect(screen.queryByText('The BrainWorker declined the request.')).not.toBeInTheDocument();
+    expect(screen.queryByText('BrainWorker Declined')).not.toBeInTheDocument();
   });
 
   it('traps focus and restores focus upon modal dismissal', async () => {

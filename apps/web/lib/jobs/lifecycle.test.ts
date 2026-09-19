@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MockCustomerActivityRepository } from './repository';
+import { MockCustomerActivityRepository, dispatchDomainInvitation } from './repository';
 import { CustomerActivityItem } from '@bukiebrainjobs/types';
 import { canTransition, InvalidTransitionError } from '@bukiebrainjobs/api-types';
 
@@ -383,8 +383,13 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
       ).rejects.toThrow(/Unauthorized: SEND_INVITATION is an internal domain operation/i);
     });
 
-    it('allows internal domain operation to dispatch invitation and transition OPEN to PENDING_ACCEPTANCE', () => {
-      const updated = repository.dispatchInvitationInternal('REQ-OPEN-TEST', {
+    it('ensures MockCustomerActivityRepository class does not expose dispatchInvitationInternal or sendInvitation', () => {
+      expect((MockCustomerActivityRepository.prototype as Record<string, unknown>).dispatchInvitationInternal).toBeUndefined();
+      expect((MockCustomerActivityRepository.prototype as Record<string, unknown>).sendInvitation).toBeUndefined();
+    });
+
+    it('allows standalone domain function to dispatch invitation and transition OPEN to PENDING_ACCEPTANCE', () => {
+      const updated = dispatchDomainInvitation(repository, 'REQ-OPEN-TEST', {
         id: 'inv-internal-1',
         taskerProfileId: 'bw-solar-tech',
       });
@@ -395,9 +400,9 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
       expect(updated.invitation?.taskerProfileId).toBe('bw-solar-tech');
     });
 
-    it('rejects internal dispatch when job cannot transition to PENDING_ACCEPTANCE', () => {
+    it('rejects domain dispatch when job cannot transition to PENDING_ACCEPTANCE', () => {
       expect(() => {
-        repository.dispatchInvitationInternal('BKG-CONFIRMED-TEST', {
+        dispatchDomainInvitation(repository, 'BKG-CONFIRMED-TEST', {
           taskerProfileId: 'bw-solar-tech',
         });
       }).toThrow(InvalidTransitionError);

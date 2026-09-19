@@ -34,6 +34,10 @@ The format follows practical release notes written plainly in engineering langua
 - Enforced fail-closed authorization in `mutateJobStatus()`: missing ownership or mismatched customerId is rejected.
 - Prevented manufactured invitations: acceptance and decline strictly require an active invitation on the job.
 - Removed payment-result copy ("Completed & Paid", "payment settled") from `LifecycleStateSurface.tsx` to preserve the payment boundary.
+- Removed mock acceptance and decline simulation controls from the customer lifecycle UI.
+- Bound decline presentation strictly to `PENDING_ACCEPTANCE`, preventing stale or contradictory invitation data from overriding authoritative states (`CONFIRMED`, `CANCELLED`, `EXPIRED`).
+- Eliminated overclaiming copy from `CancellationModal.tsx`: removed unverified "stop further processing" language and aligned titles and body text dynamically between service requests and confirmed bookings.
+- Decoupled invitation dispatch from the exported `MockCustomerActivityRepository` class, replacing it with a standalone `dispatchDomainInvitation()` service function.
 - Eliminated confirmed schedule fabrication: `confirmedSchedule` is retained solely from authoritative contracts and remains undefined otherwise; requested schedule is displayed separately.
 - Enforced `PENDING_ACCEPTANCE` boundary on decline mutations: `DECLINE_INVITATION` now rejects operations outside that lifecycle state.
 - Hardened invitation creation boundary: removed `SEND_INVITATION` from customer-facing `JobLifecycleAction` and `mutateJobStatus`, separating invitation dispatch into an internal domain operation.

@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { AlertTriangle, X, Loader2 } from 'lucide-react';
+import { JobStatus } from '@bukiebrainjobs/types';
 
 interface CancellationModalProps {
   isOpen: boolean;
   referenceCode?: string | undefined;
+  jobStatus?: JobStatus | undefined;
   isPending: boolean;
   onConfirm: (reason: string) => Promise<void>;
   onClose: () => void;
@@ -23,6 +25,7 @@ const CANCELLATION_REASONS = [
 export function CancellationModal({
   isOpen,
   referenceCode,
+  jobStatus,
   isPending,
   onConfirm,
   onClose,
@@ -124,7 +127,7 @@ export function CancellationModal({
           <div className="flex items-center gap-2 text-rose-700">
             <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0" aria-hidden="true" />
             <h3 id="cancel-modal-title" className="text-base font-bold text-slate-900 font-display">
-              Cancel Service Request
+              {jobStatus === 'CONFIRMED' ? 'Cancel Booking' : 'Cancel Service Request'}
             </h3>
           </div>
           <button
@@ -139,9 +142,9 @@ export function CancellationModal({
         </div>
 
         <p className="text-xs text-slate-600 leading-relaxed">
-          Are you sure you want to cancel request{' '}
+          Are you sure you want to cancel {jobStatus === 'CONFIRMED' ? 'booking' : 'request'}{' '}
           <span className="font-semibold text-slate-900 font-mono">{referenceCode}</span>?
-          This action will update the request status to Cancelled and stop further processing.
+          This action will update the status to Cancelled.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -186,7 +189,7 @@ export function CancellationModal({
               disabled={isPending}
               className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition disabled:opacity-50 cursor-pointer"
             >
-              Keep request
+              {jobStatus === 'CONFIRMED' ? 'Keep booking' : 'Keep request'}
             </button>
             <button
               type="submit"

@@ -13,7 +13,6 @@ import {
   CheckCircle2,
   XCircle,
   HelpCircle,
-  Sparkles,
 } from 'lucide-react';
 import { CustomerActivityItem, JobStatus } from '@bukiebrainjobs/types';
 import { canTransition } from '@bukiebrainjobs/api-types';
@@ -24,8 +23,6 @@ import { CancellationModal } from './CancellationModal';
 export interface LifecycleStateSurfaceProps {
   activity: CustomerActivityItem;
   onCancel?: ((activityId: string, reason: string) => Promise<void>) | undefined;
-  onAccept?: ((activityId: string, invitationId: string, workerId: string) => Promise<void>) | undefined;
-  onDecline?: ((activityId: string, invitationId: string, workerId: string, reason?: string) => Promise<void>) | undefined;
   isMutating?: boolean | undefined;
   mutationError?: string | null | undefined;
   onClearMutationError?: (() => void) | undefined;
@@ -39,12 +36,13 @@ interface StateCopy {
 }
 
 function resolveStateCopy(activity: CustomerActivityItem): StateCopy {
-  const isDeclined = Boolean(
-    activity.declineResponse ||
-      (activity.invitation && activity.invitation.accepted === false)
-  );
-
   const jobStatus: JobStatus = activity.jobStatus ?? 'OPEN';
+  const isDeclined =
+    jobStatus === 'PENDING_ACCEPTANCE' &&
+    Boolean(
+      activity.declineResponse ||
+        (activity.invitation && activity.invitation.accepted === false)
+    );
 
   if (isDeclined) {
     return {
@@ -134,8 +132,6 @@ function resolveStateCopy(activity: CustomerActivityItem): StateCopy {
 export function LifecycleStateSurface({
   activity,
   onCancel,
-  onAccept,
-  onDecline,
   isMutating = false,
   mutationError = null,
   onClearMutationError,
@@ -143,11 +139,13 @@ export function LifecycleStateSurface({
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [localActionPending, setLocalActionPending] = useState(false);
 
-  const isDeclined = Boolean(
-    activity.declineResponse ||
-      (activity.invitation && activity.invitation.accepted === false)
-  );
   const currentJobStatus: JobStatus = activity.jobStatus ?? 'OPEN';
+  const isDeclined =
+    currentJobStatus === 'PENDING_ACCEPTANCE' &&
+    Boolean(
+      activity.declineResponse ||
+        (activity.invitation && activity.invitation.accepted === false)
+    );
   const stateCopy = resolveStateCopy(activity);
 
   // Check if cancellation is permitted by state machine
@@ -160,33 +158,6 @@ export function LifecycleStateSurface({
     try {
       await onCancel(activity.id, reason);
       setIsCancelModalOpen(false);
-    } finally {
-      setLocalActionPending(false);
-    }
-  };
-
-  // Simulation handler for acceptance
-  const handleSimulateAccept = async () => {
-    if (!onAccept || !activity.invitation) return;
-    setLocalActionPending(true);
-    try {
-      await onAccept(activity.id, activity.invitation.id, activity.invitation.taskerProfileId);
-    } finally {
-      setLocalActionPending(false);
-    }
-  };
-
-  // Simulation handler for decline
-  const handleSimulateDecline = async () => {
-    if (!onDecline || !activity.invitation) return;
-    setLocalActionPending(true);
-    try {
-      await onDecline(
-        activity.id,
-        activity.invitation.id,
-        activity.invitation.taskerProfileId,
-        'The BrainWorker is fully committed on another project.'
-      );
     } finally {
       setLocalActionPending(false);
     }
@@ -462,34 +433,6 @@ export function LifecycleStateSurface({
             )}
           </div>
         </div>
-
-        {/* Deterministic Simulation Controls (Accessible in dev/mock verification) */}
-        {currentJobStatus === 'PENDING_ACCEPTANCE' && !isDeclined && activity.invitation && onAccept && onDecline && (
-          <div className="mt-3 p-3.5 rounded-xl bg-slate-100/80 border border-slate-200 space-y-2">
-            <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-              <span>Simulate Worker Response (Mock Environment)</span>
-            </div>
-            <div className="flex flex-wrap items-center gap-2 pt-1">
-              <button
-                type="button"
-                onClick={handleSimulateAccept}
-                disabled={isPending}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#296A4B] text-white hover:bg-[#23583E] transition disabled:opacity-50 cursor-pointer"
-              >
-                Simulate Acceptance
-              </button>
-              <button
-                type="button"
-                onClick={handleSimulateDecline}
-                disabled={isPending}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300 transition disabled:opacity-50 cursor-pointer"
-              >
-                Simulate Decline
-              </button>
-            </div>
-          </div>
-        )}
       </section>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
@@ -524,6 +467,7 @@ export function LifecycleStateSurface({
       <CancellationModal
         isOpen={isCancelModalOpen}
         referenceCode={activity.referenceCode}
+        jobStatus={currentJobStatus}
         isPending={isPending}
         onConfirm={handleConfirmCancel}
         onClose={() => setIsCancelModalOpen(false)}

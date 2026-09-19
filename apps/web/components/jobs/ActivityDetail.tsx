@@ -13,8 +13,6 @@ interface ActivityDetailProps {
   onCloseMobile: () => void;
   onResetSelected?: (() => void) | undefined;
   onCancel?: ((activityId: string, reason: string) => Promise<void>) | undefined;
-  onAccept?: ((activityId: string, invitationId: string, workerId: string) => Promise<void>) | undefined;
-  onDecline?: ((activityId: string, invitationId: string, workerId: string, reason?: string) => Promise<void>) | undefined;
   isMutating?: boolean | undefined;
   mutationError?: string | null | undefined;
   onClearMutationError?: (() => void) | undefined;
@@ -27,8 +25,6 @@ export function ActivityDetail({
   onCloseMobile,
   onResetSelected,
   onCancel,
-  onAccept,
-  onDecline,
   isMutating,
   mutationError,
   onClearMutationError,
@@ -120,8 +116,6 @@ export function ActivityDetail({
           <LifecycleStateSurface
             activity={activity}
             onCancel={onCancel}
-            onAccept={onAccept}
-            onDecline={onDecline}
             isMutating={isMutating}
             mutationError={mutationError}
             onClearMutationError={onClearMutationError}

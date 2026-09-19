@@ -129,62 +129,6 @@ export default function JobsScreen() {
     [currentUser]
   );
 
-  const handleAcceptActivity = useCallback(
-    async (activityId: string, invitationId: string, workerId: string) => {
-      setIsMutating(true);
-      setMutationError(null);
-      try {
-        const repo = getCustomerActivityRepository();
-        const customerId = currentUser?.id || 'usr-customer-default';
-        const updated = await repo.mutateJobStatus(customerId, activityId, {
-          type: 'ACCEPT_INVITATION',
-          invitationId,
-          taskerProfileId: workerId,
-        });
-        setActivitiesList((prev) =>
-          prev.map((item) =>
-            item.id === updated.id || item.referenceCode === updated.referenceCode
-              ? updated
-              : item
-          )
-        );
-      } catch (err) {
-        setMutationError(err instanceof Error ? err.message : 'Failed to accept invitation');
-      } finally {
-        setIsMutating(false);
-      }
-    },
-    [currentUser]
-  );
-
-  const handleDeclineActivity = useCallback(
-    async (activityId: string, invitationId: string, workerId: string, reason?: string) => {
-      setIsMutating(true);
-      setMutationError(null);
-      try {
-        const repo = getCustomerActivityRepository();
-        const customerId = currentUser?.id || 'usr-customer-default';
-        const updated = await repo.mutateJobStatus(customerId, activityId, {
-          type: 'DECLINE_INVITATION',
-          invitationId,
-          taskerProfileId: workerId,
-          ...(reason ? { declineReason: reason } : {}),
-        });
-        setActivitiesList((prev) =>
-          prev.map((item) =>
-            item.id === updated.id || item.referenceCode === updated.referenceCode
-              ? updated
-              : item
-          )
-        );
-      } catch (err) {
-        setMutationError(err instanceof Error ? err.message : 'Failed to record worker decline');
-      } finally {
-        setIsMutating(false);
-      }
-    },
-    [currentUser]
-  );
 
   // Compute view model
   const viewModel: CustomerActivityViewModel = useMemo(() => {
@@ -448,8 +392,6 @@ export default function JobsScreen() {
                     router.push('/jobs');
                   }}
                   onCancel={handleCancelActivity}
-                  onAccept={handleAcceptActivity}
-                  onDecline={handleDeclineActivity}
                   isMutating={isMutating}
                   mutationError={mutationError}
                   onClearMutationError={() => setMutationError(null)}

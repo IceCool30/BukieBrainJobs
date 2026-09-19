@@ -60,3 +60,16 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code and tests; 0 forbidden corporate phrases; state-honest plain language across all lifecycle states
 - **Status**: PASS
 
+## 2026-09-19: WEB-013 Production Surface & Precedence Remediation
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-013-customer-booking-lifecycle`
+- **Trigger**: Remediation of PR #48 production surface, precedence, and copy audit findings
+- **Items Remediated**:
+  1. Removed mock worker response simulation controls (Simulate Acceptance, Simulate Decline) from customer UI.
+  2. Enforced `PENDING_ACCEPTANCE` requirement on decline presentation, preventing stale invitation data from overriding authoritative states.
+  3. Aligned cancellation copy dynamically ('Cancel Booking' vs 'Cancel Service Request') and removed unverified claims ('stop further processing').
+  4. Decoupled invitation dispatch from `MockCustomerActivityRepository` class into a standalone `dispatchDomainInvitation` domain function.
+- **Voice and Slop Audit**: 0 em dashes in code and tests; 0 forbidden corporate phrases; state-honest plain language across all lifecycle states
+- **Status**: PENDING VERIFICATION
+
+

@@ -13,7 +13,7 @@ Implement the customer-facing booking acceptance and lifecycle surface within th
 
 2. **Acceptance and Decline Boundary**:
     - BrainWorker acceptance triggers `canTransition('PENDING_ACCEPTANCE', 'CONFIRMED')` to reach `CONFIRMED`.
-    - BrainWorker decline records `accepted: false`, optional customer-safe `declineReason`, and timestamp on the invitation response. The invitation response boundary is strictly `PENDING_ACCEPTANCE`. The decline mutation rejects responses outside that boundary without creating a `DECLINED` JobStatus or cancelling the job.
+    - BrainWorker decline records `accepted: false`, optional customer-safe `declineReason`, and timestamp on the invitation response. The invitation response boundary is strictly `PENDING_ACCEPTANCE`. Decline presentation requires `PENDING_ACCEPTANCE` and never overrides authoritative states (`CONFIRMED`, `CANCELLED`, `EXPIRED`).
 
 3. **Confirmation Boundary**:
     - Render "Your booking is confirmed." only when authoritative state is `CONFIRMED`.
@@ -28,6 +28,7 @@ Implement the customer-facing booking acceptance and lifecycle surface within th
     - Available only when `canTransition(currentStatus, 'CANCELLED')` evaluates to true and customer ownership is validated.
     - Permitted states: `OPEN`, `PENDING_ACCEPTANCE`, `CONFIRMED`, `DISPUTED`, `RESOLVED`.
     - Execution uses transient pending mutation state; on failure, prior state is retained. No `CANCELLATION_PENDING` status.
+    - Modal title and text dynamically reflect booking vs request ('Cancel Booking' vs 'Cancel Service Request') and honestly state that the status will be updated to Cancelled without unverified backend claims.
 
 6. **Payment Boundary**:
     - Zero payment execution, payment CTAs, escrow states, or funds-secured messaging in WEB-013.
@@ -37,7 +38,8 @@ Implement the customer-facing booking acceptance and lifecycle surface within th
     - Enforce customer data isolation in `getActivities()` and `getActivityById()`: never return or leak another customer's activities.
     - Fail closed: if an activity has missing ownership (no `customerId`), mutations must be rejected.
     - Reject cross-customer mutations and unauthorized worker associations.
-    - Acceptance and decline strictly require an active invitation on the job. Customer callers cannot manufacture, create, or send invitations; `SEND_INVITATION` is excluded from the customer-facing `JobLifecycleAction` repository mutation boundary.
+    - Acceptance and decline strictly require an active invitation on the job. Customer callers cannot manufacture, create, or send invitations; simulation controls are excluded from customer surfaces.
+    - Invitation dispatch is separated from the customer repository class into a standalone domain service function (`dispatchDomainInvitation`).
     - Confirmed schedule must originate from an authoritative booking/lifecycle response, never fabricated from the customer's requested schedule.
 
 8. **Design and Accessibility**:

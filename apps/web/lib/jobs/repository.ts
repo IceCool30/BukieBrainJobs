@@ -359,48 +359,6 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
     return { ...updated };
   }
 
-  /**
-   * Internal domain operation to dispatch an invitation to a BrainWorker.
-   * Separated from customer-facing JobLifecycleAction and mutateJobStatus boundary.
-   */
-  dispatchInvitationInternal(
-    jobId: string,
-    invitation: { id?: string; taskerProfileId: string; taskerName?: string }
-  ): CustomerActivityItem {
-    const activityIndex = this.inMemoryActivities.findIndex(
-      (a) => a.id === jobId || a.referenceCode === jobId
-    );
-    if (activityIndex === -1) {
-      throw new Error(`[Repository] Activity not found for ID: ${jobId}`);
-    }
-    const currentActivity = this.inMemoryActivities[activityIndex]!;
-    const currentJobStatus: JobStatus = currentActivity.jobStatus ?? 'OPEN';
-    if (!canTransition(currentJobStatus, 'PENDING_ACCEPTANCE')) {
-      throw new InvalidTransitionError(currentJobStatus, 'PENDING_ACCEPTANCE');
-    }
-
-    const invitationRecord: JobInvitation = {
-      id: invitation.id || `inv-${currentActivity.id}-${Date.now()}`,
-      jobId: currentActivity.id,
-      taskerProfileId: invitation.taskerProfileId,
-      sentAt: new Date().toISOString(),
-    };
-
-    const targetJobStatus: JobStatus = 'PENDING_ACCEPTANCE';
-    const presentation = mapJobStatusToPresentation(targetJobStatus);
-    const updated: CustomerActivityItem = {
-      ...currentActivity,
-      jobStatus: targetJobStatus,
-      status: presentation.status,
-      statusLabel: presentation.label,
-      invitation: invitationRecord,
-    };
-
-    this.inMemoryActivities[activityIndex] = updated;
-    this.persistToStorage();
-    return { ...updated };
-  }
-
   /** Reset internal storage for testing and session cleanup */
   reset(activities: CustomerActivityItem[] = MOCK_CUSTOMER_ACTIVITIES): void {
     this.inMemoryActivities = [...activities];
@@ -433,3 +391,49 @@ export function resetCustomerActivityRepository(
     defaultRepository = new MockCustomerActivityRepository(activities);
   }
 }
+
+/**
+ * Internal domain service operation to dispatch an invitation to a BrainWorker.
+ * Completely decoupled from the exported customer repository class and customer mutation boundary.
+ */
+export function dispatchDomainInvitation(
+  repo: MockCustomerActivityRepository,
+  jobId: string,
+  invitation: { id?: string; taskerProfileId: string; taskerName?: string }
+): CustomerActivityItem {
+  const activities = repo.getSynchronousActivities();
+  const activityIndex = activities.findIndex(
+    (a) => a.id === jobId || a.referenceCode === jobId
+  );
+  if (activityIndex === -1) {
+    throw new Error(`[Repository] Activity not found for ID: ${jobId}`);
+  }
+  const currentActivity = activities[activityIndex]!;
+  const currentJobStatus: JobStatus = currentActivity.jobStatus ?? 'OPEN';
+  if (!canTransition(currentJobStatus, 'PENDING_ACCEPTANCE')) {
+    throw new InvalidTransitionError(currentJobStatus, 'PENDING_ACCEPTANCE');
+  }
+
+  const invitationRecord: JobInvitation = {
+    id: invitation.id || `inv-${currentActivity.id}-${Date.now()}`,
+    jobId: currentActivity.id,
+    taskerProfileId: invitation.taskerProfileId,
+    sentAt: new Date().toISOString(),
+  };
+
+  const targetJobStatus: JobStatus = 'PENDING_ACCEPTANCE';
+  const presentation = mapJobStatusToPresentation(targetJobStatus);
+  const updated: CustomerActivityItem = {
+    ...currentActivity,
+    jobStatus: targetJobStatus,
+    status: presentation.status,
+    statusLabel: presentation.label,
+    invitation: invitationRecord,
+  };
+
+  const updatedActivities = [...activities];
+  updatedActivities[activityIndex] = updated;
+  repo.reset(updatedActivities);
+  return { ...updated };
+}
+
