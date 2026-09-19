@@ -110,7 +110,7 @@ The canonical transition boundary is:
 canTransition(from, to)
 ```
 
-Customer-facing labels are presentation mappings from authoritative domain state. They must not form a parallel state machine.
+Customer-facing lifecycle labels are presentation mappings from authoritative domain state. Acceptance-response outcomes such as an explicit BrainWorker decline are scoped response records, not JobStatus values, and must never form a competing lifecycle state machine.
 
 The UI must never directly mutate presentation-only statuses. Every lifecycle mutation must cross the canonical transition boundary.
 
