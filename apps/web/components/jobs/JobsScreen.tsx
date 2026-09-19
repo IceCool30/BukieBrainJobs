@@ -168,7 +168,7 @@ export default function JobsScreen() {
           type: 'DECLINE_INVITATION',
           invitationId,
           taskerProfileId: workerId,
-          declineReason: reason,
+          ...(reason ? { declineReason: reason } : {}),
         });
         setActivitiesList((prev) =>
           prev.map((item) =>

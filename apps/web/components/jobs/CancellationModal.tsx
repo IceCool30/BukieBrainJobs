@@ -5,7 +5,7 @@ import { AlertTriangle, X, Loader2 } from 'lucide-react';
 
 interface CancellationModalProps {
   isOpen: boolean;
-  referenceCode?: string;
+  referenceCode?: string | undefined;
   isPending: boolean;
   onConfirm: (reason: string) => Promise<void>;
   onClose: () => void;

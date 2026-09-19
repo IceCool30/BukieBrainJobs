@@ -446,9 +446,9 @@ export type JobLifecycleAction =
   | { type: 'CANCEL'; reason: string }
   | { type: 'CONFIRM_COMPLETION' }
   | { type: 'OPEN_DISPUTE'; reason: string }
-  | { type: 'SEND_INVITATION'; taskerProfileId: string; taskerName?: string }
-  | { type: 'ACCEPT_INVITATION'; invitationId: string; taskerProfileId: string; confirmedSchedule?: string }
-  | { type: 'DECLINE_INVITATION'; invitationId: string; taskerProfileId: string; declineReason?: string };
+  | { type: 'SEND_INVITATION'; taskerProfileId: string; taskerName?: string | undefined }
+  | { type: 'ACCEPT_INVITATION'; invitationId: string; taskerProfileId: string; confirmedSchedule?: string | undefined }
+  | { type: 'DECLINE_INVITATION'; invitationId: string; taskerProfileId: string; declineReason?: string | undefined };
 
 export interface CustomerActivityFilter {
   view?: ActivityFilterView | undefined;

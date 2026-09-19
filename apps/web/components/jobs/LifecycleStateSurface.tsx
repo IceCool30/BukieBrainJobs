@@ -24,12 +24,12 @@ import { CancellationModal } from './CancellationModal';
 
 export interface LifecycleStateSurfaceProps {
   activity: CustomerActivityItem;
-  onCancel?: (activityId: string, reason: string) => Promise<void>;
-  onAccept?: (activityId: string, invitationId: string, workerId: string) => Promise<void>;
-  onDecline?: (activityId: string, invitationId: string, workerId: string, reason?: string) => Promise<void>;
-  isMutating?: boolean;
-  mutationError?: string | null;
-  onClearMutationError?: () => void;
+  onCancel?: ((activityId: string, reason: string) => Promise<void>) | undefined;
+  onAccept?: ((activityId: string, invitationId: string, workerId: string) => Promise<void>) | undefined;
+  onDecline?: ((activityId: string, invitationId: string, workerId: string, reason?: string) => Promise<void>) | undefined;
+  isMutating?: boolean | undefined;
+  mutationError?: string | null | undefined;
+  onClearMutationError?: (() => void) | undefined;
 }
 
 interface StateCopy {

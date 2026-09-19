@@ -220,7 +220,7 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
         sentAt: currentActivity.invitation?.sentAt || currentActivity.createdAt,
         respondedAt: new Date().toISOString(),
         accepted: false,
-        declineReason: action.declineReason,
+        ...(action.declineReason ? { declineReason: action.declineReason } : {}),
       };
 
       const updated: CustomerActivityItem = {
@@ -229,7 +229,7 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
         invitation: updatedInvitation,
         declineResponse: {
           respondedAt: updatedInvitation.respondedAt!,
-          declineReason: action.declineReason,
+          ...(action.declineReason ? { declineReason: action.declineReason } : {}),
         },
       };
 
