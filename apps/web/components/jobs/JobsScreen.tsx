@@ -11,6 +11,7 @@ import {
 import {
   CustomerActivityViewModel,
   ActivityFilterView,
+  CustomerActivityItem,
 } from '@bukiebrainjobs/types';
 import {
   getMockAuthenticatedUser,
@@ -22,6 +23,8 @@ import {
   resolveJobsContext,
   normalizeFilterView,
   MOCK_CUSTOMER_ACTIVITIES,
+  getCustomerActivityRepository,
+  MockCustomerActivityRepository,
 } from '../../lib/jobs';
 import { ActivityCard } from './ActivityCard';
 import { ActivityDetail } from './ActivityDetail';
@@ -53,6 +56,17 @@ export default function JobsScreen() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mobileDetailOpen, setMobileDetailOpen] = useState(false);
 
+  // Activities state backed by repository
+  const [activitiesList, setActivitiesList] = useState<CustomerActivityItem[]>(() => {
+    const repo = getCustomerActivityRepository();
+    if (repo instanceof MockCustomerActivityRepository) {
+      return repo.getSynchronousActivities();
+    }
+    return [...MOCK_CUSTOMER_ACTIVITIES];
+  });
+  const [isMutating, setIsMutating] = useState(false);
+  const [mutationError, setMutationError] = useState<string | null>(null);
+
   // Recovery overrides
   const [partialFailureCleared, setPartialFailureCleared] = useState(false);
 
@@ -66,6 +80,15 @@ export default function JobsScreen() {
     setAuthChecked(true);
   }, []);
 
+  // Sync with repository on user change
+  useEffect(() => {
+    const repo = getCustomerActivityRepository();
+    const customerId = currentUser?.id || 'usr-customer-default';
+    repo.getActivities(customerId).then((items) => {
+      setActivitiesList(items);
+    });
+  }, [currentUser]);
+
   // Sync URL query params on mount & searchParams changes
   useEffect(() => {
     const viewParam = searchParams.get('view');
@@ -78,10 +101,95 @@ export default function JobsScreen() {
     }
   }, [searchParams]);
 
+  // Mutation Handlers
+  const handleCancelActivity = useCallback(
+    async (activityId: string, reason: string) => {
+      setIsMutating(true);
+      setMutationError(null);
+      try {
+        const repo = getCustomerActivityRepository();
+        const customerId = currentUser?.id || 'usr-customer-default';
+        const updated = await repo.mutateJobStatus(customerId, activityId, {
+          type: 'CANCEL',
+          reason,
+        });
+        setActivitiesList((prev) =>
+          prev.map((item) =>
+            item.id === updated.id || item.referenceCode === updated.referenceCode
+              ? updated
+              : item
+          )
+        );
+      } catch (err) {
+        setMutationError(err instanceof Error ? err.message : 'Failed to cancel request');
+      } finally {
+        setIsMutating(false);
+      }
+    },
+    [currentUser]
+  );
+
+  const handleAcceptActivity = useCallback(
+    async (activityId: string, invitationId: string, workerId: string) => {
+      setIsMutating(true);
+      setMutationError(null);
+      try {
+        const repo = getCustomerActivityRepository();
+        const customerId = currentUser?.id || 'usr-customer-default';
+        const updated = await repo.mutateJobStatus(customerId, activityId, {
+          type: 'ACCEPT_INVITATION',
+          invitationId,
+          taskerProfileId: workerId,
+        });
+        setActivitiesList((prev) =>
+          prev.map((item) =>
+            item.id === updated.id || item.referenceCode === updated.referenceCode
+              ? updated
+              : item
+          )
+        );
+      } catch (err) {
+        setMutationError(err instanceof Error ? err.message : 'Failed to accept invitation');
+      } finally {
+        setIsMutating(false);
+      }
+    },
+    [currentUser]
+  );
+
+  const handleDeclineActivity = useCallback(
+    async (activityId: string, invitationId: string, workerId: string, reason?: string) => {
+      setIsMutating(true);
+      setMutationError(null);
+      try {
+        const repo = getCustomerActivityRepository();
+        const customerId = currentUser?.id || 'usr-customer-default';
+        const updated = await repo.mutateJobStatus(customerId, activityId, {
+          type: 'DECLINE_INVITATION',
+          invitationId,
+          taskerProfileId: workerId,
+          ...(reason ? { declineReason: reason } : {}),
+        });
+        setActivitiesList((prev) =>
+          prev.map((item) =>
+            item.id === updated.id || item.referenceCode === updated.referenceCode
+              ? updated
+              : item
+          )
+        );
+      } catch (err) {
+        setMutationError(err instanceof Error ? err.message : 'Failed to record worker decline');
+      } finally {
+        setIsMutating(false);
+      }
+    },
+    [currentUser]
+  );
+
   // Compute view model
   const viewModel: CustomerActivityViewModel = useMemo(() => {
     const preservedJob = getPreservedJobDraft();
-    const vm = resolveJobsContext(searchParams, currentUser, preservedJob);
+    const vm = resolveJobsContext(searchParams, currentUser, preservedJob, activitiesList);
 
     // Filter view override if local state changed
     let activities = vm.activities;
@@ -121,14 +229,18 @@ export default function JobsScreen() {
       currentFilter: activeFilter,
       activities,
     };
-  }, [searchParams, currentUser, activeFilter, partialFailureCleared]);
+  }, [searchParams, currentUser, activeFilter, partialFailureCleared, activitiesList]);
 
   // Auto-select first activity if none selected and on desktop
   const activeSelectedActivity = useMemo(() => {
     if (selectedId) {
       return (
-        viewModel.activities.find((a) => a.id === selectedId) ||
-        viewModel.allActivities.find((a) => a.id === selectedId)
+        viewModel.activities.find(
+          (a) => a.id === selectedId || a.referenceCode === selectedId
+        ) ||
+        viewModel.allActivities.find(
+          (a) => a.id === selectedId || a.referenceCode === selectedId
+        )
       );
     }
     return viewModel.activities[0] || viewModel.allActivities[0];
@@ -335,6 +447,12 @@ export default function JobsScreen() {
                     setSelectedId(null);
                     router.push('/jobs');
                   }}
+                  onCancel={handleCancelActivity}
+                  onAccept={handleAcceptActivity}
+                  onDecline={handleDeclineActivity}
+                  isMutating={isMutating}
+                  mutationError={mutationError}
+                  onClearMutationError={() => setMutationError(null)}
                 />
               </div>
             )}
