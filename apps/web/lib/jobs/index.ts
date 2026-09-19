@@ -18,6 +18,7 @@ export const DEFAULT_JOBS_CUSTOMER: CustomerActivityCustomer = {
 export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
   {
     id: 'REQ-84920',
+    customerId: DEFAULT_JOBS_CUSTOMER.id,
     type: 'job_request',
     title: 'Inverter Backup & Battery Inspection',
     service: 'Inverter & Solar Installation',
@@ -50,6 +51,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
   },
   {
     id: 'REQ-72941',
+    customerId: DEFAULT_JOBS_CUSTOMER.id,
     type: 'job_request',
     title: 'Generator Servicing & Carburetor Clean',
     service: 'Generator Servicing & Repair',
@@ -89,6 +91,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
   },
   {
     id: 'REQ-51829',
+    customerId: DEFAULT_JOBS_CUSTOMER.id,
     type: 'job_request',
     title: 'Kitchen Cabinet Hinge & Track Realignment',
     service: 'Carpentry & Woodwork',
@@ -111,6 +114,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
   },
   {
     id: 'BKG-77210',
+    customerId: DEFAULT_JOBS_CUSTOMER.id,
     type: 'booking',
     title: 'Split-Unit AC Deep Servicing',
     service: 'AC Repair & Installation',
@@ -138,6 +142,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
   },
   {
     id: 'BKG-63102',
+    customerId: DEFAULT_JOBS_CUSTOMER.id,
     type: 'booking',
     title: 'Plumbing Drainage Pressure Test',
     service: 'Plumbing & Pipefitting',
@@ -174,6 +179,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
   },
   {
     id: 'BKG-44109',
+    customerId: DEFAULT_JOBS_CUSTOMER.id,
     type: 'booking',
     title: 'Bathroom Pipe & Trap Replacement',
     service: 'Plumbing & Pipefitting',
@@ -200,6 +206,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
   },
   {
     id: 'REQ-31092',
+    customerId: DEFAULT_JOBS_CUSTOMER.id,
     type: 'job_request',
     title: 'Ceiling Fan & Chandelier Wiring',
     service: 'Electrical Services',
@@ -226,6 +233,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
   },
   {
     id: 'REQ-22019',
+    customerId: DEFAULT_JOBS_CUSTOMER.id,
     type: 'job_request',
     title: 'Deep House Cleaning & Window Washing',
     service: 'Deep House Cleaning',
@@ -247,6 +255,7 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
   },
   {
     id: 'REQ-19024',
+    customerId: DEFAULT_JOBS_CUSTOMER.id,
     type: 'job_request',
     title: 'Generator Carburetor Rebuild',
     service: 'Generator Maintenance',
@@ -348,6 +357,7 @@ export function resolveJobsContext(
     };
     const newActiveItem: CustomerActivityItem = {
       id: safeRef,
+      customerId: customer.id,
       type: 'job_request',
       title: safeTitle,
       category: 'general',
@@ -376,6 +386,7 @@ export function resolveJobsContext(
     };
     const draftItem: CustomerActivityItem = {
       id: safeRef,
+      customerId: customer.id,
       type: 'job_request',
       title: safeTitle,
       category: preservedDraft.category ?? 'general',

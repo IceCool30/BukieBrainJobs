@@ -85,16 +85,10 @@ function resolveStateCopy(activity: CustomerActivityItem): StateCopy {
         icon: 'clock',
       };
     case 'COMPLETED':
+    case 'PAID':
       return {
         badgeLabel: 'Completed',
         meaningLine: 'Service delivery completed.',
-        badgeStyle: 'emerald',
-        icon: 'check',
-      };
-    case 'PAID':
-      return {
-        badgeLabel: 'Completed & Paid',
-        meaningLine: 'Service delivery completed and payment settled.',
         badgeStyle: 'emerald',
         icon: 'check',
       };
@@ -173,12 +167,10 @@ export function LifecycleStateSurface({
 
   // Simulation handler for acceptance
   const handleSimulateAccept = async () => {
-    if (!onAccept) return;
-    const invitationId = activity.invitation?.id || `inv-${activity.id}-sim`;
-    const workerId = activity.invitation?.taskerProfileId || 'bw-simulated-artisan';
+    if (!onAccept || !activity.invitation) return;
     setLocalActionPending(true);
     try {
-      await onAccept(activity.id, invitationId, workerId);
+      await onAccept(activity.id, activity.invitation.id, activity.invitation.taskerProfileId);
     } finally {
       setLocalActionPending(false);
     }
@@ -186,15 +178,13 @@ export function LifecycleStateSurface({
 
   // Simulation handler for decline
   const handleSimulateDecline = async () => {
-    if (!onDecline) return;
-    const invitationId = activity.invitation?.id || `inv-${activity.id}-sim`;
-    const workerId = activity.invitation?.taskerProfileId || 'bw-simulated-artisan';
+    if (!onDecline || !activity.invitation) return;
     setLocalActionPending(true);
     try {
       await onDecline(
         activity.id,
-        invitationId,
-        workerId,
+        activity.invitation.id,
+        activity.invitation.taskerProfileId,
         'The BrainWorker is fully committed on another project.'
       );
     } finally {
@@ -474,7 +464,7 @@ export function LifecycleStateSurface({
         </div>
 
         {/* Deterministic Simulation Controls (Accessible in dev/mock verification) */}
-        {currentJobStatus === 'PENDING_ACCEPTANCE' && !isDeclined && onAccept && onDecline && (
+        {currentJobStatus === 'PENDING_ACCEPTANCE' && !isDeclined && activity.invitation && onAccept && onDecline && (
           <div className="mt-3 p-3.5 rounded-xl bg-slate-100/80 border border-slate-200 space-y-2">
             <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5 text-blue-600" />

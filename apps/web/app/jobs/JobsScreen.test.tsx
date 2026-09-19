@@ -26,7 +26,7 @@ vi.mock('next/image', () => ({
 
 describe('WEB-011 JobsScreen Component (TDD)', () => {
   const mockCustomerUser: AuthUser = {
-    id: 'usr-customer-88',
+    id: 'usr-customer-default',
     name: 'Babajide Adeleke',
     email: 'babajide@example.com',
     phone: '+2348031234567',
@@ -298,5 +298,26 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
     fireEvent.click(acceptBtn);
 
     expect(await screen.findByText('Your booking is confirmed.')).toBeInTheDocument();
+  });
+
+  it('traps focus and restores focus upon modal dismissal', async () => {
+    mockSearchParams = new URLSearchParams('id=REQ-51829');
+    render(<JobsScreen />);
+
+    const cancelBtn = screen.getByRole('button', { name: /Cancel Request/i });
+    cancelBtn.focus();
+    expect(document.activeElement).toBe(cancelBtn);
+
+    fireEvent.click(cancelBtn);
+
+    const dialog = screen.getByRole('dialog', { name: /Cancel Service Request/i });
+    expect(dialog).toBeInTheDocument();
+
+    // Dismiss with Escape key
+    fireEvent.keyDown(window, { key: 'Escape' });
+
+    // Modal closes and focus is restored to the trigger button
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(document.activeElement).toBe(cancelBtn);
   });
 });

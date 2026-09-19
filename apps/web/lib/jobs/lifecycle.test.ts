@@ -90,6 +90,18 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
       referenceCode: 'REQ-OPEN-TEST',
       createdAt: 'Today, 8:00 AM',
     },
+    {
+      id: 'REQ-NO-OWNER',
+      type: 'job_request',
+      title: 'Unowned Activity',
+      status: 'request_received',
+      statusLabel: 'Request Received',
+      jobStatus: 'OPEN',
+      location: 'Lagos',
+      schedule: 'Flexible',
+      referenceCode: 'REQ-NO-OWNER',
+      createdAt: 'Today',
+    },
   ];
 
   beforeEach(() => {
@@ -102,7 +114,6 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
         type: 'ACCEPT_INVITATION',
         invitationId: 'inv-solar-1',
         taskerProfileId: 'bw-solar-tech',
-        confirmedSchedule: 'Tomorrow 9:00 AM - 12:00 PM',
       });
 
       expect(updated.jobStatus).toBe('CONFIRMED');
@@ -110,7 +121,7 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
       expect(updated.statusLabel).toBe('Scheduled');
       expect(updated.invitation?.accepted).toBe(true);
       expect(updated.invitation?.respondedAt).toBeDefined();
-      expect(updated.confirmedSchedule).toBe('Tomorrow 9:00 AM - 12:00 PM');
+      expect(updated.confirmedSchedule).toBe('Tomorrow morning');
     });
 
     it('rejects acceptance if invitation does not belong to job', async () => {
@@ -121,6 +132,16 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
           taskerProfileId: 'bw-solar-tech',
         })
       ).rejects.toThrow(/does not belong to job/i);
+    });
+
+    it('rejects acceptance if no invitation exists on the job (cannot manufacture invitation)', async () => {
+      await expect(
+        repository.mutateJobStatus('usr-cust-1', 'REQ-OPEN-TEST', {
+          type: 'ACCEPT_INVITATION',
+          invitationId: 'inv-manufactured',
+          taskerProfileId: 'bw-solar-tech',
+        })
+      ).rejects.toThrow(/no active invitation found/i);
     });
 
     it('rejects acceptance from a state where transition to CONFIRMED is prohibited', async () => {
@@ -164,6 +185,16 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
           taskerProfileId: 'unmatched-worker-id',
         })
       ).rejects.toThrow(/does not match invitation/i);
+    });
+
+    it('rejects decline if no invitation exists on the job (cannot manufacture invitation)', async () => {
+      await expect(
+        repository.mutateJobStatus('usr-cust-1', 'REQ-OPEN-TEST', {
+          type: 'DECLINE_INVITATION',
+          invitationId: 'inv-manufactured',
+          taskerProfileId: 'bw-gen-expert',
+        })
+      ).rejects.toThrow(/no active invitation found/i);
     });
   });
 
@@ -220,6 +251,35 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
           reason: 'No auth',
         })
       ).rejects.toThrow(/Unauthorized: customerId is required/i);
+    });
+
+    it('fails closed when attempting to mutate an activity with missing customerId', async () => {
+      await expect(
+        repository.mutateJobStatus('usr-cust-1', 'REQ-NO-OWNER', {
+          type: 'CANCEL',
+          reason: 'Attempt cancel on unowned activity',
+        })
+      ).rejects.toThrow(/Unauthorized: activity 'REQ-NO-OWNER' has no owner/i);
+    });
+  });
+
+  describe('Section 5: Customer Data Isolation', () => {
+    it('strictly isolates getActivities by customer ID', async () => {
+      const cust1Activities = await repository.getActivities('usr-cust-1');
+      expect(cust1Activities.length).toBe(5);
+      expect(cust1Activities.every((a) => a.customerId === 'usr-cust-1')).toBe(true);
+
+      const otherActivities = await repository.getActivities('usr-different-cust');
+      expect(otherActivities.length).toBe(0);
+    });
+
+    it('strictly isolates getActivityById and returns null for unauthorized customer', async () => {
+      const authorized = await repository.getActivityById('usr-cust-1', 'REQ-ACCEPT-TEST');
+      expect(authorized).not.toBeNull();
+      expect(authorized?.id).toBe('REQ-ACCEPT-TEST');
+
+      const unauthorized = await repository.getActivityById('usr-different-cust', 'REQ-ACCEPT-TEST');
+      expect(unauthorized).toBeNull();
     });
   });
 });

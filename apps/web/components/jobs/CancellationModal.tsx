@@ -30,17 +30,73 @@ export function CancellationModal({
   const [selectedReason, setSelectedReason] = useState<string>(CANCELLATION_REASONS[0]!);
   const [customDetails, setCustomDetails] = useState('');
   const modalRef = useRef<HTMLDivElement>(null);
+  const previousActiveElement = useRef<HTMLElement | null>(null);
 
-  // Close on escape key
+  // Focus trap, initial focus, and focus restoration
   useEffect(() => {
     if (!isOpen) return;
+
+    // Capture currently focused element for restoration
+    previousActiveElement.current = document.activeElement as HTMLElement | null;
+
+    // Focus the first interactive element after render
+    const frameId = requestAnimationFrame(() => {
+      if (modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), select:not([disabled]), textarea:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length > 0) {
+          focusable[0]?.focus();
+        }
+      }
+    });
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && !isPending) {
+        e.preventDefault();
         onClose();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        if (!modalRef.current) return;
+        const focusable = Array.from(
+          modalRef.current.querySelectorAll<HTMLElement>(
+            'button:not([disabled]), select:not([disabled]), textarea:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          )
+        );
+        if (focusable.length === 0) {
+          e.preventDefault();
+          return;
+        }
+
+        const firstElement = focusable[0]!;
+        const lastElement = focusable[focusable.length - 1]!;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement || !modalRef.current.contains(document.activeElement)) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement || !modalRef.current.contains(document.activeElement)) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener('keydown', handleKeyDown);
+      // Restore focus to previously active element
+      if (previousActiveElement.current && typeof previousActiveElement.current.focus === 'function') {
+        previousActiveElement.current.focus();
+      }
+    };
   }, [isOpen, isPending, onClose]);
 
   if (!isOpen) return null;
