@@ -127,7 +127,41 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
       expect(updated.statusLabel).toBe('Scheduled');
       expect(updated.invitation?.accepted).toBe(true);
       expect(updated.invitation?.respondedAt).toBeDefined();
-      expect(updated.confirmedSchedule).toBe('Tomorrow morning');
+      expect(updated.confirmedSchedule).toBeUndefined();
+    });
+
+    it('preserves authoritative confirmedSchedule when provided, without fabricating from requested schedule', async () => {
+      const withAuthSchedule: CustomerActivityItem = {
+        id: 'REQ-AUTH-SCHED',
+        type: 'job_request',
+        title: 'Solar Inverter Calibration',
+        service: 'Solar Installation',
+        status: 'awaiting_progress',
+        statusLabel: 'BrainWorker Responding',
+        jobStatus: 'PENDING_ACCEPTANCE',
+        customerId: 'usr-cust-1',
+        location: 'Lekki Phase 1, Lagos',
+        schedule: 'Tomorrow morning',
+        confirmedSchedule: 'Friday, Sep 25, 2026 (9:00 AM - 12:00 PM)',
+        referenceCode: 'REQ-AUTH-SCHED',
+        createdAt: 'Today, 9:00 AM',
+        invitation: {
+          id: 'inv-auth-1',
+          jobId: 'REQ-AUTH-SCHED',
+          taskerProfileId: 'bw-solar-tech',
+          sentAt: 'Today, 9:00 AM',
+        },
+      };
+      repository = new MockCustomerActivityRepository([withAuthSchedule]);
+
+      const updated = await repository.mutateJobStatus('usr-cust-1', 'REQ-AUTH-SCHED', {
+        type: 'ACCEPT_INVITATION',
+        invitationId: 'inv-auth-1',
+        taskerProfileId: 'bw-solar-tech',
+      });
+
+      expect(updated.jobStatus).toBe('CONFIRMED');
+      expect(updated.confirmedSchedule).toBe('Friday, Sep 25, 2026 (9:00 AM - 12:00 PM)');
     });
 
     it('rejects acceptance if invitation does not belong to job', async () => {
@@ -181,6 +215,35 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
       });
       // The job is NOT cancelled
       expect(updated.status).not.toBe('cancelled');
+    });
+
+    it('rejects decline when job is outside the PENDING_ACCEPTANCE response boundary', async () => {
+      // Decline attempted when job is OPEN
+      await expect(
+        repository.mutateJobStatus('usr-cust-1', 'REQ-OPEN-TEST', {
+          type: 'DECLINE_INVITATION',
+          invitationId: 'inv-any',
+          taskerProfileId: 'bw-any',
+        })
+      ).rejects.toThrow(/is in state 'OPEN', expected 'PENDING_ACCEPTANCE'/i);
+
+      // Decline attempted when job is CONFIRMED
+      await expect(
+        repository.mutateJobStatus('usr-cust-1', 'BKG-CONFIRMED-TEST', {
+          type: 'DECLINE_INVITATION',
+          invitationId: 'inv-any',
+          taskerProfileId: 'bw-any',
+        })
+      ).rejects.toThrow(/is in state 'CONFIRMED', expected 'PENDING_ACCEPTANCE'/i);
+
+      // Decline attempted when job is COMPLETED
+      await expect(
+        repository.mutateJobStatus('usr-cust-1', 'BKG-COMPLETED-TEST', {
+          type: 'DECLINE_INVITATION',
+          invitationId: 'inv-completed-1',
+          taskerProfileId: 'bw-completed-tech',
+        })
+      ).rejects.toThrow(/is in state 'COMPLETED', expected 'PENDING_ACCEPTANCE'/i);
     });
 
     it('rejects decline if worker id does not match invitation', async () => {
@@ -288,4 +351,36 @@ describe('WEB-013 Customer Booking Acceptance & Lifecycle Repository (TDD)', () 
       expect(unauthorized).toBeNull();
     });
   });
+
+  describe('Section 6: Invitation Boundary Hardening and Customer Prevention', () => {
+    it('rejects customer attempt to dispatch SEND_INVITATION via mutateJobStatus', async () => {
+      await expect(
+        repository.mutateJobStatus('usr-cust-1', 'REQ-OPEN-TEST', {
+          type: 'SEND_INVITATION',
+          taskerProfileId: 'bw-solar-tech',
+        } as unknown as Parameters<typeof repository.mutateJobStatus>[2])
+      ).rejects.toThrow(/Unauthorized: SEND_INVITATION is an internal domain operation/i);
+    });
+
+    it('allows internal domain operation to dispatch invitation and transition OPEN to PENDING_ACCEPTANCE', () => {
+      const updated = repository.dispatchInvitationInternal('REQ-OPEN-TEST', {
+        id: 'inv-internal-1',
+        taskerProfileId: 'bw-solar-tech',
+      });
+
+      expect(updated.jobStatus).toBe('PENDING_ACCEPTANCE');
+      expect(updated.status).toBe('awaiting_progress');
+      expect(updated.invitation?.id).toBe('inv-internal-1');
+      expect(updated.invitation?.taskerProfileId).toBe('bw-solar-tech');
+    });
+
+    it('rejects internal dispatch when job cannot transition to PENDING_ACCEPTANCE', () => {
+      expect(() => {
+        repository.dispatchInvitationInternal('BKG-CONFIRMED-TEST', {
+          taskerProfileId: 'bw-solar-tech',
+        });
+      }).toThrow(InvalidTransitionError);
+    });
+  });
 });
+

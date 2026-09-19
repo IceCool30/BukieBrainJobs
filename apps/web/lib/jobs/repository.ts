@@ -223,7 +223,21 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
 
     const currentJobStatus: JobStatus = currentActivity.jobStatus ?? 'OPEN';
 
+    // Prevent customer callers from invoking internal SEND_INVITATION
+    if ((action as unknown as { type: string }).type === 'SEND_INVITATION') {
+      throw new Error(
+        '[Repository] Unauthorized: SEND_INVITATION is an internal domain operation and cannot be invoked by customer callers'
+      );
+    }
+
     if (action.type === 'DECLINE_INVITATION') {
+      // The invitation response boundary is strictly PENDING_ACCEPTANCE
+      if (currentJobStatus !== 'PENDING_ACCEPTANCE') {
+        throw new Error(
+          `[Repository] Cannot decline: job '${jobId}' is in state '${currentJobStatus}', expected 'PENDING_ACCEPTANCE'`
+        );
+      }
+
       // Decline is recorded as an acceptance response on an existing invitation
       // It does NOT create a "DECLINED" JobStatus, and does NOT cancel the job
       if (!currentActivity.invitation) {
@@ -271,16 +285,6 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
     let cancelledBy = currentActivity.cancelledBy;
 
     switch (action.type) {
-      case 'SEND_INVITATION': {
-        targetJobStatus = 'PENDING_ACCEPTANCE';
-        updatedInvitation = {
-          id: `inv-${currentActivity.id}-${Date.now()}`,
-          jobId: currentActivity.id,
-          taskerProfileId: action.taskerProfileId,
-          sentAt: new Date().toISOString(),
-        };
-        break;
-      }
       case 'ACCEPT_INVITATION': {
         if (!currentActivity.invitation) {
           throw new Error(`[Repository] Cannot accept: no active invitation found on job '${jobId}'`);
@@ -303,8 +307,8 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
           respondedAt: new Date().toISOString(),
           accepted: true,
         };
-        // Schedule is derived from existing activity context, not customer action payload
-        confirmedSchedule = currentActivity.confirmedSchedule || currentActivity.schedule;
+        // Confirmed schedule must originate from authoritative response, never fabricated from requested schedule
+        confirmedSchedule = currentActivity.confirmedSchedule;
         break;
       }
       case 'CANCEL':
@@ -348,6 +352,48 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
               primary: true,
             }
           : currentActivity.nextAction,
+    };
+
+    this.inMemoryActivities[activityIndex] = updated;
+    this.persistToStorage();
+    return { ...updated };
+  }
+
+  /**
+   * Internal domain operation to dispatch an invitation to a BrainWorker.
+   * Separated from customer-facing JobLifecycleAction and mutateJobStatus boundary.
+   */
+  dispatchInvitationInternal(
+    jobId: string,
+    invitation: { id?: string; taskerProfileId: string; taskerName?: string }
+  ): CustomerActivityItem {
+    const activityIndex = this.inMemoryActivities.findIndex(
+      (a) => a.id === jobId || a.referenceCode === jobId
+    );
+    if (activityIndex === -1) {
+      throw new Error(`[Repository] Activity not found for ID: ${jobId}`);
+    }
+    const currentActivity = this.inMemoryActivities[activityIndex]!;
+    const currentJobStatus: JobStatus = currentActivity.jobStatus ?? 'OPEN';
+    if (!canTransition(currentJobStatus, 'PENDING_ACCEPTANCE')) {
+      throw new InvalidTransitionError(currentJobStatus, 'PENDING_ACCEPTANCE');
+    }
+
+    const invitationRecord: JobInvitation = {
+      id: invitation.id || `inv-${currentActivity.id}-${Date.now()}`,
+      jobId: currentActivity.id,
+      taskerProfileId: invitation.taskerProfileId,
+      sentAt: new Date().toISOString(),
+    };
+
+    const targetJobStatus: JobStatus = 'PENDING_ACCEPTANCE';
+    const presentation = mapJobStatusToPresentation(targetJobStatus);
+    const updated: CustomerActivityItem = {
+      ...currentActivity,
+      jobStatus: targetJobStatus,
+      status: presentation.status,
+      statusLabel: presentation.label,
+      invitation: invitationRecord,
     };
 
     this.inMemoryActivities[activityIndex] = updated;

@@ -43,3 +43,15 @@ This file records verification checks executed across the codebase under `/check
   7. Focus trap, focus containment, and focus restoration verified in `CancellationModal`
 - **Voice and Slop Audit**: 0 em dashes in UI components and test files; 0 forbidden corporate phrases; state-honest plain language across all lifecycle states
 - **Status**: PASS
+
+## 2026-09-19: WEB-013 Final Audit Remediation (Schedule, Decline Boundary, Invitation Boundary)
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-013-customer-booking-lifecycle`
+- **Trigger**: Remediation of PR #48 final audit blockers
+- **Items Remediated**:
+  1. Confirmed schedule fabrication eliminated: `confirmedSchedule` is retained solely from authoritative contracts and remains undefined otherwise; requested schedule is displayed separately.
+  2. Enforced response boundary on decline: `DECLINE_INVITATION` strictly requires the job to be in `PENDING_ACCEPTANCE`, rejecting mutations from any other lifecycle state.
+  3. Hardened invitation creation boundary: removed `SEND_INVITATION` from customer-facing `JobLifecycleAction` and `mutateJobStatus`, separating invitation dispatch into an internal domain operation.
+- **Voice and Slop Audit**: 0 em dashes in code and tests; 0 forbidden corporate phrases; state-honest plain language across all lifecycle states
+- **Status**: PENDING VERIFICATION
+

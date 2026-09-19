@@ -12,33 +12,33 @@ Implement the customer-facing booking acceptance and lifecycle surface within th
    - Never add `DECLINED`, `SCHEDULED`, `CANCELLATION_PENDING`, or `PAYMENT_PENDING` to `JobStatus`.
 
 2. **Acceptance and Decline Boundary**:
-   - BrainWorker acceptance triggers `canTransition('PENDING_ACCEPTANCE', 'CONFIRMED')` to reach `CONFIRMED`.
-   - BrainWorker decline records `accepted: false`, optional customer-safe `declineReason`, and timestamp on the invitation response. It displays "The BrainWorker declined the request." without mutating the job into a fabricated `DECLINED` status and without cancelling the job.
+    - BrainWorker acceptance triggers `canTransition('PENDING_ACCEPTANCE', 'CONFIRMED')` to reach `CONFIRMED`.
+    - BrainWorker decline records `accepted: false`, optional customer-safe `declineReason`, and timestamp on the invitation response. The invitation response boundary is strictly `PENDING_ACCEPTANCE`. The decline mutation rejects responses outside that boundary without creating a `DECLINED` JobStatus or cancelling the job.
 
 3. **Confirmation Boundary**:
-   - Render "Your booking is confirmed." only when authoritative state is `CONFIRMED`.
-   - Selection, interest, profile viewing, or proposed schedules must never render confirmed-booking language.
+    - Render "Your booking is confirmed." only when authoritative state is `CONFIRMED`.
+    - Selection, interest, profile viewing, or proposed schedules must never render confirmed-booking language.
 
 4. **Schedule Treatment**:
-   - Requested schedule is displayed purely as request context.
-   - No schedule negotiation, counter-proposals, or accept/reject schedule controls are built.
-   - Confirmed schedule is rendered only when an authoritative contract supplies it.
+    - Requested schedule is displayed purely as request context.
+    - No schedule negotiation, counter-proposals, or accept/reject schedule controls are built.
+    - Confirmed schedule is rendered only when an authoritative contract supplies it. If not supplied, `confirmedSchedule` remains undefined and the requested schedule is displayed separately.
 
 5. **Customer Cancellation**:
-   - Available only when `canTransition(currentStatus, 'CANCELLED')` evaluates to true and customer ownership is validated.
-   - Permitted states: `OPEN`, `PENDING_ACCEPTANCE`, `CONFIRMED`, `DISPUTED`, `RESOLVED`.
-   - Execution uses transient pending mutation state; on failure, prior state is retained. No `CANCELLATION_PENDING` status.
+    - Available only when `canTransition(currentStatus, 'CANCELLED')` evaluates to true and customer ownership is validated.
+    - Permitted states: `OPEN`, `PENDING_ACCEPTANCE`, `CONFIRMED`, `DISPUTED`, `RESOLVED`.
+    - Execution uses transient pending mutation state; on failure, prior state is retained. No `CANCELLATION_PENDING` status.
 
 6. **Payment Boundary**:
-   - Zero payment execution, payment CTAs, escrow states, or funds-secured messaging in WEB-013.
-   - Booking confirmation is not payment confirmation.
+    - Zero payment execution, payment CTAs, escrow states, or funds-secured messaging in WEB-013.
+    - Booking confirmation is not payment confirmation.
 
 7. **Authorization, Data Isolation, and Anti-Manufacturing**:
-   - Enforce customer data isolation in `getActivities()` and `getActivityById()`: never return or leak another customer's activities.
-   - Fail closed: if an activity has missing ownership (no `customerId`), mutations must be rejected.
-   - Reject cross-customer mutations and unauthorized worker associations.
-   - Acceptance and decline strictly require an active invitation on the job. Customer actions cannot manufacture invitations.
-   - Confirmed schedule is derived from established request context, never from customer action payload.
+    - Enforce customer data isolation in `getActivities()` and `getActivityById()`: never return or leak another customer's activities.
+    - Fail closed: if an activity has missing ownership (no `customerId`), mutations must be rejected.
+    - Reject cross-customer mutations and unauthorized worker associations.
+    - Acceptance and decline strictly require an active invitation on the job. Customer callers cannot manufacture, create, or send invitations; `SEND_INVITATION` is excluded from the customer-facing `JobLifecycleAction` repository mutation boundary.
+    - Confirmed schedule must originate from an authoritative booking/lifecycle response, never fabricated from the customer's requested schedule.
 
 8. **Design and Accessibility**:
    - Deep Navy `#001A41` as primary; Emerald `#296A4B` used strategically for confirmed/completed indicators.
