@@ -110,7 +110,7 @@ The canonical transition boundary is:
 canTransition(from, to)
 ```
 
-Customer-facing labels are presentation mappings from authoritative domain state. They must not form a parallel state machine.
+Customer-facing lifecycle labels are presentation mappings from authoritative domain state. Acceptance-response outcomes such as an explicit BrainWorker decline are scoped response records, not JobStatus values, and must never form a competing lifecycle state machine.
 
 The UI must never directly mutate presentation-only statuses. Every lifecycle mutation must cross the canonical transition boundary.
 
@@ -719,17 +719,95 @@ Potential future measures:
 
 Analytics is not required for this slice unless an approved analytics contract exists. Sensitive identity/operational data must not be collected unnecessarily.
 
-## 34. Open Product Questions
+## 34. Contract Decisions
 
-These must be resolved before implementation if no authoritative repository contract already answers them:
+The five load-bearing questions from the original §34 are resolved for WEB-013. These decisions are authoritative for the frontend implementation phase and remain compatible with the existing JobStatus, JobInvitation, RespondToInvitationRequest, and canTransition() contracts.
 
-1. **Decline representation:** How does the acceptance domain record a BrainWorker decline while remaining compatible with the existing JobStatus model?
-2. **Schedule negotiation:** Does the production contract support proposal, customer response, and confirmation?
-3. **Cancellation authority:** Which lifecycle states permit customer cancellation, and can cancellation be asynchronous?
-4. **Confirmation source:** Which domain operation makes `CONFIRMED` authoritative?
-5. **Payment timing:** Does any existing approved contract require payment before, at, or after confirmation?
+### 34.1 Decline representation
 
-The frontend must not invent answers to these questions.
+A BrainWorker decline is recorded on the acceptance/invitation response, not as a new JobStatus.
+
+The existing JobInvitation contract is authoritative for this response boundary:
+
+- accepted: false records the explicit decline;
+- respondedAt records when the response occurred when authoritative;
+- declineReason is optional and customer-safe when supplied;
+- the job does not gain a DECLINED JobStatus.
+
+The declined invitation remains a historical response for that BrainWorker. The customer may review alternatives where the matching lifecycle supports another candidate. The job lifecycle remains governed by the canonical JobStatus contract and must not be forced into CANCELLED or EXPIRED merely because one BrainWorker declined.
+
+Customer-facing decline wording is therefore scoped to the acceptance response: **The BrainWorker declined the request.** It must not be presented as a replacement JobStatus.
+
+### 34.2 Schedule negotiation
+
+WEB-013 does not introduce schedule negotiation as an implementation capability.
+
+For this slice:
+
+- the customer requested schedule is carried as request context;
+- a confirmed schedule is shown only when an authoritative booking/lifecycle contract supplies it;
+- no proposal, counter-proposal, customer accept/reject schedule workflow is rendered;
+- no new SCHEDULED JobStatus is introduced.
+
+If a future approved scheduling contract adds proposal/response semantics, those belong in a separate schedule contract and must remain subordinate to the canonical JobStatus model.
+
+### 34.3 Cancellation authority and asynchronous behavior
+
+The existing canonical transition graph is the authority for customer cancellation. In the current contract, the customer may request cancellation only from states where canTransition(currentStatus, 'CANCELLED') is true. That currently permits cancellation from OPEN, PENDING_ACCEPTANCE, CONFIRMED, DISPUTED, and RESOLVED, subject to separate customer-ownership and domain-policy checks.
+
+WEB-013 does not introduce persistent asynchronous cancellation as a lifecycle state. The frontend mutation is synchronous for this mock-first slice:
+
+1. validate customer ownership and lifecycle capability;
+2. enter a transient pending UI state;
+3. perform the mutation;
+4. render authoritative CANCELLED on success;
+5. retain the prior authoritative state on failure.
+
+A future production API may use an idempotent asynchronous operation, but that operation must be represented by a separate mutation/pending contract rather than a new JobStatus unless the canonical state machine is formally amended.
+
+### 34.4 Confirmation source
+
+CONFIRMED is authoritative only when the booking/acceptance domain operation records an accepted invitation and successfully crosses the canonical transition boundary:
+
+canTransition('PENDING_ACCEPTANCE', 'CONFIRMED')
+
+For the current frontend contract, the authoritative confirmation source is the accepted RespondToInvitationRequest processed by the booking/lifecycle domain boundary. UI selection, local optimistic state, a BrainWorker profile, a proposed schedule, or a payment event cannot independently produce confirmed-booking language.
+
+The customer-facing confirmation line **Your booking is confirmed.** is therefore rendered only from authoritative CONFIRMED state.
+
+### 34.5 Payment timing
+
+No existing approved WEB-013 contract establishes a payment-before-confirmation, payment-at-confirmation, or payment-after-confirmation rule. Therefore WEB-013 deliberately makes no payment-timing commitment.
+
+For this slice:
+
+- booking confirmation is not payment confirmation;
+- no payment state, payment CTA, escrow state, or funds-secured claim is rendered;
+- payment execution remains outside WEB-013 and belongs to the separately approved payment/wallet capability;
+- when that capability is specified, its payment timing must integrate with the booking lifecycle without redefining CONFIRMED retroactively.
+
+This preserves ARCH-002's distinction between customer budget, BrainWorker rate, marketplace pricing, and actual payment state.
+
+### 34.6 Implementation contract summary
+
+The implementation must use these boundaries:
+
+Customer Job Invitation / Acceptance Response
+  -> records accepted or declined response
+
+PENDING_ACCEPTANCE -> CONFIRMED
+  -> only through the canonical lifecycle mutation
+
+Schedule
+  -> request context only unless a future authoritative schedule contract exists
+
+Cancellation
+  -> capability derived from canTransition() + customer/domain authorization
+
+Payment
+  -> separate capability; no WEB-013 payment state
+
+No frontend-only status, optimistic confirmation, fabricated schedule, or payment implication may bypass these decisions.
 
 ## 35. Risks and Mitigations
 
@@ -883,4 +961,4 @@ Merge
 Production Verification
 ```
 
-**Current status: READY FOR INDEPENDENT PRODUCT REVIEW.**
+**Current status: PRODUCT CONTRACT DECISIONS RESOLVED.**
