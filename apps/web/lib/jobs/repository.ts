@@ -30,11 +30,11 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
   }
 
   getSynchronousActivities(customerId?: string): CustomerActivityItem[] {
-    const custId = (customerId || '').trim();
-    if (!custId) {
-      return [];
+    if (customerId) {
+      const custId = customerId.trim();
+      return this.inMemoryActivities.filter((a) => a.customerId === custId);
     }
-    return this.inMemoryActivities.filter((a) => a.customerId === custId);
+    return [...this.inMemoryActivities];
   }
 
   private loadFromStorage(): void {

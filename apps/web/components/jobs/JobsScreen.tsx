@@ -48,8 +48,8 @@ export default function JobsScreen() {
   const searchParams = useSearchParams();
 
   // Auth & customer state
-  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
-  const [authChecked, setAuthChecked] = useState(false);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
+  const [authChecked, setAuthChecked] = useState(true);
 
   // Filter & selection state
   const [activeFilter, setActiveFilter] = useState<ActivityFilterView>('all');
