@@ -13,18 +13,14 @@ import {
   LogOut,
   X,
 } from 'lucide-react';
-import { CustomerActivityCustomer, ActivityFilterView } from '@bukiebrainjobs/types';
+import { CustomerActivityCustomer } from '@bukiebrainjobs/types';
 
 export function JobsSidebar({
   customer,
-  activeFilter,
-  onSelectFilter,
   onSignOut,
   onOpenNoticeDialog,
 }: {
   customer: CustomerActivityCustomer | null;
-  activeFilter?: ActivityFilterView;
-  onSelectFilter?: (filter: ActivityFilterView) => void;
   onSignOut: () => void;
   onOpenNoticeDialog: (dialog: 'messages' | 'notifications') => void;
 }) {
