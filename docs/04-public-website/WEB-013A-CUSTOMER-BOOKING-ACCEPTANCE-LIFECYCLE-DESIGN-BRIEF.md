@@ -173,9 +173,9 @@ The existing `StatusPill` primitive uses an uppercase compact pill with a leadin
 
 ### 7.3 Declined (conditional on contract decision)
 
-- **Domain condition:** an explicit `AcceptanceResponse` recording a decline. There is no `DECLINED` JobStatus, and this brief does not invent one. The decline is presented from the acceptance-response contract while the job itself reaches whatever approved lifecycle state the contract decision assigns.
-- **Condition to unlock:** WEB-013 §34 question 1 (decline representation) must be resolved by a documented contract decision that names where a declined job lands in the lifecycle and how the response is recorded.
-- **Safe fallback until resolved:** the activity is shown as no longer awaiting a response, with the neutral meaning line "This request is no longer active," and a recovery action back to Jobs or to matching alternatives. No "declined" wording is used until the contract supports it.
+- **Domain condition:** an explicit `AcceptanceResponse` / `JobInvitation` response records `accepted: false`. There is no `DECLINED` JobStatus, and this brief does not invent one. Decline is an acceptance-response outcome scoped to the selected BrainWorker, while the job itself remains governed by the canonical JobStatus lifecycle.
+- **Contract decision:** WEB-013 §34.1 resolves decline representation. The response may be shown as "The BrainWorker declined the request." without creating a new lifecycle status.
+- **Safe fallback for an unresolved response:** before an explicit response exists, remain in the `PENDING_ACCEPTANCE` awaiting state.
 - **Treatment once unlocked:** distinct from both expiration and cancellation. Muted neutral surface, no error color, no line-through. It is an answer, not a failure.
 - **Meaning line once unlocked:** The BrainWorker declined the request.
 - **Available action:** review alternatives or return to Jobs.
@@ -451,7 +451,7 @@ Session and authentication behavior follow WEB-008. Session failure routes throu
 
 This register lists every treatment in this brief that depends on an open WEB-013 §34 question, the question it depends on, and the safe fallback used until a documented contract decision unlocks it. Implementation must not build the unlocked form without the corresponding decision.
 
-| Treatment | Depends on §34 question | Safe fallback until resolved |
+| Treatment | Contract dependency | Current approved treatment |
 |---|---|---|
 | Declined state and wording | Resolved by WEB-013 §34.1 | Explicit acceptance-response decline; no DECLINED JobStatus |
 | Schedule proposal and negotiation UI | Resolved by WEB-013 §34.2 | Requested schedule shown as context only; no proposal interface in WEB-013 |
@@ -505,7 +505,7 @@ This register lists every treatment in this brief that depends on an open WEB-01
 - [ ] `CONFIRMED` is the only state using confirmation language and settled positive treatment.
 - [ ] Decline, expiration, and cancellation are three visually and verbally distinct outcomes.
 - [ ] Every visible status derives from an authoritative `JobStatus` reachable through `canTransition()`.
-- [ ] No `DECLINED` state or parallel status model is introduced.
+- [ ] No `DECLINED` JobStatus or parallel lifecycle state machine is introduced; decline is scoped to the acceptance-response record.
 - [ ] Every conditional treatment is marked and has its fallback rendered.
 - [ ] Requested and confirmed schedule are visually distinguishable.
 - [ ] At most one primary action per state; destructive actions confirm and prevent duplication.
