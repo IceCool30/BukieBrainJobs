@@ -344,7 +344,6 @@ export type ActivityFilterView = 'all' | 'active' | 'upcoming' | 'past';
 export interface CustomerActivityPreferredWorker {
   name: string;
   avatar?: string | undefined;
-  verified?: boolean | undefined;
 }
 
 export interface CustomerActivityNextAction {

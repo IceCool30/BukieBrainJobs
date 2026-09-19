@@ -43,6 +43,7 @@ The format follows practical release notes written plainly in engineering langua
 - Hardened invitation creation boundary: removed `SEND_INVITATION` from customer-facing `JobLifecycleAction` and `mutateJobStatus`, separating invitation dispatch into an internal domain operation.
 - Removed synthetic fallback identifiers (`inv-...-sim`, `bw-simulated-artisan`) from simulation controls and guarded controls with active invitation check.
 - Implemented accessible focus trap and focus restoration to the trigger button in `CancellationModal.tsx`.
+- Removed unsupported verification trust claims ("Verified Identity & Community Standards" safety standard card and preferred worker verified badge) from customer lifecycle surface until backed by authoritative verification contracts.
 
 ### Added
 - WEB-012 customer job matching at `/job/[referenceCode]/matches`.

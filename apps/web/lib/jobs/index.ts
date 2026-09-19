@@ -33,7 +33,6 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
       'Solar inverter requires complete system health check and deep-cycle battery bank load testing following frequent trip switch issues.',
     preferredWorker: {
       name: 'Tunde Bakare',
-      verified: true,
     },
     referenceCode: 'REQ-84920',
     invitation: {
@@ -66,7 +65,6 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
       'Carburetor cleaning and spark plug replacement for 5.5kVA Elepaq generator.',
     preferredWorker: {
       name: 'Folake Adeyemi',
-      verified: true,
     },
     referenceCode: 'REQ-72941',
     invitation: {
@@ -130,7 +128,6 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     preferredWorker: {
       name: 'Chidi Okonkwo',
       avatar: '/images/workers/chidi.jpg',
-      verified: true,
     },
     referenceCode: 'BKG-77210',
     nextAction: {
@@ -159,7 +156,6 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
     preferredWorker: {
       name: 'Emeka Obi',
       avatar: '/images/workers/emeka.jpg',
-      verified: true,
     },
     referenceCode: 'BKG-63102',
     invitation: {
@@ -194,7 +190,6 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
       'Replaced fractured PVC waste pipes and installed new anti-siphon bottle P-trap under master bath vanity.',
     preferredWorker: {
       name: 'Emeka Obi',
-      verified: true,
     },
     referenceCode: 'BKG-44109',
     nextAction: {
@@ -221,7 +216,6 @@ export const MOCK_CUSTOMER_ACTIVITIES: CustomerActivityItem[] = [
       'Installed reinforced ceiling anchor bracket and dedicated dimmer circuit wiring for high-ceiling living room chandelier.',
     preferredWorker: {
       name: 'Adeyemi Johnson',
-      verified: true,
     },
     referenceCode: 'REQ-31092',
     nextAction: {

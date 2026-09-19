@@ -77,4 +77,22 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code and tests; 0 forbidden corporate phrases; state-honest plain language across all lifecycle states
 - **Status**: PASS
 
+## 2026-09-19: WEB-013 Verification Trust Claims Remediation
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-013-customer-booking-lifecycle`
+- **Trigger**: Removal of unsupported verification claims and badge presentations prior to merge
+- **Items Remediated**:
+  1. Removed static "Verified Identity & Community Standards" safety standard card from `LifecycleStateSurface.tsx`.
+  2. Removed unbacked `activity.preferredWorker.verified` badge from `LifecycleStateSurface.tsx`.
+  3. Removed `verified: true` fixture properties from `apps/web/lib/jobs/index.ts` mock activities.
+  4. Removed `verified?: boolean | undefined` from `CustomerActivityPreferredWorker` interface in `packages/types/src/index.ts`.
+- **Commands Executed**:
+  - `pnpm run type-check`: Passed across 6 packages with 0 errors
+  - `pnpm test`: Passed across monorepo (379 tests passed in `apps/web` across 21 suites, 42 tests in `validation`, 7 tests in `utils`, 428 tests total, 0 failures)
+  - `pnpm run lint`: Passed with 0 errors and 0 warnings
+  - `pnpm run build`: Passed with Next.js compiling all 29 static and dynamic routes
+- **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 forbidden corporate phrases; state-honest presentation of BrainWorker preferences
+- **Status**: PASS
+
+
 

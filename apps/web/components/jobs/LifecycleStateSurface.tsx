@@ -6,7 +6,6 @@ import {
   MapPin,
   Calendar,
   Clock,
-  ShieldCheck,
   User,
   ArrowRight,
   AlertTriangle,
@@ -303,16 +302,6 @@ export function LifecycleStateSurface({
               </div>
             </div>
           )}
-
-          <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100 flex items-start gap-3">
-            <ShieldCheck className="h-4 w-4 text-[#296A4B] shrink-0 mt-0.5" aria-hidden="true" />
-            <div className="text-xs">
-              <span className="block text-slate-400 font-medium">Safety Standard</span>
-              <span className="font-semibold text-slate-900 mt-0.5 block">
-                Verified Identity & Community Standards
-              </span>
-            </div>
-          </div>
         </div>
 
         {/* Selected or Preferred BrainWorker */}
@@ -343,12 +332,6 @@ export function LifecycleStateSurface({
                   </div>
                 </div>
               </div>
-              {activity.preferredWorker.verified && (
-                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#296A4B] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 shrink-0">
-                  <ShieldCheck className="h-3 w-3" />
-                  Verified
-                </span>
-              )}
             </div>
           </div>
         )}
