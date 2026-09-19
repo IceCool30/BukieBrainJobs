@@ -30,7 +30,7 @@ WEB-013 does not introduce a new screen of its own. It deepens the existing cust
 
 The single governing design problem is truthfulness. Every pixel of this brief exists to stop the interface from claiming more than the underlying domain state supports. The design must make the boundary between customer preference, BrainWorker response, booking confirmation, scheduling, cancellation, and later execution visually unmistakable.
 
-This brief designs only what the approved lifecycle and the canonical domain contracts can represent. Where a state depends on an open product question recorded in WEB-013 §34, this brief marks the treatment as conditional and names a safe fallback rather than designing an unsupported claim.
+This brief designs only what the approved lifecycle and the canonical domain contracts can represent. Where a state depends on an explicitly future capability, this brief names the approved current contract and a safe fallback rather than designing an unsupported claim.
 
 ---
 
@@ -453,12 +453,12 @@ This register lists every treatment in this brief that depends on an open WEB-01
 
 | Treatment | Depends on §34 question | Safe fallback until resolved |
 |---|---|---|
-| Declined state and wording | 1. Decline representation | Neutral "no longer active" state with recovery to Jobs or alternatives |
-| Schedule proposal and negotiation UI | 2. Schedule negotiation | Requested schedule shown as context only; no proposal interface |
-| Cancellation eligibility presentation | 3. Cancellation authority | Cancellation action is rendered only when the authoritative domain action exposes cancellation for the current customer/job/state; otherwise hidden |
-| Persistent cancellation-pending status | 3. Cancellation authority (async) | Synchronous pending mutation resolving to cancelled or failure |
-| Confirmation-source labeling nuance | 4. Confirmation source | Confirmation shown only on authoritative `CONFIRMED`, with no added sourcing detail |
-| Any payment timing display | 5. Payment timing | No payment state shown; payment stays outside WEB-013 |
+| Declined state and wording | Resolved by WEB-013 §34.1 | Explicit acceptance-response decline; no DECLINED JobStatus |
+| Schedule proposal and negotiation UI | Resolved by WEB-013 §34.2 | Requested schedule shown as context only; no proposal interface in WEB-013 |
+| Cancellation eligibility presentation | Resolved by WEB-013 §34.3 | Render only when canTransition(currentStatus, 'CANCELLED') and customer/domain authorization permit it |
+| Persistent cancellation-pending status | Resolved by WEB-013 §34.3 | No persistent cancellation-pending JobStatus; use transient pending UI only |
+| Confirmation-source labeling nuance | Resolved by WEB-013 §34.4 | Confirmation shown only from authoritative `CONFIRMED` produced by the lifecycle mutation |
+| Any payment timing display | Resolved by WEB-013 §34.5 | No payment state shown; payment stays outside WEB-013 |
 
 ---
 
@@ -557,6 +557,8 @@ Independent Design Review
   |
 WEB-013 Section 34 contract decisions recorded
   |
+Independent design review
+  |
 Implementation Authorization
   |
 Antigravity Implementation
@@ -568,7 +570,7 @@ Merge
 Production Verification
 ```
 
-**Implementation authorization is withheld until both the independent design review is complete and the five open product questions in WEB-013 §34, especially decline representation, have documented contract decisions.**
+**Implementation authorization is withheld until the independent design review is complete. The five WEB-013 §34 contract questions are now resolved and must be treated as authoritative implementation constraints.**
 
 ---
 
