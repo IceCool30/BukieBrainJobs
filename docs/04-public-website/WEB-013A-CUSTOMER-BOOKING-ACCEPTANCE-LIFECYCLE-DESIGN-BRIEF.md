@@ -131,7 +131,7 @@ This order is fixed. It must not be rearranged to make a pending state feel more
 
 ## 6. Lifecycle Position Treatment
 
-A horizontal step indicator on desktop and a compact vertical indicator on mobile show position within the lifecycle. This element reuses the existing `StepIndicator` primitive and its established node language:
+A horizontal step indicator on desktop and a compact vertical indicator on mobile show position within the lifecycle. The indicator represents presentation progress only; it does not create a new domain status such as `SCHEDULED`. This element reuses the existing `StepIndicator` primitive and its established node language:
 
 - Completed step: emerald `#296A4B` node with a check.
 - Current step: navy `#001A41` node, scaled, with a soft navy ring.
@@ -203,11 +203,11 @@ The existing `StatusPill` primitive uses an uppercase compact pill with a leadin
 - **Must not imply:** refunds or any financial outcome without an approved payment contract.
 - **Available action:** view history or recover, per the current contract.
 
-### 7.7 Scheduled and later execution states
+### 7.7 Confirmed schedule and later execution states
 
-- **Domain condition:** execution states such as `IN_PROGRESS`, `PENDING_COMPLETION`, `COMPLETED`, and `PAID` render only when the authoritative domain state exists.
+- **Domain condition:** a confirmed schedule is a schedule substate or supported scheduling record, not a new `JobStatus`. Execution states such as `IN_PROGRESS`, `PENDING_COMPLETION`, `COMPLETED`, and `PAID` render only when the authoritative domain state exists.
 - **Treatment:** the approved semantic treatments already present in the status language. `IN_PROGRESS` may carry the existing active pulse. `COMPLETED` and `PAID` carry the emerald positive treatment.
-- **Honesty rule:** these states are never previewed, teased, or shown as upcoming on a request that has not reached them. Schedule fields alone do not prove an appointment is confirmed.
+- **Honesty rule:** a confirmed schedule is shown only when its supporting contract is authoritative. It must never be represented as a separate `JobStatus`. Execution states are never previewed, teased, or shown as upcoming on a request that has not reached them.
 
 ---
 
@@ -254,7 +254,7 @@ Withdrawal of interest is a secondary, clearly-labelled action available only wh
 
 ### Cancel booking
 
-Cancellation is a destructive action and follows the destructive-action pattern:
+Cancellation is a destructive action and follows the destructive-action pattern. The UI does not determine cancellation eligibility. It reflects only the cancellation capability exposed by the authoritative domain contract for the authenticated customer, job, and current lifecycle state:
 
 - It is clearly labelled for what it cancels.
 - It requires an explicit confirmation step.
@@ -298,7 +298,7 @@ No empty or failure state invents data, fabricates a status, or implies the requ
 Only approved tokens are used.
 
 - Navy `#001A41`: headings, primary and focus states, the confirmed-state emphasis, controlled depth.
-- Emerald `#296A4B`: positive completed steps, the single primary action where one exists, completed and paid states.
+- Emerald `#296A4B`: positive completed steps, completed and paid states. It remains a strategic semantic accent, not the default primary-action treatment.
 - Mint `#ABEEC8`: focus rings and short highlights only.
 - Off-white `#F8F9FF`: page canvas.
 - Neutral slate: pending, muted, expired, and informational states.
@@ -455,7 +455,7 @@ This register lists every treatment in this brief that depends on an open WEB-01
 |---|---|---|
 | Declined state and wording | 1. Decline representation | Neutral "no longer active" state with recovery to Jobs or alternatives |
 | Schedule proposal and negotiation UI | 2. Schedule negotiation | Requested schedule shown as context only; no proposal interface |
-| Cancellation eligibility presentation | 3. Cancellation authority | Cancellation action shown only where the current contract clearly permits; otherwise hidden |
+| Cancellation eligibility presentation | 3. Cancellation authority | Cancellation action is rendered only when the authoritative domain action exposes cancellation for the current customer/job/state; otherwise hidden |
 | Persistent cancellation-pending status | 3. Cancellation authority (async) | Synchronous pending mutation resolving to cancelled or failure |
 | Confirmation-source labeling nuance | 4. Confirmation source | Confirmation shown only on authoritative `CONFIRMED`, with no added sourcing detail |
 | Any payment timing display | 5. Payment timing | No payment state shown; payment stays outside WEB-013 |
