@@ -10,7 +10,6 @@ import {
   User,
   ArrowRight,
   AlertTriangle,
-  RotateCcw,
   CheckCircle2,
   XCircle,
   HelpCircle,
@@ -18,7 +17,7 @@ import {
 } from 'lucide-react';
 import { CustomerActivityItem, JobStatus } from '@bukiebrainjobs/types';
 import { canTransition } from '@bukiebrainjobs/api-types';
-import { TypeBadge, StatusBadge } from './JobsBadges';
+import { TypeBadge } from './JobsBadges';
 import { LifecycleStepIndicator } from './LifecycleStepIndicator';
 import { CancellationModal } from './CancellationModal';
 

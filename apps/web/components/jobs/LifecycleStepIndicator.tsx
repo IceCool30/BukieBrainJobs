@@ -65,7 +65,6 @@ export function LifecycleStepIndicator({ jobStatus, isDeclined = false }: Lifecy
           {LIFECYCLE_STEPS.map((step, idx) => {
             const isCompleted = !isTerminalNegative && idx < currentStepIndex;
             const isCurrent = !isTerminalNegative && idx === currentStepIndex;
-            const isFuture = !isTerminalNegative && idx > currentStepIndex;
 
             return (
               <li
