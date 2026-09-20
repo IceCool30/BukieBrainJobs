@@ -135,3 +135,24 @@ This file records verification checks executed across the codebase under `/check
   - Vercel Preview Deployment: SUCCESS
 - **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 corporate filler terms; state-honest copy
 - **Status**: PASS
+
+## 2026-09-20: WEB-006 Services Discovery Streamlining
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-011-customer-jobs-and-bookings`
+- **Trigger**: User instruction to remove oversized hero section from the services discovery page and integrate the search bar with the city toggle inside the category browsing card
+- **Items Verified & Hardened**:
+  1. Removed full-bleed dark navy hero section and background photography from `/services` to eliminate vertical dead space on mobile.
+  2. Preserved navigation back to home via clean left-aligned text link at the top of the main container.
+  3. Integrated search input and city dropdown filter together within the "Browse by category" card, adapting responsively across mobile and desktop viewports.
+  4. Updated ServicesDirectory component test suite with jsdom environment and fireEvent interactions.
+  5. Verified all 30 tests in `apps/web/app/services/ServicesDirectory.test.tsx` pass cleanly.
+  6. Verified all 54 tests in `apps/web/lib/services/services.test.ts` pass cleanly.
+  7. Verified Next.js type-check passes across the web workspace with 0 errors.
+  8. Verified production Next.js build generates all 29 routes successfully.
+- **Commands Executed on Codespace**:
+  - `pnpm exec vitest run app/services/ServicesDirectory.test.tsx`: 30 passed, 0 failed
+  - `pnpm exec vitest run lib/services/services.test.ts`: 54 passed, 0 failed
+  - `pnpm type-check`: Passed with 0 errors
+  - `pnpm build`: Next.js compiled all 29 routes successfully
+- **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 corporate filler terms
+- **Status**: PASS
