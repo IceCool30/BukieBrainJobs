@@ -20,6 +20,18 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import type { ReadonlyURLSearchParams } from 'next/navigation';
 import ServicesPage from './page';
 
+vi.mock('next/navigation', () => ({
+  useRouter: vi.fn(),
+  useSearchParams: vi.fn(),
+}));
+
+vi.mock('next/image', () => ({
+  default: ({ src, alt, ...props }: { src: string; alt: string; [key: string]: unknown }) => (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt={alt} {...props} />
+  ),
+}));
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -57,7 +69,7 @@ describe('ServicesPage: initial render', () => {
   it('renders the page heading', () => {
     render(<ServicesPage />);
     expect(
-      screen.getByRole('heading', { name: /find the right service for the job/i }),
+      screen.getByRole('heading', { name: /browse by category/i }),
     ).toBeInTheDocument();
   });
 
