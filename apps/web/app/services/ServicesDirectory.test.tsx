@@ -1,3 +1,4 @@
+/** @vitest-environment jsdom */
 /**
  * ServicesDirectory component tests: WEB-006
  *
@@ -15,45 +16,36 @@
  */
 import React from 'react';
 import { cleanup, render, screen, fireEvent, within } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { useRouter, useSearchParams } from 'next/navigation';
 import type { ReadonlyURLSearchParams } from 'next/navigation';
 import ServicesPage from './page';
 
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function makeSearchParams(params: Record<string, string> = {}): ReadonlyURLSearchParams {
+  return new URLSearchParams(params) as unknown as ReadonlyURLSearchParams;
+}
+
 const mockPush = vi.fn();
 const mockReplace = vi.fn();
-let mockSearchParams = new URLSearchParams();
 
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({
+function makeRouter() {
+  return {
     push: mockPush,
     replace: mockReplace,
     back: vi.fn(),
     forward: vi.fn(),
     refresh: vi.fn(),
     prefetch: vi.fn(),
-  }),
-  useSearchParams: () => mockSearchParams as unknown as ReadonlyURLSearchParams,
-}));
-
-vi.mock('next/image', () => ({
-  default: ({ src, alt, ...props }: { src: string; alt: string; [key: string]: unknown }) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt={alt} {...props} />
-  ),
-}));
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function makeSearchParams(params: Record<string, string> = {}): URLSearchParams {
-  return new URLSearchParams(params);
+  };
 }
 
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
-  mockSearchParams = new URLSearchParams();
 });
 
 // ---------------------------------------------------------------------------
@@ -61,6 +53,11 @@ afterEach(() => {
 // ---------------------------------------------------------------------------
 
 describe('ServicesPage: initial render', () => {
+  beforeEach(() => {
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
+  });
+
   it('renders the page heading', () => {
     render(<ServicesPage />);
     expect(
@@ -102,8 +99,13 @@ describe('ServicesPage: initial render', () => {
 // ---------------------------------------------------------------------------
 
 describe('ServicesPage: search input', () => {
+  beforeEach(() => {
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
+  });
+
   it('pre-fills the search input from the URL q param', () => {
-    mockSearchParams = makeSearchParams({ q: 'plumbing' });
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ q: 'plumbing' }));
     render(<ServicesPage />);
     expect((screen.getByRole('searchbox') as HTMLInputElement).value).toBe('plumbing');
   });
@@ -163,8 +165,13 @@ describe('ServicesPage: search input', () => {
 // ---------------------------------------------------------------------------
 
 describe('ServicesPage: category button filters', () => {
+  beforeEach(() => {
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
+  });
+
   it('pre-presses the correct category button when category param is present', () => {
-    mockSearchParams = makeSearchParams({ category: 'plumbing' });
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ category: 'plumbing' }));
     render(<ServicesPage />);
 
     const plumbingBtn = screen.getByRole('button', { name: /plumbing/i });
@@ -206,8 +213,12 @@ describe('ServicesPage: category button filters', () => {
 // ---------------------------------------------------------------------------
 
 describe('ServicesPage: invalid URL parameter notices', () => {
+  beforeEach(() => {
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
+  });
+
   it('shows a status notice when the city param is not an active Nigerian city', () => {
-    mockSearchParams = makeSearchParams({ city: 'London' });
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ city: 'London' }));
     render(<ServicesPage />);
 
     // Notices use role="status" per the live markup
@@ -218,7 +229,7 @@ describe('ServicesPage: invalid URL parameter notices', () => {
   });
 
   it('does not show a city notice when the city param is a valid active city', () => {
-    mockSearchParams = makeSearchParams({ city: 'Lagos' });
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ city: 'Lagos' }));
     render(<ServicesPage />);
 
     // The result count status is always shown; look specifically for the location notice
@@ -227,14 +238,14 @@ describe('ServicesPage: invalid URL parameter notices', () => {
   });
 
   it('shows a status notice when the category param is not a canonical category ID', () => {
-    mockSearchParams = makeSearchParams({ category: 'SPACESHIP' });
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ category: 'SPACESHIP' }));
     render(<ServicesPage />);
 
     expect(screen.getByText(/category not recognized/i)).toBeInTheDocument();
   });
 
   it('dismisses the invalid city notice when the "Dismiss notice" button is clicked', () => {
-    mockSearchParams = makeSearchParams({ city: 'Atlantis' });
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ city: 'Atlantis' }));
     render(<ServicesPage />);
 
     expect(screen.getByText(/not active yet/i)).toBeInTheDocument();
@@ -250,6 +261,11 @@ describe('ServicesPage: invalid URL parameter notices', () => {
 // ---------------------------------------------------------------------------
 
 describe('ServicesPage: empty state and reset filters', () => {
+  beforeEach(() => {
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
+  });
+
   it('shows the "Reset filters" button in the empty state', () => {
     render(<ServicesPage />);
 
@@ -284,6 +300,11 @@ describe('ServicesPage: empty state and reset filters', () => {
 // ---------------------------------------------------------------------------
 
 describe('ServicesPage: Review details navigation', () => {
+  beforeEach(() => {
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
+  });
+
   it('calls router.push with a /services/[serviceId] path when "Review details" is clicked', () => {
     render(<ServicesPage />);
 
@@ -296,7 +317,7 @@ describe('ServicesPage: Review details navigation', () => {
   });
 
   it('includes the city in the detail URL when a valid city is active', () => {
-    mockSearchParams = makeSearchParams({ city: 'Lagos' });
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ city: 'Lagos' }));
     render(<ServicesPage />);
 
     const buttons = screen.getAllByRole('button', { name: /review details/i });
@@ -327,6 +348,11 @@ describe('ServicesPage: Review details navigation', () => {
 // ---------------------------------------------------------------------------
 
 describe('ServicesPage: accessibility', () => {
+  beforeEach(() => {
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
+  });
+
   it('search input is associated with a visible label', () => {
     render(<ServicesPage />);
     const input = screen.getByRole('searchbox');
