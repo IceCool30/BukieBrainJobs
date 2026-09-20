@@ -1,3 +1,4 @@
+/** @vitest-environment jsdom */
 /**
  * ServicesDirectory component tests: WEB-006
  *
@@ -13,8 +14,8 @@
  * Underlying pure logic is covered in lib/services/services.test.ts.
  * These tests prove the React layer wires that logic correctly.
  */
-import { cleanup, render, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import React from 'react';
+import { cleanup, render, screen, fireEvent, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { ReadonlyURLSearchParams } from 'next/navigation';
@@ -28,10 +29,13 @@ function makeSearchParams(params: Record<string, string> = {}): ReadonlyURLSearc
   return new URLSearchParams(params) as unknown as ReadonlyURLSearchParams;
 }
 
+const mockPush = vi.fn();
+const mockReplace = vi.fn();
+
 function makeRouter() {
   return {
-    push: vi.fn(),
-    replace: vi.fn(),
+    push: mockPush,
+    replace: mockReplace,
     back: vi.fn(),
     forward: vi.fn(),
     refresh: vi.fn(),
@@ -57,7 +61,7 @@ describe('ServicesPage: initial render', () => {
   it('renders the page heading', () => {
     render(<ServicesPage />);
     expect(
-      screen.getByRole('heading', { name: /find the right service for the job/i }),
+      screen.getByRole('heading', { name: /browse by category/i }),
     ).toBeInTheDocument();
   });
 
@@ -95,12 +99,9 @@ describe('ServicesPage: initial render', () => {
 // ---------------------------------------------------------------------------
 
 describe('ServicesPage: search input', () => {
-  let router: ReturnType<typeof makeRouter>;
-
   beforeEach(() => {
-    router = makeRouter();
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
-    vi.mocked(useRouter).mockReturnValue(router);
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
   });
 
   it('pre-fills the search input from the URL q param', () => {
@@ -109,55 +110,50 @@ describe('ServicesPage: search input', () => {
     expect((screen.getByRole('searchbox') as HTMLInputElement).value).toBe('plumbing');
   });
 
-  it('shows the "Clear search" button only when the input has a value', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('shows the "Clear search" button only when the input has a value', () => {
     render(<ServicesPage />);
 
     expect(screen.queryByRole('button', { name: /clear search/i })).not.toBeInTheDocument();
 
-    await user.type(screen.getByRole('searchbox'), 'generator');
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'generator' } });
 
     expect(screen.getByRole('button', { name: /clear search/i })).toBeInTheDocument();
   });
 
-  it('caps input at 100 characters (maxLength)', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('caps input at 100 characters (maxLength)', () => {
     render(<ServicesPage />);
 
-    await user.type(screen.getByRole('searchbox'), 'a'.repeat(120));
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'a'.repeat(120) } });
 
     expect((screen.getByRole('searchbox') as HTMLInputElement).value).toHaveLength(100);
   });
 
-  it('filters service cards to matching categories when a keyword is typed', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('filters service cards to matching categories when a keyword is typed', () => {
     render(<ServicesPage />);
 
-    await user.type(screen.getByRole('searchbox'), 'generator');
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'generator' } });
 
     const cards = screen.getAllByRole('article');
     expect(cards).toHaveLength(1);
     expect(within(cards[0]!).getByRole('heading', { name: /generator/i })).toBeInTheDocument();
   });
 
-  it('shows the empty state when no categories match the search', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('shows the empty state when no categories match the search', () => {
     render(<ServicesPage />);
 
-    await user.type(screen.getByRole('searchbox'), 'zzznomatch');
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'zzznomatch' } });
 
     expect(screen.getByRole('heading', { name: /no services match that search/i })).toBeInTheDocument();
     expect(screen.queryAllByRole('article')).toHaveLength(0);
   });
 
-  it('clears the input and restores all 8 cards when "Clear search" is clicked', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('clears the input and restores all 8 cards when "Clear search" is clicked', () => {
     render(<ServicesPage />);
 
-    await user.type(screen.getByRole('searchbox'), 'plumbing');
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'plumbing' } });
     expect(screen.getAllByRole('article')).toHaveLength(1);
 
-    await user.click(screen.getByRole('button', { name: /clear search/i }));
+    fireEvent.click(screen.getByRole('button', { name: /clear search/i }));
 
     expect((screen.getByRole('searchbox') as HTMLInputElement).value).toBe('');
     expect(screen.getAllByRole('article')).toHaveLength(8);
@@ -169,12 +165,9 @@ describe('ServicesPage: search input', () => {
 // ---------------------------------------------------------------------------
 
 describe('ServicesPage: category button filters', () => {
-  let router: ReturnType<typeof makeRouter>;
-
   beforeEach(() => {
-    router = makeRouter();
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
-    vi.mocked(useRouter).mockReturnValue(router);
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
   });
 
   it('pre-presses the correct category button when category param is present', () => {
@@ -188,24 +181,22 @@ describe('ServicesPage: category button filters', () => {
     expect(allBtn).toHaveAttribute('aria-pressed', 'false');
   });
 
-  it('filters cards to only the selected category when a category button is clicked', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('filters cards to only the selected category when a category button is clicked', () => {
     render(<ServicesPage />);
 
-    await user.click(screen.getByRole('button', { name: /ac repair/i }));
+    fireEvent.click(screen.getByRole('button', { name: /ac repair/i }));
 
     const cards = screen.getAllByRole('article');
     expect(cards).toHaveLength(1);
     expect(within(cards[0]!).getByRole('heading', { name: /ac/i })).toBeInTheDocument();
   });
 
-  it('calls router.push with the correct category param when a category button is clicked', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('calls router.push with the correct category param when a category button is clicked', () => {
     render(<ServicesPage />);
 
-    await user.click(screen.getByRole('button', { name: /cleaning/i }));
+    fireEvent.click(screen.getByRole('button', { name: /cleaning/i }));
 
-    expect(router.push).toHaveBeenCalledWith(
+    expect(mockPush).toHaveBeenCalledWith(
       expect.stringContaining('category=cleaning'),
       expect.anything(),
     );
@@ -253,14 +244,13 @@ describe('ServicesPage: invalid URL parameter notices', () => {
     expect(screen.getByText(/category not recognized/i)).toBeInTheDocument();
   });
 
-  it('dismisses the invalid city notice when the "Dismiss notice" button is clicked', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('dismisses the invalid city notice when the "Dismiss notice" button is clicked', () => {
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ city: 'Atlantis' }));
     render(<ServicesPage />);
 
     expect(screen.getByText(/not active yet/i)).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /dismiss notice/i }));
+    fireEvent.click(screen.getByRole('button', { name: /dismiss notice/i }));
 
     expect(screen.queryByText(/not active yet/i)).not.toBeInTheDocument();
   });
@@ -271,41 +261,35 @@ describe('ServicesPage: invalid URL parameter notices', () => {
 // ---------------------------------------------------------------------------
 
 describe('ServicesPage: empty state and reset filters', () => {
-  let router: ReturnType<typeof makeRouter>;
-
   beforeEach(() => {
-    router = makeRouter();
-    vi.mocked(useRouter).mockReturnValue(router);
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
   });
 
-  it('shows the "Reset filters" button in the empty state', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('shows the "Reset filters" button in the empty state', () => {
     render(<ServicesPage />);
 
-    await user.type(screen.getByRole('searchbox'), 'zzznomatch');
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'zzznomatch' } });
 
     expect(screen.getByRole('button', { name: /reset filters/i })).toBeInTheDocument();
   });
 
-  it('calls router.push with "/services" when "Reset filters" is clicked', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('calls router.push with "/services" when "Reset filters" is clicked', () => {
     render(<ServicesPage />);
 
-    await user.type(screen.getByRole('searchbox'), 'zzznomatch');
-    await user.click(screen.getByRole('button', { name: /reset filters/i }));
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'zzznomatch' } });
+    fireEvent.click(screen.getByRole('button', { name: /reset filters/i }));
 
-    expect(router.push).toHaveBeenCalledWith('/services', expect.anything());
+    expect(mockPush).toHaveBeenCalledWith('/services', expect.anything());
   });
 
-  it('restores all 8 cards after "Reset filters" is clicked', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('restores all 8 cards after "Reset filters" is clicked', () => {
     render(<ServicesPage />);
 
-    await user.type(screen.getByRole('searchbox'), 'zzznomatch');
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'zzznomatch' } });
     expect(screen.queryAllByRole('article')).toHaveLength(0);
 
-    await user.click(screen.getByRole('button', { name: /reset filters/i }));
+    fireEvent.click(screen.getByRole('button', { name: /reset filters/i }));
 
     expect(screen.getAllByRole('article')).toHaveLength(8);
   });
@@ -316,49 +300,43 @@ describe('ServicesPage: empty state and reset filters', () => {
 // ---------------------------------------------------------------------------
 
 describe('ServicesPage: Review details navigation', () => {
-  let router: ReturnType<typeof makeRouter>;
-
   beforeEach(() => {
-    router = makeRouter();
-    vi.mocked(useRouter).mockReturnValue(router);
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
   });
 
-  it('calls router.push with a /services/[serviceId] path when "Review details" is clicked', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('calls router.push with a /services/[serviceId] path when "Review details" is clicked', () => {
     render(<ServicesPage />);
 
     const buttons = screen.getAllByRole('button', { name: /review details/i });
-    await user.click(buttons[0]!);
+    fireEvent.click(buttons[0]!);
 
-    expect(router.push).toHaveBeenCalledWith(
+    expect(mockPush).toHaveBeenCalledWith(
       expect.stringMatching(/^\/services\//),
     );
   });
 
-  it('includes the city in the detail URL when a valid city is active', async () => {
+  it('includes the city in the detail URL when a valid city is active', () => {
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ city: 'Lagos' }));
-    const user = userEvent.setup({ delay: null });
     render(<ServicesPage />);
 
     const buttons = screen.getAllByRole('button', { name: /review details/i });
-    await user.click(buttons[0]!);
+    fireEvent.click(buttons[0]!);
 
-    expect(router.push).toHaveBeenCalledWith(
+    expect(mockPush).toHaveBeenCalledWith(
       expect.stringContaining('city=Lagos'),
     );
   });
 
-  it('includes returnQ in the detail URL when a search query is active', async () => {
-    const user = userEvent.setup({ delay: null });
+  it('includes returnQ in the detail URL when a search query is active', () => {
     render(<ServicesPage />);
 
-    await user.type(screen.getByRole('searchbox'), 'repair');
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'repair' } });
 
     const reviewButtons = screen.getAllByRole('button', { name: /review details/i });
-    await user.click(reviewButtons[0]!);
+    fireEvent.click(reviewButtons[0]!);
 
-    const calls = router.push.mock.calls;
+    const calls = mockPush.mock.calls;
     const lastCall = calls[calls.length - 1];
     const lastPushArg = String(lastCall?.[0] ?? '');
     expect(lastPushArg).toContain('returnQ=repair');
