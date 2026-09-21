@@ -459,8 +459,8 @@ describe('WEB-015 CustomerPaymentRepository (TDD)', () => {
       ];
 
       for (const method of forbiddenMethods) {
-        expect((productionRepo as Record<string, unknown>)[method]).toBeUndefined();
-        expect((directRepo as Record<string, unknown>)[method]).toBeUndefined();
+        expect((productionRepo as unknown as Record<string, unknown>)[method]).toBeUndefined();
+        expect((directRepo as unknown as Record<string, unknown>)[method]).toBeUndefined();
       }
 
       // Proves that production repository only exposes authoritative ICustomerPaymentRepository operations
