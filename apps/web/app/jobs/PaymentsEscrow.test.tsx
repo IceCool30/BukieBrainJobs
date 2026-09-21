@@ -11,6 +11,7 @@ import {
 } from '../../components/payment';
 import { LifecycleStateSurface } from '../../components/jobs/LifecycleStateSurface';
 import * as authStorage from '../../lib/auth/storage';
+import * as paymentRepoModule from '../../lib/payment/repository';
 import {
   resetCustomerPaymentRepository,
   getPaymentTestController,
@@ -48,7 +49,8 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
 
   beforeEach(() => {
     vi.clearAllMocks();
-    resetCustomerPaymentRepository();
+    const testRepo = resetCustomerPaymentRepository();
+    vi.spyOn(paymentRepoModule, 'getCustomerPaymentRepository').mockImplementation(() => testRepo);
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUser);
   });
 

@@ -8,11 +8,31 @@ import type {
   IPaymentProviderAdapter,
 } from '../types';
 import { PaymentInternalStore, getSharedPaymentStore, resetSharedPaymentStore } from './store';
-import {
-  createIsolatedCustomerPaymentRepository,
-  resetSharedRepositoryInstance,
-} from '../repository';
+import { CustomerPaymentRepository } from '../repository';
 import { SandboxPaymentProviderAdapter } from '../provider-adapter';
+
+/**
+ * Isolated repository implementation for test harnesses with an injected test store.
+ * Strictly test-isolated and located in the testing module.
+ */
+export class IsolatedCustomerPaymentRepository extends CustomerPaymentRepository {
+  constructor(testStore: PaymentInternalStore, providerAdapter?: IPaymentProviderAdapter) {
+    super(providerAdapter);
+    this.store = testStore;
+  }
+}
+
+/**
+ * Isolated construction path located entirely in the testing module.
+ * Not exposed by production repository modules.
+ */
+export function createIsolatedCustomerPaymentRepository(
+  store: PaymentInternalStore,
+  providerAdapter?: IPaymentProviderAdapter
+): ICustomerPaymentRepository {
+  return new IsolatedCustomerPaymentRepository(store, providerAdapter);
+}
+
 
 /**
  * Dedicated test controller for deterministic state fixtures.
@@ -271,6 +291,7 @@ export class CustomerPaymentTestController implements ICustomerPaymentTestContro
   }
 }
 
+let sharedTestRepository: ICustomerPaymentRepository | null = null;
 let sharedTestController: ICustomerPaymentTestController | null = null;
 
 export function getPaymentTestController(): ICustomerPaymentTestController {
@@ -280,12 +301,26 @@ export function getPaymentTestController(): ICustomerPaymentTestController {
   return sharedTestController;
 }
 
+export function getSharedTestRepository(): ICustomerPaymentRepository {
+  if (!sharedTestRepository) {
+    sharedTestRepository = new IsolatedCustomerPaymentRepository(
+      getSharedPaymentStore(),
+      new SandboxPaymentProviderAdapter()
+    );
+  }
+  return sharedTestRepository;
+}
+
 export function resetCustomerPaymentRepository(
   newInstance?: ICustomerPaymentRepository
 ): ICustomerPaymentRepository {
   resetSharedPaymentStore();
-  sharedTestController = new CustomerPaymentTestController(getSharedPaymentStore());
-  return resetSharedRepositoryInstance(newInstance);
+  const store = getSharedPaymentStore();
+  sharedTestRepository =
+    newInstance ??
+    new IsolatedCustomerPaymentRepository(store, new SandboxPaymentProviderAdapter());
+  sharedTestController = new CustomerPaymentTestController(store);
+  return sharedTestRepository;
 }
 
 export function createPaymentTestHarness(providerAdapter?: IPaymentProviderAdapter): {
@@ -298,3 +333,4 @@ export function createPaymentTestHarness(providerAdapter?: IPaymentProviderAdapt
   const testController = new CustomerPaymentTestController(store);
   return { repository, testController };
 }
+

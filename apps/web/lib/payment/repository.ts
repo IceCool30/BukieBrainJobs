@@ -20,9 +20,10 @@ import type {
   InternalBookingRecord,
   IPaymentProviderAdapter,
   PaymentProviderCapabilities,
+  PaymentStoreData,
 } from './types';
+import { DEFAULT_PAYMENT_BOOKINGS } from './types';
 import { SandboxPaymentProviderAdapter } from './provider-adapter';
-import { PaymentInternalStore, getSharedPaymentStore } from './testing/store';
 
 /**
  * Production customer payment repository implementation.
@@ -30,12 +31,35 @@ import { PaymentInternalStore, getSharedPaymentStore } from './testing/store';
  * Does not allow callers to supply arbitrary internal stores.
  */
 export class CustomerPaymentRepository implements ICustomerPaymentRepository {
-  private store: PaymentInternalStore;
-  private providerAdapter: IPaymentProviderAdapter;
+  protected store: PaymentStoreData;
+  protected providerAdapter: IPaymentProviderAdapter;
 
   constructor(providerAdapter?: IPaymentProviderAdapter) {
-    this.store = getSharedPaymentStore();
     this.providerAdapter = providerAdapter ?? new SandboxPaymentProviderAdapter();
+    this.store = this.createDefaultProductionStore();
+  }
+
+  protected createDefaultProductionStore(): PaymentStoreData {
+    const bookings = new Map<string, InternalBookingRecord>();
+    for (const b of DEFAULT_PAYMENT_BOOKINGS) {
+      bookings.set(b.bookingId, { ...b });
+    }
+    return {
+      bookings,
+      checkoutSessions: new Map(),
+      idempotencyMap: new Map(),
+      paymentAttempts: new Map(),
+      receipts: new Map(),
+      refundDetails: new Map(),
+      feeConfig: {
+        platformFeePercentage: 10.0,
+        escrowProtectionFeePercentage: 7.5,
+        statutoryVatPercentage: 7.5,
+      },
+      isOffline: false,
+      nextPaymentOutcome: null,
+      nextEscrowOutcome: null,
+    };
   }
 
   private validateOwnership(authenticatedCustomerId: string, bookingId: string): InternalBookingRecord {
@@ -514,18 +538,6 @@ export class CustomerPaymentRepository implements ICustomerPaymentRepository {
   }
 }
 
-/**
- * Isolated repository implementation for test harnesses with an injected store.
- * Internal to the testing bridge.
- */
-class IsolatedCustomerPaymentRepository extends CustomerPaymentRepository {
-  constructor(store: PaymentInternalStore, providerAdapter?: IPaymentProviderAdapter) {
-    super(providerAdapter);
-    // Assign store via private reference in test harness
-    (this as unknown as { store: PaymentInternalStore }).store = store;
-  }
-}
-
 let sharedRepository: ICustomerPaymentRepository | null = null;
 
 export function getCustomerPaymentRepository(): ICustomerPaymentRepository {
@@ -541,24 +553,3 @@ export function createCustomerPaymentRepository(
   return new CustomerPaymentRepository(providerAdapter);
 }
 
-/**
- * Internal factory for test harness instantiation.
- * Not for production consumption.
- */
-export function createIsolatedCustomerPaymentRepository(
-  store: PaymentInternalStore,
-  providerAdapter?: IPaymentProviderAdapter
-): ICustomerPaymentRepository {
-  return new IsolatedCustomerPaymentRepository(store, providerAdapter);
-}
-
-/**
- * Internal helper for test resets.
- * Not for production consumption.
- */
-export function resetSharedRepositoryInstance(
-  newInstance?: ICustomerPaymentRepository
-): ICustomerPaymentRepository {
-  sharedRepository = newInstance ?? new CustomerPaymentRepository(new SandboxPaymentProviderAdapter());
-  return sharedRepository;
-}

@@ -275,6 +275,102 @@ export interface InternalBookingRecord {
   activeRefundReference?: string | undefined;
 }
 
+export interface PaymentStoreData {
+  bookings: Map<string, InternalBookingRecord>;
+  checkoutSessions: Map<string, CheckoutSession>;
+  idempotencyMap: Map<string, string>;
+  paymentAttempts: Map<string, PaymentAttempt[]>;
+  receipts: Map<string, PaymentReceipt>;
+  refundDetails: Map<string, RefundStatusDetails>;
+  feeConfig: FeeScheduleConfig;
+  isOffline: boolean;
+  nextPaymentOutcome?: { status: PaymentAuthorizationStatus; reason?: string | undefined } | null;
+  nextEscrowOutcome?: { status: EscrowStatus; reason?: string | undefined } | null;
+}
+
+export const DEFAULT_PAYMENT_BOOKINGS: InternalBookingRecord[] = [
+  {
+    bookingId: 'book-ac-001',
+    customerId: 'usr-customer-88',
+    jobStatus: 'CONFIRMED',
+    bookingStatus: 'booking_confirmed',
+    serviceTitle: 'Inverter Backup & Battery Inspection',
+    workerName: 'Tunde Oladipo',
+    workerAvatar: '/images/workers/tunde.jpg',
+    serviceLocation: 'Block B4, 1004 Estate, Victoria Island, Lagos',
+    baseAmountNaira: 20000,
+    paymentAuthStatus: 'idle',
+    escrowStatus: 'unfunded',
+  },
+  {
+    bookingId: 'book-1',
+    customerId: 'usr-customer-88',
+    jobStatus: 'COMPLETED',
+    bookingStatus: 'completed_and_paid',
+    serviceTitle: 'Plumbing Drainage Pressure Test',
+    workerName: 'Emeka Obi',
+    workerAvatar: '/images/workers/emeka.jpg',
+    serviceLocation: 'Ikeja GRA, Lagos',
+    baseAmountNaira: 25000,
+    paymentAuthStatus: 'verified',
+    escrowStatus: 'released',
+    verifiedPaymentMethod: 'card',
+  },
+  {
+    bookingId: 'BKG-77210',
+    customerId: 'usr-customer-default',
+    jobStatus: 'IN_PROGRESS',
+    bookingStatus: 'job_in_progress',
+    serviceTitle: 'Split-Unit AC Deep Servicing',
+    workerName: 'Chidi Okonkwo',
+    workerAvatar: '/images/workers/chidi.jpg',
+    serviceLocation: 'Victoria Island, Lagos',
+    baseAmountNaira: 18000,
+    paymentAuthStatus: 'verified',
+    escrowStatus: 'held_in_escrow',
+    verifiedPaymentMethod: 'card',
+  },
+  {
+    bookingId: 'BKG-63102',
+    customerId: 'usr-customer-default',
+    jobStatus: 'CONFIRMED',
+    bookingStatus: 'booking_confirmed',
+    serviceTitle: 'Plumbing Drainage Pressure Test',
+    workerName: 'Emeka Obi',
+    workerAvatar: '/images/workers/emeka.jpg',
+    serviceLocation: 'Surulere, Lagos',
+    baseAmountNaira: 22000,
+    paymentAuthStatus: 'idle',
+    escrowStatus: 'unfunded',
+  },
+  {
+    bookingId: 'BKG-44109',
+    customerId: 'usr-customer-default',
+    jobStatus: 'CONFIRMED',
+    bookingStatus: 'booking_confirmed',
+    serviceTitle: 'Electrical Wiring Troubleshooting',
+    workerName: 'Tunde Oladipo',
+    workerAvatar: '/images/workers/tunde.jpg',
+    serviceLocation: 'Yaba, Lagos',
+    baseAmountNaira: 35000,
+    paymentAuthStatus: 'idle',
+    escrowStatus: 'unfunded',
+  },
+  {
+    bookingId: 'act-confirmed-001',
+    customerId: 'usr-customer-default',
+    jobStatus: 'CONFIRMED',
+    bookingStatus: 'booking_confirmed',
+    serviceTitle: 'Electrical Fault Diagnosis',
+    workerName: 'Babatunde Adeleke',
+    workerAvatar: '/images/workers/tunde.jpg',
+    serviceLocation: 'Yaba, Lagos',
+    baseAmountNaira: 30000,
+    paymentAuthStatus: 'idle',
+    escrowStatus: 'unfunded',
+  },
+];
+
 export interface ICustomerPaymentTestController {
   setOffline(offline: boolean): void;
   setNextPaymentOutcome(status: PaymentAuthorizationStatus, reason?: string | undefined): void;
@@ -284,3 +380,4 @@ export interface ICustomerPaymentTestController {
   seedBooking(booking: InternalBookingRecord): void;
   reset(): void;
 }
+

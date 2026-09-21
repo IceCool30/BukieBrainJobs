@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+import * as path from 'path';
 import { describe, it, expect, beforeEach } from 'vitest';
 import * as ProductionModule from './index';
 import * as RepositoryModule from './repository';
@@ -501,12 +503,32 @@ describe('WEB-015 CustomerPaymentRepository (TDD)', () => {
         'getPaymentTestController',
         'createPaymentTestHarness',
         'resetCustomerPaymentRepository',
+        'createIsolatedCustomerPaymentRepository',
+        'resetSharedRepositoryInstance',
+        'IsolatedCustomerPaymentRepository',
       ];
 
       for (const exp of forbiddenExports) {
         expect((ProductionModule as Record<string, unknown>)[exp]).toBeUndefined();
         expect((RepositoryModule as Record<string, unknown>)[exp]).toBeUndefined();
       }
+
+      const exportedKeys = Object.keys(RepositoryModule).filter(
+        (key) => !key.startsWith('__') && key !== 'default'
+      );
+      expect(exportedKeys.sort()).toEqual([
+        'CustomerPaymentRepository',
+        'createCustomerPaymentRepository',
+        'getCustomerPaymentRepository',
+      ].sort());
+    });
+
+    it('proves production repository module does not import from testing module', () => {
+      const repoPath = path.resolve(__dirname, 'repository.ts');
+      const repoContent = fs.readFileSync(repoPath, 'utf-8');
+      expect(repoContent).not.toContain('./testing');
+      expect(repoContent).not.toContain('/testing');
     });
   });
 });
+
