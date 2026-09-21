@@ -56,10 +56,11 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
 
       expect(screen.getByRole('region', { name: /Escrow Protection Tracker/i })).toBeInTheDocument();
       expect(screen.getByText(/Safe Payment Milestone Timeline/i)).toBeInTheDocument();
-      expect(screen.getByText('Booking Confirmed')).toBeInTheDocument();
-      expect(screen.getByText('Escrow Funded')).toBeInTheDocument();
-      expect(screen.getByText('Work & Inspection')).toBeInTheDocument();
-      expect(screen.getByText('Payment Settled')).toBeInTheDocument();
+      expect(screen.getByText('Booking')).toBeInTheDocument();
+      expect(screen.getByText('Confirmed')).toBeInTheDocument();
+      expect(screen.getByText('Escrow')).toBeInTheDocument();
+      expect(screen.getByText('Inspection')).toBeInTheDocument();
+      expect(screen.getByText('Settlement')).toBeInTheDocument();
     });
 
     it('shows awaiting funding badge when status is unfunded', () => {
@@ -132,7 +133,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
         />
       );
 
-      expect(screen.getByRole('dialog', { name: /Complete Escrow Deposit/i })).toBeInTheDocument();
+      expect(screen.getByRole('dialog', { name: /Fund Escrow/i })).toBeInTheDocument();
       expect(screen.getByText('₦20,000')).toBeInTheDocument();
       expect(screen.getByText('₦2,000')).toBeInTheDocument();
       expect(screen.getByText('₦1,500')).toBeInTheDocument();
@@ -246,9 +247,9 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       expect(screen.getByRole('region', { name: /Work Completion Inspection/i })).toBeInTheDocument();
       expect(screen.getByText(/Emeka Okafor Marked This Job as Complete/i)).toBeInTheDocument();
       expect(screen.getByText(/Funds of ₦23,650 remain locked in escrow until your approval/i)).toBeInTheDocument();
-      expect(screen.getByText(/Work was delivered according to agreement/i)).toBeInTheDocument();
+      expect(screen.getByText(/All requested work items have been fully executed/i)).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /Inspect & Release Funds/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /Report Issue \/ Open Dispute/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Open Dispute/i })).toBeInTheDocument();
     });
 
     it('opens release confirmation modal with feedback and rating inputs', async () => {
@@ -267,7 +268,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
 
       fireEvent.click(screen.getByRole('button', { name: /Inspect & Release Funds/i }));
 
-      expect(screen.getByRole('dialog', { name: /Confirm Inspection & Release Escrow/i })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 4, name: /Authorize Escrow Release/i })).toBeInTheDocument();
       expect(screen.getByPlaceholderText(/Share your experience with Emeka Okafor/i)).toBeInTheDocument();
 
       const confirmBtn = screen.getByRole('button', { name: /Confirm & Release Escrow Payout/i });
@@ -291,7 +292,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
         />
       );
 
-      fireEvent.click(screen.getByRole('button', { name: /Report Issue \/ Open Dispute/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Open Dispute/i }));
       expect(handleDispute).toHaveBeenCalledTimes(1);
     });
 
@@ -328,7 +329,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       );
 
       expect(screen.getByRole('dialog', { name: /Open BukieGuarantee Dispute/i })).toBeInTheDocument();
-      expect(screen.getByText(/Payouts are completely frozen/i)).toBeInTheDocument();
+      expect(screen.getByText(/Opening a dispute freezes payout/i)).toBeInTheDocument();
 
       const submitBtn = screen.getByRole('button', { name: /Submit Dispute & Freeze Escrow/i });
 
@@ -338,7 +339,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       expect(handleSubmitDispute).not.toHaveBeenCalled();
 
       // Fill in description
-      const descInput = screen.getByPlaceholderText(/Describe what went wrong and what resolution you expect/i);
+      const descInput = screen.getByPlaceholderText(/Explain what went wrong/i);
       fireEvent.change(descInput, { target: { value: 'Work was only partially done and tools were left behind.' } });
 
       fireEvent.click(submitBtn);
@@ -371,7 +372,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       expect(screen.getByRole('dialog', { name: /Request Escrow Refund/i })).toBeInTheDocument();
       expect(screen.getByText(/3 to 5 business days/i)).toBeInTheDocument();
 
-      const submitBtn = screen.getByRole('button', { name: /Confirm Refund Request/i });
+      const submitBtn = screen.getByRole('button', { name: /Submit Refund Request/i });
       fireEvent.click(submitBtn);
 
       await waitFor(() => {
@@ -415,10 +416,10 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
 
       expect(screen.getByRole('dialog', { name: /Payment & Escrow Receipt/i })).toBeInTheDocument();
       expect(screen.getByText('REC-2026-0921-9988')).toBeInTheDocument();
-      expect(screen.getByText('BKG-77210')).toBeInTheDocument();
       expect(screen.getByText('Babajide Adeleke')).toBeInTheDocument();
       expect(screen.getByText('Chidi Okonkwo')).toBeInTheDocument();
       expect(screen.getByText('Inverter Backup & Battery Inspection')).toBeInTheDocument();
+      expect(screen.getByText('bbj-pay-card-001')).toBeInTheDocument();
       expect(screen.getByText('₦23,650')).toBeInTheDocument();
 
       // Distinct settlement status badge
@@ -489,7 +490,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       fireEvent.click(fundBtn);
 
       await waitFor(() => {
-        expect(screen.getByRole('dialog', { name: /Complete Escrow Deposit/i })).toBeInTheDocument();
+        expect(screen.getByRole('dialog', { name: /Fund Escrow/i })).toBeInTheDocument();
       });
     });
 

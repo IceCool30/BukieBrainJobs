@@ -550,7 +550,11 @@ export function LifecycleStateSurface({
         {activity.preferredWorker && (
           <div className="pt-1">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
-              Assigned BrainWorker
+              {currentJobStatus === 'CONFIRMED' ||
+              currentJobStatus === 'IN_PROGRESS' ||
+              currentJobStatus === 'COMPLETED'
+                ? 'Confirmed Professional'
+                : 'Preferred Professional'}
             </h4>
             <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -560,6 +564,13 @@ export function LifecycleStateSurface({
                 <div>
                   <div className="text-xs sm:text-sm font-bold text-[#001A41]">
                     {activity.preferredWorker.name}
+                  </div>
+                  <div className="text-[11px] text-slate-500">
+                    {currentJobStatus === 'CONFIRMED' ||
+                    currentJobStatus === 'IN_PROGRESS' ||
+                    currentJobStatus === 'COMPLETED'
+                      ? 'Confirmed BrainWorker'
+                      : 'Customer Preference • Not assigned'}
                   </div>
                 </div>
               </div>
