@@ -198,7 +198,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       const fillBtn = screen.getByRole('button', { name: /Fill Sandbox Card/i });
       fireEvent.click(fillBtn);
 
-      const payBtn = screen.getByRole('button', { name: /Authorize Escrow Payment/i });
+      const payBtn = screen.getByRole('button', { name: /Pay ₦23,650 & Fund Escrow/i });
       fireEvent.click(payBtn);
 
       await waitFor(() => {
@@ -225,8 +225,8 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
         />
       );
 
-      expect(screen.getByText(/Financial mutations are disabled offline/i)).toBeInTheDocument();
-      const payBtn = screen.getByRole('button', { name: /Authorize Escrow Payment/i });
+      expect(screen.getByText(/You are currently offline/i)).toBeInTheDocument();
+      const payBtn = screen.getByRole('button', { name: /Pay ₦23,650 & Fund Escrow/i });
       expect(payBtn).toBeDisabled();
     });
   });
@@ -269,9 +269,9 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       fireEvent.click(screen.getByRole('button', { name: /Inspect & Release Funds/i }));
 
       expect(screen.getByRole('heading', { level: 4, name: /Authorize Escrow Release/i })).toBeInTheDocument();
-      expect(screen.getByPlaceholderText(/Share your experience with Emeka Okafor/i)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/Share details about the quality of service/i)).toBeInTheDocument();
 
-      const confirmBtn = screen.getByRole('button', { name: /Confirm & Release Escrow Payout/i });
+      const confirmBtn = screen.getByRole('button', { name: /Approve & Release/i });
       fireEvent.click(confirmBtn);
 
       await waitFor(() => {
