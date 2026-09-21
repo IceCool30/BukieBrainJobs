@@ -57,6 +57,7 @@ This file defines the standards and operational map every contributor must follo
 - **Active Phase**: Baseline Realignment (`/sync` [REALIGN])
 - **Loop State Files**:
   - Scope: `docs/scope.md`
+  - Master Checklist: `docs/master-checklist.md`
   - Context Map: `AGENTS.md`
   - Specifications: `docs/specs/`
   - Verification Log: `docs/check-log.md`

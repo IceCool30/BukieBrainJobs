@@ -3,6 +3,9 @@
 ## Objective
 Establish, verify, and expand the BukieBrainJobs customer marketplace across web and mobile using production-first contracts, deterministic mock data boundaries, and strict brand and voice standards.
 
+## Master Product Checklist
+See [docs/master-checklist.md](./master-checklist.md) for the complete, sequential product checklist across all 7 development phases.
+
 ## Active Work Slice
 
 _No active slice. Work is complete._
