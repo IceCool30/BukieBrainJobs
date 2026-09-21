@@ -13,7 +13,7 @@ import { LifecycleStateSurface } from '../../components/jobs/LifecycleStateSurfa
 import * as authStorage from '../../lib/auth/storage';
 import { resetCustomerPaymentRepository, getCustomerPaymentRepository } from '../../lib/payment/repository';
 import type { CustomerActivityItem } from '@bukiebrainjobs/types';
-import type { PaymentReceipt, PricingBreakdown } from '../../lib/payment/types';
+import type { PaymentReceipt, PricingBreakdown, CheckoutSession } from '../../lib/payment/types';
 
 // Mock Next.js navigation
 const mockPush = vi.fn();
@@ -163,7 +163,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       );
 
       // Default is card
-      expect(screen.getByText(/Simulated Test Card Details/i)).toBeInTheDocument();
+      expect(screen.getByText(/Sandbox Simulated Payment/i)).toBeInTheDocument();
 
       // Switch to Bank Transfer
       fireEvent.click(screen.getByRole('tab', { name: /Transfer/i }));
@@ -179,6 +179,15 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       const mockVerify = vi.fn().mockResolvedValue({ status: 'verified' });
       const mockSuccess = vi.fn();
 
+      const mockSession: CheckoutSession = {
+        bookingId: 'book-001',
+        checkoutReference: 'bbj-chk-001',
+        totalPayableNaira: 23650,
+        availableMethods: ['card', 'bank_transfer', 'ussd'],
+        status: 'awaiting_payment',
+        expiresAt: new Date(Date.now() + 3600 * 1000).toISOString(),
+      };
+
       render(
         <CheckoutModal
           isOpen={true}
@@ -187,7 +196,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
           serviceTitle="Air Conditioner Servicing"
           workerName="Emeka Okafor"
           pricing={samplePricing}
-          session={null}
+          session={mockSession}
           onVerifyPayment={mockVerify}
           onCheckStatus={vi.fn()}
           onSuccess={mockSuccess}
