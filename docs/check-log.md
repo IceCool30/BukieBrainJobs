@@ -195,4 +195,23 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
 - **Status**: PASS
 
-
+## 2026-09-21: WEB-015 Customer Payments & Escrow UX Verification
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-015-customer-payments-escrow`
+- **Trigger**: WEB-015 `/check` [VERIFY] full suite execution
+- **Implementation & Architectural Hardening**:
+  1. Financial Authority Doctrine: Frontend requests payment operations; authoritative escrow status is confirmed solely through the repository contract. Zero synthetic money, phantom balances, or arbitrary client-side status assertions.
+  2. Four-Dimensional State Orthogonality: Strict separation between JobStatus, BookingStatus, PaymentAuthorizationStatus, and EscrowStatus.
+  3. No Raw Card Credentials: Zero PAN, CVV, or raw card data transmitted. Sandbox mode provides explicit test filler credentials with clear non-production indicators.
+  4. Provider-Neutral Architecture: No hardcoded bank names or USSD codes in core domain types. Dedicated virtual accounts and USSD codes are dynamically delivered from the session.
+  5. Config-Driven Fee Calculation: Dynamic pricing calculation including base service amount, 10% platform fee, 7.5% escrow protection fee, and 7.5% statutory VAT.
+  6. Receipt Authority & Settlement Distinctions: Digital receipts strictly gated to funded or settled escrows, with distinct settlement status badges (funded, release_pending, settled) and simulated watermark banner.
+  7. Fail-Closed Customer Isolation & Offline Protection: All financial mutations fail closed on missing or mismatched customer identifiers. All financial mutations are disabled when offline while cached reads remain accessible.
+  8. Full Deterministic Scenario Fixtures: 21 reproducible fixtures covering card, virtual account, USSD, timeouts, payment declines, disputes, release failures, retries, and refunds.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 10 packages with 0 errors (8.07s)
+  - `pnpm lint`: Passed with 0 errors and 0 warnings (3.14s)
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 25 test suites (465 tests passed, 0 failures, 52.85s)
+  - `pnpm build`: Passed in 37.7s with Next.js compiling all 30 static and dynamic routes including `/receipt/[bookingId]`
+- **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
+- **Status**: PASS
