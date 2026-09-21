@@ -400,9 +400,11 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       paymentMethod: 'card',
       paymentReference: 'bbj-pay-card-001',
       authorizationDate: '2026-09-21T10:00:00.000Z',
+      paidAt: '2026-09-21T10:00:00.000Z',
       settlementStatus: 'settled',
       settlementDate: '2026-09-21T14:30:00.000Z',
       statutoryNotice: 'BukieBrainJobs Financial Escrow Services - Verified & Settled.',
+      isSimulatedTestDocument: true,
     };
 
     it('renders official receipt header, watermark, breakdown, and settlement badge', () => {
