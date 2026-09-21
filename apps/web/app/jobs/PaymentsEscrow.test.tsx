@@ -167,8 +167,8 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
 
       // Switch to Bank Transfer
       fireEvent.click(screen.getByRole('tab', { name: /Transfer/i }));
-      expect(screen.getByText(/Dedicated Virtual Account/i)).toBeInTheDocument();
-      expect(screen.getByText(/BukieGuarantee \/ SafeHaven MFB/i)).toBeInTheDocument();
+      expect(screen.getByText(/Bank Name/i)).toBeInTheDocument();
+      expect(screen.getByText(/Account Number/i)).toBeInTheDocument();
 
       // Switch to USSD
       fireEvent.click(screen.getByRole('tab', { name: /USSD/i }));
@@ -214,7 +214,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
         expect(mockVerify).toHaveBeenCalled();
       });
 
-      expect(screen.getByText(/Payment Verified & Escrow Protected/i)).toBeInTheDocument();
+      expect(screen.getByText(/Escrow Funded Successfully/i)).toBeInTheDocument();
     });
 
     it('disables payment actions and renders offline warning when isOffline is true', () => {
