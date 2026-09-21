@@ -156,3 +156,24 @@ This file records verification checks executed across the codebase under `/check
   - `pnpm build`: Next.js compiled all 29 routes successfully
 - **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 corporate filler terms
 - **Status**: PASS
+
+## 2026-09-21: WEB-011 Re-Audit Remediation (Recovery Customer Isolation & Deep-Link Precedence)
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-011-customer-jobs-and-bookings`
+- **Trigger**: Remediation of two remaining independent audit blockers identified on PR #49
+- **Items Remediated & Verified**:
+  1. Removed Global Mock Recovery Fallback: `JobsScreen.tsx` no longer imports or references `MOCK_CUSTOMER_ACTIVITIES`. Partial-failure recovery strictly restores the customer's own activities from `activitiesList` and synchronously refreshes from the scoped repository. A non-default customer recovering from a partial failure never receives another customer's mock activities.
+  2. Explicit ID Deep-Link Precedence: When an explicit `id` query parameter is provided (such as `/jobs?id=NON-EXISTENT-999`), it takes strict precedence over the zero-activity empty state. An authenticated customer with zero activities now cleanly receives the "Activity not found" surface instead of the first-run empty state. Clicking "View all activity" clears the invalid parameter and transitions cleanly back to the first-run empty state.
+  3. Responsive Detail Layout: `ActivityDetail` accepts an optional `className` parameter (`lg:col-span-7` by default, `lg:col-span-12` when no activities exist in the list) with centered max-width constraint for balanced presentation.
+  4. Regression Test Coverage: Added targeted regression tests in `apps/web/app/jobs/JobsScreen.test.tsx` verifying customer-isolated partial-failure recovery, clean zero-activity recovery, and deep-link precedence over empty states.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 6 packages with 0 errors
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 21 test files (390 tests passed, 0 failures)
+  - `pnpm lint`: Passed with 0 errors and 0 warnings
+  - `pnpm build`: Passed in 56.8s with Next.js compiling all 29 static and dynamic routes
+- **CI & Deployment Status**:
+  - GitHub Actions CI (Run 35613754267): SUCCESS
+  - Vercel Preview Deployment: SUCCESS
+- **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 forbidden corporate filler terms; state-honest copy
+- **Status**: PASS
+
