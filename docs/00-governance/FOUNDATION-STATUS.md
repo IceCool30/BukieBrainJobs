@@ -1,8 +1,11 @@
 # BukieBrainJobs Repository Foundation Status
 
+> **Historical Archive Notice (Day 1 Setup)**  
+> This document records the initial repository foundation status from August 2026. The foundation was completed and released. Current operational work is governed by `AGENTS.md` and `docs/master-checklist.md`.
+
 **Document ID:** GOV-007
 **Version:** 2.0
-**Status:** Active
+**Status:** Historical Archive (Foundation Completed)
 
 ## Current Gate
 

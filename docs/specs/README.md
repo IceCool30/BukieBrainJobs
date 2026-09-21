@@ -12,17 +12,17 @@ Detailed product UX briefs continue to be archived under `docs/04-public-website
 
 | Spec ID | Feature Name | Status | Primary Doc Reference |
 |---|---|---|---|
-| `00-engineering-loop` | 9-Command Engineering Loop Integration | Accepted | `AGENTS.md` |
-| `FOUND-001` | Foundation & Stack Upgrade | Accepted | `docs/00-governance/TECHNICAL-BASELINE.md` |
-| `ARCH-002` | Production-First Contract Alignment | Accepted | `docs/03-architecture/ARCH-002-CONTRACT-DECISIONS.md` |
-| `WEB-001` | Public Customer Homepage | Accepted | `docs/04-public-website/WEB-001-HOMEPAGE.md` |
-| `WEB-004` | Service Category Detail | Accepted | `docs/04-public-website/WEB-004-SERVICE-DETAIL.md` |
-| `WEB-005` | Public BrainWorker Profile | Accepted | `docs/04-public-website/WEB-005-PUBLIC-BRAINWORKER-PROFILE.md` |
-| `WEB-006` | Services Discovery Catalog | Accepted | `docs/04-public-website/WEB-006-SERVICES-DISCOVERY.md` |
-| `WEB-007` | Public Booking Preparation | Accepted | `docs/04-public-website/WEB-007-PUBLIC-BOOKING-PREPARATION.md` |
-| `WEB-008` | Customer Authentication & Verification | Accepted | `docs/04-public-website/WEB-008A-AUTHENTICATION-DESIGN-BRIEF.md` |
-| `WEB-009` | Customer Job Posting | Accepted | `docs/04-public-website/WEB-009A-CUSTOMER-JOB-POSTING-DESIGN-BRIEF.md` |
-| `WEB-010` | Customer Dashboard | Accepted | `docs/04-public-website/WEB-010A-CUSTOMER-DASHBOARD-DESIGN-BRIEF.md` |
-| `WEB-011` | Customer Jobs & Bookings Activity Hub | Accepted | `docs/specs/WEB-011-customer-jobs-and-bookings.md` |
-| `WEB-012` | Customer Job Matching & Match Results | Accepted | `docs/04-public-website/WEB-012-CUSTOMER-JOB-MATCHING-PRODUCT-UX-SPECIFICATION.md` |
-| `WEB-013` | Customer Booking Acceptance & Lifecycle | Accepted | `docs/specs/WEB-013-customer-booking-lifecycle.md` |
+| `00-engineering-loop` | 9-Command Engineering Loop Integration | Accepted & Operational | `AGENTS.md` |
+| `FOUND-001` | Foundation & Stack Upgrade | Accepted & Operational | `docs/00-governance/TECHNICAL-BASELINE.md` |
+| `ARCH-002` | Production-First Contract Alignment | Accepted & Operational | `docs/03-architecture/ARCH-002-CONTRACT-DECISIONS.md` |
+| `WEB-001` | Public Customer Homepage | Live in Production | `docs/04-public-website/WEB-001-HOMEPAGE.md` |
+| `WEB-004` | Service Category Detail | Live in Production | `docs/04-public-website/WEB-004-SERVICE-DETAIL.md` |
+| `WEB-005` | Public BrainWorker Profile | Live in Production | `docs/04-public-website/WEB-005-PUBLIC-BRAINWORKER-PROFILE.md` |
+| `WEB-006` | Services Discovery Catalog | Live in Production | `docs/04-public-website/WEB-006-SERVICES-DISCOVERY.md` |
+| `WEB-007` | Public Booking Preparation | Live in Production | `docs/04-public-website/WEB-007-PUBLIC-BOOKING-PREPARATION.md` |
+| `WEB-008` | Customer Authentication & Verification | Live in Production | `docs/04-public-website/WEB-008A-AUTHENTICATION-DESIGN-BRIEF.md` |
+| `WEB-009` | Customer Job Posting | Live in Production | `docs/04-public-website/WEB-009A-CUSTOMER-JOB-POSTING-DESIGN-BRIEF.md` |
+| `WEB-010` | Customer Dashboard | Live in Production | `docs/04-public-website/WEB-010A-CUSTOMER-DASHBOARD-DESIGN-BRIEF.md` |
+| `WEB-011` | Customer Jobs & Bookings Activity Hub | Live in Production | `docs/specs/WEB-011-customer-jobs-and-bookings.md` |
+| `WEB-012` | Customer Job Matching & Match Results | Live in Production | `docs/04-public-website/WEB-012-CUSTOMER-JOB-MATCHING-PRODUCT-UX-SPECIFICATION.md` |
+| `WEB-013` | Customer Booking Acceptance & Lifecycle | Live in Production | `docs/specs/WEB-013-customer-booking-lifecycle.md` |

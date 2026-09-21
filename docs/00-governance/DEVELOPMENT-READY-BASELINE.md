@@ -1,7 +1,10 @@
 # Development Ready Baseline
 
-Status: READY FOR DEVELOPMENT
-Version: 1.0
+> **Historical Archive Notice (Day 1 Milestone)**  
+> This document superseded initial foundation closeout gates and authorized feature development in August 2026. Ongoing engineering delivery is governed by `AGENTS.md` and `docs/master-checklist.md`.
+
+**Status:** Historical Milestone (Development Baseline Established)
+**Version:** 1.0
 
 ## Purpose
 

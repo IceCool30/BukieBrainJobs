@@ -1,6 +1,9 @@
 # Foundation Verification Record
 
-Status: IN PROGRESS
+> **Historical Archive Notice (Day 1 Setup)**  
+> This document records the initial verification evidence for the Day 1 documentation baseline. The foundation was completed and released in August 2026. Ongoing engineering verification is recorded in `docs/check-log.md`.
+
+**Status:** Historical Archive (Foundation Completed)
 
 This record is the evidence ledger for the documentation foundation. It must be updated from repository evidence, not conversation memory.
 

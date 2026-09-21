@@ -1,8 +1,10 @@
 # BukieBrainJobs Foundation Final Status
 
+> **Historical Archive Notice (Day 1 Setup)**  
+> This document records the final status of the Day 1 governance foundation from August 2026. Current active platform implementation is governed by `AGENTS.md` and `docs/master-checklist.md`.
+
 **Date:** 2026-08-09
-**Status:** DOCUMENTATION FOUNDATION COMPLETE FOR HANDOFF
-**Application implementation:** AUTHORIZED ONLY THROUGH THE DEFINED FEATURE FACTORY GATE
+**Status:** Historical Archive (Foundation Completed)
 
 ## What is complete
 

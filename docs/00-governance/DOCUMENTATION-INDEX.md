@@ -1,269 +1,124 @@
 # BukieBrainJobs Documentation Index
 
-**Document ID:** GOV-005
-**Version:** 1.4
-**Status:** Active
+**Document ID:** GOV-005  
+**Version:** 2.0  
+**Status:** Active  
+**Last Updated:** 2026-09-21  
+
+This index is the canonical navigation map for all documentation in the BukieBrainJobs repository.
+
+---
 
-This is the navigation map for the repository documentation. The repository is the canonical handoff point for humans and coding/design agents.
+## 1. Operating State & Tracking Files (Root & Top-Level)
 
-## 00 Governance
+- `AGENTS.md`: Repository overview, development standards, and 9-command engineering loop state.
+- `README.md`: General repository overview, quickstart instructions, and toolchain versions.
+- `CHANGELOG.md`: Chronological log of material platform releases and enhancements.
+- `docs/master-checklist.md`: The complete, sequential product checklist across all 7 implementation phases.
+- `docs/scope.md`: Living engineering scope tracking completed, active, and upcoming slices.
+- `docs/check-log.md`: Verification check log recording test, build, lint, and CI proofs under `/check`.
 
-- `SOURCE-OF-TRUTH.md`: authority and conflict resolution
-- `REPOSITORY-STRUCTURE.md`: repository boundaries
-- `DEVELOPMENT-WORKFLOW.md`: product-to-code workflow
-- `DECISION-LOG.md`: material decisions
-- `DOCUMENTATION-INDEX.md`: this index
-- `TECHNICAL-BASELINE.md`: approved engineering baseline
-- `FOUNDATION-STATUS.md`: foundation gate and readiness status
-- `SOURCE-MATERIAL-REGISTER.md`: supplied source inventory and verification record
-- `CANONICALIZATION-PLAN.md`: consolidation rules and release gate
-- `FOUNDATION-FINAL-STATUS.md`: completed foundation record
-- `FOUNDATION-VERIFICATION-RECORD.md`: foundation verification record
-- `FOUNDATION-RELEASE-GATE.md`: released foundation gate
-- `FOUNDATION-CLOSEOUT.md`: foundation closeout
+---
 
-## 01 Product
+## 2. Governance (`docs/00-governance/`)
 
-- `PRODUCT-FOUNDATION.md`: product foundation
-- `ROADMAP.md`: milestones and sequencing
-- `OPERATING-CHARTER.md`: project operating rules and responsibilities
+- `SOURCE-OF-TRUTH.md`: Document hierarchy and conflict-resolution rules.
+- `LEGACY-SOURCE-BOUNDARY.md`: Rules separating historical research notes from current normative specifications.
+- `REPOSITORY-STRUCTURE.md`: Architectural boundaries between apps, packages, and services.
+- `DEVELOPMENT-WORKFLOW.md`: Product specification to implementation lifecycle.
+- `TECHNICAL-BASELINE.md`: Approved technical baseline and toolchain standards.
+- `DECISION-LOG.md`: Central record of material architectural and product decisions.
+- `CANONICALIZATION-PLAN.md`: Documentation consolidation and normalization rules.
+- **Completed Foundation Records (Historical Archives)**:
+  - `FOUNDATION-STATUS.md`: Initial gate review record.
+  - `FOUNDATION-FINAL-STATUS.md`: Initial closeout status.
+  - `FOUNDATION-RELEASE-GATE.md`: Initial release gate checklist.
+  - `FOUNDATION-VERIFICATION-RECORD.md`: Initial foundation verification log.
+  - `FOUNDATION-CLOSEOUT.md`: Formal sign-off on repository baseline.
 
-Future canonical documents include the Product Bible, PRD, business model, personas, marketplace strategy and success metrics.
-
-## 02 Design System
+---
 
-Canonical visual source:
+## 3. Product Roadmap & Charter (`docs/01-product/`)
 
-- Root `DESIGN.md`
-- `DESIGN-SYSTEM-v1.0.md`
-- DS-001 Brand Identity
-- DS-002 Logo System
-- DS-003 Color System
-- DS-004 Typography System
-- DS-005 Grid and Layout
-- DS-006 Spacing
-- DS-007 Iconography
-- DS-008 Component Library
-- DS-009 Motion
-- DS-010 Accessibility
-- DS-011 Design Tokens
-- DS-012 Final Design System Review
+- `ROADMAP.md`: Strategic milestones and current phase status (Version 2.0).
+- `PRODUCT-FOUNDATION.md`: Core product principles, Nigerian marketplace dynamics, and user trust anchors.
+- `OPERATING-CHARTER.md`: Core values, quality thresholds, and operational constraints.
 
-The DS artifacts are the formal design-system records. Root `DESIGN.md` remains authoritative for the visual source material.
+---
 
-Live-first authority:
+## 4. Design System & Experience Standards (`docs/02-design-system/`)
 
-- `LIVE-EXPERIENCE-STANDARD.md`: project-wide live experience authority and extension rules
-- `skills/bukiebrainjobs-experience-standards/`: mandatory project-wide experience skill and its references:
-  - `references/live-approved-experience.md`: live visual, interaction, platform, and homepage-specific baseline
-  - `references/content-density-and-decision-architecture.md`: task hierarchy, progressive disclosure, and content-density decisions
-  - `references/BUKIEBRAINJOBS-CONTENT-GUIDE.md`: customer-facing content guide
-  - `references/quality-gates.md`: project-wide delivery quality gates
-  - `references/validation-examples.md`: product-quality application examples
+- Root `DESIGN.md`: Visual tokens, color palettes, and typography source material.
+- `DESIGN-SYSTEM-v1.0.md`: Formal Design System v1.0 specification.
+- `LIVE-EXPERIENCE-STANDARD.md`: Live-first experience authority and extension standards.
+- `DESIGN-CANONICALIZATION.md`: Rules reconciling visual tokens with live code authority.
+- `APPROVED-ARTIFACTS.md` & `APPROVED-ARTIFACT-MATRIX.md`: Approved visual component decisions.
+- `skills/bukiebrainjobs-experience-standards/`: Project-wide experience skill and bundled references:
+  - `BUKIEBRAINJOBS-CONTENT-GUIDE.md`: Approved brand voice, terminology, and microcopy guidelines.
+  - `content-density-and-decision-architecture.md`: Task hierarchy and progressive disclosure patterns.
+  - `live-approved-experience.md`: Canonical visual, motion, and interaction standards.
+  - `quality-gates.md`: Deliverable quality checklist.
+  - `validation-examples.md`: Practical implementation patterns.
 
-All future customer-facing pages, flows, components, PWA views, and native-app screens must follow the live-first experience standard.
+---
 
-## 03 Architecture
+## 5. Engineering Architecture (`docs/03-architecture/`)
 
-- `README.md`: engineering architecture hub and implementation boundary
-- `ARCHITECTURE-BASELINE.md`: approved engineering baseline
-- Detailed Full-Stack Technical Specification: supplied engineering reference to be preserved as a canonical source artifact
+- `README.md`: Architecture hub and package boundary overview.
+- `ARCH-002-CONTRACT-DECISIONS.md`: Canonical decision record for production-first mock data contracts.
+- `ARCH-002-PRODUCTION-FIRST-MOCK-DATA-DEVELOPMENT-MODEL.md`: Full architectural specification for domain models and state machines.
+- `reference/`: Supplied foundational specifications preserved for technical reference:
+  - `TECH-SPEC-01-ARCHITECTURE-AND-TOOLCHAIN.md`: Toolchain and monorepo design.
+  - `TECH-SPEC-02-27-INDEX.md` & `TECH-SPEC-02-27-CANONICAL-REGISTER.md`: Domain topic registers.
 
-Future canonical documents include API contracts, database schema, state machines, integrations, infrastructure, environment strategy and observability.
+---
 
-## 04 Information Architecture
+## 6. Information Architecture (`docs/03-information-architecture/`)
 
-- `SCREEN-CATALOG.md`: current product surface inventory and planning estimate
+- `SCREEN-CATALOG.md`: Inventory of planned and implemented screens across customer, worker, and admin roles.
 
-Future canonical documents include the site map, navigation model, role-based information architecture, route inventory and deep-link rules.
+---
 
-## 05 Public Website
+## 7. Customer & Public Web Specifications (`docs/04-public-website/`)
 
-Live approved feature:
+- `WEB-001-HOMEPAGE.md` & `APPROVED-HOMEPAGE-ARTIFACTS.md`: Public Homepage specification and decisions.
+- `WEB-004-SERVICE-DETAIL.md`: Service Category Detail page specification (`/services/[serviceId]`).
+- `WEB-005-PUBLIC-BRAINWORKER-PROFILE.md` & `WEB-005-PHASE-1-AUDIT.md`: BrainWorker Public Profile specification (`/brainworkers/[id]`).
+- `WEB-006-SERVICES-DISCOVERY.md` & `WEB-006-DESIGN-SPECIFICATION.md`: Services Directory and City Search specification (`/services`).
+- `WEB-007-PUBLIC-BOOKING-PREPARATION.md` & `WEB-007A-BOOKING-PREPARATION-DESIGN-BRIEF.md`: Booking preparation specification (`/book`).
+- `WEB-008A-AUTHENTICATION-DESIGN-BRIEF.md`: Authentication, phone OTP, and session design brief.
+- `WEB-009A-CUSTOMER-JOB-POSTING-DESIGN-BRIEF.md`: Multi-step job posting design brief (`/post-job`).
+- `WEB-010A-CUSTOMER-DASHBOARD-DESIGN-BRIEF.md`: Customer dashboard design brief (`/dashboard`).
+- `WEB-011A-CUSTOMER-JOBS-AND-BOOKINGS-DESIGN-BRIEF.md`: Customer jobs and bookings activity hub design brief.
+- `WEB-012-CUSTOMER-JOB-MATCHING-PRODUCT-UX-SPECIFICATION.md`: Candidate recommendations and matching specification (`/job/[referenceCode]/matches`).
+- `WEB-013-CUSTOMER-BOOKING-ACCEPTANCE-BOOKING-LIFECYCLE-PRODUCT-UX-SPECIFICATION.md`: Booking lifecycle and state machine specification.
+- `WEB-013A-CUSTOMER-BOOKING-ACCEPTANCE-LIFECYCLE-DESIGN-BRIEF.md`: Design brief for lifecycle presentation states.
 
-- `WEB-001-HOMEPAGE.md`: homepage implementation status and history
-- `WEB-004-SERVICE-DETAIL.md`: public service detail specification and implementation contract
-- `WEB-005-PUBLIC-BRAINWORKER-PROFILE.md`: public BrainWorker profile specification and return contract
-- `WEB-006-SERVICES-DISCOVERY.md`: public services discovery and query synchronization specification
-- `WEB-006-DESIGN-SPECIFICATION.md`: public services discovery design specification and state matrix
-- `APPROVED-HOMEPAGE-ARTIFACTS.md`: approved homepage decisions
-- The homepage is live and approved on `feature/web-001-homepage-redesign` with a two-tier hero search, image-led service cards, a three-brand trust strip (Paystack, Flutterwave, Dojah), and BrainWorker terminology standardized across all customer-facing copy
+---
 
-
-## 06 Authentication
+## 8. Build Specifications (`docs/specs/`)
 
-Planned:
+Governed by `/architect` [DECIDE] and `/develop` [BUILD] of the 9-Command Engineering Loop:
+- `README.md`: Build specification directory index and status map.
+- `00-engineering-loop.md`: Engineering loop integration specification.
+- `WEB-011-customer-jobs-and-bookings.md`: Activity hub build specification.
+- `WEB-012-matching.md`: Job matching build specification.
+- `WEB-013-customer-booking-lifecycle.md`: Booking lifecycle build specification.
 
-- Login
-- Registration
-- OTP
-- Verification
-- Password recovery
-- Session management
-- Role routing
-
-## 07 Customer Platform
-
-Planned:
-
-- Customer dashboard
-- Search
-- Service discovery
-- Job posting
-- Booking
-- Payments
-- Reviews
-- Wallet
-- Notifications
-- Settings
+---
 
-## 08 BrainWorker Platform
+## 9. Brand & Asset Generation (`docs/06-brand/`)
 
-Planned:
+- `BRAND-GUIDE.md`: Brand identity guidelines, logo lockups, and social banner standards.
+- `generate-assets.py`: Python automation script for generating branded raster and vector assets.
+- `assets/`: Master brand logos, app icons, 3D badge renders, and wordmark banners.
 
-- Onboarding
-- Verification
-- Profile
-- Skills and rates
-- Availability
-- Job management
-- Earnings
-- Portfolio
-- Performance
+---
 
-## 09 Booking
+## 10. Quality, Security & Operations Baselines
 
-Planned:
-
-- Booking lifecycle
-- Job state machine
-- Scheduling
-- Check-in
-- Completion
-- Cancellation
-- Disputes
-
-## 10 Payments and Wallet
-
-Planned:
-
-- Pricing rules
-- Paystack integration
-- Platform fees
-- Split payments
-- Refunds
-- Wallet rules
-- Payouts
-- Webhook idempotency
-
-## 11 Messaging and Notifications
-
-Planned:
-
-- Chat
-- Real-time events
-- Notification types
-- Push notifications
-- Email
-- SMS
-- Contact-sharing policy
-
-## 12 Corporate
-
-Planned:
-
-- Organization management
-- Team members
-- Recurring services
-- Billing
-- Reporting
-
-## 13 Admin
-
-Planned:
-
-- Operations
-- Verification
-- Users
-- Jobs
-- Payments
-- Disputes
-- CMS
-- Analytics
-
-## 14 API
-
-Planned:
-
-- API catalogue
-- Request/response contracts
-- Error model
-- Authentication requirements
-- Rate limits
-- Webhook contracts
-
-## 15 Database
-
-Planned:
-
-- Prisma schema
-- Entity relationships
-- Indexing
-- Migration policy
-- Data retention
-- Backup and recovery
-
-## 16 Analytics
-
-Planned:
-
-- Event taxonomy
-- Funnel definitions
-- Product metrics
-- Marketplace metrics
-- Operational metrics
-
-## 17 Security and Compliance
-
-- `SECURITY-BASELINE.md`: approved security baseline
-
-Future canonical documents include the threat model, privacy/data protection, abuse prevention and incident response.
-
-## 18 Accessibility
-
-Planned:
-
-- WCAG 2.2 AA checklist
-- Web accessibility
-- Mobile accessibility
-- Content accessibility
-
-## 19 QA and Testing
-
-- `QA-BASELINE.md`: approved test and release-quality baseline
-
-Future canonical documents include the complete test strategy, E2E matrix and release acceptance suite.
-
-## 20 Deployment and Operations
-
-- `RELEASE-BASELINE.md`: approved deployment and operations baseline
-
-Future canonical documents include local setup, development, staging, production, CI/CD, observability, alerts, rollback and disaster recovery.
-
-## 21 Prompts
-
-Every approved agent prompt belongs here and must reference the specification it implements.
-
-- `AGENT-EXECUTION-POLICY.md`: rules for all design, coding and QA agents
-
-The `WEB-001B-MCP` orchestration prompt was removed as deprecated.
-
-## 22 Decision Log
-
-Use for detailed ADRs when the central decision index becomes too large.
-
-## Canonical-document rule
-
-Do not create duplicate versions of a specification in different directories. If a document moves, update this index and preserve its history.
-
-Historical project summaries and conversation exports are reference material, not canonical specifications.
+- `docs/16-security-compliance/SECURITY-BASELINE.md`: Authentication standards, input sanitization, and data isolation controls.
+- `docs/18-qa-testing/QA-BASELINE.md`: Testing tiers, coverage expectations, and quality gates.
+- `docs/19-deployment-operations/RELEASE-BASELINE.md`: CI/CD pipelines, Vercel deployments, and Codespace synchronization rules.
+- `docs/20-prompts/AGENT-EXECUTION-POLICY.md`: Operational policy governing AI coding agents.
+- `docs/21-decision-log/`: Material architectural decisions and feature-level design records.

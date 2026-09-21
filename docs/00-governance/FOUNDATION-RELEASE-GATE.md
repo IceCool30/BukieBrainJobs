@@ -1,6 +1,9 @@
 # BukieBrainJobs Foundation Release Gate
 
-**Status:** RELEASED
+> **Historical Archive Notice (Day 1 Setup)**  
+> This gate document records the initial Day 1 verification conditions. The foundation was formally released in August 2026. Current feature work is governed by `AGENTS.md` and `docs/master-checklist.md`.
+
+**Status:** RELEASED (HISTORICAL)
 **Purpose:** Prevent application implementation until the project documentation can serve as a reliable handoff point for humans and AI agents.
 
 ## Release conditions

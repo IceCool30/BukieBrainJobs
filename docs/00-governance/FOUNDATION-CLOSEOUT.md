@@ -1,8 +1,11 @@
 # BukieBrainJobs Foundation Closeout
 
-## Status
+> **Historical Archive Notice (Day 1 Setup)**  
+> This document records the initial repository foundation gate from August 2026. The foundation was subsequently released (superseded by `DEVELOPMENT-READY-BASELINE.md`). Development is fully active and governed by `AGENTS.md` and `docs/master-checklist.md`.
 
-CONDITIONAL, IMPLEMENTATION GATE CLOSED
+## Historical Status (August 2026)
+
+CONDITIONAL, IMPLEMENTATION GATE CLOSED (HISTORICAL - SUPERSEDED)
 
 The repository governance foundation is established. Application implementation remains blocked until the authoritative source artifacts listed in the canonical source register are physically mirrored and verified in GitHub.
 
