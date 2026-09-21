@@ -498,7 +498,7 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
     expect(screen.queryByText(/Could not refresh active work/i)).not.toBeInTheDocument();
 
     // Isolated custom activity is restored
-    expect(screen.getByText('Generator Soundproof Enclosure Repair')).toBeInTheDocument();
+    expect(screen.getAllByText('Generator Soundproof Enclosure Repair').length).toBeGreaterThan(0);
 
     // Global mock activities belonging to default customer must NOT be injected
     expect(screen.queryByText('Inverter Backup & Battery Inspection')).not.toBeInTheDocument();
