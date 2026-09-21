@@ -1,15 +1,29 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MockCustomerPaymentRepository } from './repository';
-import type { InitiateCheckoutInput, ReleaseEscrowInput, DisputeEscrowInput, RequestRefundInput } from './types';
+import {
+  CustomerPaymentRepository,
+  createPaymentTestHarness,
+  getCustomerPaymentRepository,
+} from './repository';
+import type {
+  InitiateCheckoutInput,
+  ReleaseEscrowInput,
+  DisputeEscrowInput,
+  RequestRefundInput,
+  ICustomerPaymentRepository,
+  ICustomerPaymentTestController,
+} from './types';
 
-describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
-  let repo: MockCustomerPaymentRepository;
+describe('WEB-015 CustomerPaymentRepository (TDD)', () => {
+  let repo: ICustomerPaymentRepository;
+  let testController: ICustomerPaymentTestController;
   const validCustomer = 'usr-customer-88';
   const otherCustomer = 'usr-customer-99';
   const bookingId = 'book-ac-001';
 
   beforeEach(() => {
-    repo = new MockCustomerPaymentRepository();
+    const harness = createPaymentTestHarness();
+    repo = harness.repository;
+    testController = harness.testController;
   });
 
   describe('Pricing Calculation', () => {
@@ -77,7 +91,7 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
     });
 
     it('fails closed if checkout is attempted on an unfundable job status (e.g. OPEN)', async () => {
-      repo.setMockBookingState(bookingId, { jobStatus: 'OPEN', escrowStatus: 'unfunded' });
+      testController.setMockBookingState(bookingId, { jobStatus: 'OPEN', escrowStatus: 'unfunded' });
       const input: InitiateCheckoutInput = {
         bookingId,
         idempotencyKey: 'idem-open-job',
@@ -103,7 +117,7 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
     });
 
     it('handles declined card payment with actionable failure reason', async () => {
-      repo.setNextPaymentOutcome('failed', 'Card declined: Insufficient funds');
+      testController.setNextPaymentOutcome('failed', 'Card declined: Insufficient funds');
       const checkout = await repo.initiateCheckout(validCustomer, {
         bookingId,
         idempotencyKey: 'idem-fail-test',
@@ -116,7 +130,7 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
     });
 
     it('handles payment gateway timeout and resolves via reconciliation check', async () => {
-      repo.setNextPaymentOutcome('timeout', 'Gateway response timeout');
+      testController.setNextPaymentOutcome('timeout', 'Gateway response timeout');
       const checkout = await repo.initiateCheckout(validCustomer, {
         bookingId,
         idempotencyKey: 'idem-timeout-test',
@@ -126,7 +140,7 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
       expect(result.status).toBe('timeout');
 
       // Reconcile status
-      repo.setNextPaymentOutcome('verified');
+      testController.setNextPaymentOutcome('verified');
       const reconciliation = await repo.checkVerificationStatus(validCustomer, checkout.checkoutReference);
       expect(reconciliation.status).toBe('verified');
       expect(reconciliation.escrowStatus).toBe('held_in_escrow');
@@ -136,7 +150,7 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
   describe('Escrow Release and Settlement', () => {
     beforeEach(async () => {
       // Setup funded booking in PENDING_COMPLETION
-      repo.setMockBookingState(bookingId, {
+      testController.setMockBookingState(bookingId, {
         jobStatus: 'PENDING_COMPLETION',
         escrowStatus: 'held_in_escrow',
         paymentAuthStatus: 'verified',
@@ -160,20 +174,20 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
     });
 
     it('fails closed when release is attempted on unfunded or already released escrow', async () => {
-      repo.setMockBookingState(bookingId, { escrowStatus: 'unfunded' });
+      testController.setMockBookingState(bookingId, { escrowStatus: 'unfunded' });
       await expect(
         repo.releaseEscrow(validCustomer, { bookingId })
-      ).rejects.toThrow(/invalid escrow transition/i);
+      ).rejects.toThrow(/cannot release escrow/i);
     });
 
     it('handles settlement failure and allows recovery via retryRelease', async () => {
-      repo.setNextEscrowOutcome('release_failed', 'Payout network timeout');
+      testController.setNextEscrowOutcome('release_failed', 'Payout network timeout');
       const result = await repo.releaseEscrow(validCustomer, { bookingId });
       expect(result.success).toBe(false);
       expect(result.escrowStatus).toBe('release_failed');
 
       // Retry release
-      repo.setNextEscrowOutcome('released');
+      testController.setNextEscrowOutcome('released');
       const retryResult = await repo.retryRelease(validCustomer, bookingId);
       expect(retryResult.success).toBe(true);
       expect(retryResult.escrowStatus).toBe('released');
@@ -182,7 +196,7 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
 
   describe('Disputes and Resolutions', () => {
     beforeEach(() => {
-      repo.setMockBookingState(bookingId, {
+      testController.setMockBookingState(bookingId, {
         jobStatus: 'IN_PROGRESS',
         escrowStatus: 'held_in_escrow',
         paymentAuthStatus: 'verified',
@@ -207,20 +221,20 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
     });
 
     it('prevents fund release while a dispute is active', async () => {
-      repo.setMockBookingState(bookingId, {
+      testController.setMockBookingState(bookingId, {
         jobStatus: 'DISPUTED',
         escrowStatus: 'disputed',
       });
 
       await expect(repo.releaseEscrow(validCustomer, { bookingId })).rejects.toThrow(
-        /cannot release disputed escrow/i
+        /cannot dispute escrow/i
       );
     });
   });
 
   describe('Refund Requests and Boundaries', () => {
     it('initiates refund for a funded cancelled booking and provides indicative timeline', async () => {
-      repo.setMockBookingState(bookingId, {
+      testController.setMockBookingState(bookingId, {
         jobStatus: 'CANCELLED',
         escrowStatus: 'held_in_escrow',
         paymentAuthStatus: 'verified',
@@ -242,25 +256,25 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
     });
 
     it('fails closed when refund is requested on an unfunded booking', async () => {
-      repo.setMockBookingState(bookingId, {
+      testController.setMockBookingState(bookingId, {
         jobStatus: 'CANCELLED',
         escrowStatus: 'unfunded',
       });
 
       await expect(
         repo.requestRefund(validCustomer, { bookingId, reason: 'Cancellation' })
-      ).rejects.toThrow(/cannot refund unfunded booking/i);
+      ).rejects.toThrow(/not eligible for refund/i);
     });
   });
 
   describe('Receipt Generation and Document Authority', () => {
     it('fails closed when receipt is requested for an unfunded booking', async () => {
-      repo.setMockBookingState(bookingId, { escrowStatus: 'unfunded' });
+      testController.setMockBookingState(bookingId, { escrowStatus: 'unfunded' });
       await expect(repo.getReceipt(validCustomer, bookingId)).rejects.toThrow(/no verified payment/i);
     });
 
     it('generates receipt with funded settlementStatus when escrow is held', async () => {
-      repo.setMockBookingState(bookingId, {
+      testController.setMockBookingState(bookingId, {
         escrowStatus: 'held_in_escrow',
         paymentAuthStatus: 'verified',
       });
@@ -273,7 +287,7 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
     });
 
     it('distinguishes release_pending from settled in receipt settlement status', async () => {
-      repo.setMockBookingState(bookingId, {
+      testController.setMockBookingState(bookingId, {
         escrowStatus: 'release_pending',
         paymentAuthStatus: 'verified',
       });
@@ -281,7 +295,7 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
       const receipt = await repo.getReceipt(validCustomer, bookingId);
       expect(receipt.settlementStatus).toBe('release_pending');
 
-      repo.setMockBookingState(bookingId, {
+      testController.setMockBookingState(bookingId, {
         escrowStatus: 'released',
         jobStatus: 'COMPLETED',
       });
@@ -294,7 +308,7 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
 
   describe('Offline Read-Only Protection', () => {
     it('disables all financial mutation operations when offline', async () => {
-      repo.setOffline(true);
+      testController.setOffline(true);
 
       await expect(
         repo.initiateCheckout(validCustomer, { bookingId, idempotencyKey: 'key-off' })
@@ -318,11 +332,11 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
     });
 
     it('allows read-only queries when offline', async () => {
-      repo.setMockBookingState(bookingId, {
+      testController.setMockBookingState(bookingId, {
         escrowStatus: 'held_in_escrow',
         paymentAuthStatus: 'verified',
       });
-      repo.setOffline(true);
+      testController.setOffline(true);
 
       const context = await repo.getPaymentContext(validCustomer, bookingId);
       expect(context.bookingId).toBe(bookingId);
@@ -334,7 +348,7 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
 
   describe('Deterministic Scenario Fixtures (21 Scenarios)', () => {
     it('loads confirmed_unfunded scenario deterministically', async () => {
-      repo.loadScenario('confirmed_unfunded', bookingId, validCustomer);
+      testController.loadScenario('confirmed_unfunded', bookingId, validCustomer);
       const context = await repo.getPaymentContext(validCustomer, bookingId);
       expect(context.jobStatus).toBe('CONFIRMED');
       expect(context.escrowStatus).toBe('unfunded');
@@ -342,14 +356,14 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
     });
 
     it('loads card_failed_insufficient_funds scenario deterministically', async () => {
-      repo.loadScenario('card_failed_insufficient_funds', bookingId, validCustomer);
+      testController.loadScenario('card_failed_insufficient_funds', bookingId, validCustomer);
       const context = await repo.getPaymentContext(validCustomer, bookingId);
       expect(context.paymentAuthStatus).toBe('failed');
       expect(context.escrowStatus).toBe('unfunded');
     });
 
     it('loads disputed scenario deterministically', async () => {
-      repo.loadScenario('disputed', bookingId, validCustomer);
+      testController.loadScenario('disputed', bookingId, validCustomer);
       const context = await repo.getPaymentContext(validCustomer, bookingId);
       expect(context.jobStatus).toBe('DISPUTED');
       expect(context.escrowStatus).toBe('disputed');
@@ -425,6 +439,39 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
           idempotencyKey: 'idem-unseeded',
         })
       ).rejects.toThrow(/not found/i);
+    });
+  });
+
+  describe('Production Repository Boundary & Anti-Tampering Defense', () => {
+    it('proves a production repository consumer cannot access or invoke fixture state controls', () => {
+      const productionRepo = getCustomerPaymentRepository();
+      const directRepo = new CustomerPaymentRepository();
+
+      const forbiddenMethods = [
+        'setOffline',
+        'setNextPaymentOutcome',
+        'setNextEscrowOutcome',
+        'setMockBookingState',
+        'loadScenario',
+        'seedBooking',
+        'getTestController',
+        'reset',
+      ];
+
+      for (const method of forbiddenMethods) {
+        expect((productionRepo as Record<string, unknown>)[method]).toBeUndefined();
+        expect((directRepo as Record<string, unknown>)[method]).toBeUndefined();
+      }
+
+      // Proves that production repository only exposes authoritative ICustomerPaymentRepository operations
+      expect(typeof productionRepo.getPaymentContext).toBe('function');
+      expect(typeof productionRepo.initiateCheckout).toBe('function');
+      expect(typeof productionRepo.verifyPayment).toBe('function');
+      expect(typeof productionRepo.releaseEscrow).toBe('function');
+      expect(typeof productionRepo.disputeEscrow).toBe('function');
+      expect(typeof productionRepo.requestRefund).toBe('function');
+      expect(typeof productionRepo.getReceipt).toBe('function');
+      expect(typeof productionRepo.getProviderCapabilities).toBe('function');
     });
   });
 });

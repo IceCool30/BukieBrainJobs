@@ -460,18 +460,18 @@ export function CheckoutModal({
                 <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-slate-500">Bank Name</span>
-                    <span className="font-bold text-slate-900">{session?.virtualAccount?.bankName || 'Wema Bank (BukiePay)'}</span>
+                    <span className="font-bold text-slate-900">{session?.virtualAccount?.bankName || 'Designated Settlement Bank'}</span>
                   </div>
 
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-slate-500">Account Number</span>
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-sm font-bold text-[#001A41]">
-                        {session?.virtualAccount?.accountNumber || '0123984712'}
+                        {session?.virtualAccount?.accountNumber || ''}
                       </span>
                       <button
                         type="button"
-                        onClick={() => handleCopyAccount(session?.virtualAccount?.accountNumber || '0123984712')}
+                        onClick={() => handleCopyAccount(session?.virtualAccount?.accountNumber || '')}
                         aria-label="Copy account number"
                         className="p-1 text-slate-500 hover:text-slate-900 cursor-pointer"
                       >
@@ -486,7 +486,7 @@ export function CheckoutModal({
 
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-slate-500">Beneficiary</span>
-                    <span className="font-semibold text-slate-800">{session?.virtualAccount?.accountName || 'Bukie Escrow'}</span>
+                    <span className="font-semibold text-slate-800">{session?.virtualAccount?.accountName || 'BukieBrainJobs Escrow'}</span>
                   </div>
 
                   <div className="pt-2 border-t border-slate-200 flex items-center justify-between text-xs">

@@ -66,6 +66,13 @@ export interface PaymentProviderCapabilities {
   supportsUssd: boolean;
 }
 
+export interface IPaymentProviderAdapter {
+  getCapabilities(): PaymentProviderCapabilities;
+  generateVirtualAccount(bookingId: string, expiry?: string | undefined): Promise<VirtualAccountDetails>;
+  generateUssdDetails(totalPayableNaira: number): Promise<UssdDetails>;
+  formatPaymentMethodLabel(method?: PaymentMethod | undefined): string;
+}
+
 export interface CheckoutSession {
   checkoutReference: string;
   bookingId: string;
@@ -221,6 +228,9 @@ export interface ICustomerPaymentRepository {
   requestRefund(authenticatedCustomerId: string, input: RequestRefundInput): Promise<RefundRequestResult>;
   getRefundStatus(authenticatedCustomerId: string, bookingId: string): Promise<RefundStatusDetails>;
   getReceipt(authenticatedCustomerId: string, bookingId: string): Promise<PaymentReceipt>;
+
+  // Provider Capabilities
+  getProviderCapabilities(): Promise<PaymentProviderCapabilities>;
 }
 
 export type DeterministicScenarioName =

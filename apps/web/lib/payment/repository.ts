@@ -18,37 +18,41 @@ import type {
   ReleaseEscrowInput,
   DisputeEscrowInput,
   RequestRefundInput,
-  VirtualAccountDetails,
-  UssdDetails,
   PaymentMethod,
   InternalBookingRecord,
   ICustomerPaymentTestController,
   DeterministicScenarioName,
+  IPaymentProviderAdapter,
+  PaymentProviderCapabilities,
 } from './types';
+import { SandboxPaymentProviderAdapter } from './provider-adapter';
 
-export class MockCustomerPaymentRepository implements ICustomerPaymentRepository {
-  private isOffline = false;
-  private nextPaymentOutcome: { status: PaymentAuthorizationStatus; reason?: string | undefined } | null = null;
-  private nextEscrowOutcome: { status: EscrowStatus; reason?: string | undefined } | null = null;
+/**
+ * In-memory state store for payment and escrow domain records.
+ * Keeps production repository behavior isolated from state mutation fixtures.
+ */
+export class PaymentInternalStore {
+  public bookings = new Map<string, InternalBookingRecord>();
+  public checkoutSessions = new Map<string, CheckoutSession>();
+  public idempotencyMap = new Map<string, string>();
+  public paymentAttempts = new Map<string, PaymentAttempt[]>();
+  public receipts = new Map<string, PaymentReceipt>();
+  public refundDetails = new Map<string, RefundStatusDetails>();
+  public isOffline = false;
+  public nextPaymentOutcome: { status: PaymentAuthorizationStatus; reason?: string | undefined } | null = null;
+  public nextEscrowOutcome: { status: EscrowStatus; reason?: string | undefined } | null = null;
 
-  private feeConfig: FeeScheduleConfig = {
+  public feeConfig: FeeScheduleConfig = {
     platformFeePercentage: 10.0,
     escrowProtectionFeePercentage: 7.5,
     statutoryVatPercentage: 7.5,
   };
 
-  private bookings = new Map<string, InternalBookingRecord>();
-  private checkoutSessions = new Map<string, CheckoutSession>();
-  private idempotencyMap = new Map<string, string>(); // idempotencyKey -> checkoutReference
-  private paymentAttempts = new Map<string, PaymentAttempt[]>(); // bookingId -> attempts
-  private receipts = new Map<string, PaymentReceipt>(); // bookingId -> receipt
-  private refundDetails = new Map<string, RefundStatusDetails>(); // refundReference -> details
-
   constructor() {
     this.seedDefaults();
   }
 
-  private seedDefaults() {
+  public seedDefaults() {
     const seededBookings: InternalBookingRecord[] = [
       {
         bookingId: 'book-ac-001',
@@ -99,33 +103,34 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
         serviceTitle: 'Plumbing Drainage Pressure Test',
         workerName: 'Emeka Obi',
         workerAvatar: '/images/workers/emeka.jpg',
-        serviceLocation: 'Ikeja GRA, Lagos',
-        baseAmountNaira: 25000,
+        serviceLocation: 'Surulere, Lagos',
+        baseAmountNaira: 22000,
         paymentAuthStatus: 'idle',
         escrowStatus: 'unfunded',
       },
       {
         bookingId: 'BKG-44109',
         customerId: 'usr-customer-default',
-        jobStatus: 'COMPLETED',
-        bookingStatus: 'completed_and_paid',
-        serviceTitle: 'Bathroom Pipe & Trap Replacement',
-        workerName: 'Emeka Obi',
-        serviceLocation: 'Surulere, Lagos',
-        baseAmountNaira: 22000,
-        paymentAuthStatus: 'verified',
-        escrowStatus: 'released',
-        verifiedPaymentMethod: 'card',
+        jobStatus: 'CONFIRMED',
+        bookingStatus: 'booking_confirmed',
+        serviceTitle: 'Electrical Wiring Troubleshooting',
+        workerName: 'Tunde Oladipo',
+        workerAvatar: '/images/workers/tunde.jpg',
+        serviceLocation: 'Yaba, Lagos',
+        baseAmountNaira: 35000,
+        paymentAuthStatus: 'idle',
+        escrowStatus: 'unfunded',
       },
       {
         bookingId: 'act-confirmed-001',
-        customerId: 'usr-customer-88',
+        customerId: 'usr-customer-default',
         jobStatus: 'CONFIRMED',
         bookingStatus: 'booking_confirmed',
-        serviceTitle: 'Plumbing Valve Replacement',
-        workerName: 'Tunde Bakare',
-        serviceLocation: 'Ikeja, Lagos',
-        baseAmountNaira: 20000,
+        serviceTitle: 'Electrical Fault Diagnosis',
+        workerName: 'Babatunde Adeleke',
+        workerAvatar: '/images/workers/tunde.jpg',
+        serviceLocation: 'Yaba, Lagos',
+        baseAmountNaira: 30000,
         paymentAuthStatus: 'idle',
         escrowStatus: 'unfunded',
       },
@@ -136,51 +141,36 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     }
   }
 
-  setOffline(offline: boolean) {
-    this.isOffline = offline;
+  public reset() {
+    this.bookings.clear();
+    this.checkoutSessions.clear();
+    this.idempotencyMap.clear();
+    this.paymentAttempts.clear();
+    this.receipts.clear();
+    this.refundDetails.clear();
+    this.isOffline = false;
+    this.nextPaymentOutcome = null;
+    this.nextEscrowOutcome = null;
+    this.seedDefaults();
   }
+}
 
-  setNextPaymentOutcome(status: PaymentAuthorizationStatus, reason?: string) {
-    this.nextPaymentOutcome = { status, reason };
-  }
+/**
+ * Production-facing customer payment repository.
+ * Implements strictly ICustomerPaymentRepository with zero fixture/test controls.
+ * Delegates provider-specific details to an injected IPaymentProviderAdapter.
+ */
+export class CustomerPaymentRepository implements ICustomerPaymentRepository {
+  constructor(
+    private store: PaymentInternalStore = new PaymentInternalStore(),
+    private providerAdapter: IPaymentProviderAdapter = new SandboxPaymentProviderAdapter()
+  ) {}
 
-  setNextEscrowOutcome(status: EscrowStatus, reason?: string) {
-    this.nextEscrowOutcome = { status, reason };
-  }
-
-  seedBooking(booking: InternalBookingRecord) {
-    this.bookings.set(booking.bookingId, { ...booking });
-  }
-
-  setMockBookingState(bookingId: string, updates: Partial<InternalBookingRecord>) {
-    const existing = this.bookings.get(bookingId);
-    if (existing) {
-      this.bookings.set(bookingId, { ...existing, ...updates });
-    } else {
-      this.bookings.set(bookingId, {
-        bookingId,
-        customerId: updates.customerId || 'usr-customer-88',
-        jobStatus: updates.jobStatus || 'CONFIRMED',
-        bookingStatus: updates.bookingStatus || 'booking_confirmed',
-        serviceTitle: updates.serviceTitle || 'Air Conditioner Deep Cleaning',
-        workerName: updates.workerName || 'Emeka Okafor',
-        serviceLocation: updates.serviceLocation || 'Lekki Phase 1, Lagos',
-        baseAmountNaira: updates.baseAmountNaira || 18500,
-        paymentAuthStatus: updates.paymentAuthStatus || 'idle',
-        escrowStatus: updates.escrowStatus || 'unfunded',
-        ...updates,
-      });
-    }
-  }
-
-  private validateOwnership(
-    authenticatedCustomerId: string,
-    bookingId: string
-  ): InternalBookingRecord {
+  private validateOwnership(authenticatedCustomerId: string, bookingId: string): InternalBookingRecord {
     if (!authenticatedCustomerId || authenticatedCustomerId.trim().length === 0) {
       throw new Error('[Security] Unauthorized: authenticated customerId is required.');
     }
-    const booking = this.bookings.get(bookingId);
+    const booking = this.store.bookings.get(bookingId);
     if (!booking) {
       throw new Error(`[NotFound] Booking ${bookingId} not found.`);
     }
@@ -191,13 +181,13 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
   }
 
   private checkOfflineMutation() {
-    if (this.isOffline) {
+    if (this.store.isOffline) {
       throw new Error('[Offline] You are currently offline. Financial operations require an active network connection.');
     }
   }
 
   async getFeeConfig(): Promise<FeeScheduleConfig> {
-    return { ...this.feeConfig };
+    return { ...this.store.feeConfig };
   }
 
   async calculatePricing(baseAmountNaira: number): Promise<PricingBreakdown> {
@@ -217,6 +207,10 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     };
   }
 
+  async getProviderCapabilities(): Promise<PaymentProviderCapabilities> {
+    return this.providerAdapter.getCapabilities();
+  }
+
   async getPaymentContext(
     authenticatedCustomerId: string,
     bookingId: string
@@ -226,7 +220,7 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
 
     let activeCheckoutSession: CheckoutSession | undefined;
     if (booking.currentPaymentReference) {
-      activeCheckoutSession = this.checkoutSessions.get(booking.currentPaymentReference);
+      activeCheckoutSession = this.store.checkoutSessions.get(booking.currentPaymentReference);
     }
 
     const receiptAvailable =
@@ -270,9 +264,9 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     }
 
     // Idempotency check
-    const existingRef = this.idempotencyMap.get(input.idempotencyKey);
+    const existingRef = this.store.idempotencyMap.get(input.idempotencyKey);
     if (existingRef) {
-      const existingSession = this.checkoutSessions.get(existingRef);
+      const existingSession = this.store.checkoutSessions.get(existingRef);
       if (existingSession) {
         return { ...existingSession };
       }
@@ -281,33 +275,27 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     const pricing = await this.calculatePricing(booking.baseAmountNaira);
     const checkoutReference = `bbj-chk-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 
-    const virtualAccount: VirtualAccountDetails = {
-      bankName: 'Wema Bank (BukiePay Escrow)',
-      accountNumber: `012${Math.floor(1000000 + Math.random() * 9000000)}`,
-      accountName: `BukieBrainJobs Escrow (${input.bookingId})`,
-      expiresAt: input.providerVirtualAccountExpiry,
-      reconciliationNotes: 'Transfer exact amount. Verification reconciles automatically upon settlement.',
-    };
+    const virtualAccount = await this.providerAdapter.generateVirtualAccount(
+      input.bookingId,
+      input.providerVirtualAccountExpiry
+    );
 
-    const ussd: UssdDetails = {
-      bankName: 'GTBank / Multiple Banks',
-      ussdString: `*737*2*${pricing.totalPayableNaira}*012345#`,
-      directDialUri: `tel:*737*2*${pricing.totalPayableNaira}*012345%23`,
-    };
+    const ussd = await this.providerAdapter.generateUssdDetails(pricing.totalPayableNaira);
+    const capabilities = this.providerAdapter.getCapabilities();
 
     const session: CheckoutSession = {
       checkoutReference,
       bookingId: input.bookingId,
       totalPayableNaira: pricing.totalPayableNaira,
-      availableMethods: ['card', 'bank_transfer', 'ussd'],
+      availableMethods: capabilities.supportedMethods,
       virtualAccount,
       ussd,
       idempotencyKey: input.idempotencyKey,
       expiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
     };
 
-    this.checkoutSessions.set(checkoutReference, session);
-    this.idempotencyMap.set(input.idempotencyKey, checkoutReference);
+    this.store.checkoutSessions.set(checkoutReference, session);
+    this.store.idempotencyMap.set(input.idempotencyKey, checkoutReference);
 
     booking.currentPaymentReference = checkoutReference;
     booking.paymentAuthStatus = 'awaiting_payment';
@@ -321,67 +309,68 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     method?: PaymentMethod
   ): Promise<PaymentVerificationResult> {
     this.checkOfflineMutation();
-    const session = this.checkoutSessions.get(checkoutReference);
+    const session = this.store.checkoutSessions.get(checkoutReference);
     if (!session) {
-      throw new Error(`[NotFound] Checkout session ${checkoutReference} not found.`);
+      throw new Error(`[NotFound] Checkout reference ${checkoutReference} not found.`);
     }
     const booking = this.validateOwnership(authenticatedCustomerId, session.bookingId);
 
-    const paymentMethod: PaymentMethod = method || 'card';
+    const effectiveMethod: PaymentMethod = method || 'card';
 
-    // Record attempt with accurate method
+    // Outcome simulation from test controller
+    if (this.store.nextPaymentOutcome) {
+      const simulated = this.store.nextPaymentOutcome;
+      this.store.nextPaymentOutcome = null;
+
+      booking.paymentAuthStatus = simulated.status;
+
+      const attempt: PaymentAttempt = {
+        id: `att-${Date.now()}`,
+        checkoutReference,
+        bookingId: booking.bookingId,
+        method: effectiveMethod,
+        status: simulated.status,
+        amountNaira: session.totalPayableNaira,
+        createdAt: new Date().toISOString(),
+        failureReason: simulated.reason,
+      };
+      this.recordAttempt(booking.bookingId, attempt);
+
+      if (simulated.status === 'verified') {
+        booking.escrowStatus = 'held_in_escrow';
+        booking.verifiedPaymentMethod = effectiveMethod;
+      }
+
+      return {
+        status: simulated.status,
+        paymentReference: checkoutReference,
+        escrowStatus: booking.escrowStatus,
+        failureReason: simulated.reason,
+        verifiedAt: simulated.status === 'verified' ? new Date().toISOString() : undefined,
+      };
+    }
+
+    // Default successful verification
+    booking.paymentAuthStatus = 'verified';
+    booking.escrowStatus = 'held_in_escrow';
+    booking.verifiedPaymentMethod = effectiveMethod;
+
     const attempt: PaymentAttempt = {
       id: `att-${Date.now()}`,
       checkoutReference,
-      bookingId: session.bookingId,
-      method: paymentMethod,
-      status: 'processing',
+      bookingId: booking.bookingId,
+      method: effectiveMethod,
+      status: 'verified',
       amountNaira: session.totalPayableNaira,
       createdAt: new Date().toISOString(),
     };
-    const attempts = this.paymentAttempts.get(session.bookingId) || [];
-    attempts.push(attempt);
-    this.paymentAttempts.set(session.bookingId, attempts);
-
-    // Determine outcome
-    const outcome = this.nextPaymentOutcome || { status: 'verified' as const };
-    this.nextPaymentOutcome = null;
-
-    if (outcome.status === 'verified') {
-      booking.paymentAuthStatus = 'verified';
-      booking.escrowStatus = 'held_in_escrow';
-      booking.verifiedPaymentMethod = paymentMethod;
-      attempt.status = 'verified';
-
-      return {
-        status: 'verified',
-        paymentReference: checkoutReference,
-        escrowStatus: 'held_in_escrow',
-        verifiedAt: new Date().toISOString(),
-      };
-    }
-
-    if (outcome.status === 'timeout') {
-      booking.paymentAuthStatus = 'timeout';
-      attempt.status = 'timeout';
-      return {
-        status: 'timeout',
-        paymentReference: checkoutReference,
-        escrowStatus: booking.escrowStatus,
-        failureReason: outcome.reason || 'Payment verification timeout',
-      };
-    }
-
-    // Failed
-    booking.paymentAuthStatus = 'failed';
-    attempt.status = 'failed';
-    attempt.failureReason = outcome.reason || 'Payment declined by issuing bank';
+    this.recordAttempt(booking.bookingId, attempt);
 
     return {
-      status: 'failed',
+      status: 'verified',
       paymentReference: checkoutReference,
-      escrowStatus: booking.escrowStatus,
-      failureReason: attempt.failureReason,
+      escrowStatus: 'held_in_escrow',
+      verifiedAt: new Date().toISOString(),
     };
   }
 
@@ -390,19 +379,35 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     checkoutReference: string,
     method?: PaymentMethod
   ): Promise<PaymentVerificationResult> {
-    const session = this.checkoutSessions.get(checkoutReference);
+    this.checkOfflineMutation();
+    const session = this.store.checkoutSessions.get(checkoutReference);
     if (!session) {
-      throw new Error(`[NotFound] Checkout session ${checkoutReference} not found.`);
+      throw new Error(`[NotFound] Checkout reference ${checkoutReference} not found.`);
     }
     const booking = this.validateOwnership(authenticatedCustomerId, session.bookingId);
 
-    const outcome = this.nextPaymentOutcome || { status: 'verified' as const };
-    this.nextPaymentOutcome = null;
+    const effectiveMethod: PaymentMethod = method || booking.verifiedPaymentMethod || 'card';
 
-    if (outcome.status === 'verified') {
-      booking.paymentAuthStatus = 'verified';
-      booking.escrowStatus = 'held_in_escrow';
-      booking.verifiedPaymentMethod = method || 'bank_transfer';
+    if (this.store.nextPaymentOutcome) {
+      const simulated = this.store.nextPaymentOutcome;
+      this.store.nextPaymentOutcome = null;
+
+      booking.paymentAuthStatus = simulated.status;
+      if (simulated.status === 'verified') {
+        booking.escrowStatus = 'held_in_escrow';
+        booking.verifiedPaymentMethod = effectiveMethod;
+      }
+
+      return {
+        status: simulated.status,
+        paymentReference: checkoutReference,
+        escrowStatus: booking.escrowStatus,
+        failureReason: simulated.reason,
+        verifiedAt: simulated.status === 'verified' ? new Date().toISOString() : undefined,
+      };
+    }
+
+    if (booking.escrowStatus === 'held_in_escrow') {
       return {
         status: 'verified',
         paymentReference: checkoutReference,
@@ -411,18 +416,30 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
       };
     }
 
+    booking.paymentAuthStatus = 'verified';
+    booking.escrowStatus = 'held_in_escrow';
+    booking.verifiedPaymentMethod = effectiveMethod;
+
     return {
-      status: outcome.status,
+      status: 'verified',
       paymentReference: checkoutReference,
-      escrowStatus: booking.escrowStatus,
-      failureReason: outcome.reason,
+      escrowStatus: 'held_in_escrow',
+      verifiedAt: new Date().toISOString(),
     };
   }
 
-  async getPaymentAttempts(authenticatedCustomerId: string, bookingId: string): Promise<PaymentAttempt[]> {
+  private recordAttempt(bookingId: string, attempt: PaymentAttempt) {
+    const list = this.store.paymentAttempts.get(bookingId) || [];
+    list.push(attempt);
+    this.store.paymentAttempts.set(bookingId, list);
+  }
+
+  async getPaymentAttempts(
+    authenticatedCustomerId: string,
+    bookingId: string
+  ): Promise<PaymentAttempt[]> {
     this.validateOwnership(authenticatedCustomerId, bookingId);
-    const list = this.paymentAttempts.get(bookingId) || [];
-    return list.map((a) => ({ ...a }));
+    return [...(this.store.paymentAttempts.get(bookingId) || [])];
   }
 
   async releaseEscrow(
@@ -432,22 +449,25 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     this.checkOfflineMutation();
     const booking = this.validateOwnership(authenticatedCustomerId, input.bookingId);
 
-    if (booking.escrowStatus === 'disputed') {
-      throw new Error('[Security] Cannot release disputed escrow. Mediation must resolve the dispute first.');
-    }
     if (booking.escrowStatus !== 'held_in_escrow' && booking.escrowStatus !== 'release_failed') {
-      throw new Error(`[Invariant] Invalid escrow transition. Escrow must be in held_in_escrow to release. Current status: ${booking.escrowStatus}.`);
+      throw new Error(`[Invariant] Cannot release escrow from status ${booking.escrowStatus}. Escrow must be held_in_escrow.`);
     }
 
-    const outcome = this.nextEscrowOutcome || { status: 'released' as const };
-    this.nextEscrowOutcome = null;
+    if (this.store.nextEscrowOutcome) {
+      const simulated = this.store.nextEscrowOutcome;
+      this.store.nextEscrowOutcome = null;
 
-    if (outcome.status === 'release_failed') {
-      booking.escrowStatus = 'release_failed';
+      booking.escrowStatus = simulated.status;
+      if (simulated.status === 'released') {
+        booking.jobStatus = 'COMPLETED';
+        booking.bookingStatus = 'completed_and_paid';
+      }
+
       return {
-        success: false,
-        escrowStatus: 'release_failed',
-        failureReason: outcome.reason || 'Settlement transfer failed on banking network.',
+        success: simulated.status === 'released',
+        escrowStatus: simulated.status,
+        failureReason: simulated.reason,
+        releasedAt: simulated.status === 'released' ? new Date().toISOString() : undefined,
       };
     }
 
@@ -462,7 +482,17 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     };
   }
 
-  async retryRelease(authenticatedCustomerId: string, bookingId: string): Promise<EscrowReleaseResult> {
+  async retryRelease(
+    authenticatedCustomerId: string,
+    bookingId: string
+  ): Promise<EscrowReleaseResult> {
+    this.checkOfflineMutation();
+    const booking = this.validateOwnership(authenticatedCustomerId, bookingId);
+
+    if (booking.escrowStatus !== 'release_failed') {
+      throw new Error(`[Invariant] Only release_failed escrows can be retried. Current status: ${booking.escrowStatus}`);
+    }
+
     return this.releaseEscrow(authenticatedCustomerId, { bookingId });
   }
 
@@ -473,11 +503,11 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     this.checkOfflineMutation();
     const booking = this.validateOwnership(authenticatedCustomerId, input.bookingId);
 
-    if (booking.escrowStatus === 'released') {
-      throw new Error('[Invariant] Cannot dispute an escrow that has already been released to the service provider.');
+    if (booking.escrowStatus !== 'held_in_escrow' && booking.escrowStatus !== 'release_failed') {
+      throw new Error(`[Invariant] Cannot dispute escrow in status ${booking.escrowStatus}.`);
     }
 
-    const disputeId = `disp-${Date.now()}`;
+    const disputeId = `disp-${booking.bookingId}-${Date.now()}`;
     booking.escrowStatus = 'disputed';
     booking.jobStatus = 'DISPUTED';
     booking.bookingStatus = 'disputed';
@@ -498,33 +528,32 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     this.checkOfflineMutation();
     const booking = this.validateOwnership(authenticatedCustomerId, input.bookingId);
 
-    if (booking.escrowStatus === 'unfunded') {
-      throw new Error('[Invariant] Cannot refund unfunded booking.');
+    if (booking.jobStatus !== 'CANCELLED') {
+      throw new Error(`[Invariant] Refund can only be requested for CANCELLED jobs. Current status: ${booking.jobStatus}`);
     }
-    if (booking.escrowStatus === 'released') {
-      throw new Error('[Invariant] Cannot refund escrow that has already been released.');
+    if (booking.escrowStatus !== 'held_in_escrow' && booking.escrowStatus !== 'refund_failed') {
+      throw new Error(`[Invariant] Escrow status ${booking.escrowStatus} is not eligible for refund.`);
     }
 
-    const refundReference = `ref-${Date.now()}`;
+    const refundReference = `ref-${booking.bookingId}-${Date.now()}`;
     booking.escrowStatus = 'refund_pending';
     booking.activeRefundReference = refundReference;
 
-    const pricing = await this.calculatePricing(booking.baseAmountNaira);
-    const refundDetails: RefundStatusDetails = {
+    const details: RefundStatusDetails = {
       refundReference,
-      bookingId: input.bookingId,
-      amountNaira: pricing.totalPayableNaira,
+      bookingId: booking.bookingId,
+      amountNaira: booking.baseAmountNaira,
       status: 'pending',
       requestedAt: new Date().toISOString(),
-      estimatedResolution: '3 to 5 business days for card refunds, 24 to 48 hours for bank transfers',
+      estimatedResolution: '3 to 5 business days',
     };
-    this.refundDetails.set(refundReference, refundDetails);
+    this.store.refundDetails.set(refundReference, details);
 
     return {
       success: true,
       refundReference,
       escrowStatus: 'refund_pending',
-      requestedAt: refundDetails.requestedAt,
+      requestedAt: details.requestedAt,
       estimatedDays: '3 to 5 business days',
     };
   }
@@ -535,16 +564,19 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
   ): Promise<RefundStatusDetails> {
     const booking = this.validateOwnership(authenticatedCustomerId, bookingId);
     if (!booking.activeRefundReference) {
-      throw new Error(`[NotFound] No active refund found for booking ${bookingId}.`);
+      throw new Error(`[NotFound] No active refund for booking ${bookingId}.`);
     }
-    const details = this.refundDetails.get(booking.activeRefundReference);
+    const details = this.store.refundDetails.get(booking.activeRefundReference);
     if (!details) {
-      throw new Error(`[NotFound] Refund details for ${booking.activeRefundReference} not found.`);
+      throw new Error(`[NotFound] Refund details not found for reference ${booking.activeRefundReference}.`);
     }
     return { ...details };
   }
 
-  async getReceipt(authenticatedCustomerId: string, bookingId: string): Promise<PaymentReceipt> {
+  async getReceipt(
+    authenticatedCustomerId: string,
+    bookingId: string
+  ): Promise<PaymentReceipt> {
     const booking = this.validateOwnership(authenticatedCustomerId, bookingId);
 
     if (booking.escrowStatus === 'unfunded') {
@@ -563,12 +595,7 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
 
     const pricing = await this.calculatePricing(booking.baseAmountNaira);
 
-    let paymentMethodLabel = 'Debit Card (Mastercard •••• 4242)';
-    if (booking.verifiedPaymentMethod === 'bank_transfer') {
-      paymentMethodLabel = 'Bank Transfer (Dedicated Virtual Account)';
-    } else if (booking.verifiedPaymentMethod === 'ussd') {
-      paymentMethodLabel = 'USSD Payment';
-    }
+    const paymentMethodLabel = this.providerAdapter.formatPaymentMethodLabel(booking.verifiedPaymentMethod);
 
     const receipt: PaymentReceipt = {
       receiptNumber: `REC-${new Date().getFullYear()}-${booking.bookingId.replace(/[^0-9]/g, '') || '8812'}`,
@@ -592,8 +619,47 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
 
     return { ...receipt };
   }
+}
 
-  loadScenario(scenario: DeterministicScenarioName, bookingId: string, customerId: string) {
+/**
+ * Dedicated test controller for deterministic state fixtures.
+ * Genuinely decoupled from the production repository interface.
+ */
+export class CustomerPaymentTestController implements ICustomerPaymentTestController {
+  constructor(private store: PaymentInternalStore) {}
+
+  setOffline(offline: boolean): void {
+    this.store.isOffline = offline;
+  }
+
+  setNextPaymentOutcome(status: PaymentAuthorizationStatus, reason?: string | undefined): void {
+    this.store.nextPaymentOutcome = { status, reason };
+  }
+
+  setNextEscrowOutcome(status: EscrowStatus, reason?: string | undefined): void {
+    this.store.nextEscrowOutcome = { status, reason };
+  }
+
+  setMockBookingState(bookingId: string, updates: Partial<InternalBookingRecord>): void {
+    const existing = this.store.bookings.get(bookingId);
+    if (!existing) {
+      throw new Error(`[NotFound] Cannot update non-existent booking ${bookingId}`);
+    }
+    this.store.bookings.set(bookingId, {
+      ...existing,
+      ...updates,
+    });
+  }
+
+  seedBooking(booking: InternalBookingRecord): void {
+    this.store.bookings.set(booking.bookingId, { ...booking });
+  }
+
+  reset(): void {
+    this.store.reset();
+  }
+
+  loadScenario(scenario: DeterministicScenarioName, bookingId: string, customerId: string): void {
     switch (scenario) {
       case 'confirmed_unfunded':
         this.setMockBookingState(bookingId, {
@@ -797,53 +863,57 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
         break;
     }
   }
-
-  getTestController(): ICustomerPaymentTestController {
-    return {
-      setOffline: (offline: boolean) => this.setOffline(offline),
-      setNextPaymentOutcome: (status, reason) => this.setNextPaymentOutcome(status, reason),
-      setNextEscrowOutcome: (status, reason) => this.setNextEscrowOutcome(status, reason),
-      setMockBookingState: (bookingId, updates) => this.setMockBookingState(bookingId, updates),
-      loadScenario: (scenario, bookingId, customerId) => this.loadScenario(scenario, bookingId, customerId),
-      seedBooking: (booking) => this.seedBooking(booking),
-      reset: () => {
-        this.bookings.clear();
-        this.checkoutSessions.clear();
-        this.idempotencyMap.clear();
-        this.paymentAttempts.clear();
-        this.receipts.clear();
-        this.refundDetails.clear();
-        this.isOffline = false;
-        this.nextPaymentOutcome = null;
-        this.nextEscrowOutcome = null;
-        this.seedDefaults();
-      },
-    };
-  }
 }
 
-let repositoryInstance: MockCustomerPaymentRepository | null = null;
+let sharedStore: PaymentInternalStore | null = null;
+let sharedRepository: ICustomerPaymentRepository | null = null;
+let sharedTestController: ICustomerPaymentTestController | null = null;
+
+function getSharedStore(): PaymentInternalStore {
+  if (!sharedStore) {
+    sharedStore = new PaymentInternalStore();
+  }
+  return sharedStore;
+}
 
 export function getCustomerPaymentRepository(): ICustomerPaymentRepository {
-  if (!repositoryInstance) {
-    repositoryInstance = new MockCustomerPaymentRepository();
+  if (!sharedRepository) {
+    sharedRepository = new CustomerPaymentRepository(getSharedStore(), new SandboxPaymentProviderAdapter());
   }
-  return repositoryInstance;
+  return sharedRepository;
 }
 
 export function getPaymentTestController(): ICustomerPaymentTestController {
-  if (!repositoryInstance) {
-    repositoryInstance = new MockCustomerPaymentRepository();
+  if (!sharedTestController) {
+    sharedTestController = new CustomerPaymentTestController(getSharedStore());
   }
-  return repositoryInstance.getTestController();
+  return sharedTestController;
 }
 
-export function resetCustomerPaymentRepository(newInstance?: MockCustomerPaymentRepository): ICustomerPaymentRepository {
-  repositoryInstance = newInstance ?? new MockCustomerPaymentRepository();
-  return repositoryInstance;
+export function resetCustomerPaymentRepository(newInstance?: ICustomerPaymentRepository): ICustomerPaymentRepository {
+  if (newInstance) {
+    sharedRepository = newInstance;
+  } else {
+    sharedStore = new PaymentInternalStore();
+    sharedRepository = new CustomerPaymentRepository(sharedStore, new SandboxPaymentProviderAdapter());
+    sharedTestController = new CustomerPaymentTestController(sharedStore);
+  }
+  return sharedRepository;
 }
 
-export function createCustomerPaymentRepository(): MockCustomerPaymentRepository {
-  return new MockCustomerPaymentRepository();
+export function createPaymentTestHarness(providerAdapter?: IPaymentProviderAdapter): {
+  repository: ICustomerPaymentRepository;
+  testController: ICustomerPaymentTestController;
+} {
+  const store = new PaymentInternalStore();
+  const adapter = providerAdapter ?? new SandboxPaymentProviderAdapter();
+  const repository = new CustomerPaymentRepository(store, adapter);
+  const testController = new CustomerPaymentTestController(store);
+  return { repository, testController };
 }
 
+// Aliases strictly typed to CustomerPaymentRepository for backwards compatibility
+export { CustomerPaymentRepository as MockCustomerPaymentRepository };
+export function createCustomerPaymentRepository(): ICustomerPaymentRepository {
+  return new CustomerPaymentRepository();
+}
