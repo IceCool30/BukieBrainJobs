@@ -1,4 +1,3 @@
-import type { JobStatus } from '@bukiebrainjobs/api-types';
 import type {
   ICustomerPaymentRepository,
   PaymentAuthorizationStatus,

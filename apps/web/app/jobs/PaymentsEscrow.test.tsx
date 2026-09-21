@@ -13,7 +13,6 @@ import { LifecycleStateSurface } from '../../components/jobs/LifecycleStateSurfa
 import * as authStorage from '../../lib/auth/storage';
 import {
   resetCustomerPaymentRepository,
-  getCustomerPaymentRepository,
   getPaymentTestController,
 } from '../../lib/payment/repository';
 import type { CustomerActivityItem } from '@bukiebrainjobs/types';
