@@ -227,7 +227,7 @@ describe('WEB-015 CustomerPaymentRepository (TDD)', () => {
       });
 
       await expect(repo.releaseEscrow(validCustomer, { bookingId })).rejects.toThrow(
-        /cannot dispute escrow/i
+        /cannot release escrow/i
       );
     });
   });

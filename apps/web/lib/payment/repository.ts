@@ -642,13 +642,26 @@ export class CustomerPaymentTestController implements ICustomerPaymentTestContro
 
   setMockBookingState(bookingId: string, updates: Partial<InternalBookingRecord>): void {
     const existing = this.store.bookings.get(bookingId);
-    if (!existing) {
-      throw new Error(`[NotFound] Cannot update non-existent booking ${bookingId}`);
+    if (existing) {
+      this.store.bookings.set(bookingId, {
+        ...existing,
+        ...updates,
+      });
+    } else {
+      this.store.bookings.set(bookingId, {
+        bookingId,
+        customerId: updates.customerId || 'usr-customer-88',
+        jobStatus: updates.jobStatus || 'CONFIRMED',
+        bookingStatus: updates.bookingStatus || 'booking_confirmed',
+        serviceTitle: updates.serviceTitle || 'Air Conditioner Deep Cleaning',
+        workerName: updates.workerName || 'Emeka Okafor',
+        serviceLocation: updates.serviceLocation || 'Lekki Phase 1, Lagos',
+        baseAmountNaira: updates.baseAmountNaira || 18500,
+        paymentAuthStatus: updates.paymentAuthStatus || 'idle',
+        escrowStatus: updates.escrowStatus || 'unfunded',
+        ...updates,
+      });
     }
-    this.store.bookings.set(bookingId, {
-      ...existing,
-      ...updates,
-    });
   }
 
   seedBooking(booking: InternalBookingRecord): void {
