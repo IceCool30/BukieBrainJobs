@@ -177,3 +177,22 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 forbidden corporate filler terms; state-honest copy
 - **Status**: PASS
 
+## 2026-09-21: WEB-014 Customer Profile & Account Settings Verification
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-014-customer-profile-settings`
+- **Trigger**: WEB-014 `/check` [VERIFY] full suite execution
+- **Implementation & Architectural Hardening**:
+  1. No Hard-Coded City Ceiling: Saved address contract accepts any valid Nigerian city string while offering popular quick-select options in the modal interface.
+  2. Strict Authorization Separation: Authenticated customer identity is resolved from the auth/session boundary and passed to the repository. All mutations fail closed on missing or mismatched customer identifiers.
+  3. Comprehensive UI State Machine: ProfileScreen cleanly handles idle, offline read-only, saving, transient success banners, inline validation failures, and localized retry on service errors.
+  4. Customer Data Isolation: Session switching completely re-scopes profile, saved addresses, notification preferences, and active sessions, preventing cross-account data leakage.
+  5. Accessible ARIA Tabs: Implemented standard W3C ARIA tablist/tab pattern with keyboard and screen reader accessibility across Personal Details, Saved Addresses, Security, Notifications, and Account Management.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 10 packages with 0 errors
+  - `pnpm lint`: Passed with 0 errors and 0 warnings
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 23 test files (416 tests passed, 0 failures)
+  - `pnpm build`: Passed in 40.4s with Next.js compiling all 30 static and dynamic routes including `/profile`
+- **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
+- **Status**: PASS
+
+
