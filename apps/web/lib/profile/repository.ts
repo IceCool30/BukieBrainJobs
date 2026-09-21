@@ -57,7 +57,7 @@ export interface ICustomerProfileRepository {
   getActiveSessions(authenticatedCustomerId: string): Promise<ActiveSession[]>;
   signOutOtherSessions(authenticatedCustomerId: string): Promise<void>;
   exportAccountData(authenticatedCustomerId: string): Promise<AccountDataExport>;
-  deleteAccount(authenticatedCustomerId: string, reason?: string): Promise<void>;
+  deleteAccount(authenticatedCustomerId: string, _reason?: string): Promise<void>;
 }
 
 export class MockCustomerProfileRepository implements ICustomerProfileRepository {
@@ -446,7 +446,7 @@ export class MockCustomerProfileRepository implements ICustomerProfileRepository
     };
   }
 
-  async deleteAccount(authenticatedCustomerId: string, reason?: string): Promise<void> {
+  async deleteAccount(authenticatedCustomerId: string, _reason?: string): Promise<void> {
     this.validateCustomerId(authenticatedCustomerId);
     this.checkOfflineMutation();
 

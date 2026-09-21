@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { User, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { CustomerProfile, UpdatePersonalDetailsInput } from '../../lib/profile/types';
 
 interface PersonalDetailsSectionProps {

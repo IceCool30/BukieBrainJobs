@@ -19,7 +19,7 @@ interface AccountManagementSectionProps {
 }
 
 export function AccountManagementSection({
-  customerId,
+  customerId: _customerId,
   isOffline,
   onExportData,
   onDeleteAccount,

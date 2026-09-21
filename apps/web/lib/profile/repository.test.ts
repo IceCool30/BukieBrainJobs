@@ -1,8 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import {
-  MockCustomerProfileRepository,
-  createCustomerProfileRepository,
-} from './repository';
+import { MockCustomerProfileRepository } from './repository';
 import {
   CreateSavedAddressInput,
   UpdatePersonalDetailsInput,

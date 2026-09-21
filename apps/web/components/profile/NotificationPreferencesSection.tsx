@@ -8,7 +8,6 @@ import {
   Smartphone,
   CheckCircle2,
   AlertCircle,
-  Loader2,
 } from 'lucide-react';
 import { NotificationPreferences } from '../../lib/profile/types';
 

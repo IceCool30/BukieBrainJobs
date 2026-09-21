@@ -112,7 +112,7 @@ export default function ProfileScreen() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [currentUser?.name, currentUser?.email, currentUser?.phone]);
 
   useEffect(() => {
     if (currentUser?.id) {
