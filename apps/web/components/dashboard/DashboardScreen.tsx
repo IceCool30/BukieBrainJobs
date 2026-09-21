@@ -60,10 +60,18 @@ export default function DashboardScreen() {
   // Listen for tab query param if provided
   useEffect(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam === 'jobs' || tabParam === 'messages' || tabParam === 'notifications' || tabParam === 'profile') {
+    if (tabParam === 'profile') {
+      if (typeof router.replace === 'function') {
+        router.replace('/profile');
+      } else if (typeof router.push === 'function') {
+        router.push('/profile');
+      }
+      return;
+    }
+    if (tabParam === 'jobs' || tabParam === 'messages' || tabParam === 'notifications') {
       setActiveTab(tabParam as DashboardTab);
     }
-  }, [searchParams]);
+  }, [searchParams, router]);
 
   // Compute view model from context
   const viewModel: DashboardViewModel = useMemo(() => {
@@ -341,15 +349,11 @@ export default function DashboardScreen() {
               </button>
 
               <button
-                onClick={() => setActiveTab('profile')}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition-colors ${
-                  activeTab === 'profile'
-                    ? 'bg-[#001A41] text-white shadow-sm'
-                    : 'text-slate-700 hover:bg-slate-50 hover:text-[#001A41]'
-                }`}
+                onClick={() => router.push('/profile')}
+                className="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition-colors text-slate-700 hover:bg-slate-50 hover:text-[#001A41]"
               >
                 <div className="flex items-center gap-3">
-                  <User className={`h-4 w-4 ${activeTab === 'profile' ? 'text-[#ABEEC8]' : 'text-slate-400'}`} />
+                  <User className="h-4 w-4 text-slate-400" />
                   <span>Profile</span>
                 </div>
               </button>
@@ -1134,10 +1138,8 @@ export default function DashboardScreen() {
         </button>
 
         <button
-          onClick={() => setActiveTab('profile')}
-          className={`flex flex-col items-center justify-center min-h-[48px] px-3 py-1 text-[11px] font-semibold transition-colors ${
-            activeTab === 'profile' ? 'text-[#ABEEC8]' : 'text-slate-400 hover:text-white'
-          }`}
+          onClick={() => router.push('/profile')}
+          className="flex flex-col items-center justify-center min-h-[48px] px-3 py-1 text-[11px] font-semibold text-slate-400 hover:text-white transition-colors"
         >
           <User className="h-4 w-4 mb-0.5" />
           <span>Profile</span>

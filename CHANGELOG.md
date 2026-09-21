@@ -17,6 +17,25 @@ The format follows practical release notes written plainly in engineering langua
 - Expanded `AGENTS.md` to conform to the canonical NINE context map schema, recording Termux environment limits and cloud Codespace execution requirements.
 - Standardized test suite describe block titles across `apps/web` to eliminate em dashes.
 
+## [1.0.0-web-014] - 2026-09-21
+
+### Added
+- WEB-014 Customer Profile & Account Settings on canonical `/profile` surface.
+- `apps/web/lib/profile/types.ts`: Domain models for customer profile, saved addresses, notification channels and topics, active sessions, and account data export.
+- `apps/web/lib/profile/repository.ts`: MockCustomerProfileRepository providing customer data isolation, Nigerian phone validation, password complexity checks, offline mode support, and fail-closed authorization.
+- `apps/web/components/profile/ProfileScreen.tsx`: Tabbed customer profile dashboard supporting Personal Details, Saved Addresses, Security, Notifications, and Account Management.
+- `apps/web/components/profile/PersonalDetailsSection.tsx`: Profile identity card with real-time Nigerian phone normalization, email verification status, and name updates.
+- `apps/web/components/profile/SavedAddressesSection.tsx`: Address management card grid with default selection, accessible add and edit modal, landmark directions, and deletion confirmation.
+- `apps/web/components/profile/SecuritySection.tsx`: Password update card, linked sign-in methods, and active sessions list with remote sign-out support.
+- `apps/web/components/profile/NotificationPreferencesSection.tsx`: Granular communication switches across SMS, WhatsApp, Email, and In-App channels.
+- `apps/web/components/profile/AccountManagementSection.tsx`: Complete JSON data export and account deletion danger zone with confirmation.
+- `apps/web/components/profile/ProfileNavigation.tsx`: Responsive navigation sidebar and mobile bottom navigation with BukieGuarantee watermark and notice dialogs.
+- 25 automated tests across repository logic and component interactions, including regression verification for session-switch customer isolation.
+
+### Changed
+- Updated dashboard and jobs navigation menus to route directly to `/profile`.
+- Enhanced `DashboardScreen.tsx` tab listener to redirect profile query parameter cleanly to `/profile` while preserving the dedicated jobs tab view.
+
 ## [1.0.0-web-013] - 2026-09-19
 
 ### Added

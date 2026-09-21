@@ -7,11 +7,13 @@ import { AuthUser } from '../../lib/auth/types';
 
 // Mock Next.js navigation
 const mockPush = vi.fn();
+const mockReplace = vi.fn();
 let mockSearchParams = new URLSearchParams();
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
     push: mockPush,
+    replace: mockReplace,
   }),
   useSearchParams: () => mockSearchParams,
 }));
@@ -212,6 +214,13 @@ describe('WEB-010 DashboardScreen Component', () => {
     expect(screen.getByText(/Inverter Backup & Battery Inspection/i)).toBeInTheDocument();
     // In dedicated Jobs tab, the generic homepage-like 'Explore Popular Services' continuation is not rendered
     expect(screen.queryByText(/Explore Popular Services/i)).not.toBeInTheDocument();
+  });
+
+  it('redirects to /profile when profile tab query parameter is provided', () => {
+    mockSearchParams = new URLSearchParams('tab=profile');
+    render(<DashboardScreen />);
+
+    expect(mockReplace).toHaveBeenCalledWith('/profile');
   });
 
   it('enforces BrainWorker terminology without artisan or pros leaks in customer copy', () => {

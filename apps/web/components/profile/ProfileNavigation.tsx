@@ -13,14 +13,15 @@ import {
   LogOut,
   X,
 } from 'lucide-react';
-import { CustomerActivityCustomer } from '@bukiebrainjobs/types';
 
-export function JobsSidebar({
-  customer,
+export function ProfileSidebar({
+  customerName,
+  customerEmail,
   onSignOut,
   onOpenNoticeDialog,
 }: {
-  customer: CustomerActivityCustomer | null;
+  customerName: string;
+  customerEmail: string;
   onSignOut: () => void;
   onOpenNoticeDialog: (dialog: 'messages' | 'notifications') => void;
 }) {
@@ -66,10 +67,10 @@ export function JobsSidebar({
 
         <button
           type="button"
-          aria-current="page"
-          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-white bg-white/10 shadow-xs transition cursor-pointer text-left"
+          onClick={() => router.push('/jobs')}
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition cursor-pointer text-left"
         >
-          <Briefcase className="h-4 w-4 text-[#ABEEC8]" />
+          <Briefcase className="h-4 w-4" />
           <span>Jobs / Bookings</span>
         </button>
 
@@ -91,27 +92,28 @@ export function JobsSidebar({
           <span>Notifications</span>
         </button>
 
-        <Link
-          href="/profile"
-          className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition"
+        <button
+          type="button"
+          aria-current="page"
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-white bg-white/10 shadow-xs transition cursor-pointer text-left"
         >
-          <User className="h-4 w-4" />
-          <span>Profile</span>
-        </Link>
+          <User className="h-4 w-4 text-[#ABEEC8]" />
+          <span>Profile & Settings</span>
+        </button>
       </nav>
 
       {/* Authenticated Customer Footer */}
       <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-8 h-8 rounded-full bg-white/10 text-white font-bold text-xs flex items-center justify-center shrink-0">
-            {customer?.name ? customer.name.charAt(0).toUpperCase() : 'C'}
+            {customerName ? customerName.charAt(0).toUpperCase() : 'C'}
           </div>
           <div className="min-w-0">
             <span className="text-xs font-semibold text-white block truncate">
-              {customer?.name || 'Customer'}
+              {customerName || 'Customer'}
             </span>
             <span className="text-[10px] text-slate-400 block truncate">
-              {customer?.email || 'customer@bukie.ng'}
+              {customerEmail || 'customer@bukie.ng'}
             </span>
           </div>
         </div>
@@ -128,7 +130,7 @@ export function JobsSidebar({
   );
 }
 
-export function JobsMobileBottomNav({
+export function ProfileMobileBottomNav({
   onOpenNoticeDialog,
 }: {
   onOpenNoticeDialog: (dialog: 'messages' | 'notifications') => void;
@@ -152,8 +154,8 @@ export function JobsMobileBottomNav({
 
         <button
           type="button"
-          aria-current="page"
-          className="min-h-[48px] min-w-[48px] flex flex-col items-center justify-center text-[10px] font-semibold text-[#ABEEC8] transition cursor-pointer"
+          onClick={() => router.push('/jobs')}
+          className="min-h-[48px] min-w-[48px] flex flex-col items-center justify-center text-[10px] font-medium text-slate-400 hover:text-white transition cursor-pointer"
         >
           <Briefcase className="h-5 w-5 mb-0.5" />
           <span>Jobs</span>
@@ -179,8 +181,8 @@ export function JobsMobileBottomNav({
 
         <button
           type="button"
-          onClick={() => router.push('/profile')}
-          className="min-h-[48px] min-w-[48px] flex flex-col items-center justify-center text-[10px] font-medium text-slate-400 hover:text-white transition cursor-pointer"
+          aria-current="page"
+          className="min-h-[48px] min-w-[48px] flex flex-col items-center justify-center text-[10px] font-semibold text-[#ABEEC8] transition cursor-pointer"
         >
           <User className="h-5 w-5 mb-0.5" />
           <span>Profile</span>
@@ -190,7 +192,7 @@ export function JobsMobileBottomNav({
   );
 }
 
-export function JobsNoticeDialog({
+export function ProfileNoticeDialog({
   dialog,
   onClose,
 }: {
