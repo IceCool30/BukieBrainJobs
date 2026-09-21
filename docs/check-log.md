@@ -255,4 +255,24 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
 - **Status**: PASS
 
+## 2026-09-21: WEB-015 Test Module Isolation, Fail-Closed Attribution & Documentation Alignment
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-015-customer-payments-escrow`
+- **Trigger**: Remediation of PR #52 test controller export, attribution fallback, and documentation alignment audit findings
+- **Items Remediated & Hardened**:
+  1. Test Module Physical Segregation: Moved `PaymentInternalStore`, `CustomerPaymentTestController`, `getPaymentTestController`, `createPaymentTestHarness`, and `resetCustomerPaymentRepository` into a dedicated test-only module at `apps/web/lib/payment/testing/`. Production barrel export at `apps/web/lib/payment/index.ts` does not export test utilities or state fixtures.
+  2. Production Repository Interface Purity: `CustomerPaymentRepository` constructor only accepts optional `providerAdapter`. It no longer accepts external store references from production callers. Direct and factory consumers receive strictly `ICustomerPaymentRepository` with zero state-tampering capabilities.
+  3. Authoritative Payment Method Attribution: Removed implicit fallback to `'card'` in `verifyPayment()` and `checkVerificationStatus()`. Methods fail closed with an explicit error when payment method cannot be authoritatively established from the invocation, checkout session, or prior verified attempts.
+  4. Documentation Alignment: Updated `docs/master-checklist.md` Section 1.2 from `Not Built` to `In Review` with all 8 items marked complete. Reconciled `docs/scope.md` to eliminate duplicate WEB-015 entry under Upcoming Planned Slices.
+  5. Regression Coverage: Added regression assertions in `repository.test.ts` verifying fail-closed payment method attribution and proving production barrel modules export undefined for all test controller utilities. All 478 tests pass across 25 suites with 0 failures.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 10 packages with 0 errors (4.70s)
+  - `pnpm lint`: Passed with 0 errors and 0 warnings (2.92s)
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 25 test files (478 tests passed, 0 failures, 52.97s)
+  - `pnpm build`: Passed in 36.92s with Next.js compiling all 30 static and dynamic routes
+- **CI & Deployment Status**:
+  - GitHub Actions CI (Run 35648950136): SUCCESS
+  - Vercel Preview Deployment: SUCCESS
+- **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
+- **Status**: PASS
 
