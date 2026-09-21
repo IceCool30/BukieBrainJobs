@@ -94,10 +94,52 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 forbidden corporate phrases; state-honest presentation of BrainWorker preferences
 - **Status**: PASS
 
-## 2026-09-20: WEB-006 Services Discovery Streamlining (Hotfix)
+## 2026-09-19: WEB-011 Build Specification & Navigation Hardening
 - **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
-- **Branch**: `hotfix/web-006-services-discovery-streamline`
-- **Trigger**: Fast-track production deployment to remove oversized hero section from services discovery page and integrate search input with city toggle inside the category browsing card
+- **Branch**: `feature/web-011-customer-jobs-and-bookings`
+- **Trigger**: Implementation authorization following approved WEB-011A Independent Design Review
+- **Items Verified & Hardened**:
+  1. Established canonical build spec in `docs/specs/WEB-011-customer-jobs-and-bookings.md` covering all 5 design review notes.
+  2. Hardened URL state synchronization: closing mobile detail cleans up the `id` parameter, and browser Back/Forward navigation resets detail and mobile view states when `id` is removed.
+  3. Sanitized query parameters using `normalizeActivityId` to prevent untrusted inputs from becoming authorization channels.
+  4. Preserved active filter view (`view=`) when resetting invalid activity IDs via not-found state.
+  5. Verified decorative watermark compliance (`aria-hidden="true"`, 3.5% opacity, `pointer-events-none`).
+  6. Verified "Scheduled" status presentation strictly reflects supported activities without contaminating domain `JobStatus`.
+  7. Verified 12-column master-detail layout on desktop and mobile full-screen detail with >=48px touch targets.
+  8. Added 2 regression tests in `apps/web/app/jobs/JobsScreen.test.tsx` verifying URL parameter cleanup and filter preservation.
+- **Commands Executed**:
+  - `pnpm run type-check`: Passed across 6 packages with 0 errors
+  - `pnpm test`: Passed across monorepo (381 tests passed in `apps/web` across 21 suites, 42 in `validation`, 7 in `utils`, 430 tests total, 0 failures)
+  - `pnpm run lint`: Passed with 0 errors and 0 warnings
+  - `pnpm run build`: Passed with Next.js compiling all 29 static and dynamic routes
+- **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 forbidden corporate phrases; state-honest customer copy
+- **Status**: PASS
+
+## 2026-09-19: WEB-011 Audit Remediation (Customer Isolation, Deep-Link Fallback, Auth Boundary)
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-011-customer-jobs-and-bookings`
+- **Trigger**: Remediation of three independent audit blockers identified on PR #49
+- **Items Remediated & Verified**:
+  1. Customer Isolation Regression: An authenticated customer with legitimate empty activity results (`activitiesOverride: []`) preserves the empty array and no longer falls back to global mock activities (`MOCK_CUSTOMER_ACTIVITIES`).
+  2. Invalid Deep-Link Fall-Through Bug: Visiting an unknown or invalid identifier (such as `/jobs?id=NON-EXISTENT-999`) returns `undefined` for `selectedActivity` instead of falling through to the first item in the list. The detail pane renders "Activity not found" with the requested identifier and a reset button.
+  3. Synthetic Customer Identity & Fail-Closed Boundary: Removed `usr-customer-default` fallbacks from activity queries and cancel mutations. `resolveJobsContext` sets `customer: null` and returns an empty activity list when unauthenticated. UI renders the sign-in boundary immediately without synthesizing an identity.
+  4. Repository & Domain Alignment: `MockCustomerActivityRepository.getSynchronousActivities` scopes to `customerId` when provided by UI components while permitting unscoped retrieval for internal domain methods (`dispatchDomainInvitation`).
+  5. Regression Test Coverage: Added dedicated test cases in `apps/web/lib/jobs/jobs.test.ts` and `apps/web/app/jobs/JobsScreen.test.tsx` verifying customer isolation, unauthenticated fail-closed state, and invalid deep-link handling.
+- **Commands Executed on Codespace**:
+  - `pnpm run type-check`: Passed across all packages with 0 errors
+  - `pnpm test`: Passed (21 test files passed, 387 tests passed in `apps/web`, 436 total monorepo tests, 0 failures)
+  - `pnpm run lint`: Passed with 0 errors and 0 warnings
+  - `pnpm run build`: Production Next.js build compiled all 29 routes successfully
+- **CI & Deployment Status**:
+  - GitHub Actions CI (Run 35470899879): SUCCESS
+  - Vercel Preview Deployment: SUCCESS
+- **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 corporate filler terms; state-honest copy
+- **Status**: PASS
+
+## 2026-09-20: WEB-006 Services Discovery Streamlining
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-011-customer-jobs-and-bookings`
+- **Trigger**: User instruction to remove oversized hero section from the services discovery page and integrate the search bar with the city toggle inside the category browsing card
 - **Items Verified & Hardened**:
   1. Removed full-bleed dark navy hero section and background photography from `/services` to eliminate vertical dead space on mobile.
   2. Preserved navigation back to home via clean left-aligned text link at the top of the main container.
@@ -115,5 +157,23 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 corporate filler terms
 - **Status**: PASS
 
-
+## 2026-09-21: WEB-011 Re-Audit Remediation (Recovery Customer Isolation & Deep-Link Precedence)
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-011-customer-jobs-and-bookings`
+- **Trigger**: Remediation of two remaining independent audit blockers identified on PR #49
+- **Items Remediated & Verified**:
+  1. Removed Global Mock Recovery Fallback: `JobsScreen.tsx` no longer imports or references `MOCK_CUSTOMER_ACTIVITIES`. Partial-failure recovery strictly restores the customer's own activities from `activitiesList` and synchronously refreshes from the scoped repository. A non-default customer recovering from a partial failure never receives another customer's mock activities.
+  2. Explicit ID Deep-Link Precedence: When an explicit `id` query parameter is provided (such as `/jobs?id=NON-EXISTENT-999`), it takes strict precedence over the zero-activity empty state. An authenticated customer with zero activities now cleanly receives the "Activity not found" surface instead of the first-run empty state. Clicking "View all activity" clears the invalid parameter and transitions cleanly back to the first-run empty state.
+  3. Responsive Detail Layout: `ActivityDetail` accepts an optional `className` parameter (`lg:col-span-7` by default, `lg:col-span-12` when no activities exist in the list) with centered max-width constraint for balanced presentation.
+  4. Regression Test Coverage: Added targeted regression tests in `apps/web/app/jobs/JobsScreen.test.tsx` verifying customer-isolated partial-failure recovery, clean zero-activity recovery, and deep-link precedence over empty states.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 6 packages with 0 errors
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 21 test files (390 tests passed, 0 failures)
+  - `pnpm lint`: Passed with 0 errors and 0 warnings
+  - `pnpm build`: Passed in 56.8s with Next.js compiling all 29 static and dynamic routes
+- **CI & Deployment Status**:
+  - GitHub Actions CI (Run 35613754267): SUCCESS
+  - Vercel Preview Deployment: SUCCESS
+- **Voice and Slop Audit**: 0 em dashes in code, docs, and tests; 0 forbidden corporate filler terms; state-honest copy
+- **Status**: PASS
 

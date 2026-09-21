@@ -309,7 +309,7 @@ export function resolveJobsContext(
   preservedDraft: PreservedJobDraft | null,
   activitiesOverride?: CustomerActivityItem[]
 ): CustomerActivityViewModel {
-  const customer: CustomerActivityCustomer = user
+  const customer: CustomerActivityCustomer | null = user && user.id
     ? {
         id: user.id,
         name: user.name,
@@ -317,7 +317,7 @@ export function resolveJobsContext(
         phone: user.phone,
         role: normalizeUserRole(user.role),
       }
-    : DEFAULT_JOBS_CUSTOMER;
+    : null;
 
   const rawState = searchParams.get('state')?.toLowerCase() ?? '';
   const rawJobCreated = searchParams.get('jobCreated');
@@ -335,14 +335,23 @@ export function resolveJobsContext(
       ? (rawState as CustomerActivityViewModel['stateMode'])
       : 'mixed';
 
-  // Base list
-  let baseActivities = activitiesOverride && activitiesOverride.length > 0
-    ? [...activitiesOverride]
-    : [...MOCK_CUSTOMER_ACTIVITIES];
+  // Base list: strictly preserve activitiesOverride even when empty
+  let baseActivities: CustomerActivityItem[] = [];
+  if (activitiesOverride !== undefined) {
+    baseActivities = [...activitiesOverride];
+  } else if (customer) {
+    // Authenticated customer without override: only default mock customer gets fixture activities
+    baseActivities = customer.id === DEFAULT_JOBS_CUSTOMER.id
+      ? [...MOCK_CUSTOMER_ACTIVITIES]
+      : [];
+  } else {
+    // Unauthenticated: fail closed with empty activities
+    baseActivities = [];
+  }
   let newJobNotice: CustomerActivityViewModel['newJobNotice'] = undefined;
 
   // Check URL handoff from /post-job
-  if (rawJobCreated && typeof rawJobCreated === 'string') {
+  if (rawJobCreated && typeof rawJobCreated === 'string' && customer) {
     const safeRef = sanitizeSafeString(rawJobCreated, 'REQ-NEW');
     const safeTitle = sanitizeSafeString(rawJobTitle, 'Custom Job Request');
     newJobNotice = {
@@ -370,7 +379,7 @@ export function resolveJobsContext(
       },
     };
     baseActivities = [newActiveItem, ...baseActivities];
-  } else if (preservedDraft && preservedDraft.title) {
+  } else if (preservedDraft && preservedDraft.title && customer) {
     // If a draft exists in session storage
     const safeTitle = sanitizeSafeString(preservedDraft.title, 'Preserved Job Draft');
     const safeRef = 'REQ-DRAFT';
@@ -464,7 +473,8 @@ export function resolveJobsContext(
   }
 
   // Selected Activity Deep Link resolution
-  const selectedActivityId = normalizeActivityId(searchParams.get('id')) ?? undefined;
+  const rawIdParam = searchParams.get('id');
+  const selectedActivityId = rawIdParam ? rawIdParam.trim() : undefined;
   const selectedActivity = selectedActivityId
     ? baseActivities.find(
         (act) => act.id === selectedActivityId || act.referenceCode === selectedActivityId

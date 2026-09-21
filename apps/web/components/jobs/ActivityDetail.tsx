@@ -16,6 +16,7 @@ interface ActivityDetailProps {
   isMutating?: boolean | undefined;
   mutationError?: string | null | undefined;
   onClearMutationError?: (() => void) | undefined;
+  className?: string | undefined;
 }
 
 export function ActivityDetail({
@@ -28,12 +29,15 @@ export function ActivityDetail({
   isMutating,
   mutationError,
   onClearMutationError,
+  className,
 }: ActivityDetailProps) {
+  const colSpanClass = className || 'lg:col-span-7';
+
   if (!activity) {
     if (requestedId) {
       return (
         <div
-          className={`lg:col-span-7 ${
+          className={`${colSpanClass} ${
             isMobileOpen
               ? 'fixed inset-0 z-50 bg-[#F8F9FF] p-4 sm:p-6 overflow-y-auto lg:static lg:p-0 lg:z-auto'
               : 'hidden lg:block'
@@ -41,7 +45,7 @@ export function ActivityDetail({
           role="region"
           aria-label="Activity Detail"
         >
-          <div className="bg-white rounded-2xl p-8 border border-slate-200 text-center shadow-xs">
+          <div className="bg-white rounded-2xl p-8 border border-slate-200 text-center shadow-xs max-w-xl mx-auto">
             <div className="mx-auto w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mb-3">
               <FileText className="h-6 w-6" />
             </div>
@@ -76,7 +80,7 @@ export function ActivityDetail({
 
   return (
     <div
-      className={`lg:col-span-7 ${
+      className={`${colSpanClass} ${
         isMobileOpen
           ? 'fixed inset-0 z-50 bg-[#F8F9FF] p-4 sm:p-6 overflow-y-auto lg:static lg:p-0 lg:z-auto'
           : 'hidden lg:block'

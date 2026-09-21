@@ -4,6 +4,7 @@ import { render, screen, fireEvent, within } from '@testing-library/react';
 import JobsScreen from '../../components/jobs/JobsScreen';
 import * as authStorage from '../../lib/auth/storage';
 import { AuthUser } from '../../lib/auth/types';
+import { CustomerActivityItem } from '@bukiebrainjobs/types';
 import { resetCustomerActivityRepository } from '../../lib/jobs/repository';
 
 // Mock Next.js navigation
@@ -373,4 +374,166 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(document.activeElement).toBe(cancelBtn);
   });
+
+  it('closing mobile detail view cleanly removes id parameter from URL and closes view', () => {
+    mockSearchParams = new URLSearchParams('id=REQ-84920&view=active');
+    render(<JobsScreen />);
+
+    const backBtn = screen.getByLabelText(/Back to activity list/i);
+    expect(backBtn).toBeInTheDocument();
+
+    fireEvent.click(backBtn);
+
+    expect(mockPush).toHaveBeenCalledWith('/jobs?view=active');
+  });
+
+  it('not-found reset control clears invalid ID and preserves active filter view', () => {
+    mockSearchParams = new URLSearchParams('view=active&id=NON-EXISTENT-999');
+    render(<JobsScreen />);
+
+    expect(screen.getByText('Activity not found')).toBeInTheDocument();
+
+    const resetBtn = screen.getByRole('button', { name: /View all activity/i });
+    fireEvent.click(resetBtn);
+
+    expect(mockPush).toHaveBeenCalledWith('/jobs?view=active');
+  });
+
+  it('fails closed and renders unauthenticated sign-in state when user is null without synthesizing default customer', () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(null);
+    render(<JobsScreen />);
+
+    expect(screen.getByRole('heading', { level: 1, name: /Sign in to view your activity/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/Please sign in to access your BukieBrainJobs service requests/i)
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /Jobs & Bookings/i })).not.toBeInTheDocument();
+  });
+
+  it('renders "Activity not found" and does not fall through to the first activity on invalid deep-link /jobs?id=NON-EXISTENT-999', () => {
+    mockSearchParams = new URLSearchParams('id=NON-EXISTENT-999');
+    render(<JobsScreen />);
+
+    expect(screen.getByText('Activity not found')).toBeInTheDocument();
+    expect(
+      screen.getByText(/The requested activity identifier \(NON-EXISTENT-999\) was not found in your account history\./i)
+    ).toBeInTheDocument();
+
+    // Verify detail pane does NOT show the first activity's action or lifecycle details
+    expect(screen.queryByText(/Your booking is confirmed\./i)).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /View all activity/i })).toBeInTheDocument();
+  });
+
+  it('renders first-run empty state when an authenticated customer has no activities (customer isolation)', () => {
+    resetCustomerActivityRepository([]);
+    render(<JobsScreen />);
+
+    expect(screen.getByText('Your activity will appear here')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Find a Service/i })).toBeInTheDocument();
+    expect(screen.queryByRole('feed', { name: /Activity list/i })).not.toBeInTheDocument();
+  });
+
+  it('renders "Activity not found" instead of first-run empty state when an authenticated customer with zero activities visits /jobs?id=NON-EXISTENT-999', () => {
+    resetCustomerActivityRepository([]);
+    mockSearchParams = new URLSearchParams('id=NON-EXISTENT-999');
+    render(<JobsScreen />);
+
+    // Explicit id deep link takes precedence over zero-activity empty state:
+    expect(screen.getByText('Activity not found')).toBeInTheDocument();
+    expect(
+      screen.getByText(/The requested activity identifier \(NON-EXISTENT-999\) was not found in your account history\./i)
+    ).toBeInTheDocument();
+
+    // Must NOT render first-run empty state:
+    expect(screen.queryByText('Your activity will appear here')).not.toBeInTheDocument();
+
+    // Resetting selection clears invalid ID from URL:
+    const resetBtn = screen.getByRole('button', { name: /View all activity/i });
+    fireEvent.click(resetBtn);
+    expect(mockPush).toHaveBeenCalledWith('/jobs');
+  });
+
+  it('restores only customer-scoped activities and does not inject global mock fixture on partial-failure retry for non-default customer', () => {
+    const customUser: AuthUser = {
+      id: 'usr-customer-isolated',
+      name: 'Amaka Eze',
+      email: 'amaka@example.com',
+      phone: '+2348099887766',
+      provider: 'google',
+      role: 'customer',
+      isBrainWorkerApproved: false,
+    };
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(customUser);
+
+    const customActivity: CustomerActivityItem = {
+      id: 'REQ-AMAKA-001',
+      customerId: 'usr-customer-isolated',
+      type: 'job_request',
+      title: 'Generator Soundproof Enclosure Repair',
+      service: 'Generator Maintenance',
+      category: 'generator-repair',
+      status: 'awaiting_progress',
+      statusLabel: 'Awaiting Progress',
+      jobStatus: 'PENDING_ACCEPTANCE',
+      location: 'Victoria Island, Lagos',
+      schedule: 'Today',
+      budgetOrPrice: '₦30,000',
+      description: 'Custom job for Amaka only.',
+      referenceCode: 'REQ-AMAKA-001',
+      createdAt: 'Today',
+    };
+
+    resetCustomerActivityRepository([customActivity]);
+    mockSearchParams = new URLSearchParams('state=partial_failure');
+    render(<JobsScreen />);
+
+    // Shows partial failure notice
+    expect(screen.getByText(/Could not refresh active work/i)).toBeInTheDocument();
+
+    // Click retry
+    const retryBtn = screen.getByRole('button', { name: /Retry active work/i });
+    fireEvent.click(retryBtn);
+
+    // Partial failure notice cleared
+    expect(screen.queryByText(/Could not refresh active work/i)).not.toBeInTheDocument();
+
+    // Isolated custom activity is restored
+    expect(screen.getAllByText('Generator Soundproof Enclosure Repair').length).toBeGreaterThan(0);
+
+    // Global mock activities belonging to default customer must NOT be injected
+    expect(screen.queryByText('Inverter Backup & Battery Inspection')).not.toBeInTheDocument();
+    expect(screen.queryByText('BKG-77210')).not.toBeInTheDocument();
+    expect(screen.queryByText('Chidi Okonkwo')).not.toBeInTheDocument();
+    expect(screen.queryByText('Kitchen Cabinet Hinge & Track Realignment')).not.toBeInTheDocument();
+  });
+
+  it('does not inject global mock activities when customer with zero activities retries partial failure', () => {
+    const emptyUser: AuthUser = {
+      id: 'usr-customer-empty',
+      name: 'Empty Account User',
+      email: 'empty@example.com',
+      phone: '+2348011223344',
+      provider: 'google',
+      role: 'customer',
+      isBrainWorkerApproved: false,
+    };
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(emptyUser);
+    resetCustomerActivityRepository([]);
+
+    mockSearchParams = new URLSearchParams('state=partial_failure');
+    render(<JobsScreen />);
+
+    expect(screen.getByText(/Could not refresh active work/i)).toBeInTheDocument();
+
+    const retryBtn = screen.getByRole('button', { name: /Retry active work/i });
+    fireEvent.click(retryBtn);
+
+    expect(screen.queryByText(/Could not refresh active work/i)).not.toBeInTheDocument();
+
+    // Empty state should be cleanly shown without default customer mock injection
+    expect(screen.getByText('Your activity will appear here')).toBeInTheDocument();
+    expect(screen.queryByText('Inverter Backup & Battery Inspection')).not.toBeInTheDocument();
+    expect(screen.queryByText('BKG-77210')).not.toBeInTheDocument();
+  });
 });
+

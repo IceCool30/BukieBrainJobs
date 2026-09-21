@@ -20,7 +20,7 @@ export function JobsSidebar({
   onSignOut,
   onOpenNoticeDialog,
 }: {
-  customer: CustomerActivityCustomer;
+  customer: CustomerActivityCustomer | null;
   onSignOut: () => void;
   onOpenNoticeDialog: (dialog: 'messages' | 'notifications') => void;
 }) {
@@ -104,14 +104,14 @@ export function JobsSidebar({
       <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-8 h-8 rounded-full bg-white/10 text-white font-bold text-xs flex items-center justify-center shrink-0">
-            {customer.name ? customer.name.charAt(0).toUpperCase() : 'C'}
+            {customer?.name ? customer.name.charAt(0).toUpperCase() : 'C'}
           </div>
           <div className="min-w-0">
             <span className="text-xs font-semibold text-white block truncate">
-              {customer.name || 'Customer'}
+              {customer?.name || 'Customer'}
             </span>
             <span className="text-[10px] text-slate-400 block truncate">
-              {customer.email || 'customer@bukie.ng'}
+              {customer?.email || 'customer@bukie.ng'}
             </span>
           </div>
         </div>

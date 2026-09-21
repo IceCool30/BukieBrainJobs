@@ -22,7 +22,6 @@ import { AuthUser } from '../../lib/auth/types';
 import {
   resolveJobsContext,
   normalizeFilterView,
-  MOCK_CUSTOMER_ACTIVITIES,
   getCustomerActivityRepository,
   MockCustomerActivityRepository,
 } from '../../lib/jobs';
@@ -48,8 +47,8 @@ export default function JobsScreen() {
   const searchParams = useSearchParams();
 
   // Auth & customer state
-  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
-  const [authChecked, setAuthChecked] = useState(false);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
+  const [authChecked, setAuthChecked] = useState(true);
 
   // Filter & selection state
   const [activeFilter, setActiveFilter] = useState<ActivityFilterView>('all');
@@ -58,17 +57,39 @@ export default function JobsScreen() {
 
   // Activities state backed by repository
   const [activitiesList, setActivitiesList] = useState<CustomerActivityItem[]>(() => {
+    const user = getMockAuthenticatedUser();
+    if (!user || !user.id) {
+      return [];
+    }
     const repo = getCustomerActivityRepository();
     if (repo instanceof MockCustomerActivityRepository) {
-      return repo.getSynchronousActivities();
+      return repo.getSynchronousActivities(user.id);
     }
-    return [...MOCK_CUSTOMER_ACTIVITIES];
+    return [];
   });
   const [isMutating, setIsMutating] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
 
   // Recovery overrides
   const [partialFailureCleared, setPartialFailureCleared] = useState(false);
+
+  // Retry handler for partial failure: re-reads scoped repository and clears partial failure flag
+  const handleRetryPartialFailure = useCallback(() => {
+    setPartialFailureCleared(true);
+    if (currentUser?.id) {
+      const repo = getCustomerActivityRepository();
+      if (repo instanceof MockCustomerActivityRepository) {
+        setActivitiesList(repo.getSynchronousActivities(currentUser.id));
+      } else {
+        repo
+          .getActivities(currentUser.id)
+          .then((items) => {
+            setActivitiesList(items);
+          })
+          .catch(() => {});
+      }
+    }
+  }, [currentUser]);
 
   // Notice dialog for future capability placeholders
   const [activeNoticeDialog, setActiveNoticeDialog] = useState<'messages' | 'notifications' | null>(null);
@@ -82,9 +103,12 @@ export default function JobsScreen() {
 
   // Sync with repository on user change
   useEffect(() => {
+    if (!currentUser || !currentUser.id) {
+      setActivitiesList([]);
+      return;
+    }
     const repo = getCustomerActivityRepository();
-    const customerId = currentUser?.id || 'usr-customer-default';
-    repo.getActivities(customerId).then((items) => {
+    repo.getActivities(currentUser.id).then((items) => {
       setActivitiesList(items);
     });
   }, [currentUser]);
@@ -94,22 +118,28 @@ export default function JobsScreen() {
     const viewParam = searchParams.get('view');
     setActiveFilter(normalizeFilterView(viewParam));
 
-    const idParam = searchParams.get('id');
+    const idParam = searchParams.get('id')?.trim();
     if (idParam) {
       setSelectedId(idParam);
       setMobileDetailOpen(true);
+    } else {
+      setSelectedId(null);
+      setMobileDetailOpen(false);
     }
   }, [searchParams]);
 
   // Mutation Handlers
   const handleCancelActivity = useCallback(
     async (activityId: string, reason: string) => {
+      if (!currentUser || !currentUser.id) {
+        setMutationError('Authentication required to cancel activity');
+        return;
+      }
       setIsMutating(true);
       setMutationError(null);
       try {
         const repo = getCustomerActivityRepository();
-        const customerId = currentUser?.id || 'usr-customer-default';
-        const updated = await repo.mutateJobStatus(customerId, activityId, {
+        const updated = await repo.mutateJobStatus(currentUser.id, activityId, {
           type: 'CANCEL',
           reason,
         });
@@ -147,9 +177,9 @@ export default function JobsScreen() {
       activities = vm.allActivities;
     }
 
-    // Apply client-side manual recovery overrides
+    // Apply client-side manual recovery overrides (strictly scoped to customer activitiesList)
     if (partialFailureCleared && vm.hasPartialFailure) {
-      const restoredActive = MOCK_CUSTOMER_ACTIVITIES.filter(
+      const restoredActive = activitiesList.filter(
         (a) =>
           a.status === 'in_progress' ||
           a.status === 'awaiting_progress' ||
@@ -175,20 +205,23 @@ export default function JobsScreen() {
     };
   }, [searchParams, currentUser, activeFilter, partialFailureCleared, activitiesList]);
 
+  const rawIdParam = searchParams.get('id')?.trim();
+  const targetId = rawIdParam || selectedId;
+
   // Auto-select first activity if none selected and on desktop
   const activeSelectedActivity = useMemo(() => {
-    if (selectedId) {
+    if (targetId) {
       return (
         viewModel.activities.find(
-          (a) => a.id === selectedId || a.referenceCode === selectedId
+          (a) => a.id === targetId || a.referenceCode === targetId
         ) ||
         viewModel.allActivities.find(
-          (a) => a.id === selectedId || a.referenceCode === selectedId
+          (a) => a.id === targetId || a.referenceCode === targetId
         )
       );
     }
     return viewModel.activities[0] || viewModel.allActivities[0];
-  }, [selectedId, viewModel.activities, viewModel.allActivities]);
+  }, [targetId, viewModel.activities, viewModel.allActivities]);
 
   // Navigation handlers
   const handleFilterChange = useCallback(
@@ -218,7 +251,12 @@ export default function JobsScreen() {
 
   const handleCloseMobileDetail = useCallback(() => {
     setMobileDetailOpen(false);
-  }, []);
+    setSelectedId(null);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('id');
+    const queryString = params.toString();
+    router.push(queryString ? `/jobs?${queryString}` : '/jobs');
+  }, [router, searchParams]);
 
   const handleSignOut = useCallback(() => {
     setMockAuthenticatedUser(null);
@@ -328,7 +366,7 @@ export default function JobsScreen() {
           {/* Partial Failure Sync Issue Notice */}
           {viewModel.hasPartialFailure && (
             <JobsPartialFailureNotice
-              onRetry={() => setPartialFailureCleared(true)}
+              onRetry={handleRetryPartialFailure}
             />
           )}
 
@@ -347,12 +385,16 @@ export default function JobsScreen() {
           {/* Loading Skeleton */}
           {viewModel.stateMode === 'loading' && <JobsLoadingSkeleton />}
 
-          {/* First-Run Empty State */}
-          {viewModel.stateMode === 'first_run' && <JobsFirstRunEmptyState />}
+          {/* First-Run Empty State (only when no explicit deep-link id is requested) */}
+          {!targetId &&
+            (viewModel.stateMode === 'first_run' || viewModel.totalCount === 0) &&
+            viewModel.stateMode !== 'loading' && <JobsFirstRunEmptyState />}
 
-          {/* Filtered Empty State */}
-          {viewModel.stateMode !== 'first_run' &&
+          {/* Filtered Empty State (only when no explicit deep-link id is requested) */}
+          {!targetId &&
+            viewModel.stateMode !== 'first_run' &&
             viewModel.stateMode !== 'loading' &&
+            viewModel.totalCount > 0 &&
             viewModel.activities.length === 0 && (
               <JobsFilteredEmptyState
                 filter={activeFilter}
@@ -362,34 +404,45 @@ export default function JobsScreen() {
 
           {/* Master-Detail 12-Column Layout */}
           {viewModel.stateMode !== 'loading' &&
-            viewModel.stateMode !== 'first_run' &&
-            viewModel.activities.length > 0 && (
+            (Boolean(targetId) ||
+              (viewModel.stateMode !== 'first_run' && viewModel.totalCount > 0)) && (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                {/* Master List (5 columns on desktop) */}
-                <div
-                  className="lg:col-span-5 space-y-3"
-                  role="feed"
-                  aria-label="Activity list"
-                >
-                  {viewModel.activities.map((activity) => (
-                    <ActivityCard
-                      key={activity.id}
-                      activity={activity}
-                      isSelected={activeSelectedActivity?.id === activity.id}
-                      onSelect={() => handleSelectActivity(activity.id)}
-                    />
-                  ))}
-                </div>
+                {/* Master List (5 columns on desktop) - rendered when activities exist */}
+                {viewModel.activities.length > 0 && (
+                  <div
+                    className="lg:col-span-5 space-y-3"
+                    role="feed"
+                    aria-label="Activity list"
+                  >
+                    {viewModel.activities.map((activity, index) => (
+                      <ActivityCard
+                        key={activity.id}
+                        activity={activity}
+                        isSelected={
+                          !targetId
+                            ? index === 0
+                            : (activity.id === targetId || activity.referenceCode === targetId)
+                        }
+                        onSelect={() => handleSelectActivity(activity.id)}
+                      />
+                    ))}
+                  </div>
+                )}
 
-                {/* Detail Pane (7 columns on desktop, full-screen on mobile) */}
+                {/* Detail Pane (7 columns when master list is present, 12 columns if no master list) */}
                 <ActivityDetail
+                  className={viewModel.activities.length > 0 ? 'lg:col-span-7' : 'lg:col-span-12'}
                   activity={activeSelectedActivity}
-                  requestedId={selectedId}
-                  isMobileOpen={mobileDetailOpen}
+                  requestedId={targetId}
+                  isMobileOpen={mobileDetailOpen || Boolean(rawIdParam)}
                   onCloseMobile={handleCloseMobileDetail}
                   onResetSelected={() => {
                     setSelectedId(null);
-                    router.push('/jobs');
+                    setMobileDetailOpen(false);
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.delete('id');
+                    const queryString = params.toString();
+                    router.push(queryString ? `/jobs?${queryString}` : '/jobs');
                   }}
                   onCancel={handleCancelActivity}
                   isMutating={isMutating}

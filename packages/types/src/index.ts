@@ -388,7 +388,7 @@ export interface CustomerActivityCustomer {
 }
 
 export interface CustomerActivityViewModel {
-  customer: CustomerActivityCustomer;
+  customer: CustomerActivityCustomer | null;
   activities: CustomerActivityItem[];
   allActivities: CustomerActivityItem[];
   activeActivities: CustomerActivityItem[];

@@ -408,8 +408,9 @@ describe('ARCH-002: Production-First Contract Alignment Suite', () => {
         null
       );
 
-      expect(context.customer.role).toBe('CLIENT');
-      expect(context.customer.name).toBe('Chief Customer');
+      expect(context.customer).not.toBeNull();
+      expect(context.customer?.role).toBe('CLIENT');
+      expect(context.customer?.name).toBe('Chief Customer');
     });
 
     it('resolves dashboard context with normalized canonical CLIENT role', () => {
