@@ -74,17 +74,21 @@ export default function JobsScreen() {
   const [partialFailureCleared, setPartialFailureCleared] = useState(false);
 
   // Retry handler for partial failure: re-reads scoped repository and clears partial failure flag
-  const handleRetryPartialFailure = useCallback(async () => {
+  const handleRetryPartialFailure = useCallback(() => {
+    setPartialFailureCleared(true);
     if (currentUser?.id) {
-      try {
-        const repo = getCustomerActivityRepository();
-        const items = await repo.getActivities(currentUser.id);
-        setActivitiesList(items);
-      } catch {
-        // Preserve current list on read failure
+      const repo = getCustomerActivityRepository();
+      if (repo instanceof MockCustomerActivityRepository) {
+        setActivitiesList(repo.getSynchronousActivities(currentUser.id));
+      } else {
+        repo
+          .getActivities(currentUser.id)
+          .then((items) => {
+            setActivitiesList(items);
+          })
+          .catch(() => {});
       }
     }
-    setPartialFailureCleared(true);
   }, [currentUser]);
 
   // Notice dialog for future capability placeholders

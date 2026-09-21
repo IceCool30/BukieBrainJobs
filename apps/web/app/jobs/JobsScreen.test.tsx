@@ -453,7 +453,7 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
     expect(mockPush).toHaveBeenCalledWith('/jobs');
   });
 
-  it('restores only customer-scoped activities and does not inject global mock fixture on partial-failure retry for non-default customer', async () => {
+  it('restores only customer-scoped activities and does not inject global mock fixture on partial-failure retry for non-default customer', () => {
     const customUser: AuthUser = {
       id: 'usr-customer-isolated',
       name: 'Amaka Eze',
@@ -498,7 +498,7 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
     expect(screen.queryByText(/Could not refresh active work/i)).not.toBeInTheDocument();
 
     // Isolated custom activity is restored
-    expect(await screen.findByText('Generator Soundproof Enclosure Repair')).toBeInTheDocument();
+    expect(screen.getByText('Generator Soundproof Enclosure Repair')).toBeInTheDocument();
 
     // Global mock activities belonging to default customer must NOT be injected
     expect(screen.queryByText('Inverter Backup & Battery Inspection')).not.toBeInTheDocument();
