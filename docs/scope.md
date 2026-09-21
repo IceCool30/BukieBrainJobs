@@ -8,19 +8,32 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- [ ] **14. WEB-014 Customer Profile & Account Settings**
-  - **Spec**: `docs/specs/WEB-014-customer-profile-settings.md`
+- [ ] **15. WEB-015 Customer Payments & Escrow UX**
+  - **Spec**: `docs/specs/WEB-015-customer-payments-escrow.md`
   - **Acceptance Criteria**:
-    - [ ] Personal information editing at `/profile` (full name, phone number, email address)
-    - [ ] Saved addresses manager supporting Nigerian service locations (Lagos, Abuja, etc.) with landmark notes
-    - [ ] Security settings for password management, provider linking, and session control
-    - [ ] Notification preferences across SMS, WhatsApp, Email, and in-app alerts
-    - [ ] Account data management (data export and safe account closure flows)
-    - [ ] Customer isolation enforced on all profile queries and mutations
-    - [ ] Complete deterministic state coverage (loading, saved confirmation, validation error, server failure, offline fallback)
+    - [ ] Checkout drawer and modal triggered from confirmed bookings
+    - [ ] Payment method selection UI (Card, Bank Transfer, USSD) matching Nigerian standards
+    - [ ] Payment authorization state machine (processing, verified, failed, retry, timeout)
+    - [ ] Escrow timeline and customer inspection approval flow
+    - [ ] Digital receipts and invoices at `/receipt/[bookingId]`
+    - [ ] Customer refund request interface with honest timeline indicators
+    - [ ] Financial mutations derive caller identity from the authenticated session and fail closed on authorization mismatch
+    - [ ] Payment and escrow mutations are disabled in offline read-only state
   - **Verification Command**: `pnpm test && pnpm type-check`
 
 ## Completed & Verified Slices
+
+- [x] **14. WEB-014 Customer Profile & Account Settings**
+  - **Spec**: `docs/specs/WEB-014-customer-profile-settings.md`
+  - **Acceptance Criteria**:
+    - [x] Personal information editing at `/profile` (full name, phone number, email address)
+    - [x] Saved addresses manager supporting flexible Nigerian service locations with landmark notes
+    - [x] Security settings for password management, provider linking, and session control
+    - [x] Notification preferences across SMS, WhatsApp, Email, and in-app alerts
+    - [x] Account data management (data export and safe account closure flows)
+    - [x] Customer isolation enforced through the authenticated session boundary with fail-closed mutations
+    - [x] Complete deterministic state coverage including loading, saved confirmation, validation error, repository failure, and offline read-only state
+  - **Verification Evidence**: PR #51 merged as `d961839471258a123172446deb5ef42ddd1f7f8c`; CI/Vercel checks passed; 416 web tests passed; production build passed.
 
 - [x] **13. WEB-013 Customer Booking Acceptance & Booking Lifecycle**
   - **Spec**: `docs/specs/WEB-013-customer-booking-lifecycle.md`
