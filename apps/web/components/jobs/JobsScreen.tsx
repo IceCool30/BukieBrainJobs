@@ -22,7 +22,6 @@ import { AuthUser } from '../../lib/auth/types';
 import {
   resolveJobsContext,
   normalizeFilterView,
-  MOCK_CUSTOMER_ACTIVITIES,
   getCustomerActivityRepository,
   MockCustomerActivityRepository,
 } from '../../lib/jobs';
@@ -73,6 +72,20 @@ export default function JobsScreen() {
 
   // Recovery overrides
   const [partialFailureCleared, setPartialFailureCleared] = useState(false);
+
+  // Retry handler for partial failure: re-reads scoped repository and clears partial failure flag
+  const handleRetryPartialFailure = useCallback(async () => {
+    if (currentUser?.id) {
+      try {
+        const repo = getCustomerActivityRepository();
+        const items = await repo.getActivities(currentUser.id);
+        setActivitiesList(items);
+      } catch {
+        // Preserve current list on read failure
+      }
+    }
+    setPartialFailureCleared(true);
+  }, [currentUser]);
 
   // Notice dialog for future capability placeholders
   const [activeNoticeDialog, setActiveNoticeDialog] = useState<'messages' | 'notifications' | null>(null);
@@ -160,9 +173,9 @@ export default function JobsScreen() {
       activities = vm.allActivities;
     }
 
-    // Apply client-side manual recovery overrides
+    // Apply client-side manual recovery overrides (strictly scoped to customer activitiesList)
     if (partialFailureCleared && vm.hasPartialFailure) {
-      const restoredActive = MOCK_CUSTOMER_ACTIVITIES.filter(
+      const restoredActive = activitiesList.filter(
         (a) =>
           a.status === 'in_progress' ||
           a.status === 'awaiting_progress' ||
@@ -349,7 +362,7 @@ export default function JobsScreen() {
           {/* Partial Failure Sync Issue Notice */}
           {viewModel.hasPartialFailure && (
             <JobsPartialFailureNotice
-              onRetry={() => setPartialFailureCleared(true)}
+              onRetry={handleRetryPartialFailure}
             />
           )}
 
@@ -368,12 +381,14 @@ export default function JobsScreen() {
           {/* Loading Skeleton */}
           {viewModel.stateMode === 'loading' && <JobsLoadingSkeleton />}
 
-          {/* First-Run Empty State */}
-          {(viewModel.stateMode === 'first_run' || viewModel.totalCount === 0) &&
+          {/* First-Run Empty State (only when no explicit deep-link id is requested) */}
+          {!targetId &&
+            (viewModel.stateMode === 'first_run' || viewModel.totalCount === 0) &&
             viewModel.stateMode !== 'loading' && <JobsFirstRunEmptyState />}
 
-          {/* Filtered Empty State */}
-          {viewModel.stateMode !== 'first_run' &&
+          {/* Filtered Empty State (only when no explicit deep-link id is requested) */}
+          {!targetId &&
+            viewModel.stateMode !== 'first_run' &&
             viewModel.stateMode !== 'loading' &&
             viewModel.totalCount > 0 &&
             viewModel.activities.length === 0 && (
@@ -385,32 +400,34 @@ export default function JobsScreen() {
 
           {/* Master-Detail 12-Column Layout */}
           {viewModel.stateMode !== 'loading' &&
-            viewModel.stateMode !== 'first_run' &&
-            viewModel.totalCount > 0 &&
-            (viewModel.activities.length > 0 || Boolean(targetId)) && (
+            (Boolean(targetId) ||
+              (viewModel.stateMode !== 'first_run' && viewModel.totalCount > 0)) && (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                {/* Master List (5 columns on desktop) */}
-                <div
-                  className="lg:col-span-5 space-y-3"
-                  role="feed"
-                  aria-label="Activity list"
-                >
-                  {viewModel.activities.map((activity, index) => (
-                    <ActivityCard
-                      key={activity.id}
-                      activity={activity}
-                      isSelected={
-                        !targetId
-                          ? index === 0
-                          : (activity.id === targetId || activity.referenceCode === targetId)
-                      }
-                      onSelect={() => handleSelectActivity(activity.id)}
-                    />
-                  ))}
-                </div>
+                {/* Master List (5 columns on desktop) - rendered when activities exist */}
+                {viewModel.activities.length > 0 && (
+                  <div
+                    className="lg:col-span-5 space-y-3"
+                    role="feed"
+                    aria-label="Activity list"
+                  >
+                    {viewModel.activities.map((activity, index) => (
+                      <ActivityCard
+                        key={activity.id}
+                        activity={activity}
+                        isSelected={
+                          !targetId
+                            ? index === 0
+                            : (activity.id === targetId || activity.referenceCode === targetId)
+                        }
+                        onSelect={() => handleSelectActivity(activity.id)}
+                      />
+                    ))}
+                  </div>
+                )}
 
-                {/* Detail Pane (7 columns on desktop, full-screen on mobile) */}
+                {/* Detail Pane (7 columns when master list is present, 12 columns if no master list) */}
                 <ActivityDetail
+                  className={viewModel.activities.length > 0 ? 'lg:col-span-7' : 'lg:col-span-12'}
                   activity={activeSelectedActivity}
                   requestedId={targetId}
                   isMobileOpen={mobileDetailOpen || Boolean(rawIdParam)}
