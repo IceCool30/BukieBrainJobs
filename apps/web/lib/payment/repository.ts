@@ -136,11 +136,19 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     }
   }
 
-  private validateOwnership(authenticatedCustomerId: string, bookingId: string): InternalBookingRecord {
+  private validateOwnership(
+    authenticatedCustomerId: string,
+    bookingId: string,
+    fallback?: Partial<InternalBookingRecord> | undefined
+  ): InternalBookingRecord {
     if (!authenticatedCustomerId || authenticatedCustomerId.trim().length === 0) {
       throw new Error('[Security] Unauthorized: authenticated customerId is required.');
     }
-    const booking = this.bookings.get(bookingId);
+    let booking = this.bookings.get(bookingId);
+    if (!booking && fallback) {
+      this.setMockBookingState(bookingId, { customerId: authenticatedCustomerId, ...fallback });
+      booking = this.bookings.get(bookingId);
+    }
     if (!booking) {
       throw new Error(`[NotFound] Booking ${bookingId} not found.`);
     }
@@ -177,8 +185,12 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
     };
   }
 
-  async getPaymentContext(authenticatedCustomerId: string, bookingId: string): Promise<PaymentContext> {
-    const booking = this.validateOwnership(authenticatedCustomerId, bookingId);
+  async getPaymentContext(
+    authenticatedCustomerId: string,
+    bookingId: string,
+    fallback?: Partial<InternalBookingRecord> | undefined
+  ): Promise<PaymentContext> {
+    const booking = this.validateOwnership(authenticatedCustomerId, bookingId, fallback);
     const pricing = await this.calculatePricing(booking.baseAmountNaira);
 
     let activeCheckoutSession: CheckoutSession | undefined;
@@ -213,10 +225,11 @@ export class MockCustomerPaymentRepository implements ICustomerPaymentRepository
 
   async initiateCheckout(
     authenticatedCustomerId: string,
-    input: InitiateCheckoutInput
+    input: InitiateCheckoutInput,
+    fallback?: Partial<InternalBookingRecord> | undefined
   ): Promise<CheckoutSession> {
     this.checkOfflineMutation();
-    const booking = this.validateOwnership(authenticatedCustomerId, input.bookingId);
+    const booking = this.validateOwnership(authenticatedCustomerId, input.bookingId, fallback);
 
     // Invariant checks
     if (booking.jobStatus !== 'CONFIRMED') {
@@ -752,6 +765,12 @@ export function getCustomerPaymentRepository(): MockCustomerPaymentRepository {
   return repositoryInstance;
 }
 
+export function resetCustomerPaymentRepository(newInstance?: MockCustomerPaymentRepository): MockCustomerPaymentRepository {
+  repositoryInstance = newInstance ?? new MockCustomerPaymentRepository();
+  return repositoryInstance;
+}
+
 export function createCustomerPaymentRepository(): MockCustomerPaymentRepository {
   return new MockCustomerPaymentRepository();
 }
+
