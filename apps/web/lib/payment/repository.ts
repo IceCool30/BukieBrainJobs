@@ -1,7 +1,5 @@
 import type {
   ICustomerPaymentRepository,
-  PaymentAuthorizationStatus,
-  EscrowStatus,
   SettlementStatus,
   FeeScheduleConfig,
   PricingBreakdown,
