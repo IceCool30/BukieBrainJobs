@@ -41,7 +41,6 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
     escrowProtectionFeeNaira: 1500,
     statutoryVatNaira: 150,
     totalPayableNaira: 23650,
-    feeScheduleVersion: '2026.1-nigeria-standard',
   };
 
   beforeEach(() => {
@@ -185,7 +184,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
         checkoutReference: 'bbj-chk-001',
         totalPayableNaira: 23650,
         availableMethods: ['card', 'bank_transfer', 'ussd'],
-        status: 'awaiting_payment',
+        idempotencyKey: 'idem-test-001',
         expiresAt: new Date(Date.now() + 3600 * 1000).toISOString(),
       };
 
@@ -399,21 +398,20 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
     const mockReceipt: PaymentReceipt = {
       receiptNumber: 'REC-2026-0921-9988',
       bookingId: 'book-001',
-      referenceCode: 'BKG-77210',
+      bookingReference: 'BKG-77210',
       customerId: 'usr-customer-test',
       customerName: 'Babajide Adeleke',
-      customerEmail: 'babajide@example.com',
-      serviceTitle: 'Inverter Backup & Battery Inspection',
+      customerPhoneMasked: '+234 803 ••• ••67',
+      workerId: 'bw-1',
       workerName: 'Chidi Okonkwo',
-      serviceLocation: 'Lekki Phase 1, Lagos',
+      serviceTitle: 'Inverter Backup & Battery Inspection',
+      address: 'Lekki Phase 1, Lagos',
       pricing: samplePricing,
-      paymentMethod: 'card',
+      paymentMethodUsed: 'card',
       paymentReference: 'bbj-pay-card-001',
-      authorizationDate: '2026-09-21T10:00:00.000Z',
       paidAt: '2026-09-21T10:00:00.000Z',
       settlementStatus: 'settled',
       settlementDate: '2026-09-21T14:30:00.000Z',
-      statutoryNotice: 'BukieBrainJobs Financial Escrow Services - Verified & Settled.',
       isSimulatedTestDocument: true,
     };
 
@@ -467,14 +465,14 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       title: 'Plumbing Valve Replacement',
       referenceCode: 'BKG-11223',
       category: 'Plumbing',
-      type: 'direct_booking',
-      status: 'confirmed',
+      type: 'booking',
+      status: 'scheduled',
+      statusLabel: 'Scheduled',
       jobStatus: 'CONFIRMED',
-      date: '2026-09-22',
-      timeSlot: '10:00 AM',
+      schedule: 'Tomorrow, 10:00 AM',
       location: 'Ikeja, Lagos',
+      createdAt: '2026-09-21T10:00:00.000Z',
       preferredWorker: {
-        id: 'wrk-001',
         name: 'Tunde Bakare',
       },
     };
@@ -582,7 +580,6 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       repo.setMockBookingState('act-receipt-001', {
         jobStatus: 'COMPLETED',
         escrowStatus: 'released',
-        settlementStatus: 'settled',
         customerId: mockUser.id,
       });
 
