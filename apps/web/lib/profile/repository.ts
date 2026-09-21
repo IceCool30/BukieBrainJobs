@@ -446,7 +446,8 @@ export class MockCustomerProfileRepository implements ICustomerProfileRepository
     };
   }
 
-  async deleteAccount(authenticatedCustomerId: string, _reason?: string): Promise<void> {
+  async deleteAccount(authenticatedCustomerId: string, reason?: string): Promise<void> {
+    void reason;
     this.validateCustomerId(authenticatedCustomerId);
     this.checkOfflineMutation();
 

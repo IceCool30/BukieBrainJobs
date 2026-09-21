@@ -12,14 +12,12 @@ import {
 } from 'lucide-react';
 
 interface AccountManagementSectionProps {
-  customerId: string;
   isOffline: boolean;
   onExportData: () => Promise<void>;
   onDeleteAccount: (reason?: string) => Promise<void>;
 }
 
 export function AccountManagementSection({
-  customerId: _customerId,
   isOffline,
   onExportData,
   onDeleteAccount,

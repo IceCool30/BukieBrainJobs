@@ -487,7 +487,6 @@ export default function ProfileScreen() {
                 {activeTab === 'account' && (
                   <div role="tabpanel" id="panel-account" aria-labelledby="tab-account">
                     <AccountManagementSection
-                      customerId={currentUser.id}
                       isOffline={isOffline}
                       onExportData={handleExportData}
                       onDeleteAccount={handleDeleteAccount}
