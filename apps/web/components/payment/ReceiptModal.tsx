@@ -64,7 +64,7 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 sm:p-6 overflow-y-auto backdrop-blur-xs"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="receipt-modal-title"
+      aria-label="Payment & Escrow Receipt"
     >
       <div className="relative w-full max-w-xl rounded-2xl bg-white p-6 sm:p-8 shadow-2xl border border-slate-200 overflow-hidden my-8">
         {/* Actions bar (Hidden when printing) */}

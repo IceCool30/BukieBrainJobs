@@ -9,6 +9,7 @@ import {
   User,
   ArrowRight,
   AlertTriangle,
+  AlertCircle,
   CheckCircle2,
   XCircle,
   HelpCircle,
