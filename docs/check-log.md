@@ -276,3 +276,28 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
 - **Status**: PASS
 
+## 2026-09-21: WEB-015 Production Repository Boundary Closure (Architectural Final)
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-015-customer-payments-escrow`
+- **Head Commit**: `ea88fae2dd8cfe73e77d6ff246e8e63b7aaeae25`
+- **Trigger**: Final architectural correction eliminating test bridge imports from production repository module
+- **Structural Changes**:
+  1. Production Import Removed: `repository.ts` no longer imports `PaymentInternalStore` or `getSharedPaymentStore` from `./testing/store`. Zero import path references to `./testing` or `/testing` remain in the production module.
+  2. `IsolatedCustomerPaymentRepository` moved entirely into `testing/harness.ts`. Extends `CustomerPaymentRepository` by overriding `this.store` with the injected `PaymentInternalStore` after construction. Not exported from any production module.
+  3. `createIsolatedCustomerPaymentRepository` and `resetSharedRepositoryInstance` removed from `repository.ts`. Both now live exclusively inside `testing/harness.ts`.
+  4. Production repository exports locked to exactly three: `CustomerPaymentRepository`, `getCustomerPaymentRepository`, `createCustomerPaymentRepository`. No test factory, no reset mechanism, no store exposure.
+  5. `PaymentStoreData` interface and `DEFAULT_PAYMENT_BOOKINGS` fixtures added to `types.ts`. Production `CustomerPaymentRepository` builds its initial store from `DEFAULT_PAYMENT_BOOKINGS` in a `createDefaultProductionStore()` method with no reference to the testing module. Test harness `PaymentInternalStore` implements `PaymentStoreData` and shares the same fixture baseline.
+  6. `resetCustomerPaymentRepository` in `testing/harness.ts` no longer calls `resetSharedRepositoryInstance` from `repository.ts`. It manages its own `sharedTestRepository` instance using `IsolatedCustomerPaymentRepository` directly.
+  7. `PaymentsEscrow.test.tsx` updated to spy on `getCustomerPaymentRepository` via `vi.spyOn(paymentRepoModule, 'getCustomerPaymentRepository')` and inject the test repository, ensuring components pick up the seeded test store.
+  8. Regression assertions added to `repository.test.ts`: (a) exact exported keys of `RepositoryModule` must equal `['CustomerPaymentRepository', 'createCustomerPaymentRepository', 'getCustomerPaymentRepository']`; (b) `repository.ts` source file must not contain `./testing` or `/testing` string.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 6 packages with 0 errors (4.585s)
+  - `pnpm lint`: Passed with 0 warnings and 0 errors (3.217s)
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 25 test files (479 tests passed, 0 failures, 53.02s)
+  - `pnpm build`: Passed in 36.4s with Next.js compiling all 30 static and dynamic routes
+- **CI & Deployment Status**:
+  - GitHub Actions CI: SUCCESS (all 3 checks green)
+  - Vercel Preview Deployment: SUCCESS
+- **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms
+- **Status**: PASS
+
