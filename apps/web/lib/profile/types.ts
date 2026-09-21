@@ -9,7 +9,7 @@ export interface CustomerProfile {
   phone: string;
   email: string;
   emailVerified: boolean;
-  avatarUrl?: string;
+  avatarUrl?: string | undefined;
   createdAt: string;
 }
 
@@ -17,7 +17,7 @@ export interface SavedAddress {
   id: string;
   customerId: string;
   label: AddressLabel;
-  customLabel?: string;
+  customLabel?: string | undefined;
   streetAddress: string;
   neighborhood: string;
   city: string;
@@ -29,24 +29,24 @@ export interface SavedAddress {
 
 export interface CreateSavedAddressInput {
   label: AddressLabel;
-  customLabel?: string;
+  customLabel?: string | undefined;
   streetAddress: string;
   neighborhood: string;
   city: string;
   state: string;
   landmark: string;
-  isDefault?: boolean;
+  isDefault?: boolean | undefined;
 }
 
 export interface UpdateSavedAddressInput {
-  label?: AddressLabel;
-  customLabel?: string;
-  streetAddress?: string;
-  neighborhood?: string;
-  city?: string;
-  state?: string;
-  landmark?: string;
-  isDefault?: boolean;
+  label?: AddressLabel | undefined;
+  customLabel?: string | undefined;
+  streetAddress?: string | undefined;
+  neighborhood?: string | undefined;
+  city?: string | undefined;
+  state?: string | undefined;
+  landmark?: string | undefined;
+  isDefault?: boolean | undefined;
 }
 
 export interface UpdatePersonalDetailsInput {

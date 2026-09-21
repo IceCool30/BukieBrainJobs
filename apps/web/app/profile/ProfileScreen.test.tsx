@@ -224,7 +224,11 @@ describe('WEB-014 ProfileScreen Component (TDD)', () => {
     expect(switches.length).toBeGreaterThanOrEqual(4);
 
     // Click the first switch (SMS)
-    fireEvent.click(switches[0]);
+    const firstSwitch = switches[0];
+    expect(firstSwitch).toBeDefined();
+    if (firstSwitch) {
+      fireEvent.click(firstSwitch);
+    }
 
     expect(await screen.findByRole('status')).toHaveTextContent(/Notification preferences updated/i);
   });

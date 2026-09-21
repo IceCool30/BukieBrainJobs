@@ -43,7 +43,7 @@ export function validatePassword(password: string): void {
 export interface ICustomerProfileRepository {
   getProfile(
     authenticatedCustomerId: string,
-    sessionUser?: { name?: string; email?: string; phone?: string }
+    sessionUser?: { name?: string | undefined; email?: string | undefined; phone?: string | undefined } | undefined
   ): Promise<CustomerProfile>;
   updateProfile(authenticatedCustomerId: string, input: UpdatePersonalDetailsInput): Promise<CustomerProfile>;
   getSavedAddresses(authenticatedCustomerId: string): Promise<SavedAddress[]>;
@@ -176,7 +176,7 @@ export class MockCustomerProfileRepository implements ICustomerProfileRepository
 
   async getProfile(
     authenticatedCustomerId: string,
-    sessionUser?: { name?: string; email?: string; phone?: string }
+    sessionUser?: { name?: string | undefined; email?: string | undefined; phone?: string | undefined } | undefined
   ): Promise<CustomerProfile> {
     this.validateCustomerId(authenticatedCustomerId);
     const existing = this.profiles.get(authenticatedCustomerId);
@@ -321,17 +321,16 @@ export class MockCustomerProfileRepository implements ICustomerProfileRepository
     this.validateCustomerId(authenticatedCustomerId);
     this.checkOfflineMutation();
 
-    const list = this.addresses.get(authenticatedCustomerId) || [];
-    const index = list.findIndex((a) => a.id === addressId);
-    if (index === -1) {
+    const target = list[index];
+    if (!target) {
       throw new Error('Address not found or not authorized to delete.');
     }
 
-    const wasDefault = list[index].isDefault;
+    const wasDefault = target.isDefault;
     list.splice(index, 1);
 
     // If deleted address was default, make first remaining address default
-    if (wasDefault && list.length > 0) {
+    if (wasDefault && list.length > 0 && list[0]) {
       list[0].isDefault = true;
     }
 
