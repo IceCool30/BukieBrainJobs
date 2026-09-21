@@ -386,7 +386,8 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
 
       const attempts = await repo.getPaymentAttempts(validCustomer, bookingId);
       const lastAttempt = attempts[attempts.length - 1];
-      expect(lastAttempt.method).toBe('bank_transfer');
+      expect(lastAttempt).toBeDefined();
+      expect(lastAttempt!.method).toBe('bank_transfer');
 
       const receipt = await repo.getReceipt(validCustomer, bookingId);
       expect(receipt.paymentMethodUsed).toBe('Bank Transfer (Dedicated Virtual Account)');
@@ -402,7 +403,8 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
 
       const attempts = await repo.getPaymentAttempts(validCustomer, bookingId);
       const lastAttempt = attempts[attempts.length - 1];
-      expect(lastAttempt.method).toBe('ussd');
+      expect(lastAttempt).toBeDefined();
+      expect(lastAttempt!.method).toBe('ussd');
 
       const receipt = await repo.getReceipt(validCustomer, bookingId);
       expect(receipt.paymentMethodUsed).toBe('USSD Payment');
