@@ -215,3 +215,25 @@ This file records verification checks executed across the codebase under `/check
   - `pnpm build`: Passed in 37.7s with Next.js compiling all 30 static and dynamic routes including `/receipt/[bookingId]`
 - **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
 - **Status**: PASS
+
+## 2026-09-21: WEB-015 Remediation Verification (Audit Blockers 1-4)
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-015-customer-payments-escrow`
+- **Trigger**: Remediation of PR #52 architectural audit findings
+- **Items Remediated & Hardened**:
+  1. Provider Virtual Account Expiry: Removed hard-coded 30-minute expiration duration. Virtual accounts use provider-supplied `providerVirtualAccountExpiry` when present and remain open-ended without synthetic expiry guarantees otherwise. UI conditionally displays expiration only when supplied by the provider.
+  2. Payment Method Attribution: Removed unconditional `method: 'card'` in `verifyPayment()` and `checkVerificationStatus()`. Retained and recorded true payment method (`card`, `bank_transfer`, `ussd`) across payment attempts, receipts, and history.
+  3. Offline UI Protection: Replaced static `isOffline={false}` in `LifecycleStateSurface.tsx` with reactive browser network status tracking and `isOffline` prop. Rendered prominent `Offline: Read-Only Financial State` alert banner. Disabled all financial mutation triggers (`Fund Escrow`, `Request Refund`, `Inspect & Release`) and forwarded offline state down to child modals and tracker.
+  4. Test Boundary Isolation & State Manufacturing Defense: Segregated test fixture helpers and state-tampering controls behind `ICustomerPaymentTestController` and `getPaymentTestController()`. Typed `getCustomerPaymentRepository()` strictly to `ICustomerPaymentRepository` with zero state-tampering methods. Eliminated client `fallback` parameter from repository queries, ensuring unseeded bookings fail closed with `[NotFound]` and preventing client synthesis of authoritative financial records.
+  5. Regression Coverage: Added 10 new regression tests (4 in `repository.test.ts` and 6 in `PaymentsEscrow.test.tsx`) asserting provider expiry behavior, accurate payment method attribution, client state synthesis defense, offline banner presentation, and offline button disabling.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 10 packages with 0 errors (7.96s)
+  - `pnpm lint`: Passed with 0 errors and 0 warnings (3.05s)
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 25 test files (475 tests passed, 0 failures, 53.08s)
+  - `pnpm build`: Passed in 36.98s with Next.js compiling all 30 static and dynamic routes
+- **CI & Deployment Status**:
+  - GitHub Actions CI (Run 35641042392): SUCCESS
+  - Vercel Preview Deployment: SUCCESS
+- **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
+- **Status**: PASS
+
