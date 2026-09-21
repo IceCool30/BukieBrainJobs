@@ -141,9 +141,9 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       expect(screen.getByText('₦23,650')).toBeInTheDocument();
 
       // Check payment method tabs
-      expect(screen.getByRole('button', { name: /Debit \/ Credit Card/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /Bank Transfer/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /USSD Shortcode/i })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: /Card/i })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: /Transfer/i })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: /USSD/i })).toBeInTheDocument();
     });
 
     it('switches between payment method tabs smoothly', () => {
@@ -166,12 +166,12 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       expect(screen.getByText(/Simulated Test Card Details/i)).toBeInTheDocument();
 
       // Switch to Bank Transfer
-      fireEvent.click(screen.getByRole('button', { name: /Bank Transfer/i }));
+      fireEvent.click(screen.getByRole('tab', { name: /Transfer/i }));
       expect(screen.getByText(/Dedicated Virtual Account/i)).toBeInTheDocument();
       expect(screen.getByText(/BukieGuarantee \/ SafeHaven MFB/i)).toBeInTheDocument();
 
       // Switch to USSD
-      fireEvent.click(screen.getByRole('button', { name: /USSD Shortcode/i }));
+      fireEvent.click(screen.getByRole('tab', { name: /USSD/i }));
       expect(screen.getByText(/Select your Nigerian bank to generate prompt/i)).toBeInTheDocument();
     });
 
@@ -195,7 +195,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       );
 
       // Fill test card
-      const fillBtn = screen.getByRole('button', { name: /Fill Sandbox Card/i });
+      const fillBtn = screen.getByRole('button', { name: /Auto-Fill Test Card/i });
       fireEvent.click(fillBtn);
 
       const payBtn = screen.getByRole('button', { name: /Pay ₦23,650 & Fund Escrow/i });
