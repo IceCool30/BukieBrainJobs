@@ -163,16 +163,6 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Upcoming Planned Slices
 
-- [ ] **15. WEB-015 Customer Payments & Escrow UX**
-  - **Spec**: `docs/specs/WEB-015-customer-payments-escrow.md`
-  - **Acceptance Criteria**:
-    - [ ] Checkout drawer and modal triggered from confirmed bookings
-    - [ ] Payment method selection UI (Card, Bank Transfer, USSD) matching Nigerian standards
-    - [ ] Payment authorization state machine (processing, verified, failed, retry, timeout)
-    - [ ] Escrow timeline and customer inspection approval flow
-    - [ ] Digital receipts and invoices at `/receipt/[bookingId]`
-  - **Verification Command**: `pnpm test`
-
 - [ ] **16. WEB-016 Customer Reviews & Reputation**
   - **Spec**: `docs/specs/WEB-016-customer-reviews-reputation.md`
   - **Acceptance Criteria**:

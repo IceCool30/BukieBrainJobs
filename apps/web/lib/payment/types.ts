@@ -78,6 +78,7 @@ export interface CheckoutSession {
   bookingId: string;
   totalPayableNaira: number;
   availableMethods: PaymentMethod[];
+  selectedMethod?: PaymentMethod | undefined;
   virtualAccount?: VirtualAccountDetails | undefined;
   ussd?: UssdDetails | undefined;
   idempotencyKey: string;

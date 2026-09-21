@@ -14,7 +14,7 @@ import * as authStorage from '../../lib/auth/storage';
 import {
   resetCustomerPaymentRepository,
   getPaymentTestController,
-} from '../../lib/payment/repository';
+} from '../../lib/payment/testing';
 import type { CustomerActivityItem } from '@bukiebrainjobs/types';
 import type { PaymentReceipt, PricingBreakdown, CheckoutSession } from '../../lib/payment/types';
 

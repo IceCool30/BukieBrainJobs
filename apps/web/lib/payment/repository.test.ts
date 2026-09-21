@@ -1,9 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import * as ProductionModule from './index';
+import * as RepositoryModule from './repository';
 import {
   CustomerPaymentRepository,
-  createPaymentTestHarness,
   getCustomerPaymentRepository,
 } from './repository';
+import { createPaymentTestHarness } from './testing';
 import type {
   InitiateCheckoutInput,
   ReleaseEscrowInput,
@@ -105,9 +107,10 @@ describe('WEB-015 CustomerPaymentRepository (TDD)', () => {
       const checkout = await repo.initiateCheckout(validCustomer, {
         bookingId,
         idempotencyKey: 'idem-verify-1',
+        preferredMethod: 'card',
       });
 
-      const result = await repo.verifyPayment(validCustomer, checkout.checkoutReference);
+      const result = await repo.verifyPayment(validCustomer, checkout.checkoutReference, 'card');
       expect(result.status).toBe('verified');
       expect(result.escrowStatus).toBe('held_in_escrow');
 
@@ -121,9 +124,10 @@ describe('WEB-015 CustomerPaymentRepository (TDD)', () => {
       const checkout = await repo.initiateCheckout(validCustomer, {
         bookingId,
         idempotencyKey: 'idem-fail-test',
+        preferredMethod: 'card',
       });
 
-      const result = await repo.verifyPayment(validCustomer, checkout.checkoutReference);
+      const result = await repo.verifyPayment(validCustomer, checkout.checkoutReference, 'card');
       expect(result.status).toBe('failed');
       expect(result.failureReason).toContain('Insufficient funds');
       expect(result.escrowStatus).toBe('unfunded');
@@ -134,16 +138,32 @@ describe('WEB-015 CustomerPaymentRepository (TDD)', () => {
       const checkout = await repo.initiateCheckout(validCustomer, {
         bookingId,
         idempotencyKey: 'idem-timeout-test',
+        preferredMethod: 'card',
       });
 
-      const result = await repo.verifyPayment(validCustomer, checkout.checkoutReference);
+      const result = await repo.verifyPayment(validCustomer, checkout.checkoutReference, 'card');
       expect(result.status).toBe('timeout');
 
       // Reconcile status
       testController.setNextPaymentOutcome('verified');
-      const reconciliation = await repo.checkVerificationStatus(validCustomer, checkout.checkoutReference);
+      const reconciliation = await repo.checkVerificationStatus(validCustomer, checkout.checkoutReference, 'card');
       expect(reconciliation.status).toBe('verified');
       expect(reconciliation.escrowStatus).toBe('held_in_escrow');
+    });
+
+    it('fails closed when payment method cannot be authoritatively established', async () => {
+      const checkout = await repo.initiateCheckout(validCustomer, {
+        bookingId,
+        idempotencyKey: 'idem-no-method-test',
+      });
+
+      await expect(
+        repo.verifyPayment(validCustomer, checkout.checkoutReference)
+      ).rejects.toThrow(/could not be authoritatively established/i);
+
+      await expect(
+        repo.checkVerificationStatus(validCustomer, checkout.checkoutReference)
+      ).rejects.toThrow(/could not be authoritatively established/i);
     });
   });
 
@@ -315,7 +335,7 @@ describe('WEB-015 CustomerPaymentRepository (TDD)', () => {
       ).rejects.toThrow(/offline/i);
 
       await expect(
-        repo.verifyPayment(validCustomer, 'bbj-pay-123')
+        repo.verifyPayment(validCustomer, 'bbj-pay-123', 'card')
       ).rejects.toThrow(/offline/i);
 
       await expect(
@@ -472,6 +492,21 @@ describe('WEB-015 CustomerPaymentRepository (TDD)', () => {
       expect(typeof productionRepo.requestRefund).toBe('function');
       expect(typeof productionRepo.getReceipt).toBe('function');
       expect(typeof productionRepo.getProviderCapabilities).toBe('function');
+    });
+
+    it('proves production import surface does not export test store or fixture machinery', () => {
+      const forbiddenExports = [
+        'PaymentInternalStore',
+        'CustomerPaymentTestController',
+        'getPaymentTestController',
+        'createPaymentTestHarness',
+        'resetCustomerPaymentRepository',
+      ];
+
+      for (const exp of forbiddenExports) {
+        expect((ProductionModule as Record<string, unknown>)[exp]).toBeUndefined();
+        expect((RepositoryModule as Record<string, unknown>)[exp]).toBeUndefined();
+      }
     });
   });
 });
