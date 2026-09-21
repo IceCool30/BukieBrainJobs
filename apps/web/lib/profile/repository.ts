@@ -321,6 +321,12 @@ export class MockCustomerProfileRepository implements ICustomerProfileRepository
     this.validateCustomerId(authenticatedCustomerId);
     this.checkOfflineMutation();
 
+    const list = this.addresses.get(authenticatedCustomerId) || [];
+    const index = list.findIndex((a) => a.id === addressId);
+    if (index === -1) {
+      throw new Error('Address not found or not authorized to delete.');
+    }
+
     const target = list[index];
     if (!target) {
       throw new Error('Address not found or not authorized to delete.');
