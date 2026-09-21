@@ -41,14 +41,19 @@ This file defines the standards and operational map every contributor must follo
     2. Sync the Codespace (`gh codespace ssh -c effective-fishstick-x5qwp6wrrp64fxwx -- "cd /workspaces/BukieBrainJobs && git checkout <branch> && git pull origin <branch>"`).
     3. Run verification commands on the Codespace.
 - **Safety Protocols**: Never delete, move, or reorganize files or directories without explicit user confirmation.
+- **System 1 High-Speed Coprocessor**:
+  - Acts as an ultra-fast, read-only scout, indexer, and navigator (running on Gemini Flash Lite). Handles file slicing, log distillation, monorepo routing, and rule verification.
+  - The primary agent retains 100% authority and responsibility over architectural design, reasoning, and code implementation. System 1 never replaces top-model reasoning; it strips away noise so the top model executes with maximum intelligence, speed, and context efficiency.
 
 ## Conventions & Standards
 - **Voice**: Mr. Solomon Natural Voice across all copy, commits, PRs, and documentation. Never use em dashes.
+- **Customer-Facing Content**: Whenever customer-facing content is written, it must activate, first, `mr-solomon-natural-voice` and `bukiebrainjobs-content-style`. These are the two mandatory skills that must be used together for any customer-facing copy.
 - **Visual**: Design tokens extracted directly from code and `globals.css` `@theme`; no arbitrary hex values. Deep Navy is primary, Emerald is strategic emphasis/success.
 - **Quality**: Anti-generic guardrails strictly enforced (zero slop: no generic icons, taglines, captions, explainers, subheadlines, fake cheerleading, or unsupported absolute claims).
 - **Data Integrity**: Production-first architecture with deterministic mock data. Never fabricate rates, coordinates, ratings, verification results, or booking confirmations.
 
 ## Engineering Loop State (The 9 Commands)
+- **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
 - **Active Phase**: Baseline Realignment (`/sync` [REALIGN])
 - **Loop State Files**:
   - Scope: `docs/scope.md`
@@ -59,17 +64,19 @@ This file defines the standards and operational map every contributor must follo
 
 ## Mandatory Skills: Load and Apply on Every Task
 
-These five skills are required for all work in this repository without exception. Load each one at the start of every session and apply it whenever the task falls within its domain. Do not skip, defer, or partially apply these skills.
+These skills are required for all work in this repository without exception. Load each one at the start of every session and apply it whenever the task falls within its domain. Do not skip, defer, or partially apply these skills.
 
 | Skill | Path | Apply when |
 |---|---|---|
-| `mr-solomon-nine-command-engineering-loop` | `.agents/skills/mr-solomon-nine-command-engineering-loop/SKILL.md` | Any task lifecycle, planning, architecture spec, development loop, verification, documentation, or debugging phase. |
+| `mr-solomon-nine-command-engineering-loop` | `.agents/skills/mr-solomon-nine-command-engineering-loop/SKILL.md` | Primary operating system for all tasks: planning, architecture spec, development loop, verification, documentation, or debugging phase. |
+| `mr-solomon-natural-voice` | `.agents/skills/mr-solomon-natural-voice/SKILL.md` | Required for all communications, documentation, and (first) for all customer-facing content. |
+| `bukiebrainjobs-content-style` | `.agents/skills/bukiebrainjobs-content-style/SKILL.md` | Customer-facing copy, marketplace terminology, and microcopy (must be applied together with `mr-solomon-natural-voice`). |
 | `bukiebrainjobs-experience-standards` | `.agents/skills/bukiebrainjobs-experience-standards/SKILL.md` | Any customer-facing UI, copy, motion, responsive layout, component, accessibility, or interaction work. |
 | `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Any visual design decision, page structure, component quality review, typography, color, animation, or UX pattern. |
 | `agent-skills-test-driven-development` | `.agents/skills/agent-skills-test-driven-development/SKILL.md` | Any logic change, bug fix, behavior modification, or new feature implementation. |
-| `mr-solomon-natural-voice` | `.agents/skills/mr-solomon-natural-voice/SKILL.md` | Any message, copy, reply, argument, or communication written on behalf of the user or in the user's voice. |
 
-All five skills must be read before work begins on any substantive task. If a task spans multiple domains, apply all relevant skills together.
+All mandatory skills must be read before work begins on any substantive task. If a task spans multiple domains, apply all relevant skills together.
+
 
 ## Before changing anything
 
