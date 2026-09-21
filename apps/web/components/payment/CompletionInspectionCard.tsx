@@ -14,7 +14,7 @@ interface CompletionInspectionCardProps {
 }
 
 export function CompletionInspectionCard({
-  bookingId: _bookingId,
+  bookingId,
   workerName,
   serviceTitle,
   amountNaira,
@@ -45,6 +45,7 @@ export function CompletionInspectionCard({
 
   return (
     <div
+      data-booking-id={bookingId}
       className="rounded-2xl border-2 border-emerald-500/40 bg-emerald-50/40 p-5 sm:p-6 shadow-xs space-y-4"
       role="region"
       aria-label="Work Completion Inspection"

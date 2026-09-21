@@ -26,7 +26,6 @@ import { getCustomerPaymentRepository } from '../../lib/payment/repository';
 import type {
   PaymentContext,
   PaymentReceipt,
-  PaymentAuthorizationStatus,
 } from '../../lib/payment/types';
 import {
   EscrowProtectionTracker,

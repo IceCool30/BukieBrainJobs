@@ -14,7 +14,7 @@ interface DisputeModalProps {
 export function DisputeModal({
   isOpen,
   onClose,
-  bookingId: _bookingId,
+  bookingId,
   isOffline = false,
   onSubmitDispute,
 }: DisputeModalProps) {
@@ -48,6 +48,7 @@ export function DisputeModal({
 
   return (
     <div
+      data-booking-id={bookingId}
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-xs"
       role="dialog"
       aria-modal="true"
