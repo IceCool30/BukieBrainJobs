@@ -1,180 +1,317 @@
-# Spec: WEB-015 Customer Payments & Escrow UX
+# Spec: WEB-015 Customer Payments & Escrow UX (v1.1)
 
-**Status**: Draft (Proposed Architecture for Review)
+**Status**: Draft (Revised Architecture v1.1 for Review)
 
-## 1. Overview and Core Objective
+## 1. Executive Summary & Core Architectural Doctrine
+
 WEB-015 establishes the Customer Payments and Escrow user experience for the BukieBrainJobs platform. In the marketplace transaction lifecycle, once a booking is confirmed (`JobStatus: CONFIRMED` following WEB-013), the customer must be able to securely fund escrow before work commences, track funds protected under BukieGuarantee, inspect completed work, release payouts upon satisfaction, and access digital receipts and honest refund flows.
 
-This specification formally locks the architectural contracts, state machines, financial boundaries, and UI requirements before `/develop` begins.
+### Core Architectural Doctrine
+> **The frontend can request financial actions, but it cannot authoritatively declare that money moved.**
+> 
+> All financial transitions, escrow ledger balances, and payment records originate from authoritative domain evaluations. The client UI renders state; it never manufactures state.
 
 ---
 
-## 2. Escrow & Payment State Machine and Relationship to Job Contracts
+## 2. Multi-Dimensional Lifecycle Architecture
 
-### 2.1 Domain Enums and States
+The marketplace transaction lifecycle consists of four orthogonal state dimensions. The UI must never conflate them into competing or artificial statuses.
 
-```typescript
-export type PaymentMethodType = 'card' | 'bank_transfer' | 'ussd';
+1. **`JobStatus`**: The authoritative marketplace lifecycle state defined in `@bukiebrainjobs/api-types` and Prisma schema (`OPEN`, `PENDING_ACCEPTANCE`, `CONFIRMED`, `IN_PROGRESS`, `PENDING_COMPLETION`, `COMPLETED`, `PAID`, `CANCELLED`, `EXPIRED`, `DISPUTED`, `RESOLVED`).
+2. **`BookingStatus`**: The operational service engagement between the customer and assigned BrainWorker (`booking_confirmed`, `job_in_progress`, `invoice_submitted`, `completed_and_paid`, `disputed`, `cancelled`).
+3. **`PaymentAuthorizationStatus`**: The client-to-gateway authorization attempt lifecycle (`idle`, `initiating`, `awaiting_payment`, `processing`, `verified`, `failed`, `timeout`, `cancelled`).
+4. **`EscrowStatus`**: The escrow ledger balance state (`unfunded`, `held_in_escrow`, `release_pending`, `released`, `release_failed`, `disputed`, `refund_pending`, `refunded`, `refund_failed`).
 
-export type PaymentRailProvider = 'paystack' | 'flutterwave' | 'moniepoint';
+### 2.1 Complete Valid/Invalid State Matrix
 
-export type PaymentAuthorizationStatus =
-  | 'idle'
-  | 'initiating'
-  | 'awaiting_payment'
-  | 'processing'
-  | 'verified'
-  | 'failed'
-  | 'timeout'
-  | 'cancelled';
+| JobStatus | BookingStatus | Payment Auth Status | EscrowStatus | Valid? | Architectural Rationale & Client Semantics |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `CONFIRMED` | `booking_confirmed` | `idle` / `awaiting_payment` | `unfunded` | **Yes** | Booking confirmed by both parties. Awaiting customer checkout initiation. |
+| `CONFIRMED` | `booking_confirmed` | `processing` | `unfunded` | **Yes** | Customer submitted payment details; gateway authorization in progress. |
+| `CONFIRMED` | `booking_confirmed` | `failed` | `unfunded` | **Yes** | Gateway declined payment attempt. Checkout displays retry options. |
+| `CONFIRMED` | `booking_confirmed` | `timeout` | `unfunded` | **Yes** | Gateway verification latency exceeded. Polling reconciliation active. |
+| `CONFIRMED` | `booking_confirmed` | `verified` | `held_in_escrow` | **Yes** | Payment verified; funds locked in escrow. Booking is funded and eligible for next step. |
+| `IN_PROGRESS` | `job_in_progress` | `verified` | `held_in_escrow` | **Yes** | Work actively in progress. Escrow safely locked. Payouts blocked. |
+| `PENDING_COMPLETION` | `invoice_submitted` | `verified` | `held_in_escrow` | **Yes** | Worker submitted completion. Customer inspection prompt active. |
+| `PENDING_COMPLETION` | `invoice_submitted` | `verified` | `release_pending` | **Yes** | Customer approved work. Payout transfer initiated to BrainWorker. |
+| `PENDING_COMPLETION` | `invoice_submitted` | `verified` | `release_failed` | **Yes** | Payout transfer failed (e.g. banking rail error). Safe retry available. |
+| `COMPLETED` | `completed_and_paid` | `verified` | `released` | **Yes** | Escrow settled. Job completed. Authoritative receipt available. |
+| `PAID` | `completed_and_paid` | `verified` | `released` | **Yes** | Final financial closure of completed job. |
+| `DISPUTED` | `disputed` | `verified` | `disputed` | **Yes** | Customer or worker opened dispute. Escrow locked pending mediation. |
+| `CANCELLED` | `cancelled` | `failed` / `cancelled` | `unfunded` | **Yes** | Booking cancelled prior to funding. Zero financial liability. |
+| `CANCELLED` | `cancelled` | `verified` | `refund_pending` | **Yes** | Booking cancelled after funding. Refund settlement in progress. |
+| `CANCELLED` | `cancelled` | `verified` | `refunded` | **Yes** | Refund completed to customer source account. |
+| `CANCELLED` | `cancelled` | `verified` | `refund_failed` | **Yes** | Refund settlement failed. Administrative retry required. |
+| `IN_PROGRESS` | any | any | `unfunded` | **NO** | Invariant violation: Work cannot begin without funded escrow. |
+| `PENDING_COMPLETION` | any | any | `unfunded` | **NO** | Invariant violation: Unfunded job cannot reach completion review. |
+| `COMPLETED` | any | any | `unfunded` | **NO** | Invariant violation: Job cannot complete without payment settlement. |
+| `PAID` | any | any | `held_in_escrow` | **NO** | Invariant violation: Cannot be PAID while funds remain in escrow. |
+| `OPEN` | any | any | `held_in_escrow` | **NO** | Invariant violation: Cannot fund open unassigned job request. |
+| `PENDING_ACCEPTANCE` | any | any | `held_in_escrow` | **NO** | Invariant violation: Cannot fund invitation prior to mutual confirmation. |
 
-export type EscrowStatus =
-  | 'unfunded'
-  | 'held_in_escrow'
-  | 'release_pending'
-  | 'released'
-  | 'disputed'
-  | 'refund_pending'
-  | 'refunded';
+---
+
+## 3. Financial State Machines & Transition Boundaries
+
+### 3.1 Payment Authorization State Machine
+```text
+               ┌───────────┐
+               │   idle    │
+               └─────┬─────┘
+                     │ initiateCheckout()
+                     ▼
+             ┌───────────────┐
+             │  initiating   │
+             └───────┬───────┘
+                     │ checkout session created
+                     ▼
+            ┌─────────────────┐
+            │awaiting_payment │◄────────────────────────┐
+            └────────┬────────┘                         │
+                     │ submitCredentials() / transfer   │
+                     ▼                                  │
+              ┌──────────────┐                          │
+              │  processing  │                          │
+              └──────┬───────┘                          │
+        ┌────────────┼────────────┐                     │
+        │            │            │                     │
+        ▼            ▼            ▼                     │
+   ┌─────────┐  ┌─────────┐ ┌───────────┐               │
+   │verified │  │ failed  │ │  timeout  │               │
+   └─────────┘  └────┬────┘ └─────┬─────┘               │
+                     │            │ checkStatus()       │
+                     │            └───────────┬─────────┘
+                     │ retry                  │
+                     └────────────────────────┴─────────┘
 ```
 
-### 2.2 Relationship to `JobStatus` and `BookingStatus`
-
-Under ARCH-002, `JobStatus` is the authoritative lifecycle state across the marketplace. Escrow status acts as an explicit financial dimension attached to the job:
-
-| JobStatus | Allowed EscrowStatus | Customer UI Surface & Prompts |
-| :--- | :--- | :--- |
-| `CONFIRMED` | `unfunded` | "Booking confirmed. Fund escrow to protect your payment and schedule technician dispatch." |
-| `CONFIRMED` | `held_in_escrow` | "Funds secured in BukieGuarantee escrow. BrainWorker has been authorized to proceed." |
-| `IN_PROGRESS` | `held_in_escrow` | "BrainWorker is actively executing service. Funds remain safely locked." |
-| `PENDING_COMPLETION` | `held_in_escrow` | "Work completed by BrainWorker. Inspect the job and approve release of funds." |
-| `COMPLETED` / `PAID` | `released` | "Funds released to BrainWorker. Service completed. Digital receipt available." |
-| `DISPUTED` | `disputed` | "Escrow locked due to open dispute. BukieBrainJobs team is reviewing the claim." |
-| `CANCELLED` | `unfunded` or `refunded` | "Booking cancelled. No funds held or refund processed." |
-
-### 2.3 Strict State Transitions
-- `unfunded` -> `held_in_escrow`: Only valid when `JobStatus` is `CONFIRMED` and payment authorization reaches `verified`.
-- `held_in_escrow` -> `release_pending` -> `released`: Only valid when `JobStatus` is `PENDING_COMPLETION` (or `IN_PROGRESS` with explicit customer inspection override).
-- `held_in_escrow` -> `disputed`: Valid at any point during `IN_PROGRESS` or `PENDING_COMPLETION` before funds are released.
-- `held_in_escrow` -> `refund_pending` -> `refunded`: Valid if booking is cancelled before work begins, or via dispute resolution.
-- Any attempt to release an `unfunded` or `refunded` escrow throws an invariant error and fails closed.
-
----
-
-## 3. Nigerian Payment Methods & Fee Presentation
-
-### 3.1 Supported Payment Methods (Modal/Drawer Selector)
-1. **Debit / Credit Card (Paystack / Flutterwave standard)**:
-   - Supports Mastercard, Visa, and Verve.
-   - Form inputs: Card number, Expiry MM/YY, CVV, with 3D Secure / OTP authorization mock simulation.
-2. **Dedicated Virtual Bank Transfer (Moniepoint / Wema ALAT / Providus standard)**:
-   - Dynamic unique virtual account generated for checkout:
-     - Bank Name: e.g. "Wema Bank / BukiePay"
-     - Account Number: e.g. "0123984712"
-     - Beneficiary Name: "BukieBrainJobs Escrow (Job #...)"
-     - Expiration countdown timer (30 minutes).
-     - Instruction: "Transfer the exact amount below. Escrow confirms automatically within 60 seconds."
-3. **USSD Shortcode**:
-   - Quick bank selector (GTBank `*737*...#`, Access `*901*...#`, Zenith `*966*...#`, UBA `*919*...#`).
-   - Copyable USSD string with direct dial link on mobile devices.
-
-### 3.2 Transparent Fee Breakdown & Calculations
-Every checkout summary and receipt itemizes four clear figures in Naira (₦):
-1. **Base Service Estimate**: Agreed rate or technician quote (e.g. ₦20,000).
-2. **Platform Service Fee**: 10% marketplace connection fee (₦2,000).
-3. **BukieGuarantee Escrow Protection Fee**: 7.5% escrow security fee (₦1,500), clearly annotated: "Protects your payment in escrow until you inspect and approve the completed work."
-4. **VAT (Value Added Tax)**: 7.5% statutory VAT applied to the platform service fee (₦150).
-5. **Total Payable**: Sum of base, platform fee, guarantee fee, and VAT (e.g. ₦23,650).
-Zero hidden convenience fees or undocumented processing charges.
+### 3.2 Escrow Ledger State Machine (Including Failures & Disputes)
+```text
+                     ┌───────────┐
+                     │ unfunded  │
+                     └─────┬─────┘
+                           │ payment authorization verified
+                           ▼
+                  ┌─────────────────┐
+                  │ held_in_escrow  │◄────────────────────────┐
+                  └────────┬────────┘                         │
+         ┌─────────────────┼─────────────────┐                │
+         │ releaseEscrow() │ cancel/refund   │ disputeEscrow()│
+         ▼                 ▼                 ▼                │
+┌────────────────┐ ┌───────────────┐ ┌───────────────┐       │
+│release_pending │ │refund_pending │ │   disputed    │       │
+└──────┬─────────┘ └───────┬───────┘ └───────┬───────┘       │
+   ┌───┴───┐           ┌───┴───┐             │               │
+   ▼       ▼           ▼       ▼             │               │
+┌──────┐┌─────────┐ ┌────────┐┌─────────┐    │               │
+│rel-  ││release_ │ │refunded││refund_  │    │               │
+│eased ││failed   │ └────────┘│failed   │    │               │
+└──────┘└────┬────┘           └────┬────┘    │               │
+             │ retry               │ retry   │               │
+             └──────────┐   ┌──────┘         │               │
+                        ▼   ▼                ▼               │
+               [mediation resolution] ───────┼───────────────┘
+                        ├── customer refund ─┤
+                        └── worker payout ───┘
+```
 
 ---
 
-## 4. Authorization & Financial Mutation Boundaries
+## 4. Provider-Neutral Payment Architecture
 
-1. **Session-Derived Caller Identity**:
-   - Every financial mutation (`initiateCheckout`, `verifyPayment`, `releaseEscrow`, `requestRefund`, `disputeEscrow`) requires the authenticated `customerId` derived from the session/auth boundary.
-   - If the caller `customerId` does not match the customer on the booking record, the mutation immediately throws `UnauthorizedError` and fails closed.
-2. **Idempotency & Duplicate Charge Prevention**:
-   - Every checkout initiation generates a unique `idempotencyKey` and `paymentReference` (`bbj-pay-[uuid]`).
-   - The UI disables payment action buttons immediately upon submission, preventing double-clicks.
-   - The repository rejects any subsequent `initiateCheckout` or `verifyPayment` call for a booking that already has status `held_in_escrow`.
-3. **No Synthetic Money**:
-   - No mock balance increments or artificial funds may be created out of thin air. All escrow records must trace to an explicit verified payment reference.
+The domain contracts are entirely decoupled from specific payment vendors. Capabilities are returned dynamically by provider adapters.
 
----
+### 4.1 Domain Contracts
+```typescript
+export type PaymentMethod = 'card' | 'bank_transfer' | 'ussd';
+export type PaymentRail = 'card_processor' | 'virtual_account' | 'ussd_session';
 
-## 5. Offline & Network Degraded Behavior
+export interface PaymentProviderCapabilities {
+  providerId: string; // e.g. 'paystack', 'flutterwave', 'mock_gateway'
+  supportedMethods: PaymentMethod[];
+  supportsVirtualAccounts: boolean;
+  supportsUssd: boolean;
+}
 
-1. **Offline Read-Only Protection**:
-   - If the application is offline (`isOffline === true`):
-     - All mutation controls ("Pay Now", "Release Escrow", "Submit Refund Request") are disabled.
-     - A clear, non-generic banner states: "You are currently offline. Payment and escrow operations require an active network connection."
-     - Background retries are paused to avoid duplicate transaction attempts when reconnecting.
-2. **Cache Readability**:
-   - Completed receipts and historical transaction records remain readable and printable from local session storage.
+export interface VirtualAccountDetails {
+  bankName: string;
+  accountNumber: string;
+  accountName: string;
+  expiresAt?: string | undefined;
+  reconciliationNotes: string;
+}
 
----
+export interface UssdDetails {
+  bankName: string;
+  ussdString: string;
+  directDialUri: string;
+}
 
-## 6. Receipts & Refund Boundaries
+export interface CheckoutSession {
+  checkoutReference: string;
+  bookingId: string;
+  totalPayableNaira: number;
+  availableMethods: PaymentMethod[];
+  virtualAccount?: VirtualAccountDetails | undefined;
+  ussd?: UssdDetails | undefined;
+  idempotencyKey: string;
+  expiresAt: string;
+}
+```
 
-### 6.1 Digital Receipt Surface (`/receipt/[bookingId]`)
-- Canonical web surface accessible via `/receipt/[bookingId]` or directly from the `/jobs` detail view.
-- Content:
-  - BukieBrainJobs official receipt header and logo badge.
-  - Receipt Number (`REC-[YEAR]-[RANDOM]`), Issue Date, and Timestamp.
-  - Customer Name, Masked Phone, and Service Address.
-  - Assigned BrainWorker Name, Trade Category, and Verification Status.
-  - Itemized Financial Breakdown (Base, Platform Fee, Escrow Guarantee, VAT, Total).
-  - Payment Method Used (e.g. `Card (Mastercard •••• 4242)` or `Bank Transfer`).
-  - Escrow Settlement Status and Release Timestamp.
-- Print & Export:
-  - Clean `@media print` layout hiding navigation and non-printable UI elements.
-  - "Download JSON Summary" for personal accounting.
-
-### 6.2 Customer Refund Flow
-- Accessible from `/jobs?id=...` when a booking is cancelled prior to work or when dispute resolution awards a refund.
-- Refund Form:
-  - Reason selector: "BrainWorker unable to attend", "Mutual cancellation", "Work incomplete or unacceptable", "Other".
-  - Additional context notes.
-- Transparent Timeline Notice:
-  - "Card refunds typically reflect within 3 to 5 business days depending on your issuing bank. Bank transfer refunds process within 24 to 48 hours."
-- State tracking: `refund_pending` -> `refunded`.
+### 4.2 Security & No Raw Card Credential Handling
+- **Production Standard**: Production card entry is strictly provider-hosted and tokenized (via Paystack Inline or Flutterwave tokenization). BukieBrainJobs application code, web servers, and databases NEVER receive, store, or transmit raw PAN, CVV, or card PIN.
+- **Mock Simulation Boundary**: The mock customer UI provides a sandbox payment simulator with test cards (e.g. `4084 0840 0000 0000`) solely to test component state transitions. An explicit notice is rendered: *"Simulated sandbox payment environment. Do not enter real payment credentials."*
 
 ---
 
-## 7. Failure, Timeout, Retry, and Degraded States
+## 5. Pricing & Fee Configuration Contract
 
-1. **Payment Gateway Timeout (`timeout`)**:
-   - Triggered when gateway verification does not respond within the expected threshold.
-   - UI warning: "Payment verification is taking longer than expected. Do not submit payment again. Click 'Check Verification Status' to re-check with your bank."
-2. **Declined / Failed Payment (`failed`)**:
-   - Shows actionable, human error reasons (e.g. "Card declined: Insufficient funds", "Bank network timeout").
-   - Action: "Try another payment method" or "Retry verification".
-3. **Service Unavailable**:
-   - Localized retry block with clean error boundary.
+To avoid hard-coding commercial assumptions into architecture, fee calculations are derived from an explicit configuration contract:
+
+```typescript
+export interface FeeScheduleConfig {
+  platformFeePercentage: number;          // e.g. 10.0
+  escrowProtectionFeePercentage: number;  // e.g. 7.5
+  statutoryVatPercentage: number;         // e.g. 7.5 applied to platform fee
+}
+
+export interface PricingBreakdown {
+  baseServiceAmountNaira: number;
+  platformServiceFeeNaira: number;
+  escrowProtectionFeeNaira: number;
+  statutoryVatNaira: number;
+  totalPayableNaira: number;
+}
+```
+
+### Calculation Rules
+1. `platformServiceFeeNaira = round(baseServiceAmountNaira * (platformFeePercentage / 100))`
+2. `escrowProtectionFeeNaira = round(baseServiceAmountNaira * (escrowProtectionFeePercentage / 100))`
+3. `statutoryVatNaira = round(platformServiceFeeNaira * (statutoryVatPercentage / 100))`
+4. `totalPayableNaira = baseServiceAmountNaira + platformServiceFeeNaira + escrowProtectionFeeNaira + statutoryVatNaira`
+
+The checkout drawer and receipts display these four itemized components. Zero undocumented fees.
 
 ---
 
-## 8. Frontend / Backend Handoff & Repository Contract
+## 6. Authoritative Receipt & Refund Boundaries
 
-To ensure the mock implementation does not establish a false contract, the frontend interacts exclusively through an authoritative repository interface:
+### 6.1 Receipt Generation Rules
+- A receipt is an authoritative financial document that can ONLY be generated when `escrowStatus` has transitioned to `held_in_escrow`, `release_pending`, or `released`.
+- Receipts derive exclusively from verified payment and settlement ledger entries:
+  - `receiptNumber`: `REC-[YEAR]-[RANDOM]`
+  - `paymentReference`: Authoritative gateway transaction reference
+  - `bookingReference`: Human-readable customer booking reference
+  - `paidAt`: ISO timestamp of verified payment
+  - `releasedAt`: ISO timestamp of settlement (if released)
+  - `itemizedPricing`: Authoritative pricing breakdown
+  - `paymentMethodUsed`: Masked payment instrument description
+- In mock mode, all receipts carry the explicit notice: *"SIMULATED TEST RECEIPT (PHASE 1 MOCK BOUNDARY)"*.
+
+### 6.2 Customer Refund Boundaries & Indicative Timelines
+- Customers can submit refund requests only when a funded booking is cancelled prior to work start or when awarded through dispute resolution.
+- Indicative Provider Timelines (Clearly labeled as provider/bank estimates, never platform guarantees):
+  - *"Card refunds are processed by your issuing bank and typically reflect within 3 to 5 business days."*
+  - *"Bank transfer refunds are processed via commercial banking rails and typically reflect within 24 to 48 hours."*
+
+---
+
+## 7. Dispute Resolution Boundaries
+
+1. **Dispute Invariants**:
+   - Filing a dispute (`disputeEscrow`) immediately freezes escrow mutations and transitions `JobStatus` to `DISPUTED` and `EscrowStatus` to `disputed`.
+   - The customer UI cannot unilaterally resolve a dispute.
+2. **Authoritative Dispute Resolution Branches**:
+   - **Resolution Branch A (Customer Full Refund)**: Administrative mediation awards full restitution -> `EscrowStatus: refund_pending` -> `refunded`. `JobStatus: RESOLVED` (or `CANCELLED`).
+   - **Resolution Branch B (BrainWorker Payout)**: Administrative mediation confirms work was performed to standard -> `EscrowStatus: release_pending` -> `released`. `JobStatus: RESOLVED` / `COMPLETED`.
+   - **Resolution Branch C (Split Settlement)**: Partial refund + partial release.
+
+---
+
+## 8. Idempotency & Reconciliation Semantics
+
+1. Every checkout attempt requires an `idempotencyKey` generated at checkout initialization.
+2. Submitting payment with the same `idempotencyKey` returns the existing attempt record rather than generating a duplicate charge.
+3. If an authorization attempt enters `timeout`, the client polls `checkVerificationStatus(paymentReference)`. The repository queries the provider ledger and transitions to `verified` or `failed` without creating a new payment attempt.
+
+---
+
+## 9. Comprehensive Customer Payment Repository Interface
+
+The application communicates exclusively through this interface:
 
 ```typescript
 export interface ICustomerPaymentRepository {
   getPaymentContext(authenticatedCustomerId: string, bookingId: string): Promise<PaymentContext>;
+  getFeeConfig(): Promise<FeeScheduleConfig>;
+  calculatePricing(baseAmountNaira: number): Promise<PricingBreakdown>;
+  
+  // Checkout & Authorization
   initiateCheckout(authenticatedCustomerId: string, input: InitiateCheckoutInput): Promise<CheckoutSession>;
-  verifyPayment(authenticatedCustomerId: string, checkoutReference: string): Promise<PaymentVerificationResult>;
+  verifyPayment(authenticatedCustomerId: string, paymentReference: string): Promise<PaymentVerificationResult>;
+  checkVerificationStatus(authenticatedCustomerId: string, paymentReference: string): Promise<PaymentVerificationResult>;
+  getPaymentAttempts(authenticatedCustomerId: string, bookingId: string): Promise<PaymentAttempt[]>;
+  
+  // Escrow Lifecycle
   releaseEscrow(authenticatedCustomerId: string, input: ReleaseEscrowInput): Promise<EscrowReleaseResult>;
+  retryRelease(authenticatedCustomerId: string, bookingId: string): Promise<EscrowReleaseResult>;
+  disputeEscrow(authenticatedCustomerId: string, input: DisputeEscrowInput): Promise<DisputeResult>;
+  
+  // Refunds & Receipts
   requestRefund(authenticatedCustomerId: string, input: RequestRefundInput): Promise<RefundRequestResult>;
+  getRefundStatus(authenticatedCustomerId: string, bookingId: string): Promise<RefundStatusDetails>;
   getReceipt(authenticatedCustomerId: string, bookingId: string): Promise<PaymentReceipt>;
 }
 ```
 
-When backend engineers deploy the production Paystack/Flutterwave microservice, they simply provide an `HttpCustomerPaymentRepository` implementing `ICustomerPaymentRepository`. The frontend components and state machines require zero structural modification.
+---
+
+## 10. Deterministic Mock Scenarios for TDD
+
+To ensure 100% testable state coverage in `/develop`, the mock repository must provide deterministic test fixtures for 21 discrete scenarios:
+
+1. `confirmed_unfunded`: Freshly confirmed booking, awaiting escrow checkout.
+2. `card_processing`: Card credentials submitted, 3D Secure verification pending.
+3. `card_verified`: Card authorization successful, escrow funded.
+4. `card_failed_insufficient_funds`: Card declined with actionable insufficient funds reason.
+5. `card_failed_network_error`: Card declined due to bank network error.
+6. `payment_timeout`: Gateway latency exceeded, reconciliation polling active.
+7. `bank_transfer_pending`: Dedicated virtual account generated, awaiting bank credit.
+8. `bank_transfer_verified`: Bank transfer credit detected, escrow funded.
+9. `ussd_pending`: USSD shortcode issued, awaiting dialing.
+10. `escrow_held`: Funds locked in BukieGuarantee escrow, job in progress.
+11. `pending_completion`: Worker submitted completion, inspection approval active.
+12. `release_pending`: Customer approved release, payout transferring.
+13. `release_failed`: Payout transfer failed, retry button active.
+14. `released`: Payout settled, job completed and paid, receipt unlocked.
+15. `refund_pending`: Booking cancelled after funding, refund transferring.
+16. `refund_failed`: Refund transfer failed, administrative intervention required.
+17. `refunded`: Refund completed to customer, receipt updated with refund record.
+18. `disputed`: Dispute open, escrow frozen, mediation notice active.
+19. `dispute_resolved_refund`: Dispute settled with customer refund.
+20. `dispute_resolved_payout`: Dispute settled with BrainWorker payout.
+21. `offline_read_only`: Network disconnected, all payment and escrow mutation controls disabled.
 
 ---
 
-## 9. Brand & Voice Standards
+## 11. Backend Handoff Contract (Future PostgreSQL/Provider Integration)
+
+When backend services deploy production payment rails, the HTTP adapter implements `ICustomerPaymentRepository` mapping to these exact endpoints:
+
+- `POST /api/v1/payments/checkout`: `{ bookingId, paymentMethod, idempotencyKey }` -> `CheckoutSession`
+- `POST /api/v1/payments/verify`: `{ paymentReference }` -> `PaymentVerificationResult`
+- `GET /api/v1/payments/status/:paymentReference`: -> `PaymentVerificationResult`
+- `POST /api/v1/escrow/release`: `{ bookingId, customerFeedback? }` -> `EscrowReleaseResult`
+- `POST /api/v1/escrow/dispute`: `{ bookingId, reason, description }` -> `DisputeResult`
+- `POST /api/v1/escrow/refund`: `{ bookingId, reason, notes? }` -> `RefundRequestResult`
+- `GET /api/v1/receipts/:bookingId`: -> `PaymentReceipt`
+
+Because the frontend is coded to `ICustomerPaymentRepository`, swapping `MockCustomerPaymentRepository` for `HttpCustomerPaymentRepository` will require zero changes to UI components or state machines.
+
+---
+
+## 12. Design, Accessibility, and Natural Voice Standards
 
 - Zero em dashes across all UI microcopy, receipts, notices, and error messages.
 - Plain, direct Nigerian marketplace terms: "Pay & Fund Escrow", "BukieGuarantee Escrow", "Inspect & Release Funds", "Bank Transfer", "Naira (₦)".
