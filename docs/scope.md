@@ -8,7 +8,21 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- [ ] **15. WEB-015 Customer Payments & Escrow UX** (Ready for Review & Merge)
+- [ ] **16. WEB-016 Customer Reviews & Reputation**
+  - **Spec**: `docs/specs/WEB-016-customer-reviews-reputation.md`
+  - **Acceptance Criteria**:
+    - [ ] Post-completion review prompt triggered on completed bookings
+    - [ ] Multi-criteria ratings (punctuality, quality, communication, overall 1-5 stars)
+    - [ ] Written customer feedback with honest character limits
+    - [ ] Public review feed on BrainWorker profile tabs
+    - [ ] Review reporting and abuse flagging action
+    - [ ] Authorization: customer can only review a booking they own and that is in COMPLETED state
+    - [ ] Offline state: review submission disabled and form read-only while offline
+  - **Verification Command**: `pnpm test && pnpm type-check`
+
+## Completed & Verified Slices
+
+- [x] **15. WEB-015 Customer Payments & Escrow Frontend Experience**
   - **Spec**: `docs/specs/WEB-015-customer-payments-escrow.md`
   - **Acceptance Criteria**:
     - [x] Checkout drawer and modal triggered from confirmed bookings
@@ -19,9 +33,8 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
     - [x] Customer refund request interface with honest timeline indicators
     - [x] Financial mutations derive caller identity from the authenticated session and fail closed on authorization mismatch
     - [x] Payment and escrow mutations are disabled in offline read-only state
-  - **Verification Command**: `pnpm test && pnpm type-check`
-
-## Completed & Verified Slices
+    - [x] Production repository boundary closed: zero testing imports in repository.ts; exact export surface regression-tested
+  - **Verification Evidence**: PR #52 merged as `78623cbc4f85504a0c62932c589413c919765ad3`; CI/Vercel checks passed; 479 web tests passed; production build passed.
 
 - [x] **14. WEB-014 Customer Profile & Account Settings**
   - **Spec**: `docs/specs/WEB-014-customer-profile-settings.md`

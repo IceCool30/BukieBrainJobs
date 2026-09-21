@@ -16,7 +16,7 @@ This document provides a single, unified checklist of what has been built, what 
 | **Design System & Visual Standards** | **Complete** | Tailwind tokens, deep navy/emerald palette, responsive typography. |
 | **Public Website Foundation** | **Mostly Complete** | Homepage, services catalog, service details, BrainWorker profiles. |
 | **Customer Web Platform Foundation** | **Substantially Complete** | Dashboard, job posting, matching, activity hub, booking lifecycle. |
-| **Customer Payments & Escrow UX** | **In Review** | Checkout modal, payment authorization, receipts, refunds, and escrow state machine implemented and verified in PR #52. |
+| **Customer Payments & Escrow UX** | **Complete** | Merged to main at 78623cb. Production boundary isolation, fail-closed attribution, provider neutrality, and 479-test coverage verified. |
 | **Customer Reviews & Reputation** | **Not Built** | Post-job ratings, feedback forms, public review tabs. |
 | **Customer Notifications & Messaging** | **Partially Built** | Shell dialogs exist. Chat threads, socket client, and push UX missing. |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
@@ -73,7 +73,7 @@ Phase 7: Launch Readiness
 - [x] Deterministic loading, saved confirmation, validation error, repository failure, and offline read-only states verified.
 - [x] WEB-014 implementation verified through CI, 416 passing web tests, production build, and Vercel preview deployment.
 
-#### 1.2 Customer Payments & Escrow Frontend Experience (WEB-015, In Review)
+#### 1.2 Customer Payments & Escrow Frontend Experience (WEB-015, Complete)
 - [x] Checkout drawer/modal triggered upon booking confirmation with transparent fee schedule breakdown.
 - [x] Payment method selection UI: Card (sandbox tokenized entry), Dedicated Bank Transfer (virtual account), and USSD flows matching Nigerian standards.
 - [x] Payment authorization state machine: Processing, verified, failed, retry, and timeout states.
@@ -82,6 +82,8 @@ Phase 7: Launch Readiness
 - [x] Customer refund request interface with honest banking settlement timeline indicators.
 - [x] Fail-closed customer ownership authorization and offline read-only financial protection.
 - [x] Provider-neutral architecture decoupling gateway metadata behind IPaymentProviderAdapter and isolating test fixtures.
+- [x] Production repository boundary fully closed: repository.ts has zero test module imports; test construction path lives entirely in testing/harness.ts; exact export surface regression-tested.
+- [x] Merged to main at 78623cb. 479 tests passing across 25 suites with 0 failures.
 
 #### 1.3 Customer Reviews & Reputation System
 - [ ] Post-completion review prompt modal triggered when a booking enters `COMPLETED`.
