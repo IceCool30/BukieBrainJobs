@@ -8,17 +8,17 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- [ ] **15. WEB-015 Customer Payments & Escrow UX**
+- [ ] **15. WEB-015 Customer Payments & Escrow UX** (Ready for Review & Merge)
   - **Spec**: `docs/specs/WEB-015-customer-payments-escrow.md`
   - **Acceptance Criteria**:
-    - [ ] Checkout drawer and modal triggered from confirmed bookings
-    - [ ] Payment method selection UI (Card, Bank Transfer, USSD) matching Nigerian standards
-    - [ ] Payment authorization state machine (processing, verified, failed, retry, timeout)
-    - [ ] Escrow timeline and customer inspection approval flow
-    - [ ] Digital receipts and invoices at `/receipt/[bookingId]`
-    - [ ] Customer refund request interface with honest timeline indicators
-    - [ ] Financial mutations derive caller identity from the authenticated session and fail closed on authorization mismatch
-    - [ ] Payment and escrow mutations are disabled in offline read-only state
+    - [x] Checkout drawer and modal triggered from confirmed bookings
+    - [x] Payment method selection UI (Card, Bank Transfer, USSD) matching Nigerian standards
+    - [x] Payment authorization state machine (processing, verified, failed, retry, timeout)
+    - [x] Escrow timeline and customer inspection approval flow
+    - [x] Digital receipts and invoices at `/receipt/[bookingId]`
+    - [x] Customer refund request interface with honest timeline indicators
+    - [x] Financial mutations derive caller identity from the authenticated session and fail closed on authorization mismatch
+    - [x] Payment and escrow mutations are disabled in offline read-only state
   - **Verification Command**: `pnpm test && pnpm type-check`
 
 ## Completed & Verified Slices
@@ -162,16 +162,6 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test app/job/MatchResultsScreen.test.tsx lib/matching/matching.test.ts`
 
 ## Upcoming Planned Slices
-
-- [ ] **15. WEB-015 Customer Payments & Escrow UX**
-  - **Spec**: `docs/specs/WEB-015-customer-payments-escrow.md`
-  - **Acceptance Criteria**:
-    - [ ] Checkout drawer and modal triggered from confirmed bookings
-    - [ ] Payment method selection UI (Card, Bank Transfer, USSD) matching Nigerian standards
-    - [ ] Payment authorization state machine (processing, verified, failed, retry, timeout)
-    - [ ] Escrow timeline and customer inspection approval flow
-    - [ ] Digital receipts and invoices at `/receipt/[bookingId]`
-  - **Verification Command**: `pnpm test`
 
 - [ ] **16. WEB-016 Customer Reviews & Reputation**
   - **Spec**: `docs/specs/WEB-016-customer-reviews-reputation.md`

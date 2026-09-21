@@ -17,6 +17,32 @@ The format follows practical release notes written plainly in engineering langua
 - Expanded `AGENTS.md` to conform to the canonical NINE context map schema, recording Termux environment limits and cloud Codespace execution requirements.
 - Standardized test suite describe block titles across `apps/web` to eliminate em dashes.
 
+## [1.0.0-web-015] - 2026-09-21
+
+### Added
+- WEB-015 Customer Payments & Escrow UX integrated into confirmed bookings and canonical `/receipt/[bookingId]` route.
+- `apps/web/lib/payment/types.ts`: Domain models for four-dimensional state machine (JobStatus, BookingStatus, PaymentAuthorizationStatus, EscrowStatus), fee schedule configuration, virtual accounts, USSD shortcodes, checkout sessions, payment attempts, receipts, and ICustomerPaymentRepository interface.
+- `apps/web/lib/payment/repository.ts`: MockCustomerPaymentRepository with strict customer isolation, fee calculations, idempotency, failure/timeout simulation, dispute filing, refund handling, receipt generation, and 21 deterministic scenario fixtures.
+- `apps/web/components/payment/EscrowProtectionTracker.tsx`: 4-milestone timeline (Booking Confirmed, Escrow Funded, Work & Inspection, Payment Settled), dynamic status badges, and localized release retry button.
+- `apps/web/components/payment/CheckoutModal.tsx`: Escrow funding modal with transparent fee schedule breakdown, tabs for Debit/Credit Card (sandbox auto-fill), Bank Transfer (dedicated virtual account), and USSD shortcodes, with offline protection.
+- `apps/web/components/payment/CompletionInspectionCard.tsx`: Verification checklist for customer inspection, approval modal with star rating and feedback, and report dispute action.
+- `apps/web/components/payment/ReceiptModal.tsx`: Official payment and escrow receipt with Nigerian Naira formatting, print styling, JSON export, settlement badges, and sandbox watermark.
+- `apps/web/components/payment/RefundRequestModal.tsx`: Customer refund request modal with reason selection and honest banking settlement timeline indicator.
+- `apps/web/components/payment/DisputeModal.tsx`: BukieGuarantee dispute modal freezing escrow payout pending mediation.
+- `apps/web/app/receipt/[bookingId]/page.tsx`: Canonical digital receipt page with customer auth guard, print styling, and JSON export.
+- 62 automated tests (32 repository unit tests + 30 component integration tests in `PaymentsEscrow.test.tsx`), bringing total web test suite to 478 passing tests across 25 suites with 0 failures.
+
+### Fixed
+- Virtual account expiry: removed hard-coded 30-minute duration and made virtual account expiration provider-supplied and conditional.
+- Payment method attribution: eliminated unconditional card attribution in payment verification, recording true payment method (card, bank transfer, USSD) across payment attempts, receipts, and history.
+- Offline lifecycle protection: replaced hardcoded offline state with live network status detection in `LifecycleStateSurface.tsx`, displaying an offline read-only notice and disabling all financial mutation triggers.
+- Test controller segregation and anti-tampering defense: segregated test fixture helpers into `getPaymentTestController()`, typed repository strictly to `ICustomerPaymentRepository`, and eliminated client fallback state synthesis vectors.
+- Provider adapter decoupling: extracted `SandboxPaymentProviderAdapter` implementing `IPaymentProviderAdapter`, isolating virtual accounts, USSD generation, and payment branding from generic repository logic.
+- Production interface boundary: stripped all test fixture methods from `CustomerPaymentRepository` so production consumers cannot access or invoke state-manipulation controls.
+- Test module physical segregation: moved `PaymentInternalStore`, `CustomerPaymentTestController`, and test harnesses into a dedicated testing module (`apps/web/lib/payment/testing/`), ensuring production barrel export does not expose test fixtures or state controls.
+- Fail-closed payment method attribution: removed implicit fallback to card in `verifyPayment()` and `checkVerificationStatus()`, failing closed with an explicit error when payment method cannot be authoritatively resolved.
+- Master checklist and scope alignment: updated `docs/master-checklist.md` Section 1.2 to In Review with all items checked, and eliminated duplicate WEB-015 block in `docs/scope.md`.
+
 ## [1.0.0-web-014] - 2026-09-21
 
 ### Added

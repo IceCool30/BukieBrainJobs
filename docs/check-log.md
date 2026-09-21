@@ -195,4 +195,109 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
 - **Status**: PASS
 
+## 2026-09-21: WEB-015 Customer Payments & Escrow UX Verification
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-015-customer-payments-escrow`
+- **Trigger**: WEB-015 `/check` [VERIFY] full suite execution
+- **Implementation & Architectural Hardening**:
+  1. Financial Authority Doctrine: Frontend requests payment operations; authoritative escrow status is confirmed solely through the repository contract. Zero synthetic money, phantom balances, or arbitrary client-side status assertions.
+  2. Four-Dimensional State Orthogonality: Strict separation between JobStatus, BookingStatus, PaymentAuthorizationStatus, and EscrowStatus.
+  3. No Raw Card Credentials: Zero PAN, CVV, or raw card data transmitted. Sandbox mode provides explicit test filler credentials with clear non-production indicators.
+  4. Provider-Neutral Architecture: No hardcoded bank names or USSD codes in core domain types. Dedicated virtual accounts and USSD codes are dynamically delivered from the session.
+  5. Config-Driven Fee Calculation: Dynamic pricing calculation including base service amount, 10% platform fee, 7.5% escrow protection fee, and 7.5% statutory VAT.
+  6. Receipt Authority & Settlement Distinctions: Digital receipts strictly gated to funded or settled escrows, with distinct settlement status badges (funded, release_pending, settled) and simulated watermark banner.
+  7. Fail-Closed Customer Isolation & Offline Protection: All financial mutations fail closed on missing or mismatched customer identifiers. All financial mutations are disabled when offline while cached reads remain accessible.
+  8. Full Deterministic Scenario Fixtures: 21 reproducible fixtures covering card, virtual account, USSD, timeouts, payment declines, disputes, release failures, retries, and refunds.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 10 packages with 0 errors (8.07s)
+  - `pnpm lint`: Passed with 0 errors and 0 warnings (3.14s)
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 25 test suites (465 tests passed, 0 failures, 52.85s)
+  - `pnpm build`: Passed in 37.7s with Next.js compiling all 30 static and dynamic routes including `/receipt/[bookingId]`
+- **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
+- **Status**: PASS
+
+## 2026-09-21: WEB-015 Remediation Verification (Audit Blockers 1-4)
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-015-customer-payments-escrow`
+- **Trigger**: Remediation of PR #52 architectural audit findings
+- **Items Remediated & Hardened**:
+  1. Provider Virtual Account Expiry: Removed hard-coded 30-minute expiration duration. Virtual accounts use provider-supplied `providerVirtualAccountExpiry` when present and remain open-ended without synthetic expiry guarantees otherwise. UI conditionally displays expiration only when supplied by the provider.
+  2. Payment Method Attribution: Removed unconditional `method: 'card'` in `verifyPayment()` and `checkVerificationStatus()`. Retained and recorded true payment method (`card`, `bank_transfer`, `ussd`) across payment attempts, receipts, and history.
+  3. Offline UI Protection: Replaced static `isOffline={false}` in `LifecycleStateSurface.tsx` with reactive browser network status tracking and `isOffline` prop. Rendered prominent `Offline: Read-Only Financial State` alert banner. Disabled all financial mutation triggers (`Fund Escrow`, `Request Refund`, `Inspect & Release`) and forwarded offline state down to child modals and tracker.
+  4. Test Boundary Isolation & State Manufacturing Defense: Segregated test fixture helpers and state-tampering controls behind `ICustomerPaymentTestController` and `getPaymentTestController()`. Typed `getCustomerPaymentRepository()` strictly to `ICustomerPaymentRepository` with zero state-tampering methods. Eliminated client `fallback` parameter from repository queries, ensuring unseeded bookings fail closed with `[NotFound]` and preventing client synthesis of authoritative financial records.
+  5. Regression Coverage: Added 10 new regression tests (4 in `repository.test.ts` and 6 in `PaymentsEscrow.test.tsx`) asserting provider expiry behavior, accurate payment method attribution, client state synthesis defense, offline banner presentation, and offline button disabling.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 10 packages with 0 errors (7.96s)
+  - `pnpm lint`: Passed with 0 errors and 0 warnings (3.05s)
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 25 test files (475 tests passed, 0 failures, 53.08s)
+  - `pnpm build`: Passed in 36.98s with Next.js compiling all 30 static and dynamic routes
+- **CI & Deployment Status**:
+  - GitHub Actions CI (Run 35641042392): SUCCESS
+  - Vercel Preview Deployment: SUCCESS
+- **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
+- **Status**: PASS
+
+## 2026-09-21: WEB-015 Production Interface & Provider Decoupling Verification
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-015-customer-payments-escrow`
+- **Trigger**: Remediation of PR #52 mock/production boundary and provider-neutrality audit findings
+- **Items Remediated & Hardened**:
+  1. Test Fixture & State Controls Segregation: Completely removed `setOffline()`, `setNextPaymentOutcome()`, `setNextEscrowOutcome()`, `seedBooking()`, `setMockBookingState()`, `loadScenario()`, and `getTestController()` from `CustomerPaymentRepository`. State manipulation is now genuinely isolated inside `CustomerPaymentTestController` and `PaymentInternalStore`.
+  2. Production Repository Interface Purity: `CustomerPaymentRepository` implements strictly `ICustomerPaymentRepository` with zero state-manufacturing capabilities, whether retrieved via `getCustomerPaymentRepository()` or instantiated directly.
+  3. Provider-Neutral Sandbox Adapter Boundary: Extracted `SandboxPaymentProviderAdapter` implementing `IPaymentProviderAdapter` in `apps/web/lib/payment/provider-adapter.ts`. Decoupled bank names, virtual account generation, USSD templates, and card brand labels from the repository logic.
+  4. Anti-Tampering Regression Proving: Added regression test in `repository.test.ts` verifying that `getCustomerPaymentRepository()` and `new CustomerPaymentRepository()` return `undefined` for all fixture state controls and expose only authoritative domain operations.
+  5. Checkout Modal Fallback Hardening: Removed hardcoded bank name fallback `'Wema Bank (BukiePay)'` from `CheckoutModal.tsx`, defaulting to provider-neutral designated settlement bank presentation.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 10 packages with 0 errors (4.48s)
+  - `pnpm lint`: Passed with 0 errors and 0 warnings (3.30s)
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 25 test files (476 tests passed, 0 failures, 53.04s)
+  - `pnpm build`: Passed in 38.23s with Next.js compiling all 30 static and dynamic routes
+- **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
+- **Status**: PASS
+
+## 2026-09-21: WEB-015 Test Module Isolation, Fail-Closed Attribution & Documentation Alignment
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-015-customer-payments-escrow`
+- **Trigger**: Remediation of PR #52 test controller export, attribution fallback, and documentation alignment audit findings
+- **Items Remediated & Hardened**:
+  1. Test Module Physical Segregation: Moved `PaymentInternalStore`, `CustomerPaymentTestController`, `getPaymentTestController`, `createPaymentTestHarness`, and `resetCustomerPaymentRepository` into a dedicated test-only module at `apps/web/lib/payment/testing/`. Production barrel export at `apps/web/lib/payment/index.ts` does not export test utilities or state fixtures.
+  2. Production Repository Interface Purity: `CustomerPaymentRepository` constructor only accepts optional `providerAdapter`. It no longer accepts external store references from production callers. Direct and factory consumers receive strictly `ICustomerPaymentRepository` with zero state-tampering capabilities.
+  3. Authoritative Payment Method Attribution: Removed implicit fallback to `'card'` in `verifyPayment()` and `checkVerificationStatus()`. Methods fail closed with an explicit error when payment method cannot be authoritatively established from the invocation, checkout session, or prior verified attempts.
+  4. Documentation Alignment: Updated `docs/master-checklist.md` Section 1.2 from `Not Built` to `In Review` with all 8 items marked complete. Reconciled `docs/scope.md` to eliminate duplicate WEB-015 entry under Upcoming Planned Slices.
+  5. Regression Coverage: Added regression assertions in `repository.test.ts` verifying fail-closed payment method attribution and proving production barrel modules export undefined for all test controller utilities. All 478 tests pass across 25 suites with 0 failures.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 10 packages with 0 errors (4.70s)
+  - `pnpm lint`: Passed with 0 errors and 0 warnings (2.92s)
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 25 test files (478 tests passed, 0 failures, 52.97s)
+  - `pnpm build`: Passed in 36.92s with Next.js compiling all 30 static and dynamic routes
+- **CI & Deployment Status**:
+  - GitHub Actions CI (Run 35648950136): SUCCESS
+  - Vercel Preview Deployment: SUCCESS
+- **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
+- **Status**: PASS
+
+## 2026-09-21: WEB-015 Production Repository Boundary Closure (Architectural Final)
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-015-customer-payments-escrow`
+- **Head Commit**: `ea88fae2dd8cfe73e77d6ff246e8e63b7aaeae25`
+- **Trigger**: Final architectural correction eliminating test bridge imports from production repository module
+- **Structural Changes**:
+  1. Production Import Removed: `repository.ts` no longer imports `PaymentInternalStore` or `getSharedPaymentStore` from `./testing/store`. Zero import path references to `./testing` or `/testing` remain in the production module.
+  2. `IsolatedCustomerPaymentRepository` moved entirely into `testing/harness.ts`. Extends `CustomerPaymentRepository` by overriding `this.store` with the injected `PaymentInternalStore` after construction. Not exported from any production module.
+  3. `createIsolatedCustomerPaymentRepository` and `resetSharedRepositoryInstance` removed from `repository.ts`. Both now live exclusively inside `testing/harness.ts`.
+  4. Production repository exports locked to exactly three: `CustomerPaymentRepository`, `getCustomerPaymentRepository`, `createCustomerPaymentRepository`. No test factory, no reset mechanism, no store exposure.
+  5. `PaymentStoreData` interface and `DEFAULT_PAYMENT_BOOKINGS` fixtures added to `types.ts`. Production `CustomerPaymentRepository` builds its initial store from `DEFAULT_PAYMENT_BOOKINGS` in a `createDefaultProductionStore()` method with no reference to the testing module. Test harness `PaymentInternalStore` implements `PaymentStoreData` and shares the same fixture baseline.
+  6. `resetCustomerPaymentRepository` in `testing/harness.ts` no longer calls `resetSharedRepositoryInstance` from `repository.ts`. It manages its own `sharedTestRepository` instance using `IsolatedCustomerPaymentRepository` directly.
+  7. `PaymentsEscrow.test.tsx` updated to spy on `getCustomerPaymentRepository` via `vi.spyOn(paymentRepoModule, 'getCustomerPaymentRepository')` and inject the test repository, ensuring components pick up the seeded test store.
+  8. Regression assertions added to `repository.test.ts`: (a) exact exported keys of `RepositoryModule` must equal `['CustomerPaymentRepository', 'createCustomerPaymentRepository', 'getCustomerPaymentRepository']`; (b) `repository.ts` source file must not contain `./testing` or `/testing` string.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 6 packages with 0 errors (4.585s)
+  - `pnpm lint`: Passed with 0 warnings and 0 errors (3.217s)
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 25 test files (479 tests passed, 0 failures, 53.02s)
+  - `pnpm build`: Passed in 36.4s with Next.js compiling all 30 static and dynamic routes
+- **CI & Deployment Status**:
+  - GitHub Actions CI: SUCCESS (all 3 checks green)
+  - Vercel Preview Deployment: SUCCESS
+- **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms
+- **Status**: PASS
 
