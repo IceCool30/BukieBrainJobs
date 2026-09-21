@@ -60,15 +60,15 @@ export default function DashboardScreen() {
   // Listen for tab query param if provided
   useEffect(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam === 'jobs') {
-      router.replace('/jobs');
-      return;
-    }
     if (tabParam === 'profile') {
-      router.replace('/profile');
+      if (typeof router.replace === 'function') {
+        router.replace('/profile');
+      } else if (typeof router.push === 'function') {
+        router.push('/profile');
+      }
       return;
     }
-    if (tabParam === 'messages' || tabParam === 'notifications') {
+    if (tabParam === 'jobs' || tabParam === 'messages' || tabParam === 'notifications') {
       setActiveTab(tabParam as DashboardTab);
     }
   }, [searchParams, router]);
