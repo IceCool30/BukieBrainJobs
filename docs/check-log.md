@@ -237,3 +237,22 @@ This file records verification checks executed across the codebase under `/check
 - **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
 - **Status**: PASS
 
+## 2026-09-21: WEB-015 Production Interface & Provider Decoupling Verification
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM)
+- **Branch**: `feature/web-015-customer-payments-escrow`
+- **Trigger**: Remediation of PR #52 mock/production boundary and provider-neutrality audit findings
+- **Items Remediated & Hardened**:
+  1. Test Fixture & State Controls Segregation: Completely removed `setOffline()`, `setNextPaymentOutcome()`, `setNextEscrowOutcome()`, `seedBooking()`, `setMockBookingState()`, `loadScenario()`, and `getTestController()` from `CustomerPaymentRepository`. State manipulation is now genuinely isolated inside `CustomerPaymentTestController` and `PaymentInternalStore`.
+  2. Production Repository Interface Purity: `CustomerPaymentRepository` implements strictly `ICustomerPaymentRepository` with zero state-manufacturing capabilities, whether retrieved via `getCustomerPaymentRepository()` or instantiated directly.
+  3. Provider-Neutral Sandbox Adapter Boundary: Extracted `SandboxPaymentProviderAdapter` implementing `IPaymentProviderAdapter` in `apps/web/lib/payment/provider-adapter.ts`. Decoupled bank names, virtual account generation, USSD templates, and card brand labels from the repository logic.
+  4. Anti-Tampering Regression Proving: Added regression test in `repository.test.ts` verifying that `getCustomerPaymentRepository()` and `new CustomerPaymentRepository()` return `undefined` for all fixture state controls and expose only authoritative domain operations.
+  5. Checkout Modal Fallback Hardening: Removed hardcoded bank name fallback `'Wema Bank (BukiePay)'` from `CheckoutModal.tsx`, defaulting to provider-neutral designated settlement bank presentation.
+- **Commands Executed on Codespace**:
+  - `pnpm type-check`: Passed across 10 packages with 0 errors (4.48s)
+  - `pnpm lint`: Passed with 0 errors and 0 warnings (3.30s)
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed across 25 test files (476 tests passed, 0 failures, 53.04s)
+  - `pnpm build`: Passed in 38.23s with Next.js compiling all 30 static and dynamic routes
+- **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 forbidden corporate filler terms; direct Nigerian marketplace terminology throughout
+- **Status**: PASS
+
+

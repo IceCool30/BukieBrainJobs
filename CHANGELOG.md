@@ -30,13 +30,15 @@ The format follows practical release notes written plainly in engineering langua
 - `apps/web/components/payment/RefundRequestModal.tsx`: Customer refund request modal with reason selection and honest banking settlement timeline indicator.
 - `apps/web/components/payment/DisputeModal.tsx`: BukieGuarantee dispute modal freezing escrow payout pending mediation.
 - `apps/web/app/receipt/[bookingId]/page.tsx`: Canonical digital receipt page with customer auth guard, print styling, and JSON export.
-- 59 automated tests (29 repository unit tests + 30 component integration tests in `PaymentsEscrow.test.tsx`), bringing total web test suite to 475 passing tests across 25 suites with 0 failures.
+- 60 automated tests (30 repository unit tests + 30 component integration tests in `PaymentsEscrow.test.tsx`), bringing total web test suite to 476 passing tests across 25 suites with 0 failures.
 
 ### Fixed
 - Virtual account expiry: removed hard-coded 30-minute duration and made virtual account expiration provider-supplied and conditional.
 - Payment method attribution: eliminated unconditional card attribution in payment verification, recording true payment method (card, bank transfer, USSD) across payment attempts, receipts, and history.
 - Offline lifecycle protection: replaced hardcoded offline state with live network status detection in `LifecycleStateSurface.tsx`, displaying an offline read-only notice and disabling all financial mutation triggers.
 - Test controller segregation and anti-tampering defense: segregated test fixture helpers into `getPaymentTestController()`, typed repository strictly to `ICustomerPaymentRepository`, and eliminated client fallback state synthesis vectors.
+- Provider adapter decoupling: extracted `SandboxPaymentProviderAdapter` implementing `IPaymentProviderAdapter`, isolating virtual accounts, USSD generation, and payment branding from generic repository logic.
+- Production interface boundary: stripped all test fixture methods from `CustomerPaymentRepository` so production consumers cannot access or invoke state-manipulation controls.
 
 ## [1.0.0-web-014] - 2026-09-21
 
