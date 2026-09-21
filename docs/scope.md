@@ -8,7 +8,17 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-_No active slice. Work is complete._
+- [ ] **14. WEB-014 Customer Profile & Account Settings**
+  - **Spec**: `docs/specs/WEB-014-customer-profile-settings.md`
+  - **Acceptance Criteria**:
+    - [ ] Personal information editing at `/profile` (full name, phone number, email address)
+    - [ ] Saved addresses manager supporting Nigerian service locations (Lagos, Abuja, etc.) with landmark notes
+    - [ ] Security settings for password management, provider linking, and session control
+    - [ ] Notification preferences across SMS, WhatsApp, Email, and in-app alerts
+    - [ ] Account data management (data export and safe account closure flows)
+    - [ ] Customer isolation enforced on all profile queries and mutations
+    - [ ] Complete deterministic state coverage (loading, saved confirmation, validation error, server failure, offline fallback)
+  - **Verification Command**: `pnpm test && pnpm type-check`
 
 ## Completed & Verified Slices
 
@@ -140,16 +150,56 @@ _No active slice. Work is complete._
 
 ## Upcoming Planned Slices
 
-- [ ] **14. BrainWorker Platform Onboarding & Verification**
-  - **Spec**: `docs/specs/BW-001-onboarding.md`
+- [ ] **15. WEB-015 Customer Payments & Escrow UX**
+  - **Spec**: `docs/specs/WEB-015-customer-payments-escrow.md`
   - **Acceptance Criteria**:
-    - [ ] BrainWorker onboarding funnel and role verification
-    - [ ] Identity check interface with clear privacy boundaries
+    - [ ] Checkout drawer and modal triggered from confirmed bookings
+    - [ ] Payment method selection UI (Card, Bank Transfer, USSD) matching Nigerian standards
+    - [ ] Payment authorization state machine (processing, verified, failed, retry, timeout)
+    - [ ] Escrow timeline and customer inspection approval flow
+    - [ ] Digital receipts and invoices at `/receipt/[bookingId]`
   - **Verification Command**: `pnpm test`
 
-- [ ] **15. BrainWorker Service Management & Availability**
+- [ ] **16. WEB-016 Customer Reviews & Reputation**
+  - **Spec**: `docs/specs/WEB-016-customer-reviews-reputation.md`
+  - **Acceptance Criteria**:
+    - [ ] Post-completion review prompt triggered on completed bookings
+    - [ ] Multi-criteria ratings (punctuality, quality, communication, overall 1-5 stars)
+    - [ ] Written customer feedback with honest character limits
+    - [ ] Public review feed on BrainWorker profile tabs
+  - **Verification Command**: `pnpm test`
+
+- [ ] **17. WEB-017 In-App Messaging & Real-Time Chat**
+  - **Spec**: `docs/specs/WEB-017-messaging-chat.md`
+  - **Acceptance Criteria**:
+    - [ ] Customer and BrainWorker active conversation threads at `/messages`
+    - [ ] Message history, pending delivery indicators, and offline caching
+    - [ ] Photo attachment and location share shortcuts
+  - **Verification Command**: `pnpm test`
+
+- [ ] **18. WEB-018 Notification Center & Push UX**
+  - **Spec**: `docs/specs/WEB-018-notification-center.md`
+  - **Acceptance Criteria**:
+    - [ ] In-app notification feed at `/notifications` with categorized tabs
+    - [ ] Read and unread badge state tracking
+    - [ ] Deep-link navigation from notifications straight to corresponding `/jobs?id=...` records
+    - [ ] Web Push service worker integration
+  - **Verification Command**: `pnpm test`
+
+- [ ] **19. BW-001 BrainWorker Platform Onboarding & Verification**
+  - **Spec**: `docs/specs/BW-001-onboarding.md`
+  - **Acceptance Criteria**:
+    - [ ] Dedicated provider registration flow at `/brainworker/register`
+    - [ ] Multi-step onboarding funnel (trade category, experience, coverage cities)
+    - [ ] Identity check interface for NIN/BVN and government ID upload
+    - [ ] Trade certifications and apprenticeship documentation upload
+    - [ ] Verification in review status screen
+  - **Verification Command**: `pnpm test`
+
+- [ ] **20. BW-002 BrainWorker Service Management & Availability**
   - **Spec**: `docs/specs/BW-002-service-management.md`
   - **Acceptance Criteria**:
-    - [ ] Service offering configuration and hourly/daily rates
-    - [ ] Weekly availability schedule management
+    - [ ] Worker service catalog configuration, hourly rates, and diagnostic fees
+    - [ ] Weekly working hours scheduler and emergency dispatch toggles
+    - [ ] Coverage area selector and travel radius management
   - **Verification Command**: `pnpm test`

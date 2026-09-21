@@ -54,7 +54,8 @@ This file defines the standards and operational map every contributor must follo
 
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
-- **Active Phase**: Baseline Realignment (`/sync` [REALIGN])
+- **Active Phase**: Phase 1 Customer Web Platform Completion (/architect [DECIDE] -> /develop [BUILD])
+- **Active Slice**: 14. WEB-014 Customer Profile & Account Settings
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`

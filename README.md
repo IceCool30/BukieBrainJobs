@@ -28,17 +28,17 @@ Shared business rules, trust model, booking model, and design system stay one so
 
 ## Current repository status
 
-**Phase:** Active development, live public homepage
+**Phase:** Phase 1 Customer Web Platform Completion (Active)
 
-**Code status:** A public homepage is live and approved on the `feature/web-001-homepage-redesign` branch. The monorepo scaffold, design system, and product foundation are complete.
+**Code status:** The core Customer Web Platform is live in production on main at `https://bukie-brain-jobs.vercel.app`. The public website, authentication, customer dashboard, job posting, matching results, and activity hub with booking lifecycle are verified and deployed.
 
-- `apps/web` — Next.js 15 web application with the live public homepage and PWA support
-- `apps/mobile` — Expo mobile application
-- `packages/` — shared contracts, UI, validation, database, store, API types, utilities
-- `services/socket-server` — real-time messaging service
-- `docs/` — governance, product, design system, and feature specifications
+- `apps/web`: Next.js 15 web application with live customer marketplace and PWA support
+- `apps/mobile`: Expo mobile application (Phase 4 native reconstruction target)
+- `packages/`: Shared contracts, UI design system, validation schemas, database client, store, API types, and utilities
+- `services/socket-server`: Real-time messaging service
+- `docs/`: Governance, product roadmap, design system, master checklist, and build specifications
 
-The public homepage is the current focus area. New pages must follow the live-first experience standard described below.
+The current execution target is Phase 1 (Customer Web Platform Completion), beginning with `WEB-014: Customer Profile & Account Settings`. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
 
 ## Live-first experience standard
 
@@ -180,4 +180,4 @@ Do not introduce arbitrary colors, typography, spacing, radii, motion or compone
 
 ## Status
 
-The product foundation, design system, live-first experience standard, and monorepo scaffold are in place. The public homepage is live, approved, and continuously deployed through Vercel previews on the feature branch. Feature implementation proceeds through approved specifications, short-lived branches, review, and merge to main.
+The product foundation, design system, live-first experience standard, and core customer web workflows are complete and verified in production. Development proceeds sequentially through the approved 7-phase roadmap, governed by the Mr. Solomon 9-Command Engineering Loop. Track implementation on [docs/master-checklist.md](docs/master-checklist.md).

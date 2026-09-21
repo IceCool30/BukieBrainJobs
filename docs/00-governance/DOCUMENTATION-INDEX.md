@@ -104,6 +104,7 @@ Governed by `/architect` [DECIDE] and `/develop` [BUILD] of the 9-Command Engine
 - `WEB-011-customer-jobs-and-bookings.md`: Activity hub build specification.
 - `WEB-012-matching.md`: Job matching build specification.
 - `WEB-013-customer-booking-lifecycle.md`: Booking lifecycle build specification.
+- `WEB-014-customer-profile-settings.md`: Customer profile and account settings build specification.
 
 ---
 
