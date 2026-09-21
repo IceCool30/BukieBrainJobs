@@ -701,7 +701,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       fireEvent.click(screen.getByRole('tab', { name: /Transfer/i }));
 
       // Click execute payment
-      const payBtn = screen.getByRole('button', { name: /Pay ₦23,650 & Fund Escrow/i });
+      const payBtn = screen.getByRole('button', { name: /I Have Completed This Transfer/i });
       fireEvent.click(payBtn);
 
       await waitFor(() => {
@@ -739,7 +739,7 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       fireEvent.click(screen.getByRole('tab', { name: /USSD/i }));
 
       // Click execute payment
-      const payBtn = screen.getByRole('button', { name: /Pay ₦23,650 & Fund Escrow/i });
+      const payBtn = screen.getByRole('button', { name: /Confirm USSD Payment/i });
       fireEvent.click(payBtn);
 
       await waitFor(() => {
