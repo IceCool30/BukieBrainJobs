@@ -11,7 +11,11 @@ import {
 } from '../../components/payment';
 import { LifecycleStateSurface } from '../../components/jobs/LifecycleStateSurface';
 import * as authStorage from '../../lib/auth/storage';
-import { resetCustomerPaymentRepository, getCustomerPaymentRepository } from '../../lib/payment/repository';
+import {
+  resetCustomerPaymentRepository,
+  getCustomerPaymentRepository,
+  getPaymentTestController,
+} from '../../lib/payment/repository';
 import type { CustomerActivityItem } from '@bukiebrainjobs/types';
 import type { PaymentReceipt, PricingBreakdown, CheckoutSession } from '../../lib/payment/types';
 
@@ -478,8 +482,8 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
     };
 
     it('displays Fund Escrow banner and button when jobStatus is CONFIRMED and escrow is unfunded', async () => {
-      const repo = getCustomerPaymentRepository();
-      repo.setMockBookingState('act-confirmed-001', {
+      const testController = getPaymentTestController();
+      testController.setMockBookingState('act-confirmed-001', {
         jobStatus: 'CONFIRMED',
         escrowStatus: 'unfunded',
         customerId: mockUser.id,
@@ -511,8 +515,8 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
         jobStatus: 'PENDING_COMPLETION',
       };
 
-      const repo = getCustomerPaymentRepository();
-      repo.setMockBookingState('act-inspect-001', {
+      const testController = getPaymentTestController();
+      testController.setMockBookingState('act-inspect-001', {
         jobStatus: 'PENDING_COMPLETION',
         escrowStatus: 'held_in_escrow',
         customerId: mockUser.id,
@@ -533,8 +537,8 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
         jobStatus: 'DISPUTED',
       };
 
-      const repo = getCustomerPaymentRepository();
-      repo.setMockBookingState('act-disputed-001', {
+      const testController = getPaymentTestController();
+      testController.setMockBookingState('act-disputed-001', {
         jobStatus: 'DISPUTED',
         escrowStatus: 'disputed',
         customerId: mockUser.id,
@@ -555,8 +559,8 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
         jobStatus: 'CANCELLED',
       };
 
-      const repo = getCustomerPaymentRepository();
-      repo.setMockBookingState('act-cancelled-001', {
+      const testController = getPaymentTestController();
+      testController.setMockBookingState('act-cancelled-001', {
         jobStatus: 'CANCELLED',
         escrowStatus: 'held_in_escrow',
         customerId: mockUser.id,
@@ -576,8 +580,8 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
         jobStatus: 'COMPLETED',
       };
 
-      const repo = getCustomerPaymentRepository();
-      repo.setMockBookingState('act-receipt-001', {
+      const testController = getPaymentTestController();
+      testController.setMockBookingState('act-receipt-001', {
         jobStatus: 'COMPLETED',
         escrowStatus: 'released',
         customerId: mockUser.id,
@@ -594,6 +598,217 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
       await waitFor(() => {
         expect(screen.getByRole('dialog', { name: /Payment & Escrow Receipt/i })).toBeInTheDocument();
       });
+    });
+
+    it('enforces offline read-only mode and disables mutations in LifecycleStateSurface', async () => {
+      const testController = getPaymentTestController();
+      testController.setMockBookingState('act-confirmed-001', {
+        jobStatus: 'CONFIRMED',
+        escrowStatus: 'unfunded',
+        customerId: mockUser.id,
+      });
+
+      render(<LifecycleStateSurface activity={mockConfirmedActivity} isOffline={true} />);
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole('alert', { name: /Offline Mode: Read-Only Financial State/i })
+        ).toBeInTheDocument();
+      });
+
+      const fundBtn = screen.getByRole('button', { name: /Fund Escrow/i });
+      expect(fundBtn).toBeDisabled();
+      expect(fundBtn).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    it('disables refund mutation button in LifecycleStateSurface when isOffline is true', async () => {
+      const mockCancelledActivity: CustomerActivityItem = {
+        ...mockConfirmedActivity,
+        id: 'act-cancelled-offline',
+        jobStatus: 'CANCELLED',
+      };
+
+      const testController = getPaymentTestController();
+      testController.setMockBookingState('act-cancelled-offline', {
+        jobStatus: 'CANCELLED',
+        escrowStatus: 'held_in_escrow',
+        customerId: mockUser.id,
+      });
+
+      render(<LifecycleStateSurface activity={mockCancelledActivity} isOffline={true} />);
+
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: /Request Refund/i })).toBeInTheDocument();
+      });
+
+      const refundBtn = screen.getByRole('button', { name: /Request Refund/i });
+      expect(refundBtn).toBeDisabled();
+      expect(refundBtn).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    it('disables inspection release mutation in LifecycleStateSurface when isOffline is true', async () => {
+      const mockPendingCompletion: CustomerActivityItem = {
+        ...mockConfirmedActivity,
+        id: 'act-inspect-offline',
+        jobStatus: 'PENDING_COMPLETION',
+      };
+
+      const testController = getPaymentTestController();
+      testController.setMockBookingState('act-inspect-offline', {
+        jobStatus: 'PENDING_COMPLETION',
+        escrowStatus: 'held_in_escrow',
+        customerId: mockUser.id,
+      });
+
+      render(<LifecycleStateSurface activity={mockPendingCompletion} isOffline={true} />);
+
+      await waitFor(() => {
+        expect(screen.getByRole('region', { name: /Work Completion Inspection/i })).toBeInTheDocument();
+      });
+
+      const inspectBtn = screen.getByRole('button', { name: /Inspect & Release Funds/i });
+      expect(inspectBtn).toBeDisabled();
+    });
+  });
+
+  describe('8. CheckoutModal Payment Method Attribution & Provider Expiry', () => {
+    it('passes bank_transfer attribution when verifying via Bank Transfer tab', async () => {
+      const mockVerify = vi.fn().mockResolvedValue({ status: 'verified' });
+      const mockSession: CheckoutSession = {
+        bookingId: 'book-method-001',
+        checkoutReference: 'bbj-chk-bank-001',
+        totalPayableNaira: 23650,
+        availableMethods: ['card', 'bank_transfer', 'ussd'],
+        idempotencyKey: 'idem-test-bank',
+        expiresAt: new Date(Date.now() + 3600 * 1000).toISOString(),
+      };
+
+      render(
+        <CheckoutModal
+          isOpen={true}
+          onClose={vi.fn()}
+          bookingId="book-method-001"
+          serviceTitle="Plumbing Repair"
+          workerName="Emeka Obi"
+          pricing={samplePricing}
+          session={mockSession}
+          onVerifyPayment={mockVerify}
+          onCheckStatus={vi.fn()}
+          onSuccess={vi.fn()}
+        />
+      );
+
+      // Switch to Bank Transfer
+      fireEvent.click(screen.getByRole('tab', { name: /Transfer/i }));
+
+      // Click execute payment
+      const payBtn = screen.getByRole('button', { name: /Pay ₦23,650 & Fund Escrow/i });
+      fireEvent.click(payBtn);
+
+      await waitFor(() => {
+        expect(mockVerify).toHaveBeenCalledWith('bbj-chk-bank-001', 'bank_transfer');
+      });
+    });
+
+    it('passes ussd attribution when verifying via USSD tab', async () => {
+      const mockVerify = vi.fn().mockResolvedValue({ status: 'verified' });
+      const mockSession: CheckoutSession = {
+        bookingId: 'book-method-002',
+        checkoutReference: 'bbj-chk-ussd-001',
+        totalPayableNaira: 23650,
+        availableMethods: ['card', 'bank_transfer', 'ussd'],
+        idempotencyKey: 'idem-test-ussd',
+        expiresAt: new Date(Date.now() + 3600 * 1000).toISOString(),
+      };
+
+      render(
+        <CheckoutModal
+          isOpen={true}
+          onClose={vi.fn()}
+          bookingId="book-method-002"
+          serviceTitle="Plumbing Repair"
+          workerName="Emeka Obi"
+          pricing={samplePricing}
+          session={mockSession}
+          onVerifyPayment={mockVerify}
+          onCheckStatus={vi.fn()}
+          onSuccess={vi.fn()}
+        />
+      );
+
+      // Switch to USSD
+      fireEvent.click(screen.getByRole('tab', { name: /USSD/i }));
+
+      // Click execute payment
+      const payBtn = screen.getByRole('button', { name: /Pay ₦23,650 & Fund Escrow/i });
+      fireEvent.click(payBtn);
+
+      await waitFor(() => {
+        expect(mockVerify).toHaveBeenCalledWith('bbj-chk-ussd-001', 'ussd');
+      });
+    });
+
+    it('renders provider-supplied virtual account expiry when present and omits when undefined', () => {
+      const expiryTimestamp = '2026-09-22T14:30:00.000Z';
+      const sessionWithExpiry: CheckoutSession = {
+        bookingId: 'book-expiry-001',
+        checkoutReference: 'bbj-chk-exp-001',
+        totalPayableNaira: 23650,
+        availableMethods: ['bank_transfer'],
+        virtualAccount: {
+          bankName: 'Wema Bank',
+          accountNumber: '0129998888',
+          accountName: 'Bukie Escrow',
+          expiresAt: expiryTimestamp,
+          reconciliationNotes: 'Exact amount',
+        },
+        idempotencyKey: 'idem-exp-001',
+        expiresAt: new Date(Date.now() + 3600 * 1000).toISOString(),
+      };
+
+      const { rerender } = render(
+        <CheckoutModal
+          isOpen={true}
+          onClose={vi.fn()}
+          bookingId="book-expiry-001"
+          serviceTitle="Plumbing Repair"
+          workerName="Emeka Obi"
+          pricing={samplePricing}
+          session={sessionWithExpiry}
+          onVerifyPayment={vi.fn()}
+          onCheckStatus={vi.fn()}
+          onSuccess={vi.fn()}
+        />
+      );
+
+      fireEvent.click(screen.getByRole('tab', { name: /Transfer/i }));
+      expect(screen.getByText(/Account valid until:/i)).toBeInTheDocument();
+
+      // Rerender with session lacking virtualAccount.expiresAt
+      const sessionWithoutExpiry: CheckoutSession = {
+        ...sessionWithExpiry,
+        virtualAccount: {
+          ...sessionWithExpiry.virtualAccount!,
+          expiresAt: undefined,
+        },
+      };
+
+      rerender(
+        <CheckoutModal
+          isOpen={true}
+          onClose={vi.fn()}
+          bookingId="book-expiry-001"
+          serviceTitle="Plumbing Repair"
+          workerName="Emeka Obi"
+          pricing={samplePricing}
+          session={sessionWithoutExpiry}
+          onVerifyPayment={vi.fn()}
+          onCheckStatus={vi.fn()}
+          onSuccess={vi.fn()}
+        />
+      );
+
+      expect(screen.queryByText(/Account valid until:/i)).not.toBeInTheDocument();
     });
   });
 });

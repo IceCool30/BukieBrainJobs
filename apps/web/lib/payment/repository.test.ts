@@ -356,4 +356,73 @@ describe('WEB-015 MockCustomerPaymentRepository (TDD)', () => {
       expect(context.activeDisputeId).toBeDefined();
     });
   });
+
+  describe('Architectural Boundary & Regression Proving', () => {
+    it('proves virtual-account expiry is provider-supplied and optional', async () => {
+      // Without provider-supplied expiry, expiresAt is undefined (no fixed 30-minute promise)
+      const sessionWithoutExpiry = await repo.initiateCheckout(validCustomer, {
+        bookingId,
+        idempotencyKey: 'idem-no-expiry',
+      });
+      expect(sessionWithoutExpiry.virtualAccount?.expiresAt).toBeUndefined();
+
+      // With provider-supplied expiry, expiresAt reflects the provider timestamp
+      const customExpiry = '2026-09-22T15:30:00.000Z';
+      const sessionWithExpiry = await repo.initiateCheckout(validCustomer, {
+        bookingId,
+        idempotencyKey: 'idem-with-expiry',
+        providerVirtualAccountExpiry: customExpiry,
+      });
+      expect(sessionWithExpiry.virtualAccount?.expiresAt).toBe(customExpiry);
+    });
+
+    it('proves bank transfer retains accurate payment method attribution on attempts and receipt', async () => {
+      const checkout = await repo.initiateCheckout(validCustomer, {
+        bookingId,
+        idempotencyKey: 'idem-transfer-attrib',
+      });
+
+      await repo.verifyPayment(validCustomer, checkout.checkoutReference, 'bank_transfer');
+
+      const attempts = await repo.getPaymentAttempts(validCustomer, bookingId);
+      const lastAttempt = attempts[attempts.length - 1];
+      expect(lastAttempt.method).toBe('bank_transfer');
+
+      const receipt = await repo.getReceipt(validCustomer, bookingId);
+      expect(receipt.paymentMethodUsed).toBe('Bank Transfer (Dedicated Virtual Account)');
+    });
+
+    it('proves ussd retains accurate payment method attribution on attempts and receipt', async () => {
+      const checkout = await repo.initiateCheckout(validCustomer, {
+        bookingId,
+        idempotencyKey: 'idem-ussd-attrib',
+      });
+
+      await repo.verifyPayment(validCustomer, checkout.checkoutReference, 'ussd');
+
+      const attempts = await repo.getPaymentAttempts(validCustomer, bookingId);
+      const lastAttempt = attempts[attempts.length - 1];
+      expect(lastAttempt.method).toBe('ussd');
+
+      const receipt = await repo.getReceipt(validCustomer, bookingId);
+      expect(receipt.paymentMethodUsed).toBe('USSD Payment');
+    });
+
+    it('proves application components cannot manufacture authoritative payment or escrow state', async () => {
+      const unseededBookingId = 'unseeded-booking-999';
+
+      // Calling getPaymentContext for an unseeded booking throws NotFound
+      await expect(
+        repo.getPaymentContext(validCustomer, unseededBookingId)
+      ).rejects.toThrow(/not found/i);
+
+      // Calling initiateCheckout for an unseeded booking throws NotFound
+      await expect(
+        repo.initiateCheckout(validCustomer, {
+          bookingId: unseededBookingId,
+          idempotencyKey: 'idem-unseeded',
+        })
+      ).rejects.toThrow(/not found/i);
+    });
+  });
 });

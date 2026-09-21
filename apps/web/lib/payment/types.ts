@@ -172,6 +172,7 @@ export interface InitiateCheckoutInput {
   bookingId: string;
   idempotencyKey: string;
   preferredMethod?: PaymentMethod | undefined;
+  providerVirtualAccountExpiry?: string | undefined;
 }
 
 export interface ReleaseEscrowInput {
@@ -199,8 +200,16 @@ export interface ICustomerPaymentRepository {
   
   // Checkout and Authorization
   initiateCheckout(authenticatedCustomerId: string, input: InitiateCheckoutInput): Promise<CheckoutSession>;
-  verifyPayment(authenticatedCustomerId: string, paymentReference: string): Promise<PaymentVerificationResult>;
-  checkVerificationStatus(authenticatedCustomerId: string, paymentReference: string): Promise<PaymentVerificationResult>;
+  verifyPayment(
+    authenticatedCustomerId: string,
+    paymentReference: string,
+    method?: PaymentMethod
+  ): Promise<PaymentVerificationResult>;
+  checkVerificationStatus(
+    authenticatedCustomerId: string,
+    paymentReference: string,
+    method?: PaymentMethod
+  ): Promise<PaymentVerificationResult>;
   getPaymentAttempts(authenticatedCustomerId: string, bookingId: string): Promise<PaymentAttempt[]>;
   
   // Escrow Lifecycle
@@ -212,4 +221,55 @@ export interface ICustomerPaymentRepository {
   requestRefund(authenticatedCustomerId: string, input: RequestRefundInput): Promise<RefundRequestResult>;
   getRefundStatus(authenticatedCustomerId: string, bookingId: string): Promise<RefundStatusDetails>;
   getReceipt(authenticatedCustomerId: string, bookingId: string): Promise<PaymentReceipt>;
+}
+
+export type DeterministicScenarioName =
+  | 'confirmed_unfunded'
+  | 'card_processing'
+  | 'card_verified'
+  | 'card_failed_insufficient_funds'
+  | 'card_failed_network_error'
+  | 'payment_timeout'
+  | 'bank_transfer_pending'
+  | 'bank_transfer_verified'
+  | 'ussd_pending'
+  | 'escrow_held'
+  | 'pending_completion'
+  | 'release_pending'
+  | 'release_failed'
+  | 'released'
+  | 'refund_pending'
+  | 'refund_failed'
+  | 'refunded'
+  | 'disputed'
+  | 'dispute_resolved_refund'
+  | 'dispute_resolved_payout'
+  | 'offline_read_only';
+
+export interface InternalBookingRecord {
+  bookingId: string;
+  customerId: string;
+  jobStatus: JobStatus;
+  bookingStatus: string;
+  serviceTitle: string;
+  workerName: string;
+  workerAvatar?: string | undefined;
+  serviceLocation: string;
+  baseAmountNaira: number;
+  paymentAuthStatus: PaymentAuthorizationStatus;
+  escrowStatus: EscrowStatus;
+  currentPaymentReference?: string | undefined;
+  verifiedPaymentMethod?: PaymentMethod | undefined;
+  activeDisputeId?: string | undefined;
+  activeRefundReference?: string | undefined;
+}
+
+export interface ICustomerPaymentTestController {
+  setOffline(offline: boolean): void;
+  setNextPaymentOutcome(status: PaymentAuthorizationStatus, reason?: string | undefined): void;
+  setNextEscrowOutcome(status: EscrowStatus, reason?: string | undefined): void;
+  setMockBookingState(bookingId: string, updates: Partial<InternalBookingRecord>): void;
+  loadScenario(scenario: DeterministicScenarioName, bookingId: string, customerId: string): void;
+  seedBooking(booking: InternalBookingRecord): void;
+  reset(): void;
 }

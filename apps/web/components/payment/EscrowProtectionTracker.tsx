@@ -9,6 +9,7 @@ interface EscrowProtectionTrackerProps {
   settlementStatus?: SettlementStatus | undefined;
   onRetryRelease?: () => void;
   isRetrying?: boolean | undefined;
+  isOffline?: boolean | undefined;
 }
 
 export function EscrowProtectionTracker({
@@ -16,6 +17,7 @@ export function EscrowProtectionTracker({
   settlementStatus,
   onRetryRelease,
   isRetrying = false,
+  isOffline = false,
 }: EscrowProtectionTrackerProps) {
   // Resolve status presentation model
   const resolveStatusBadge = () => {
@@ -145,16 +147,22 @@ export function EscrowProtectionTracker({
 
       {/* Release Failure Localized Retry */}
       {escrowStatus === 'release_failed' && onRetryRelease && (
-        <div className="pt-1">
+        <div className="pt-1 space-y-1.5">
           <button
             type="button"
             onClick={onRetryRelease}
-            disabled={isRetrying}
+            disabled={isRetrying || isOffline}
+            aria-disabled={isRetrying || isOffline}
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold transition cursor-pointer disabled:opacity-50"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${isRetrying ? 'animate-spin' : ''}`} aria-hidden="true" />
             <span>{isRetrying ? 'Retrying transfer...' : 'Retry Release Settlement'}</span>
           </button>
+          {isOffline && (
+            <p className="text-[11px] text-rose-700 font-medium">
+              You are offline. Reconnecting is required to retry settlement release.
+            </p>
+          )}
         </div>
       )}
 

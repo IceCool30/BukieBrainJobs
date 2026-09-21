@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   Receipt,
   RotateCcw,
+  WifiOff,
 } from 'lucide-react';
 import { CustomerActivityItem, JobStatus } from '@bukiebrainjobs/types';
 import { canTransition } from '@bukiebrainjobs/api-types';
@@ -26,6 +27,7 @@ import { getCustomerPaymentRepository } from '../../lib/payment/repository';
 import type {
   PaymentContext,
   PaymentReceipt,
+  PaymentMethod,
 } from '../../lib/payment/types';
 import {
   EscrowProtectionTracker,
@@ -43,6 +45,7 @@ export interface LifecycleStateSurfaceProps {
   isMutating?: boolean | undefined;
   mutationError?: string | null | undefined;
   onClearMutationError?: (() => void) | undefined;
+  isOffline?: boolean | undefined;
 }
 
 interface StateCopy {
@@ -152,9 +155,28 @@ export function LifecycleStateSurface({
   isMutating = false,
   mutationError = null,
   onClearMutationError,
+  isOffline: isOfflineProp,
 }: LifecycleStateSurfaceProps) {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [localActionPending, setLocalActionPending] = useState(false);
+
+  // Network state detection
+  const [isNetworkOffline, setIsNetworkOffline] = useState(() => {
+    return typeof navigator !== 'undefined' ? !navigator.onLine : false;
+  });
+
+  React.useEffect(() => {
+    const handleOnline = () => setIsNetworkOffline(false);
+    const handleOffline = () => setIsNetworkOffline(true);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  const isOffline = isOfflineProp !== undefined ? isOfflineProp : isNetworkOffline;
 
   // Payment and Escrow State (WEB-015)
   const [paymentContext, setPaymentContext] = useState<PaymentContext | null>(null);
@@ -196,13 +218,7 @@ export function LifecycleStateSurface({
 
     const repo = getCustomerPaymentRepository();
     repo
-      .getPaymentContext(customerId, activity.id, {
-        jobStatus: currentJobStatus,
-        serviceTitle: activity.title,
-        workerName: activity.preferredWorker?.name || 'Assigned BrainWorker',
-        serviceLocation: activity.location || 'Lagos, Nigeria',
-        baseAmountNaira: 20000,
-      })
+      .getPaymentContext(customerId, activity.id)
       .then((ctx) => {
         setPaymentContext(ctx);
       })
@@ -226,13 +242,6 @@ export function LifecycleStateSurface({
         {
           bookingId: activity.id,
           idempotencyKey: `idem-chk-${activity.id}-${Date.now()}`,
-        },
-        {
-          jobStatus: currentJobStatus,
-          serviceTitle: activity.title,
-          workerName: activity.preferredWorker?.name || 'Assigned BrainWorker',
-          serviceLocation: activity.location || 'Lagos, Nigeria',
-          baseAmountNaira: 20000,
         }
       );
       setPaymentContext((prev) => (prev ? { ...prev, activeCheckoutSession: session } : null));
@@ -242,17 +251,17 @@ export function LifecycleStateSurface({
     }
   };
 
-  const handleVerifyPayment = async (checkoutReference: string) => {
+  const handleVerifyPayment = async (checkoutReference: string, method?: PaymentMethod) => {
     const repo = getCustomerPaymentRepository();
-    const result = await repo.verifyPayment(customerId, checkoutReference);
+    const result = await repo.verifyPayment(customerId, checkoutReference, method);
     const updated = await repo.getPaymentContext(customerId, activity.id);
     setPaymentContext(updated);
     return result;
   };
 
-  const handleCheckStatus = async (checkoutReference: string) => {
+  const handleCheckStatus = async (checkoutReference: string, method?: PaymentMethod) => {
     const repo = getCustomerPaymentRepository();
-    const result = await repo.checkVerificationStatus(customerId, checkoutReference);
+    const result = await repo.checkVerificationStatus(customerId, checkoutReference, method);
     const updated = await repo.getPaymentContext(customerId, activity.id);
     setPaymentContext(updated);
     return result;
@@ -417,6 +426,23 @@ export function LifecycleStateSurface({
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       {paymentContext && (
         <section aria-label="Payment and Escrow Protection" className="space-y-4">
+          {/* Offline Read-Only Notice Banner */}
+          {isOffline && (
+            <div
+              role="alert"
+              aria-label="Offline Mode: Read-Only Financial State"
+              className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-xs text-amber-900 flex items-start gap-3"
+            >
+              <WifiOff className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" aria-hidden="true" />
+              <div className="space-y-0.5">
+                <p className="font-bold">Offline: Read-Only Financial State</p>
+                <p className="text-amber-800 leading-relaxed">
+                  You are currently offline. Financial mutations (funding escrow, releasing funds, requesting refunds, and filing disputes) are disabled until your connection is restored. Booking details and receipts remain accessible in read-only mode.
+                </p>
+              </div>
+            </div>
+          )}
+
           <EscrowProtectionTracker
             escrowStatus={paymentContext.escrowStatus}
             settlementStatus={
@@ -430,6 +456,7 @@ export function LifecycleStateSurface({
             }
             onRetryRelease={handleRetryRelease}
             isRetrying={isPaymentActionPending}
+            isOffline={isOffline}
           />
 
           {/* Prompt to Fund Escrow for CONFIRMED bookings */}
@@ -450,7 +477,10 @@ export function LifecycleStateSurface({
               <button
                 type="button"
                 onClick={handleOpenCheckout}
-                className="min-h-[48px] px-5 py-2.5 rounded-xl bg-[#296A4B] hover:bg-[#20543B] text-white text-xs font-semibold inline-flex items-center justify-center gap-2 transition cursor-pointer shrink-0 shadow-xs"
+                disabled={isOffline}
+                aria-disabled={isOffline}
+                title={isOffline ? 'Escrow funding requires an active internet connection' : undefined}
+                className="min-h-[48px] px-5 py-2.5 rounded-xl bg-[#296A4B] hover:bg-[#20543B] text-white text-xs font-semibold inline-flex items-center justify-center gap-2 transition cursor-pointer shrink-0 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ShieldCheck className="h-4 w-4" aria-hidden="true" />
                 <span>Fund Escrow (₦{paymentContext.pricing.totalPayableNaira.toLocaleString()})</span>
@@ -465,7 +495,7 @@ export function LifecycleStateSurface({
               workerName={activity.preferredWorker?.name || 'BrainWorker'}
               serviceTitle={activity.title}
               amountNaira={paymentContext.pricing.totalPayableNaira}
-              isOffline={false}
+              isOffline={isOffline}
               onReleaseEscrow={handleReleaseEscrow}
               onOpenDisputeModal={() => setIsDisputeModalOpen(true)}
             />
@@ -623,7 +653,10 @@ export function LifecycleStateSurface({
                 <button
                   type="button"
                   onClick={() => setIsRefundModalOpen(true)}
-                  className="px-3.5 py-2 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 transition cursor-pointer"
+                  disabled={isOffline}
+                  aria-disabled={isOffline}
+                  title={isOffline ? 'Refund requests require an active internet connection' : undefined}
+                  className="px-3.5 py-2 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Request Refund</span>
@@ -736,7 +769,7 @@ export function LifecycleStateSurface({
             workerName={activity.preferredWorker?.name || 'Assigned BrainWorker'}
             pricing={paymentContext.pricing}
             session={paymentContext.activeCheckoutSession || null}
-            isOffline={false}
+            isOffline={isOffline}
             onVerifyPayment={handleVerifyPayment}
             onCheckStatus={handleCheckStatus}
             onSuccess={() => setIsCheckoutModalOpen(false)}
@@ -753,7 +786,7 @@ export function LifecycleStateSurface({
             onClose={() => setIsRefundModalOpen(false)}
             bookingId={activity.id}
             amountNaira={paymentContext.pricing.totalPayableNaira}
-            isOffline={false}
+            isOffline={isOffline}
             onSubmitRefund={handleRequestRefund}
           />
 
@@ -761,7 +794,7 @@ export function LifecycleStateSurface({
             isOpen={isDisputeModalOpen}
             onClose={() => setIsDisputeModalOpen(false)}
             bookingId={activity.id}
-            isOffline={false}
+            isOffline={isOffline}
             onSubmitDispute={handleDisputeEscrow}
           />
         </>

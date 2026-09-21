@@ -32,8 +32,8 @@ interface CheckoutModalProps {
   pricing: PricingBreakdown;
   session: CheckoutSession | null;
   isOffline?: boolean | undefined;
-  onVerifyPayment: (checkoutReference: string) => Promise<{ status: PaymentAuthorizationStatus; failureReason?: string | undefined }>;
-  onCheckStatus: (checkoutReference: string) => Promise<{ status: PaymentAuthorizationStatus; failureReason?: string | undefined }>;
+  onVerifyPayment: (checkoutReference: string, method?: PaymentMethod) => Promise<{ status: PaymentAuthorizationStatus; failureReason?: string | undefined }>;
+  onCheckStatus: (checkoutReference: string, method?: PaymentMethod) => Promise<{ status: PaymentAuthorizationStatus; failureReason?: string | undefined }>;
   onSuccess: () => void;
 }
 
@@ -115,7 +115,7 @@ export function CheckoutModal({
     setFailureMessage(null);
 
     try {
-      const result = await onVerifyPayment(session.checkoutReference);
+      const result = await onVerifyPayment(session.checkoutReference, selectedMethod);
       setPaymentState(result.status);
       if (result.status === 'verified') {
         setTimeout(() => {
@@ -138,7 +138,7 @@ export function CheckoutModal({
     setPaymentState('processing');
 
     try {
-      const result = await onCheckStatus(session.checkoutReference);
+      const result = await onCheckStatus(session.checkoutReference, selectedMethod);
       setPaymentState(result.status);
       if (result.status === 'verified') {
         setTimeout(() => {
@@ -498,6 +498,13 @@ export function CheckoutModal({
                 <p className="text-[11px] text-slate-500 leading-relaxed">
                   Transfer the exact amount above from your banking app. Verification reconciles automatically once funds reflect.
                 </p>
+
+                {session?.virtualAccount?.expiresAt && (
+                  <div className="flex items-center gap-1.5 text-[11px] text-slate-500 pt-0.5">
+                    <Clock className="h-3.5 w-3.5 text-slate-400" />
+                    <span>Account valid until: {new Date(session.virtualAccount.expiresAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>
+                )}
               </div>
             )}
 
