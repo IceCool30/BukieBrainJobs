@@ -172,7 +172,8 @@ describe('WEB-015 Customer Payments & Escrow UX (Component Integration)', () => 
 
       // Switch to USSD
       fireEvent.click(screen.getByRole('tab', { name: /USSD/i }));
-      expect(screen.getByText(/Select your Nigerian bank to generate prompt/i)).toBeInTheDocument();
+      expect(screen.getByText(/Choose Your Bank/i)).toBeInTheDocument();
+      expect(screen.getByText(/Dial the code below/i)).toBeInTheDocument();
     });
 
     it('populates test card using quick fill sandbox button and handles verification', async () => {
