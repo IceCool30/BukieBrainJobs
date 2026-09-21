@@ -93,25 +93,25 @@ describe('WEB-014 ProfileScreen Component (TDD)', () => {
     await screen.findByRole('heading', { level: 1 });
 
     // Switch to Saved Addresses tab
-    const addressesTab = screen.getByRole('button', { name: /Saved Addresses/i });
+    const addressesTab = screen.getByRole('tab', { name: /Saved Addresses/i });
     fireEvent.click(addressesTab);
 
     expect(await screen.findByRole('heading', { name: /Saved Service Locations/i })).toBeInTheDocument();
 
     // Switch to Security & Login tab
-    const securityTab = screen.getByRole('button', { name: /Security & Login/i });
+    const securityTab = screen.getByRole('tab', { name: /Security & Login/i });
     fireEvent.click(securityTab);
 
     expect(await screen.findByRole('heading', { name: /Security & Login Credentials/i })).toBeInTheDocument();
 
     // Switch to Notifications tab
-    const notificationsTab = screen.getByRole('button', { name: /Notifications/i });
+    const notificationsTab = screen.getByRole('tab', { name: /Notifications/i });
     fireEvent.click(notificationsTab);
 
     expect(await screen.findByRole('heading', { name: /Notification Preferences/i })).toBeInTheDocument();
 
     // Switch to Account & Privacy tab
-    const accountTab = screen.getByRole('button', { name: /Account & Privacy/i });
+    const accountTab = screen.getByRole('tab', { name: /Account & Privacy/i });
     fireEvent.click(accountTab);
 
     expect(await screen.findByRole('heading', { name: /Account Data & Privacy/i })).toBeInTheDocument();
@@ -148,7 +148,7 @@ describe('WEB-014 ProfileScreen Component (TDD)', () => {
     await screen.findByRole('heading', { level: 1 });
 
     // Go to addresses tab
-    const addressesTab = screen.getByRole('button', { name: /Saved Addresses/i });
+    const addressesTab = screen.getByRole('tab', { name: /Saved Addresses/i });
     fireEvent.click(addressesTab);
 
     await screen.findByRole('heading', { name: /Saved Service Locations/i });
@@ -183,7 +183,7 @@ describe('WEB-014 ProfileScreen Component (TDD)', () => {
     await screen.findByRole('heading', { level: 1 });
 
     // Go to security tab
-    const securityTab = screen.getByRole('button', { name: /Security & Login/i });
+    const securityTab = screen.getByRole('tab', { name: /Security & Login/i });
     fireEvent.click(securityTab);
 
     await screen.findByRole('heading', { name: /Security & Login Credentials/i });
@@ -215,7 +215,7 @@ describe('WEB-014 ProfileScreen Component (TDD)', () => {
     await screen.findByRole('heading', { level: 1 });
 
     // Go to notifications tab
-    const notificationsTab = screen.getByRole('button', { name: /Notifications/i });
+    const notificationsTab = screen.getByRole('tab', { name: /Notifications/i });
     fireEvent.click(notificationsTab);
 
     await screen.findByRole('heading', { name: /Notification Preferences/i });
@@ -251,7 +251,7 @@ describe('WEB-014 ProfileScreen Component (TDD)', () => {
       expect(screen.getByDisplayValue('bukola.adeyemi@example.com')).toBeInTheDocument();
 
       // Go to addresses and verify Customer A's address is displayed
-      const addressesTab = screen.getByRole('button', { name: /Saved Addresses/i });
+      const addressesTab = screen.getByRole('tab', { name: /Saved Addresses/i });
       fireEvent.click(addressesTab);
 
       expect(await screen.findByText('14 Admiralty Way')).toBeInTheDocument();
@@ -278,14 +278,14 @@ describe('WEB-014 ProfileScreen Component (TDD)', () => {
 
       // Verify Customer B's name is rendered in sidebar and profile
       expect(await screen.findByText(/Chinedu Okonkwo/i)).toBeInTheDocument();
-      expect(screen.getByDisplayValue('chinedu.okonkwo@example.com')).toBeInTheDocument();
+      expect(await screen.findByDisplayValue('chinedu.okonkwo@example.com')).toBeInTheDocument();
 
       // Verify zero trace of Customer A's data exists in Customer B's view
       expect(screen.queryByText('Bukola Adeyemi')).not.toBeInTheDocument();
       expect(screen.queryByDisplayValue('bukola.adeyemi@example.com')).not.toBeInTheDocument();
 
       // Go to addresses tab for Customer B
-      const addressesTabB = screen.getByRole('button', { name: /Saved Addresses/i });
+      const addressesTabB = screen.getByRole('tab', { name: /Saved Addresses/i });
       fireEvent.click(addressesTabB);
 
       // Customer B's address must be visible

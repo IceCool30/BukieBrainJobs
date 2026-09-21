@@ -92,7 +92,11 @@ export default function ProfileScreen() {
       setIsOffline(repo.isOfflineMode());
 
       const [p, addr, pref, sess] = await Promise.all([
-        repo.getProfile(customerId),
+        repo.getProfile(customerId, {
+          name: currentUser?.name,
+          email: currentUser?.email,
+          phone: currentUser?.phone,
+        }),
         repo.getSavedAddresses(customerId),
         repo.getNotificationPreferences(customerId),
         repo.getActiveSessions(customerId),
@@ -263,7 +267,6 @@ export default function ProfileScreen() {
           alt=""
           width={420}
           height={420}
-          priority={false}
         />
       </div>
 
@@ -327,9 +330,17 @@ export default function ProfileScreen() {
             )}
 
             {/* Sub-Navigation Tabs */}
-            <div className="bg-white rounded-2xl p-2 border border-slate-200 shadow-xs flex gap-1 overflow-x-auto">
+            <div
+              role="tablist"
+              aria-label="Profile Sections"
+              className="bg-white rounded-2xl p-2 border border-slate-200 shadow-xs flex gap-1 overflow-x-auto"
+            >
               <button
                 type="button"
+                role="tab"
+                id="tab-personal"
+                aria-selected={activeTab === 'personal'}
+                aria-controls="panel-personal"
                 onClick={() => handleTabChange('personal')}
                 className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
                   activeTab === 'personal'
@@ -343,6 +354,10 @@ export default function ProfileScreen() {
 
               <button
                 type="button"
+                role="tab"
+                id="tab-addresses"
+                aria-selected={activeTab === 'addresses'}
+                aria-controls="panel-addresses"
                 onClick={() => handleTabChange('addresses')}
                 className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
                   activeTab === 'addresses'
@@ -367,6 +382,10 @@ export default function ProfileScreen() {
 
               <button
                 type="button"
+                role="tab"
+                id="tab-security"
+                aria-selected={activeTab === 'security'}
+                aria-controls="panel-security"
                 onClick={() => handleTabChange('security')}
                 className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
                   activeTab === 'security'
@@ -380,6 +399,10 @@ export default function ProfileScreen() {
 
               <button
                 type="button"
+                role="tab"
+                id="tab-notifications"
+                aria-selected={activeTab === 'notifications'}
+                aria-controls="panel-notifications"
                 onClick={() => handleTabChange('notifications')}
                 className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
                   activeTab === 'notifications'
@@ -393,6 +416,10 @@ export default function ProfileScreen() {
 
               <button
                 type="button"
+                role="tab"
+                id="tab-account"
+                aria-selected={activeTab === 'account'}
+                aria-controls="panel-account"
                 onClick={() => handleTabChange('account')}
                 className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
                   activeTab === 'account'
@@ -414,48 +441,58 @@ export default function ProfileScreen() {
             ) : (
               <>
                 {activeTab === 'personal' && profile && (
-                  <PersonalDetailsSection
-                    profile={profile}
-                    isOffline={isOffline}
-                    onSave={handleSavePersonalDetails}
-                  />
+                  <div role="tabpanel" id="panel-personal" aria-labelledby="tab-personal">
+                    <PersonalDetailsSection
+                      profile={profile}
+                      isOffline={isOffline}
+                      onSave={handleSavePersonalDetails}
+                    />
+                  </div>
                 )}
 
                 {activeTab === 'addresses' && (
-                  <SavedAddressesSection
-                    addresses={addresses}
-                    isOffline={isOffline}
-                    onAddAddress={handleAddAddress}
-                    onUpdateAddress={handleUpdateAddress}
-                    onDeleteAddress={handleDeleteAddress}
-                    onSetDefaultAddress={handleSetDefaultAddress}
-                  />
+                  <div role="tabpanel" id="panel-addresses" aria-labelledby="tab-addresses">
+                    <SavedAddressesSection
+                      addresses={addresses}
+                      isOffline={isOffline}
+                      onAddAddress={handleAddAddress}
+                      onUpdateAddress={handleUpdateAddress}
+                      onDeleteAddress={handleDeleteAddress}
+                      onSetDefaultAddress={handleSetDefaultAddress}
+                    />
+                  </div>
                 )}
 
                 {activeTab === 'security' && (
-                  <SecuritySection
-                    activeSessions={sessions}
-                    isOffline={isOffline}
-                    onUpdatePassword={handleUpdatePassword}
-                    onSignOutOtherSessions={handleSignOutOtherSessions}
-                  />
+                  <div role="tabpanel" id="panel-security" aria-labelledby="tab-security">
+                    <SecuritySection
+                      activeSessions={sessions}
+                      isOffline={isOffline}
+                      onUpdatePassword={handleUpdatePassword}
+                      onSignOutOtherSessions={handleSignOutOtherSessions}
+                    />
+                  </div>
                 )}
 
                 {activeTab === 'notifications' && preferences && (
-                  <NotificationPreferencesSection
-                    preferences={preferences}
-                    isOffline={isOffline}
-                    onUpdatePreferences={handleUpdatePreferences}
-                  />
+                  <div role="tabpanel" id="panel-notifications" aria-labelledby="tab-notifications">
+                    <NotificationPreferencesSection
+                      preferences={preferences}
+                      isOffline={isOffline}
+                      onUpdatePreferences={handleUpdatePreferences}
+                    />
+                  </div>
                 )}
 
                 {activeTab === 'account' && (
-                  <AccountManagementSection
-                    customerId={currentUser.id}
-                    isOffline={isOffline}
-                    onExportData={handleExportData}
-                    onDeleteAccount={handleDeleteAccount}
-                  />
+                  <div role="tabpanel" id="panel-account" aria-labelledby="tab-account">
+                    <AccountManagementSection
+                      customerId={currentUser.id}
+                      isOffline={isOffline}
+                      onExportData={handleExportData}
+                      onDeleteAccount={handleDeleteAccount}
+                    />
+                  </div>
                 )}
               </>
             )}

@@ -41,7 +41,10 @@ export function validatePassword(password: string): void {
 }
 
 export interface ICustomerProfileRepository {
-  getProfile(authenticatedCustomerId: string): Promise<CustomerProfile>;
+  getProfile(
+    authenticatedCustomerId: string,
+    sessionUser?: { name?: string; email?: string; phone?: string }
+  ): Promise<CustomerProfile>;
   updateProfile(authenticatedCustomerId: string, input: UpdatePersonalDetailsInput): Promise<CustomerProfile>;
   getSavedAddresses(authenticatedCustomerId: string): Promise<SavedAddress[]>;
   addSavedAddress(authenticatedCustomerId: string, input: CreateSavedAddressInput): Promise<SavedAddress>;
@@ -171,19 +174,27 @@ export class MockCustomerProfileRepository implements ICustomerProfileRepository
     }
   }
 
-  async getProfile(authenticatedCustomerId: string): Promise<CustomerProfile> {
+  async getProfile(
+    authenticatedCustomerId: string,
+    sessionUser?: { name?: string; email?: string; phone?: string }
+  ): Promise<CustomerProfile> {
     this.validateCustomerId(authenticatedCustomerId);
     const existing = this.profiles.get(authenticatedCustomerId);
     if (existing) {
       return { ...existing };
     }
-    // Return empty profile shell for new authenticated user
+
+    const nameParts = sessionUser?.name ? sessionUser.name.trim().split(' ') : [];
+    const firstName = nameParts[0] || 'Customer';
+    const lastName = nameParts.slice(1).join(' ') || 'User';
+
+    // Return profile shell for new authenticated user
     const fallback: CustomerProfile = {
       customerId: authenticatedCustomerId,
-      firstName: 'Customer',
-      lastName: 'User',
-      phone: '+2348000000000',
-      email: `${authenticatedCustomerId}@example.com`,
+      firstName,
+      lastName,
+      phone: sessionUser?.phone || '+2348000000000',
+      email: sessionUser?.email || `${authenticatedCustomerId}@example.com`,
       emailVerified: false,
       createdAt: new Date().toISOString(),
     };
