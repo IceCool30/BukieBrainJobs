@@ -6,9 +6,9 @@ import type { ConversationSummary } from '../../lib/messaging/types';
 
 export interface ConversationCardProps {
   conversation: ConversationSummary;
-  isActive?: boolean;
-  currentUserId?: string;
-  onSelect?: (jobId: string) => void;
+  isActive?: boolean | undefined;
+  currentUserId?: string | undefined;
+  onSelect?: ((jobId: string) => void) | undefined;
 }
 
 function getInitials(name: string): string {

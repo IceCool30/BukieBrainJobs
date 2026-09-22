@@ -11,13 +11,13 @@ import {
 } from './ConversationFilterBar';
 
 export interface ConversationHubProps {
-  conversations?: ConversationSummary[];
-  activeJobId?: string;
-  onSelectConversation?: (jobId: string) => void;
-  isLoading?: boolean;
-  error?: string | null;
-  onRetry?: () => void;
-  currentUserId?: string;
+  conversations?: ConversationSummary[] | undefined;
+  activeJobId?: string | undefined;
+  onSelectConversation?: ((jobId: string) => void) | undefined;
+  isLoading?: boolean | undefined;
+  error?: string | null | undefined;
+  onRetry?: (() => void) | undefined;
+  currentUserId?: string | undefined;
 }
 
 export function ConversationHub({
