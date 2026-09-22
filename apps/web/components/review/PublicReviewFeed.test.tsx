@@ -74,10 +74,10 @@ describe('PublicReviewFeed (TDD Suite 5: FED-001 to FED-011)', () => {
 
       expect(screen.getByText(/Verified bookings only/i)).toBeInTheDocument();
       expect(screen.getByText(/Rating Breakdown/i)).toBeInTheDocument();
-      expect(screen.getByText(/Punctuality/i)).toBeInTheDocument();
-      expect(screen.getByText(/Work quality/i)).toBeInTheDocument();
-      expect(screen.getByText(/Communication/i)).toBeInTheDocument();
-      expect(screen.getByText(/Overall/i)).toBeInTheDocument();
+      expect(screen.getByText('Punctuality', { exact: true })).toBeInTheDocument();
+      expect(screen.getByText('Work quality', { exact: true })).toBeInTheDocument();
+      expect(screen.getByText('Communication', { exact: true })).toBeInTheDocument();
+      expect(screen.getByText('Overall', { exact: true })).toBeInTheDocument();
     });
   });
 
