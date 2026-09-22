@@ -301,31 +301,24 @@ export class CustomerReviewRepository implements ICustomerReviewRepository {
     const validatedRatings = validateReviewRatings(input.ratings);
     const validatedComment = validateReviewComment(input.comment);
 
-    // [8] Atomically persist — no intermediate awaits
+    // [8] Atomically persist — no intermediate awaits between duplicate check and write.
+    // Mock-first: customerName uses customerId as a stand-in.
+    // Phase 4+ will resolve the display name from the authenticated auth profile service.
     const record: CustomerReviewRecord = {
       id: generateId(),
       bookingId: input.bookingId,
       customerId: callerId,
-      customerName: booking.brainWorkerName !== undefined
-        ? '' // placeholder — real name resolution is future auth-layer concern
-        : '',
+      customerName: callerId,
       brainWorkerId: booking.brainWorkerId,
       ratings: validatedRatings,
       comment: validatedComment,
       createdAt: new Date().toISOString(),
     };
 
-    // Resolve customer display name from booking context (mock-first: use caller ID as name)
-    // In production, this will be fetched from the auth profile service.
-    const nameRecord: CustomerReviewRecord = {
-      ...record,
-      customerName: callerId,
-    };
+    this.store.reviewsByBookingId.set(input.bookingId, record);
+    this.store.reviewsById.set(record.id, record);
 
-    this.store.reviewsByBookingId.set(input.bookingId, nameRecord);
-    this.store.reviewsById.set(nameRecord.id, nameRecord);
-
-    return nameRecord;
+    return record;
   }
 
   // ──────────────────────────────────────────────────────────────
