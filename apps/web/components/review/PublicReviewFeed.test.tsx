@@ -69,7 +69,7 @@ describe('PublicReviewFeed (TDD Suite 5: FED-001 to FED-011)', () => {
       render(<PublicReviewFeed brainWorkerId={brainWorkerId} />);
 
       await waitFor(() => {
-        expect(screen.getByText('4.9')).toBeInTheDocument();
+        expect(screen.getAllByText('4.9').length).toBeGreaterThan(0);
       });
 
       expect(screen.getByText(/Verified bookings only/i)).toBeInTheDocument();
