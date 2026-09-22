@@ -132,6 +132,11 @@ export interface MediaUploadResult {
   mimeType: string;
 }
 
+export interface ImageAttachmentInput {
+  size: number;
+  mimeType: string;
+}
+
 export interface IMessagingRepository {
   /**
    * Returns all conversation summaries for the authenticated caller,

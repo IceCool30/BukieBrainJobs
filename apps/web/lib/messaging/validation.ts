@@ -4,12 +4,18 @@
 
 import {
   type LocationPayload,
+  type ImageAttachmentInput,
   MessageValidationError,
   MediaUploadError,
   MessagingError,
 } from './types';
 
-export { MessageValidationError, MediaUploadError, MessagingError };
+export {
+  type ImageAttachmentInput,
+  MessageValidationError,
+  MediaUploadError,
+  MessagingError,
+};
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Validation Constants
@@ -105,7 +111,7 @@ export function validateTextMessage(text: unknown): string {
  * Enforces 5.0 MB maximum size cap and strict MIME allowlist.
  */
 export function validateImageAttachment(file: unknown): void {
-  if (!file || typeof file !== 'object') {
+  if (!file || typeof file !== 'object' || Array.isArray(file)) {
     throw new MediaUploadError('Image attachment file is required.');
   }
 
