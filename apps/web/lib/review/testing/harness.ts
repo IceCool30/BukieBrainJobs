@@ -1,43 +1,29 @@
 // apps/web/lib/review/testing/harness.ts
-// Isolated test harness and controller for WEB-016 repository contract tests.
-// This module never imports from production `../repository.ts` during Phase 2 RED.
-// The harness exposes the ICustomerReviewRepository interface so that tests
-// target the contract, not the implementation.
+// Isolated test harness for WEB-016 repository contract tests.
+// Phase 3 GREEN: replaces StubCustomerReviewRepository with IsolatedCustomerReviewRepository.
+// The harness injects the ReviewTestStore into the production CustomerReviewRepository
+// via a protected subclass — following the identical pattern used by the payment module.
 //
 // Architecture: WEB-016 Architecture Contract v1.2, Section 6.2 (Zero-Leakage Production Boundary)
+// No test code is imported or executed from production modules.
+// Production `repository.ts` does not import from this module.
 
-import type {
-  ICustomerReviewRepository,
-  CustomerReviewRecord,
-  PublicBrainWorkerReview,
-  BrainWorkerReputationSummary,
-  ReviewEligibility,
-  SubmitReviewInput,
-  SubmitReviewReportInput,
-  ReviewReportResult,
-  GetPublicReviewsResult,
-  AbuseReportReason,
-} from '../types';
+import type { ICustomerReviewRepository, CustomerReviewRecord, AbuseReportReason } from '../types';
+import type { ReviewInternalStore } from '../repository';
+import { CustomerReviewRepository } from '../repository';
 
 import type {
   ReviewInternalBookingRecord,
 } from './fixtures';
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Internal Test Store
+// Test Store
+// Extends ReviewInternalStore with test-lifecycle reset() utility.
+// Structurally satisfies ReviewInternalStore so IsolatedCustomerReviewRepository
+// can accept it via the protected `store` field.
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-export interface ReviewTestStore {
-  /** Canonical booking records keyed by bookingId. */
-  bookings: Map<string, ReviewInternalBookingRecord>;
-  /** Submitted review records keyed by bookingId (one review per booking). */
-  reviewsByBookingId: Map<string, CustomerReviewRecord>;
-  /** All review records keyed by review ID (for public projection lookups). */
-  reviewsById: Map<string, CustomerReviewRecord>;
-  /** Abuse reports keyed by `${reviewId}::${reporterId}` composite key. */
-  reports: Map<string, { reviewId: string; reporterId: string; reason: AbuseReportReason; details?: string; reportId: string }>;
-  /** When true, the adapter simulates an unavailable storage/transport condition. */
-  isStorageUnavailable: boolean;
+export interface ReviewTestStore extends ReviewInternalStore {
   reset(): void;
 }
 
@@ -64,13 +50,13 @@ export function createReviewTestStore(): ReviewTestStore {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 export interface IReviewTestController {
-  /** Seed a booking record into the test store. */
+  /** Seed a single booking record into the test store. */
   seedBooking(booking: ReviewInternalBookingRecord): void;
   /** Seed multiple bookings at once. */
   seedBookings(bookings: ReviewInternalBookingRecord[]): void;
-  /** Pre-seed a submitted review record (for already-reviewed scenarios). */
+  /** Pre-seed a submitted review record (e.g., for already-reviewed scenarios). */
   seedReview(review: CustomerReviewRecord): void;
-  /** Simulate storage/transport unavailability (repository offline test). */
+  /** Simulate storage/transport unavailability (offline boundary injection). */
   setStorageUnavailable(unavailable: boolean): void;
   /** Reset all store state to clean baseline. */
   reset(): void;
@@ -114,44 +100,21 @@ export class ReviewTestController implements IReviewTestController {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Stub Repository (Phase 2 RED: intentionally unimplemented)
+// Isolated Repository (Phase 3 GREEN: injects test store into production class)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 /**
- * Stub repository used during Phase 2 RED to expose the ICustomerReviewRepository interface.
- * All methods throw NotImplementedError. Phase 3 GREEN will replace this with
- * the production CustomerReviewRepository injected with the test store.
+ * Extends the production CustomerReviewRepository and overrides its internal store
+ * with the injected test store. This allows the test harness to seed state and
+ * observe mutations without modifying production code.
  *
- * This class is strictly test infrastructure and must never be referenced by production code.
+ * Follows the exact same pattern as IsolatedCustomerPaymentRepository in the payment module.
  */
-export class StubCustomerReviewRepository implements ICustomerReviewRepository {
-  constructor(private readonly _store: ReviewTestStore) {}
-
-  async getReviewEligibility(
-    _authenticatedCustomerId: string,
-    _bookingId: string
-  ): Promise<ReviewEligibility> {
-    throw new Error('[Stub] CustomerReviewRepository.getReviewEligibility is not yet implemented.');
-  }
-
-  async submitReview(
-    _authenticatedCustomerId: string,
-    _input: SubmitReviewInput
-  ): Promise<CustomerReviewRecord> {
-    throw new Error('[Stub] CustomerReviewRepository.submitReview is not yet implemented.');
-  }
-
-  async getPublicReviews(
-    _brainWorkerId: string
-  ): Promise<GetPublicReviewsResult> {
-    throw new Error('[Stub] CustomerReviewRepository.getPublicReviews is not yet implemented.');
-  }
-
-  async reportReview(
-    _authenticatedCustomerId: string,
-    _input: SubmitReviewReportInput
-  ): Promise<ReviewReportResult> {
-    throw new Error('[Stub] CustomerReviewRepository.reportReview is not yet implemented.');
+class IsolatedCustomerReviewRepository extends CustomerReviewRepository {
+  constructor(testStore: ReviewTestStore) {
+    super();
+    // Override the protected store with the injected test store
+    this.store = testStore;
   }
 }
 
@@ -167,12 +130,12 @@ export interface ReviewTestHarness {
 
 /**
  * Creates an isolated review test harness with a clean store for each test.
- * During Phase 2 RED, the repository is a stub. Phase 3 GREEN will inject the
- * production CustomerReviewRepository implementation via this same factory interface.
+ * The repository is the production CustomerReviewRepository with a test store injected.
+ * All repository behavior is real — only the storage layer is isolated.
  */
 export function createReviewTestHarness(): ReviewTestHarness {
   const store = createReviewTestStore();
   const testController = new ReviewTestController(store);
-  const repository = new StubCustomerReviewRepository(store);
+  const repository = new IsolatedCustomerReviewRepository(store);
   return { repository, testController, store };
 }
