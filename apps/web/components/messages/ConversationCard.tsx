@@ -175,16 +175,11 @@ export function ConversationCard({
         <div className="flex items-center justify-between gap-2 mt-1.5">
           <p className="text-xs text-slate-500 truncate flex-1">
             {lastMessage ? (
-              <>
-                <span className="font-semibold text-slate-700">
-                  {getSenderPrefix(
-                    lastMessage.senderId,
-                    currentUserId,
-                    lastMessage.senderName
-                  )}
-                </span>
-                <span>{lastMessage.content}</span>
-              </>
+              `${getSenderPrefix(
+                lastMessage.senderId,
+                currentUserId,
+                lastMessage.senderName
+              )}${lastMessage.content}`
             ) : (
               <span className="italic text-slate-400">No messages yet</span>
             )}
