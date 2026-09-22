@@ -5,7 +5,7 @@
 // Design principles:
 // - Transport-agnostic: no Socket.io, polling, or browser globals.
 // - Fail-closed: every operation rejects before it succeeds when authorization is absent.
-// - No imports from ./testing — the production boundary is enforced by REP-025.
+// - Production boundary: this module has zero imports from the test harness (enforced by REP-025).
 
 import type {
   IMessagingRepository,
