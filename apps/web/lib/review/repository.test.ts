@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import type { ICustomerReviewRepository } from './types';
+import type { ICustomerReviewRepository, ReviewRatings, CustomerReviewRecord } from './types';
 import type { IReviewTestController } from './testing/harness';
 import {
   createReviewTestHarness,
@@ -201,17 +201,17 @@ describe('WEB-016 CustomerReviewRepository (TDD Suite 2)', () => {
 
   describe('REP-010: Immutability — no update method exists', () => {
     it('repository does not expose an update method on the ICustomerReviewRepository contract', () => {
-      expect((repo as Record<string, unknown>).updateReview).toBeUndefined();
-      expect((repo as Record<string, unknown>).editReview).toBeUndefined();
-      expect((repo as Record<string, unknown>).patchReview).toBeUndefined();
+      expect((repo as unknown as Record<string, unknown>).updateReview).toBeUndefined();
+      expect((repo as unknown as Record<string, unknown>).editReview).toBeUndefined();
+      expect((repo as unknown as Record<string, unknown>).patchReview).toBeUndefined();
     });
   });
 
   describe('REP-011: Immutability — no delete method exists', () => {
     it('repository does not expose a delete method on the ICustomerReviewRepository contract', () => {
-      expect((repo as Record<string, unknown>).deleteReview).toBeUndefined();
-      expect((repo as Record<string, unknown>).removeReview).toBeUndefined();
-      expect((repo as Record<string, unknown>).destroyReview).toBeUndefined();
+      expect((repo as unknown as Record<string, unknown>).deleteReview).toBeUndefined();
+      expect((repo as unknown as Record<string, unknown>).removeReview).toBeUndefined();
+      expect((repo as unknown as Record<string, unknown>).destroyReview).toBeUndefined();
     });
   });
 
@@ -241,10 +241,10 @@ describe('WEB-016 CustomerReviewRepository (TDD Suite 2)', () => {
       const publicReview = result.reviews[0]!;
 
       // Privacy: no private identifiers exposed
-      expect((publicReview as Record<string, unknown>).customerId).toBeUndefined();
-      expect((publicReview as Record<string, unknown>).phone).toBeUndefined();
-      expect((publicReview as Record<string, unknown>).email).toBeUndefined();
-      expect((publicReview as Record<string, unknown>).address).toBeUndefined();
+      expect((publicReview as unknown as Record<string, unknown>).customerId).toBeUndefined();
+      expect((publicReview as unknown as Record<string, unknown>).phone).toBeUndefined();
+      expect((publicReview as unknown as Record<string, unknown>).email).toBeUndefined();
+      expect((publicReview as unknown as Record<string, unknown>).address).toBeUndefined();
 
       // Name must be masked to first name + last initial
       expect(publicReview.reviewerDisplayName).toMatch(/^[A-Za-zÀ-ÿ]+ [A-Za-zÀ-ÿ]\./);
@@ -266,10 +266,10 @@ describe('WEB-016 CustomerReviewRepository (TDD Suite 2)', () => {
       ];
       testController.seedBookings(bookings);
 
-      const ratings = [
-        { punctuality: 5, quality: 5, communication: 5, overall: 5 as const },
-        { punctuality: 4, quality: 4, communication: 4, overall: 4 as const },
-        { punctuality: 3, quality: 3, communication: 3, overall: 3 as const },
+      const ratings: ReviewRatings[] = [
+        { punctuality: 5, quality: 5, communication: 5, overall: 5 },
+        { punctuality: 4, quality: 4, communication: 4, overall: 4 },
+        { punctuality: 3, quality: 3, communication: 3, overall: 3 },
       ];
 
       for (let i = 0; i < bookings.length; i++) {
@@ -300,9 +300,9 @@ describe('WEB-016 CustomerReviewRepository (TDD Suite 2)', () => {
       ];
       testController.seedBookings(bookings);
 
-      const reviews = [
-        { id: 'rev-014a', bookingId: 'book-rep-014a', customerId: FIXTURE_CUSTOMER_ID, customerName: 'A', brainWorkerId: bwId, ratings: { punctuality: 4, quality: 3, communication: 5, overall: 5 as const }, createdAt: '2026-09-20T10:00:00.000Z' },
-        { id: 'rev-014b', bookingId: 'book-rep-014b', customerId: 'cust-014b', customerName: 'B', brainWorkerId: bwId, ratings: { punctuality: 2, quality: 5, communication: 3, overall: 3 as const }, createdAt: '2026-09-20T10:00:00.000Z' },
+      const reviews: CustomerReviewRecord[] = [
+        { id: 'rev-014a', bookingId: 'book-rep-014a', customerId: FIXTURE_CUSTOMER_ID, customerName: 'A', brainWorkerId: bwId, ratings: { punctuality: 4, quality: 3, communication: 5, overall: 5 }, createdAt: '2026-09-20T10:00:00.000Z' },
+        { id: 'rev-014b', bookingId: 'book-rep-014b', customerId: 'cust-014b', customerName: 'B', brainWorkerId: bwId, ratings: { punctuality: 2, quality: 5, communication: 3, overall: 3 }, createdAt: '2026-09-20T10:00:00.000Z' },
       ];
       for (const rev of reviews) testController.seedReview(rev);
 
