@@ -8,19 +8,27 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- [ ] **16. WEB-016 Customer Reviews & Reputation**
-  - **Spec**: `docs/specs/WEB-016-customer-reviews-reputation.md`
+- [ ] **17. WEB-017 In-App Messaging & Real-Time Chat**
+  - **Spec**: `docs/specs/WEB-017-messaging-chat.md`
   - **Acceptance Criteria**:
-    - [ ] Post-completion review prompt triggered on completed bookings
-    - [ ] Multi-criteria ratings (punctuality, quality, communication, overall 1-5 stars)
-    - [ ] Written customer feedback with honest character limits
-    - [ ] Public review feed on BrainWorker profile tabs
-    - [ ] Review reporting and abuse flagging action
-    - [ ] Authorization: customer can only review a booking they own and that is in COMPLETED state
-    - [ ] Offline state: review submission disabled and form read-only while offline
-  - **Verification Command**: `pnpm test && pnpm type-check`
+    - [ ] Customer and BrainWorker active conversation threads at `/messages`
+    - [ ] Message history, pending delivery indicators, and offline caching
+    - [ ] Photo attachment and location share shortcuts
+  - **Verification Command**: `pnpm --filter @bukiebrainjobs/web type-check && pnpm --filter @bukiebrainjobs/web lint && pnpm --filter @bukiebrainjobs/web test`
 
 ## Completed & Verified Slices
+
+- [x] **16. WEB-016 Customer Reviews & Reputation**
+  - **Spec**: `docs/specs/WEB-016-customer-reviews-reputation.md`
+  - **Acceptance Criteria**:
+    - [x] Post-completion review prompt triggered on completed bookings
+    - [x] Multi-criteria ratings (punctuality, quality, communication, overall 1-5 stars)
+    - [x] Written customer feedback with honest character limits (1,000 Unicode code points)
+    - [x] Public review feed on BrainWorker profile tabs with verified booking badge
+    - [x] Review reporting and abuse flagging action
+    - [x] Authorization: customer can only review a booking they own and that is in COMPLETED state
+    - [x] Offline state: review submission disabled and form read-only while offline
+  - **Verification Command**: `pnpm --filter @bukiebrainjobs/web type-check && pnpm --filter @bukiebrainjobs/web lint && pnpm --filter @bukiebrainjobs/web test`
 
 - [x] **15. WEB-015 Customer Payments & Escrow Frontend Experience**
   - **Spec**: `docs/specs/WEB-015-customer-payments-escrow.md`
@@ -175,15 +183,6 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test app/job/MatchResultsScreen.test.tsx lib/matching/matching.test.ts`
 
 ## Upcoming Planned Slices
-
-- [ ] **16. WEB-016 Customer Reviews & Reputation**
-  - **Spec**: `docs/specs/WEB-016-customer-reviews-reputation.md`
-  - **Acceptance Criteria**:
-    - [ ] Post-completion review prompt triggered on completed bookings
-    - [ ] Multi-criteria ratings (punctuality, quality, communication, overall 1-5 stars)
-    - [ ] Written customer feedback with honest character limits
-    - [ ] Public review feed on BrainWorker profile tabs
-  - **Verification Command**: `pnpm test`
 
 - [ ] **17. WEB-017 In-App Messaging & Real-Time Chat**
   - **Spec**: `docs/specs/WEB-017-messaging-chat.md`

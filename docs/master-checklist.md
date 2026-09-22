@@ -17,7 +17,7 @@ This document provides a single, unified checklist of what has been built, what 
 | **Public Website Foundation** | **Mostly Complete** | Homepage, services catalog, service details, BrainWorker profiles. |
 | **Customer Web Platform Foundation** | **Substantially Complete** | Dashboard, job posting, matching, activity hub, booking lifecycle. |
 | **Customer Payments & Escrow UX** | **Complete** | Merged to main at 78623cb. Production boundary isolation, fail-closed attribution, provider neutrality, and 479-test coverage verified. |
-| **Customer Reviews & Reputation** | **Not Built** | Post-job ratings, feedback forms, public review tabs. |
+| **Customer Reviews & Reputation** | **Complete** | Completed & live in production. 608 passing tests across 32 suites. Verified on Vercel deployment 6586791746 (commit 962a870). |
 | **Customer Notifications & Messaging** | **Partially Built** | Shell dialogs exist. Chat threads, socket client, and push UX missing. |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
 | **BrainWorker Platform** | **Not Built** | Onboarding, identity check, job inbox, availability, earnings wallet. |
@@ -86,11 +86,12 @@ Phase 7: Launch Readiness
 - [x] Merged to main at 78623cb. 479 tests passing across 25 suites with 0 failures.
 
 #### 1.3 Customer Reviews & Reputation System
-- [ ] Post-completion review prompt modal triggered when a booking enters `COMPLETED`.
-- [ ] Multi-criteria rating inputs: Punctuality, work quality, communication, and overall score (1 to 5 stars).
-- [ ] Written feedback textarea with honest character limits and guidelines.
-- [ ] Review display tabs on BrainWorker public profiles (`/brainworkers/[id]`) showing verified customer feedback.
-- [ ] Review reporting and abuse flagging action.
+- [x] Post-completion review prompt modal triggered when a booking enters `COMPLETED`.
+- [x] Multi-criteria rating inputs: Punctuality, work quality, communication, and overall score (1 to 5 stars).
+- [x] Written feedback textarea with honest character limits and guidelines.
+- [x] Review display tabs on BrainWorker public profiles (`/brainworkers/[id]`) showing verified customer feedback.
+- [x] Review reporting and abuse flagging action.
+- [x] Merged to main at 962a870. 608 tests passing across 32 suites with 0 regressions. Verified on Vercel production preview.
 
 #### 1.4 In-App Messaging & Real-Time Chat
 - [ ] Replace "Messages coming soon" dialog in navigation with active chat thread list (`/messages`).
