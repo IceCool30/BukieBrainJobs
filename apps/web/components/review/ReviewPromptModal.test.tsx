@@ -252,7 +252,7 @@ describe('ReviewPromptModal (TDD Suite 4: MDL-001 to MDL-017)', () => {
 
   describe('MDL-009: Submitting state lock', () => {
     it('disables submit button and shows spinner during async submission', async () => {
-      let resolveSubmit: (val: any) => void;
+      let resolveSubmit!: (val: unknown) => void;
       const pendingPromise = new Promise((resolve) => {
         resolveSubmit = resolve;
       });
