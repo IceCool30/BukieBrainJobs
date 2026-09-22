@@ -39,11 +39,10 @@ function getSenderPrefix(
   return `${firstName}: `;
 }
 
-function formatRelativeTimestamp(isoDate: string): string {
+function formatRelativeTimestamp(isoDate: string, now: number = Date.now()): string {
   const timestamp = new Date(isoDate).getTime();
   if (Number.isNaN(timestamp)) return '';
 
-  const now = Date.now();
   const diffMs = now - timestamp;
   const diffSec = Math.floor(diffMs / 1000);
   const diffMin = Math.floor(diffSec / 60);
