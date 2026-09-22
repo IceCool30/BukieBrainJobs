@@ -78,9 +78,7 @@ describe('WEB-016 Review Validation (TDD Suite 1)', () => {
     });
 
     it('throws ValidationError when a rating is a string or non-numeric type', () => {
-      // @ts-expect-error Testing invalid runtime input
       expect(() => validateReviewRatings({ ...validRatings, quality: '5' })).toThrow(ValidationError);
-      // @ts-expect-error Testing invalid runtime input
       expect(() => validateReviewRatings({ ...validRatings, communication: true })).toThrow(ValidationError);
     });
   });
