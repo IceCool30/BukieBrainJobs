@@ -87,7 +87,6 @@ export function ReviewPromptCard({
     'your BrainWorker';
 
   const workerId =
-    activity.preferredWorker?.id ||
     eligibility.bookingSummary?.brainWorkerId ||
     '';
 

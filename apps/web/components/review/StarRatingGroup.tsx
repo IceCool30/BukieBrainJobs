@@ -7,11 +7,11 @@ import type { ReviewRating } from '../../lib/review/types';
 export interface StarRatingGroupProps {
   criterionId: string;
   label: string;
-  description?: string;
+  description?: string | undefined;
   value: ReviewRating | null;
   onChange: (value: ReviewRating) => void;
-  disabled?: boolean;
-  error?: string;
+  disabled?: boolean | undefined;
+  error?: string | undefined;
 }
 
 const RATING_LABELS: Record<ReviewRating, string> = {
