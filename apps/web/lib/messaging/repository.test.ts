@@ -93,7 +93,7 @@ describe('WEB-017 MessagingRepository Contract (REP-001 – REP-025)', () => {
       }
       // Verify strict descending order
       for (let i = 0; i < conversations.length - 1; i++) {
-        expect(conversations[i].lastMessageAt >= conversations[i + 1].lastMessageAt).toBe(true);
+        expect(conversations[i]!.lastMessageAt >= conversations[i + 1]!.lastMessageAt).toBe(true);
       }
     });
 
@@ -224,7 +224,7 @@ describe('WEB-017 MessagingRepository Contract (REP-001 – REP-025)', () => {
         FIXTURE_PAGINATION_JOB_ID
       );
       for (let i = 0; i < result.messages.length - 1; i++) {
-        expect(result.messages[i].createdAt <= result.messages[i + 1].createdAt).toBe(true);
+        expect(result.messages[i]!.createdAt <= result.messages[i + 1]!.createdAt).toBe(true);
       }
     });
 
@@ -281,7 +281,7 @@ describe('WEB-017 MessagingRepository Contract (REP-001 – REP-025)', () => {
       );
       // The last message returned should be the most recent (message 35)
       const lastReturnedMsg = result.messages[result.messages.length - 1];
-      expect(lastReturnedMsg.id).toBe(allMessages[34].id);
+      expect(lastReturnedMsg!.id).toBe(allMessages[34]!.id);
     });
   });
 

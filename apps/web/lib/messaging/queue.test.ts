@@ -86,7 +86,7 @@ describe('WEB-017 Offline Queue & Session Isolation (QUE-001 – QUE-010)', () =
 
       const userQueue = queue.getQueue(FIXTURE_CUSTOMER_ID_A);
       expect(userQueue).toHaveLength(1);
-      expect(userQueue[0].tempId).toBe('temp-que-001');
+      expect(userQueue[0]!.tempId).toBe('temp-que-001');
     });
 
     it('queued message has a queuedAt ISO 8601 timestamp', () => {
@@ -184,8 +184,8 @@ describe('WEB-017 Offline Queue & Session Isolation (QUE-001 – QUE-010)', () =
 
       expect(queue.getQueue(FIXTURE_CUSTOMER_ID_A)).toHaveLength(1);
       expect(queue.getQueue(FIXTURE_CUSTOMER_ID_B)).toHaveLength(1);
-      expect(queue.getQueue(FIXTURE_CUSTOMER_ID_A)[0].tempId).toBe('temp-que-003-a2');
-      expect(queue.getQueue(FIXTURE_CUSTOMER_ID_B)[0].tempId).toBe('temp-que-003-b2');
+      expect(queue.getQueue(FIXTURE_CUSTOMER_ID_A)[0]!.tempId).toBe('temp-que-003-a2');
+      expect(queue.getQueue(FIXTURE_CUSTOMER_ID_B)[0]!.tempId).toBe('temp-que-003-b2');
     });
   });
 
@@ -533,7 +533,7 @@ describe('WEB-017 Offline Queue & Session Isolation (QUE-001 – QUE-010)', () =
 
       const remaining = queue.getQueue(FIXTURE_CUSTOMER_ID_A);
       expect(remaining).toHaveLength(1);
-      expect(remaining[0].tempId).toBe('temp-que-010-keep');
+      expect(remaining[0]!.tempId).toBe('temp-que-010-keep');
     });
 
     it('dismissFailed() removes a failed message from the failed messages list', async () => {

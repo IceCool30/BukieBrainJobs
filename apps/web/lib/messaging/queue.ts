@@ -262,6 +262,7 @@ class OfflineQueue implements IOfflineQueue {
     if (idx === -1) return;
 
     const failedMsg = failed[idx];
+    if (!failedMsg) return;
 
     // Remove from the failed list
     this.failedByUser.set(userId, failed.filter((m) => m.tempId !== tempId));
