@@ -14,11 +14,13 @@ import type {
   GetMessagesResult,
   MediaUploadResult,
   SendMessageInput,
+  MessagingBookingStatus,
 } from './types';
 import {
   UnauthorizedError,
   ConversationClosedError,
   MediaUploadError,
+  isReadOnlyBookingStatus,
 } from './types';
 import { ALLOWED_IMAGE_MIME_TYPES, MAX_ATTACHMENT_BYTES } from './validation';
 
@@ -26,9 +28,6 @@ import { ALLOWED_IMAGE_MIME_TYPES, MAX_ATTACHMENT_BYTES } from './validation';
 // Internal Types
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-type BookingStatus = 'CONFIRMED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'DISPUTED';
-
-const READONLY_STATUSES: readonly BookingStatus[] = ['COMPLETED', 'CANCELLED'];
 const PAGE_SIZE = 30;
 
 interface ParticipantRecord {
@@ -43,7 +42,7 @@ interface ConversationRecord {
   jobId: string;
   referenceCode: string;
   serviceTitle: string;
-  bookingStatus: BookingStatus;
+  bookingStatus: MessagingBookingStatus;
   createdAt: string;
   customer: ParticipantRecord;
   brainWorker: ParticipantRecord;
@@ -100,7 +99,7 @@ class MessagingRepository implements IMessagingRepository {
   }
 
   private assertWriteable(record: ConversationRecord): void {
-    if ((READONLY_STATUSES as readonly string[]).includes(record.bookingStatus)) {
+    if (isReadOnlyBookingStatus(record.bookingStatus)) {
       throw new ConversationClosedError();
     }
   }
@@ -118,7 +117,7 @@ class MessagingRepository implements IMessagingRepository {
   private buildSummary(callerId: string, record: ConversationRecord): ConversationSummary {
     const isCustomer = callerId === record.customer.id;
     const participant = isCustomer ? record.brainWorker : record.customer;
-    const isReadOnly = (READONLY_STATUSES as readonly string[]).includes(record.bookingStatus);
+    const isReadOnly = isReadOnlyBookingStatus(record.bookingStatus);
 
     const latestMsgId = record.messageOrder[record.messageOrder.length - 1];
     const latestMsg = latestMsgId ? record.messageById.get(latestMsgId) : undefined;

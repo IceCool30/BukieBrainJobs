@@ -66,13 +66,33 @@ export interface ClientChatMessage extends ChatMessageRecord {
 }
 
 /**
+ * Authoritative booking lifecycle statuses relevant to messaging.
+ */
+export type MessagingBookingStatus =
+  | 'CONFIRMED'
+  | 'IN_PROGRESS'
+  | 'COMPLETED'
+  | 'CANCELLED'
+  | 'DISPUTED';
+
+export const READONLY_BOOKING_STATUSES = ['COMPLETED', 'CANCELLED'] as const;
+export type ReadonlyBookingStatus = typeof READONLY_BOOKING_STATUSES[number];
+
+/**
+ * Type guard checking whether a booking status is in a read-only (archived) state.
+ */
+export function isReadOnlyBookingStatus(status: string): status is ReadonlyBookingStatus {
+  return (READONLY_BOOKING_STATUSES as readonly string[]).includes(status);
+}
+
+/**
  * Conversation inbox thread summary for /messages.
  */
 export interface ConversationSummary {
   jobId: string;
   referenceCode: string;           // Human-facing reference (e.g. 'BBJ-LAG-2026-0891')
   serviceTitle: string;            // Service title (e.g. 'Generator Servicing & Repair')
-  bookingStatus: 'CONFIRMED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'DISPUTED';
+  bookingStatus: MessagingBookingStatus;
   participant: {
     id: string;
     name: string;
@@ -105,6 +125,16 @@ export interface OfflineQueuedMessage {
   location?: LocationPayload | undefined;
   queuedAt: string;                // ISO 8601
   retryCount: number;
+}
+
+/**
+ * A queued message that permanently failed to send during drain replay.
+ */
+export interface FailedQueuedMessage extends OfflineQueuedMessage {
+  /** Human-readable reason the message could not be sent. */
+  errorMessage: string;
+  /** ISO 8601 timestamp when the failure was recorded. */
+  failedAt: string;
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

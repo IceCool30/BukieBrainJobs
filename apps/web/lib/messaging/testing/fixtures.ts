@@ -8,7 +8,10 @@ import type {
   ConversationSummary,
   LocationPayload,
   OfflineQueuedMessage,
+  MessagingBookingStatus,
 } from '../types';
+
+export type { MessagingBookingStatus };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Canonical Participant IDs
@@ -24,13 +27,6 @@ export const FIXTURE_UNAUTHENTICATED_ID = '';
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Internal Booking Record Schema (Test Harness Only)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-export type MessagingBookingStatus =
-  | 'CONFIRMED'
-  | 'IN_PROGRESS'
-  | 'COMPLETED'
-  | 'CANCELLED'
-  | 'DISPUTED';
 
 export interface MessagingBookingRecord {
   jobId: string;

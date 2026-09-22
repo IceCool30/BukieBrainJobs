@@ -21,19 +21,16 @@ import type {
   SendMessageInput,
   GetMessagesResult,
   MediaUploadResult,
+  FailedQueuedMessage,
 } from '../types';
 
-/** A queued message that permanently failed to send during drain replay. */
-export interface FailedQueuedMessage extends OfflineQueuedMessage {
-  /** Human-readable reason the message could not be sent. */
-  errorMessage: string;
-  /** ISO 8601 timestamp when the failure was recorded. */
-  failedAt: string;
-}
+export type { FailedQueuedMessage };
+
 import {
   UnauthorizedError,
   ConversationClosedError,
   MediaUploadError,
+  isReadOnlyBookingStatus,
 } from '../types';
 import {
   validateImageAttachment,
@@ -81,7 +78,6 @@ function createMessagingInternalStore(): MessagingInternalStore {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 const PAGE_SIZE = 30;
-const READONLY_STATUSES: MessagingBookingStatus[] = ['COMPLETED', 'CANCELLED'];
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // InMemoryMessagingRepository
@@ -107,7 +103,7 @@ export class InMemoryMessagingRepository implements IMessagingRepository {
   }
 
   private assertWriteable(state: ConversationState): void {
-    if (READONLY_STATUSES.includes(state.booking.bookingStatus)) {
+    if (isReadOnlyBookingStatus(state.booking.bookingStatus)) {
       throw new ConversationClosedError();
     }
   }
@@ -123,7 +119,7 @@ export class InMemoryMessagingRepository implements IMessagingRepository {
     state: ConversationState
   ): ConversationSummary {
     const { booking, messageOrder, messageById, readState } = state;
-    const isReadOnly = READONLY_STATUSES.includes(booking.bookingStatus);
+    const isReadOnly = isReadOnlyBookingStatus(booking.bookingStatus);
 
     // Determine the participant from the opposing side
     const isCustomer = callerId === booking.customerId;

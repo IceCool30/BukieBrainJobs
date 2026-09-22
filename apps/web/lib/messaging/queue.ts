@@ -14,20 +14,15 @@
 import type {
   OfflineQueuedMessage,
   LocationPayload,
+  FailedQueuedMessage,
 } from './types';
-import { MediaUploadError } from './types';
+import { MediaUploadError, isReadOnlyBookingStatus } from './types';
+
+export type { FailedQueuedMessage };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Domain Types
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-/** A queued message that permanently failed to send during drain replay. */
-export interface FailedQueuedMessage extends OfflineQueuedMessage {
-  /** Human-readable reason the message could not be sent. */
-  errorMessage: string;
-  /** ISO 8601 timestamp when the failure was recorded. */
-  failedAt: string;
-}
 
 /** Input shape for enqueueing a text message. */
 export interface EnqueueTextInput {
@@ -94,6 +89,12 @@ export interface IOfflineQueue {
    * Returns the OfflineQueuedMessage record with generated metadata.
    */
   enqueueText(userId: string, input: EnqueueTextInput): OfflineQueuedMessage;
+
+  /**
+   * Appends a location message to the userId-scoped pending queue.
+   * Returns the OfflineQueuedMessage record with generated metadata.
+   */
+  enqueueLocation(userId: string, input: EnqueueLocationInput): OfflineQueuedMessage;
 
   /**
    * Always throws MediaUploadError.
@@ -167,17 +168,6 @@ class InternalMemoryStorage implements IQueueStorage {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Lifecycle Constants
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-const READONLY_BOOKING_STATUSES = ['COMPLETED', 'CANCELLED'] as const;
-type ReadonlyBookingStatus = typeof READONLY_BOOKING_STATUSES[number];
-
-function isReadOnlyStatus(status: string): status is ReadonlyBookingStatus {
-  return (READONLY_BOOKING_STATUSES as readonly string[]).includes(status);
-}
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // OfflineQueue Implementation
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -197,6 +187,21 @@ class OfflineQueue implements IOfflineQueue {
       userId,
       content: input.content,
       contentType: 'text',
+      queuedAt: new Date().toISOString(),
+      retryCount: 0,
+    };
+    this.storage.append(userId, msg);
+    return msg;
+  }
+
+  enqueueLocation(userId: string, input: EnqueueLocationInput): OfflineQueuedMessage {
+    const msg: OfflineQueuedMessage = {
+      tempId: input.tempId,
+      jobId: input.jobId,
+      userId,
+      content: input.content,
+      contentType: 'location',
+      location: input.location,
       queuedAt: new Date().toISOString(),
       retryCount: 0,
     };
@@ -227,7 +232,7 @@ class OfflineQueue implements IOfflineQueue {
       // Re-verify booking lifecycle before each send
       const status = await options.getBookingStatus(msg.jobId);
 
-      if (isReadOnlyStatus(status)) {
+      if (isReadOnlyBookingStatus(status)) {
         // Booking closed while device was offline — invalidate message
         this.storage.remove(userId, msg.tempId);
         this.recordFailure(
