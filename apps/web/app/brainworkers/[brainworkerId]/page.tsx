@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, CheckCircle2, MapPin } from 'lucide-react';
 import BrainWorkerProfileBookingContext from '../../../components/BrainWorkerProfileBookingContext';
+import { PublicReviewFeed } from '../../../components/review';
 import {
   getPublicBrainWorker,
   buildPublicBrainWorkerServicesUrl,
@@ -17,6 +18,7 @@ interface PageProps {
     serviceId?: string | string[];
     city?: string | string[];
     service?: string | string[];
+    tab?: string | string[];
   }>;
 }
 
@@ -32,6 +34,9 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
   const context = resolvePublicBrainWorkerContext(query);
   const servicesUrl = buildPublicBrainWorkerServicesUrl(context);
   const activeLocations = NIGERIAN_LOCATIONS.filter((location) => location.status === 'active');
+
+  const rawTab = Array.isArray(query.tab) ? query.tab[0] : query.tab;
+  const initialTab = rawTab === 'reviews' ? 'reviews' : 'service';
 
   return (
     <main className="min-h-screen bg-[#F8F9FF] text-[#0B1C30]">
@@ -73,21 +78,14 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
       </section>
 
       <section className="mx-auto grid max-w-[1280px] gap-8 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-10 lg:px-8">
-        <div className="space-y-8">
-
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-7">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Service focus</p>
-            <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-[#001A41]">What this BrainWorker lists.</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">Review the listed skills and choose the service that matches the work you need.</p>
-            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-              {profile.skills.map((skill) => (
-                <li key={skill} className="flex gap-3 rounded-xl border border-slate-200 bg-[#F8F9FF] p-4 text-sm font-semibold leading-6 text-slate-700">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
-                  {skill}
-                </li>
-              ))}
-            </ul>
-          </section>
+        <div className="space-y-8" id="reviews">
+          {/* Surface 3: Public BrainWorker Profile Review Experience (WEB-016) */}
+          <PublicReviewFeed
+            brainWorkerId={brainworkerId}
+            initialTab={initialTab}
+            skills={profile.skills}
+            serviceCategories={[profile.category]}
+          />
 
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-7">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Location context</p>

@@ -37,6 +37,7 @@ import {
   RefundRequestModal,
   DisputeModal,
 } from '../payment';
+import { ReviewPromptCard } from '../review';
 import { getMockAuthenticatedUser } from '../../lib/auth/storage';
 
 export interface LifecycleStateSurfaceProps {
@@ -625,16 +626,26 @@ export function LifecycleStateSurface({
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section
         aria-label="Lifecycle Actions"
-        className="pt-4 border-t border-slate-100 space-y-3"
+        className="pt-4 border-t border-slate-100 space-y-4"
       >
+        {/* Post-Completion Review Prompt Card (WEB-016) */}
+        {currentJobStatus === 'COMPLETED' && (
+          <ReviewPromptCard
+            activity={activity}
+            paymentContext={paymentContext ? { receiptAvailable: paymentContext.receiptAvailable } : undefined}
+            onViewReceipt={handleOpenReceipt}
+            isOffline={isOffline}
+          />
+        )}
+
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="text-xs text-slate-500">
             Reference code: <span className="font-mono font-bold text-slate-700">{activity.referenceCode}</span>
           </div>
 
           <div className="flex items-center gap-2.5 flex-wrap">
-            {/* View Digital Receipt */}
-            {paymentContext?.receiptAvailable && (
+            {/* View Digital Receipt (Rendered here for non-completed funded/released bookings; completed bookings render it inside ReviewPromptCard) */}
+            {paymentContext?.receiptAvailable && currentJobStatus !== 'COMPLETED' && (
               <button
                 type="button"
                 onClick={handleOpenReceipt}
