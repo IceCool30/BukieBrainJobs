@@ -10,7 +10,7 @@ export interface ReportReviewModalProps {
   isOpen: boolean;
   onClose: () => void;
   reviewId: string;
-  onRequireAuth?: () => void;
+  onRequireAuth?: (() => void) | undefined;
 }
 
 const ABUSE_REASONS: Array<{ value: AbuseReportReason; label: string }> = [
