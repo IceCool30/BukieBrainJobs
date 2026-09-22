@@ -12,3 +12,15 @@ export type { StarRatingGroupProps } from './StarRatingGroup';
 
 export { CharacterCountTextarea } from './CharacterCountTextarea';
 export type { CharacterCountTextareaProps } from './CharacterCountTextarea';
+
+export { PublicReviewSummary } from './PublicReviewSummary';
+export type { PublicReviewSummaryProps } from './PublicReviewSummary';
+
+export { PublicReviewCard } from './PublicReviewCard';
+export type { PublicReviewCardProps } from './PublicReviewCard';
+
+export { PublicReviewFeed } from './PublicReviewFeed';
+export type { PublicReviewFeedProps } from './PublicReviewFeed';
+
+export { ReportReviewModal } from './ReportReviewModal';
+export type { ReportReviewModalProps } from './ReportReviewModal';
