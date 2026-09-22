@@ -10,15 +10,15 @@ import { getMockAuthenticatedUser } from '../../lib/auth/storage';
 import { ReviewPromptModal } from './ReviewPromptModal';
 
 export interface ReviewPromptCardPaymentContext {
-  receiptAvailable?: boolean;
+  receiptAvailable?: boolean | undefined;
 }
 
 export interface ReviewPromptCardProps {
   activity: CustomerActivityItem;
-  paymentContext?: ReviewPromptCardPaymentContext;
-  onOpenReviewModal?: () => void;
-  onViewReceipt?: () => void;
-  isOffline?: boolean;
+  paymentContext?: ReviewPromptCardPaymentContext | undefined;
+  onOpenReviewModal?: (() => void) | undefined;
+  onViewReceipt?: (() => void) | undefined;
+  isOffline?: boolean | undefined;
 }
 
 export function ReviewPromptCard({
