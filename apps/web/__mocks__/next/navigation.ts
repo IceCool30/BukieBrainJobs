@@ -36,4 +36,4 @@ export const usePathname: () => string = vi.fn(() => '/services');
 
 export const useParams: () => Record<string, string> = vi.fn(() => ({}));
 
-export const notFound: () => never = vi.fn();
+export const notFound: () => void = vi.fn();
