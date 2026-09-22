@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react';
 import type { ReviewBookingSummary, ReviewRatings, ReviewRating } from '../../lib/review/types';
 import { getCustomerReviewRepository } from '../../lib/review/repository';
