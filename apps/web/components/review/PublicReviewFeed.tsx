@@ -21,7 +21,7 @@ export interface PublicReviewFeedProps {
 
 export function PublicReviewFeed({
   brainWorkerId,
-  initialTab = 'service',
+  initialTab = 'reviews',
   skills = [],
   serviceCategories = [],
   onRequireAuth,

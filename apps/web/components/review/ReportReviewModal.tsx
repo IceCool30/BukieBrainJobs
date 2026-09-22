@@ -136,7 +136,7 @@ export function ReportReviewModal({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close dialog"
+            aria-label="Dismiss report modal"
             className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
           >
             <X className="w-5 h-5" />
