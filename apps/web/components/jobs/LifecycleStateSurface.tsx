@@ -644,8 +644,8 @@ export function LifecycleStateSurface({
           </div>
 
           <div className="flex items-center gap-2.5 flex-wrap">
-            {/* View Digital Receipt (Rendered here for non-completed funded/released bookings; completed bookings render it inside ReviewPromptCard) */}
-            {paymentContext?.receiptAvailable && currentJobStatus !== 'COMPLETED' && (
+            {/* View Digital Receipt */}
+            {paymentContext?.receiptAvailable && (
               <button
                 type="button"
                 onClick={handleOpenReceipt}
