@@ -54,6 +54,13 @@ export function ReviewPromptModal({
     }
   }, [isOpen]);
 
+  const handleDismiss = useCallback(() => {
+    onClose();
+    if (triggerRef?.current) {
+      triggerRef.current.focus();
+    }
+  }, [onClose, triggerRef]);
+
   // Handle Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -64,7 +71,7 @@ export function ReviewPromptModal({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, isSubmitting]);
+  }, [isOpen, isSubmitting, handleDismiss]);
 
   // Trap focus within modal
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -89,13 +96,6 @@ export function ReviewPromptModal({
         e.preventDefault();
         firstElement.focus();
       }
-    }
-  };
-
-  const handleDismiss = () => {
-    onClose();
-    if (triggerRef?.current) {
-      triggerRef.current.focus();
     }
   };
 
@@ -149,8 +149,9 @@ export function ReviewPromptModal({
       if (onSuccess) {
         onSuccess();
       }
-    } catch (err: any) {
-      setErrorMessage(err?.message || 'Failed to submit review. Please try again.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to submit review. Please try again.';
+      setErrorMessage(message);
     } finally {
       setIsSubmitting(false);
     }

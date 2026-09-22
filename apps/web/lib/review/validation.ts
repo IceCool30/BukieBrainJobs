@@ -6,7 +6,6 @@ import {
   type ReviewRating,
   type ReviewRatings,
   type SubmitReviewInput,
-  type ReviewValidationErrors,
   ValidationError,
 } from './types';
 

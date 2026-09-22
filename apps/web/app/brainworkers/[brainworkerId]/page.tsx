@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, CheckCircle2, MapPin } from 'lucide-react';
+import { ArrowLeft, MapPin } from 'lucide-react';
 import BrainWorkerProfileBookingContext from '../../../components/BrainWorkerProfileBookingContext';
 import { PublicReviewFeed } from '../../../components/review';
 import {

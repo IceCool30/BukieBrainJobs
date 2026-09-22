@@ -5,6 +5,8 @@ import type { CustomerActivityItem } from '@bukiebrainjobs/types';
 import * as reviewRepoModule from '../../lib/review/repository';
 import * as authStorage from '../../lib/auth/storage';
 import { ReviewPromptCard } from './ReviewPromptCard';
+import type { AuthUser } from '../../lib/auth/types';
+import type { ICustomerReviewRepository } from '../../lib/review/types';
 
 describe('ReviewPromptCard (TDD Suite 3: CRD-001 to CRD-008)', () => {
   const mockUser = {
@@ -52,8 +54,8 @@ describe('ReviewPromptCard (TDD Suite 3: CRD-001 to CRD-008)', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUser as any);
-    vi.spyOn(reviewRepoModule, 'getCustomerReviewRepository').mockReturnValue(mockRepository as any);
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUser as unknown as AuthUser);
+    vi.spyOn(reviewRepoModule, 'getCustomerReviewRepository').mockReturnValue(mockRepository as unknown as ICustomerReviewRepository);
   });
 
   describe('CRD-001: Render prompt on COMPLETED booking', () => {

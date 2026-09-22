@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { RefreshCw, MessageSquare, CheckCircle2 } from 'lucide-react';
 import type {
   PublicBrainWorkerReview,
@@ -38,7 +38,7 @@ export function PublicReviewFeed({
   // Reporting modal state
   const [reportingReviewId, setReportingReviewId] = useState<string | null>(null);
 
-  const fetchReviews = async (pageNum: number, isAppend: boolean = false) => {
+  const fetchReviews = useCallback(async (pageNum: number, isAppend: boolean = false) => {
     try {
       if (isAppend) {
         setIsLoadingMore(true);
@@ -62,17 +62,18 @@ export function PublicReviewFeed({
       setTotalCount(result.totalCount);
       setReputationSummary(result.reputationSummary);
       setPage(pageNum);
-    } catch (err: any) {
-      setError(err?.message || 'Failed to load reviews.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to load reviews.';
+      setError(message);
     } finally {
       setIsLoading(false);
       setIsLoadingMore(false);
     }
-  };
+  }, [brainWorkerId]);
 
   useEffect(() => {
     fetchReviews(1);
-  }, [brainWorkerId]);
+  }, [fetchReviews]);
 
   const handleLoadMore = () => {
     if (isLoadingMore || reviews.length >= totalCount) return;

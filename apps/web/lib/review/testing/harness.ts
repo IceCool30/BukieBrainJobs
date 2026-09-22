@@ -8,7 +8,7 @@
 // No test code is imported or executed from production modules.
 // Production `repository.ts` does not import from this module.
 
-import type { ICustomerReviewRepository, CustomerReviewRecord, AbuseReportReason } from '../types';
+import type { ICustomerReviewRepository, CustomerReviewRecord } from '../types';
 import type { ReviewInternalStore } from '../repository';
 import { CustomerReviewRepository } from '../repository';
 

@@ -4,7 +4,8 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as reviewRepoModule from '../../lib/review/repository';
 import * as authStorage from '../../lib/auth/storage';
 import { PublicReviewFeed } from './PublicReviewFeed';
-import type { GetPublicReviewsResult, PublicBrainWorkerReview } from '../../lib/review/types';
+import type { AuthUser } from '../../lib/auth/types';
+import type { GetPublicReviewsResult, PublicBrainWorkerReview, ICustomerReviewRepository } from '../../lib/review/types';
 
 describe('PublicReviewFeed (TDD Suite 5: FED-001 to FED-011)', () => {
   const brainWorkerId = 'usr-brainworker-01';
@@ -59,8 +60,8 @@ describe('PublicReviewFeed (TDD Suite 5: FED-001 to FED-011)', () => {
       name: 'Adaeze Nwosu',
       email: 'adaeze@example.com',
       role: 'customer' as const,
-    } as any);
-    vi.spyOn(reviewRepoModule, 'getCustomerReviewRepository').mockReturnValue(mockRepository as any);
+    } as unknown as AuthUser);
+    vi.spyOn(reviewRepoModule, 'getCustomerReviewRepository').mockReturnValue(mockRepository as unknown as ICustomerReviewRepository);
     mockRepository.getPublicReviews.mockResolvedValue(defaultResult);
   });
 

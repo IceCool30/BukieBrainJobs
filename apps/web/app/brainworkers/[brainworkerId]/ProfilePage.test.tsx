@@ -4,7 +4,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import PublicBrainWorkerProfilePage from './page';
 import * as reviewRepoModule from '../../../lib/review/repository';
 import * as authStorage from '../../../lib/auth/storage';
-import type { GetPublicReviewsResult } from '../../../lib/review/types';
+import type { AuthUser } from '../../../lib/auth/types';
+import type { GetPublicReviewsResult, ICustomerReviewRepository } from '../../../lib/review/types';
 
 // Mock Next.js Image
 vi.mock('next/image', () => ({
@@ -65,8 +66,8 @@ describe('PublicBrainWorkerProfilePage Integration (WEB-016)', () => {
       name: 'Adaeze Nwosu',
       email: 'adaeze@example.com',
       role: 'customer' as const,
-    } as any);
-    vi.spyOn(reviewRepoModule, 'getCustomerReviewRepository').mockReturnValue(mockRepository as any);
+    } as unknown as AuthUser);
+    vi.spyOn(reviewRepoModule, 'getCustomerReviewRepository').mockReturnValue(mockRepository as unknown as ICustomerReviewRepository);
     mockRepository.getPublicReviews.mockResolvedValue(mockReviewResult);
   });
 

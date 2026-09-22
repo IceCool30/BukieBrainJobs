@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, Flag, AlertCircle, CheckCircle2, RefreshCw } from 'lucide-react';
+import { X, AlertCircle, CheckCircle2, RefreshCw } from 'lucide-react';
 import type { AbuseReportReason } from '../../lib/review/types';
 import { getCustomerReviewRepository } from '../../lib/review/repository';
 import { getMockAuthenticatedUser } from '../../lib/auth/storage';
@@ -108,8 +108,9 @@ export function ReportReviewModal({
       } else if (result.success) {
         setIsSuccess(true);
       }
-    } catch (err: any) {
-      setErrorMessage(err?.message || 'Failed to submit report. Please try again.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to submit report. Please try again.';
+      setErrorMessage(message);
     } finally {
       setIsSubmitting(false);
     }

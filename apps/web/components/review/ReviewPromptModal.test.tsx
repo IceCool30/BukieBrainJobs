@@ -4,7 +4,8 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as reviewRepoModule from '../../lib/review/repository';
 import * as authStorage from '../../lib/auth/storage';
 import { ReviewPromptModal } from './ReviewPromptModal';
-import type { ReviewBookingSummary } from '../../lib/review/types';
+import type { ReviewBookingSummary, ICustomerReviewRepository } from '../../lib/review/types';
+import type { AuthUser } from '../../lib/auth/types';
 
 describe('ReviewPromptModal (TDD Suite 4: MDL-001 to MDL-017)', () => {
   const mockUser = {
@@ -33,8 +34,8 @@ describe('ReviewPromptModal (TDD Suite 4: MDL-001 to MDL-017)', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUser as any);
-    vi.spyOn(reviewRepoModule, 'getCustomerReviewRepository').mockReturnValue(mockRepository as any);
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUser as unknown as AuthUser);
+    vi.spyOn(reviewRepoModule, 'getCustomerReviewRepository').mockReturnValue(mockRepository as unknown as ICustomerReviewRepository);
   });
 
   describe('MDL-001: Initial unselected state (No defaults)', () => {

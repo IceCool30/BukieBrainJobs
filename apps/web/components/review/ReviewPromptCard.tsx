@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Star, ShieldCheck, CheckCircle2, Receipt, ArrowRight, WifiOff } from 'lucide-react';
+import { Star, CheckCircle2, Receipt, ArrowRight, WifiOff } from 'lucide-react';
 import type { CustomerActivityItem } from '@bukiebrainjobs/types';
 import type { ReviewEligibility } from '../../lib/review/types';
 import { getCustomerReviewRepository } from '../../lib/review/repository';

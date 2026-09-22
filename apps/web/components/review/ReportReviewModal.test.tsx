@@ -4,11 +4,11 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as reviewRepoModule from '../../lib/review/repository';
 import * as authStorage from '../../lib/auth/storage';
 import { ReportReviewModal } from './ReportReviewModal';
-import { UnauthorizedError, NotFoundError, ValidationError } from '../../lib/review/types';
+import { UnauthorizedError, NotFoundError, type ICustomerReviewRepository } from '../../lib/review/types';
+import type { AuthUser } from '../../lib/auth/types';
 
 describe('ReportReviewModal (TDD Suite 6: RPT-001 to RPT-010)', () => {
   const reviewId = 'rev-public-001';
-  const brainWorkerName = 'Emeka Okafor';
 
   const mockUser = {
     id: 'usr-customer-reporter',
@@ -26,8 +26,8 @@ describe('ReportReviewModal (TDD Suite 6: RPT-001 to RPT-010)', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUser as any);
-    vi.spyOn(reviewRepoModule, 'getCustomerReviewRepository').mockReturnValue(mockRepository as any);
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUser as unknown as AuthUser);
+    vi.spyOn(reviewRepoModule, 'getCustomerReviewRepository').mockReturnValue(mockRepository as unknown as ICustomerReviewRepository);
   });
 
   describe('RPT-001: Unauthenticated access gate', () => {
@@ -220,7 +220,7 @@ describe('ReportReviewModal (TDD Suite 6: RPT-001 to RPT-010)', () => {
         id: '   ',
         name: 'Empty',
         role: 'customer' as const,
-      } as any);
+      } as unknown as AuthUser);
 
       render(
         <ReportReviewModal
