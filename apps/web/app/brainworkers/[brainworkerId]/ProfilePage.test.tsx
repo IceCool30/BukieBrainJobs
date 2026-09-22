@@ -15,7 +15,7 @@ vi.mock('next/image', () => ({
 }));
 
 describe('PublicBrainWorkerProfilePage Integration (WEB-016)', () => {
-  const brainworkerId = 'bw-solomon-01';
+  const brainworkerId = 'bw-1';
 
   const mockReviewResult: GetPublicReviewsResult = {
     reviews: [
@@ -79,7 +79,7 @@ describe('PublicBrainWorkerProfilePage Integration (WEB-016)', () => {
     render(pageComponent);
 
     // Profile header
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/Solomon Kuti/i);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/Emeka Nwosu/i);
 
     // Sub-navigation tabs
     expect(screen.getByRole('tab', { name: /Service focus/i })).toBeInTheDocument();

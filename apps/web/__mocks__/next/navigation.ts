@@ -35,3 +35,5 @@ export const useSearchParams: () => ReadonlyURLSearchParams = vi.fn(
 export const usePathname: () => string = vi.fn(() => '/services');
 
 export const useParams: () => Record<string, string> = vi.fn(() => ({}));
+
+export const notFound = vi.fn();
