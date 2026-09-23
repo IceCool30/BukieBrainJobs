@@ -9,8 +9,8 @@ import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import * as authStorage from '../../../lib/auth/storage';
+import ChatPage from './page';
 import { AuthUser } from '../../../lib/auth/types';
-import type { ChatMessageRecord } from '../../../lib/messaging/types';
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Mock Navigation & Next.js Hooks
@@ -66,17 +66,9 @@ const mockUnauthorizedUser: AuthUser = {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 describe('ChatPage Route Integration Contract (INT-003, INT-004, INT-007)', () => {
-  // Placeholder component for RED phase - will be replaced with actual import during GREEN
-  let ChatPage: React.ComponentType<{ params?: Promise<{ jobId: string }> }>;
-
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockCustomerUser);
-
-    // In RED phase, this mock ensures TypeScript compiles but tests fail genuinely
-    ChatPage = () => {
-      throw new Error('ChatPage route component not implemented yet - RED phase expected to fail');
-    };
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -7,7 +7,7 @@
 // - docs/specs/WEB-017-messaging-chat.md
 
 import React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import type { ChatMessageRecord, ClientMessageStatus, MessagingBookingStatus } from '../../lib/messaging/types';
 import { ChatScreen } from './ChatScreen';
@@ -133,6 +133,12 @@ describe('ChatScreen Component Contract (CHT-001 through CHT-020)', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-09-22T14:00:00.000Z'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

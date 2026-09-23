@@ -38,12 +38,12 @@ export function ChatHeader({
       <div className="max-w-6xl mx-auto flex items-center gap-3">
         {/* Back link - visible on mobile, optional on desktop */}
         <Link
-          href={`/jobs?id=${jobId}`}
+          href="/messages"
           className="flex items-center gap-2 text-sm font-medium text-[#001A41] hover:text-[#296A4B] transition-colors flex-shrink-0"
-          aria-label={`Back to booking ${referenceCode}`}
+          aria-label="Back to messages"
         >
           <span className="text-lg">&#8592;</span>
-          <span className="hidden sm:inline">Back to Booking</span>
+          <span className="hidden sm:inline">Back to Messages</span>
         </Link>
 
         {/* Avatar */}

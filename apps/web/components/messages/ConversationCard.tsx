@@ -86,7 +86,8 @@ export function ConversationCard({
     lastMessageAt,
   } = conversation;
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     onSelect?.(jobId);
   };
 

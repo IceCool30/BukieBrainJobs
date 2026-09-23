@@ -323,16 +323,13 @@ export default function DashboardScreen() {
               </button>
 
               <button
-                onClick={() => setActiveNoticeDialog('messages')}
+                onClick={() => router.push('/messages')}
                 className="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#001A41] transition-colors group"
               >
                 <div className="flex items-center gap-3">
                   <MessageSquare className="h-4 w-4 text-slate-400 group-hover:text-[#001A41]" />
                   <span>Messages</span>
                 </div>
-                <span className="text-[11px] font-medium bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">
-                  Soon
-                </span>
               </button>
 
               <button
@@ -1122,7 +1119,7 @@ export default function DashboardScreen() {
         </button>
 
         <button
-          onClick={() => setActiveNoticeDialog('messages')}
+          onClick={() => router.push('/messages')}
           className="flex flex-col items-center justify-center min-h-[48px] px-3 py-1 text-[11px] font-semibold text-slate-400 hover:text-white transition-colors relative"
         >
           <MessageSquare className="h-4 w-4 mb-0.5" />

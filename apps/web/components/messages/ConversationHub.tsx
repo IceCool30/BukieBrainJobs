@@ -184,13 +184,18 @@ export function ConversationHub({
           className="space-y-2.5 overflow-y-auto flex-1 pr-0.5"
         >
           {filteredConversations.map((conversation) => (
-            <ConversationCard
+            <Link
               key={conversation.jobId}
-              conversation={conversation}
-              isActive={activeJobId === conversation.jobId}
-              currentUserId={currentUserId}
-              onSelect={onSelectConversation}
-            />
+              href={`/messages/${conversation.jobId}`}
+              className="block no-underline focus:outline-none"
+            >
+              <ConversationCard
+                conversation={conversation}
+                isActive={activeJobId === conversation.jobId}
+                currentUserId={currentUserId}
+                onSelect={onSelectConversation}
+              />
+            </Link>
           ))}
         </div>
       )}
