@@ -6,7 +6,7 @@
 // - docs/specs/WEB-018-architecture-contract.md (Section 2 & 3)
 
 import React from 'react';
-import type { CustomerNotification } from '@/lib/notifications';
+import type { CustomerNotification } from '../../lib/notifications/types';
 
 export interface NotificationCardProps {
   notification: CustomerNotification;

@@ -119,6 +119,7 @@ describe('WEB-018 Notification UI States & Push UX (STA-001 through STA-013)', (
       // Create a repository with a delayed resolution to inspect loading state
       const slowRepo: INotificationRepository = {
         getNotifications: () => new Promise(() => {}), // Never resolves during test
+        getUnreadCount: vi.fn().mockResolvedValue(0),
         markAsRead: vi.fn(),
         markAllAsRead: vi.fn(),
         dismiss: vi.fn(),
@@ -163,6 +164,7 @@ describe('WEB-018 Notification UI States & Push UX (STA-001 through STA-013)', (
     it('renders error card with retry button when initial fetch rejects', async () => {
       const failingRepo: INotificationRepository = {
         getNotifications: vi.fn().mockRejectedValue(new Error('Network error')),
+        getUnreadCount: vi.fn().mockRejectedValue(new Error('Network error')),
         markAsRead: vi.fn(),
         markAllAsRead: vi.fn(),
         dismiss: vi.fn(),
@@ -304,6 +306,7 @@ describe('WEB-018 Notification UI States & Push UX (STA-001 through STA-013)', (
     it('includes motion-reduce classes on skeleton placeholders', () => {
       const slowRepo: INotificationRepository = {
         getNotifications: () => new Promise(() => {}),
+        getUnreadCount: vi.fn().mockResolvedValue(0),
         markAsRead: vi.fn(),
         markAllAsRead: vi.fn(),
         dismiss: vi.fn(),
