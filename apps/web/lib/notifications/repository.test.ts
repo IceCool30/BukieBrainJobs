@@ -12,11 +12,6 @@ import { resolve } from 'node:path';
 import type { INotificationRepository, CustomerNotification } from './types';
 import { UnauthorizedError, NotFoundError } from './types';
 import {
-  createNotificationRepository,
-  createNotificationStore,
-  type NotificationRepositoryStore,
-} from './repository';
-import {
   createNotificationTestHarness,
   type INotificationTestController,
   FIXTURE_CUSTOMER_A,
@@ -32,13 +27,11 @@ import {
 describe('WEB-018 NotificationRepository Contract (REP-001 – REP-016)', () => {
   let repo: INotificationRepository;
   let ctrl: INotificationTestController;
-  let store: NotificationRepositoryStore;
 
   beforeEach(() => {
     const harness = createNotificationTestHarness();
     repo = harness.repository;
     ctrl = harness.testController;
-    store = harness.store;
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

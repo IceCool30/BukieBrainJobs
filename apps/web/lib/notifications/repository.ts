@@ -34,41 +34,34 @@ export function createNotificationStore(): NotificationRepositoryStore {
 }
 
 export class NotificationRepository implements INotificationRepository {
-  constructor(private readonly store: NotificationRepositoryStore = createNotificationStore()) {}
+  /** Internal store reserved for Phase 2 GREEN in-memory state. */
+  readonly store: NotificationRepositoryStore;
 
-  async getNotifications(
-    _customerId: string,
-    _options?: NotificationQueryOptions
-  ): Promise<NotificationQueryResult> {
+  constructor(store: NotificationRepositoryStore = createNotificationStore()) {
+    this.store = store;
+  }
+
+  async getNotifications(): Promise<NotificationQueryResult> {
     throw new Error('Not implemented');
   }
 
-  async getUnreadCount(_customerId: string): Promise<number> {
+  async getUnreadCount(): Promise<number> {
     throw new Error('Not implemented');
   }
 
-  async markAsRead(
-    _customerId: string,
-    _notificationId: string
-  ): Promise<CustomerNotification> {
+  async markAsRead(): Promise<CustomerNotification> {
     throw new Error('Not implemented');
   }
 
-  async markAllAsRead(
-    _customerId: string,
-    _category?: NotificationCategory
-  ): Promise<{ count: number }> {
+  async markAllAsRead(): Promise<{ count: number }> {
     throw new Error('Not implemented');
   }
 
-  async dismiss(_customerId: string, _notificationId: string): Promise<void> {
+  async dismiss(): Promise<void> {
     throw new Error('Not implemented');
   }
 
-  subscribe(
-    _customerId: string,
-    _listener: (notification: CustomerNotification) => void
-  ): () => void {
+  subscribe(): () => void {
     throw new Error('Not implemented');
   }
 }
