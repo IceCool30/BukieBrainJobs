@@ -156,9 +156,9 @@ describe('WEB-018 Domain Types & Category Mapping (TDD Suite 1)', () => {
       expect(record.referenceCode).toBe('BBJ-LAG-2026-0891');
 
       // Assert presentation properties are not present on domain records
-      expect((record as Record<string, unknown>).activeCategory).toBeUndefined();
-      expect((record as Record<string, unknown>).isCached).toBeUndefined();
-      expect((record as Record<string, unknown>).resolvedDeepLink).toBeUndefined();
+      expect(((record as unknown) as Record<string, unknown>).activeCategory).toBeUndefined();
+      expect(((record as unknown) as Record<string, unknown>).isCached).toBeUndefined();
+      expect(((record as unknown) as Record<string, unknown>).resolvedDeepLink).toBeUndefined();
     });
   });
 

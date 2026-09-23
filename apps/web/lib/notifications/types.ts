@@ -56,10 +56,10 @@ export interface CustomerNotification {
   message: string;
   isRead: boolean;
   createdAt: string;       // ISO 8601
-  readAt?: string | null;  // ISO 8601
-  targetUrl?: string | null;
-  referenceCode?: string | null;
-  metadata?: Record<string, unknown> | null;
+  readAt?: string | null | undefined;  // ISO 8601
+  targetUrl?: string | null | undefined;
+  referenceCode?: string | null | undefined;
+  metadata?: Record<string, unknown> | null | undefined;
 }
 
 /**
