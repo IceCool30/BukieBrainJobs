@@ -105,7 +105,7 @@ export const NotificationErrorCard: React.FC<NotificationErrorCardProps> = ({ on
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 export interface FirstRunEmptyStateProps {
-  onBrowseServices?: () => void;
+  onBrowseServices?: (() => void) | undefined;
 }
 
 export const FirstRunEmptyState: React.FC<FirstRunEmptyStateProps> = ({ onBrowseServices }) => {

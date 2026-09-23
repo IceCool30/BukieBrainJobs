@@ -18,8 +18,8 @@ import { resolveNotificationDeepLink } from '../../lib/notifications/deep-link';
 
 export interface NotificationCardProps {
   notification: CustomerNotification;
-  onNavigate?: (targetUrl: string) => void;
-  onMarkAsRead?: (notificationId: string) => Promise<void> | void;
+  onNavigate?: ((targetUrl: string) => void) | undefined;
+  onMarkAsRead?: ((notificationId: string) => Promise<void> | void) | undefined;
 }
 
 function formatRelativeTimestamp(isoDate: string, now: number = Date.now()): string {

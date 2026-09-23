@@ -36,10 +36,10 @@ import {
 
 export interface NotificationCenterProps {
   customerId: string;
-  repository?: INotificationRepository;
-  pushAdapter?: IPushNotificationAdapter;
-  isOffline?: boolean;
-  onNavigate?: (url: string) => void;
+  repository?: INotificationRepository | undefined;
+  pushAdapter?: IPushNotificationAdapter | undefined;
+  isOffline?: boolean | undefined;
+  onNavigate?: ((url: string) => void) | undefined;
 }
 
 interface TabDefinition {
