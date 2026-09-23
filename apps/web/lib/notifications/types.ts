@@ -201,4 +201,16 @@ export class NotFoundError extends NotificationError {
   }
 }
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Push Capability Adapter Contract
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface IPushNotificationAdapter {
+  isSupported(): boolean;
+  getPermission(): PushPermissionState;
+  requestPermission(): Promise<PushPermissionState>;
+  sendTestAlert?(title: string, body: string): Promise<boolean>;
+}
+
+
 

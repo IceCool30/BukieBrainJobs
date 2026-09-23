@@ -12,3 +12,8 @@ export {
   createNotificationStore,
 } from './repository';
 export type { NotificationRepositoryStore } from './repository';
+export {
+  BrowserPushAdapter,
+  getBrowserPushAdapter,
+} from './push-adapter';
+

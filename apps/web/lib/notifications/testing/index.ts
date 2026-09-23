@@ -6,3 +6,4 @@ export * from './fixtures';
 export * from './store';
 export * from './controller';
 export * from './harness';
+export * from './push-adapter';
