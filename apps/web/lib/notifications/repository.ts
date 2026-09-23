@@ -3,7 +3,7 @@
 // Authoritative Reference: WEB-018 Architecture Contract v1.0
 //
 // Invariant Rules:
-// 1. Strictly ZERO imports from ./testing or /testing (enforced by REP-015).
+// 1. Strictly ZERO imports from test harness or fixtures (enforced by REP-015).
 // 2. Implements INotificationRepository.
 // 3. Methods throw 'Not implemented' during Phase 2 RED.
 
