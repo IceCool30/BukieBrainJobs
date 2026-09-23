@@ -55,12 +55,13 @@ Work in this repository is executed sequentially to maintain platform coherence:
 - `WEB-010`: Authenticated Customer Dashboard with metric cards (`/dashboard`).
 - `WEB-011`: Customer Jobs & Bookings Activity Hub with master-detail layout, deep linking, and deterministic states (`/jobs`).
 - `WEB-012`: Ranked candidate recommendations and match explanations (`/job/[referenceCode]/matches`).
+- **Completed Customer Experience Slices (Live in Production)**:
+  - `WEB-014`: Customer Profile and Saved Locations (`/profile`)
+  - `WEB-015`: Customer Payments and Escrow checkout UX (`/receipt/[bookingId]`)
+  - `WEB-016`: Customer Reviews and Ratings flow (`/brainworkers/[id]`)
+  - `WEB-017`: In-App Messaging & Real-Time Chat (`/messages`, `/messages/[jobId]`)
 - **Remaining Scope in Phase 1**:
-  - Customer Profile and Saved Locations (`/profile`)
-  - Customer Payments and Escrow checkout UX
-  - Customer Reviews and Ratings flow
-  - In-App Messaging threads (`/messages`)
-  - In-App Notification Center (`/notifications`)
+  - `WEB-018`: In-App Notification Center (`/notifications`)
 
 ### Milestone 5: BrainWorker Platform
 **Status: Planned (Phase 2 Priority)**

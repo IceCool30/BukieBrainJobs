@@ -17,6 +17,35 @@ The format follows practical release notes written plainly in engineering langua
 - Expanded `AGENTS.md` to conform to the canonical NINE context map schema, recording Termux environment limits and cloud Codespace execution requirements.
 - Standardized test suite describe block titles across `apps/web` to eliminate em dashes.
 
+## [1.0.0-web-017] - 2026-09-23
+
+### Added
+- WEB-017 In-App Messaging & Real-Time Chat integrated into canonical `/messages` and `/messages/[jobId]` routes.
+- `apps/web/lib/messaging/types.ts`: Domain models for conversations, messages, delivery states (pending, sent, delivered, failed), media attachments (JPEG, PNG, WEBP up to 5 MB), structured location snapshots, and `IMessagingRepository` contract.
+- `apps/web/lib/messaging/repository.ts`: Production-first `MessagingRepository` with fail-closed customer and booking participant isolation, thread deduplication per `jobId`, offline optimistic message queuing with retry and cancel controls, and deterministic scenario fixtures.
+- `apps/web/components/messaging/ConversationHub.tsx`: Authenticated messaging inbox supporting real-time conversation filtering, unread indicators, and 12-column desktop master-detail / mobile responsive layout.
+- `apps/web/components/messaging/ChatScreen.tsx`: Active conversation surface with deterministic midnight-rollover date separators, optimistic delivery indicators, failed-message retry, and archived read-only state for completed or cancelled bookings.
+- `apps/web/components/messaging/MediaUploadStaging.tsx`: Image attachment staging with client-side MIME and size validation (5 MB maximum) and instant cancellation before dispatch.
+- `apps/web/components/messaging/LocationShareModal.tsx` and `LocationMessageCard.tsx`: Explicit one-time structured location snapshot capture with safe external Google Maps link.
+- `apps/web/app/messages/page.tsx` and `apps/web/app/messages/[jobId]/page.tsx`: Production routes with Next.js 15 App Router static generation guards and authentication redirects.
+- 208 automated messaging tests across 6 phases, bringing the monorepo web test suite to 816 passing tests with 0 failures.
+
+### Changed
+- Retired temporary "Messages coming soon" dialog and navigation targets across `DashboardScreen.tsx`, `ProfileNavigation.tsx`, and `JobsNavigation.tsx`, routing directly to `/messages`.
+- Production repository boundary verified with 0 imports from `testing/` in production modules.
+
+## [1.0.0-web-016] - 2026-09-22
+
+### Added
+- WEB-016 Customer Reviews & Reputation System integrated on completed bookings and BrainWorker profiles (`/brainworkers/[id]`).
+- Multi-criteria rating inputs: Punctuality, work quality, communication, and overall score (1 to 5 stars).
+- Customer review submission modal with 1,000 Unicode code point limit and honest character countdown.
+- Public review feed on BrainWorker profile tabs displaying verified booking badges and timestamps.
+- Review reporting and abuse flagging action.
+- Fail-closed customer ownership authorization: customers can only review bookings they own that are in `COMPLETED` state.
+- Offline protection disabling review submissions while keeping cached reviews accessible.
+- 608 passing tests across 32 suites verified live on Vercel preview.
+
 ## [1.0.0-web-015] - 2026-09-21
 
 ### Added

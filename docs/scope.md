@@ -8,15 +8,28 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- [ ] **17. WEB-017 In-App Messaging & Real-Time Chat**
-  - **Spec**: `docs/specs/WEB-017-messaging-chat.md`
+- [ ] **18. WEB-018 Notification Center & Push UX**
+  - **Spec**: `docs/specs/WEB-018-notification-center.md`
   - **Acceptance Criteria**:
-    - [ ] Customer and BrainWorker active conversation threads at `/messages`
-    - [ ] Message history, pending delivery indicators, and offline caching
-    - [ ] Photo attachment and location share shortcuts
+    - [ ] In-app notification feed at `/notifications` with categorized tabs (All, Bookings, Account, System)
+    - [ ] Read and unread badge state tracking and mark-all-as-read actions
+    - [ ] Deep-link navigation from notifications straight to corresponding `/jobs?id=...` and `/messages/[jobId]` records
+    - [ ] Web Push service worker integration for background browser notifications
+    - [ ] Deterministic mock notification repository and offline handling
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web type-check && pnpm --filter @bukiebrainjobs/web lint && pnpm --filter @bukiebrainjobs/web test`
 
 ## Completed & Verified Slices
+
+- [x] **17. WEB-017 In-App Messaging & Real-Time Chat**
+  - **Spec**: `docs/specs/WEB-017-messaging-chat.md`
+  - **Acceptance Criteria**:
+    - [x] Customer and BrainWorker active conversation threads at `/messages`
+    - [x] Message history, pending delivery indicators, and offline caching
+    - [x] Photo attachment and location share shortcuts
+    - [x] Authorization: fail-closed access on missing or mismatched customer identifiers
+    - [x] Offline state: optimistic queued delivery with retry/cancel actions
+    - [x] Retired temporary "Messages coming soon" modal notices and routes
+  - **Verification Evidence**: Complete / Live at commit `99f11f1`; CI and Deploy Web passed; 208/208 WEB-017 tests passed; 816/816 monorepo web tests passed; production build 31/31 pages; Vercel production preview verified.
 
 - [x] **16. WEB-016 Customer Reviews & Reputation**
   - **Spec**: `docs/specs/WEB-016-customer-reviews-reputation.md`
@@ -183,23 +196,6 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test app/job/MatchResultsScreen.test.tsx lib/matching/matching.test.ts`
 
 ## Upcoming Planned Slices
-
-- [ ] **17. WEB-017 In-App Messaging & Real-Time Chat**
-  - **Spec**: `docs/specs/WEB-017-messaging-chat.md`
-  - **Acceptance Criteria**:
-    - [ ] Customer and BrainWorker active conversation threads at `/messages`
-    - [ ] Message history, pending delivery indicators, and offline caching
-    - [ ] Photo attachment and location share shortcuts
-  - **Verification Command**: `pnpm test`
-
-- [ ] **18. WEB-018 Notification Center & Push UX**
-  - **Spec**: `docs/specs/WEB-018-notification-center.md`
-  - **Acceptance Criteria**:
-    - [ ] In-app notification feed at `/notifications` with categorized tabs
-    - [ ] Read and unread badge state tracking
-    - [ ] Deep-link navigation from notifications straight to corresponding `/jobs?id=...` records
-    - [ ] Web Push service worker integration
-  - **Verification Command**: `pnpm test`
 
 - [ ] **19. BW-001 BrainWorker Platform Onboarding & Verification**
   - **Spec**: `docs/specs/BW-001-onboarding.md`

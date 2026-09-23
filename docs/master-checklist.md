@@ -18,7 +18,7 @@ This document provides a single, unified checklist of what has been built, what 
 | **Customer Web Platform Foundation** | **Substantially Complete** | Dashboard, job posting, matching, activity hub, booking lifecycle. |
 | **Customer Payments & Escrow UX** | **Complete** | Merged to main at 78623cb. Production boundary isolation, fail-closed attribution, provider neutrality, and 479-test coverage verified. |
 | **Customer Reviews & Reputation** | **Complete** | Completed & live in production. 608 passing tests across 32 suites. Verified on Vercel deployment 6586791746 (commit 962a870). |
-| **Customer Notifications & Messaging** | **Partially Built** | Shell dialogs exist. Chat threads, socket client, and push UX missing. |
+| **Customer Notifications & Messaging** | **Partially Built** | Messaging is Complete & Live (WEB-017). Notification center (/notifications) and Web Push pending (WEB-018). |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
 | **BrainWorker Platform** | **Not Built** | Onboarding, identity check, job inbox, availability, earnings wallet. |
 | **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Customer state machine is built. Worker accept/decline and check-in are missing. |
@@ -93,13 +93,14 @@ Phase 7: Launch Readiness
 - [x] Review reporting and abuse flagging action.
 - [x] Merged to main at 962a870. 608 tests passing across 32 suites with 0 regressions. Verified on Vercel production preview.
 
-#### 1.4 In-App Messaging & Real-Time Chat
-- [ ] Replace "Messages coming soon" dialog in navigation with active chat thread list (`/messages`).
-- [ ] Conversation view between customer and assigned BrainWorker.
-- [ ] Photo attachment upload (e.g., leaking pipe, damaged circuit, replacement parts).
-- [ ] Location share shortcut.
-- [ ] Offline message caching with pending delivery indicators.
-- [ ] Integration with `services/socket-server` client hooks.
+#### 1.4 In-App Messaging & Real-Time Chat (WEB-017, Complete)
+- [x] Replace "Messages coming soon" dialog in navigation with active chat thread list (`/messages`).
+- [x] Conversation view between customer and assigned BrainWorker (`/messages/[jobId]`).
+- [x] Photo attachment upload (e.g., leaking pipe, damaged circuit, replacement parts).
+- [x] Location share shortcut.
+- [x] Offline message caching with pending delivery indicators, failed retry, and cancellation.
+- [x] Integration with transport-agnostic messaging repository and client hooks.
+- [x] Completed and verified live in production (commit 99f11f1; 208/208 messaging tests, 816/816 web regression tests; Vercel preview verified).
 
 #### 1.5 Notification Center
 - [ ] Replace "Notifications coming soon" dialog with notification feed (`/notifications`).

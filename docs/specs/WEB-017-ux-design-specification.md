@@ -4,14 +4,14 @@
 |---|---|
 | **Document ID** | WEB-017-UX |
 | **Feature** | In-App Messaging & Real-Time Chat |
-| **Status** | 🟡 Proposed for UX Approval (v1.0) |
-| **Version** | 1.0 |
+| **Status** | 🟢 Complete / Live |
+| **Version** | 1.0 (Live in Production) |
 | **Workstream** | Phase 1: Customer Web Platform Completion |
-| **Governing Loop** | Mr. Solomon 9-Command Engineering Loop (`/architect`) |
+| **Governing Loop** | Mr. Solomon 9-Command Engineering Loop |
 | **Architecture Contract** | WEB-017 Architecture Contract v1.0 |
 | **Target Surfaces** | `/messages` (Conversation Hub), `/messages/[jobId]` (Active Chat Screen) |
 | **Design Standards** | BukieBrainJobs Experience Standards & Content Guide |
-| **Date** | 2026-09-22 |
+| **Date** | 2026-09-23 |
 
 ---
 

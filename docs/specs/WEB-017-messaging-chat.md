@@ -4,12 +4,12 @@
 |---|---|
 | **Document ID** | WEB-017-SCOPE |
 | **Feature** | In-App Messaging & Real-Time Chat |
-| **Status** | 🟢 Locked (Approved for `/architect`) |
-| **Version** | 1.1 |
+| **Status** | 🟢 Complete / Live |
+| **Version** | 1.0 (Live in Production) |
 | **Workstream** | Phase 1: Customer Web Platform Completion |
-| **Governing Loop** | Mr. Solomon 9-Command Engineering Loop (`/scope`) |
+| **Governing Loop** | Mr. Solomon 9-Command Engineering Loop |
 | **Target Surfaces** | `/messages` (Conversation List Hub), `/messages/[jobId]` (Active Conversation Screen) |
-| **Date** | 2026-09-22 |
+| **Date** | 2026-09-23 |
 
 ---
 

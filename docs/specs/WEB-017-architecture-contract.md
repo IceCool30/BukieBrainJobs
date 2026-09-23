@@ -4,13 +4,13 @@
 |---|---|
 | **Document ID** | WEB-017-ARCH |
 | **Feature** | In-App Messaging & Real-Time Chat |
-| **Status** | 🟡 Proposed for Architecture Approval (v1.0) |
-| **Version** | 1.0 |
+| **Status** | 🟢 Complete / Live |
+| **Version** | 1.0 (Live in Production) |
 | **Workstream** | Phase 1: Customer Web Platform Completion |
-| **Governing Loop** | Mr. Solomon 9-Command Engineering Loop (`/architect`) |
+| **Governing Loop** | Mr. Solomon 9-Command Engineering Loop |
 | **Scope Contract** | WEB-017 Scope & Product Contract v1.1 |
 | **Target Surfaces** | `/messages` (Conversation List), `/messages/[jobId]` (Active Chat View) |
-| **Date** | 2026-09-22 |
+| **Date** | 2026-09-23 |
 
 ---
 
