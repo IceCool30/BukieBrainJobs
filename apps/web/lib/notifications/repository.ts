@@ -10,8 +10,6 @@
 import type {
   INotificationRepository,
   CustomerNotification,
-  NotificationCategory,
-  NotificationQueryOptions,
   NotificationQueryResult,
 } from './types';
 
