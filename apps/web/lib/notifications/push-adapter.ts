@@ -27,7 +27,7 @@ export class BrowserPushAdapter implements IPushNotificationAdapter {
     throw new Error('Not implemented');
   }
 
-  async sendTestAlert(_title: string, _body: string): Promise<boolean> {
+  async sendTestAlert(): Promise<boolean> {
     throw new Error('Not implemented');
   }
 }
