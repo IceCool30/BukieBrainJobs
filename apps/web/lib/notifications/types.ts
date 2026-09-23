@@ -92,16 +92,38 @@ export interface NotificationQueryResult {
   isCached?: boolean;
 }
 
-// Minimal stubs for RED phase (production implementation deliberately absent)
-
 export function getNotificationCategory(type: NotificationType): NotificationCategory {
-  throw new Error(`Not implemented: getNotificationCategory for ${type}`);
+  switch (type) {
+    case 'JOB_CONFIRMED':
+    case 'JOB_STARTED':
+    case 'JOB_COMPLETED':
+    case 'JOB_CANCELLED':
+      return 'bookings';
+
+    case 'MESSAGE_RECEIVED':
+    case 'PAYMENT_CONFIRMED':
+    case 'PAYMENT_RELEASED':
+    case 'PAYMENT_REFUNDED':
+      return 'messages_payments';
+
+    case 'REVIEW_REQUESTED':
+    case 'SECURITY_ALERT':
+    case 'VERIFICATION_COMPLETE':
+    case 'SYSTEM':
+      return 'account';
+
+    default: {
+      const _exhaustiveCheck: never = type;
+      throw new Error(`Unhandled notification type: ${String(_exhaustiveCheck)}`);
+    }
+  }
 }
 
 export function isValidNotificationType(type: unknown): type is NotificationType {
-  return false;
+  return typeof type === 'string' && NOTIFICATION_TYPES.includes(type as NotificationType);
 }
 
 export function isValidNotificationCategory(category: unknown): category is NotificationCategory {
-  return false;
+  return typeof category === 'string' && NOTIFICATION_CATEGORIES.includes(category as NotificationCategory);
 }
+
