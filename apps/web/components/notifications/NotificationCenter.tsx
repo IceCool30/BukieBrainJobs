@@ -13,12 +13,15 @@ import type {
   INotificationRepository,
   CustomerNotification,
   NotificationCategory,
+  IPushNotificationAdapter,
 } from '../../lib/notifications/types';
 import { getNotificationRepository } from '../../lib/notifications/repository';
 
 export interface NotificationCenterProps {
   customerId: string;
   repository?: INotificationRepository;
+  pushAdapter?: IPushNotificationAdapter;
+  isOffline?: boolean;
   onNavigate?: (url: string) => void;
 }
 
@@ -38,8 +41,12 @@ const TABS: readonly TabDefinition[] = [
 export const NotificationCenter: React.FC<NotificationCenterProps> = ({
   customerId,
   repository,
+  pushAdapter,
+  isOffline,
   onNavigate,
 }) => {
+  void pushAdapter;
+  void isOffline;
   void onNavigate;
   const repo = useMemo(() => repository ?? getNotificationRepository(), [repository]);
 
