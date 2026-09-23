@@ -29,6 +29,6 @@ Detailed product UX briefs continue to be archived under `docs/04-public-website
 | `WEB-014` | Customer Profile & Account Settings | Live in Production | `docs/specs/WEB-014-customer-profile-settings.md` |
 | `WEB-015` | Customer Payments & Escrow UX | Live in Production | `docs/specs/WEB-015-customer-payments-escrow.md` |
 | `WEB-016` | Customer Reviews & Reputation | Live in Production | `docs/specs/WEB-016-customer-reviews-reputation.md` |
-| `WEB-017` | In-App Messaging & Real-Time Chat | Planned (Phase 1) | `docs/master-checklist.md` |
-| `WEB-018` | Notification Center & Push UX | Planned (Phase 1) | `docs/master-checklist.md` |
+| `WEB-017` | In-App Messaging & Real-Time Chat | Live in Production | `docs/specs/WEB-017-messaging-chat.md` |
+| `WEB-018` | Notification Center & Push UX | Active Scope (Phase 1) | `docs/specs/WEB-018-notification-center.md` |
 
