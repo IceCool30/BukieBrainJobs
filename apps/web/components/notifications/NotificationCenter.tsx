@@ -38,8 +38,9 @@ const TABS: readonly TabDefinition[] = [
 export const NotificationCenter: React.FC<NotificationCenterProps> = ({
   customerId,
   repository,
-  onNavigate: _onNavigate,
+  onNavigate,
 }) => {
+  void onNavigate;
   const repo = useMemo(() => repository ?? getNotificationRepository(), [repository]);
 
   const [activeTab, setActiveTab] = useState<NotificationCategory>('all');
