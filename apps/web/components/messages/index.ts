@@ -24,3 +24,17 @@ export type { MessageBubbleProps } from './MessageBubble';
 
 export { DeliveryStatusIcon } from './DeliveryStatusIcon';
 export type { DeliveryStatusIconProps } from './DeliveryStatusIcon';
+
+// Media upload components
+export { MediaUploadStaging } from './MediaUploadStaging';
+export type { MediaUploadStagingProps } from './MediaUploadStaging';
+
+export { ImageLightbox } from './ImageLightbox';
+export type { ImageLightboxProps } from './ImageLightbox';
+
+// Location sharing components
+export { LocationShareModal } from './LocationShareModal';
+export type { LocationShareModalProps } from './LocationShareModal';
+
+export { LocationCard } from './LocationCard';
+export type { LocationCardProps } from './LocationCard';

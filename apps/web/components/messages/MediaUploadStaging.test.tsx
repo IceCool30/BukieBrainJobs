@@ -10,33 +10,12 @@ import { render, screen, fireEvent } from '@testing-library/react';
 // Test Contract: MED-001 through MED-008 - Media Attachment & Lightbox
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-// Placeholder component type for RED phase - will cause import errors until GREEN
-// This is expected and intentional for test-first development
-interface MediaUploadStagingProps {
-  onFileSelect: (file: File) => void | Promise<void>;
-  onUploadStart: (file: File) => void;
-  onUploadProgress: (file: File, progress: number) => void;
-  onUploadComplete: (file: File, url: string) => void;
-  onUploadError: (file: File, error: string) => void;
-  onUploadAbort: (file: File) => void;
-  maxFileSize: number;
-  allowedMimeTypes: string[];
-  disabled?: boolean;
-}
+// Import actual components for GREEN phase
+import { MediaUploadStaging, type MediaUploadStagingProps } from './MediaUploadStaging';
+import { ImageLightbox as Lightbox, type ImageLightboxProps } from './ImageLightbox';
 
-// Placeholder import - will fail until GREEN implementation exists
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-let MediaUploadStaging: React.ComponentType<MediaUploadStagingProps>;
-
-// Placeholder for Lightbox component
-interface LightboxProps {
-  src: string;
-  alt: string;
-  onClose: () => void;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-let Lightbox: React.ComponentType<LightboxProps>;
+// Re-export props types for consistency
+export type { MediaUploadStagingProps, ImageLightboxProps as LightboxProps };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Test Suite: MED-001 through MED-008

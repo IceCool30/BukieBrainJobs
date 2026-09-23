@@ -10,31 +10,13 @@ import { render, screen, fireEvent } from '@testing-library/react';
 // Test Contract: LOC-001 through LOC-008 - Location Sharing Modal & Card
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-// Placeholder component type for RED phase - will cause import errors until GREEN
-// This is expected and intentional for test-first development
-interface LocationShareModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: (locationData: { latitude: number; longitude: number; address: string; landmark?: string }) => void;
-  bookingAddress: string;
-  bookingLandmark?: string;
-  bookingCity: string;
-}
+// Import actual components for GREEN phase
+import { LocationShareModal } from './LocationShareModal';
+import { LocationCard } from './LocationCard';
 
-// Placeholder import - will fail until GREEN implementation exists
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-let LocationShareModal: React.ComponentType<LocationShareModalProps>;
-
-// Placeholder for LocationCard component
-interface LocationCardProps {
-  latitude: number;
-  longitude: number;
-  address: string;
-  landmark?: string;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-let LocationCard: React.ComponentType<LocationCardProps>;
+// Re-export props types for consistency
+export type { LocationShareModalProps } from './LocationShareModal';
+export type { LocationCardProps } from './LocationCard';
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Test Suite: LOC-001 through LOC-008
