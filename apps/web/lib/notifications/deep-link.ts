@@ -20,7 +20,12 @@ export function isValidInternalPath(path: string): boolean {
   }
 
   // Disallow scheme indicators (:) before query string or hash anchor
-  const pathWithoutQuery = path.split('?')[0].split('#')[0];
+  const queryIndex = path.indexOf('?');
+  const hashIndex = path.indexOf('#');
+  let cutIndex = path.length;
+  if (queryIndex !== -1) cutIndex = Math.min(cutIndex, queryIndex);
+  if (hashIndex !== -1) cutIndex = Math.min(cutIndex, hashIndex);
+  const pathWithoutQuery = path.slice(0, cutIndex);
   if (pathWithoutQuery.includes(':')) {
     return false;
   }
