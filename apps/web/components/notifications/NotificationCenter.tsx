@@ -11,10 +11,10 @@ export interface NotificationCenterProps {
   onNavigate?: (url: string) => void;
 }
 
-export function NotificationCenter(_props: NotificationCenterProps): React.JSX.Element {
+export const NotificationCenter: React.FC<NotificationCenterProps> = () => {
   return (
     <div data-testid="notification-center-stub">
-      {/* Phase 4 RED Stub — Feed and tab infrastructure not yet implemented */}
+      {/* Phase 4 RED Stub: Feed and tab infrastructure not yet implemented */}
     </div>
   );
-}
+};
