@@ -88,8 +88,8 @@ export interface NotificationQueryResult {
     account: number;
   };
   hasMore: boolean;
-  nextCursor?: string | null;
-  isCached?: boolean;
+  nextCursor?: string | null | undefined;
+  isCached?: boolean | undefined;
 }
 
 export function getNotificationCategory(type: NotificationType): NotificationCategory {
@@ -126,4 +126,79 @@ export function isValidNotificationType(type: unknown): type is NotificationType
 export function isValidNotificationCategory(category: unknown): category is NotificationCategory {
   return typeof category === 'string' && NOTIFICATION_CATEGORIES.includes(category as NotificationCategory);
 }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Repository Contract
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export interface INotificationRepository {
+  /**
+   * Fetches notifications for the authenticated customer.
+   * Fails closed if customerId is missing or does not match caller session.
+   */
+  getNotifications(
+    customerId: string,
+    options?: NotificationQueryOptions
+  ): Promise<NotificationQueryResult>;
+
+  /**
+   * Returns total unread notification count for the authenticated customer.
+   */
+  getUnreadCount(customerId: string): Promise<number>;
+
+  /**
+   * Marks a single notification as read.
+   * Fails closed if notification does not exist or does not belong to customerId.
+   */
+  markAsRead(customerId: string, notificationId: string): Promise<CustomerNotification>;
+
+  /**
+   * Marks all unread notifications (optionally filtered by category) as read.
+   * Returns the count of mutated records.
+   */
+  markAllAsRead(customerId: string, category?: NotificationCategory): Promise<{ count: number }>;
+
+  /**
+   * Soft-dismisses a notification for the active customer.
+   */
+  dismiss(customerId: string, notificationId: string): Promise<void>;
+
+  /**
+   * Subscribes to real-time notification push events for the authenticated customer.
+   * Returns an unsubscribe cleanup function.
+   */
+  subscribe(
+    customerId: string,
+    listener: (notification: CustomerNotification) => void
+  ): () => void;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Domain Error Hierarchy
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export class NotificationError extends Error {
+  constructor(message: string, public readonly code: string) {
+    super(message);
+    this.name = 'NotificationError';
+    Object.setPrototypeOf(this, NotificationError.prototype);
+  }
+}
+
+export class UnauthorizedError extends NotificationError {
+  constructor(message = 'You do not have permission to access these notifications.') {
+    super(message, 'UNAUTHORIZED');
+    this.name = 'UnauthorizedError';
+    Object.setPrototypeOf(this, UnauthorizedError.prototype);
+  }
+}
+
+export class NotFoundError extends NotificationError {
+  constructor(message = 'Notification not found.') {
+    super(message, 'NOT_FOUND');
+    this.name = 'NotFoundError';
+    Object.setPrototypeOf(this, NotFoundError.prototype);
+  }
+}
+
 
