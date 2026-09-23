@@ -9,6 +9,7 @@ import {
   getNotificationCategory,
   isValidNotificationType,
   isValidNotificationCategory,
+} from './types';
 import type { CustomerNotification } from './types';
 
 describe('WEB-018 Domain Types & Category Mapping (TDD Suite 1)', () => {
