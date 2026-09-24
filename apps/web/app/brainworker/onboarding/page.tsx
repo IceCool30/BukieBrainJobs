@@ -123,6 +123,37 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
     return steps;
   }, [draftRecord, identityDraft, tradeDraft, credentialsDraft]);
 
+  // Provide safe normalized defaults for review step to prevent destructuring exceptions on partial drafts
+  const identityDataForReview: OnboardingIdentityData = useMemo(() => {
+    const base = draftRecord?.identity ?? identityDraft;
+    return {
+      legalFirstName: base?.legalFirstName ?? '',
+      legalMiddleName: base?.legalMiddleName ?? '',
+      legalLastName: base?.legalLastName ?? '',
+      dateOfBirth: base?.dateOfBirth ?? '',
+      identifierType: base?.identifierType ?? 'NIN',
+      identifierNumber: base?.identifierNumber ?? '',
+      maskedIdentifier: base?.maskedIdentifier ?? '',
+      residentialAddress: base?.residentialAddress ?? {
+        street: '',
+        city: '',
+        lga: '',
+        state: '',
+      },
+    };
+  }, [draftRecord?.identity, identityDraft]);
+
+  const tradeDataForReview: OnboardingTradeData = useMemo(() => {
+    const base = draftRecord?.trade ?? tradeDraft;
+    return {
+      primaryCategory: base?.primaryCategory ?? '',
+      subSpecialties: base?.subSpecialties ?? [],
+      experienceLevel: base?.experienceLevel ?? 'JOURNEYMAN_EXPERIENCED',
+      yearsInTrade: base?.yearsInTrade ?? 0,
+      coverageCities: base?.coverageCities ?? [],
+    };
+  }, [draftRecord?.trade, tradeDraft]);
+
   // Customer boundary notice (rendered immediately without repository call)
   if (user?.role === 'customer') {
     return (
@@ -239,37 +270,6 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
       setIsSubmitting(false);
     }
   };
-
-  // Provide safe normalized defaults for review step to prevent destructuring exceptions on partial drafts
-  const identityDataForReview: OnboardingIdentityData = useMemo(() => {
-    const base = draftRecord?.identity ?? identityDraft;
-    return {
-      legalFirstName: base?.legalFirstName ?? '',
-      legalMiddleName: base?.legalMiddleName ?? '',
-      legalLastName: base?.legalLastName ?? '',
-      dateOfBirth: base?.dateOfBirth ?? '',
-      identifierType: base?.identifierType ?? 'NIN',
-      identifierNumber: base?.identifierNumber ?? '',
-      maskedIdentifier: base?.maskedIdentifier ?? '',
-      residentialAddress: base?.residentialAddress ?? {
-        street: '',
-        city: '',
-        lga: '',
-        state: '',
-      },
-    };
-  }, [draftRecord?.identity, identityDraft]);
-
-  const tradeDataForReview: OnboardingTradeData = useMemo(() => {
-    const base = draftRecord?.trade ?? tradeDraft;
-    return {
-      primaryCategory: base?.primaryCategory ?? '',
-      subSpecialties: base?.subSpecialties ?? [],
-      experienceLevel: base?.experienceLevel ?? 'JOURNEYMAN_EXPERIENCED',
-      yearsInTrade: base?.yearsInTrade ?? 0,
-      coverageCities: base?.coverageCities ?? [],
-    };
-  }, [draftRecord?.trade, tradeDraft]);
 
   return (
     <main className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
