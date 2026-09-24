@@ -381,7 +381,7 @@ export function IdentityStepForm({
                 }}
                 className="h-4 w-4 text-[#001A41] focus:ring-[#001A41]"
               />
-              <span>National Identification Number (NIN)</span>
+              <span>NIN</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-800">
               <input
@@ -395,7 +395,7 @@ export function IdentityStepForm({
                 }}
                 className="h-4 w-4 text-[#001A41] focus:ring-[#001A41]"
               />
-              <span>Bank Verification Number (BVN)</span>
+              <span>BVN</span>
             </label>
           </div>
         </div>
