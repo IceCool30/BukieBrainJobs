@@ -8,6 +8,7 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { getBrainWorkerOnboardingRepository } from '../../../lib/brainworker/repository';
 import { useBrainWorkerOnboardingStore } from '../../../lib/brainworker/store';
@@ -131,18 +132,18 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
             You are currently signed in as a customer. Provider onboarding requires an active BrainWorker provider account. Customer accounts cannot access provider onboarding.
           </p>
           <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
-            <a
+            <Link
               href="/brainworker/register"
               className="inline-flex items-center justify-center rounded-xl bg-[#001A41] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#002661]"
             >
               Create Provider Account
-            </a>
-            <a
+            </Link>
+            <Link
               href="/"
               className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               Return Home
-            </a>
+            </Link>
           </div>
         </div>
       </div>

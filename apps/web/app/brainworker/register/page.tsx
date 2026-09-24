@@ -8,6 +8,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { ShieldCheck, ArrowRight, AlertTriangle } from 'lucide-react';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib/auth/storage';
 import type { AuthUser } from '../../../lib/auth/types';
@@ -56,12 +57,12 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
             >
               Sign Out
             </button>
-            <a
+            <Link
               href="/"
               className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               Return Home
-            </a>
+            </Link>
           </div>
         </div>
       </div>

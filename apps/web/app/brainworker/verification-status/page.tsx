@@ -8,9 +8,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { getBrainWorkerOnboardingRepository } from '../../../lib/brainworker/repository';
-import type { BrainWorkerOnboardingRecord, OnboardingStep } from '../../../lib/brainworker/types';
+import type { BrainWorkerOnboardingRecord } from '../../../lib/brainworker/types';
 import { VerificationStatusMonitor } from '../../../components/brainworker/onboarding/VerificationStatusMonitor';
 import type { AuthUser } from '../../../lib/auth/types';
 
@@ -73,7 +74,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
     }
   }, [router]);
 
-  const handleRemediate = (_targetStep: OnboardingStep) => {
+  const handleRemediate = () => {
     router.push('/brainworker/onboarding');
   };
 
@@ -100,12 +101,12 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
           <p className="text-sm text-slate-600 leading-relaxed">
             BrainWorker verification status is only accessible by registered service providers.
           </p>
-          <a
+          <Link
             href="/"
             className="inline-flex items-center justify-center rounded-xl bg-[#001A41] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#002661]"
           >
             Return to Customer Dashboard
-          </a>
+          </Link>
         </div>
       </div>
     );

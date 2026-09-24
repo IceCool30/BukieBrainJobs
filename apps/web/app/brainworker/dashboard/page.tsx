@@ -8,6 +8,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
   ShieldCheck,
   Briefcase,
@@ -64,12 +65,12 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
           <p className="text-sm text-slate-600 leading-relaxed">
             The BrainWorker workspace is strictly reserved for verified service providers.
           </p>
-          <a
+          <Link
             href="/"
             className="inline-flex items-center justify-center rounded-xl bg-[#001A41] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#002661]"
           >
             Return to Customer Dashboard
-          </a>
+          </Link>
         </div>
       </div>
     );
