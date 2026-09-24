@@ -256,6 +256,7 @@ export function DocumentUploadCard({
         <div className="space-y-4">
           {isImage ? (
             <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previewSrc}
                 alt={`Preview of ${value.fileName}`}
