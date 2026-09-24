@@ -49,7 +49,7 @@ Work in this repository is executed sequentially to maintain platform coherence:
 - Role-aware session routing and unauthenticated boundary protection.
 
 ### Milestone 4: Customer Platform
-**Status: Substantially Complete (Core Flows Live in Production)**
+**Status: Complete (100% Phase 1 Customer Web Platform Live in Production)**
 - `WEB-007`: Public Booking Preparation form (`/book`).
 - `WEB-009`: Multi-step Customer Job Posting with review summary (`/post-job`).
 - `WEB-010`: Authenticated Customer Dashboard with metric cards (`/dashboard`).
@@ -60,7 +60,6 @@ Work in this repository is executed sequentially to maintain platform coherence:
   - `WEB-015`: Customer Payments and Escrow checkout UX (`/receipt/[bookingId]`)
   - `WEB-016`: Customer Reviews and Ratings flow (`/brainworkers/[id]`)
   - `WEB-017`: In-App Messaging & Real-Time Chat (`/messages`, `/messages/[jobId]`)
-- **Remaining Scope in Phase 1**:
   - `WEB-018`: In-App Notification Center (`/notifications`)
 
 ### Milestone 5: BrainWorker Platform

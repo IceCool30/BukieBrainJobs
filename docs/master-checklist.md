@@ -103,11 +103,12 @@ Phase 7: Launch Readiness
 - [x] Completed and verified live in production (commit 99f11f1; 208/208 messaging tests, 816/816 web regression tests; Vercel preview verified).
 
 #### 1.5 Notification Center
-- [ ] Replace "Notifications coming soon" dialog with notification feed (`/notifications`).
-- [ ] Category tabs: All, Bookings, Account, and Promos.
-- [ ] Read and unread badge state tracking.
-- [ ] Deep-link navigation from notifications straight to corresponding `/jobs?id=...` records.
-- [ ] Web Push service worker integration for background browser notifications.
+- [x] Replace "Notifications coming soon" dialog with notification feed (`/notifications`).
+- [x] Category tabs: All, Bookings, Messages & Payments, and Account.
+- [x] Read and unread badge state tracking with live repository subscription and 99+ capping.
+- [x] Deep-link navigation from notifications straight to corresponding sanitized `/jobs?id=...` records.
+- [x] Web Push adapter integration with explicit-click opt-in permission and graceful fallback.
+- [x] Completed and verified live in production (commit b8eb6e6; 128/128 notification tests, 944/944 web regression tests; Vercel deployment verified).
 
 ---
 

@@ -17,6 +17,26 @@ The format follows practical release notes written plainly in engineering langua
 - Expanded `AGENTS.md` to conform to the canonical NINE context map schema, recording Termux environment limits and cloud Codespace execution requirements.
 - Standardized test suite describe block titles across `apps/web` to eliminate em dashes.
 
+## [1.0.0-web-018] - 2026-09-24
+
+### Added
+- WEB-018 Customer In-App Notification Center integrated into canonical `/notifications` route.
+- `apps/web/lib/notifications/types.ts`: Domain models for customer notifications, categories (bookings, messages_payments, account), query options, mutations, unread count caching, and `INotificationRepository` contract.
+- `apps/web/lib/notifications/repository.ts`: Production-first `NotificationRepository` with fail-closed recipient isolation, cached offline snapshots, optimistic read reconciliation, and observer subscriptions.
+- `apps/web/lib/notifications/push-adapter.ts`: Browser Web Push capability adapter with explicit-click opt-in permission flow, granted/denied/unsupported state detection, and zero permission auto-prompting on mount.
+- `apps/web/lib/notifications/deep-link.ts`: Strict deep-link sanitizer routing notification clicks to canonical routes (`/jobs?id=...`, `/messages/...`, `/receipt/...`, `/profile`) with safe `/notifications` fallback.
+- `apps/web/components/notifications/NotificationCard.tsx`: Category-tinted notification item card with unread status dot, relative timestamps, reference code badges, keyboard focus rings, and 44x44px min touch targets.
+- `apps/web/components/notifications/NotificationStates.tsx`: Deterministic states for empty feed, category-filtered empty, loading skeletons, offline cached mode, initial fetch error with retry, and Web Push permission status.
+- `apps/web/components/notifications/NotificationCenter.tsx`: Primary feed component supporting 4 accessible category tabs, unread filter toggle, Mark All as Read bulk action, and live count sync.
+- `apps/web/components/notifications/NotificationBell.tsx`: Navigation header bell with live repository subscription, exact count (1 to 99), and `99+` display capping.
+- `apps/web/app/notifications/page.tsx`: Production route with customer authentication redirect, static prerendering safety guards, and channel preferences footer card linking to `/profile?tab=notifications`.
+- 128 automated notification tests across 8 suites, bringing the monorepo web regression test suite to 944 passing tests with 0 failures across 49 test files.
+
+### Changed
+- Retired obsolete "Notifications Coming Soon" modal and "Soon" badge indicators in `DashboardScreen`, `ProfileNavigation`, and `JobsNavigation`.
+- Unified all customer notification entry points (header bell, sidebar tabs, mobile bottom nav Alerts) to route directly to `/notifications`.
+- Milestone 4 (Phase 1 Customer Web Platform) marked 100% Complete and Live in Production.
+
 ## [1.0.0-web-017] - 2026-09-23
 
 ### Added
