@@ -308,9 +308,10 @@ export class BrainWorkerOnboardingRepository implements IBrainWorkerOnboardingRe
   ): Promise<BrainWorkerOnboardingRecord> {
     this.assertCallerAuthorization(brainWorkerId);
 
-    const record = this.store.records.get(brainWorkerId);
+    let record = this.store.records.get(brainWorkerId);
     if (!record) {
-      throw new ValidationError('No onboarding record exists for submission.');
+      await this.getOnboardingRecord(brainWorkerId);
+      record = this.store.records.get(brainWorkerId)!;
     }
 
     if (
