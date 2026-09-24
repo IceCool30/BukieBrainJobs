@@ -220,7 +220,7 @@ describe('BW-001 Suite 7: Credentials & Review Forms Contracts', () => {
         screen.getByText(/Journeyman \/ Experienced/i)
       ).toBeInTheDocument();
       expect(screen.getByText(/6 years/i)).toBeInTheDocument();
-      expect(screen.getByText(/Lagos, Abuja \(FCT\)|Lagos/i)).toBeInTheDocument();
+      expect(screen.getByText(/Lagos, Abuja \(FCT\)/i)).toBeInTheDocument();
     });
 
     it('REV-003: renders Documents Summary Card with staged file names and categories', () => {
