@@ -236,6 +236,7 @@ describe('WEB-018 Route Integration, Bell Badge & Placeholder Retirement (INT-00
         <ProfileSidebar
           customerName="Adaeze Okafor"
           customerEmail="adaeze@example.com"
+          onSignOut={vi.fn()}
           onOpenNoticeDialog={mockNotice}
         />
       );
@@ -256,7 +257,8 @@ describe('WEB-018 Route Integration, Bell Badge & Placeholder Retirement (INT-00
       const mockNotice = vi.fn();
       render(
         <JobsSidebar
-          customer={mockCustomerUser}
+          customer={null}
+          onSignOut={vi.fn()}
           onOpenNoticeDialog={mockNotice}
         />
       );
