@@ -14,11 +14,11 @@ import NotificationsPage from './page';
 import { NotificationBell } from '../../components/notifications/NotificationBell';
 import DashboardScreen from '../../components/dashboard/DashboardScreen';
 import {
-  ProfileNavigation,
+  ProfileSidebar,
   ProfileMobileBottomNav,
 } from '../../components/profile/ProfileNavigation';
 import {
-  JobsNavigation,
+  JobsSidebar,
   JobsMobileBottomNav,
 } from '../../components/jobs/JobsNavigation';
 import {
@@ -233,7 +233,7 @@ describe('WEB-018 Route Integration, Bell Badge & Placeholder Retirement (INT-00
     it('routes directly to /notifications and does not trigger obsolete notice modal', () => {
       const mockNotice = vi.fn();
       render(
-        <ProfileNavigation
+        <ProfileSidebar
           customerName="Adaeze Okafor"
           customerEmail="adaeze@example.com"
           onOpenNoticeDialog={mockNotice}
@@ -255,7 +255,7 @@ describe('WEB-018 Route Integration, Bell Badge & Placeholder Retirement (INT-00
     it('routes directly to /notifications and does not trigger obsolete notice modal', () => {
       const mockNotice = vi.fn();
       render(
-        <JobsNavigation
+        <JobsSidebar
           customer={mockCustomerUser}
           onOpenNoticeDialog={mockNotice}
         />
