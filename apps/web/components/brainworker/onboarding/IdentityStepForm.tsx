@@ -8,7 +8,7 @@
 'use client';
 
 import React, { useState, useId, useMemo } from 'react';
-import { Shield, CheckCircle2, AlertCircle, Edit2 } from 'lucide-react';
+import { Shield, CheckCircle2, Edit2 } from 'lucide-react';
 import type {
   OnboardingIdentityData,
   IdentityIdentifierType,
