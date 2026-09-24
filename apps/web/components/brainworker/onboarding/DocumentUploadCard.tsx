@@ -112,8 +112,7 @@ export function DocumentUploadCard({
         setLocalPreviewUrl(previewUrl);
       }
 
-      const formatted = formatFileSize(file.size);
-      setStatusMessage(`Document staged: ${file.name} (${formatted})`);
+      setStatusMessage(`Document staged: ${file.name}`);
 
       onChange({
         name: file.name,
@@ -197,7 +196,7 @@ export function DocumentUploadCard({
   const previewSrc = value?.previewUrl || localPreviewUrl || '';
 
   const activeAnnouncement = value
-    ? `Document staged: ${value.fileName} (${formatFileSize(value.fileSizeBytes)})`
+    ? `Document staged: ${value.fileName}`
     : statusMessage;
 
   return (
