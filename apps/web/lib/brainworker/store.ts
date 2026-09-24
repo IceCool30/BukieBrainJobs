@@ -11,8 +11,6 @@ import type {
   BrainWorkerOnboardingRecord,
   OnboardingIdentityData,
   OnboardingTradeData,
-  OnboardingCredentialsData,
-  OnboardingDeclarationData,
   StagedDocument,
 } from './types';
 
