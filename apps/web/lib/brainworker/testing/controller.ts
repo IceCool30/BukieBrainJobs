@@ -8,6 +8,7 @@ import type {
   RejectionDetails,
 } from '../types';
 import type { BrainWorkerRepositoryStore } from '../repository';
+import * as authStorage from '../../auth/storage';
 
 export interface IBrainWorkerTestController {
   seedRecord(record: BrainWorkerOnboardingRecord): void;
@@ -52,6 +53,16 @@ export class BrainWorkerTestController implements IBrainWorkerTestController {
       updatedAt: new Date().toISOString(),
     };
     this.store.records.set(brainWorkerId, updated);
+
+    // Operational approval enables isBrainWorkerApproved on the active session
+    const currentUser = authStorage.getMockAuthenticatedUser();
+    if (currentUser && currentUser.id === brainWorkerId) {
+      authStorage.setMockAuthenticatedUser({
+        ...currentUser,
+        isBrainWorkerApproved: true,
+      });
+    }
+
     this.notify(updated);
     return updated;
   }
