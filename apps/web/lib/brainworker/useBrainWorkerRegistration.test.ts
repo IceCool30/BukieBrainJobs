@@ -92,6 +92,7 @@ describe('BW-001 Registration Hook Contracts (Suite 3: REG-001 to REG-009)', () 
         await result.current.loadRecord();
       });
 
+      expect(result.current.error).not.toBeNull();
       expect(result.current.error).toMatch(/authentication required/i);
     });
   });
@@ -108,6 +109,7 @@ describe('BW-001 Registration Hook Contracts (Suite 3: REG-001 to REG-009)', () 
       );
 
       expect(result.current.isCustomerBlocked).toBe(true);
+      expect(result.current.error).not.toBeNull();
       expect(result.current.error).toMatch(/customer/i);
 
       await act(async () => {
