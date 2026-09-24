@@ -18,7 +18,7 @@ export function ProfileSidebar({
   customerName,
   customerEmail,
   onSignOut,
-  onOpenNoticeDialog,
+  onOpenNoticeDialog: _onOpenNoticeDialog,
 }: {
   customerName: string;
   customerEmail: string;
@@ -131,7 +131,7 @@ export function ProfileSidebar({
 }
 
 export function ProfileMobileBottomNav({
-  onOpenNoticeDialog,
+  onOpenNoticeDialog: _onOpenNoticeDialog,
 }: {
   onOpenNoticeDialog?: ((dialog: 'messages') => void) | undefined;
 }) {

@@ -18,7 +18,7 @@ import { CustomerActivityCustomer } from '@bukiebrainjobs/types';
 export function JobsSidebar({
   customer,
   onSignOut,
-  onOpenNoticeDialog,
+  onOpenNoticeDialog: _onOpenNoticeDialog,
 }: {
   customer: CustomerActivityCustomer | null;
   onSignOut: () => void;
@@ -129,7 +129,7 @@ export function JobsSidebar({
 }
 
 export function JobsMobileBottomNav({
-  onOpenNoticeDialog,
+  onOpenNoticeDialog: _onOpenNoticeDialog,
 }: {
   onOpenNoticeDialog?: ((dialog: 'messages') => void) | undefined;
 }) {
