@@ -159,16 +159,33 @@ export class BrainWorkerOnboardingRepository implements IBrainWorkerOnboardingRe
         record.currentStep = 'credentials';
       }
     } else if (step === 'credentials') {
-      const creds = stepData as OnboardingCredentialsData;
+      const creds = stepData as Partial<OnboardingCredentialsData>;
       const stripEphemeralPreview = (doc: StagedDocument): StagedDocument => {
         const { id, category, specificType, fileName, fileSizeBytes, mimeType, stagedAt } = doc;
         return { id, category, specificType, fileName, fileSizeBytes, mimeType, stagedAt };
       };
 
+      const existingCreds = record.credentials ?? {
+        governmentId: null,
+        tradeCredentials: [],
+        workProofs: [],
+      };
+
       record.credentials = {
-        governmentId: creds.governmentId ? stripEphemeralPreview(creds.governmentId) : null,
-        tradeCredentials: (creds.tradeCredentials ?? []).map(stripEphemeralPreview),
-        workProofs: (creds.workProofs ?? []).map(stripEphemeralPreview),
+        governmentId:
+          creds.governmentId !== undefined
+            ? creds.governmentId
+              ? stripEphemeralPreview(creds.governmentId)
+              : null
+            : existingCreds.governmentId,
+        tradeCredentials:
+          creds.tradeCredentials !== undefined
+            ? creds.tradeCredentials.map(stripEphemeralPreview)
+            : existingCreds.tradeCredentials,
+        workProofs:
+          creds.workProofs !== undefined
+            ? creds.workProofs.map(stripEphemeralPreview)
+            : existingCreds.workProofs,
       };
       if (record.status === 'DRAFT' && record.currentStep === 'credentials') {
         record.currentStep = 'review';
