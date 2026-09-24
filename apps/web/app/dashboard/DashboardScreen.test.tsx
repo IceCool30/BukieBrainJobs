@@ -127,7 +127,7 @@ describe('WEB-010 DashboardScreen Component', () => {
     expect(screen.getByText(/How BukieBrainJobs Works/i)).toBeInTheDocument();
   });
 
-  it('navigates directly to /messages when clicking Messages, and shows notice for Notifications', () => {
+  it('navigates directly to /messages when clicking Messages, and navigates to /notifications for Notifications', () => {
     render(<DashboardScreen />);
 
     const messagesBtn = screen.getAllByRole('button', { name: /Messages/i })[0]!;
@@ -138,7 +138,7 @@ describe('WEB-010 DashboardScreen Component', () => {
     const alertsBtn = screen.getAllByRole('button', { name: /Alerts|Notifications/i })[0]!;
     fireEvent.click(alertsBtn);
 
-    expect(screen.getByRole('dialog', { name: /Platform Notifications Notice/i })).toBeInTheDocument();
+    expect(mockPush).toHaveBeenCalledWith('/notifications');
   });
 
   it('renders stable skeleton loading state when state=loading', () => {

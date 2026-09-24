@@ -1151,9 +1151,7 @@ export default function DashboardScreen() {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={
-            activeNoticeDialog === 'messages' ? 'Direct Messaging Notice' : 'Platform Notifications Notice'
-          }
+          aria-label="Direct Messaging Notice"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
           onClick={closeDialog}
         >
