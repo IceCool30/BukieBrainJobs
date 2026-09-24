@@ -210,7 +210,7 @@ describe('BW-001 Repository Contract & Multi-Tenant Isolation (Suite 2)', () => 
 
       // Staged return value must not expose ephemeral preview/data URL
       expect(stagedGov.previewUrl).toBeUndefined();
-      expect((stagedGov as Record<string, unknown>).dataUrl).toBeUndefined();
+      expect((stagedGov as unknown as Record<string, unknown>).dataUrl).toBeUndefined();
       expect(stagedGov.fileName).toBe('nin-slip.jpg');
       expect(stagedGov.fileSizeBytes).toBe(1.5 * 1024 * 1024);
       expect(stagedGov.mimeType).toBe('image/jpeg');
@@ -222,7 +222,7 @@ describe('BW-001 Repository Contract & Multi-Tenant Isolation (Suite 2)', () => 
       expect(savedDoc).toBeDefined();
       expect(savedDoc?.id).toBe(stagedGov.id);
       expect(savedDoc?.previewUrl).toBeUndefined();
-      expect((savedDoc as Record<string, unknown>)?.dataUrl).toBeUndefined();
+      expect((savedDoc as unknown as Record<string, unknown>)?.dataUrl).toBeUndefined();
       expect(savedDoc?.fileName).toBe('nin-slip.jpg');
       expect(savedDoc?.fileSizeBytes).toBe(1.5 * 1024 * 1024);
       expect(savedDoc?.mimeType).toBe('image/jpeg');
