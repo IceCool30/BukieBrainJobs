@@ -110,18 +110,21 @@ describe('BW-001 Repository Contract & Multi-Tenant Isolation (Suite 2)', () => 
         brainWorkerId: FIXTURE_BRAINWORKER_B,
       });
 
+      // Provider A cannot read or mutate Provider B
       await expect(
         harness.repository.getOnboardingRecord(FIXTURE_BRAINWORKER_B)
       ).rejects.toThrow(UnauthorizedError);
-
-      // Provider B cannot access or mutate Provider A
-      vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockBrainWorkerUserB);
-      await expect(
-        harness.repository.saveDraftStep(FIXTURE_BRAINWORKER_A, 'identity', {})
-      ).rejects.toThrow(UnauthorizedError);
-
       await expect(
         harness.repository.saveDraftStep(FIXTURE_BRAINWORKER_B, 'identity', {})
+      ).rejects.toThrow(UnauthorizedError);
+
+      // Provider B cannot read or mutate Provider A
+      vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockBrainWorkerUserB);
+      await expect(
+        harness.repository.getOnboardingRecord(FIXTURE_BRAINWORKER_A)
+      ).rejects.toThrow(UnauthorizedError);
+      await expect(
+        harness.repository.saveDraftStep(FIXTURE_BRAINWORKER_A, 'identity', {})
       ).rejects.toThrow(UnauthorizedError);
     });
   });
