@@ -165,7 +165,7 @@ describe('BW-001 Suite 8: VerificationStatusMonitor Contracts (VFD-001 to VFD-00
     render(<VerificationStatusMonitor record={record} onRemediate={onRemediate} />);
 
     expect(
-      screen.getByText(/Action Needed|Document Re-Upload Required/i)
+      screen.getByText(/^Action Needed$/i)
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: /Action Needed: Document Re-Upload Required/i })
