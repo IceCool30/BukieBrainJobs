@@ -88,8 +88,9 @@ export const useBrainWorkerOnboardingStore = create<BrainWorkerOnboardingStoreSt
   nextStep: () =>
     set((state) => {
       const currentIndex = FUNNEL_STEPS.indexOf(state.currentStep);
-      if (currentIndex < FUNNEL_STEPS.length - 1) {
-        return { currentStep: FUNNEL_STEPS[currentIndex + 1] };
+      const next = FUNNEL_STEPS[currentIndex + 1];
+      if (currentIndex < FUNNEL_STEPS.length - 1 && next !== undefined) {
+        return { currentStep: next };
       }
       return state;
     }),
@@ -97,8 +98,9 @@ export const useBrainWorkerOnboardingStore = create<BrainWorkerOnboardingStoreSt
   prevStep: () =>
     set((state) => {
       const currentIndex = FUNNEL_STEPS.indexOf(state.currentStep);
-      if (currentIndex > 0) {
-        return { currentStep: FUNNEL_STEPS[currentIndex - 1] };
+      const prev = FUNNEL_STEPS[currentIndex - 1];
+      if (currentIndex > 0 && prev !== undefined) {
+        return { currentStep: prev };
       }
       return state;
     }),
