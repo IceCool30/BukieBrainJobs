@@ -277,7 +277,7 @@ export default function ProfileScreen() {
             customerName={currentUser.name}
             customerEmail={currentUser.email || `${currentUser.id}@bukie.ng`}
             onSignOut={handleSignOut}
-            onOpenNoticeDialog={(d) => setActiveNoticeDialog(d)}
+            onOpenNoticeDialog={setActiveNoticeDialog}
           />
 
           {/* Main Content Workspace */}
@@ -501,7 +501,7 @@ export default function ProfileScreen() {
 
       {/* Mobile Bottom Navigation Bar */}
       <ProfileMobileBottomNav
-        onOpenNoticeDialog={(d) => setActiveNoticeDialog(d)}
+        onOpenNoticeDialog={setActiveNoticeDialog}
       />
 
       {/* Future Capabilities Notice Dialog */}

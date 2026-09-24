@@ -23,7 +23,7 @@ export function ProfileSidebar({
   customerName: string;
   customerEmail: string;
   onSignOut: () => void;
-  onOpenNoticeDialog: (dialog: 'messages' | 'notifications') => void;
+  onOpenNoticeDialog?: ((dialog: 'messages') => void) | undefined;
 }) {
   const router = useRouter();
 
@@ -133,7 +133,7 @@ export function ProfileSidebar({
 export function ProfileMobileBottomNav({
   onOpenNoticeDialog,
 }: {
-  onOpenNoticeDialog: (dialog: 'messages' | 'notifications') => void;
+  onOpenNoticeDialog?: ((dialog: 'messages') => void) | undefined;
 }) {
   const router = useRouter();
 

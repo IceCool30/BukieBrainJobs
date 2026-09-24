@@ -22,7 +22,7 @@ export function JobsSidebar({
 }: {
   customer: CustomerActivityCustomer | null;
   onSignOut: () => void;
-  onOpenNoticeDialog: (dialog: 'messages' | 'notifications') => void;
+  onOpenNoticeDialog?: ((dialog: 'messages') => void) | undefined;
 }) {
   const router = useRouter();
 
@@ -131,7 +131,7 @@ export function JobsSidebar({
 export function JobsMobileBottomNav({
   onOpenNoticeDialog,
 }: {
-  onOpenNoticeDialog: (dialog: 'messages' | 'notifications') => void;
+  onOpenNoticeDialog?: ((dialog: 'messages') => void) | undefined;
 }) {
   const router = useRouter();
 
