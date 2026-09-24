@@ -208,7 +208,7 @@ describe('BW-001 Client Store Contracts (Suite 3: STO-001 to STO-007)', () => {
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   describe('STO-007: Anti-Tampering Boundary', () => {
     it('does not expose methods for mutating authoritative status directly', () => {
-      const state = useBrainWorkerOnboardingStore.getState() as Record<string, unknown>;
+      const state = useBrainWorkerOnboardingStore.getState() as unknown as Record<string, unknown>;
 
       // Neither status setter nor approval setter must exist on the store
       expect(state['setStatus']).toBeUndefined();
