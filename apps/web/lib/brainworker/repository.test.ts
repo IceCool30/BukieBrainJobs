@@ -269,6 +269,72 @@ describe('BW-001 Repository Contract & Multi-Tenant Isolation (Suite 2)', () => 
       expect(record?.credentials.governmentId?.previewUrl).toBeUndefined();
       expect(record?.credentials.tradeCredentials[0]?.previewUrl).toBeUndefined();
     });
+
+    it('preserves existing credentials metadata when performing partial saveDraftStep updates and strips previewUrl', async () => {
+      // 1. Stage government ID
+      const stagedGov = await harness.repository.stageDocument(FIXTURE_BRAINWORKER_A, {
+        name: 'nin-slip.jpg',
+        size: 1.5 * 1024 * 1024,
+        type: 'image/jpeg',
+        category: 'GOVERNMENT_ID',
+        specificType: 'NIN_SLIP',
+      });
+
+      // 2. Save partial credentials draft with ONLY tradeCredentials (containing ephemeral previewUrl)
+      const tradeDocWithPreview = {
+        id: 'doc-trade-partial',
+        category: 'TRADE_CREDENTIAL' as const,
+        specificType: 'TRADE_TEST_CERTIFICATE' as const,
+        fileName: 'cert.pdf',
+        fileSizeBytes: 2 * 1024 * 1024,
+        mimeType: 'application/pdf' as const,
+        stagedAt: new Date().toISOString(),
+        previewUrl: 'blob:https://bukiebrainjobs.com/ephemeral-trade',
+      };
+
+      const recordAfterTrade = await harness.repository.saveDraftStep(
+        FIXTURE_BRAINWORKER_A,
+        'credentials',
+        { tradeCredentials: [tradeDocWithPreview] }
+      );
+
+      // CRITICAL: governmentId must NOT be wiped out to null on partial update!
+      expect(recordAfterTrade.credentials.governmentId).toBeDefined();
+      expect(recordAfterTrade.credentials.governmentId?.id).toBe(stagedGov.id);
+      expect(recordAfterTrade.credentials.governmentId?.fileName).toBe('nin-slip.jpg');
+      expect(recordAfterTrade.credentials.governmentId?.previewUrl).toBeUndefined();
+
+      // tradeCredentials must be saved and stripped of previewUrl
+      expect(recordAfterTrade.credentials.tradeCredentials).toHaveLength(1);
+      expect(recordAfterTrade.credentials.tradeCredentials[0]?.fileName).toBe('cert.pdf');
+      expect(recordAfterTrade.credentials.tradeCredentials[0]?.previewUrl).toBeUndefined();
+
+      // 3. Save partial credentials draft with ONLY workProofs (containing ephemeral previewUrl)
+      const workDocWithPreview = {
+        id: 'doc-work-partial',
+        category: 'WORK_PROOF' as const,
+        specificType: 'WORKSHOP_PHOTO' as const,
+        fileName: 'work.jpg',
+        fileSizeBytes: 1024 * 1024,
+        mimeType: 'image/jpeg' as const,
+        stagedAt: new Date().toISOString(),
+        previewUrl: 'blob:https://bukiebrainjobs.com/ephemeral-work',
+      };
+
+      const recordAfterWork = await harness.repository.saveDraftStep(
+        FIXTURE_BRAINWORKER_A,
+        'credentials',
+        { workProofs: [workDocWithPreview] }
+      );
+
+      // Both previous governmentId and tradeCredentials must still be preserved!
+      expect(recordAfterWork.credentials.governmentId?.id).toBe(stagedGov.id);
+      expect(recordAfterWork.credentials.tradeCredentials).toHaveLength(1);
+      expect(recordAfterWork.credentials.tradeCredentials[0]?.id).toBe('doc-trade-partial');
+      expect(recordAfterWork.credentials.workProofs).toHaveLength(1);
+      expect(recordAfterWork.credentials.workProofs[0]?.fileName).toBe('work.jpg');
+      expect(recordAfterWork.credentials.workProofs[0]?.previewUrl).toBeUndefined();
+    });
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
