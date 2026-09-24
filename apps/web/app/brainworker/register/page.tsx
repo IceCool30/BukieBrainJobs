@@ -37,10 +37,10 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
         <div className="max-w-md w-full bg-white rounded-2xl border border-amber-200 p-8 shadow-sm text-center space-y-4">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 border border-amber-300 px-3 py-1 text-xs font-semibold text-amber-900">
             <AlertTriangle className="h-3.5 w-3.5 text-amber-600" />
-            <span>Customer Account Detected</span>
+            <span>Boundary Conflict</span>
           </div>
           <h2 className="text-xl font-bold text-[#001A41]">
-            Already signed in as a customer
+            Customer Account Detected
           </h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             Please sign out or create a separate provider account to register as a BrainWorker. Existing customer accounts cannot be converted to provider accounts.

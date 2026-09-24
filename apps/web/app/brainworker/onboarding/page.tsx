@@ -123,7 +123,7 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="max-w-lg w-full bg-white rounded-2xl border border-amber-200 p-8 shadow-sm space-y-4 text-center">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 border border-amber-300 px-3 py-1 text-xs font-semibold text-amber-900">
-            Customer Account Detected
+            Boundary Conflict
           </div>
           <h2 className="text-xl font-bold text-[#001A41]">
             BrainWorker Registration Required
