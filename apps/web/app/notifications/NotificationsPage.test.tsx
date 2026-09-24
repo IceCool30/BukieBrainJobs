@@ -23,6 +23,7 @@ import {
 } from '../../components/jobs/JobsNavigation';
 import {
   createNotificationTestHarness,
+  FIXTURE_CUSTOMER_A,
   FIXTURE_NOTIF_BOOKING_CONFIRMED,
   FIXTURE_NOTIF_BOOKING_STARTED,
   FIXTURE_NOTIF_MESSAGE_RECEIVED,
@@ -57,7 +58,7 @@ vi.mock('next/image', () => ({
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 const mockCustomerUser: AuthUser = {
-  id: 'usr-customer-99',
+  id: FIXTURE_CUSTOMER_A,
   name: 'Adaeze Okafor',
   email: 'adaeze@example.com',
   phone: '+2348031234567',
