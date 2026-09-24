@@ -115,11 +115,12 @@ Phase 7: Launch Readiness
 ### Phase 2: BrainWorker (Service Provider) Web Platform
 
 #### 2.1 BrainWorker Onboarding & Identity Verification (`BW-001`)
-- [ ] Dedicated BrainWorker signup entry point (`/brainworker/register`).
-- [ ] Multi-step onboarding funnel: Trade category selection, experience level, coverage cities.
-- [ ] Identity check interface: Secure capture of National Identity Number (NIN) / Bank Verification Number (BVN) and government ID upload.
-- [ ] Trade certifications and apprentice proofs upload.
-- [ ] Application pending / verification in review status screen.
+- [x] Dedicated BrainWorker signup entry point (`/brainworker/register`).
+- [x] Multi-step onboarding funnel: Trade category selection, experience level, coverage cities.
+- [x] Identity check interface: Secure capture of National Identity Number (NIN) / Bank Verification Number (BVN) and government ID upload.
+- [x] Trade certifications and apprentice proofs upload.
+- [x] Application pending / verification in review status screen (`/brainworker/verification-status`).
+- [x] Completed and verified live in production (commit `36b8385`; 137/137 BrainWorker tests, 1,079/1,079 web regression tests; Vercel deployment verified).
 
 #### 2.2 BrainWorker Dashboard & Operating Workspace
 - [ ] BrainWorker authenticated home (`/brainworker/dashboard`).

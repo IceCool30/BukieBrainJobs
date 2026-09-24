@@ -63,8 +63,8 @@ Work in this repository is executed sequentially to maintain platform coherence:
   - `WEB-018`: In-App Notification Center (`/notifications`)
 
 ### Milestone 5: BrainWorker Platform
-**Status: Planned (Phase 2 Priority)**
-- `BW-001`: BrainWorker Onboarding, NIN/BVN identity check, and trade credential verification.
+**Status: In Progress (Phase 2 Active - Milestone Slice 1 Complete)**
+- `BW-001`: BrainWorker Onboarding, NIN/BVN identity check, and trade credential verification (`/brainworker/register`, `/brainworker/onboarding`, `/brainworker/verification-status`, `/brainworker/dashboard`). **(Complete & Verified Live in Production)**
 - `BW-002`: Service Catalog and Working Hours Availability scheduler.
 - BrainWorker Operating Dashboard (`/brainworker/dashboard`).
 - Local Job Requests & Leads Inbox with direct quote/accept/decline actions.

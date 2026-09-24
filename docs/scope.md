@@ -8,17 +8,38 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- [ ] **18. WEB-018 Notification Center & Push UX**
-  - **Spec**: `docs/specs/WEB-018-notification-center.md`
+- [ ] **20. BW-002 BrainWorker Service Catalog & Availability Management**
+  - **Spec**: `docs/specs/BW-002-service-catalog-availability.md` (Pending formal scope authorization)
   - **Acceptance Criteria**:
-    - [ ] In-app notification feed at `/notifications` with categorized tabs (All, Bookings, Account, System)
-    - [ ] Read and unread badge state tracking and mark-all-as-read actions
-    - [ ] Deep-link navigation from notifications straight to corresponding `/jobs?id=...` and `/messages/[jobId]` records
-    - [ ] Web Push service worker integration for background browser notifications
-    - [ ] Deterministic mock notification repository and offline handling
+    - [ ] Worker service catalog configuration: Add/remove individual services, set hourly rates and diagnostic call-out fees
+    - [ ] Weekly working hours scheduler: Set working days, time slots (e.g., 8:00 AM to 5:00 PM), and emergency availability
+    - [ ] Coverage area selector: Select specific neighbourhoods and maximum travel radius
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web type-check && pnpm --filter @bukiebrainjobs/web lint && pnpm --filter @bukiebrainjobs/web test`
 
 ## Completed & Verified Slices
+
+- [x] **19. BW-001 BrainWorker Onboarding & Identity Verification**
+  - **Spec**: `docs/specs/BW-001-onboarding.md`
+  - **Acceptance Criteria**:
+    - [x] Dedicated BrainWorker signup entry point (`/brainworker/register`)
+    - [x] Multi-step onboarding funnel (`/brainworker/onboarding`): Identity, trade category selection, experience level, coverage cities, credentials staging, and review
+    - [x] Identity check interface: Secure capture of National Identity Number (NIN) / Bank Verification Number (BVN) and government ID upload
+    - [x] Trade certifications and apprentice proofs upload with format and size validation
+    - [x] Verification status monitor route (`/brainworker/verification-status`) with real-time observer updates
+    - [x] Operating workspace guard on `/brainworker/dashboard` strictly enforcing `role === 'brainworker' && isBrainWorkerApproved === true`
+    - [x] Fail-closed customer boundary cards preventing customer account conversion and unauthorized repository queries
+    - [x] Strict ephemeral preview isolation: authoritative record retains metadata only; client preview URLs remain UI-local
+  - **Verification Evidence**: Complete / Live on `main` at commit `36b8385`; 137/137 BW-001 tests passed; 1,079/1,079 monorepo web tests passed; production build passed with all 36 static pages generated.
+
+- [x] **18. WEB-018 Notification Center & Push UX**
+  - **Spec**: `docs/specs/WEB-018-notification-center.md`
+  - **Acceptance Criteria**:
+    - [x] In-app notification feed at `/notifications` with categorized tabs (All, Bookings, Messages & Payments, Account)
+    - [x] Read and unread badge state tracking and mark-all-as-read actions
+    - [x] Deep-link navigation from notifications straight to corresponding `/jobs?id=...` and `/messages/[jobId]` records
+    - [x] Web Push service worker integration for background browser notifications with explicit opt-in
+    - [x] Deterministic mock notification repository and offline handling
+  - **Verification Evidence**: Complete / Live on `main` at commit `b8eb6e6`; 128/128 notification tests passed; 944/944 web tests passed.
 
 - [x] **17. WEB-017 In-App Messaging & Real-Time Chat**
   - **Spec**: `docs/specs/WEB-017-messaging-chat.md`

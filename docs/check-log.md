@@ -2,6 +2,32 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-09-24: BW-001 BrainWorker Onboarding & Identity Verification Production Sign-Off Check
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM) + Vercel Preview/Production
+- **Commit**: `36b8385` on `main`
+- **Trigger**: BW-001 Final Gate Verification, Document Preview Isolation Audit & Merge to Main
+- **Commands Executed**:
+  - `pnpm vitest run`: Passed 1,079/1,079 tests across 60 suites in `apps/web` (137/137 BW-001 tests across 12 suites, 17/17 route integration tests) with 0 failures
+  - `pnpm tsc --noEmit`: Passed with 0 errors (`exactOptionalPropertyTypes: true` compliant)
+  - `pnpm lint`: Passed with 0 errors (0 warnings in BW-001 code)
+  - `pnpm build`: Passed in 15.6s; generated 36/36 static pages including all 4 BrainWorker routes:
+    - `○ /brainworker/dashboard` (3.26 kB)
+    - `○ /brainworker/onboarding` (16.7 kB)
+    - `○ /brainworker/register` (3.02 kB)
+    - `○ /brainworker/verification-status` (4.75 kB)
+  - Physical boundary inspection: 0 forbidden `testing/` imports found across production routes (INT-010 verified)
+  - Temporary preview isolation: Proved `previewUrl` and `dataUrl` are stripped and never stored in repository records; authoritative records retain metadata only
+  - Partial draft preservation: Proved incremental credentials draft saves preserve previously staged documents without erasure
+- **Architecture Invariants Verified**:
+  - Verification authority: UI cannot manufacture verification or approval
+  - Workspace authority: `isBrainWorkerApproved === true` remains the operating-workspace gate
+  - Lifecycle authority: Onboarding status originates strictly from repository record, not React state
+  - Customer boundary: Customer sessions blocked with fail-closed cards; zero repository queries for customer sessions
+  - Document security: Identity/trade documents represented authoritatively by metadata; temporary preview data remains UI-local
+  - Static safety: All 4 routes render cleanly during Next.js static prerendering (INT-009 verified)
+- **Voice and Slop Audit**: State-honest Nigerian plain language; 0 em dashes in UI components; 0 forbidden corporate filler terms
+- **Status**: PASS (APPROVED FOR MERGE / ZERO DEFECTS)
+
 ## 2026-09-24: WEB-018 In-App Notification Center Production Sign-Off Check
 - **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM) + Vercel Production
 - **Commit**: `b8eb6e6` on `main`

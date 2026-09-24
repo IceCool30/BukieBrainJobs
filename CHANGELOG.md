@@ -17,6 +17,32 @@ The format follows practical release notes written plainly in engineering langua
 - Expanded `AGENTS.md` to conform to the canonical NINE context map schema, recording Termux environment limits and cloud Codespace execution requirements.
 - Standardized test suite describe block titles across `apps/web` to eliminate em dashes.
 
+## [1.0.0-bw-001] - 2026-09-24
+
+### Added
+- BW-001 BrainWorker Onboarding & Identity Verification integrated into canonical provider routes (`/brainworker/register`, `/brainworker/onboarding`, `/brainworker/verification-status`, `/brainworker/dashboard`).
+- `apps/web/lib/brainworker/types.ts`: Domain models for provider onboarding lifecycle (`DRAFT`, `SUBMITTED`, `PENDING_REVIEW`, `REMEDIATION_REQUIRED`, `REJECTED`, `APPROVED`), Nigerian identity verification (NIN slip, National eID, BVN), trade categories, experience tiers, staged document metadata, and `IBrainWorkerOnboardingRepository` contract.
+- `apps/web/lib/brainworker/repository.ts`: Multi-tenant production-first onboarding repository with fail-closed provider tenant isolation, authoritative status transitions, reactive observer subscriptions, and strict ephemeral preview URL isolation (authoritative record retains document metadata only; temporary data URLs / object URLs remain UI-local).
+- `apps/web/lib/brainworker/validation.ts`: Validation for 11-digit NIN, 11-digit BVN, Nigerian phone numbers (`+234...`), trade credentials, experience tiers, and step data.
+- `apps/web/lib/brainworker/store.ts`: Client-side funnel draft store and step management with optimistic state preservation.
+- `apps/web/lib/brainworker/useBrainWorkerRegistration.ts`: Registration hook managing lifecycle synchronization and step validation.
+- `apps/web/components/brainworker/onboarding/FunnelProgressBar.tsx`: Accessible step indicator tracking identity, trade, credentials, and review progress.
+- `apps/web/components/brainworker/onboarding/IdentityStepForm.tsx`: Personal identity capture with masked NIN/BVN inputs and residential address validation.
+- `apps/web/components/brainworker/onboarding/TradeStepForm.tsx`: Service trade selection, years of experience, and Nigerian city coverage mapping.
+- `apps/web/components/brainworker/onboarding/DocumentUploadCard.tsx`: Drag-and-drop file upload with format/size validation (JPEG, PNG, WEBP, PDF up to 5 MB), accessible progress feedback, and UI-local object URL management with cleanup.
+- `apps/web/components/brainworker/onboarding/CredentialsStepForm.tsx`: Multi-document staging surface for government ID, trade certificates, and apprentice proof documents.
+- `apps/web/components/brainworker/onboarding/ReviewStepForm.tsx`: Pre-submission verification review summary with legal declaration acknowledgments.
+- `apps/web/components/brainworker/onboarding/VerificationStatusMonitor.tsx`: Authoritative lifecycle status display with live queue position, remediation instructions, and verified provider entry actions.
+- `apps/web/app/brainworker/register/page.tsx`: Provider account registration with customer boundary conflict detection and fail-closed prevention of customer account silent conversion.
+- `apps/web/app/brainworker/onboarding/page.tsx`: Step-by-step onboarding route with unauthenticated redirect, customer fail-closed boundary, and lifecycle status routing.
+- `apps/web/app/brainworker/verification-status/page.tsx`: Authoritative verification status route with live repository subscription.
+- `apps/web/app/brainworker/dashboard/page.tsx`: Provider operating workspace gate strictly enforcing `role === 'brainworker' && isBrainWorkerApproved === true`.
+- 137 automated unit, integration, and security contract tests across 12 test files, bringing the monorepo web test baseline to 1,079 passing tests with 0 failures across 60 test suites.
+
+### Changed
+- Phase 2 (BrainWorker Web Platform) initiated with Milestone 5 Slice 1 (BW-001) complete and verified live in production.
+- Strictly isolated temporary document preview data (`previewUrl` / `dataUrl`) to UI components, ensuring authoritative records retain only document metadata.
+
 ## [1.0.0-web-018] - 2026-09-24
 
 ### Added
