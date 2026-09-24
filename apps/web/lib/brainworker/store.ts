@@ -14,6 +14,13 @@ import type {
   StagedDocument,
 } from './types';
 
+const FUNNEL_STEPS: readonly OnboardingStep[] = [
+  'identity',
+  'trade',
+  'credentials',
+  'review',
+] as const;
+
 export interface BrainWorkerOnboardingStoreState {
   currentStep: OnboardingStep;
   isDirty: boolean;
@@ -67,7 +74,7 @@ const INITIAL_DECLARATION: BrainWorkerOnboardingStoreState['declarationDraft'] =
   termsAccepted: false,
 };
 
-export const useBrainWorkerOnboardingStore = create<BrainWorkerOnboardingStoreState>((_set) => ({
+export const useBrainWorkerOnboardingStore = create<BrainWorkerOnboardingStoreState>((set) => ({
   currentStep: 'identity',
   isDirty: false,
   draftRecord: null,
@@ -76,15 +83,91 @@ export const useBrainWorkerOnboardingStore = create<BrainWorkerOnboardingStoreSt
   credentialsDraft: { ...INITIAL_CREDENTIALS },
   declarationDraft: { ...INITIAL_DECLARATION },
 
-  // RED Stub: intentionally unimplemented actions
-  setStep: (_step) => {},
-  nextStep: () => {},
-  prevStep: () => {},
-  setDirty: (_isDirty) => {},
-  setIdentityDraft: (_data) => {},
-  setTradeDraft: (_data) => {},
-  setCredentialsDraft: (_data) => {},
-  setDeclarationDraft: (_data) => {},
-  syncFromRecord: (_record) => {},
-  resetStore: () => {},
+  setStep: (step) => set({ currentStep: step }),
+
+  nextStep: () =>
+    set((state) => {
+      const currentIndex = FUNNEL_STEPS.indexOf(state.currentStep);
+      if (currentIndex < FUNNEL_STEPS.length - 1) {
+        return { currentStep: FUNNEL_STEPS[currentIndex + 1] };
+      }
+      return state;
+    }),
+
+  prevStep: () =>
+    set((state) => {
+      const currentIndex = FUNNEL_STEPS.indexOf(state.currentStep);
+      if (currentIndex > 0) {
+        return { currentStep: FUNNEL_STEPS[currentIndex - 1] };
+      }
+      return state;
+    }),
+
+  setDirty: (isDirty) => set({ isDirty }),
+
+  setIdentityDraft: (data) =>
+    set((state) => ({
+      identityDraft: { ...state.identityDraft, ...data },
+      isDirty: true,
+    })),
+
+  setTradeDraft: (data) =>
+    set((state) => ({
+      tradeDraft: { ...state.tradeDraft, ...data },
+      isDirty: true,
+    })),
+
+  setCredentialsDraft: (data) =>
+    set((state) => ({
+      credentialsDraft: {
+        governmentId:
+          data.governmentId !== undefined ? data.governmentId : state.credentialsDraft.governmentId,
+        tradeCredentials: data.tradeCredentials ?? state.credentialsDraft.tradeCredentials,
+        workProofs: data.workProofs ?? state.credentialsDraft.workProofs,
+      },
+      isDirty: true,
+    })),
+
+  setDeclarationDraft: (data) =>
+    set((state) => ({
+      declarationDraft: { ...state.declarationDraft, ...data },
+      isDirty: true,
+    })),
+
+  syncFromRecord: (record) =>
+    set(() => {
+      // If in remediation, jump directly to the flagged step
+      let targetStep = record.currentStep;
+      if (record.status === 'REMEDIATION_REQUIRED' && record.remediationIssues.length > 0) {
+        targetStep = record.remediationIssues[0]?.targetStep ?? record.currentStep;
+      }
+
+      return {
+        draftRecord: { ...record },
+        currentStep: targetStep,
+        identityDraft: record.identity ? { ...record.identity } : {},
+        tradeDraft: record.trade ? { ...record.trade } : {},
+        credentialsDraft: {
+          governmentId: record.credentials?.governmentId ?? null,
+          tradeCredentials: [...(record.credentials?.tradeCredentials ?? [])],
+          workProofs: [...(record.credentials?.workProofs ?? [])],
+        },
+        declarationDraft: {
+          truthfulnessAcknowledged: record.declaration?.truthfulnessAcknowledged ?? false,
+          termsAccepted: record.declaration?.termsAccepted ?? false,
+        },
+        isDirty: false,
+      };
+    }),
+
+  resetStore: () =>
+    set({
+      currentStep: 'identity',
+      isDirty: false,
+      draftRecord: null,
+      identityDraft: {},
+      tradeDraft: {},
+      credentialsDraft: { ...INITIAL_CREDENTIALS },
+      declarationDraft: { ...INITIAL_DECLARATION },
+    }),
 }));
