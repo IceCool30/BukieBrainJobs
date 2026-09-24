@@ -39,7 +39,7 @@ export function FunnelProgressBar({
 }: FunnelProgressBarProps): React.ReactElement {
   const currentStepIndex = STEPS.findIndex((s) => s.key === currentStep);
   const currentStepNumber =
-    currentStepIndex !== -1 ? STEPS[currentStepIndex].stepNumber : 1;
+    currentStepIndex !== -1 ? STEPS[currentStepIndex]?.stepNumber ?? 1 : 1;
 
   return (
     <nav
