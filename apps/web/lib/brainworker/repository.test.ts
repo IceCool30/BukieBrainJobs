@@ -14,14 +14,10 @@ import {
   FIXTURE_BRAINWORKER_B,
   FIXTURE_CUSTOMER_USER_ID,
   FIXTURE_IDENTITY_VALID,
-  FIXTURE_TRADE_VALID,
-  FIXTURE_GOV_DOC,
-  FIXTURE_TRADE_DOC,
   FIXTURE_RECORD_NEW,
   FIXTURE_RECORD_SUBMITTED,
   FIXTURE_RECORD_REMEDIATION,
   FIXTURE_RECORD_REJECTED,
-  FIXTURE_RECORD_APPROVED,
 } from './testing';
 import {
   UnauthorizedError,
@@ -116,6 +112,12 @@ describe('BW-001 Repository Contract & Multi-Tenant Isolation (Suite 2)', () => 
 
       await expect(
         harness.repository.getOnboardingRecord(FIXTURE_BRAINWORKER_B)
+      ).rejects.toThrow(UnauthorizedError);
+
+      // Provider B cannot access or mutate Provider A
+      vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockBrainWorkerUserB);
+      await expect(
+        harness.repository.saveDraftStep(FIXTURE_BRAINWORKER_A, 'identity', {})
       ).rejects.toThrow(UnauthorizedError);
 
       await expect(
@@ -316,6 +318,10 @@ describe('BW-001 Repository Contract & Multi-Tenant Isolation (Suite 2)', () => 
       // Operational team approves
       const setSessionSpy = vi.spyOn(authStorage, 'setMockAuthenticatedUser');
       harness.testController.simulateOpsApproval(FIXTURE_BRAINWORKER_A);
+
+      expect(setSessionSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ isBrainWorkerApproved: true })
+      );
 
       const record = await harness.repository.getOnboardingRecord(FIXTURE_BRAINWORKER_A);
       expect(record?.status).toBe('APPROVED');

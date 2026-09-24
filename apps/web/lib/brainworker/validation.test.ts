@@ -84,6 +84,15 @@ describe('BW-001 Format & File Validation Utilities (Suite 1)', () => {
       expect(validateDocumentFile(validPdf).valid).toBe(true);
     });
 
+    it('whitelists exactly jpeg, png, webp, and pdf MIME types', () => {
+      expect(ALLOWED_DOCUMENT_MIME_TYPES).toEqual([
+        'image/jpeg',
+        'image/png',
+        'image/webp',
+        'application/pdf',
+      ]);
+    });
+
     it('rejects files exceeding 5 MB limit', () => {
       const oversized = {
         name: 'huge-scan.pdf',

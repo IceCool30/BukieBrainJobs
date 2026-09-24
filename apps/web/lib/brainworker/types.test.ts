@@ -8,22 +8,11 @@ import { describe, it, expect } from 'vitest';
 import type {
   BrainWorkerOnboardingStatus,
   OnboardingStep,
-  IdentityIdentifierType,
   GovernmentIdType,
   TradeCredentialType,
   WorkProofType,
   SpecificDocumentType,
-  DocumentCategory,
-  TradeExperienceLevel,
   RejectionReasonCode,
-  StagedDocument,
-  OnboardingIdentityData,
-  OnboardingTradeData,
-  OnboardingCredentialsData,
-  OnboardingDeclarationData,
-  RemediationIssue,
-  RejectionDetails,
-  BrainWorkerOnboardingRecord,
 } from './types';
 import {
   UnauthorizedError,
