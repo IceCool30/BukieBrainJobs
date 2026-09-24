@@ -36,6 +36,7 @@ export interface DocumentUploadCardProps {
 }
 
 export function DocumentUploadCard(_props: DocumentUploadCardProps): React.ReactElement {
+  void _props;
   // RED stub - returns minimal element to establish failing contract
   return (
     <div data-testid="document-upload-card-stub">
