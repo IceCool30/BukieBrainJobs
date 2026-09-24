@@ -74,7 +74,7 @@ export interface StagedDocument {
   fileSizeBytes: number;
   mimeType: 'image/jpeg' | 'image/png' | 'image/webp' | 'application/pdf';
   stagedAt: string;          // ISO 8601
-  previewUrl?: string | undefined; // Ephemeral client-generated blob URL for preview only
+  previewUrl?: string | undefined; // Ephemeral client-generated blob URL for UI-local preview only; never persisted into authoritative record
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

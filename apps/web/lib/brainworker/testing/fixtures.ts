@@ -46,7 +46,6 @@ export const FIXTURE_GOV_DOC: StagedDocument = {
   fileSizeBytes: 1.8 * 1024 * 1024,
   mimeType: 'image/jpeg',
   stagedAt: '2026-09-24T08:00:00.000Z',
-  previewUrl: 'blob:http://localhost:3000/preview-gov-001',
 };
 
 export const FIXTURE_TRADE_DOC: StagedDocument = {
@@ -67,7 +66,6 @@ export const FIXTURE_WORK_DOC: StagedDocument = {
   fileSizeBytes: 1.1 * 1024 * 1024,
   mimeType: 'image/jpeg',
   stagedAt: '2026-09-24T08:10:00.000Z',
-  previewUrl: 'blob:http://localhost:3000/preview-wrk-001',
 };
 
 export const FIXTURE_CREDENTIALS_VALID: OnboardingCredentialsData = {

@@ -159,10 +159,17 @@ export class BrainWorkerOnboardingRepository implements IBrainWorkerOnboardingRe
         record.currentStep = 'credentials';
       }
     } else if (step === 'credentials') {
+      const creds = stepData as OnboardingCredentialsData;
+      const stripEphemeralPreview = (doc: StagedDocument): StagedDocument => {
+        const { id, category, specificType, fileName, fileSizeBytes, mimeType, stagedAt } = doc;
+        return { id, category, specificType, fileName, fileSizeBytes, mimeType, stagedAt };
+      };
+
       record.credentials = {
-        ...(record.credentials ?? {}),
-        ...(stepData as OnboardingCredentialsData),
-      } as OnboardingCredentialsData;
+        governmentId: creds.governmentId ? stripEphemeralPreview(creds.governmentId) : null,
+        tradeCredentials: (creds.tradeCredentials ?? []).map(stripEphemeralPreview),
+        workProofs: (creds.workProofs ?? []).map(stripEphemeralPreview),
+      };
       if (record.status === 'DRAFT' && record.currentStep === 'credentials') {
         record.currentStep = 'review';
       }
@@ -228,6 +235,8 @@ export class BrainWorkerOnboardingRepository implements IBrainWorkerOnboardingRe
     const docId = `doc_${file.category.toLowerCase().slice(0, 3)}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
     const now = new Date().toISOString();
 
+    // Staged document in repository retains ONLY document metadata
+    // Ephemeral client-side preview URLs (such as object URLs or data URLs) remain UI-local only
     const stagedDoc: StagedDocument = {
       id: docId,
       category: file.category,
@@ -236,7 +245,6 @@ export class BrainWorkerOnboardingRepository implements IBrainWorkerOnboardingRe
       fileSizeBytes: file.size,
       mimeType: file.type as StagedDocument['mimeType'],
       stagedAt: now,
-      previewUrl: file.dataUrl,
     };
 
     this.store.stagedFiles.set(docId, stagedDoc);

@@ -197,6 +197,78 @@ describe('BW-001 Repository Contract & Multi-Tenant Isolation (Suite 2)', () => 
       const record = await harness.repository.getOnboardingRecord(FIXTURE_BRAINWORKER_A);
       expect(record?.credentials.tradeCredentials.find((d) => d.id === staged.id)).toBeUndefined();
     });
+
+    it('enforces that temporary preview data (dataUrl/previewUrl) is never persisted into authoritative record or staged files', async () => {
+      const stagedGov = await harness.repository.stageDocument(FIXTURE_BRAINWORKER_A, {
+        name: 'nin-slip.jpg',
+        size: 1.5 * 1024 * 1024,
+        type: 'image/jpeg',
+        category: 'GOVERNMENT_ID',
+        specificType: 'NIN_SLIP',
+        dataUrl: 'data:image/jpeg;base64,temporary-preview-data-payload-mock',
+      });
+
+      // Staged return value must not expose ephemeral preview/data URL
+      expect(stagedGov.previewUrl).toBeUndefined();
+      expect((stagedGov as Record<string, unknown>).dataUrl).toBeUndefined();
+      expect(stagedGov.fileName).toBe('nin-slip.jpg');
+      expect(stagedGov.fileSizeBytes).toBe(1.5 * 1024 * 1024);
+      expect(stagedGov.mimeType).toBe('image/jpeg');
+      expect(stagedGov.stagedAt).toBeDefined();
+
+      // Authoritative repository record must retain ONLY document metadata
+      const record = await harness.repository.getOnboardingRecord(FIXTURE_BRAINWORKER_A);
+      const savedDoc = record?.credentials.governmentId;
+      expect(savedDoc).toBeDefined();
+      expect(savedDoc?.id).toBe(stagedGov.id);
+      expect(savedDoc?.previewUrl).toBeUndefined();
+      expect((savedDoc as Record<string, unknown>)?.dataUrl).toBeUndefined();
+      expect(savedDoc?.fileName).toBe('nin-slip.jpg');
+      expect(savedDoc?.fileSizeBytes).toBe(1.5 * 1024 * 1024);
+      expect(savedDoc?.mimeType).toBe('image/jpeg');
+      expect(savedDoc?.stagedAt).toBeDefined();
+    });
+
+    it('strips ephemeral previewUrl when saving credentials via saveDraftStep', async () => {
+      const stagedDoc = {
+        id: 'doc-preview-strip-01',
+        category: 'GOVERNMENT_ID' as const,
+        specificType: 'NIN_SLIP' as const,
+        fileName: 'identity-card.jpg',
+        fileSizeBytes: 1024 * 1024,
+        mimeType: 'image/jpeg' as const,
+        stagedAt: new Date().toISOString(),
+        previewUrl: 'blob:https://bukiebrainjobs.com/ephemeral-object-url-1234',
+      };
+
+      const tradeDoc = {
+        id: 'doc-preview-strip-02',
+        category: 'TRADE_CREDENTIAL' as const,
+        specificType: 'TRADE_TEST_CERTIFICATE' as const,
+        fileName: 'cert.pdf',
+        fileSizeBytes: 2 * 1024 * 1024,
+        mimeType: 'application/pdf' as const,
+        stagedAt: new Date().toISOString(),
+        previewUrl: 'blob:https://bukiebrainjobs.com/ephemeral-trade-preview',
+      };
+
+      const savedRecord = await harness.repository.saveDraftStep(FIXTURE_BRAINWORKER_A, 'credentials', {
+        governmentId: stagedDoc,
+        tradeCredentials: [tradeDoc],
+        workProofs: [],
+      });
+
+      // Authoritative record must have stripped previewUrl
+      expect(savedRecord.credentials.governmentId?.previewUrl).toBeUndefined();
+      expect(savedRecord.credentials.tradeCredentials[0]?.previewUrl).toBeUndefined();
+      expect(savedRecord.credentials.governmentId?.fileName).toBe('identity-card.jpg');
+      expect(savedRecord.credentials.tradeCredentials[0]?.fileName).toBe('cert.pdf');
+
+      // Verify direct retrieval from repository confirms isolation
+      const record = await harness.repository.getOnboardingRecord(FIXTURE_BRAINWORKER_A);
+      expect(record?.credentials.governmentId?.previewUrl).toBeUndefined();
+      expect(record?.credentials.tradeCredentials[0]?.previewUrl).toBeUndefined();
+    });
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
