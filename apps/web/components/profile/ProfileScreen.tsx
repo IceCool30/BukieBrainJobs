@@ -69,7 +69,7 @@ export default function ProfileScreen() {
   const [isOffline, setIsOffline] = useState(false);
 
   // Notice dialog state
-  const [activeNoticeDialog, setActiveNoticeDialog] = useState<'messages' | 'notifications' | null>(null);
+  const [activeNoticeDialog, setActiveNoticeDialog] = useState<'messages' | null>(null);
 
   // Check auth and redirect if unauthenticated
   useEffect(() => {

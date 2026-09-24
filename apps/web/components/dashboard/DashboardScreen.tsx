@@ -48,7 +48,7 @@ export default function DashboardScreen() {
   const [isOfflineManual, setIsOfflineManual] = useState(false);
 
   // Dialog state for future capability placeholders
-  const [activeNoticeDialog, setActiveNoticeDialog] = useState<'messages' | 'notifications' | null>(null);
+  const [activeNoticeDialog, setActiveNoticeDialog] = useState<'messages' | null>(null);
 
   // Check authentication on mount
   useEffect(() => {
@@ -68,7 +68,11 @@ export default function DashboardScreen() {
       }
       return;
     }
-    if (tabParam === 'jobs' || tabParam === 'messages' || tabParam === 'notifications') {
+    if (tabParam === 'notifications') {
+      router.push('/notifications');
+      return;
+    }
+    if (tabParam === 'jobs' || tabParam === 'messages') {
       setActiveTab(tabParam as DashboardTab);
     }
   }, [searchParams, router]);
@@ -333,16 +337,13 @@ export default function DashboardScreen() {
               </button>
 
               <button
-                onClick={() => setActiveNoticeDialog('notifications')}
+                onClick={() => router.push('/notifications')}
                 className="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#001A41] transition-colors group"
               >
                 <div className="flex items-center gap-3">
                   <Bell className="h-4 w-4 text-slate-400 group-hover:text-[#001A41]" />
                   <span>Notifications</span>
                 </div>
-                <span className="text-[11px] font-medium bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">
-                  Soon
-                </span>
               </button>
 
               <button
@@ -1127,7 +1128,7 @@ export default function DashboardScreen() {
         </button>
 
         <button
-          onClick={() => setActiveNoticeDialog('notifications')}
+          onClick={() => router.push('/notifications')}
           className="flex flex-col items-center justify-center min-h-[48px] px-3 py-1 text-[11px] font-semibold text-slate-400 hover:text-white transition-colors relative"
         >
           <Bell className="h-4 w-4 mb-0.5" />
@@ -1162,11 +1163,7 @@ export default function DashboardScreen() {
           >
             <div className="flex items-center justify-between">
               <div className="h-10 w-10 rounded-xl bg-[#001A41]/10 flex items-center justify-center text-[#001A41]">
-                {activeNoticeDialog === 'messages' ? (
-                  <MessageSquare className="h-5 w-5" />
-                ) : (
-                  <Bell className="h-5 w-5" />
-                )}
+                <MessageSquare className="h-5 w-5" />
               </div>
               <button
                 onClick={closeDialog}
@@ -1179,14 +1176,10 @@ export default function DashboardScreen() {
 
             <div>
               <h3 className="text-lg font-bold font-display text-[#001A41]">
-                {activeNoticeDialog === 'messages'
-                  ? 'Direct Messaging in Progress'
-                  : 'Platform Notifications in Progress'}
+                Direct Messaging in Progress
               </h3>
               <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                {activeNoticeDialog === 'messages'
-                  ? 'Direct real-time chat with your chosen BrainWorker is part of our upcoming Customer Platform release. In the meantime, communication is coordinated after booking confirmation under the BukieGuarantee.'
-                  : 'Instant dispatch and proposal notification feeds will be enabled when matching services launch. Active work status remains continuously visible on your dashboard.'}
+                Direct real-time chat with your chosen BrainWorker is part of our upcoming Customer Platform release. In the meantime, communication is coordinated after booking confirmation under the BukieGuarantee.
               </p>
             </div>
 

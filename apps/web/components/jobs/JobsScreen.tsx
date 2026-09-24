@@ -92,7 +92,7 @@ export default function JobsScreen() {
   }, [currentUser]);
 
   // Notice dialog for future capability placeholders
-  const [activeNoticeDialog, setActiveNoticeDialog] = useState<'messages' | 'notifications' | null>(null);
+  const [activeNoticeDialog, setActiveNoticeDialog] = useState<'messages' | null>(null);
 
   // Check authentication on mount
   useEffect(() => {

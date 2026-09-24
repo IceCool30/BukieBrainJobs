@@ -84,7 +84,7 @@ export function JobsSidebar({
 
         <button
           type="button"
-          onClick={() => onOpenNoticeDialog('notifications')}
+          onClick={() => router.push('/notifications')}
           className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition cursor-pointer text-left"
         >
           <Bell className="h-4 w-4" />
@@ -170,7 +170,7 @@ export function JobsMobileBottomNav({
 
         <button
           type="button"
-          onClick={() => onOpenNoticeDialog('notifications')}
+          onClick={() => router.push('/notifications')}
           className="min-h-[48px] min-w-[48px] flex flex-col items-center justify-center text-[10px] font-medium text-slate-400 hover:text-white transition cursor-pointer"
         >
           <Bell className="h-5 w-5 mb-0.5" />
@@ -194,7 +194,7 @@ export function JobsNoticeDialog({
   dialog,
   onClose,
 }: {
-  dialog: 'messages' | 'notifications' | null;
+  dialog: 'messages' | null;
   onClose: () => void;
 }) {
   if (!dialog) return null;
@@ -216,21 +216,13 @@ export function JobsNoticeDialog({
           <X className="h-5 w-5" />
         </button>
         <div className="mx-auto w-12 h-12 rounded-full bg-blue-50 text-[#001A41] flex items-center justify-center mb-3">
-          {dialog === 'messages' ? (
-            <MessageSquare className="h-6 w-6" />
-          ) : (
-            <Bell className="h-6 w-6" />
-          )}
+          <MessageSquare className="h-6 w-6" />
         </div>
         <h3 id="dialog-heading" className="text-lg font-bold font-display text-[#001A41] mb-2">
-          {dialog === 'messages'
-            ? 'Messages Coming Soon'
-            : 'Notifications Coming Soon'}
+          Messages Coming Soon
         </h3>
         <p className="text-slate-600 text-xs sm:text-sm mb-6 leading-relaxed">
-          {dialog === 'messages'
-            ? 'Real-time in-app messaging between customers and BrainWorkers is planned for an upcoming milestone.'
-            : 'Direct in-app notification center and push alerts are being configured for a future release.'}
+          Real-time in-app messaging between customers and BrainWorkers is planned for an upcoming milestone.
         </p>
         <button
           type="button"
