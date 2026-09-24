@@ -50,6 +50,7 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
   const setCredentialsDraft = useBrainWorkerOnboardingStore((s) => s.setCredentialsDraft);
 
   useEffect(() => {
+    let isMounted = true;
     const currentUser = getMockAuthenticatedUser();
     setUser(currentUser);
 
@@ -75,28 +76,33 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
     const repo = getBrainWorkerOnboardingRepository();
     repo.getOnboardingRecord(currentUser.id)
       .then((record) => {
+        if (!isMounted) return;
         if (record) {
-          // If already submitted, pending review, or rejected -> redirect to verification status
+          // If already submitted, pending review, rejected, or approved -> redirect to verification status
+          // The route must not decide the provider is approved independently of isBrainWorkerApproved
           if (
             record.status === 'SUBMITTED' ||
             record.status === 'PENDING_REVIEW' ||
-            record.status === 'REJECTED'
+            record.status === 'REJECTED' ||
+            record.status === 'APPROVED'
           ) {
             router.replace('/brainworker/verification-status');
             return;
           }
-          if (record.status === 'APPROVED') {
-            router.replace('/brainworker/dashboard');
-            return;
-          }
-          // Sync draft state into store
+          // Sync draft state into store (DRAFT or REMEDIATION_REQUIRED)
           syncFromRecord(record);
         }
         setIsInitializing(false);
       })
       .catch(() => {
-        setIsInitializing(false);
+        if (isMounted) {
+          setIsInitializing(false);
+        }
       });
+
+    return () => {
+      isMounted = false;
+    };
   }, [router, syncFromRecord]);
 
   // Compute completed steps for progress bar
@@ -234,11 +240,46 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
     }
   };
 
+  // Provide safe normalized defaults for review step to prevent destructuring exceptions on partial drafts
+  const identityDataForReview: OnboardingIdentityData = useMemo(() => {
+    const base = draftRecord?.identity ?? identityDraft;
+    return {
+      legalFirstName: base?.legalFirstName ?? '',
+      legalMiddleName: base?.legalMiddleName ?? '',
+      legalLastName: base?.legalLastName ?? '',
+      dateOfBirth: base?.dateOfBirth ?? '',
+      identifierType: base?.identifierType ?? 'NIN',
+      identifierNumber: base?.identifierNumber ?? '',
+      maskedIdentifier: base?.maskedIdentifier ?? '',
+      residentialAddress: base?.residentialAddress ?? {
+        street: '',
+        city: '',
+        lga: '',
+        state: '',
+      },
+    };
+  }, [draftRecord?.identity, identityDraft]);
+
+  const tradeDataForReview: OnboardingTradeData = useMemo(() => {
+    const base = draftRecord?.trade ?? tradeDraft;
+    return {
+      primaryCategory: base?.primaryCategory ?? '',
+      subSpecialties: base?.subSpecialties ?? [],
+      experienceLevel: base?.experienceLevel ?? 'JOURNEYMAN_EXPERIENCED',
+      yearsInTrade: base?.yearsInTrade ?? 0,
+      coverageCities: base?.coverageCities ?? [],
+    };
+  }, [draftRecord?.trade, tradeDraft]);
+
   return (
     <main className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto space-y-8">
         <div>
-          <FunnelProgressBar currentStep={currentStep} completedSteps={completedSteps} />
+          <FunnelProgressBar
+            currentStep={currentStep}
+            completedSteps={completedSteps}
+            onStepClick={(step) => setStep(step)}
+          />
         </div>
 
         {currentStep === 'identity' && (
@@ -271,8 +312,8 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
 
         {currentStep === 'review' && (
           <ReviewStepForm
-            identityData={(draftRecord?.identity ?? identityDraft) as OnboardingIdentityData}
-            tradeData={(draftRecord?.trade ?? tradeDraft) as OnboardingTradeData}
+            identityData={identityDataForReview}
+            tradeData={tradeDataForReview}
             credentialsData={draftRecord?.credentials ?? credentialsDraft}
             onEditStep={(step) => setStep(step)}
             onBack={prevStep}

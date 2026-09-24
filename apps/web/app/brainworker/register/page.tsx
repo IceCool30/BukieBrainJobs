@@ -25,9 +25,13 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
     const currentUser = getMockAuthenticatedUser();
     setUser(currentUser);
 
-    // If already an approved BrainWorker -> dashboard
-    if (currentUser?.role === 'brainworker' && currentUser.isBrainWorkerApproved) {
-      router.replace('/brainworker/dashboard');
+    // If already an approved BrainWorker -> dashboard; if registered unapproved -> onboarding
+    if (currentUser?.role === 'brainworker') {
+      if (currentUser.isBrainWorkerApproved) {
+        router.replace('/brainworker/dashboard');
+      } else {
+        router.replace('/brainworker/onboarding');
+      }
     }
   }, [router]);
 
@@ -71,6 +75,12 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const currentUser = getMockAuthenticatedUser();
+    if (currentUser?.role === 'customer') {
+      setError('Existing customer accounts cannot be converted to provider accounts. Please sign out first.');
+      return;
+    }
+
     if (!name.trim() || !email.trim() || !phone.trim()) {
       setError('Please fill in all required fields.');
       return;

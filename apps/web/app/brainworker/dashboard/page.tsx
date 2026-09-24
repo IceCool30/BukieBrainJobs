@@ -34,13 +34,13 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
       return;
     }
 
-    // Guard 2: Customer -> blocked
-    if (currentUser.role === 'customer') {
+    // Guard 2: Non-BrainWorker -> fail-closed boundary
+    if (currentUser.role !== 'brainworker') {
       return;
     }
 
     // Guard 3: Unapproved BrainWorker -> redirect to verification status
-    if (currentUser.role === 'brainworker' && !currentUser.isBrainWorkerApproved) {
+    if (!currentUser.isBrainWorkerApproved) {
       router.replace('/brainworker/verification-status');
       return;
     }
@@ -54,12 +54,12 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
     );
   }
 
-  if (user.role === 'customer') {
+  if (user.role !== 'brainworker') {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-2xl border border-red-200 p-8 shadow-sm text-center space-y-4">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-red-50 border border-red-200 px-3 py-1 text-xs font-semibold text-red-800">
-            Customer Account Detected
+            {user.role === 'customer' ? 'Customer Account Detected' : 'Unauthorized Access'}
           </div>
           <h2 className="text-xl font-bold text-slate-900">Access Restricted</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
@@ -69,14 +69,14 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
             href="/"
             className="inline-flex items-center justify-center rounded-xl bg-[#001A41] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#002661]"
           >
-            Return to Customer Dashboard
+            {user.role === 'customer' ? 'Return to Customer Dashboard' : 'Return Home'}
           </Link>
         </div>
       </div>
     );
   }
 
-  if (user.role === 'brainworker' && !user.isBrainWorkerApproved) {
+  if (!user.isBrainWorkerApproved) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-50">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] border-t-transparent" />

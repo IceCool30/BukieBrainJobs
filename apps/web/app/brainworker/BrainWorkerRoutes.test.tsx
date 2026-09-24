@@ -167,6 +167,7 @@ describe('BW-001 Suite 8: Route Integration & Security Guard Contracts (INT-001 
     vi.spyOn(repositoryModule, 'getBrainWorkerOnboardingRepository').mockReturnValue(
       mockRepository
     );
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(null);
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -341,5 +342,118 @@ describe('BW-001 Suite 8: Route Integration & Security Guard Contracts (INT-001 
       expect(content).not.toMatch(/from ['"].*\/testing['"]/);
       expect(content).not.toMatch(/from ['"].*\/testing\/.*['"]/);
     }
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // INT-011: Unauthenticated Visitor on Verification Status
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  it('INT-011: unauthenticated visitor accessing /brainworker/verification-status is redirected to /login', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(null);
+
+    render(<BrainWorkerVerificationStatusPage />);
+
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith(
+        expect.stringMatching(/\/login\?redirect=%2Fbrainworker%2Fverification-status|\/login\?redirect=\/brainworker\/verification-status/)
+      );
+    });
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // INT-012: Customer Boundary on Verification Status
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  it('INT-012: authenticated customer accessing /brainworker/verification-status is blocked with boundary notice without repository call', () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockCustomerUser);
+
+    render(<BrainWorkerVerificationStatusPage />);
+
+    expect(screen.getByText(/Customer Account Detected/i)).toBeInTheDocument();
+    expect(screen.getByText(/Provider Status Restricted/i)).toBeInTheDocument();
+    expect(mockRepository.getOnboardingRecord).not.toHaveBeenCalled();
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // INT-013: Unauthenticated Visitor on Dashboard
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  it('INT-013: unauthenticated visitor accessing /brainworker/dashboard is redirected to /login', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(null);
+
+    render(<BrainWorkerDashboardPage />);
+
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith(
+        expect.stringMatching(/\/login\?redirect=%2Fbrainworker%2Fdashboard|\/login\?redirect=\/brainworker\/dashboard/)
+      );
+    });
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // INT-014: Customer Boundary on Dashboard
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  it('INT-014: authenticated customer accessing /brainworker/dashboard is blocked with access restricted notice', () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockCustomerUser);
+
+    render(<BrainWorkerDashboardPage />);
+
+    expect(screen.getByText(/Access Restricted/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/The BrainWorker workspace is strictly reserved for verified service providers/i)
+    ).toBeInTheDocument();
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // INT-015: PENDING_REVIEW BrainWorker Redirect
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  it('INT-015: PENDING_REVIEW BrainWorker accessing /brainworker/onboarding is redirected to /brainworker/verification-status', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUnapprovedBrainWorkerUser);
+    vi.mocked(mockRepository.getOnboardingRecord).mockResolvedValue({
+      ...mockSubmittedRecord,
+      status: 'PENDING_REVIEW',
+    });
+
+    render(<BrainWorkerOnboardingPage />);
+
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith('/brainworker/verification-status');
+    });
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // INT-016: Logged-in BrainWorker Visiting Register
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  it('INT-016: already registered unapproved BrainWorker accessing /brainworker/register is routed to /brainworker/onboarding', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUnapprovedBrainWorkerUser);
+
+    render(<BrainWorkerRegisterPage />);
+
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith('/brainworker/onboarding');
+    });
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // INT-017: Approved Record on Verification Status Promotes Workspace Admission
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  it('INT-017: approved record on /brainworker/verification-status promotes session upon entering workspace', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUnapprovedBrainWorkerUser);
+    const setAuthSpy = vi.spyOn(authStorage, 'setMockAuthenticatedUser');
+    vi.mocked(mockRepository.getOnboardingRecord).mockResolvedValue({
+      ...mockSubmittedRecord,
+      status: 'APPROVED',
+    });
+
+    render(<BrainWorkerVerificationStatusPage />);
+
+    const enterBtn = await screen.findByRole('button', { name: /Enter BrainWorker Workspace/i });
+    expect(enterBtn).toBeInTheDocument();
+
+    fireEvent.click(enterBtn);
+
+    expect(setAuthSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        isBrainWorkerApproved: true,
+      })
+    );
+    expect(mockPush).toHaveBeenCalledWith('/brainworker/dashboard');
   });
 });

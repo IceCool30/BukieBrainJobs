@@ -31,47 +31,45 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
       return;
     }
 
-    // Guard 2: Customer -> fail-closed boundary, no repo call
-    if (currentUser.role === 'customer') {
+    // Guard 2: Non-BrainWorker (e.g. Customer) -> fail-closed boundary, no repo call
+    if (currentUser.role !== 'brainworker') {
       setIsLoading(false);
       return;
     }
 
     // Guard 3: BrainWorker -> load authoritative record
-    if (currentUser.role === 'brainworker') {
-      const repo = getBrainWorkerOnboardingRepository();
-      let isSubscribed = true;
+    const repo = getBrainWorkerOnboardingRepository();
+    let isSubscribed = true;
 
-      repo
-        .getOnboardingRecord(currentUser.id)
-        .then((fetchedRecord) => {
-          if (isSubscribed) {
-            setRecord(fetchedRecord);
-            setIsLoading(false);
-          }
-        })
-        .catch(() => {
-          if (isSubscribed) {
-            setIsLoading(false);
-          }
-        });
+    repo
+      .getOnboardingRecord(currentUser.id)
+      .then((fetchedRecord) => {
+        if (isSubscribed) {
+          setRecord(fetchedRecord);
+          setIsLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isSubscribed) {
+          setIsLoading(false);
+        }
+      });
 
-      if (repo.subscribe) {
-        const unsubscribe = repo.subscribe(currentUser.id, (updatedRecord) => {
-          if (isSubscribed) {
-            setRecord(updatedRecord);
-          }
-        });
-        return () => {
-          isSubscribed = false;
-          unsubscribe();
-        };
-      }
-
+    if (repo.subscribe) {
+      const unsubscribe = repo.subscribe(currentUser.id, (updatedRecord) => {
+        if (isSubscribed) {
+          setRecord(updatedRecord);
+        }
+      });
       return () => {
         isSubscribed = false;
+        unsubscribe();
       };
     }
+
+    return () => {
+      isSubscribed = false;
+    };
   }, [router]);
 
   const handleRemediate = () => {
@@ -79,6 +77,12 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
   };
 
   const handleEnterWorkspace = () => {
+    // If operational review transitioned record to APPROVED, ensure session flag is enabled before entering operating dashboard
+    if (record?.status === 'APPROVED' && user && !user.isBrainWorkerApproved) {
+      const approvedUser: AuthUser = { ...user, isBrainWorkerApproved: true };
+      setMockAuthenticatedUser(approvedUser);
+      setUser(approvedUser);
+    }
     router.push('/brainworker/dashboard');
   };
 
@@ -90,7 +94,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
     );
   }
 
-  if (user.role === 'customer') {
+  if (user.role !== 'brainworker') {
     return (
       <div className="min-h-screen bg-slate-50 p-6 flex items-center justify-center">
         <div className="max-w-md w-full bg-white rounded-2xl border border-amber-200 p-8 text-center space-y-4 shadow-sm">
