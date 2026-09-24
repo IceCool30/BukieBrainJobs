@@ -9,7 +9,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
+import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { getBrainWorkerOnboardingRepository } from '../../../lib/brainworker/repository';
 import type { BrainWorkerOnboardingRecord } from '../../../lib/brainworker/types';
 import { VerificationStatusMonitor } from '../../../components/brainworker/onboarding/VerificationStatusMonitor';
