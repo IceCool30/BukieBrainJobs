@@ -21,8 +21,7 @@ import type {
   OnboardingIdentityData,
   OnboardingTradeData,
   OnboardingCredentialsData,
-  DocumentCategory,
-  SpecificDocumentType,
+  StagedDocument,
 } from '../../../lib/brainworker/types';
 import type { AuthUser } from '../../../lib/auth/types';
 
@@ -185,30 +184,24 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
     }
   };
 
-  const handleStageDocument = async (file: {
-    name: string;
-    size: number;
-    type: string;
-    category: DocumentCategory;
-    specificType: SpecificDocumentType;
-    dataUrl?: string | undefined;
-  }) => {
-    const repo = getBrainWorkerOnboardingRepository();
-    const staged = await repo.stageDocument(user.id, file);
-    const updated = await repo.getOnboardingRecord(user.id);
-    if (updated) {
-      syncFromRecord(updated);
-    }
-    return staged;
+  const handleStageDocument = (doc: StagedDocument) => {
+    setCredentialsDraft({
+      ...credentialsDraft,
+      ...(doc.category === 'GOVERNMENT_ID'
+        ? { governmentId: doc }
+        : doc.category === 'TRADE_CREDENTIAL'
+          ? { tradeCredentials: [...credentialsDraft.tradeCredentials, doc] }
+          : { workProofs: [...credentialsDraft.workProofs, doc] }),
+    });
   };
 
-  const handleRemoveDocument = async (docId: string) => {
-    const repo = getBrainWorkerOnboardingRepository();
-    await repo.removeStagedDocument(user.id, docId);
-    const updated = await repo.getOnboardingRecord(user.id);
-    if (updated) {
-      syncFromRecord(updated);
-    }
+  const handleRemoveDocument = (docId: string) => {
+    setCredentialsDraft({
+      ...credentialsDraft,
+      governmentId: credentialsDraft.governmentId?.id === docId ? null : credentialsDraft.governmentId,
+      tradeCredentials: credentialsDraft.tradeCredentials.filter((d) => d.id !== docId),
+      workProofs: credentialsDraft.workProofs.filter((d) => d.id !== docId),
+    });
   };
 
   const handleSaveCredentials = async (data: OnboardingCredentialsData) => {
