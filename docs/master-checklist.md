@@ -2,7 +2,7 @@
 
 **Document ID:** CHECKLIST-001  
 **Status:** Living Canonical Roadmap Tracker  
-**Last Updated:** 2026-09-21  
+**Last Updated:** 2026-09-25  
 
 This document provides a single, unified checklist of what has been built, what is partially implemented, and what remains to be completed across the BukieBrainJobs monorepo. It establishes the sequential order of execution so engineering moves forward in focused phases rather than scattered work.
 
@@ -15,12 +15,12 @@ This document provides a single, unified checklist of what has been built, what 
 | **Product Foundation & Contracts** | **Complete** | Monorepo layout, shared types, Zod schemas, test harnesses. |
 | **Design System & Visual Standards** | **Complete** | Tailwind tokens, deep navy/emerald palette, responsive typography. |
 | **Public Website Foundation** | **Mostly Complete** | Homepage, services catalog, service details, BrainWorker profiles. |
-| **Customer Web Platform Foundation** | **Substantially Complete** | Dashboard, job posting, matching, activity hub, booking lifecycle. |
+| **Customer Web Platform Foundation** | **Complete** | Dashboard, job posting, matching, activity hub, booking lifecycle (100% Phase 1 Complete). |
 | **Customer Payments & Escrow UX** | **Complete** | Merged to main at 78623cb. Production boundary isolation, fail-closed attribution, provider neutrality, and 479-test coverage verified. |
 | **Customer Reviews & Reputation** | **Complete** | Completed & live in production. 608 passing tests across 32 suites. Verified on Vercel deployment 6586791746 (commit 962a870). |
-| **Customer Notifications & Messaging** | **Partially Built** | Messaging is Complete & Live (WEB-017). Notification center (/notifications) and Web Push pending (WEB-018). |
+| **Customer Notifications & Messaging** | **Complete** | Messaging (WEB-017) and Notification Center (WEB-018) both complete and live in production. |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
-| **BrainWorker Platform** | **Not Built** | Onboarding, identity check, job inbox, availability, earnings wallet. |
+| **BrainWorker Platform** | **In Progress** | BW-001 Onboarding & Identity complete and live in production (commit 36b8385). BW-002 next. |
 | **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Customer state machine is built. Worker accept/decline and check-in are missing. |
 | **Mobile Application (`apps/mobile`)** | **Not Built** | Expo starter only. Full native reconstruction required. |
 | **Admin & Operational Console** | **Not Built** | Worker vetting, dispute mediation, category management, analytics. |

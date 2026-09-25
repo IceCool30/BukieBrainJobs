@@ -30,5 +30,7 @@ Detailed product UX briefs continue to be archived under `docs/04-public-website
 | `WEB-015` | Customer Payments & Escrow UX | Live in Production | `docs/specs/WEB-015-customer-payments-escrow.md` |
 | `WEB-016` | Customer Reviews & Reputation | Live in Production | `docs/specs/WEB-016-customer-reviews-reputation.md` |
 | `WEB-017` | In-App Messaging & Real-Time Chat | Live in Production | `docs/specs/WEB-017-messaging-chat.md` |
-| `WEB-018` | Notification Center & Push UX | Active Scope (Phase 1) | `docs/specs/WEB-018-notification-center.md` |
+| `WEB-018` | Notification Center & Push UX | Live in Production | `docs/specs/WEB-018-notification-center.md` |
+| `BW-001` | BrainWorker Onboarding & Identity Verification | Live in Production | `docs/specs/BW-001-onboarding.md` |
+| `BW-002` | BrainWorker Service Catalog & Availability | Candidate Next Scope | `docs/specs/BW-002-service-catalog-availability.md` |
 
