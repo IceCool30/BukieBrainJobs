@@ -189,17 +189,42 @@ export interface IBrainWorkerOperationsRepository {
     }
   ): Promise<BrainWorkerCoverage>;
 
-  getMatchingHydrationProfile(brainWorkerId: string): Promise<{
-    skills: Array<{ skillId: string; hourlyRateKobo: number; isActive: boolean }>;
-    isAvailable: boolean;
-    isEmergencyAvailable: boolean;
-    weeklySchedule: Record<DayOfWeek, DaySchedule>;
-    travelRadiusKm: number;
-    primaryCityId: string;
-  }>;
+  getMatchingHydrationProfile(brainWorkerId: string): Promise<MatchingHydrationProfile>;
 
   subscribe?(
     brainWorkerId: string,
     callback: (profile: BrainWorkerOperationalProfile) => void
   ): () => void;
 }
+
+export interface MatchingHydrationProfile {
+  skills: Array<{ skillId: string; hourlyRateKobo: number; isActive: boolean }>;
+  isAvailable: boolean;
+  isEmergencyAvailable: boolean;
+  weeklySchedule: Record<DayOfWeek, DaySchedule>;
+  travelRadiusKm: number;
+  primaryCityId: string;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Domain Errors
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+export class ForbiddenTenantAccessError extends Error {
+  readonly code = 'FORBIDDEN_TENANT_ACCESS';
+
+  constructor(message = 'FORBIDDEN_TENANT_ACCESS') {
+    super(message);
+    this.name = 'ForbiddenTenantAccessError';
+  }
+}
+
+export class OperationsValidationError extends Error {
+  readonly code = 'OPERATIONS_VALIDATION_ERROR';
+
+  constructor(message: string) {
+    super(message);
+    this.name = 'OperationsValidationError';
+  }
+}
+
