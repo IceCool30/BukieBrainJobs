@@ -26,7 +26,7 @@ export interface OperationsTestHarness {
 
 export function createOperationsTestHarness(
   options: {
-    dependencies?: BrainWorkerOperationsRepositoryDependencies;
+    dependencies?: BrainWorkerOperationsRepositoryDependencies | undefined;
   } = {}
 ): OperationsTestHarness {
   const onboardingStore = createBrainWorkerRepositoryStore();

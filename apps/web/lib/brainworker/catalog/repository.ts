@@ -17,11 +17,11 @@ import type {
 } from './types';
 
 export interface BrainWorkerOperationsRepositoryDependencies {
-  onboardingRepository?: IBrainWorkerOnboardingRepository;
+  onboardingRepository?: IBrainWorkerOnboardingRepository | undefined;
 }
 
 export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRepository {
-  protected readonly onboardingRepository?: IBrainWorkerOnboardingRepository;
+  protected readonly onboardingRepository?: IBrainWorkerOnboardingRepository | undefined;
 
   constructor(dependencies: BrainWorkerOperationsRepositoryDependencies = {}) {
     this.onboardingRepository = dependencies.onboardingRepository;
