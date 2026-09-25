@@ -155,6 +155,17 @@ describe('BW-002 Domain Validation & Invariants (Suite 1: CAT-001 to CAT-010)', 
       endHour: 0,
     };
     expect(validateDaySchedule(inactiveSchedule).valid).toBe(true);
+
+    // Null or invalid day
+    expect(validateDaySchedule(null as unknown as Parameters<typeof validateDaySchedule>[0]).valid).toBe(false);
+    expect(
+      validateDaySchedule({
+        day: 'funday' as unknown as Parameters<typeof validateDaySchedule>[0]['day'],
+        isActive: true,
+        startHour: 8,
+        endHour: 17,
+      }).valid
+    ).toBe(false);
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -371,6 +382,31 @@ describe('BW-002 Domain Validation & Invariants (Suite 1: CAT-001 to CAT-010)', 
         coverage: { ...validCoverage, travelRadiusKm: 20 as unknown as ValidTravelRadiusKm },
       })
     ).toBe(false);
+
+    // Null or undefined profile
+    expect(isOperationalProfileComplete(null)).toBe(false);
+    expect(isOperationalProfileComplete(undefined)).toBe(false);
+
+    // Whitespace-only neighbourhoods
+    expect(
+      isOperationalProfileComplete({
+        catalog: validCatalog,
+        availability: validAvailability,
+        coverage: { ...validCoverage, coverageNeighbourhoods: ['', '   '] },
+      })
+    ).toBe(false);
+
+    // Active service with mismatched categoryId against canonical registry
+    expect(
+      isOperationalProfileComplete({
+        catalog: {
+          ...validCatalog,
+          services: [{ ...firstService, categoryId: 'plumbing' as const }],
+        },
+        availability: validAvailability,
+        coverage: validCoverage,
+      })
+    ).toBe(false);
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -489,5 +525,11 @@ describe('BW-002 Domain Validation & Invariants (Suite 1: CAT-001 to CAT-010)', 
     // On inactive day evaluates to false
     const onInactiveDay = new Date('2026-09-27T12:00:00'); // Sunday
     expect(isDispatchEligibleNow({ profile: onDutyProfile, targetDate: onInactiveDay })).toBe(false);
+
+    // Null params or invalid date targets
+    expect(isDispatchEligibleNow(null)).toBe(false);
+    expect(isDispatchEligibleNow(undefined)).toBe(false);
+    expect(isDispatchEligibleNow({ profile: onDutyProfile, targetDate: new Date('invalid') })).toBe(false);
+    expect(isDispatchEligibleNow({ profile: onDutyProfile, targetDate: '2026-09-28T10:00:00' })).toBe(true);
   });
 });

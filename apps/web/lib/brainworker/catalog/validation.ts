@@ -34,11 +34,24 @@ const DAYS_BY_INDEX: readonly DayOfWeek[] = [
   'saturday',
 ];
 
+const VALID_DAYS_SET = new Set<DayOfWeek>([
+  'sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+]);
+
 export function validateTradeCategory(category: string): {
   valid: boolean;
   error?: string | undefined;
 } {
-  if (CANONICAL_TRADE_CATEGORIES.includes(category as CanonicalTradeCategoryId)) {
+  if (
+    typeof category === 'string' &&
+    CANONICAL_TRADE_CATEGORIES.includes(category as CanonicalTradeCategoryId)
+  ) {
     return { valid: true };
   }
   return {
@@ -89,6 +102,20 @@ export function validateDaySchedule(schedule: DaySchedule): {
   valid: boolean;
   error?: string | undefined;
 } {
+  if (!schedule || typeof schedule !== 'object') {
+    return {
+      valid: false,
+      error: 'Day schedule must be a valid object.',
+    };
+  }
+
+  if (schedule.day && !VALID_DAYS_SET.has(schedule.day)) {
+    return {
+      valid: false,
+      error: `Day '${schedule.day}' is not a valid day of the week.`,
+    };
+  }
+
   if (!schedule.isActive) {
     return { valid: true };
   }
@@ -196,11 +223,20 @@ export function validateCanonicalServiceId(serviceId: string): {
   };
 }
 
-export function isOperationalProfileComplete(profile: {
-  catalog?: Partial<BrainWorkerServiceCatalog> | null | undefined;
-  availability?: Partial<BrainWorkerAvailability> | null | undefined;
-  coverage?: Partial<BrainWorkerCoverage> | null | undefined;
-}): boolean {
+export function isOperationalProfileComplete(
+  profile:
+    | {
+        catalog?: Partial<BrainWorkerServiceCatalog> | null | undefined;
+        availability?: Partial<BrainWorkerAvailability> | null | undefined;
+        coverage?: Partial<BrainWorkerCoverage> | null | undefined;
+      }
+    | null
+    | undefined
+): boolean {
+  if (!profile || typeof profile !== 'object') {
+    return false;
+  }
+
   // Criterion 1: At least one configured service item is ACTIVE and valid
   const services = profile.catalog?.services;
   const activeServices = Array.isArray(services)
@@ -208,13 +244,19 @@ export function isOperationalProfileComplete(profile: {
     : [];
   const hasActiveService =
     activeServices.length > 0 &&
-    activeServices.every(
-      (s) =>
-        Boolean(s.serviceId) &&
-        validateCanonicalServiceId(s.serviceId).valid &&
-        typeof s.hourlyRateNgn === 'number' &&
-        validateHourlyRate(s.hourlyRateNgn).valid
-    );
+    activeServices.every((s) => {
+      if (!s || !s.serviceId || typeof s.hourlyRateNgn !== 'number') {
+        return false;
+      }
+      const canonical = validateCanonicalServiceId(s.serviceId);
+      if (!canonical.valid || !canonical.service) {
+        return false;
+      }
+      if (s.categoryId && s.categoryId !== canonical.service.categoryId) {
+        return false;
+      }
+      return validateHourlyRate(s.hourlyRateNgn).valid;
+    });
 
   // Criterion 2: Valid diagnostic fee (₦2,000 - ₦20,000, whole integer)
   const hasValidDiagnosticFee =
@@ -236,7 +278,9 @@ export function isOperationalProfileComplete(profile: {
   // Criterion 5: At least one coverage LGA / operational zone designated
   const hasNeighbourhoods = Boolean(
     Array.isArray(profile.coverage?.coverageNeighbourhoods) &&
-      profile.coverage.coverageNeighbourhoods.length > 0
+      profile.coverage.coverageNeighbourhoods.some(
+        (n) => typeof n === 'string' && n.trim().length > 0
+      )
   );
 
   // Criterion 6: Valid discrete travel radius selected
@@ -254,11 +298,16 @@ export function isOperationalProfileComplete(profile: {
   );
 }
 
-export function isDispatchEligibleNow(params: {
-  profile: BrainWorkerOperationalProfile;
-  targetDate?: Date | undefined;
-}): boolean {
-  if (!params.profile || !params.profile.isComplete) {
+export function isDispatchEligibleNow(
+  params:
+    | {
+        profile: BrainWorkerOperationalProfile;
+        targetDate?: Date | string | undefined;
+      }
+    | null
+    | undefined
+): boolean {
+  if (!params || !params.profile || !params.profile.isComplete) {
     return false;
   }
 
@@ -266,14 +315,28 @@ export function isDispatchEligibleNow(params: {
     return false;
   }
 
-  const target = params.targetDate ?? new Date();
+  let target: Date;
+  if (!params.targetDate) {
+    target = new Date();
+  } else if (typeof params.targetDate === 'string') {
+    target = new Date(params.targetDate);
+  } else if (params.targetDate instanceof Date) {
+    target = params.targetDate;
+  } else {
+    return false;
+  }
+
+  if (isNaN(target.getTime())) {
+    return false;
+  }
+
   const dayOfWeek = DAYS_BY_INDEX[target.getDay()];
   if (!dayOfWeek) {
     return false;
   }
 
   const daySchedule = params.profile.availability.weeklySchedule?.[dayOfWeek];
-  if (!daySchedule || !daySchedule.isActive) {
+  if (!daySchedule || !daySchedule.isActive || !validateDaySchedule(daySchedule).valid) {
     return false;
   }
 
