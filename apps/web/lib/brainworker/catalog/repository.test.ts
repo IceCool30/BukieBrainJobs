@@ -11,21 +11,29 @@ import {
   resetOperationsRepository,
   FIXTURE_APPROVED_BRAINWORKER_A,
   FIXTURE_APPROVED_BRAINWORKER_B,
+  FIXTURE_UNAPPROVED_BRAINWORKER,
   FIXTURE_CUSTOMER_USER_ID,
   mockApprovedWorkerA,
   mockApprovedWorkerB,
+  mockUnapprovedWorker,
   mockCustomerUser,
   FIXTURE_DEFAULT_WEEKLY_SCHEDULE,
   FIXTURE_VARIED_WEEKLY_SCHEDULE,
+  FIXTURE_OPERATIONAL_PROFILE_A,
 } from './testing';
 import {
   ForbiddenTenantAccessError,
   OperationsValidationError,
+  type BrainWorkerOperationalProfile,
+  type ValidTravelRadiusKm,
 } from './types';
 
 describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to REP-010)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    if (typeof localStorage !== 'undefined') {
+      localStorage.clear();
+    }
     resetOperationsRepository();
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
   });
@@ -48,6 +56,17 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
     expect(profile?.availability.weeklySchedule).toBeDefined();
     expect(Object.keys(profile?.availability.weeklySchedule || {})).toHaveLength(7);
     expect(profile?.coverage.travelRadiusKm).toBe(15);
+
+    // Profile hydration when browser storage contains pre-existing operational profile
+    const storedProfile: BrainWorkerOperationalProfile = FIXTURE_OPERATIONAL_PROFILE_A;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(
+        `bukie_bw_operations_${FIXTURE_APPROVED_BRAINWORKER_A}`,
+        JSON.stringify(storedProfile)
+      );
+    }
+    const hydratedProfile = await repository.getOperationalProfile(FIXTURE_APPROVED_BRAINWORKER_A);
+    expect(hydratedProfile).toEqual(storedProfile);
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -81,7 +100,6 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
     expect(savedCatalog.services[0]!.hourlyRateNgn).toBe(8500);
     expect(savedCatalog.services[0]!.status).toBe('ACTIVE');
 
-
     // Retrieve via getServiceCatalog
     const retrievedCatalog = await repository.getServiceCatalog(FIXTURE_APPROVED_BRAINWORKER_A);
     expect(retrievedCatalog.diagnosticFeeNgn).toBe(7500);
@@ -91,6 +109,28 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
     const profile = await repository.getOperationalProfile(FIXTURE_APPROVED_BRAINWORKER_A);
     expect(profile?.catalog.diagnosticFeeNgn).toBe(7500);
     expect(profile?.catalog.services).toHaveLength(2);
+
+    // Rejection of invalid diagnostic fee (< 2,000 NGN)
+    await expect(
+      repository.saveServiceCatalog(FIXTURE_APPROVED_BRAINWORKER_A, {
+        diagnosticFeeNgn: 1000,
+        services: [],
+      })
+    ).rejects.toThrow(OperationsValidationError);
+
+    // Rejection of non-canonical service ID
+    await expect(
+      repository.saveServiceCatalog(FIXTURE_APPROVED_BRAINWORKER_A, {
+        diagnosticFeeNgn: 5000,
+        services: [
+          {
+            serviceId: 'unregistered-non-canonical-service',
+            hourlyRateNgn: 5000,
+            status: 'ACTIVE',
+          },
+        ],
+      })
+    ).rejects.toThrow(OperationsValidationError);
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -140,7 +180,6 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
 
     expect(reactivatedCatalog.services[0]!.status).toBe('ACTIVE');
     expect(reactivatedCatalog.services[0]!.hourlyRateNgn).toBe(8500);
-
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -176,6 +215,18 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
 
     expect(offDuty.isAvailable).toBe(false);
     expect(offDuty.weeklySchedule.monday.isActive).toBe(true);
+
+    // Rejection of invalid schedule (endHour <= startHour)
+    await expect(
+      repository.saveAvailability(FIXTURE_APPROVED_BRAINWORKER_A, {
+        isAvailable: true,
+        isEmergencyAvailable: false,
+        weeklySchedule: {
+          ...FIXTURE_DEFAULT_WEEKLY_SCHEDULE,
+          monday: { day: 'monday', isActive: true, startHour: 14, endHour: 12 },
+        },
+      })
+    ).rejects.toThrow(OperationsValidationError);
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -184,7 +235,7 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
   it('REP-005: saves primary city and operational LGAs, enforcing primaryCityId must be in verified onboarding coverageCities', async () => {
     const { repository } = createOperationsTestHarness();
 
-    // Saving coverage with verified onboarding city (Lagos) succeeds
+    // Saving coverage with verified onboarding city (Lagos is in ['Lagos', 'Ibadan']) succeeds
     const savedCoverage = await repository.saveCoverage(FIXTURE_APPROVED_BRAINWORKER_A, {
       primaryCityId: 'Lagos',
       primaryCityName: 'Lagos',
@@ -209,6 +260,26 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
         primaryCityId: 'Kano',
         primaryCityName: 'Kano',
         coverageNeighbourhoods: ['Fagge', 'Nasarawa'],
+        travelRadiusKm: 25,
+      })
+    ).rejects.toThrow(OperationsValidationError);
+
+    // Saving coverage with invalid travel radius (e.g. 30 km is not one of [5, 10, 15, 25, 50]) fails closed
+    await expect(
+      repository.saveCoverage(FIXTURE_APPROVED_BRAINWORKER_A, {
+        primaryCityId: 'Lagos',
+        primaryCityName: 'Lagos',
+        coverageNeighbourhoods: ['Ikeja'],
+        travelRadiusKm: 30 as unknown as ValidTravelRadiusKm,
+      })
+    ).rejects.toThrow(OperationsValidationError);
+
+    // Saving coverage with empty operational zones fails closed
+    await expect(
+      repository.saveCoverage(FIXTURE_APPROVED_BRAINWORKER_A, {
+        primaryCityId: 'Lagos',
+        primaryCityName: 'Lagos',
+        coverageNeighbourhoods: [],
         travelRadiusKm: 25,
       })
     ).rejects.toThrow(OperationsValidationError);
@@ -267,10 +338,28 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
       })
     ).rejects.toThrow('FORBIDDEN_TENANT_ACCESS');
 
-    // Customer session rejected
+    // Customer session rejected on read and mutation
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockCustomerUser);
     await expect(
       repository.getOperationalProfile(FIXTURE_CUSTOMER_USER_ID)
+    ).rejects.toThrow(ForbiddenTenantAccessError);
+    await expect(
+      repository.saveServiceCatalog(FIXTURE_CUSTOMER_USER_ID, {
+        diagnosticFeeNgn: 5000,
+        services: [],
+      })
+    ).rejects.toThrow(ForbiddenTenantAccessError);
+
+    // Unapproved BrainWorker rejected on read and mutation
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUnapprovedWorker);
+    await expect(
+      repository.getOperationalProfile(FIXTURE_UNAPPROVED_BRAINWORKER)
+    ).rejects.toThrow(ForbiddenTenantAccessError);
+    await expect(
+      repository.saveServiceCatalog(FIXTURE_UNAPPROVED_BRAINWORKER, {
+        diagnosticFeeNgn: 5000,
+        services: [],
+      })
     ).rejects.toThrow(ForbiddenTenantAccessError);
 
     // Cross-tenant access from Worker B to Worker A
@@ -279,12 +368,23 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
       repository.getOperationalProfile(FIXTURE_APPROVED_BRAINWORKER_A)
     ).rejects.toThrow(ForbiddenTenantAccessError);
 
-    // Unauthenticated session rejected
+    // Unauthenticated session rejected on read and mutation
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(null);
     await expect(
       repository.getOperationalProfile(FIXTURE_APPROVED_BRAINWORKER_A)
-    ).rejects.toThrow('FORBIDDEN_TENANT_ACCESS');
+    ).rejects.toThrow(ForbiddenTenantAccessError);
+    await expect(
+      repository.saveServiceCatalog(FIXTURE_APPROVED_BRAINWORKER_A, {
+        diagnosticFeeNgn: 5000,
+        services: [],
+      })
+    ).rejects.toThrow(ForbiddenTenantAccessError);
 
+    // Missing / empty target ID rejected
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
+    await expect(
+      repository.getOperationalProfile('')
+    ).rejects.toThrow(ForbiddenTenantAccessError);
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -359,6 +459,10 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
     const unsubscribe = repository.subscribe?.(FIXTURE_APPROVED_BRAINWORKER_A, observer);
     expect(unsubscribe).toBeDefined();
 
+    // Multi-tenant observer isolation check: observer for Worker B receives no events on Worker A mutations
+    const observerB = vi.fn();
+    repository.subscribe?.(FIXTURE_APPROVED_BRAINWORKER_B, observerB);
+
     // Mutate catalog -> observer invoked
     await repository.saveServiceCatalog(FIXTURE_APPROVED_BRAINWORKER_A, {
       diagnosticFeeNgn: 6000,
@@ -373,7 +477,7 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
 
     expect(observer).toHaveBeenCalledTimes(1);
     expect(observer.mock.calls[0]![0]!.catalog.diagnosticFeeNgn).toBe(6000);
-
+    expect(observerB).not.toHaveBeenCalled();
 
     // Mutate availability -> observer invoked again
     await repository.saveAvailability(FIXTURE_APPROVED_BRAINWORKER_A, {

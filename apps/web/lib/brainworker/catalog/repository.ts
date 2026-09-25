@@ -2,6 +2,7 @@
 // BW-002: BrainWorker Operations Repository (Phase 2 RED Stub)
 // Governed by: BW-002 Architecture Contract v1.2 (Sections 6 & 7) & Test-First Implementation Plan v1.2 (Suite 2)
 
+import type { IBrainWorkerOnboardingRepository } from '../types';
 import type {
   IBrainWorkerOperationsRepository,
   BrainWorkerOperationalProfile,
@@ -15,7 +16,18 @@ import type {
   MatchingHydrationProfile,
 } from './types';
 
+export interface BrainWorkerOperationsRepositoryDependencies {
+  onboardingRepository?: IBrainWorkerOnboardingRepository;
+}
+
 export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRepository {
+  protected readonly onboardingRepository?: IBrainWorkerOnboardingRepository;
+
+  constructor(dependencies: BrainWorkerOperationsRepositoryDependencies = {}) {
+    this.onboardingRepository = dependencies.onboardingRepository;
+    void this.onboardingRepository;
+  }
+
   async getOperationalProfile(brainWorkerId: string): Promise<BrainWorkerOperationalProfile | null> {
     void brainWorkerId;
     throw new Error('Not implemented: Phase 2 RED stub');
@@ -103,8 +115,10 @@ export function getBrainWorkerOperationsRepository(): IBrainWorkerOperationsRepo
   return defaultOperationsRepository;
 }
 
-export function createBrainWorkerOperationsRepository(): IBrainWorkerOperationsRepository {
-  return new BrainWorkerOperationsRepository();
+export function createBrainWorkerOperationsRepository(
+  dependencies: BrainWorkerOperationsRepositoryDependencies = {}
+): IBrainWorkerOperationsRepository {
+  return new BrainWorkerOperationsRepository(dependencies);
 }
 
 export function resetDefaultBrainWorkerOperationsRepository(): void {
