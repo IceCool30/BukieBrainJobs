@@ -273,11 +273,18 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
       repository.getOperationalProfile(FIXTURE_CUSTOMER_USER_ID)
     ).rejects.toThrow(ForbiddenTenantAccessError);
 
+    // Cross-tenant access from Worker B to Worker A
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerB);
+    await expect(
+      repository.getOperationalProfile(FIXTURE_APPROVED_BRAINWORKER_A)
+    ).rejects.toThrow(ForbiddenTenantAccessError);
+
     // Unauthenticated session rejected
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(null);
     await expect(
       repository.getOperationalProfile(FIXTURE_APPROVED_BRAINWORKER_A)
     ).rejects.toThrow('FORBIDDEN_TENANT_ACCESS');
+
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

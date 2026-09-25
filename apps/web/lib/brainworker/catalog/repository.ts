@@ -16,17 +16,19 @@ import type {
 } from './types';
 
 export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRepository {
-  async getOperationalProfile(_brainWorkerId: string): Promise<BrainWorkerOperationalProfile | null> {
+  async getOperationalProfile(brainWorkerId: string): Promise<BrainWorkerOperationalProfile | null> {
+    void brainWorkerId;
     throw new Error('Not implemented: Phase 2 RED stub');
   }
 
-  async getServiceCatalog(_brainWorkerId: string): Promise<BrainWorkerServiceCatalog> {
+  async getServiceCatalog(brainWorkerId: string): Promise<BrainWorkerServiceCatalog> {
+    void brainWorkerId;
     throw new Error('Not implemented: Phase 2 RED stub');
   }
 
   async saveServiceCatalog(
-    _brainWorkerId: string,
-    _catalog: {
+    brainWorkerId: string,
+    catalog: {
       diagnosticFeeNgn: number;
       services: Array<{
         serviceId: string;
@@ -35,48 +37,59 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
       }>;
     }
   ): Promise<BrainWorkerServiceCatalog> {
+    void brainWorkerId;
+    void catalog;
     throw new Error('Not implemented: Phase 2 RED stub');
   }
 
-  async getAvailability(_brainWorkerId: string): Promise<BrainWorkerAvailability> {
+  async getAvailability(brainWorkerId: string): Promise<BrainWorkerAvailability> {
+    void brainWorkerId;
     throw new Error('Not implemented: Phase 2 RED stub');
   }
 
   async saveAvailability(
-    _brainWorkerId: string,
-    _availability: {
+    brainWorkerId: string,
+    availability: {
       isAvailable: boolean;
       isEmergencyAvailable: boolean;
       weeklySchedule: Record<DayOfWeek, DaySchedule>;
     }
   ): Promise<BrainWorkerAvailability> {
+    void brainWorkerId;
+    void availability;
     throw new Error('Not implemented: Phase 2 RED stub');
   }
 
-  async getCoverage(_brainWorkerId: string): Promise<BrainWorkerCoverage> {
+  async getCoverage(brainWorkerId: string): Promise<BrainWorkerCoverage> {
+    void brainWorkerId;
     throw new Error('Not implemented: Phase 2 RED stub');
   }
 
   async saveCoverage(
-    _brainWorkerId: string,
-    _coverage: {
+    brainWorkerId: string,
+    coverage: {
       primaryCityId: string;
       primaryCityName: string;
       coverageNeighbourhoods: string[];
       travelRadiusKm: ValidTravelRadiusKm;
     }
   ): Promise<BrainWorkerCoverage> {
+    void brainWorkerId;
+    void coverage;
     throw new Error('Not implemented: Phase 2 RED stub');
   }
 
-  async getMatchingHydrationProfile(_brainWorkerId: string): Promise<MatchingHydrationProfile> {
+  async getMatchingHydrationProfile(brainWorkerId: string): Promise<MatchingHydrationProfile> {
+    void brainWorkerId;
     throw new Error('Not implemented: Phase 2 RED stub');
   }
 
   subscribe(
-    _brainWorkerId: string,
-    _callback: (profile: BrainWorkerOperationalProfile) => void
+    brainWorkerId: string,
+    callback: (profile: BrainWorkerOperationalProfile) => void
   ): () => void {
+    void brainWorkerId;
+    void callback;
     throw new Error('Not implemented: Phase 2 RED stub');
   }
 }
