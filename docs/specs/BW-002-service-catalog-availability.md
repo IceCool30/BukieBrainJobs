@@ -1,11 +1,11 @@
-# Spec: BW-002 BrainWorker Service Catalog & Availability Management (v1.1)
+# Spec: BW-002 BrainWorker Service Catalog & Availability Management (v1.2)
 
 | Field | Value |
 |---|---|
 | **Document ID** | BW-002-SCOPE |
 | **Feature** | BrainWorker Service Catalog & Availability Management |
-| **Status** | 🟡 Proposed for Scope Approval (v1.1 - Reconciled) |
-| **Version** | 1.1 |
+| **Status** | 🟡 Proposed for Scope Approval (v1.2 - Reconciled) |
+| **Version** | 1.2 |
 | **Workstream** | Phase 2: BrainWorker (Service Provider) Web Platform |
 | **Governing Loop** | Mr. Solomon 9-Command Engineering Loop (`/scope`) |
 | **Target Surfaces** | `/brainworker/services`, `/brainworker/availability`, `/brainworker/dashboard` (Setup Card) |
@@ -20,7 +20,7 @@ BW-002 establishes the commercial, operational, and geographic profile for verif
 
 Without this operational configuration, the marketplace matching engine (`packages/utils/src/matching.ts`) cannot evaluate candidate suitability against customer jobs. Candidate ranking depends directly on service capabilities, hourly rates, geographic radius, and operating schedule windows.
 
-BW-002 enables approved BrainWorkers to configure their service offerings from the canonical trade taxonomy, set transparent hourly rates and diagnostic call-out fees, manage a weekly availability schedule, declare emergency dispatch readiness, and define their operational zones and travel radius within their verified onboarding cities.
+BW-002 enables approved BrainWorkers to configure their service offerings from an authoritative service definition registry, set transparent hourly rates and diagnostic call-out fees, manage a weekly availability schedule, declare emergency dispatch readiness, and define their operational zones and travel radius within their verified onboarding cities.
 
 ### 1.1 Core Doctrine: Operational Transparency & Dispatch Readiness
 
@@ -28,13 +28,13 @@ BW-002 enables approved BrainWorkers to configure their service offerings from t
 >
 > In the Nigerian informal services sector, pricing ambiguity and unpredictable arrival times are the primary sources of customer friction and dispute. Providers on BukieBrainJobs must specify clear hourly labor rates and upfront diagnostic call-out fees before receiving leads.
 >
-> A provider marked as "On-Duty" represents an operational commitment to be eligible for incoming customer matching and dispatch requests within their designated working hours. Availability is an operational contract with the marketplace, not a vanity toggle.
+> Operational completeness (`isComplete`) establishes that a provider is fully configured. Real-time dispatch duty (`isAvailable`) and schedule adherence establish whether they are eligible for immediate job dispatch.
 
 ---
 
 ## 2. Product Scope & Business Boundaries
 
-### 2.1 Canonical Service Taxonomy (Aligned with BW-001)
+### 2.1 Canonical Service Taxonomy & Authoritative Definition Registry
 BW-002 consumes the **canonical 8 trade categories** established in BW-001 ([`apps/web/lib/brainworker/types.ts`](file:///data/data/com.termux/files/home/BukieBrainJobs/apps/web/lib/brainworker/types.ts#L101)):
 1. **Generator Repair & Maintenance** (`generator`)
 2. **Air Conditioning & Refrigeration** (`ac`)
@@ -45,7 +45,8 @@ BW-002 consumes the **canonical 8 trade categories** established in BW-001 ([`ap
 7. **Masonry, Tiling & Bricklaying** (`masonry`)
 8. **Welding & Metal Fabrication** (`welding`)
 
-*(Note: Consumer-facing discovery categories like Cleaning and Appliance Repair belong to customer browsing taxonomy and are separate from the artisan trade verification taxonomy established in Phase 2).*
+#### Authoritative Service Definition Registry
+To ensure strict identity matching with customer jobs (`JobSkill.skillId`), all configured services must strictly reference a pre-defined canonical service definition from the **Canonical Service Registry**. Providers **cannot** invent arbitrary or free-text `serviceId` values. Each service has an immutable `serviceId`, canonical category, authoritative display name, and mapped `skillId`.
 
 ### 2.2 Pricing Boundaries & Invariants
 - **Hourly Labor Rates**: Configured per active service item.
@@ -68,8 +69,8 @@ BW-002 consumes the **canonical 8 trade categories** established in BW-001 ([`ap
   - Sequence Rule: `endHour` must be strictly greater than `startHour`.
   - Individual day toggle: Provider can designate rest days (e.g., Sundays off).
 - **Global Dispatch Duty Toggle (`isAvailable`)**:
-  - `On-Duty` (`isAvailable: true`): Eligible for incoming customer matching and job dispatch.
-  - `Off-Duty` (`isAvailable: false`): Paused from incoming matching; availability score in matching engine defaults to `0`.
+  - `On-Duty` (`isAvailable: true`): Provider is available for incoming matching during active working hours.
+  - `Off-Duty` (`isAvailable: false`): Provider is paused from incoming matching; availability score in matching engine defaults to `0`.
   - *Terminology Boundary*: This toggle controls **dispatch eligibility**, not public directory profile visibility (which is governed by `WEB-005` / `BW-006`).
 - **Emergency Dispatch Readiness (`isEmergencyAvailable`)**:
   - Denotes the provider's operational readiness to accept urgent dispatch requests with an arrival window of `< 2 hours` (targeting 60 to 90-minute on-site arrival).
@@ -84,16 +85,23 @@ BW-002 consumes the **canonical 8 trade categories** established in BW-001 ([`ap
 - **Maximum Travel Radius (`travelRadiusKm`)**:
   - Provider specifies the maximum distance they are willing to travel from their operational base: `5 km`, `10 km`, `15 km`, `25 km`, or `50 km`. Default is `15 km`.
 
-### 2.5 Operational Readiness Invariant (`isComplete`)
-A BrainWorker profile is defined as **Ready for Dispatch** (`isComplete: true`) if and only if **all** of the following criteria are satisfied:
-1. **Active Services**: At least one configured service item has `isActive === true`.
-2. **Valid Diagnostic Fee**: `diagnosticFeeNgn` is between ₦2,000 and ₦20,000.
-3. **Active Operating Schedule**: At least one day in `weeklySchedule` has `isActive === true` with a valid window (`endHour - startHour >= 2`).
-4. **Valid Primary City**: `primaryCityId` is set to one of the provider's verified BW-001 coverage cities.
-5. **Operational Zones**: At least one LGA / operational zone is selected in `coverageNeighbourhoods`.
-6. **Travel Radius**: `travelRadiusKm` is one of `[5, 10, 15, 25, 50]`.
+### 2.5 Operational Completeness (`isComplete`) vs. Current Dispatch Eligibility (`isDispatchEligibleNow`)
+The specification strictly separates profile completeness from real-time operational availability:
 
-If any criterion is missing, `isComplete` is `false`, and `/brainworker/dashboard` renders the "Complete Profile Setup" prompt banner.
+1. **Operational Profile Completeness (`isComplete`)**:
+   Evaluates whether the provider has completed their operational configuration. A profile is **Setup Complete** (`isComplete: true`) if and only if **all 6** of the following criteria are satisfied:
+   - **Active Services**: At least one configured service item has `status === 'ACTIVE'`.
+   - **Valid Diagnostic Fee**: `diagnosticFeeNgn` is between ₦2,000 and ₦20,000.
+   - **Active Operating Schedule**: At least one day in `weeklySchedule` has `isActive === true` with a valid window (`endHour - startHour >= 2`).
+   - **Valid Primary City**: `primaryCityId` is set to one of the provider's verified BW-001 coverage cities.
+   - **Operational Zones**: At least one LGA / operational zone is selected in `coverageNeighbourhoods`.
+   - **Travel Radius**: `travelRadiusKm` is one of `[5, 10, 15, 25, 50]`.
+
+2. **Current Dispatch Eligibility (`isDispatchEligibleNow`)**:
+   A provider with `isComplete === true` who has set `isAvailable === false` is **Off-Duty**, not dispatch-eligible.
+   Conceptually:
+   $$\text{isDispatchEligibleNow} = \text{isComplete} \land \text{isAvailable} \land \text{isWithinScheduledHours(currentDate, weeklySchedule)}$$
+   `isComplete: true` alone **does not** mean the provider is currently accepting jobs or dispatchable.
 
 ### 2.6 Persistence & Offline Semantics (`ARCH-002`)
 - In accordance with `ARCH-002` production-first mock architecture, configuration is persisted locally in browser `localStorage` under tenant-scoped keys.
@@ -118,16 +126,17 @@ If any criterion is missing, `isComplete` is `false`, and `/brainworker/dashboar
 ## 4. Functional Requirements
 
 ### 4.1 Service Catalog Management
-- **FR-001 (Canonical Service Selection):** Provider can select services categorized strictly under the 8 canonical BW-001 categories.
+- **FR-001 (Canonical Service Registry Selection):** Provider can select services strictly from the pre-defined canonical service definition registry. Rejects arbitrary or un-registered service IDs.
 - **FR-002 (Rate Setting & Bounds):** For each selected service, provider sets an hourly labor rate between ₦2,000 and ₦50,000 (step ₦500).
 - **FR-003 (Diagnostic Call-Out Fee):** Provider sets a flat diagnostic call-out fee between ₦2,000 and ₦20,000 (recommended default ₦5,000).
 - **FR-004 (Active State Toggle):** Provider can toggle individual services between `ACTIVE` and `PAUSED` without losing previously configured rates.
-- **FR-005 (At Least One Service):** At least one active service is required for operational readiness.
+- **FR-005 (At Least One Service):** At least one active service is required for operational completeness.
 
 ### 4.2 Availability & Schedule Management
 - **FR-006 (Weekly Schedule):** Provider configures working hours across all 7 days of the week.
 - **FR-007 (Daily Operating Window):** For each active day, start and end hours must satisfy `06:00 <= startHour < endHour <= 22:00` and `endHour - startHour >= 2`.
-- **FR-008 (Dispatch Duty Toggle):** A top-level toggle controls `isAvailable` (On-Duty / Off-Duty), governing eligibility for job matching.
+- **FR-008 (Dispatch Duty Toggle):** A top-level toggle controls `isAvailable` (On-Duty / Off-Duty).
+- **FR-008b (Eligibility Separation):** The system distinguishes `isComplete` from `isAvailable`. An off-duty provider remains complete without being dispatchable.
 - **FR-009 (Emergency Dispatch Readiness):** Provider can declare emergency readiness (`isEmergencyAvailable: boolean`) for arrival requests within `< 2 hours`.
 
 ### 4.3 Geographic Coverage & Radius
@@ -139,7 +148,7 @@ If any criterion is missing, `isComplete` is `false`, and `/brainworker/dashboar
 - **FR-013 (Setup Status Prompt):** If `isComplete === false`, `/brainworker/dashboard` renders an actionable banner:
   - "Configure Services & Rates" (links to `/brainworker/services`)
   - "Set Working Hours & Coverage" (links to `/brainworker/availability`)
-- **FR-014 (Readiness Signal):** When `isComplete === true`, the dashboard banner displays "Ready for Customer Dispatch" with active duty status.
+- **FR-014 (Readiness Signal):** When `isComplete === true`, the dashboard banner displays "Setup Complete" along with current dispatch duty status ("On-Duty" or "Off-Duty").
 
 ---
 
@@ -154,6 +163,7 @@ If any criterion is missing, `isComplete` is `false`, and `/brainworker/dashboar
    - Repository queries and mutations verify that the authenticated session matches the target `brainWorkerId`. Cross-tenant mutations throw `FORBIDDEN_TENANT_ACCESS`.
 3. **Data Integrity**:
    - Rates cannot be negative, fractional, or non-numeric.
+   - Service IDs must be registered in the canonical registry.
    - Pausing a service preserves its rate for future reactivation.
    - De-activating an operating day preserves its configured hours.
 4. **Prerender & Static Safety**:
@@ -165,10 +175,12 @@ If any criterion is missing, `isComplete` is `false`, and `/brainworker/dashboar
 
 ## 6. Acceptance Criteria
 
-- [ ] Approved provider can navigate to `/brainworker/services`, select services from the 8 canonical categories, and save valid hourly rates and diagnostic fee.
+- [ ] Approved provider can navigate to `/brainworker/services`, select canonical services, and save valid hourly rates and diagnostic fee.
+- [ ] Arbitrary or un-registered service IDs are rejected during validation.
 - [ ] Approved provider can navigate to `/brainworker/availability`, configure a 7-day schedule, set primary city refined from verified onboarding cities, select operational LGAs, and set travel radius.
 - [ ] Validation rejects rates outside ₦2,000–₦50,000 and diagnostic fees outside ₦2,000–₦20,000.
 - [ ] Schedule validation rejects daily windows where `endHour <= startHour` or `endHour - startHour < 2`.
 - [ ] `isComplete` evaluates to `true` only when all 6 readiness criteria are satisfied.
+- [ ] Setting `isAvailable === false` when `isComplete === true` marks the provider Off-Duty without invalidating setup completeness.
 - [ ] `/brainworker/dashboard` renders the setup prompt banner when incomplete, and ready signal when complete.
 - [ ] All tests pass with 0 type errors, 0 lint errors, and 0 monorepo regressions.

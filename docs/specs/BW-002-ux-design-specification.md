@@ -1,11 +1,11 @@
-# UX Design Specification: BW-002 BrainWorker Service Catalog & Availability (v1.1)
+# UX Design Specification: BW-002 BrainWorker Service Catalog & Availability (v1.2)
 
 | Field | Value |
 |---|---|
 | **Document ID** | BW-002-UX |
 | **Feature** | BrainWorker Service Catalog & Availability Management |
-| **Status** | 🟡 Proposed for UX Design Review (v1.1 - Reconciled) |
-| **Version** | 1.1 |
+| **Status** | 🟡 Proposed for UX Design Review (v1.2 - Reconciled) |
+| **Version** | 1.2 |
 | **Governing Loop** | Mr. Solomon 9-Command Engineering Loop (`/architect`) |
 | **Design Standards** | Deep Navy (`#001A41`), Emerald (`#059669`), `mr-solomon-natural-voice`, `bukiebrainjobs-experience-standards` |
 | **Date** | 2026-09-25 |
@@ -43,11 +43,11 @@ BW-002 introduces two dedicated configuration surfaces, accessible to verified B
   ├─► /brainworker/services
   │     ├─ Diagnostic Call-Out Fee Section
   │     ├─ Category Filter Tabs (8 canonical trade categories)
-  │     └─ Configured Services List (Hourly rates, ACTIVE/PAUSED toggles)
+  │     └─ Canonical Service Selector & Rates List (Hourly rates, ACTIVE/PAUSED toggles)
   │
   └─► /brainworker/availability
         ├─ Global Dispatch Duty Status Card (On-Duty / Off-Duty)
-        ├─ Weekly 7-Day Operating Hours Scheduler
+        ├─ Weekly 7-Day Operating Hours Scheduler (Per-day windows)
         ├─ Emergency Dispatch Readiness Toggle (< 2hr arrival window)
         └─ Primary City Refinement & Travel Radius Slider
 ```
@@ -58,7 +58,7 @@ BW-002 introduces two dedicated configuration surfaces, accessible to verified B
 
 ### 3.1 Header & Context
 - **Title**: `Service Catalog & Pricing`
-- **Subtitle**: `Configure the services you offer and your standard hourly labor rates. Clear, transparent pricing helps match you with serious customer requests.`
+- **Subtitle**: `Select the specific trade services you offer and set your standard hourly labor rates. Clear, transparent pricing helps match you with serious customer requests.`
 - **Action**: Floating or top-right `Save Changes` CTA with saving spinner and success feedback.
 
 ### 3.2 Diagnostic Call-Out Fee Section
@@ -70,7 +70,7 @@ BW-002 introduces two dedicated configuration surfaces, accessible to verified B
   - Helper Badge: `₦5,000 (Recommended standard)`.
   - *Boundary Rule*: Zero mention of downstream credit settlement rules. It is presented strictly as a diagnostic visit fee.
 
-### 3.3 Service Selection & Rate Configuration
+### 3.3 Canonical Service Selection & Rate Configuration
 - **Category Filter Tabs**: 8 canonical BW-001 categories:
   1. `Generator Repair & Maintenance` (`generator`)
   2. `Air Conditioning & Refrigeration` (`ac`)
@@ -80,10 +80,10 @@ BW-002 introduces two dedicated configuration surfaces, accessible to verified B
   6. `Painting & Wall Finishing` (`painting`)
   7. `Masonry, Tiling & Bricklaying` (`masonry`)
   8. `Welding & Metal Fabrication` (`welding`)
-- **Service Checkboxes**: List of sub-services within the selected category.
+- **Canonical Service Checkboxes**: Checkbox list populated strictly from `CANONICAL_SERVICES_REGISTRY`. Providers select pre-defined services; arbitrary freeform service names are not permitted.
 - **Configured Service Card**:
   Each added service renders as an interactive card:
-  1. Service Name (e.g., `Generator AVR Replacement & Wiring`)
+  1. Service Name (from registry, e.g., `Diesel Generator Servicing & Overhaul`)
   2. Category Badge (e.g., `Generator Repair`)
   3. Hourly Rate Input: `₦` prefix, bounded between `₦2,000` and `₦50,000` (step `₦500`).
   4. Status Toggle Switch: `ACTIVE` (Emerald badge) vs `PAUSED` (Slate badge).
@@ -101,7 +101,7 @@ BW-002 introduces two dedicated configuration surfaces, accessible to verified B
 - **States**:
   - `On-Duty (Eligible for Dispatch)`: Emerald dot, `You are available to receive customer job matches and dispatch invitations during your scheduled working hours.`
   - `Off-Duty (Paused)`: Slate dot, `You are currently taking a break. No new job leads or matches will be routed to your account.`
-  - *Distinction*: Clearly states this governs **matching and dispatch eligibility**, not public directory directory visibility.
+  - *Distinction*: Clearly states this governs **matching and dispatch eligibility**, not public directory visibility.
 
 ### 4.2 Weekly 7-Day Schedule Editor
 - **Grid Layout**: 7 rows (Monday through Sunday).
@@ -134,7 +134,7 @@ BW-002 introduces two dedicated configuration surfaces, accessible to verified B
 
 In [`apps/web/app/brainworker/dashboard/page.tsx`](file:///data/data/com.termux/files/home/BukieBrainJobs/apps/web/app/brainworker/dashboard/page.tsx):
 
-### Setup Incomplete State (`isComplete === false`)
+### 1. Incomplete Setup (`isComplete === false`)
 Rendered when any of the 6 readiness criteria are unmet:
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
@@ -147,12 +147,21 @@ Rendered when any of the 6 readiness criteria are unmet:
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Ready for Dispatch State (`isComplete === true`)
+### 2. Complete Setup & On-Duty (`isComplete === true && isAvailable === true`)
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │ 🟢 Ready for Customer Dispatch                                         │
 │ Status: On-Duty • 3 Services Active • Operating in Lagos (15 km radius) │
 │ [Edit Catalog]                    [Edit Schedule & Coverage]           │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+### 3. Complete Setup & Off-Duty (`isComplete === true && isAvailable === false`)
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│ ⏸️ Setup Complete • Status: Off-Duty (Paused)                           │
+│ You are taking a break. Toggle On-Duty when ready to receive matches.  │
+│ [Switch to On-Duty]                [Edit Schedule & Coverage]          │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
