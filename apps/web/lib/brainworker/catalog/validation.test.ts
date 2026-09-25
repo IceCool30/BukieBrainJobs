@@ -322,9 +322,10 @@ describe('BW-002 Domain Validation & Invariants (Suite 1: CAT-001 to CAT-010)', 
     expect(isOperationalProfileComplete(partialProfile)).toBe(false);
 
     // Missing active services (empty or all PAUSED)
-    const pausedCatalog = {
+    const firstService = validCatalog.services[0]!;
+    const pausedCatalog: BrainWorkerServiceCatalog = {
       ...validCatalog,
-      services: [{ ...validCatalog.services[0], status: 'PAUSED' as const }],
+      services: [{ ...firstService, status: 'PAUSED' }],
     };
     expect(
       isOperationalProfileComplete({
