@@ -75,11 +75,12 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
     expect(savedCatalog.brainWorkerId).toBe(FIXTURE_APPROVED_BRAINWORKER_A);
     expect(savedCatalog.diagnosticFeeNgn).toBe(7500);
     expect(savedCatalog.services).toHaveLength(2);
-    expect(savedCatalog.services[0].serviceId).toBe('gen-diesel-servicing');
-    expect(savedCatalog.services[0].categoryId).toBe('generator');
-    expect(savedCatalog.services[0].serviceName).toBe('Diesel Generator Servicing & Overhaul');
-    expect(savedCatalog.services[0].hourlyRateNgn).toBe(8500);
-    expect(savedCatalog.services[0].status).toBe('ACTIVE');
+    expect(savedCatalog.services[0]!.serviceId).toBe('gen-diesel-servicing');
+    expect(savedCatalog.services[0]!.categoryId).toBe('generator');
+    expect(savedCatalog.services[0]!.serviceName).toBe('Diesel Generator Servicing & Overhaul');
+    expect(savedCatalog.services[0]!.hourlyRateNgn).toBe(8500);
+    expect(savedCatalog.services[0]!.status).toBe('ACTIVE');
+
 
     // Retrieve via getServiceCatalog
     const retrievedCatalog = await repository.getServiceCatalog(FIXTURE_APPROVED_BRAINWORKER_A);
@@ -122,8 +123,8 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
       ],
     });
 
-    expect(pausedCatalog.services[0].status).toBe('PAUSED');
-    expect(pausedCatalog.services[0].hourlyRateNgn).toBe(8500);
+    expect(pausedCatalog.services[0]!.status).toBe('PAUSED');
+    expect(pausedCatalog.services[0]!.hourlyRateNgn).toBe(8500);
 
     // Toggle service back to ACTIVE
     const reactivatedCatalog = await repository.saveServiceCatalog(FIXTURE_APPROVED_BRAINWORKER_A, {
@@ -137,8 +138,9 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
       ],
     });
 
-    expect(reactivatedCatalog.services[0].status).toBe('ACTIVE');
-    expect(reactivatedCatalog.services[0].hourlyRateNgn).toBe(8500);
+    expect(reactivatedCatalog.services[0]!.status).toBe('ACTIVE');
+    expect(reactivatedCatalog.services[0]!.hourlyRateNgn).toBe(8500);
+
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -363,7 +365,8 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
     });
 
     expect(observer).toHaveBeenCalledTimes(1);
-    expect(observer.mock.calls[0][0].catalog.diagnosticFeeNgn).toBe(6000);
+    expect(observer.mock.calls[0]![0]!.catalog.diagnosticFeeNgn).toBe(6000);
+
 
     // Mutate availability -> observer invoked again
     await repository.saveAvailability(FIXTURE_APPROVED_BRAINWORKER_A, {

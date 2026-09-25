@@ -2,8 +2,8 @@
 // Deterministic Test Fixtures for BW-002 BrainWorker Service Catalog & Availability
 // Governed by: BW-002 Architecture Contract v1.2 & Test-First Implementation Plan v1.2
 
-import type { AuthUser } from '../../auth/types';
-import type { BrainWorkerOnboardingRecord } from '../..';
+import type { AuthUser } from '../../../auth/types';
+import type { BrainWorkerOnboardingRecord } from '../../types';
 import type {
   BrainWorkerOperationalProfile,
   BrainWorkerServiceCatalog,
@@ -13,6 +13,7 @@ import type {
   DaySchedule,
   ConfiguredServiceItem,
 } from '../types';
+
 
 export const FIXTURE_APPROVED_BRAINWORKER_A = 'bw-cat-001';
 export const FIXTURE_APPROVED_BRAINWORKER_B = 'bw-cat-002';
