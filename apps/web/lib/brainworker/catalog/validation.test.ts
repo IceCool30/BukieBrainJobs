@@ -20,6 +20,7 @@ import {
   BrainWorkerServiceCatalog,
   BrainWorkerAvailability,
   BrainWorkerCoverage,
+  ValidTravelRadiusKm,
 } from './types';
 
 describe('BW-002 Domain Validation & Invariants (Suite 1: CAT-001 to CAT-010)', () => {
@@ -367,7 +368,7 @@ describe('BW-002 Domain Validation & Invariants (Suite 1: CAT-001 to CAT-010)', 
       isOperationalProfileComplete({
         catalog: validCatalog,
         availability: validAvailability,
-        coverage: { ...validCoverage, travelRadiusKm: 20 as any },
+        coverage: { ...validCoverage, travelRadiusKm: 20 as unknown as ValidTravelRadiusKm },
       })
     ).toBe(false);
   });

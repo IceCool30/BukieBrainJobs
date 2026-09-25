@@ -11,68 +11,76 @@ import {
   BrainWorkerCoverage,
 } from './types';
 
-export function validateTradeCategory(_category: string): {
+export function validateTradeCategory(category: string): {
   valid: boolean;
   error?: string | undefined;
 } {
+  void category;
   // RED Stub: intentionally incomplete
   return { valid: false, error: 'Not implemented' };
 }
 
-export function validateHourlyRate(_rate: number): {
+export function validateHourlyRate(rate: number): {
   valid: boolean;
   error?: string | undefined;
 } {
+  void rate;
   // RED Stub: intentionally incomplete
   return { valid: false, error: 'Not implemented' };
 }
 
-export function validateDiagnosticFee(_fee: number): {
+export function validateDiagnosticFee(fee: number): {
   valid: boolean;
   error?: string | undefined;
 } {
+  void fee;
   // RED Stub: intentionally incomplete
   return { valid: false, error: 'Not implemented' };
 }
 
-export function validateDaySchedule(_schedule: DaySchedule): {
+export function validateDaySchedule(schedule: DaySchedule): {
   valid: boolean;
   error?: string | undefined;
 } {
+  void schedule;
   // RED Stub: intentionally incomplete
   return { valid: false, error: 'Not implemented' };
 }
 
-export function validateTravelRadius(_radiusKm: number): {
+export function validateTravelRadius(radiusKm: number): {
   valid: boolean;
   error?: string | undefined;
 } {
+  void radiusKm;
   // RED Stub: intentionally incomplete
   return { valid: false, error: 'Not implemented' };
 }
 
-export function validateCanonicalServiceId(_serviceId: string): {
+export function validateCanonicalServiceId(serviceId: string): {
   valid: boolean;
   service?: CanonicalServiceDefinition | undefined;
   error?: string | undefined;
 } {
+  void serviceId;
   // RED Stub: intentionally incomplete
   return { valid: false, error: 'Not implemented' };
 }
 
-export function isOperationalProfileComplete(_profile: {
+export function isOperationalProfileComplete(profile: {
   catalog?: Partial<BrainWorkerServiceCatalog> | null | undefined;
   availability?: Partial<BrainWorkerAvailability> | null | undefined;
   coverage?: Partial<BrainWorkerCoverage> | null | undefined;
 }): boolean {
+  void profile;
   // RED Stub: intentionally incomplete
   return false;
 }
 
-export function isDispatchEligibleNow(_params: {
+export function isDispatchEligibleNow(params: {
   profile: BrainWorkerOperationalProfile;
   targetDate?: Date | undefined;
 }): boolean {
+  void params;
   // RED Stub: intentionally incomplete
   return false;
 }
