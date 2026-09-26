@@ -1,17 +1,26 @@
 // apps/web/lib/brainworker/catalog/store.ts
-// Phase 3 RED Stub: BrainWorker Operations & Catalog Client Store
+// Phase 3 GREEN: BrainWorker Operations & Catalog Client Store
 // Governed by: BW-002 Architecture Contract v1.2 & Test-First Implementation Plan v1.2 (Suite 3: STO-001 to STO-006)
 
 import { create } from 'zustand';
-import type {
-  BrainWorkerOperationalProfile,
-  BrainWorkerServiceCatalog,
-  BrainWorkerAvailability,
-  BrainWorkerCoverage,
-  DayOfWeek,
-  DaySchedule,
-  ValidTravelRadiusKm,
+import {
+  CANONICAL_SERVICES_REGISTRY,
+  type BrainWorkerOperationalProfile,
+  type BrainWorkerServiceCatalog,
+  type BrainWorkerAvailability,
+  type BrainWorkerCoverage,
+  type DayOfWeek,
+  type DaySchedule,
+  type ConfiguredServiceItem,
+  type ServiceItemStatus,
+  type ValidTravelRadiusKm,
 } from './types';
+import {
+  isOperationalProfileComplete,
+  validateHourlyRate,
+  validateDiagnosticFee,
+  validateDaySchedule,
+} from './validation';
 
 export const INITIAL_OPERATIONS_WEEKLY_SCHEDULE: Record<DayOfWeek, DaySchedule> = {
   monday: { day: 'monday', isActive: true, startHour: 8, endHour: 18 },
@@ -89,78 +98,500 @@ export interface BrainWorkerOperationsStoreState {
   setTravelRadius: (travelRadiusKm: ValidTravelRadiusKm) => void;
 }
 
-export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreState>((set) => {
-  void set;
-  return {
-    catalog: { ...INITIAL_OPERATIONS_CATALOG, services: [] },
-    availability: {
-      ...INITIAL_OPERATIONS_AVAILABILITY,
-      weeklySchedule: { ...INITIAL_OPERATIONS_WEEKLY_SCHEDULE },
+const createInitialState = () => ({
+  catalog: {
+    ...INITIAL_OPERATIONS_CATALOG,
+    services: [],
+  },
+  availability: {
+    ...INITIAL_OPERATIONS_AVAILABILITY,
+    weeklySchedule: {
+      monday: { ...INITIAL_OPERATIONS_WEEKLY_SCHEDULE.monday },
+      tuesday: { ...INITIAL_OPERATIONS_WEEKLY_SCHEDULE.tuesday },
+      wednesday: { ...INITIAL_OPERATIONS_WEEKLY_SCHEDULE.wednesday },
+      thursday: { ...INITIAL_OPERATIONS_WEEKLY_SCHEDULE.thursday },
+      friday: { ...INITIAL_OPERATIONS_WEEKLY_SCHEDULE.friday },
+      saturday: { ...INITIAL_OPERATIONS_WEEKLY_SCHEDULE.saturday },
+      sunday: { ...INITIAL_OPERATIONS_WEEKLY_SCHEDULE.sunday },
     },
-    coverage: { ...INITIAL_OPERATIONS_COVERAGE, coverageNeighbourhoods: [] },
-    isDirty: false,
-    isSaving: false,
-    saveError: null,
-    validationErrors: {},
-    isComplete: false,
+  },
+  coverage: {
+    ...INITIAL_OPERATIONS_COVERAGE,
+    coverageNeighbourhoods: [],
+  },
+  isDirty: false,
+  isSaving: false,
+  saveError: null,
+  validationErrors: {} as Record<string, string>,
+  isComplete: false,
+});
 
-    // RED Stub: intentionally unimplemented actions
+export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreState>((set) => {
+  return {
+    ...createInitialState(),
+
     initializeFromProfile: (profile) => {
-      void profile;
+      const catalog: BrainWorkerServiceCatalog = {
+        ...profile.catalog,
+        services: profile.catalog.services.map((s) => ({ ...s })),
+      };
+      const weeklySchedule = { ...profile.availability.weeklySchedule };
+      for (const day of Object.keys(weeklySchedule) as DayOfWeek[]) {
+        weeklySchedule[day] = { ...weeklySchedule[day] };
+      }
+      const availability: BrainWorkerAvailability = {
+        ...profile.availability,
+        weeklySchedule,
+      };
+      const coverage: BrainWorkerCoverage = {
+        ...profile.coverage,
+        coverageNeighbourhoods: [...profile.coverage.coverageNeighbourhoods],
+      };
+
+      const isComplete = isOperationalProfileComplete({
+        catalog,
+        availability,
+        coverage,
+      });
+
+      set({
+        catalog,
+        availability,
+        coverage,
+        isDirty: false,
+        isSaving: false,
+        saveError: null,
+        validationErrors: {},
+        isComplete,
+      });
     },
-    resetStore: () => {},
+
+    resetStore: () => {
+      set(() => createInitialState());
+    },
+
     setDirty: (isDirty) => {
-      void isDirty;
+      set({ isDirty });
     },
+
     setIsSaving: (isSaving) => {
-      void isSaving;
+      set({ isSaving });
     },
-    setSaveError: (error) => {
-      void error;
+
+    setSaveError: (saveError) => {
+      set({ saveError });
     },
+
     clearValidationError: (key) => {
-      void key;
+      set((state) => {
+        if (!(key in state.validationErrors)) {
+          return state;
+        }
+        const nextValidationErrors = { ...state.validationErrors };
+        delete nextValidationErrors[key];
+        return { validationErrors: nextValidationErrors };
+      });
     },
 
     addService: (serviceId, initialRateNgn) => {
-      void serviceId;
-      void initialRateNgn;
+      set((state) => {
+        const canonical = CANONICAL_SERVICES_REGISTRY.find((s) => s.serviceId === serviceId);
+        if (!canonical) {
+          return state;
+        }
+
+        const alreadyExists = state.catalog.services.some((s) => s.serviceId === serviceId);
+        if (alreadyExists) {
+          return state;
+        }
+
+        const hourlyRateNgn = initialRateNgn ?? canonical.defaultRateNgn;
+        const newService: ConfiguredServiceItem = {
+          serviceId: canonical.serviceId,
+          categoryId: canonical.categoryId,
+          serviceName: canonical.serviceName,
+          hourlyRateNgn,
+          status: 'ACTIVE',
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextServices = [...state.catalog.services, newService];
+        const nextCatalog: BrainWorkerServiceCatalog = {
+          ...state.catalog,
+          services: nextServices,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextValidationErrors = { ...state.validationErrors };
+        const rateValidation = validateHourlyRate(hourlyRateNgn);
+        const errorKey = `service_rate_${serviceId}`;
+        if (!rateValidation.valid && rateValidation.error) {
+          nextValidationErrors[errorKey] = rateValidation.error;
+        } else {
+          delete nextValidationErrors[errorKey];
+        }
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: nextCatalog,
+          availability: state.availability,
+          coverage: state.coverage,
+        });
+
+        return {
+          catalog: nextCatalog,
+          validationErrors: nextValidationErrors,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
     },
+
     removeService: (serviceId) => {
-      void serviceId;
+      set((state) => {
+        const nextServices = state.catalog.services.filter((s) => s.serviceId !== serviceId);
+        const nextCatalog: BrainWorkerServiceCatalog = {
+          ...state.catalog,
+          services: nextServices,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextValidationErrors = { ...state.validationErrors };
+        delete nextValidationErrors[`service_rate_${serviceId}`];
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: nextCatalog,
+          availability: state.availability,
+          coverage: state.coverage,
+        });
+
+        return {
+          catalog: nextCatalog,
+          validationErrors: nextValidationErrors,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
     },
+
     toggleServiceStatus: (serviceId) => {
-      void serviceId;
+      set((state) => {
+        const serviceIndex = state.catalog.services.findIndex((s) => s.serviceId === serviceId);
+        if (serviceIndex === -1) {
+          return state;
+        }
+
+        const currentService = state.catalog.services[serviceIndex]!;
+        const nextStatus: ServiceItemStatus =
+          currentService.status === 'ACTIVE' ? 'PAUSED' : 'ACTIVE';
+
+        const updatedService: ConfiguredServiceItem = {
+          ...currentService,
+          status: nextStatus,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextServices = [...state.catalog.services];
+        nextServices[serviceIndex] = updatedService;
+
+        const nextCatalog: BrainWorkerServiceCatalog = {
+          ...state.catalog,
+          services: nextServices,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: nextCatalog,
+          availability: state.availability,
+          coverage: state.coverage,
+        });
+
+        return {
+          catalog: nextCatalog,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
     },
+
     updateServiceRate: (serviceId, hourlyRateNgn) => {
-      void serviceId;
-      void hourlyRateNgn;
+      set((state) => {
+        const serviceIndex = state.catalog.services.findIndex((s) => s.serviceId === serviceId);
+        if (serviceIndex === -1) {
+          return state;
+        }
+
+        const currentService = state.catalog.services[serviceIndex]!;
+        const updatedService: ConfiguredServiceItem = {
+          ...currentService,
+          hourlyRateNgn,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextServices = [...state.catalog.services];
+        nextServices[serviceIndex] = updatedService;
+
+        const nextCatalog: BrainWorkerServiceCatalog = {
+          ...state.catalog,
+          services: nextServices,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextValidationErrors = { ...state.validationErrors };
+        const validation = validateHourlyRate(hourlyRateNgn);
+        const errorKey = `service_rate_${serviceId}`;
+        if (!validation.valid && validation.error) {
+          nextValidationErrors[errorKey] = validation.error;
+        } else {
+          delete nextValidationErrors[errorKey];
+        }
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: nextCatalog,
+          availability: state.availability,
+          coverage: state.coverage,
+        });
+
+        return {
+          catalog: nextCatalog,
+          validationErrors: nextValidationErrors,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
     },
+
     updateDiagnosticFee: (diagnosticFeeNgn) => {
-      void diagnosticFeeNgn;
+      set((state) => {
+        const nextCatalog: BrainWorkerServiceCatalog = {
+          ...state.catalog,
+          diagnosticFeeNgn,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextValidationErrors = { ...state.validationErrors };
+        const validation = validateDiagnosticFee(diagnosticFeeNgn);
+        if (!validation.valid && validation.error) {
+          nextValidationErrors.diagnosticFee = validation.error;
+        } else {
+          delete nextValidationErrors.diagnosticFee;
+        }
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: nextCatalog,
+          availability: state.availability,
+          coverage: state.coverage,
+        });
+
+        return {
+          catalog: nextCatalog,
+          validationErrors: nextValidationErrors,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
     },
 
     updateDaySchedule: (day, update) => {
-      void day;
-      void update;
+      set((state) => {
+        const currentSchedule = state.availability.weeklySchedule[day];
+        const updatedDaySchedule: DaySchedule = {
+          ...currentSchedule,
+          ...update,
+          day,
+        };
+
+        const nextWeeklySchedule = {
+          ...state.availability.weeklySchedule,
+          [day]: updatedDaySchedule,
+        };
+
+        const nextAvailability: BrainWorkerAvailability = {
+          ...state.availability,
+          weeklySchedule: nextWeeklySchedule,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextValidationErrors = { ...state.validationErrors };
+        const errorKey = `schedule_${day}`;
+
+        const validation = validateDaySchedule(updatedDaySchedule);
+        if (!validation.valid && validation.error) {
+          nextValidationErrors[errorKey] = validation.error;
+        } else {
+          delete nextValidationErrors[errorKey];
+        }
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: state.catalog,
+          availability: nextAvailability,
+          coverage: state.coverage,
+        });
+
+        return {
+          availability: nextAvailability,
+          validationErrors: nextValidationErrors,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
     },
-    copyMondayHoursToWeekdays: () => {},
+
+    copyMondayHoursToWeekdays: () => {
+      set((state) => {
+        const monday = state.availability.weeklySchedule.monday;
+        const weekdays: DayOfWeek[] = ['tuesday', 'wednesday', 'thursday', 'friday'];
+
+        const nextWeeklySchedule = { ...state.availability.weeklySchedule };
+        const nextValidationErrors = { ...state.validationErrors };
+
+        for (const day of weekdays) {
+          const copiedSchedule: DaySchedule = {
+            day,
+            isActive: monday.isActive,
+            startHour: monday.startHour,
+            endHour: monday.endHour,
+          };
+          nextWeeklySchedule[day] = copiedSchedule;
+
+          const validation = validateDaySchedule(copiedSchedule);
+          const errorKey = `schedule_${day}`;
+          if (!validation.valid && validation.error) {
+            nextValidationErrors[errorKey] = validation.error;
+          } else {
+            delete nextValidationErrors[errorKey];
+          }
+        }
+
+        const nextAvailability: BrainWorkerAvailability = {
+          ...state.availability,
+          weeklySchedule: nextWeeklySchedule,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: state.catalog,
+          availability: nextAvailability,
+          coverage: state.coverage,
+        });
+
+        return {
+          availability: nextAvailability,
+          validationErrors: nextValidationErrors,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
+    },
+
     setIsAvailable: (isAvailable) => {
-      void isAvailable;
+      set((state) => {
+        const nextAvailability: BrainWorkerAvailability = {
+          ...state.availability,
+          isAvailable,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: state.catalog,
+          availability: nextAvailability,
+          coverage: state.coverage,
+        });
+
+        return {
+          availability: nextAvailability,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
     },
+
     setIsEmergencyAvailable: (isEmergencyAvailable) => {
-      void isEmergencyAvailable;
+      set((state) => {
+        const nextAvailability: BrainWorkerAvailability = {
+          ...state.availability,
+          isEmergencyAvailable,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: state.catalog,
+          availability: nextAvailability,
+          coverage: state.coverage,
+        });
+
+        return {
+          availability: nextAvailability,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
     },
 
     setPrimaryCity: (cityId, cityName) => {
-      void cityId;
-      void cityName;
+      set((state) => {
+        const nextCoverage: BrainWorkerCoverage = {
+          ...state.coverage,
+          primaryCityId: cityId,
+          primaryCityName: cityName,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: state.catalog,
+          availability: state.availability,
+          coverage: nextCoverage,
+        });
+
+        return {
+          coverage: nextCoverage,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
     },
+
     setCoverageNeighbourhoods: (neighbourhoods) => {
-      void neighbourhoods;
+      set((state) => {
+        const nextCoverage: BrainWorkerCoverage = {
+          ...state.coverage,
+          coverageNeighbourhoods: [...neighbourhoods],
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: state.catalog,
+          availability: state.availability,
+          coverage: nextCoverage,
+        });
+
+        return {
+          coverage: nextCoverage,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
     },
+
     setTravelRadius: (travelRadiusKm) => {
-      void travelRadiusKm;
+      set((state) => {
+        const nextCoverage: BrainWorkerCoverage = {
+          ...state.coverage,
+          travelRadiusKm,
+          updatedAt: new Date().toISOString(),
+        };
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: state.catalog,
+          availability: state.availability,
+          coverage: nextCoverage,
+        });
+
+        return {
+          coverage: nextCoverage,
+          isDirty: true,
+          isComplete: nextComplete,
+        };
+      });
     },
   };
 });
