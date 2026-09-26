@@ -87,9 +87,19 @@ export function ServiceCatalogEditor({
         .getServiceCatalog(brainWorkerId)
         .then((fetchedCatalog) => {
           if (isSubscribed && fetchedCatalog) {
+            const currentCatalog = useBrainWorkerOperationsStore.getState().catalog;
             const isCurrentlyDirty = useBrainWorkerOperationsStore.getState().isDirty;
             if (!isCurrentlyDirty) {
-              initializeCatalog(fetchedCatalog);
+              const isDifferent =
+                currentCatalog.diagnosticFeeNgn !== fetchedCatalog.diagnosticFeeNgn ||
+                currentCatalog.services.length !== fetchedCatalog.services.length ||
+                (fetchedCatalog.services.length > 0 &&
+                  JSON.stringify(currentCatalog.services) !==
+                    JSON.stringify(fetchedCatalog.services));
+
+              if (isDifferent) {
+                initializeCatalog(fetchedCatalog);
+              }
             }
           }
         })
