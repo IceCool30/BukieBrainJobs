@@ -68,6 +68,7 @@ export interface BrainWorkerOperationsStoreState {
   setDirty: (isDirty: boolean) => void;
   setIsSaving: (isSaving: boolean) => void;
   setSaveError: (error: string | null) => void;
+  clearValidationError: (key: string) => void;
 
   // Service Catalog Actions
   addService: (serviceId: string, initialRateNgn?: number) => void;
@@ -116,6 +117,9 @@ export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreSt
     },
     setSaveError: (error) => {
       void error;
+    },
+    clearValidationError: (key) => {
+      void key;
     },
 
     addService: (serviceId, initialRateNgn) => {
