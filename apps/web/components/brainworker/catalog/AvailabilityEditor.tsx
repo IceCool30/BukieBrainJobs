@@ -313,18 +313,20 @@ export function AvailabilityEditor({
           <div>
             <h3 className="text-lg font-bold text-slate-900">Weekly schedule</h3>
             <p className="mt-0.5 text-sm text-slate-600">
-              Working hours run 06:00 to 22:00. Each active day needs at least 2 hours.
+              Set the hours you are open each day, between 6am and 10pm. Every
+              open day needs a two-hour minimum or more.
             </p>
           </div>
           <button
             type="button"
+            aria-label="Copy Monday to weekdays"
             onClick={() => {
               setSuccessToast(null);
               copyMondayHoursToWeekdays();
             }}
             className="px-4 py-2 text-sm font-semibold rounded-lg bg-white text-[#001A41] border border-slate-300 hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2"
           >
-            Copy Monday to weekdays
+            Copy to weekdays
           </button>
         </div>
 
