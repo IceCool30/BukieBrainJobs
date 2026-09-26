@@ -34,7 +34,6 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
   const redirectedRef = React.useRef(false);
   const toggledDutyRef = React.useRef<boolean | null>(null);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const currentUser = getMockAuthenticatedUser();
     setUser(currentUser);
@@ -101,7 +100,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
     return () => {
       isSubscribed = false;
     };
-  });
+  }, [router]);
 
   if (!user) {
     return (
