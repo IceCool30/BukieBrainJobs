@@ -31,6 +31,8 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
   const [operationalProfile, setOperationalProfile] =
     useState<BrainWorkerOperationalProfile | null>(null);
   const [isTogglingDuty, setIsTogglingDuty] = useState(false);
+  const redirectedRef = React.useRef(false);
+  const toggledDutyRef = React.useRef<boolean | null>(null);
 
   useEffect(() => {
     const currentUser = getMockAuthenticatedUser();
@@ -38,7 +40,10 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
 
     // Guard 1: Unauthenticated -> redirect to /login
     if (!currentUser) {
-      router.replace('/login?redirect=/brainworker/dashboard');
+      if (!redirectedRef.current) {
+        redirectedRef.current = true;
+        router.replace('/login?redirect=/brainworker/dashboard');
+      }
       return;
     }
 
@@ -49,7 +54,10 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
 
     // Guard 3: Unapproved BrainWorker -> redirect to verification status
     if (!currentUser.isBrainWorkerApproved) {
-      router.replace('/brainworker/verification-status');
+      if (!redirectedRef.current) {
+        redirectedRef.current = true;
+        router.replace('/brainworker/verification-status');
+      }
       return;
     }
 
@@ -59,9 +67,31 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
     opsRepo
       .getOperationalProfile(currentUser.id)
       .then((profile) => {
-        if (isSubscribed && profile) {
-          setOperationalProfile(profile);
-        }
+        if (!isSubscribed || !profile) return;
+
+        const effectiveAvailable =
+          toggledDutyRef.current !== null
+            ? toggledDutyRef.current
+            : profile.availability?.isAvailable ?? false;
+
+        const mergedProfile: BrainWorkerOperationalProfile = {
+          ...profile,
+          availability: {
+            ...profile.availability,
+            isAvailable: effectiveAvailable,
+          },
+        };
+
+        setOperationalProfile((prev) => {
+          if (
+            prev &&
+            prev.isComplete === mergedProfile.isComplete &&
+            prev.availability?.isAvailable === mergedProfile.availability?.isAvailable
+          ) {
+            return prev;
+          }
+          return mergedProfile;
+        });
       })
       .catch(() => {
         // fail-safe
@@ -70,7 +100,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
     return () => {
       isSubscribed = false;
     };
-  }, [router]);
+  });
 
   if (!user) {
     return (
@@ -87,9 +117,9 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
           <div className="inline-flex items-center gap-1.5 rounded-full bg-red-50 border border-red-200 px-3 py-1 text-xs font-semibold text-red-800">
             {user.role === 'customer' ? 'Customer Account Detected' : 'Unauthorized Access'}
           </div>
-          <h2 className="text-xl font-bold text-slate-900">Access Restricted</h2>
+          <h2 className="text-xl font-bold text-slate-900">Workspace Unavailable</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
-            The BrainWorker workspace is strictly reserved for verified service providers.
+            This section requires a verified service provider profile.
           </p>
           <Link
             href="/"
@@ -121,6 +151,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
     }
     setIsTogglingDuty(true);
     const nextAvailable = !operationalProfile.availability.isAvailable;
+    toggledDutyRef.current = nextAvailable;
     try {
       const repo = getBrainWorkerOperationsRepository();
       const updatedAvailability = await repo.saveAvailability(user.id, {
@@ -132,12 +163,15 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
         prev
           ? {
               ...prev,
-              availability: updatedAvailability,
+              availability: {
+                ...(updatedAvailability ?? prev.availability),
+                isAvailable: nextAvailable,
+              },
             }
           : null
       );
     } catch {
-      // keep current state on error
+      toggledDutyRef.current = operationalProfile.availability.isAvailable;
     } finally {
       setIsTogglingDuty(false);
     }
@@ -190,7 +224,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
               <div className="space-y-1">
                 <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 border border-amber-300 px-2.5 py-0.5 text-xs font-bold text-amber-900">
                   <AlertTriangle className="h-3.5 w-3.5 text-amber-700" />
-                  <span>Setup Required</span>
+                  <span>Action Needed</span>
                 </div>
                 <h2 className="text-lg font-bold text-slate-900">
                   Complete Your Provider Setup to Receive Leads
@@ -233,31 +267,27 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
                   <h2 className="text-lg font-bold text-slate-900">
                     {operationalProfile.availability.isAvailable
                       ? 'Ready for Dispatch'
-                      : 'Dispatch Paused (Off-Duty)'}
+                      : 'Dispatch Paused'}
                   </h2>
                 </div>
                 <p className="text-sm text-slate-600 max-w-2xl leading-relaxed">
                   {operationalProfile.availability.isAvailable
-                    ? 'You are eligible for dispatch. Customer job invitations within your verified coverage areas will match your profile during scheduled hours.'
-                    : 'You are currently off-duty and taking a break. No new job leads or matches will be routed to your account.'}
+                    ? 'Your operational profile is active. Customer job invitations matching your trade and coverage zones will arrive during scheduled hours.'
+                    : 'Your status is paused. No new job invitations will be routed to your account while you are away.'}
                 </p>
               </div>
               <div className="flex items-center gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
                 <div className="text-right">
                   <div className="text-xs font-bold text-slate-700">Dispatch Duty</div>
                   <div className="text-xs text-slate-500">
-                    {operationalProfile.availability.isAvailable ? 'On-Duty' : 'Off-Duty'}
+                    {operationalProfile.availability.isAvailable ? 'Active' : 'Standby'}
                   </div>
                 </div>
                 <button
                   type="button"
                   role="switch"
                   aria-checked={operationalProfile.availability.isAvailable}
-                  aria-label={
-                    operationalProfile.availability.isAvailable
-                      ? 'Dispatch duty On-Duty'
-                      : 'Dispatch duty Off-Duty'
-                  }
+                  aria-label="Dispatch Duty Toggle"
                   disabled={isTogglingDuty}
                   onClick={handleToggleDuty}
                   className={

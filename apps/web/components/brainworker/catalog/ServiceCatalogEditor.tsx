@@ -285,9 +285,9 @@ export function ServiceCatalogEditor({
       <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <h3 className="text-lg font-bold text-slate-900">
+            <div className="text-lg font-bold text-slate-900">
               Diagnostic Inspection / Call-Out Fee
-            </h3>
+            </div>
             <p className="mt-1 text-sm text-slate-600 leading-relaxed">
               A flat fee charged for your initial on-site visit, inspection, and fault diagnosis.
             </p>
