@@ -16,6 +16,7 @@ import * as operationsRepoModule from '../../lib/brainworker/catalog/repository'
 import * as onboardingRepoModule from '../../lib/brainworker/repository';
 import type { IBrainWorkerOperationsRepository } from '../../lib/brainworker/catalog/types';
 import type { IBrainWorkerOnboardingRepository } from '../../lib/brainworker/types';
+import { isOperationalProfileComplete } from '../../lib/brainworker/catalog/validation';
 import {
   FIXTURE_APPROVED_BRAINWORKER_A,
   FIXTURE_OPERATIONAL_PROFILE_A,
@@ -153,7 +154,20 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
     render(<BrainWorkerServicesPage />);
 
     expect(await screen.findByRole('heading', { name: /service catalog|diagnostic.*fee/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /save changes|save catalog/i })).toBeInTheDocument();
+    const saveBtn = screen.getByRole('button', { name: /save changes|save catalog/i });
+    expect(saveBtn).toBeInTheDocument();
+
+    fireEvent.click(saveBtn);
+
+    await waitFor(() => {
+      expect(mockOperationsRepo.saveServiceCatalog).toHaveBeenCalledWith(
+        mockApprovedWorkerA.id,
+        expect.objectContaining({
+          diagnosticFeeNgn: FIXTURE_SERVICE_CATALOG_A.diagnosticFeeNgn,
+          services: expect.any(Array),
+        })
+      );
+    });
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -232,7 +246,7 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // INT-008: Dashboard Quick Duty Toggle Preserves Completeness
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-008: dashboard quick duty toggle toggles availability without altering completeness', async () => {
+  it('INT-008: dashboard quick duty toggle toggles availability via repository while proving profile completeness remains unchanged', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     vi.mocked(mockOperationsRepo.getOperationalProfile).mockResolvedValue({
       ...FIXTURE_OPERATIONAL_PROFILE_A,
@@ -251,12 +265,32 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
         expect.objectContaining({ isAvailable: false })
       );
     });
+
+    // Invariant proof: saving availability off-duty never mutates catalog or coverage
+    expect(mockOperationsRepo.saveServiceCatalog).not.toHaveBeenCalled();
+    expect(mockOperationsRepo.saveCoverage).not.toHaveBeenCalled();
+
+    // Domain proof: operational completeness is invariant to duty state changes
+    expect(
+      isOperationalProfileComplete({
+        catalog: FIXTURE_SERVICE_CATALOG_A,
+        availability: { ...FIXTURE_AVAILABILITY_A, isAvailable: false },
+        coverage: FIXTURE_COVERAGE_A,
+      })
+    ).toBe(true);
+
+    // Dashboard UI proof: toggling off-duty displays paused status and NEVER falls back to unconfigured setup banner
+    expect(await screen.findByText(/off-duty|dispatch paused|taking a break/i)).toBeInTheDocument();
+    expect(screen.queryByText(/complete your provider setup|setup required/i)).not.toBeInTheDocument();
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // INT-009: Static Prerendering Safety
+  // INT-009: Static Prerendering and SSR Mount Safety
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-009: static prerendering safety: route components render without throwing ReferenceError', () => {
+  it('INT-009: static prerendering and SSR mount safety: route components render without ReferenceError or unhandled window access', async () => {
+    const { renderToString } = await import('react-dom/server');
+    expect(() => renderToString(<BrainWorkerServicesPage />)).not.toThrow();
+    expect(() => renderToString(<BrainWorkerAvailabilityPage />)).not.toThrow();
     expect(() => render(<BrainWorkerServicesPage />)).not.toThrow();
     expect(() => render(<BrainWorkerAvailabilityPage />)).not.toThrow();
   });
