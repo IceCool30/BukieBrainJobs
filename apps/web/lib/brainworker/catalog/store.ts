@@ -88,40 +88,77 @@ export interface BrainWorkerOperationsStoreState {
   setTravelRadius: (travelRadiusKm: ValidTravelRadiusKm) => void;
 }
 
-export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreState>((_set) => ({
-  catalog: { ...INITIAL_OPERATIONS_CATALOG, services: [] },
-  availability: {
-    ...INITIAL_OPERATIONS_AVAILABILITY,
-    weeklySchedule: { ...INITIAL_OPERATIONS_WEEKLY_SCHEDULE },
-  },
-  coverage: { ...INITIAL_OPERATIONS_COVERAGE, coverageNeighbourhoods: [] },
-  isDirty: false,
-  isSaving: false,
-  saveError: null,
-  validationErrors: {},
-  isComplete: false,
+export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreState>((set) => {
+  void set;
+  return {
+    catalog: { ...INITIAL_OPERATIONS_CATALOG, services: [] },
+    availability: {
+      ...INITIAL_OPERATIONS_AVAILABILITY,
+      weeklySchedule: { ...INITIAL_OPERATIONS_WEEKLY_SCHEDULE },
+    },
+    coverage: { ...INITIAL_OPERATIONS_COVERAGE, coverageNeighbourhoods: [] },
+    isDirty: false,
+    isSaving: false,
+    saveError: null,
+    validationErrors: {},
+    isComplete: false,
 
-  // RED Stub: intentionally unimplemented actions
-  initializeFromProfile: (_profile) => {},
-  resetStore: () => {},
-  setDirty: (_isDirty) => {},
-  setIsSaving: (_isSaving) => {},
-  setSaveError: (_error) => {},
+    // RED Stub: intentionally unimplemented actions
+    initializeFromProfile: (profile) => {
+      void profile;
+    },
+    resetStore: () => {},
+    setDirty: (isDirty) => {
+      void isDirty;
+    },
+    setIsSaving: (isSaving) => {
+      void isSaving;
+    },
+    setSaveError: (error) => {
+      void error;
+    },
 
-  addService: (_serviceId, _initialRateNgn) => {},
-  removeService: (_serviceId) => {},
-  toggleServiceStatus: (_serviceId) => {},
-  updateServiceRate: (_serviceId, _hourlyRateNgn) => {},
-  updateDiagnosticFee: (_diagnosticFeeNgn) => {},
+    addService: (serviceId, initialRateNgn) => {
+      void serviceId;
+      void initialRateNgn;
+    },
+    removeService: (serviceId) => {
+      void serviceId;
+    },
+    toggleServiceStatus: (serviceId) => {
+      void serviceId;
+    },
+    updateServiceRate: (serviceId, hourlyRateNgn) => {
+      void serviceId;
+      void hourlyRateNgn;
+    },
+    updateDiagnosticFee: (diagnosticFeeNgn) => {
+      void diagnosticFeeNgn;
+    },
 
-  updateDaySchedule: (_day, _update) => {},
-  copyMondayHoursToWeekdays: () => {},
-  setIsAvailable: (_isAvailable) => {},
-  setIsEmergencyAvailable: (_isEmergencyAvailable) => {},
+    updateDaySchedule: (day, update) => {
+      void day;
+      void update;
+    },
+    copyMondayHoursToWeekdays: () => {},
+    setIsAvailable: (isAvailable) => {
+      void isAvailable;
+    },
+    setIsEmergencyAvailable: (isEmergencyAvailable) => {
+      void isEmergencyAvailable;
+    },
 
-  setPrimaryCity: (_cityId, _cityName) => {},
-  setCoverageNeighbourhoods: (_neighbourhoods) => {},
-  setTravelRadius: (_travelRadiusKm) => {},
-}));
+    setPrimaryCity: (cityId, cityName) => {
+      void cityId;
+      void cityName;
+    },
+    setCoverageNeighbourhoods: (neighbourhoods) => {
+      void neighbourhoods;
+    },
+    setTravelRadius: (travelRadiusKm) => {
+      void travelRadiusKm;
+    },
+  };
+});
 
 export const useBrainWorkerCatalogStore = useBrainWorkerOperationsStore;
