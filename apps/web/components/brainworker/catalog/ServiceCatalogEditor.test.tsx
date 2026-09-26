@@ -15,7 +15,10 @@ import {
   FIXTURE_APPROVED_BRAINWORKER_A,
   FIXTURE_SERVICE_CATALOG_A,
 } from '../../../lib/brainworker/catalog/testing';
-import type { IBrainWorkerOperationsRepository } from '../../../lib/brainworker/catalog/types';
+import type {
+  IBrainWorkerOperationsRepository,
+  ServiceItemStatus,
+} from '../../../lib/brainworker/catalog/types';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -28,17 +31,29 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
     mockRepository = {
       getOperationalProfile: vi.fn(),
       getServiceCatalog: vi.fn().mockResolvedValue(FIXTURE_SERVICE_CATALOG_A),
-      saveServiceCatalog: vi.fn().mockImplementation(async (_id, catalog) => ({
-        brainWorkerId: _id,
-        diagnosticFeeNgn: catalog.diagnosticFeeNgn,
-        services: catalog.services.map((s) => ({
-          ...s,
-          categoryId: 'generator',
-          serviceName: 'Test Service',
+      saveServiceCatalog: vi.fn().mockImplementation(
+        async (
+          _id: string,
+          catalog: {
+            diagnosticFeeNgn: number;
+            services: Array<{
+              serviceId: string;
+              hourlyRateNgn: number;
+              status: ServiceItemStatus;
+            }>;
+          }
+        ) => ({
+          brainWorkerId: _id,
+          diagnosticFeeNgn: catalog.diagnosticFeeNgn,
+          services: catalog.services.map((s) => ({
+            ...s,
+            categoryId: 'generator' as const,
+            serviceName: 'Test Service',
+            updatedAt: new Date().toISOString(),
+          })),
           updatedAt: new Date().toISOString(),
-        })),
-        updatedAt: new Date().toISOString(),
-      })),
+        })
+      ),
       getAvailability: vi.fn(),
       saveAvailability: vi.fn(),
       getCoverage: vi.fn(),
