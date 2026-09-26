@@ -249,8 +249,15 @@ describe('BW-002 Suite 5 RED: Availability & Schedule Editor Contracts (SCH-001 
     await waitFor(() => {
       expect(mockRepository.saveAvailability).toHaveBeenCalledTimes(1);
     });
-    const savedSchedule = (mockRepository.saveAvailability as Mock).mock.calls[0][1]
-      .weeklySchedule as Record<string, { day: string }>;
+    const saveCalls = (mockRepository.saveAvailability as Mock).mock.calls;
+    const firstSaveCall = saveCalls[0];
+    expect(firstSaveCall).toBeDefined();
+    if (firstSaveCall === undefined) {
+      throw new Error('Expected saveAvailability to have been called once.');
+    }
+    const savedSchedule = (
+      firstSaveCall[1] as { weeklySchedule: Record<string, { day: string }> }
+    ).weeklySchedule;
     expect(Object.keys(savedSchedule).sort()).toEqual(
       ['friday', 'monday', 'saturday', 'sunday', 'thursday', 'tuesday', 'wednesday'].sort()
     );
