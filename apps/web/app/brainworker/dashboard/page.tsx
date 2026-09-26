@@ -117,9 +117,9 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
           <div className="inline-flex items-center gap-1.5 rounded-full bg-red-50 border border-red-200 px-3 py-1 text-xs font-semibold text-red-800">
             {user.role === 'customer' ? 'Customer Account Detected' : 'Unauthorized Access'}
           </div>
-          <h2 className="text-xl font-bold text-slate-900">Workspace Unavailable</h2>
+          <h2 className="text-xl font-bold text-slate-900">Access Restricted</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
-            This section requires a verified service provider profile.
+            The BrainWorker workspace is strictly reserved for verified service providers.
           </p>
           <Link
             href="/"
