@@ -40,8 +40,11 @@ type MockOperationsRepository = {
   getMatchingHydrationProfile: Mock;
 };
 
-const VERIFIED_CITIES: string[] =
-  FIXTURE_ONBOARDING_RECORD_A.trade.coverageCities;
+const onboardingTrade = FIXTURE_ONBOARDING_RECORD_A.trade;
+if (onboardingTrade === null || onboardingTrade === undefined) {
+  throw new Error('Fixture onboarding record is missing trade coverage data.');
+}
+const VERIFIED_CITIES: string[] = onboardingTrade.coverageCities;
 
 describe('BW-002 Suite 6 RED: Coverage Area & Location Editor Contracts (COV-001 to COV-010)', () => {
   let mockRepository: MockOperationsRepository & IBrainWorkerOperationsRepository;
