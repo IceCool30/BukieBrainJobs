@@ -7,7 +7,6 @@
 import React, { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import {
   type BrainWorkerCoverage,
-  type ValidTravelRadiusKm,
   type IBrainWorkerOperationsRepository,
   VALID_TRAVEL_RADII_KM,
 } from '../../../lib/brainworker/catalog/types';
