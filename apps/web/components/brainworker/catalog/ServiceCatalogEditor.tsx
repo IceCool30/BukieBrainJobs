@@ -58,6 +58,14 @@ export function ServiceCatalogEditor({
   const [confirmRemoveServiceId, setConfirmRemoveServiceId] = useState<string | null>(null);
   const [successToast, setSuccessToast] = useState<string | null>(null);
 
+  const isMountedRef = React.useRef(true);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
   const catalog = useBrainWorkerOperationsStore((s) => s.catalog);
   const isSaving = useBrainWorkerOperationsStore((s) => s.isSaving);
   const saveError = useBrainWorkerOperationsStore((s) => s.saveError);
@@ -76,14 +84,23 @@ export function ServiceCatalogEditor({
   useIsomorphicLayoutEffect(() => {
     if (initialCatalog) {
       initializeCatalog(initialCatalog);
+    } else if (
+      brainWorkerId &&
+      useBrainWorkerOperationsStore.getState().catalog.brainWorkerId !== brainWorkerId
+    ) {
+      initializeCatalog({
+        ...useBrainWorkerOperationsStore.getState().catalog,
+        brainWorkerId,
+      });
     }
-  }, [initialCatalog, initializeCatalog]);
+  }, [initialCatalog, brainWorkerId, initializeCatalog]);
 
   // Asynchronously hydrate from repository when initialCatalog is omitted
   useEffect(() => {
-    if (!initialCatalog && repository && brainWorkerId) {
+    if (!initialCatalog && brainWorkerId) {
       let isSubscribed = true;
-      repository
+      const repo = repository ?? getBrainWorkerOperationsRepository();
+      repo
         .getServiceCatalog(brainWorkerId)
         .then((fetchedCatalog) => {
           if (isSubscribed && fetchedCatalog) {
@@ -91,11 +108,11 @@ export function ServiceCatalogEditor({
             const isCurrentlyDirty = useBrainWorkerOperationsStore.getState().isDirty;
             if (!isCurrentlyDirty) {
               const isDifferent =
+                currentCatalog.brainWorkerId !== fetchedCatalog.brainWorkerId ||
                 currentCatalog.diagnosticFeeNgn !== fetchedCatalog.diagnosticFeeNgn ||
                 currentCatalog.services.length !== fetchedCatalog.services.length ||
-                (fetchedCatalog.services.length > 0 &&
-                  JSON.stringify(currentCatalog.services) !==
-                    JSON.stringify(fetchedCatalog.services));
+                JSON.stringify(currentCatalog.services) !==
+                  JSON.stringify(fetchedCatalog.services);
 
               if (isDifferent) {
                 initializeCatalog(fetchedCatalog);
@@ -116,8 +133,61 @@ export function ServiceCatalogEditor({
     }
   }, [initialCatalog, repository, brainWorkerId, initializeCatalog, setSaveError]);
 
+  const handleUpdateDiagnosticFee = (val: number) => {
+    setSuccessToast(null);
+    updateDiagnosticFee(val);
+  };
+
+  const handleAddService = (serviceId: string) => {
+    setSuccessToast(null);
+    addService(serviceId);
+  };
+
+  const handleRemoveService = (serviceId: string) => {
+    setSuccessToast(null);
+    removeService(serviceId);
+  };
+
+  const handleToggleServiceStatus = (serviceId: string) => {
+    setSuccessToast(null);
+    toggleServiceStatus(serviceId);
+  };
+
+  const handleUpdateServiceRate = (serviceId: string, val: number) => {
+    setSuccessToast(null);
+    updateServiceRate(serviceId, val);
+  };
+
+  const handleTabKeyDown = (
+    e: React.KeyboardEvent<HTMLButtonElement>,
+    currentIndex: number
+  ) => {
+    let nextIndex: number | null = null;
+    if (e.key === 'ArrowRight') {
+      nextIndex = (currentIndex + 1) % TRADE_CATEGORIES.length;
+    } else if (e.key === 'ArrowLeft') {
+      nextIndex =
+        (currentIndex - 1 + TRADE_CATEGORIES.length) % TRADE_CATEGORIES.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = TRADE_CATEGORIES.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      const targetCategory = TRADE_CATEGORIES[nextIndex];
+      if (targetCategory) {
+        setActiveCategoryId(targetCategory.id);
+        const nextTab = document.getElementById(`tab-${targetCategory.id}`);
+        nextTab?.focus();
+      }
+    }
+  };
+
   const handleSave = async () => {
-    if (isSaving || Object.keys(validationErrors).length > 0) {
+    const currentState = useBrainWorkerOperationsStore.getState();
+    if (currentState.isSaving || Object.keys(currentState.validationErrors).length > 0) {
       return;
     }
 
@@ -139,7 +209,9 @@ export function ServiceCatalogEditor({
 
       const savedCatalog = await repo.saveServiceCatalog(workerId, payload);
       initializeCatalog(savedCatalog);
-      setSuccessToast('Service catalog saved successfully.');
+      if (isMountedRef.current) {
+        setSuccessToast('Service catalog saved successfully.');
+      }
       onSaveSuccess?.(savedCatalog);
     } catch (err: unknown) {
       const message =
@@ -246,9 +318,10 @@ export function ServiceCatalogEditor({
               value={catalog.diagnosticFeeNgn || ''}
               onChange={(e) => {
                 const val = e.target.value === '' ? 0 : Number(e.target.value);
-                updateDiagnosticFee(val);
+                handleUpdateDiagnosticFee(val);
               }}
               className="block w-full rounded-lg border border-slate-300 pl-8 pr-4 py-2.5 text-slate-900 placeholder:text-slate-400 focus:border-[#001A41] focus:ring-2 focus:ring-[#001A41] focus:outline-none sm:text-sm font-medium"
+              aria-invalid={validationErrors.diagnosticFee ? 'true' : 'false'}
               aria-describedby={
                 validationErrors.diagnosticFee ? 'diagnostic-fee-error' : undefined
               }
@@ -282,7 +355,7 @@ export function ServiceCatalogEditor({
           aria-label="Canonical Trade Categories"
           className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200"
         >
-          {TRADE_CATEGORIES.map((cat) => {
+          {TRADE_CATEGORIES.map((cat, index) => {
             const isSelected = activeCategoryId === cat.id;
             return (
               <button
@@ -293,6 +366,7 @@ export function ServiceCatalogEditor({
                 aria-controls={`tabpanel-${cat.id}`}
                 tabIndex={isSelected ? 0 : -1}
                 onClick={() => setActiveCategoryId(cat.id)}
+                onKeyDown={(e) => handleTabKeyDown(e, index)}
                 className={
                   isSelected
                     ? 'whitespace-nowrap px-4 py-2 text-sm font-semibold rounded-lg bg-[#001A41] text-white transition-colors'
@@ -339,7 +413,7 @@ export function ServiceCatalogEditor({
                           ? `Added ${service.serviceName}`
                           : `Add ${service.serviceName}`
                       }
-                      onClick={() => addService(service.serviceId)}
+                      onClick={() => handleAddService(service.serviceId)}
                       className={
                         isAdded
                           ? 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-400 cursor-not-allowed'
@@ -409,7 +483,7 @@ export function ServiceCatalogEditor({
                       role="switch"
                       aria-checked={item.status === 'ACTIVE'}
                       aria-label={`Toggle status for ${item.serviceName}`}
-                      onClick={() => toggleServiceStatus(item.serviceId)}
+                      onClick={() => handleToggleServiceStatus(item.serviceId)}
                       className={
                         item.status === 'ACTIVE'
                           ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
@@ -449,9 +523,14 @@ export function ServiceCatalogEditor({
                         onChange={(e) => {
                           const val =
                             e.target.value === '' ? 0 : Number(e.target.value);
-                          updateServiceRate(item.serviceId, val);
+                          handleUpdateServiceRate(item.serviceId, val);
                         }}
                         className="block w-full rounded-lg border border-slate-300 pl-8 pr-4 py-2 text-slate-900 placeholder:text-slate-400 focus:border-[#001A41] focus:ring-2 focus:ring-[#001A41] focus:outline-none sm:text-sm font-medium"
+                        aria-invalid={
+                          validationErrors[`service_rate_${item.serviceId}`]
+                            ? 'true'
+                            : 'false'
+                        }
                         aria-describedby={
                           validationErrors[`service_rate_${item.serviceId}`]
                             ? `rate-error-${item.serviceId}`
@@ -472,7 +551,11 @@ export function ServiceCatalogEditor({
 
                   <div>
                     {confirmRemoveServiceId === item.serviceId ? (
-                      <div className="flex items-center gap-2 bg-red-50 p-2 rounded-lg border border-red-200">
+                      <div
+                        role="alert"
+                        aria-live="polite"
+                        className="flex items-center gap-2 bg-red-50 p-2 rounded-lg border border-red-200"
+                      >
                         <span className="text-xs font-semibold text-red-800">
                           Remove this service?
                         </span>
@@ -486,7 +569,7 @@ export function ServiceCatalogEditor({
                         <button
                           type="button"
                           onClick={() => {
-                            removeService(item.serviceId);
+                            handleRemoveService(item.serviceId);
                             setConfirmRemoveServiceId(null);
                           }}
                           className="px-2.5 py-1 text-xs font-semibold rounded bg-red-600 text-white hover:bg-red-700 transition-colors"

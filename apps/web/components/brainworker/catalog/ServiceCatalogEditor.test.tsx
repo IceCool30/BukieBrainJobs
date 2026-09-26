@@ -20,6 +20,7 @@ import type {
   ServiceItemStatus,
   BrainWorkerServiceCatalog,
 } from '../../../lib/brainworker/catalog/types';
+import { getBrainWorkerOperationsRepository } from '../../../lib/brainworker/catalog/repository';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -356,6 +357,28 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
       expect(
         screen.getByTestId('configured-service-card-ac-gas-recharge')
       ).toBeInTheDocument();
+    });
+
+    it('asynchronously hydrates catalog using default repository when repository prop is omitted', async () => {
+      const defaultRepo = getBrainWorkerOperationsRepository();
+      const getSpy = vi
+        .spyOn(defaultRepo, 'getServiceCatalog')
+        .mockResolvedValueOnce(FIXTURE_SERVICE_CATALOG_A);
+
+      render(
+        <ServiceCatalogEditor
+          brainWorkerId={FIXTURE_APPROVED_BRAINWORKER_A}
+        />
+      );
+
+      await waitFor(() => {
+        expect(getSpy).toHaveBeenCalledWith(FIXTURE_APPROVED_BRAINWORKER_A);
+      });
+
+      expect(
+        await screen.findByTestId('configured-service-card-gen-diesel-servicing')
+      ).toBeInTheDocument();
+      getSpy.mockRestore();
     });
   });
 
@@ -709,6 +732,76 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
       expect(saveBtn).toBeEnabled();
       expect(onSaveError).toHaveBeenCalledTimes(1);
     });
+
+    it('dismisses success toast immediately upon any subsequent user modification', async () => {
+      render(
+        <ServiceCatalogEditor
+          brainWorkerId={FIXTURE_APPROVED_BRAINWORKER_A}
+          repository={mockRepository}
+        />
+      );
+
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: /Add Diesel Generator Servicing & Overhaul/i,
+        })
+      );
+
+      const saveBtn = screen.getByRole('button', { name: /Save Changes/i });
+      fireEvent.click(saveBtn);
+
+      expect(
+        await screen.findByText(/Service catalog saved successfully/i)
+      ).toBeInTheDocument();
+
+      // Mutate diagnostic fee
+      const feeInput = screen.getByLabelText(/Diagnostic Call-Out Fee/i);
+      fireEvent.change(feeInput, { target: { value: '6500' } });
+
+      // Stale toast should be immediately dismissed
+      expect(
+        screen.queryByText(/Service catalog saved successfully/i)
+      ).not.toBeInTheDocument();
+    });
+
+    it('prevents concurrent duplicate saves when rapid save clicks occur', async () => {
+      let resolveSave: ((val: unknown) => void) | null = null;
+      mockRepository.saveServiceCatalog.mockImplementationOnce(
+        () => new Promise((resolve) => { resolveSave = resolve; })
+      );
+
+      render(
+        <ServiceCatalogEditor
+          brainWorkerId={FIXTURE_APPROVED_BRAINWORKER_A}
+          repository={mockRepository}
+        />
+      );
+
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: /Add Diesel Generator Servicing & Overhaul/i,
+        })
+      );
+
+      const saveBtn = screen.getByRole('button', { name: /Save Changes/i });
+      // Rapid multiple clicks
+      fireEvent.click(saveBtn);
+      fireEvent.click(saveBtn);
+      fireEvent.click(saveBtn);
+
+      expect(mockRepository.saveServiceCatalog).toHaveBeenCalledTimes(1);
+
+      resolveSave!({
+        brainWorkerId: FIXTURE_APPROVED_BRAINWORKER_A,
+        diagnosticFeeNgn: 5000,
+        services: [],
+        updatedAt: new Date().toISOString(),
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText(/Service catalog saved successfully/i)).toBeInTheDocument();
+      });
+    });
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -757,6 +850,78 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
           name: /Remove Diesel Generator Servicing & Overhaul/i,
         })
       ).toBeInTheDocument();
+    });
+
+    it('supports keyboard arrow navigation across category filter tabs', () => {
+      render(
+        <ServiceCatalogEditor
+          brainWorkerId={FIXTURE_APPROVED_BRAINWORKER_A}
+          repository={mockRepository}
+        />
+      );
+
+      const genTab = screen.getByRole('tab', { name: /Generator Repair & Maintenance/i });
+      const acTab = screen.getByRole('tab', { name: /Air Conditioning & Refrigeration/i });
+      const weldTab = screen.getByRole('tab', { name: /Welding & Metal Fabrication/i });
+
+      // ArrowRight from generator moves to ac
+      fireEvent.keyDown(genTab, { key: 'ArrowRight' });
+      expect(acTab).toHaveAttribute('aria-selected', 'true');
+      expect(genTab).toHaveAttribute('aria-selected', 'false');
+
+      // ArrowLeft wraps around to welding (last tab)
+      fireEvent.keyDown(genTab, { key: 'ArrowLeft' });
+      // When at acTab (currently active):
+      fireEvent.keyDown(acTab, { key: 'ArrowLeft' });
+      expect(genTab).toHaveAttribute('aria-selected', 'true');
+
+      // End key moves to last tab
+      fireEvent.keyDown(genTab, { key: 'End' });
+      expect(weldTab).toHaveAttribute('aria-selected', 'true');
+
+      // Home key moves to first tab
+      fireEvent.keyDown(weldTab, { key: 'Home' });
+      expect(genTab).toHaveAttribute('aria-selected', 'true');
+    });
+
+    it('sets aria-invalid="true" when diagnostic fee or hourly rate has validation errors', async () => {
+      render(
+        <ServiceCatalogEditor
+          brainWorkerId={FIXTURE_APPROVED_BRAINWORKER_A}
+          repository={mockRepository}
+        />
+      );
+
+      const feeInput = screen.getByLabelText(/Diagnostic Call-Out Fee/i);
+      expect(feeInput).toHaveAttribute('aria-invalid', 'false');
+
+      // Set invalid fee (< 2000)
+      fireEvent.change(feeInput, { target: { value: '1000' } });
+      expect(feeInput).toHaveAttribute('aria-invalid', 'true');
+
+      // Reset to valid
+      fireEvent.change(feeInput, { target: { value: '5000' } });
+      expect(feeInput).toHaveAttribute('aria-invalid', 'false');
+
+      // Add service and test rate aria-invalid
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: /Add Diesel Generator Servicing & Overhaul/i,
+        })
+      );
+      const card = screen.getByTestId(
+        'configured-service-card-gen-diesel-servicing'
+      );
+      const rateInput = within(card).getByLabelText(
+        /Hourly rate for Diesel Generator Servicing & Overhaul/i
+      );
+      expect(rateInput).toHaveAttribute('aria-invalid', 'false');
+
+      fireEvent.change(rateInput, { target: { value: '1000' } });
+      expect(rateInput).toHaveAttribute('aria-invalid', 'true');
+
+      fireEvent.change(rateInput, { target: { value: '5000' } });
+      expect(rateInput).toHaveAttribute('aria-invalid', 'false');
     });
   });
 
