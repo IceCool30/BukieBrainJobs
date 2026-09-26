@@ -133,11 +133,17 @@ export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreSt
     initializeFromProfile: (profile) => {
       const catalog: BrainWorkerServiceCatalog = {
         ...profile.catalog,
-        services: profile.catalog.services.map((s) => ({ ...s })),
+        services: Array.isArray(profile.catalog?.services)
+          ? profile.catalog.services.map((s) => ({ ...s }))
+          : [],
       };
-      const weeklySchedule = { ...profile.availability.weeklySchedule };
+      const weeklySchedule = {
+        ...(profile.availability?.weeklySchedule ?? INITIAL_OPERATIONS_WEEKLY_SCHEDULE),
+      };
       for (const day of Object.keys(weeklySchedule) as DayOfWeek[]) {
-        weeklySchedule[day] = { ...weeklySchedule[day] };
+        if (weeklySchedule[day]) {
+          weeklySchedule[day] = { ...weeklySchedule[day] };
+        }
       }
       const availability: BrainWorkerAvailability = {
         ...profile.availability,
@@ -145,7 +151,9 @@ export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreSt
       };
       const coverage: BrainWorkerCoverage = {
         ...profile.coverage,
-        coverageNeighbourhoods: [...profile.coverage.coverageNeighbourhoods],
+        coverageNeighbourhoods: Array.isArray(profile.coverage?.coverageNeighbourhoods)
+          ? [...profile.coverage.coverageNeighbourhoods]
+          : [],
       };
 
       const isComplete = isOperationalProfileComplete({
@@ -248,6 +256,14 @@ export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreSt
 
     removeService: (serviceId) => {
       set((state) => {
+        const serviceExists = state.catalog.services.some((s) => s.serviceId === serviceId);
+        const errorKey = `service_rate_${serviceId}`;
+        const hasError = errorKey in state.validationErrors;
+
+        if (!serviceExists && !hasError) {
+          return state;
+        }
+
         const nextServices = state.catalog.services.filter((s) => s.serviceId !== serviceId);
         const nextCatalog: BrainWorkerServiceCatalog = {
           ...state.catalog,
@@ -256,7 +272,7 @@ export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreSt
         };
 
         const nextValidationErrors = { ...state.validationErrors };
-        delete nextValidationErrors[`service_rate_${serviceId}`];
+        delete nextValidationErrors[errorKey];
 
         const nextComplete = isOperationalProfileComplete({
           catalog: nextCatalog,
@@ -394,6 +410,9 @@ export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreSt
     updateDaySchedule: (day, update) => {
       set((state) => {
         const currentSchedule = state.availability.weeklySchedule[day];
+        if (!currentSchedule) {
+          return state;
+        }
         const updatedDaySchedule: DaySchedule = {
           ...currentSchedule,
           ...update,
@@ -438,7 +457,10 @@ export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreSt
 
     copyMondayHoursToWeekdays: () => {
       set((state) => {
-        const monday = state.availability.weeklySchedule.monday;
+        const monday = state.availability.weeklySchedule?.monday;
+        if (!monday) {
+          return state;
+        }
         const weekdays: DayOfWeek[] = ['tuesday', 'wednesday', 'thursday', 'friday'];
 
         const nextWeeklySchedule = { ...state.availability.weeklySchedule };
@@ -554,7 +576,7 @@ export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreSt
       set((state) => {
         const nextCoverage: BrainWorkerCoverage = {
           ...state.coverage,
-          coverageNeighbourhoods: [...neighbourhoods],
+          coverageNeighbourhoods: Array.isArray(neighbourhoods) ? [...neighbourhoods] : [],
           updatedAt: new Date().toISOString(),
         };
 

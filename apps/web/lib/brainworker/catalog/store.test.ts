@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useBrainWorkerOperationsStore } from './store';
 import { FIXTURE_OPERATIONAL_PROFILE_A } from './testing';
-import type { ValidTravelRadiusKm } from './types';
+import type { ConfiguredServiceItem, ValidTravelRadiusKm } from './types';
 
 describe('BW-002 Client Store Contracts (Suite 3: STO-001 to STO-006)', () => {
   beforeEach(() => {
@@ -109,6 +109,28 @@ describe('BW-002 Client Store Contracts (Suite 3: STO-001 to STO-006)', () => {
 
       useBrainWorkerOperationsStore.getState().clearValidationError('diagnosticFee');
       expect(useBrainWorkerOperationsStore.getState().validationErrors.diagnosticFee).toBeUndefined();
+    });
+
+    it('safely handles partial or undefined profile collections during hydration', () => {
+      const partialProfile = {
+        ...FIXTURE_OPERATIONAL_PROFILE_A,
+        catalog: {
+          ...FIXTURE_OPERATIONAL_PROFILE_A.catalog,
+          services: undefined as unknown as ConfiguredServiceItem[],
+        },
+        coverage: {
+          ...FIXTURE_OPERATIONAL_PROFILE_A.coverage,
+          coverageNeighbourhoods: undefined as unknown as string[],
+        },
+      };
+
+      expect(() => {
+        useBrainWorkerOperationsStore.getState().initializeFromProfile(partialProfile);
+      }).not.toThrow();
+
+      const state = useBrainWorkerOperationsStore.getState();
+      expect(state.catalog.services).toEqual([]);
+      expect(state.coverage.coverageNeighbourhoods).toEqual([]);
     });
   });
 
