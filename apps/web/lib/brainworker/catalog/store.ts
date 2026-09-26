@@ -73,6 +73,7 @@ export interface BrainWorkerOperationsStoreState {
 
   // Actions
   initializeFromProfile: (profile: BrainWorkerOperationalProfile) => void;
+  initializeCatalog: (catalog: BrainWorkerServiceCatalog) => void;
   resetStore: () => void;
   setDirty: (isDirty: boolean) => void;
   setIsSaving: (isSaving: boolean) => void;
@@ -171,6 +172,57 @@ export const useBrainWorkerOperationsStore = create<BrainWorkerOperationsStoreSt
         saveError: null,
         validationErrors: {},
         isComplete,
+      });
+    },
+
+    initializeCatalog: (catalog) => {
+      set((state) => {
+        const nextCatalog: BrainWorkerServiceCatalog = {
+          brainWorkerId: catalog?.brainWorkerId ?? state.catalog.brainWorkerId,
+          diagnosticFeeNgn:
+            typeof catalog?.diagnosticFeeNgn === 'number'
+              ? catalog.diagnosticFeeNgn
+              : state.catalog.diagnosticFeeNgn,
+          services: Array.isArray(catalog?.services)
+            ? catalog.services.map((s) => ({ ...s }))
+            : [],
+          updatedAt: catalog?.updatedAt ?? new Date().toISOString(),
+        };
+
+        const nextValidationErrors = { ...state.validationErrors };
+        delete nextValidationErrors.diagnosticFee;
+        for (const key of Object.keys(nextValidationErrors)) {
+          if (key.startsWith('service_rate_')) {
+            delete nextValidationErrors[key];
+          }
+        }
+
+        const feeValidation = validateDiagnosticFee(nextCatalog.diagnosticFeeNgn);
+        if (!feeValidation.valid && feeValidation.error) {
+          nextValidationErrors.diagnosticFee = feeValidation.error;
+        }
+
+        for (const s of nextCatalog.services) {
+          const rateValidation = validateHourlyRate(s.hourlyRateNgn);
+          if (!rateValidation.valid && rateValidation.error) {
+            nextValidationErrors[`service_rate_${s.serviceId}`] = rateValidation.error;
+          }
+        }
+
+        const nextComplete = isOperationalProfileComplete({
+          catalog: nextCatalog,
+          availability: state.availability,
+          coverage: state.coverage,
+        });
+
+        return {
+          catalog: nextCatalog,
+          validationErrors: nextValidationErrors,
+          isDirty: false,
+          isSaving: false,
+          saveError: null,
+          isComplete: nextComplete,
+        };
       });
     },
 
