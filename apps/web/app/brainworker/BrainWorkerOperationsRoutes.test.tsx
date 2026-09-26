@@ -18,7 +18,6 @@ import type { IBrainWorkerOperationsRepository } from '../../lib/brainworker/cat
 import type { IBrainWorkerOnboardingRepository } from '../../lib/brainworker/types';
 import { isOperationalProfileComplete } from '../../lib/brainworker/catalog/validation';
 import {
-  FIXTURE_APPROVED_BRAINWORKER_A,
   FIXTURE_OPERATIONAL_PROFILE_A,
   FIXTURE_SERVICE_CATALOG_A,
   FIXTURE_AVAILABILITY_A,
