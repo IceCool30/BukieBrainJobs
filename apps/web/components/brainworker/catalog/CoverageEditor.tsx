@@ -404,8 +404,7 @@ export function CoverageEditor({
         <div>
           <h3 className="text-lg font-bold text-slate-900">Operational zones</h3>
           <p className="mt-1 text-sm text-slate-600 leading-relaxed">
-            Select at least one local government area or operational zone where you
-            can provide service.
+            Pick the local government areas and neighbourhoods where you accept work.
           </p>
         </div>
         <div
