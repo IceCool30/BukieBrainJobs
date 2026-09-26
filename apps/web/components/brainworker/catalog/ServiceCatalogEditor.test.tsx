@@ -7,7 +7,7 @@
 // - docs/specs/BW-002-service-catalog-availability.md (v1.2, Section 2.1, 2.2, 2.6)
 
 import React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import { ServiceCatalogEditor } from './ServiceCatalogEditor';
 import { useBrainWorkerOperationsStore } from '../../../lib/brainworker/catalog/store';
@@ -30,8 +30,19 @@ const FIXTURE_EMPTY_CATALOG: BrainWorkerServiceCatalog = {
   updatedAt: '2026-09-25T10:00:00.000Z',
 };
 
+type MockOperationsRepository = {
+  getOperationalProfile: Mock;
+  getServiceCatalog: Mock;
+  saveServiceCatalog: Mock;
+  getAvailability: Mock;
+  saveAvailability: Mock;
+  getCoverage: Mock;
+  saveCoverage: Mock;
+  getMatchingHydrationProfile: Mock;
+};
+
 describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through CMP-009)', () => {
-  let mockRepository: IBrainWorkerOperationsRepository;
+  let mockRepository: MockOperationsRepository & IBrainWorkerOperationsRepository;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -324,7 +335,7 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
     });
 
     it('asynchronously hydrates catalog from repository when initialCatalog is omitted', async () => {
-      (mockRepository.getServiceCatalog as any).mockResolvedValueOnce(FIXTURE_SERVICE_CATALOG_A);
+      mockRepository.getServiceCatalog.mockResolvedValueOnce(FIXTURE_SERVICE_CATALOG_A);
 
       render(
         <ServiceCatalogEditor
@@ -629,7 +640,7 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
 
     it('disables save button while repository save is in flight', async () => {
       let resolveSave: ((val: unknown) => void) | null = null;
-      (mockRepository.saveServiceCatalog as any).mockImplementationOnce(
+      mockRepository.saveServiceCatalog.mockImplementationOnce(
         () => new Promise((resolve) => { resolveSave = resolve; })
       );
 
@@ -667,7 +678,7 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
 
     it('displays error message and re-enables save button when repository save fails', async () => {
       const onSaveError = vi.fn();
-      (mockRepository.saveServiceCatalog as any).mockRejectedValueOnce(
+      mockRepository.saveServiceCatalog.mockRejectedValueOnce(
         new Error('Failed to persist catalog changes')
       );
 
