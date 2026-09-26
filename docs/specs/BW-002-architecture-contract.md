@@ -4,11 +4,11 @@
 |---|---|
 | **Document ID** | BW-002-ARCH |
 | **Feature** | BrainWorker Service Catalog & Availability Management |
-| **Status** | 🟡 Proposed for Architecture Review (v1.2 - Reconciled) |
+| **Status** | 🟢 Complete & Verified (v1.2) |
 | **Version** | 1.2 |
-| **Governing Loop** | Mr. Solomon 9-Command Engineering Loop (`/architect`) |
+| **Governing Loop** | Mr. Solomon 9-Command Engineering Loop (`/architect` to `/check`) |
 | **Implementation Target** | `apps/web/lib/brainworker/catalog/`, `apps/web/app/brainworker/` |
-| **Date** | 2026-09-25 |
+| **Date** | 2026-09-26 |
 
 ---
 

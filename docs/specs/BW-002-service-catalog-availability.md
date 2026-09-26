@@ -4,13 +4,13 @@
 |---|---|
 | **Document ID** | BW-002-SCOPE |
 | **Feature** | BrainWorker Service Catalog & Availability Management |
-| **Status** | 🟡 Proposed for Scope Approval (v1.2 - Reconciled) |
+| **Status** | 🟢 Complete & Verified (v1.2) |
 | **Version** | 1.2 |
 | **Workstream** | Phase 2: BrainWorker (Service Provider) Web Platform |
-| **Governing Loop** | Mr. Solomon 9-Command Engineering Loop (`/scope`) |
+| **Governing Loop** | Mr. Solomon 9-Command Engineering Loop (`/scope` to `/check`) |
 | **Target Surfaces** | `/brainworker/services`, `/brainworker/availability`, `/brainworker/dashboard` (Setup Card) |
 | **Prerequisites** | BW-001 BrainWorker Onboarding & Identity Verification (Complete on `main` at `36b8385` / `c2dd0d9`) |
-| **Date** | 2026-09-25 |
+| **Date** | 2026-09-26 |
 
 ---
 
@@ -175,12 +175,12 @@ The specification strictly separates profile completeness from real-time operati
 
 ## 6. Acceptance Criteria
 
-- [ ] Approved provider can navigate to `/brainworker/services`, select canonical services, and save valid hourly rates and diagnostic fee.
-- [ ] Arbitrary or un-registered service IDs are rejected during validation.
-- [ ] Approved provider can navigate to `/brainworker/availability`, configure a 7-day schedule, set primary city refined from verified onboarding cities, select operational LGAs, and set travel radius.
-- [ ] Validation rejects rates outside ₦2,000–₦50,000 and diagnostic fees outside ₦2,000–₦20,000.
-- [ ] Schedule validation rejects daily windows where `endHour <= startHour` or `endHour - startHour < 2`.
-- [ ] `isComplete` evaluates to `true` only when all 6 readiness criteria are satisfied.
-- [ ] Setting `isAvailable === false` when `isComplete === true` marks the provider Off-Duty without invalidating setup completeness.
-- [ ] `/brainworker/dashboard` renders the setup prompt banner when incomplete, and ready signal when complete.
-- [ ] All tests pass with 0 type errors, 0 lint errors, and 0 monorepo regressions.
+- [x] Approved provider can navigate to `/brainworker/services`, select canonical services, and save valid hourly rates and diagnostic fee.
+- [x] Arbitrary or un-registered service IDs are rejected during validation.
+- [x] Approved provider can navigate to `/brainworker/availability`, configure a 7-day schedule, set primary city refined from verified onboarding cities, select operational LGAs, and set travel radius.
+- [x] Validation rejects rates outside ₦2,000 to ₦50,000 and diagnostic fees outside ₦2,000 to ₦20,000.
+- [x] Schedule validation rejects daily windows where `endHour <= startHour` or `endHour - startHour < 2`.
+- [x] `isComplete` evaluates to `true` only when all 6 readiness criteria are satisfied.
+- [x] Setting `isAvailable === false` when `isComplete === true` marks the provider Off-Duty without invalidating setup completeness.
+- [x] `/brainworker/dashboard` renders the setup prompt banner when incomplete, and ready signal when complete.
+- [x] All tests pass with 0 type errors, 0 lint errors, and 0 monorepo regressions.

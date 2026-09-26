@@ -20,7 +20,7 @@ This document provides a single, unified checklist of what has been built, what 
 | **Customer Reviews & Reputation** | **Complete** | Completed & live in production. 608 passing tests across 32 suites. Verified on Vercel deployment 6586791746 (commit 962a870). |
 | **Customer Notifications & Messaging** | **Complete** | Messaging (WEB-017) and Notification Center (WEB-018) both complete and live in production. |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
-| **BrainWorker Platform** | **In Progress** | BW-001 Onboarding & Identity complete and live in production (commit 36b8385). BW-002 next. |
+| **BrainWorker Platform** | **In Progress** | BW-001 Onboarding & Identity and BW-002 Service Catalog & Availability complete and verified. BW-003 next. |
 | **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Customer state machine is built. Worker accept/decline and check-in are missing. |
 | **Mobile Application (`apps/mobile`)** | **Not Built** | Expo starter only. Full native reconstruction required. |
 | **Admin & Operational Console** | **Not Built** | Worker vetting, dispute mediation, category management, analytics. |
@@ -135,9 +135,9 @@ Phase 7: Launch Readiness
 - [ ] Direct invitation response surface: Real worker interface to click "Accept Booking" or "Decline Booking" with reason selection.
 
 #### 2.4 Service Catalog & Availability Management (`BW-002`)
-- [ ] Worker service catalog configuration: Add or remove individual services, set hourly rates and diagnostic call-out fees.
-- [ ] Weekly working hours scheduler: Set working days, time slots (e.g., 8:00 AM to 5:00 PM), and emergency availability.
-- [ ] Coverage area selector: Select specific neighbourhoods and maximum travel radius.
+- [x] Worker service catalog configuration: Add or remove individual services, set hourly rates and diagnostic call-out fees.
+- [x] Weekly working hours scheduler: Set working days, time slots (e.g., 8:00 AM to 5:00 PM), and emergency availability.
+- [x] Coverage area selector: Select specific neighbourhoods and maximum travel radius.
 
 #### 2.5 BrainWorker Earnings, Wallet & Payouts
 - [ ] Wallet summary: Available balance, pending escrow clearance, and lifetime earnings.

@@ -17,6 +17,28 @@ The format follows practical release notes written plainly in engineering langua
 - Expanded `AGENTS.md` to conform to the canonical NINE context map schema, recording Termux environment limits and cloud Codespace execution requirements.
 - Standardized test suite describe block titles across `apps/web` to eliminate em dashes.
 
+## [1.0.0-bw-002] - 2026-09-26
+
+### Added
+- BW-002 BrainWorker Service Catalog & Availability Management integrated across canonical operational provider routes (`/brainworker/services`, `/brainworker/availability`, `/brainworker/dashboard`).
+- `apps/web/lib/brainworker/catalog/types.ts`: Domain models for canonical service registry, configured services, hourly rate bounds (₦2,000 to ₦50,000), diagnostic call-out fee bounds (₦2,000 to ₦20,000), 7-day schedule with daily active windows, geographic coverage refinement within verified onboarding cities, travel radius whitelist (`[5, 10, 15, 25, 50]` km), and multi-tenant `IBrainWorkerOperationsRepository` contract.
+- `apps/web/lib/brainworker/catalog/canonical-registry.ts`: Authoritative registry of pre-defined trade services across the 8 canonical categories (`generator`, `ac`, `plumbing`, `electrical`, `carpentry`, `painting`, `masonry`, `welding`) with mapped backend `skillId` and default rates.
+- `apps/web/lib/brainworker/catalog/validation.ts`: Strict Zod validation and domain invariants for service categories, rate bounds, schedule windows (enforcing `endHour > startHour` and `endHour - startHour >= 2` within 06:00 to 22:00), travel radius, and 6-point operational readiness (`isComplete`).
+- `apps/web/lib/brainworker/catalog/repository.ts`: Multi-tenant production-first operations repository supporting catalog, availability, and coverage persistence with fail-closed tenant isolation (`FORBIDDEN_TENANT_ACCESS`), authoritative city verification against BW-001 onboarding records, and lossless 7-day schedule preservation.
+- `apps/web/lib/brainworker/catalog/store.ts`: Zustand client store managing draft catalog items, diagnostic fee, weekly schedule, duty status, and coverage with optimistic mutations, error purging, and dynamic `isComplete` evaluation.
+- `apps/web/components/brainworker/catalog/ServiceCatalogEditor.tsx`: Service catalog configuration surface with diagnostic call-out fee input, category filter tabs, canonical service picker, hourly rate live validation, active/paused toggles, inline removal confirmations, and keyboard navigation.
+- `apps/web/components/brainworker/catalog/AvailabilityEditor.tsx`: Weekly availability schedule surface with global dispatch duty toggle (On-Duty vs Off-Duty), 7-day schedule grid, per-day window inputs, weekday bulk copy ("Copy Monday to Weekdays"), and emergency dispatch readiness toggle.
+- `apps/web/components/brainworker/catalog/CoverageEditor.tsx`: Geographic coverage configuration surface with primary city selector restricted strictly to verified onboarding cities, operational zones multi-select, and discrete travel radius slider.
+- `apps/web/app/brainworker/services/page.tsx`: Production route with unauthenticated redirect, customer fail-closed boundary card, unapproved provider verification guard, and ServiceCatalogEditor integration.
+- `apps/web/app/brainworker/availability/page.tsx`: Production route with provider guards, integrating AvailabilityEditor and CoverageEditor with authoritatively derived verified onboarding cities.
+- `apps/web/app/brainworker/dashboard/page.tsx`: Operational readiness banner integration rendering action cards ("Configure Services & Rates", "Set Hours & Coverage") when `isComplete === false`, and dispatch readiness indicator ("Ready for Dispatch" vs "Paused") with quick duty toggle when `isComplete === true`.
+- 115 automated operational contract and route integration tests across 7 test files (`CAT-001..010`, `REP-001..010`, `STO-001..006`, `CMP-001..009`, `SCH-001..011`, `COV-001..010`, `INT-001..010`), bringing the monorepo web test suite to 1,194 passing tests with 0 failures across 67 test suites.
+
+### Changed
+- Phase 2 (BrainWorker Web Platform) Milestone 5 Slice 2 (BW-002) complete and verified with 0 regressions.
+- Separated operational setup completeness (`isComplete`) from real-time dispatch duty (`isAvailable`), allowing providers to pause dispatch without invalidating configured profiles.
+- Enforced strict physical boundary isolation between production modules and testing utilities across all catalog components and routes.
+
 ## [1.0.0-bw-001] - 2026-09-24
 
 ### Added

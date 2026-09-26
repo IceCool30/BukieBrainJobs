@@ -8,15 +8,28 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- [ ] **20. BW-002 BrainWorker Service Catalog & Availability Management**
-  - **Spec**: `docs/specs/BW-002-service-catalog-availability.md` (Pending formal scope authorization)
+- [ ] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
+  - **Spec**: `docs/specs/BW-003-leads-inbox.md` (Candidate Next Scope)
   - **Acceptance Criteria**:
-    - [ ] Worker service catalog configuration: Add/remove individual services, set hourly rates and diagnostic call-out fees
-    - [ ] Weekly working hours scheduler: Set working days, time slots (e.g., 8:00 AM to 5:00 PM), and emergency availability
-    - [ ] Coverage area selector: Select specific neighbourhoods and maximum travel radius
+    - [ ] Real-time incoming leads feed on `/brainworker/leads` matching verified skills and coverage radius
+    - [ ] Job invitation response interface with direct Accept and Decline actions
+    - [ ] Decline reason taxonomy and response time metrics
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web type-check && pnpm --filter @bukiebrainjobs/web lint && pnpm --filter @bukiebrainjobs/web test`
 
 ## Completed & Verified Slices
+
+- [x] **20. BW-002 BrainWorker Service Catalog & Availability Management**
+  - **Spec**: `docs/specs/BW-002-service-catalog-availability.md`
+  - **Acceptance Criteria**:
+    - [x] Worker service catalog configuration: Add/remove individual services, set hourly rates and diagnostic call-out fees
+    - [x] Weekly working hours scheduler: Set working days, time slots (e.g., 8:00 AM to 5:00 PM), and emergency availability
+    - [x] Coverage area selector: Select primary city from verified onboarding cities, operational zones, and maximum travel radius
+    - [x] Operational readiness: `isComplete` evaluates to true strictly when all 6 criteria are met; separates setup completeness from real-time dispatch duty (`isAvailable`)
+    - [x] Route integration: Provider guards on `/brainworker/services` and `/brainworker/availability`; actionable setup banners on `/brainworker/dashboard`
+    - [x] Tenant isolation: All queries and mutations fail closed on missing or cross-tenant provider IDs
+    - [x] Prerender safety: All routes compile cleanly without window errors (`○ (Static)`)
+    - [x] Physical boundary: Zero imports from `testing/` in production modules
+  - **Verification Evidence**: Complete & Verified on branch `feature/bw-002-coverage-location` (commit `64ad004`); 115/115 BW-002 tests passed across 7 suites; 252/252 BrainWorker platform tests passed; 1,194/1,194 monorepo web tests passed; production build passed with 38 static routes; live Vercel preview deployment READY with 0 runtime errors.
 
 - [x] **19. BW-001 BrainWorker Onboarding & Identity Verification**
   - **Spec**: `docs/specs/BW-001-onboarding.md`
@@ -218,20 +231,26 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Upcoming Planned Slices
 
-- [ ] **19. BW-001 BrainWorker Platform Onboarding & Verification**
-  - **Spec**: `docs/specs/BW-001-onboarding.md`
+- [ ] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
+  - **Spec**: `docs/specs/BW-003-leads-inbox.md`
   - **Acceptance Criteria**:
-    - [ ] Dedicated provider registration flow at `/brainworker/register`
-    - [ ] Multi-step onboarding funnel (trade category, experience, coverage cities)
-    - [ ] Identity check interface for NIN/BVN and government ID upload
-    - [ ] Trade certifications and apprenticeship documentation upload
-    - [ ] Verification in review status screen
+    - [ ] Real-time incoming leads feed on `/brainworker/leads` matching verified skills and coverage radius
+    - [ ] Job invitation response interface with direct Accept and Decline actions
+    - [ ] Decline reason taxonomy and response time metrics
   - **Verification Command**: `pnpm test`
 
-- [ ] **20. BW-002 BrainWorker Service Management & Availability**
-  - **Spec**: `docs/specs/BW-002-service-management.md`
+- [ ] **22. BW-004 BrainWorker Booking Management & Fulfillment**
+  - **Spec**: `docs/specs/BW-004-booking-management.md`
   - **Acceptance Criteria**:
-    - [ ] Worker service catalog configuration, hourly rates, and diagnostic fees
-    - [ ] Weekly working hours scheduler and emergency dispatch toggles
-    - [ ] Coverage area selector and travel radius management
+    - [ ] Active bookings management and customer contact shortcuts
+    - [ ] On-site check-in confirmation and arrival tracking
+    - [ ] Scope adjustment request interface for additional parts or labor
+  - **Verification Command**: `pnpm test`
+
+- [ ] **23. BW-005 BrainWorker Earnings, Wallet & Payouts**
+  - **Spec**: `docs/specs/BW-005-wallet-payouts.md`
+  - **Acceptance Criteria**:
+    - [ ] Wallet summary: Available balance, pending escrow clearance, and lifetime earnings
+    - [ ] Nigerian bank account setup form with NUBAN name inquiry preview
+    - [ ] Payout withdrawal request flow with payout timeline history
   - **Verification Command**: `pnpm test`

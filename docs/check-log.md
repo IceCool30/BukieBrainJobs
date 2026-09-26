@@ -2,6 +2,42 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-09-26: BW-002 BrainWorker Service Catalog & Availability Management Production Sign-Off Check
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM) + Vercel Preview
+- **Commit**: `64ad004b53c9fa9e6765b5ab6f0577160fb39cde` on `feature/bw-002-coverage-location` (41 ahead of `main`, 0 behind)
+- **Trigger**: BW-002 Final Gate Verification, Operational Contract Suite Execution & Pre-Merge Sign-Off
+- **Commands Executed**:
+  - `pnpm vitest run`: Passed 1,194/1,194 tests across 67 suites in `apps/web` (252/252 BrainWorker platform tests across 19 suites; 115/115 BW-002 operational contract tests across 7 suites) with 0 failures
+    - Suite 1: `apps/web/lib/brainworker/catalog/validation.test.ts` (10/10 tests, CAT-001 to CAT-010)
+    - Suite 2: `apps/web/lib/brainworker/catalog/repository.test.ts` (10/10 tests, REP-001 to REP-010)
+    - Suite 3: `apps/web/lib/brainworker/catalog/store.test.ts` (40/40 tests, STO-001 to STO-006 + reactive state machine)
+    - Suite 4: `apps/web/components/brainworker/catalog/ServiceCatalogEditor.test.tsx` (24/24 tests, CMP-001 to CMP-009)
+    - Suite 5: `apps/web/components/brainworker/catalog/AvailabilityEditor.test.tsx` (11/11 tests, SCH-001 to SCH-011)
+    - Suite 6: `apps/web/components/brainworker/catalog/CoverageEditor.test.tsx` (10/10 tests, COV-001 to COV-010)
+    - Suite 7: `apps/web/app/brainworker/BrainWorkerOperationsRoutes.test.tsx` (10/10 tests, INT-001 to INT-010)
+  - `pnpm tsc --noEmit`: Passed with 0 errors across 6 packages (`exactOptionalPropertyTypes: true` compliant)
+  - `pnpm lint`: Passed with 0 errors and 0 warnings across all BW-002 files; zero ESLint suppression comments in production code
+  - `pnpm build`: Passed in 15.7s; generated 38/38 static pages including all provider operational routes:
+    - `○ /brainworker/services` (5.22 kB)
+    - `○ /brainworker/availability` (6.84 kB)
+    - `○ /brainworker/dashboard` (4.15 kB)
+    - `○ /brainworker/onboarding` (16.7 kB)
+    - `○ /brainworker/register` (3.02 kB)
+    - `○ /brainworker/verification-status` (4.75 kB)
+  - Physical boundary inspection: 0 forbidden `testing/` imports found across production routes and catalog components (INT-010, CMP-009, SCH-011, COV-010 verified)
+  - Vercel preview deployment: Verified live at deployment `ARX73uJA1qqbS5JVQbw2mKHnER7V` (`state: success`), 0 runtime errors, 0 runtime logs in 24h
+- **Architecture & Domain Invariants Verified**:
+  - Operational readiness invariant: `isComplete` evaluates to `true` strictly when all 6 criteria are met (at least 1 active service, diagnostic fee between ₦2k and ₦20k, at least 1 working day with valid window, primary city selected, at least 1 operational zone, travel radius selected)
+  - Dispatch eligibility separation: Off-duty provider (`isAvailable === false`) retains setup completeness (`isComplete === true`) while being non-dispatchable
+  - Canonical taxonomy adherence: Rejects arbitrary service IDs not in `CANONICAL_SERVICES_REGISTRY`; hourly rates bounded strictly between ₦2,000 and ₦50,000
+  - Lossless schedule preservation: 7-day schedule preserved and retrieved without arbitrary single-window truncation or synthetic collapse
+  - Coverage refinement: Primary operating city derived authoritatively from BW-001 verified onboarding `coverageCities`; discrete radius whitelist `[5, 10, 15, 25, 50]` km
+  - Tenant isolation: Multi-tenant repository fails closed (`FORBIDDEN_TENANT_ACCESS`) on cross-tenant read or mutation attempts
+  - Route guards: Unauthenticated visitors redirect to `/login`; authenticated customers receive fail-closed boundary cards without triggering repository reads; unapproved providers redirect to verification status; approved providers load full operational interfaces
+  - Prerender safety: All browser storage guarded by window checks, ensuring clean static compilation (`○ (Static)`)
+- **Voice and Slop Audit**: Direct Nigerian marketplace terminology; 0 em dashes in UI components and documentation; 0 corporate filler terms
+- **Status**: PASS (APPROVED FOR MERGE / ZERO DEFECTS)
+
 ## 2026-09-24: BW-001 BrainWorker Onboarding & Identity Verification Production Sign-Off Check
 - **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM) + Vercel Preview/Production
 - **Commit**: `36b8385` on `main`
