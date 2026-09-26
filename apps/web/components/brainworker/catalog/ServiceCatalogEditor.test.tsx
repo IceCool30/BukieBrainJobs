@@ -18,9 +18,17 @@ import {
 import type {
   IBrainWorkerOperationsRepository,
   ServiceItemStatus,
+  BrainWorkerServiceCatalog,
 } from '../../../lib/brainworker/catalog/types';
 import * as fs from 'fs';
 import * as path from 'path';
+
+const FIXTURE_EMPTY_CATALOG: BrainWorkerServiceCatalog = {
+  brainWorkerId: FIXTURE_APPROVED_BRAINWORKER_A,
+  diagnosticFeeNgn: 5000,
+  services: [],
+  updatedAt: '2026-09-25T10:00:00.000Z',
+};
 
 describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through CMP-009)', () => {
   let mockRepository: IBrainWorkerOperationsRepository;
@@ -30,7 +38,7 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
     useBrainWorkerOperationsStore.getState().resetStore();
     mockRepository = {
       getOperationalProfile: vi.fn(),
-      getServiceCatalog: vi.fn().mockResolvedValue(FIXTURE_SERVICE_CATALOG_A),
+      getServiceCatalog: vi.fn().mockResolvedValue(FIXTURE_EMPTY_CATALOG),
       saveServiceCatalog: vi.fn().mockImplementation(
         async (
           _id: string,
@@ -121,6 +129,7 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
       );
 
       const feeInput = screen.getByLabelText(/Diagnostic Call-Out Fee/i);
+      const saveBtn = screen.getByRole('button', { name: /Save Changes/i });
 
       // Valid update
       fireEvent.change(feeInput, { target: { value: '7500' } });
@@ -129,14 +138,25 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
       // Invalid low update (< 2000)
       fireEvent.change(feeInput, { target: { value: '1500' } });
       expect(
-        await screen.findByText(/Diagnostic fee must be between ₦2,000 and ₦20,000/i)
+        await screen.findByText(/(?:Diagnostic (?:call-out )?fee|fee) must be between ₦2,000 and ₦20,000/i)
       ).toBeInTheDocument();
+      expect(saveBtn).toBeDisabled();
 
       // Invalid high update (> 20000)
       fireEvent.change(feeInput, { target: { value: '25000' } });
       expect(
-        await screen.findByText(/Diagnostic fee must be between ₦2,000 and ₦20,000/i)
+        await screen.findByText(/(?:Diagnostic (?:call-out )?fee|fee) must be between ₦2,000 and ₦20,000/i)
       ).toBeInTheDocument();
+      expect(saveBtn).toBeDisabled();
+
+      // Valid reset clears error and enables save button
+      fireEvent.change(feeInput, { target: { value: '5000' } });
+      await waitFor(() => {
+        expect(
+          screen.queryByText(/(?:Diagnostic (?:call-out )?fee|fee) must be between ₦2,000 and ₦20,000/i)
+        ).not.toBeInTheDocument();
+      });
+      expect(saveBtn).toBeEnabled();
     });
   });
 
@@ -268,6 +288,63 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
       // Button is now disabled or shows Added
       expect(addBtn).toBeDisabled();
       expect(addBtn).toHaveTextContent(/Added/i);
+    });
+
+    it('hydrates and renders pre-existing configured services when initialCatalog is provided', () => {
+      render(
+        <ServiceCatalogEditor
+          brainWorkerId={FIXTURE_APPROVED_BRAINWORKER_A}
+          initialCatalog={FIXTURE_SERVICE_CATALOG_A}
+          repository={mockRepository}
+        />
+      );
+
+      // Pre-configured services are rendered
+      expect(
+        screen.getByTestId('configured-service-card-gen-diesel-servicing')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('configured-service-card-ac-gas-recharge')
+      ).toBeInTheDocument();
+
+      // Rates are populated
+      expect(
+        screen.getByLabelText(/Hourly rate for Diesel Generator Servicing & Overhaul/i)
+      ).toHaveValue(7500);
+      expect(
+        screen.getByLabelText(/Hourly rate for AC Refrigerant Gas Top-Up & Leak Sealing/i)
+      ).toHaveValue(6000);
+
+      // Status badges
+      expect(screen.getByText('ACTIVE')).toBeInTheDocument();
+      expect(screen.getByText('PAUSED')).toBeInTheDocument();
+
+      // Empty state is not rendered
+      expect(screen.queryByText(/No services configured yet/i)).not.toBeInTheDocument();
+    });
+
+    it('asynchronously hydrates catalog from repository when initialCatalog is omitted', async () => {
+      (mockRepository.getServiceCatalog as any).mockResolvedValueOnce(FIXTURE_SERVICE_CATALOG_A);
+
+      render(
+        <ServiceCatalogEditor
+          brainWorkerId={FIXTURE_APPROVED_BRAINWORKER_A}
+          repository={mockRepository}
+        />
+      );
+
+      await waitFor(() => {
+        expect(mockRepository.getServiceCatalog).toHaveBeenCalledWith(
+          FIXTURE_APPROVED_BRAINWORKER_A
+        );
+      });
+
+      expect(
+        await screen.findByTestId('configured-service-card-gen-diesel-servicing')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('configured-service-card-ac-gas-recharge')
+      ).toBeInTheDocument();
     });
   });
 
@@ -549,6 +626,78 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
       ).toBeInTheDocument();
       expect(onSaveSuccess).toHaveBeenCalledTimes(1);
     });
+
+    it('disables save button while repository save is in flight', async () => {
+      let resolveSave: ((val: unknown) => void) | null = null;
+      (mockRepository.saveServiceCatalog as any).mockImplementationOnce(
+        () => new Promise((resolve) => { resolveSave = resolve; })
+      );
+
+      render(
+        <ServiceCatalogEditor
+          brainWorkerId={FIXTURE_APPROVED_BRAINWORKER_A}
+          repository={mockRepository}
+        />
+      );
+
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: /Add Diesel Generator Servicing & Overhaul/i,
+        })
+      );
+
+      const saveBtn = screen.getByRole('button', { name: /Save Changes/i });
+      fireEvent.click(saveBtn);
+
+      await waitFor(() => {
+        expect(saveBtn).toBeDisabled();
+      });
+
+      resolveSave!({
+        brainWorkerId: FIXTURE_APPROVED_BRAINWORKER_A,
+        diagnosticFeeNgn: 5000,
+        services: [],
+        updatedAt: new Date().toISOString(),
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText(/Service catalog saved successfully/i)).toBeInTheDocument();
+      });
+    });
+
+    it('displays error message and re-enables save button when repository save fails', async () => {
+      const onSaveError = vi.fn();
+      (mockRepository.saveServiceCatalog as any).mockRejectedValueOnce(
+        new Error('Failed to persist catalog changes')
+      );
+
+      render(
+        <ServiceCatalogEditor
+          brainWorkerId={FIXTURE_APPROVED_BRAINWORKER_A}
+          repository={mockRepository}
+          onSaveError={onSaveError}
+        />
+      );
+
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: /Add Diesel Generator Servicing & Overhaul/i,
+        })
+      );
+
+      const saveBtn = screen.getByRole('button', { name: /Save Changes/i });
+      fireEvent.click(saveBtn);
+
+      await waitFor(() => {
+        expect(mockRepository.saveServiceCatalog).toHaveBeenCalledTimes(1);
+      });
+
+      expect(
+        await screen.findByText(/Failed to persist catalog changes|Failed to save service catalog/i)
+      ).toBeInTheDocument();
+      expect(saveBtn).toBeEnabled();
+      expect(onSaveError).toHaveBeenCalledTimes(1);
+    });
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -562,6 +711,9 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
           repository={mockRepository}
         />
       );
+
+      // Tablist container semantics
+      expect(screen.getByRole('tablist')).toBeInTheDocument();
 
       // Tabs have role tab and aria-selected
       const tabs = screen.getAllByRole('tab');

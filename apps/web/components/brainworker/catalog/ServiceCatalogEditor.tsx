@@ -15,6 +15,7 @@ export interface ServiceCatalogEditorProps {
   initialCatalog?: BrainWorkerServiceCatalog | undefined;
   repository?: IBrainWorkerOperationsRepository | undefined;
   onSaveSuccess?: ((savedCatalog: BrainWorkerServiceCatalog) => void) | undefined;
+  onSaveError?: ((error: Error) => void) | undefined;
   className?: string | undefined;
 }
 
