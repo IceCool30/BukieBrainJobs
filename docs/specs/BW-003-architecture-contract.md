@@ -2,7 +2,7 @@
 
 **Document ID:** BW-003-ARCH  
 **Version:** 1.0  
-**Status:** Approved Architecture Draft
+**Status:** In Review
 
 ## 1. Objective
 
