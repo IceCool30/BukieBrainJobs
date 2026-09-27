@@ -180,12 +180,36 @@ export function evaluateLeadEligibility(
 export function projectLeadForProvider<T extends RawLeadData>(
   lead: T
 ): ProviderProjectedLead {
-  const {
-    exactAddress: _address,
-    customerPhone: _phone,
-    customerEmail: _email,
-    ...projected
-  } = lead;
+  const projected: ProviderProjectedLead = {
+    id: lead.id,
+    jobId: lead.jobId,
+    invitationId: lead.invitationId,
+    title: lead.title,
+    description: lead.description,
+    serviceId: lead.serviceId,
+    categoryId: lead.categoryId,
+    skillId: lead.skillId,
+    cityId: lead.cityId,
+    neighbourhoodOrZone: lead.neighbourhoodOrZone,
+    scheduledStartAt: lead.scheduledStartAt,
+    urgency: lead.urgency,
+    pricingMode: lead.pricingMode,
+    invitationState: lead.invitationState,
+    sentAt: lead.sentAt,
+  };
+
+  if (lead.landmark !== undefined) {
+    projected.landmark = lead.landmark;
+  }
+  if (lead.scheduledEndAt !== undefined) {
+    projected.scheduledEndAt = lead.scheduledEndAt;
+  }
+  if (lead.customerBudgetKobo !== undefined) {
+    projected.customerBudgetKobo = lead.customerBudgetKobo;
+  }
+  if (lead.attachmentRefs !== undefined) {
+    projected.attachmentRefs = lead.attachmentRefs;
+  }
 
   return projected;
 }
