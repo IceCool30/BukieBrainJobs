@@ -2,7 +2,7 @@
 
 **Document ID:** BW-003-UX  
 **Version:** 1.0  
-**Status:** Approved Architecture Draft
+**Status:** In Review
 
 ## 1. Experience Goal
 
