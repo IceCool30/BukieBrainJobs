@@ -2,7 +2,7 @@
 
 **Document ID:** BW-003-UX  
 **Version:** 1.0  
-**Status:** In Review
+**Status:** Approved
 
 ## 1. Experience Goal
 

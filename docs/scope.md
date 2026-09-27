@@ -9,8 +9,8 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 ## Active Work Slice
 
 - [ ] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
-  - **Status**: Scope phase
-  - **Spec**: `docs/specs/BW-003-leads-inbox.md` (not yet present; must be created and approved before implementation)
+  - **Status**: Specifications Approved; entering /develop Phase 1
+  - **Spec**: `docs/specs/BW-003-leads-inbox.md` (Approved)
   - **Primary Route**: `/brainworker/leads`
   - **Primary User**: Approved BrainWorker
   - **Dependencies**: BW-001 verified trade categories and provider identity; BW-002 service catalog, weekly availability, operational zones, travel radius, and dispatch-readiness model; existing customer job/request foundation from WEB-009/WEB-012; authenticated BrainWorker route/security baseline.
