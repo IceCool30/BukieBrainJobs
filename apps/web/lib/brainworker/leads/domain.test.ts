@@ -59,6 +59,7 @@ const leadFixture = (overrides: Partial<LeadFixture> = {}): LeadFixture => ({
   customerPhone: '+2348000000000',
   customerEmail: 'customer@example.com',
   attachmentRefs: ['attachment-001'],
+  distanceKm: 8,
   invitationState: 'PENDING',
   sentAt: '2026-09-27T10:00:00.000Z',
   ...overrides,
@@ -101,8 +102,13 @@ describe('BW-003 Phase 1: Domain Contracts and Eligibility', () => {
   it('LEAD-004: enforces verified primary city, operational zone, and configured travel radius', () => {
     const provider = completeProvider();
 
+    // Default fixture within radius (8km <= 15km)
     expect(evaluateLeadEligibility(provider, leadFixture()).eligible).toBe(true);
 
+    // Explicit distance within radius passes
+    expect(evaluateLeadEligibility(provider, leadFixture({ distanceKm: 12 })).eligible).toBe(true);
+
+    // Outside primary city
     expect(
       evaluateLeadEligibility(
         provider,
@@ -110,10 +116,29 @@ describe('BW-003 Phase 1: Domain Contracts and Eligibility', () => {
       ),
     ).toEqual({ eligible: false, reason: 'OUTSIDE_COVERAGE' });
 
+    // Outside operational zone
     expect(
       evaluateLeadEligibility(
         provider,
         leadFixture({ cityId: 'abuja', neighbourhoodOrZone: 'Maitama' }),
+      ),
+    ).toEqual({ eligible: false, reason: 'OUTSIDE_COVERAGE' });
+
+    // Exceeds configured travel radius (20km > 15km)
+    expect(
+      evaluateLeadEligibility(
+        provider,
+        leadFixture({ distanceKm: 20 }),
+      ),
+    ).toEqual({ eligible: false, reason: 'OUTSIDE_COVERAGE' });
+
+    // Stricter radius provider rejects lead beyond boundary
+    const shortRadiusProvider = completeProvider();
+    shortRadiusProvider.operationalProfile.travelRadiusKm = 5;
+    expect(
+      evaluateLeadEligibility(
+        shortRadiusProvider,
+        leadFixture({ distanceKm: 8 }),
       ),
     ).toEqual({ eligible: false, reason: 'OUTSIDE_COVERAGE' });
   });
@@ -139,12 +164,21 @@ describe('BW-003 Phase 1: Domain Contracts and Eligibility', () => {
       reason: 'OUTSIDE_SCHEDULE',
     });
 
+    // Off-duty provider is ineligible even during scheduled working hours
+    const offDutyProvider = completeProvider();
+    offDutyProvider.operationalProfile.weeklySchedule = provider.operationalProfile.weeklySchedule;
+    offDutyProvider.operationalProfile.isAvailable = false;
+    expect(evaluateLeadEligibility(offDutyProvider, scheduled)).toEqual({
+      eligible: false,
+      reason: 'OFF_DUTY',
+    });
+
     expect(provider.operationalProfile).not.toHaveProperty('workingHoursStart');
     expect(provider.operationalProfile).not.toHaveProperty('workingHoursEnd');
   });
 
   it('LEAD-006: projects only provider-authorized customer/job data and masks private contact details', () => {
-    const projected = projectLeadForProvider(leadFixture());
+    const projected = projectLeadForProvider(leadFixture({ distanceKm: 8 }));
 
     expect(projected.exactAddress).toBeUndefined();
     expect(projected.customerPhone).toBeUndefined();
@@ -153,6 +187,7 @@ describe('BW-003 Phase 1: Domain Contracts and Eligibility', () => {
     expect(projected.neighbourhoodOrZone).toBe('Gwarinpa');
     expect(projected.landmark).toBe('Near the main junction');
     expect(projected.attachmentRefs).toEqual(['attachment-001']);
+    expect(projected.distanceKm).toBe(8);
   });
 
   it('LEAD-007: orders deterministically and paginates without duplicating or skipping leads', () => {

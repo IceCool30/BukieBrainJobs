@@ -66,6 +66,7 @@ export interface RawLeadData {
   customerPhone?: string | undefined;
   customerEmail?: string | undefined;
   attachmentRefs?: string[] | undefined;
+  distanceKm?: number | undefined;
   invitationState: string;
   sentAt: string;
 }
@@ -82,6 +83,7 @@ export type ProviderProjectedLead = Omit<
 export type IneligibilityReason =
   | 'INCOMPLETE_OPERATIONAL_PROFILE'
   | 'UNAUTHORIZED_ROLE'
+  | 'OFF_DUTY'
   | 'SKILL_MISMATCH'
   | 'OUTSIDE_COVERAGE'
   | 'OUTSIDE_SCHEDULE';
@@ -92,8 +94,8 @@ export type LeadEligibilityResult =
 
 /**
  * LEAD-001 to LEAD-005: Evaluates whether a lead is eligible for presentation
- * to an authenticated BrainWorker provider based on completeness, role, skills,
- * coverage zones, and lossless weekly schedule.
+ * to an authenticated BrainWorker provider based on completeness, role, duty state,
+ * skills, coverage zones, travel radius, and lossless weekly schedule.
  */
 export function evaluateLeadEligibility(
   provider: LeadProviderContext,
@@ -111,6 +113,11 @@ export function evaluateLeadEligibility(
     !provider.isBrainWorkerApproved
   ) {
     return { eligible: false, reason: 'UNAUTHORIZED_ROLE' };
+  }
+
+  // Duty state gate: provider must be on-duty
+  if (!provider.operationalProfile.isAvailable) {
+    return { eligible: false, reason: 'OFF_DUTY' };
   }
 
   // LEAD-003: Active configured service skill match
@@ -135,6 +142,14 @@ export function evaluateLeadEligibility(
     if (!zoneMatch) {
       return { eligible: false, reason: 'OUTSIDE_COVERAGE' };
     }
+  }
+
+  if (
+    typeof lead.distanceKm === 'number' &&
+    typeof provider.operationalProfile.travelRadiusKm === 'number' &&
+    lead.distanceKm > provider.operationalProfile.travelRadiusKm
+  ) {
+    return { eligible: false, reason: 'OUTSIDE_COVERAGE' };
   }
 
   // LEAD-005: Lossless weekly schedule eligibility
@@ -209,6 +224,9 @@ export function projectLeadForProvider<T extends RawLeadData>(
   }
   if (lead.attachmentRefs !== undefined) {
     projected.attachmentRefs = lead.attachmentRefs;
+  }
+  if (lead.distanceKm !== undefined) {
+    projected.distanceKm = lead.distanceKm;
   }
 
   return projected;
