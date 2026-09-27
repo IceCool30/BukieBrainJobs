@@ -144,11 +144,19 @@ export function evaluateLeadEligibility(
     }
   }
 
+  // Authoritative travel-radius boundary. Missing, non-finite, or negative
+  // distance fails closed as OUTSIDE_COVERAGE. Valid range:
+  // distanceKm <= travelRadiusKm continues; greater than rejects.
+  const distanceKm = lead.distanceKm;
   if (
-    typeof lead.distanceKm === 'number' &&
-    typeof provider.operationalProfile.travelRadiusKm === 'number' &&
-    lead.distanceKm > provider.operationalProfile.travelRadiusKm
+    typeof distanceKm !== 'number' ||
+    !Number.isFinite(distanceKm) ||
+    distanceKm < 0
   ) {
+    return { eligible: false, reason: 'OUTSIDE_COVERAGE' };
+  }
+
+  if (distanceKm > provider.operationalProfile.travelRadiusKm) {
     return { eligible: false, reason: 'OUTSIDE_COVERAGE' };
   }
 

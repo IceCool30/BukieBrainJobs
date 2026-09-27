@@ -141,6 +141,38 @@ describe('BW-003 Phase 1: Domain Contracts and Eligibility', () => {
         leadFixture({ distanceKm: 8 }),
       ),
     ).toEqual({ eligible: false, reason: 'OUTSIDE_COVERAGE' });
+
+    // Missing distance fails closed
+    expect(
+      evaluateLeadEligibility(
+        provider,
+        leadFixture({ distanceKm: undefined }),
+      ),
+    ).toEqual({ eligible: false, reason: 'OUTSIDE_COVERAGE' });
+
+    // NaN distance fails closed
+    expect(
+      evaluateLeadEligibility(
+        provider,
+        leadFixture({ distanceKm: Number.NaN }),
+      ),
+    ).toEqual({ eligible: false, reason: 'OUTSIDE_COVERAGE' });
+
+    // Negative distance fails closed
+    expect(
+      evaluateLeadEligibility(
+        provider,
+        leadFixture({ distanceKm: -1 }),
+      ),
+    ).toEqual({ eligible: false, reason: 'OUTSIDE_COVERAGE' });
+
+    // Exact boundary (distanceKm === travelRadiusKm) remains eligible
+    expect(
+      evaluateLeadEligibility(
+        provider,
+        leadFixture({ distanceKm: 15 }),
+      ).eligible,
+    ).toBe(true);
   });
 
   it('LEAD-005: uses the lossless weekly schedule and duty state without fabricating a legacy global window', () => {
