@@ -73,7 +73,11 @@ export interface RawLeadData {
 export type ProviderProjectedLead = Omit<
   RawLeadData,
   'exactAddress' | 'customerPhone' | 'customerEmail'
->;
+> & {
+  exactAddress?: undefined;
+  customerPhone?: undefined;
+  customerEmail?: undefined;
+};
 
 export type IneligibilityReason =
   | 'INCOMPLETE_OPERATIONAL_PROFILE'
