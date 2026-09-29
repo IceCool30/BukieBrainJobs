@@ -296,7 +296,7 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
     }
   }
 
-  // ── Partition access ────────────────────────────────────────────
+  // ── Partition access ───────────────────────────────────────────
 
   private getPartition(brainWorkerId: string): BrainWorkerLeadPartition {
     let partition = this.partitions.get(brainWorkerId);
@@ -393,7 +393,7 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
       return { ok: false, reason: 'INVALID_STATE' };
     }
 
-    return this.respondToInvitation(brainWorkerId, invitationId, 'DECLINED');
+    return this.respondToInvitation(brainWorkerId, invitationId, 'DECLINED', reason);
   }
 
   /**
