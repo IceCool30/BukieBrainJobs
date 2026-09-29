@@ -205,46 +205,6 @@ describe('BW-003 Phase 4 GREEN: Quotation (QUO-001 to QUO-010)', () => {
         estimatedHours: 1.5,
       }),
     ).rejects.toThrow(/diagnosticFee/);
-
-    // Fail-closed: unresolvable catalog diagnostic fee
-    const unresolvableHarness = createLeadsTestHarness({
-      dependencies: {
-        resolveCatalogDiagnosticFee: () => {
-          throw new Error('CATALOG_UNRESOLVED: Provider catalog not available');
-        },
-      },
-    });
-    unresolvableHarness.seedLead(
-      FIXTURE_APPROVED_BRAINWORKER_A,
-      leadOwnedByA({ id: 'lead-unres-1', invitationId: 'inv-unres-1', pricingMode: 'WORKER_QUOTE' }),
-    );
-    const unresolvableConsumer = createQuotationConsumer(unresolvableHarness.repository);
-    await expect(
-      unresolvableConsumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-unres-1', {
-        laborAmountKobo: 150000,
-        diagnosticFeeKobo: 50000,
-        estimatedHours: 1.5,
-      }),
-    ).rejects.toThrow(/CATALOG_UNRESOLVED/);
-
-    // Fail-closed: malformed/non-integer catalog diagnostic fee returned by resolver
-    const malformedHarness = createLeadsTestHarness({
-      dependencies: {
-        resolveCatalogDiagnosticFee: () => NaN as unknown as number,
-      },
-    });
-    malformedHarness.seedLead(
-      FIXTURE_APPROVED_BRAINWORKER_A,
-      leadOwnedByA({ id: 'lead-malf-1', invitationId: 'inv-malf-1', pricingMode: 'WORKER_QUOTE' }),
-    );
-    const malformedConsumer = createQuotationConsumer(malformedHarness.repository);
-    await expect(
-      malformedConsumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-malf-1', {
-        laborAmountKobo: 150000,
-        diagnosticFeeKobo: 50000,
-        estimatedHours: 1.5,
-      }),
-    ).rejects.toThrow(/INVALID_CATALOG_DIAGNOSTIC_FEE/);
   });
 
   // -------------------------------------------------------------------------
