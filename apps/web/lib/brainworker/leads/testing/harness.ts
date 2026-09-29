@@ -1,5 +1,6 @@
 // apps/web/lib/brainworker/leads/testing/harness.ts
-// Test harness for BW-003 Phase 2 Repository & Tenant Isolation
+// Deterministic test harness for BW-003 Phase 2 Repository & Tenant Isolation
+// Governed by: BW-003 Architecture Contract v1.0 & Test-First Implementation Plan v1.0
 // Strictly for testing. Must never be imported by production code.
 
 import type { IBrainWorkerLeadsRepository } from '../types';
@@ -53,6 +54,7 @@ export function createLeadsTestHarness(
 ): LeadsTestHarness {
   const repository = createBrainWorkerLeadsRepository({
     resolveOperationalProfile: fixtureOperationalProfileResolver,
+    resolveCatalogDiagnosticFee: () => 50_000,
     ...options.dependencies,
   });
 
