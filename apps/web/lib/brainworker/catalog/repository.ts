@@ -30,6 +30,7 @@ import {
   validateCanonicalServiceId,
   isOperationalProfileComplete,
 } from './validation';
+import { COVERAGE_CITY_ZONES } from './cityZones';
 
 const STORAGE_KEY_PREFIX = 'bukie_bw_operations_';
 
@@ -443,13 +444,27 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
       );
     }
 
-    for (const n of coverage.coverageNeighbourhoods) {
+    const primaryCityZones = COVERAGE_CITY_ZONES[coverage.primaryCityId] ?? [];
+    const knownZones = new Map(
+      Object.values(COVERAGE_CITY_ZONES).flatMap((zones) =>
+        zones.map((zone) => [zone.toLowerCase(), zone] as const)
+      )
+    );
+    const coverageNeighbourhoods = coverage.coverageNeighbourhoods.map((n) => {
       if (typeof n !== 'string' || !n.trim()) {
         throw new OperationsValidationError(
           'Operational neighbourhoods/LGAs must be non-empty strings.'
         );
       }
-    }
+      const trimmedZone = n.trim();
+      const canonicalZone = knownZones.get(trimmedZone.toLowerCase());
+      if (canonicalZone && !primaryCityZones.includes(canonicalZone)) {
+        throw new OperationsValidationError(
+          `Operational zone '${n}' does not belong to primary city '${coverage.primaryCityId}'.`
+        );
+      }
+      return canonicalZone ?? trimmedZone;
+    });
 
     const radiusResult = validateTravelRadius(coverage.travelRadiusKm);
     if (!radiusResult.valid) {
@@ -465,7 +480,7 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
       brainWorkerId,
       primaryCityId: coverage.primaryCityId,
       primaryCityName: coverage.primaryCityName,
-      coverageNeighbourhoods: [...coverage.coverageNeighbourhoods],
+      coverageNeighbourhoods,
       travelRadiusKm: coverage.travelRadiusKm,
       updatedAt: now,
     };
@@ -560,4 +575,3 @@ export function createBrainWorkerOperationsRepository(
 export function resetDefaultBrainWorkerOperationsRepository(): void {
   defaultOperationsRepository = null;
 }
-

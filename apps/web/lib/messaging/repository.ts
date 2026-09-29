@@ -22,7 +22,12 @@ import {
   MediaUploadError,
   isReadOnlyBookingStatus,
 } from './types';
-import { ALLOWED_IMAGE_MIME_TYPES, MAX_ATTACHMENT_BYTES } from './validation';
+import {
+  ALLOWED_IMAGE_MIME_TYPES,
+  MAX_ATTACHMENT_BYTES,
+  validateLocationPayload,
+  validateTextMessage,
+} from './validation';
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Internal Types
@@ -251,6 +256,14 @@ class MessagingRepository implements IMessagingRepository {
     this.assertParticipant(callerId, record);
     this.assertWriteable(record);
 
+    const contentType = input.contentType ?? 'text';
+    const content = contentType === 'text'
+      ? validateTextMessage(input.content)
+      : input.content ?? '';
+    const location = contentType === 'location'
+      ? validateLocationPayload(input.location)
+      : input.location;
+
     // Idempotency: return the existing record for a repeated tempId
     const existingMsgId = this.store.sentTempIds.get(input.tempId);
     if (existingMsgId) {
@@ -268,10 +281,10 @@ class MessagingRepository implements IMessagingRepository {
       senderId: callerId,
       senderRole: isCustomer ? 'customer' : 'brainworker',
       senderName: isCustomer ? record.customer.name : record.brainWorker.name,
-      content: input.content ?? '',
-      contentType: input.contentType ?? 'text',
+      content,
+      contentType,
       mediaUrl: input.mediaUrl,
-      location: input.location,
+      location,
       isRead: false,
       createdAt: now,
     };
@@ -322,6 +335,7 @@ class MessagingRepository implements IMessagingRepository {
       throw new UnauthorizedError('Conversation not found or access denied.');
     }
     this.assertParticipant(callerId, record);
+    this.assertWriteable(record);
 
     // MIME allowlist — fail closed
     if (!ALLOWED_IMAGE_MIME_TYPES.includes(mimeType as typeof ALLOWED_IMAGE_MIME_TYPES[number])) {

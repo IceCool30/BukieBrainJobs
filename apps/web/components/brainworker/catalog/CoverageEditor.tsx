@@ -13,6 +13,7 @@ import {
 import { useBrainWorkerOperationsStore } from '../../../lib/brainworker/catalog/store';
 import { getBrainWorkerOperationsRepository } from '../../../lib/brainworker/catalog/repository';
 import { validateTravelRadius } from '../../../lib/brainworker/catalog/validation';
+import { COVERAGE_CITY_ZONES } from '../../../lib/brainworker/catalog/cityZones';
 
 export interface CoverageEditorProps {
   brainWorkerId?: string | undefined;
@@ -23,86 +24,6 @@ export interface CoverageEditorProps {
   onSaveError?: ((error: Error) => void) | undefined;
   className?: string | undefined;
 }
-
-const DEFAULT_CITY_ZONES: Record<string, string[]> = {
-  Lagos: [
-    'Ikeja',
-    'Yaba',
-    'Surulere',
-    'Lekki',
-    'Victoria Island',
-    'Ikoyi',
-    'Alimosho',
-    'Kosofe',
-    'Lagos Island',
-    'Gbagada',
-    'Maryland',
-    'Ajah',
-  ],
-  Ibadan: [
-    'Bodija',
-    'Ring Road',
-    'Dugbe',
-    'Iyana Church',
-    'Samonda',
-    'Oluyole',
-    'Mokola',
-    'Agodi',
-  ],
-  'Abuja (FCT)': [
-    'Garki',
-    'Wuse',
-    'Maitama',
-    'Asokoro',
-    'Jabi',
-    'Utako',
-    'Gwarinpa',
-    'Kubwa',
-  ],
-  Abuja: [
-    'Garki',
-    'Wuse',
-    'Maitama',
-    'Asokoro',
-    'Jabi',
-    'Utako',
-    'Gwarinpa',
-    'Kubwa',
-  ],
-  'Port Harcourt': [
-    'Port Harcourt GRA',
-    'Rumuokoro',
-    'Rumuogba',
-    'D-Line',
-    'Trans-Amadi',
-    'Diobu',
-    'Ada George',
-  ],
-  'Benin City': [
-    'GRA Benin',
-    'Uselu',
-    'Ring Road',
-    'Ikpoba Hill',
-    'Ugbowo',
-    'Ekenwan',
-  ],
-  Enugu: [
-    'Independence Layout',
-    'New Haven',
-    'Ogui',
-    'Achara Layout',
-    'Abakpa Nike',
-    'GRA Enugu',
-  ],
-  Kano: [
-    'Nasarawa',
-    'Fagge',
-    'Dala',
-    'Tarauni',
-    'Gwale',
-    'Kano Municipal',
-  ],
-};
 
 const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect;
@@ -232,7 +153,7 @@ export function CoverageEditor({
   const currentCityKey =
     coverage.primaryCityName || coverage.primaryCityId || availableCities[0] || 'Lagos';
   const baseCityZones =
-    DEFAULT_CITY_ZONES[currentCityKey] ?? DEFAULT_CITY_ZONES['Lagos'] ?? [];
+    COVERAGE_CITY_ZONES[currentCityKey] ?? COVERAGE_CITY_ZONES['Lagos'] ?? [];
   const renderedZones = Array.from(
     new Set([...baseCityZones, ...(coverage.coverageNeighbourhoods || [])])
   );

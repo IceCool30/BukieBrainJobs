@@ -180,6 +180,7 @@ describe('BW-001 Suite 8: Route Integration & Security Guard Contracts (INT-001 
     render(<BrainWorkerRegisterPage />);
 
     expect(screen.getByRole('heading', { name: /BrainWorker Registration|Become a BrainWorker/i })).toBeInTheDocument();
+    expect(screen.getByText(/Join BukieBrainJobs as a BrainWorker/)).toBeInTheDocument();
     expect(screen.getByLabelText(/Full Name|Name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Email Address|Email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Phone Number|Phone/i)).toBeInTheDocument();
