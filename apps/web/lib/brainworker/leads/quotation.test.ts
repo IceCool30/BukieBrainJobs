@@ -60,6 +60,25 @@ describe('BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)', () => {
       expect(typeof result.respondedAt).toBe('string');
       expect(new Date(result.respondedAt).getTime()).not.toBeNaN();
     }
+
+    // Negative assertion: acceptCustomerRate is strictly forbidden on a WORKER_QUOTE lead
+    seedLead(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      leadOwnedByA({
+        id: 'lead-worker-quote-only-001',
+        invitationId: 'inv-worker-quote-only-001',
+        pricingMode: 'WORKER_QUOTE',
+      }),
+    );
+
+    const quoteModeResult = await consumer.acceptCustomerRate(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      'inv-worker-quote-only-001',
+    );
+    expect(quoteModeResult.ok).toBe(false);
+    if (!quoteModeResult.ok) {
+      expect(quoteModeResult.reason).toBe('INVALID_STATE');
+    }
   });
 
   // -------------------------------------------------------------------------
@@ -125,12 +144,22 @@ describe('BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)', () => {
         estimatedHours: 3,
       }),
     ).rejects.toThrow(/materialsAmountKobo/);
+
+    // Fractional materials amount rejected
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 200000,
+        materialsAmountKobo: 100.5,
+        diagnosticFeeKobo: 50000,
+        estimatedHours: 3,
+      }),
+    ).rejects.toThrow(/materialsAmountKobo/);
   });
 
   // -------------------------------------------------------------------------
   // QUO-004: Catalog diagnostic fee sourcing
   // -------------------------------------------------------------------------
-  it('QUO-004: enforces non-negative integer diagnostic fee matching catalog', async () => {
+  it('QUO-004: enforces diagnostic fee sourced from active provider catalog and rejects mismatched or non-integer fees', async () => {
     const { repository, seedLead } = createLeadsTestHarness();
     seedLead(
       FIXTURE_APPROVED_BRAINWORKER_A,
@@ -138,6 +167,7 @@ describe('BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)', () => {
     );
     const consumer = createQuotationConsumer(repository);
 
+    // Sourced matching fee (50000 kobo matching provider catalog) succeeds
     const validQuote = await consumer.submitQuote(
       FIXTURE_APPROVED_BRAINWORKER_A,
       'inv-owned-a-001',
@@ -149,6 +179,15 @@ describe('BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)', () => {
     );
     expect(validQuote.diagnosticFeeKobo).toBe(50000);
 
+    // Mismatched positive fee (51000 kobo != catalog 50000 kobo) rejected
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 150000,
+        diagnosticFeeKobo: 51000,
+        estimatedHours: 1.5,
+      }),
+    ).rejects.toThrow(/diagnosticFee|catalog/i);
+
     // Negative diagnostic fee rejected
     await expect(
       consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
@@ -156,7 +195,16 @@ describe('BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)', () => {
         diagnosticFeeKobo: -1,
         estimatedHours: 1.5,
       }),
-    ).rejects.toThrow(/diagnosticFeeKobo/);
+    ).rejects.toThrow(/diagnosticFee/);
+
+    // Fractional diagnostic fee rejected
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 150000,
+        diagnosticFeeKobo: 50000.5,
+        estimatedHours: 1.5,
+      }),
+    ).rejects.toThrow(/diagnosticFee/);
   });
 
   // -------------------------------------------------------------------------
@@ -310,6 +358,15 @@ describe('BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)', () => {
     });
     const { repository, seedLead } = createLeadsTestHarness();
     seedLead(FIXTURE_APPROVED_BRAINWORKER_A, rawLead);
+
+    // Initial state check
+    const leadBefore = await repository.getLead(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      rawLead.id,
+    );
+    expect(leadBefore?.invitationState).toBe('PENDING');
+    expect(leadBefore?.jobId).toBe('job-quotation-active-500');
+
     const consumer = createQuotationConsumer(repository);
 
     const quote = await consumer.submitQuote(
@@ -322,13 +379,25 @@ describe('BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)', () => {
       },
     );
 
+    // Quote is PENDING and strictly separate from booking confirmation
     expect(quote.status).toBe('PENDING');
-    // Verifies lead customer job remains intact and unmodified
-    const lead = await repository.getLead(FIXTURE_APPROVED_BRAINWORKER_A, rawLead.id);
-    expect(lead?.jobId).toBe('job-quotation-active-500');
-    // Does not create a payment or booking assignment on the quote object
+
+    // Verifies lead customer job and invitation state remain intact and unmutated to booked/confirmed
+    const leadAfter = await repository.getLead(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      rawLead.id,
+    );
+    expect(leadAfter?.jobId).toBe('job-quotation-active-500');
+    expect(leadAfter?.invitationState).toBe('PENDING');
+
+    // Quotation contract boundary: assert quote does not contain booking, escrow, or payment fields
+    expect(quote).not.toHaveProperty('bookingId');
+    expect(quote).not.toHaveProperty('bookingStatus');
+    expect(quote).not.toHaveProperty('paymentAuthorizationId');
     expect(quote).not.toHaveProperty('paymentStatus');
     expect(quote).not.toHaveProperty('escrowId');
-    expect(quote).not.toHaveProperty('bookingId');
+    expect(quote).not.toHaveProperty('escrowStatus');
+    expect(quote).not.toHaveProperty('payoutId');
+    expect(quote).not.toHaveProperty('settlementStatus');
   });
 });
