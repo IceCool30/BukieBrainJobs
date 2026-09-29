@@ -187,13 +187,25 @@ export function ConversationHub({
             <Link
               key={conversation.jobId}
               href={`/messages/${conversation.jobId}`}
-              className="block no-underline focus:outline-none"
+              aria-current={activeJobId === conversation.jobId ? 'page' : undefined}
+              onClick={(event) => {
+                if (
+                  !onSelectConversation ||
+                  event.button !== 0 ||
+                  event.metaKey ||
+                  event.ctrlKey ||
+                  event.shiftKey ||
+                  event.altKey
+                ) return;
+                event.preventDefault();
+                onSelectConversation(conversation.jobId);
+              }}
+              className="block no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F8F9FF]"
             >
               <ConversationCard
                 conversation={conversation}
                 isActive={activeJobId === conversation.jobId}
                 currentUserId={currentUserId}
-                onSelect={onSelectConversation}
               />
             </Link>
           ))}

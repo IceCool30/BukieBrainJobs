@@ -8,7 +8,6 @@ export interface ConversationCardProps {
   conversation: ConversationSummary;
   isActive?: boolean | undefined;
   currentUserId?: string | undefined;
-  onSelect?: ((jobId: string) => void) | undefined;
 }
 
 function getInitials(name: string): string {
@@ -74,10 +73,8 @@ export function ConversationCard({
   conversation,
   isActive = false,
   currentUserId,
-  onSelect,
 }: ConversationCardProps) {
   const {
-    jobId,
     referenceCode,
     serviceTitle,
     participant,
@@ -86,28 +83,12 @@ export function ConversationCard({
     lastMessageAt,
   } = conversation;
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    onSelect?.(jobId);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onSelect?.(jobId);
-    }
-  };
-
   const formattedTime = formatRelativeTimestamp(lastMessageAt);
 
   return (
     <article
       role="article"
-      tabIndex={0}
-      aria-selected={isActive ? 'true' : 'false'}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      className={`group relative flex items-start gap-3.5 p-4 rounded-2xl border transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] ${
+      className={`group relative flex items-start gap-3.5 p-4 rounded-2xl border transition-all ${
         isActive
           ? 'bg-slate-50/80 border-[#001A41] shadow-xs'
           : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/40 shadow-xs'

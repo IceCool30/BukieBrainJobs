@@ -11,6 +11,7 @@ import {
 } from '@bukiebrainjobs/types';
 import { canTransition, InvalidTransitionError } from '@bukiebrainjobs/api-types';
 import { generateJobReferenceCode, formatNairaFromKobo } from '@bukiebrainjobs/utils';
+import { CreateJobSchema, CustomerJobCreationSchema } from '@bukiebrainjobs/validation';
 import { MOCK_CUSTOMER_ACTIVITIES } from './index';
 
 const STORAGE_KEY = 'bukiebrainjobs_mock_customer_activities_v1';
@@ -132,6 +133,10 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
       throw new Error('[Repository] Unauthorized: customerId is required');
     }
 
+    const validatedPayload = 'state' in payload
+      ? CreateJobSchema.parse(payload)
+      : CustomerJobCreationSchema.parse(payload);
+
     // Technical UUID primary key
     const id =
       typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
@@ -140,22 +145,22 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
 
     // Authoritative durable human-readable reference code
     const referenceCode =
-      'referenceCode' in payload && payload.referenceCode
-        ? payload.referenceCode
+      'referenceCode' in validatedPayload && validatedPayload.referenceCode
+        ? validatedPayload.referenceCode
         : generateJobReferenceCode();
 
     const presentation = mapJobStatusToPresentation('OPEN');
 
     // Decision A: Customer budget vs worker rate (integer kobo representation)
     let budgetKobo: number | undefined;
-    if ('customerBudgetKobo' in payload && typeof payload.customerBudgetKobo === 'number') {
-      budgetKobo = payload.customerBudgetKobo;
+    if ('customerBudgetKobo' in validatedPayload && typeof validatedPayload.customerBudgetKobo === 'number') {
+      budgetKobo = validatedPayload.customerBudgetKobo;
     } else if (
-      'estimatedTotalKobo' in payload &&
-      typeof payload.estimatedTotalKobo === 'number' &&
-      payload.estimatedTotalKobo > 0
+      'estimatedTotalKobo' in validatedPayload &&
+      typeof validatedPayload.estimatedTotalKobo === 'number' &&
+      validatedPayload.estimatedTotalKobo > 0
     ) {
-      budgetKobo = payload.estimatedTotalKobo;
+      budgetKobo = validatedPayload.estimatedTotalKobo;
     }
 
     const formattedBudget =
@@ -164,21 +169,23 @@ export class MockCustomerActivityRepository implements ICustomerActivityReposito
         : 'Estimate Provided';
 
     // Staged location: address, optional landmark, city
-    const landmarkStr = 'landmark' in payload && payload.landmark ? ` (${payload.landmark})` : '';
-    const locationDisplay = `${payload.address}${landmarkStr}, ${payload.city}`;
+    const landmarkStr = 'landmark' in validatedPayload && validatedPayload.landmark
+      ? ` (${validatedPayload.landmark})`
+      : '';
+    const locationDisplay = `${validatedPayload.address}${landmarkStr}, ${validatedPayload.city}`;
 
     const newActivity: CustomerActivityItem = {
       id,
       customerId: custId,
       type: 'job_request',
-      title: payload.title,
-      description: payload.description,
+      title: validatedPayload.title,
+      description: validatedPayload.description,
       status: presentation.status,
       statusLabel: presentation.label,
-      service: payload.title,
+      service: validatedPayload.title,
       category: 'general',
       location: locationDisplay,
-      schedule: payload.scheduledStartAt ? 'Scheduled Window' : 'Flexible / Recently Posted',
+      schedule: validatedPayload.scheduledStartAt ? 'Scheduled Window' : 'Flexible / Recently Posted',
       budgetOrPrice: formattedBudget,
       budgetKobo,
       jobStatus: 'OPEN',
@@ -440,4 +447,3 @@ export function dispatchDomainInvitation(
   repo.reset(updatedActivities);
   return { ...updated };
 }
-

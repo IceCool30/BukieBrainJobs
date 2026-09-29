@@ -283,6 +283,43 @@ describe('BW-002 Operations Repository & Tenant Isolation (Suite 2: REP-001 to R
         travelRadiusKm: 25,
       })
     ).rejects.toThrow(OperationsValidationError);
+
+    await expect(
+      repository.saveCoverage(FIXTURE_APPROVED_BRAINWORKER_A, {
+        primaryCityId: 'Lagos',
+        primaryCityName: 'Lagos',
+        coverageNeighbourhoods: ['Bodija'],
+        travelRadiusKm: 25,
+      })
+    ).rejects.toThrow(OperationsValidationError);
+  });
+
+  it('REP-005: normalizes zone whitespace and letter case to canonical values before persisting coverage', async () => {
+    const { repository } = createOperationsTestHarness();
+
+    const saved = await repository.saveCoverage(FIXTURE_APPROVED_BRAINWORKER_A, {
+      primaryCityId: 'Lagos',
+      primaryCityName: 'Lagos',
+      coverageNeighbourhoods: ['  iKeJa  ', 'yAbA'],
+      travelRadiusKm: 25,
+    });
+
+    expect(saved.coverageNeighbourhoods).toEqual(['Ikeja', 'Yaba']);
+    const persisted = await repository.getCoverage(FIXTURE_APPROVED_BRAINWORKER_A);
+    expect(persisted.coverageNeighbourhoods).toEqual(['Ikeja', 'Yaba']);
+  });
+
+  it('REP-005: rejects a normalized known zone that belongs to another city', async () => {
+    const { repository } = createOperationsTestHarness();
+
+    await expect(
+      repository.saveCoverage(FIXTURE_APPROVED_BRAINWORKER_A, {
+        primaryCityId: 'Lagos',
+        primaryCityName: 'Lagos',
+        coverageNeighbourhoods: ['  bOdIjA  '],
+        travelRadiusKm: 25,
+      })
+    ).rejects.toThrow(/does not belong to primary city 'Lagos'/);
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

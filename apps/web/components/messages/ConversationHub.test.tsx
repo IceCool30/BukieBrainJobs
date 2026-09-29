@@ -548,9 +548,21 @@ describe('ConversationHub (TDD Suite 4: HUB-001 to HUB-012)', () => {
       expect(handleSelect).toHaveBeenCalledWith('job-act-001');
     });
 
-    it('supports keyboard navigation via Enter key on a focused card', () => {
-      const handleSelect = vi.fn();
+    it('provides a native link target for keyboard activation', () => {
+      render(
+        <ConversationHub
+          conversations={ALL_MOCK_CONVERSATIONS}
+          currentUserId={CURRENT_USER_ID}
+        />
+      );
 
+      const link = screen.getByRole('link', { name: /fatima bello/i });
+      expect(link.tagName).toBe('A');
+      expect(link).toHaveAttribute('href', '/messages/job-act-002');
+    });
+
+    it('preserves native behavior for modified and non-primary clicks', () => {
+      const handleSelect = vi.fn();
       render(
         <ConversationHub
           conversations={ALL_MOCK_CONVERSATIONS}
@@ -559,17 +571,21 @@ describe('ConversationHub (TDD Suite 4: HUB-001 to HUB-012)', () => {
         />
       );
 
-      const secondCard = screen.getAllByRole('article')[1]!;
-      fireEvent.keyDown(secondCard, { key: 'Enter', code: 'Enter' });
-
-      expect(handleSelect).toHaveBeenCalledWith('job-act-002');
+      const link = screen.getByRole('link', { name: /generator servicing & repair/i });
+      link.setAttribute('href', '#');
+      for (const modifiers of [
+        { ctrlKey: true },
+        { metaKey: true },
+        { shiftKey: true },
+        { altKey: true },
+        { button: 1 },
+      ]) {
+        expect(fireEvent.click(link, modifiers)).toBe(true);
+      }
+      expect(handleSelect).not.toHaveBeenCalled();
     });
-  });
 
-  // ── HUB-011: Highlights active conversation card in desktop split view ───
-
-  describe('HUB-011: Active Conversation Highlight', () => {
-    it('marks the active conversation card with aria-selected="true"', () => {
+    it('exposes one focusable link per conversation and keeps selection state on the link', () => {
       render(
         <ConversationHub
           conversations={ALL_MOCK_CONVERSATIONS}
@@ -578,12 +594,36 @@ describe('ConversationHub (TDD Suite 4: HUB-001 to HUB-012)', () => {
         />
       );
 
-      const cards = screen.getAllByRole('article');
-      expect(cards[0]).toHaveAttribute('aria-selected', 'true');
-      expect(cards[1]).toHaveAttribute('aria-selected', 'false');
+      const link = screen.getByRole('link', { name: /generator servicing & repair/i });
+      const card = within(link).getByRole('article');
+
+      expect(link).toHaveAttribute('aria-current', 'page');
+      expect(link.className).toContain('focus-visible:ring-2');
+      expect(link.className).toContain('focus-visible:ring-[#001A41]');
+      expect(card).not.toHaveAttribute('tabindex');
+      expect(card).not.toHaveAttribute('aria-selected');
+      expect(link.querySelectorAll('a, button, input, [tabindex]')).toHaveLength(0);
+    });
+  });
+
+  // ── HUB-011: Highlights active conversation card in desktop split view ───
+
+  describe('HUB-011: Active Conversation Highlight', () => {
+    it('marks the active conversation link as the current page', () => {
+      render(
+        <ConversationHub
+          conversations={ALL_MOCK_CONVERSATIONS}
+          currentUserId={CURRENT_USER_ID}
+          activeJobId="job-act-001"
+        />
+      );
+
+      const links = screen.getAllByRole('link').filter((link) => link.getAttribute('href')?.startsWith('/messages/'));
+      expect(links[0]).toHaveAttribute('aria-current', 'page');
+      expect(links[1]).not.toHaveAttribute('aria-current');
     });
 
-    it('marks all cards aria-selected="false" when activeJobId is undefined', () => {
+    it('does not mark a conversation link current when activeJobId is undefined', () => {
       render(
         <ConversationHub
           conversations={ALL_MOCK_CONVERSATIONS}
@@ -591,10 +631,9 @@ describe('ConversationHub (TDD Suite 4: HUB-001 to HUB-012)', () => {
         />
       );
 
-      const cards = screen.getAllByRole('article');
-      for (const card of cards) {
-        expect(card).toHaveAttribute('aria-selected', 'false');
-      }
+      const links = screen.getAllByRole('link').filter((link) => link.getAttribute('href')?.startsWith('/messages/'));
+      expect(links).toHaveLength(4);
+      for (const link of links) expect(link).not.toHaveAttribute('aria-current');
     });
   });
 

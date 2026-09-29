@@ -112,7 +112,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
             Become a BrainWorker
           </h1>
           <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-            Join the verified artisan network. Complete your provider registration to begin the onboarding and verification process.
+            Join BukieBrainJobs as a BrainWorker. Complete your registration to begin onboarding and profile verification.
           </p>
         </div>
 

@@ -46,8 +46,12 @@ export default function CustomerHomepage() {
     goToDiscovery(details);
   };
 
-  const handleSelectCategory = (category: ServiceCategory) => {
-    goToDiscovery({ service: category.title, categoryId: category.id });
+  const handleSelectCategory = (category: ServiceCategory, city?: string) => {
+    goToDiscovery({
+      service: category.title,
+      categoryId: category.id,
+      ...(city ? { city } : {}),
+    });
   };
 
 

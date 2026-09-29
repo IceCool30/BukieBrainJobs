@@ -21,14 +21,12 @@ import {
 } from '../lib/mock/homepage-data';
 import PartnerBar from './PartnerBar';
 import FeaturedBrainWorkers from './FeaturedBrainWorkers';
-import HowItWorks from './HowItWorks';
-import FAQSection from './FAQSection';
 import ServiceCategoryRail from './ServiceCategoryRail';
 
 interface PwaHomeProps {
   onOpenDrawer: () => void;
   onSearchSubmit?: (service: string, location: string) => void;
-  onSelectCategory?: (category: ServiceCategory) => void;
+  onSelectCategory?: (category: ServiceCategory, city: string) => void;
 }
 
 const SYNONYM_MAP: Record<string, string[]> = {
@@ -176,7 +174,7 @@ export default function PwaHome({
 
     const exact = SERVICE_CATEGORIES.find((category) => category.title.toLowerCase() === finalQuery.toLowerCase());
     if (exact) {
-      onSelectCategory?.(exact);
+      onSelectCategory?.(exact, selectedLocation.name);
       return;
     }
     onSearchSubmit?.(finalQuery, selectedLocation.name);
@@ -467,7 +465,7 @@ export default function PwaHome({
                           onClick={() => {
                             setQuery(category.title);
                             setSearchOpen(false);
-                            onSelectCategory?.(category);
+                            onSelectCategory?.(category, selectedLocation.name);
                           }}
                           id={`pwa-service-option-${category.id}`}
                           role="option"
@@ -509,7 +507,7 @@ export default function PwaHome({
       {/* Popular Services Grid */}
       <div ref={servicesRef} className={`motion-reveal px-4 pt-6${servicesVisible ? ' is-visible' : ''}`}>
         <div className="motion-reveal-item">
-          <ServiceCategoryRail onSelectCategory={onSelectCategory} />
+          <ServiceCategoryRail onSelectCategory={(category) => onSelectCategory?.(category, selectedLocation.name)} />
         </div>
 
         <div className="motion-reveal-item flex items-baseline justify-between pt-5">
@@ -524,8 +522,8 @@ export default function PwaHome({
             <button
               key={cat.id}
               type="button"
-              onClick={() => onSelectCategory?.(cat)}
-              className="motion-press motion-reveal-item group text-left block rounded-2xl active:-translate-y-px focus-visible:outline-none"
+              onClick={() => onSelectCategory?.(cat, selectedLocation.name)}
+              className="motion-press motion-reveal-item group text-left block rounded-2xl active:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F8F9FF]"
             >
               <div className="relative aspect-[5/4] overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-sm">
                 <Image
@@ -546,8 +544,6 @@ export default function PwaHome({
       </div>
 
       <FeaturedBrainWorkers profileCity={selectedLocation.name} />
-      <HowItWorks />
-      <FAQSection />
     </div>
   );
 }
