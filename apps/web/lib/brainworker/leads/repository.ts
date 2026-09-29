@@ -10,6 +10,7 @@
 // 5. Mutations verify invitation ownership and unresponded state (REP-006, REP-007).
 // 6. Mutations fail closed while offline; reads stay tenant-scoped (REP-008).
 // 7. Backing state is physically partitioned per BrainWorker ID (REP-010).
+// 8. Diagnostic fee is sourced from the active provider catalog, never client-authored, and fails closed if unresolvable (QUO-004).
 
 import type {
   IBrainWorkerLeadsRepository,
@@ -58,13 +59,12 @@ export type OperationalProfileResolver = (
 
 /**
  * Resolves the catalog diagnostic fee for a BrainWorker in integer kobo.
+ * Missing profiles, catalogs, storage errors, or invalid amounts must fail closed.
  */
 export type CatalogDiagnosticFeeResolver = (
   brainWorkerId: string,
   serviceId?: string
 ) => number | Promise<number>;
-
-export const DEFAULT_CATALOG_DIAGNOSTIC_FEE_KOBO = 50_000;
 
 export interface BrainWorkerLeadsRepositoryDependencies {
   /**
@@ -153,17 +153,51 @@ async function resolveProfileFromOperationsRepository(
 async function resolveDiagnosticFeeFromOperationsRepository(
   brainWorkerId: string
 ): Promise<number> {
+  let profile: BrainWorkerOperationalProfile | null;
   try {
-    const profile = await getBrainWorkerOperationsRepository().getOperationalProfile(
+    profile = await getBrainWorkerOperationsRepository().getOperationalProfile(
       brainWorkerId
     );
-    if (profile?.catalog && typeof profile.catalog.diagnosticFeeNgn === 'number') {
-      return profile.catalog.diagnosticFeeNgn * 100;
-    }
-  } catch {
-    // Fall back to standard catalog default
+  } catch (error) {
+    throw new Error(
+      `CATALOG_UNRESOLVED: Failed to resolve authoritative operational profile for BrainWorker '${brainWorkerId}': ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
   }
-  return DEFAULT_CATALOG_DIAGNOSTIC_FEE_KOBO;
+
+  if (!profile || !profile.catalog) {
+    throw new Error(
+      `CATALOG_UNRESOLVED: Authoritative operational profile or catalog not found for BrainWorker '${brainWorkerId}'.`
+    );
+  }
+
+  const rawFeeNgn = profile.catalog.diagnosticFeeNgn;
+  if (
+    typeof rawFeeNgn !== 'number' ||
+    !Number.isFinite(rawFeeNgn) ||
+    rawFeeNgn < 0
+  ) {
+    throw new Error(
+      `INVALID_CATALOG_DIAGNOSTIC_FEE: Provider catalog diagnostic fee is not a valid non-negative number (${String(
+        rawFeeNgn
+      )} NGN).`
+    );
+  }
+
+  const feeKobo = Math.round(rawFeeNgn * 100);
+  if (
+    !Number.isInteger(feeKobo) ||
+    !Number.isFinite(feeKobo) ||
+    feeKobo < 0 ||
+    Math.abs(feeKobo - rawFeeNgn * 100) > 1e-4
+  ) {
+    throw new Error(
+      `INVALID_CATALOG_DIAGNOSTIC_FEE: Catalog diagnostic fee (${rawFeeNgn} NGN) cannot be converted to a valid integer kobo amount.`
+    );
+  }
+
+  return feeKobo;
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -359,7 +393,7 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
       return { ok: false, reason: 'INVALID_STATE' };
     }
 
-    return this.respondToInvitation(brainWorkerId, invitationId, 'DECLINED', reason);
+    return this.respondToInvitation(brainWorkerId, invitationId, 'DECLINED');
   }
 
   /**
@@ -460,6 +494,16 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
     // QUO-004: Diagnostic fee must match active catalog diagnostic fee
     const expectedCatalogDiagnosticFeeKobo =
       await this.resolveCatalogDiagnosticFee(brainWorkerId, lead.serviceId);
+    if (
+      typeof expectedCatalogDiagnosticFeeKobo !== 'number' ||
+      !Number.isInteger(expectedCatalogDiagnosticFeeKobo) ||
+      !Number.isFinite(expectedCatalogDiagnosticFeeKobo) ||
+      expectedCatalogDiagnosticFeeKobo < 0
+    ) {
+      throw new Error(
+        `INVALID_CATALOG_DIAGNOSTIC_FEE: Resolved catalog fee is not a valid non-negative integer kobo amount.`
+      );
+    }
     if (diagnosticFeeKobo !== expectedCatalogDiagnosticFeeKobo) {
       throw new Error(
         `Invalid quote draft: diagnosticFeeKobo (${diagnosticFeeKobo}) must match active provider catalog fee (${expectedCatalogDiagnosticFeeKobo}).`
@@ -547,19 +591,23 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
   }
 }
 
-let defaultRepository: BrainWorkerLeadsRepository | null = null;
+// ─────────────────────────────────────────────────────────────────
+// Factory & singleton
+// ─────────────────────────────────────────────────────────────────
 
-export function createBrainWorkerLeadsRepository(
-  dependencies: BrainWorkerLeadsRepositoryDependencies = {}
-): BrainWorkerLeadsRepository {
-  return new BrainWorkerLeadsRepository(dependencies);
-}
+let defaultRepository: IBrainWorkerLeadsRepository | null = null;
 
 export function getBrainWorkerLeadsRepository(): IBrainWorkerLeadsRepository {
   if (!defaultRepository) {
-    defaultRepository = createBrainWorkerLeadsRepository();
+    defaultRepository = new BrainWorkerLeadsRepository();
   }
   return defaultRepository;
+}
+
+export function createBrainWorkerLeadsRepository(
+  dependencies: BrainWorkerLeadsRepositoryDependencies = {}
+): IBrainWorkerLeadsRepository {
+  return new BrainWorkerLeadsRepository(dependencies);
 }
 
 export function resetDefaultBrainWorkerLeadsRepository(): void {
