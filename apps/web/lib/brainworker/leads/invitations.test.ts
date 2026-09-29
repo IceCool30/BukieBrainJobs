@@ -1,5 +1,5 @@
 // apps/web/lib/brainworker/leads/invitations.test.ts
-// BW-003 Phase 3 RED: Invitation Responses (INV-001 to INV-010)
+// BW-003 Phase 3 GREEN: Invitation Responses (INV-001 to INV-010)
 // Authoritative References:
 // - docs/specs/BW-003-architecture-contract.md (Approved, Section 7)
 // - docs/specs/BW-003-test-first-implementation-plan.md (Approved, Phase 3)
@@ -25,7 +25,7 @@ import {
   createInvitationResponseConsumer,
 } from './invitations';
 
-describe('BW-003 Phase 3 RED: Invitation Responses (INV-001 to INV-010)', () => {
+describe('BW-003 Phase 3 GREEN: Invitation Responses (INV-001 to INV-010)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     if (typeof localStorage !== 'undefined') {

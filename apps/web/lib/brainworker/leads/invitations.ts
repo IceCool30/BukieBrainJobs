@@ -1,5 +1,5 @@
 // apps/web/lib/brainworker/leads/invitations.ts
-// BW-003 Phase 3 RED: Invitation Response Consumer (stub)
+// BW-003 Phase 3 GREEN: Invitation Response Consumer (INV-001 to INV-010)
 // Governed by: BW-003 Architecture Contract v1.0 & Test-First Implementation Plan v1.0
 //
 // Invariant Rules:
@@ -28,30 +28,34 @@ export interface InvitationResponseConsumer {
 }
 
 export class DefaultInvitationResponseConsumer implements InvitationResponseConsumer {
-  constructor(
-    private readonly repository: IBrainWorkerLeadsRepository = getBrainWorkerLeadsRepository()
-  ) {}
+  private readonly repository: IBrainWorkerLeadsRepository;
+
+  constructor(repository?: IBrainWorkerLeadsRepository) {
+    this.repository = repository ?? getBrainWorkerLeadsRepository();
+  }
 
   async accept(
-    _brainWorkerId: string,
-    _invitationId: string
+    brainWorkerId: string,
+    invitationId: string
   ): Promise<LeadMutationResult> {
-    throw new Error('RED: accept not implemented');
+    return this.repository.acceptInvitation(brainWorkerId, invitationId);
   }
 
   async decline(
-    _brainWorkerId: string,
-    _invitationId: string,
-    _reason: DeclineReason
+    brainWorkerId: string,
+    invitationId: string,
+    reason: DeclineReason
   ): Promise<LeadMutationResult> {
-    throw new Error('RED: decline not implemented');
+    return this.repository.declineInvitation(brainWorkerId, invitationId, reason);
   }
 }
 
 export function createInvitationResponseConsumer(
   repository?: IBrainWorkerLeadsRepository
 ): InvitationResponseConsumer {
-  return new DefaultInvitationResponseConsumer(repository);
+  return new DefaultInvitationResponseConsumer(
+    repository ?? getBrainWorkerLeadsRepository()
+  );
 }
 
 export async function acceptLeadInvitation(
