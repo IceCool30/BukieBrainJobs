@@ -68,6 +68,7 @@ export interface RawLeadData {
   attachmentRefs?: string[] | undefined;
   distanceKm?: number | undefined;
   invitationState: string;
+  declineReason?: string | undefined;
   sentAt: string;
 }
 
@@ -235,6 +236,9 @@ export function projectLeadForProvider<T extends RawLeadData>(
   }
   if (lead.distanceKm !== undefined) {
     projected.distanceKm = lead.distanceKm;
+  }
+  if (lead.declineReason !== undefined) {
+    projected.declineReason = lead.declineReason;
   }
 
   return projected;

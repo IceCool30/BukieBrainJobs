@@ -325,7 +325,7 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
       return { ok: false, reason: 'INVALID_STATE' };
     }
 
-    return this.respondToInvitation(brainWorkerId, invitationId, 'DECLINED');
+    return this.respondToInvitation(brainWorkerId, invitationId, 'DECLINED', reason);
   }
 
   /**
@@ -337,7 +337,8 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
   private async respondToInvitation(
     brainWorkerId: string,
     invitationId: string,
-    nextState: 'ACCEPTED' | 'DECLINED'
+    nextState: 'ACCEPTED' | 'DECLINED',
+    declineReason?: DeclineReason
   ): Promise<LeadMutationResult> {
     const lead = this.findLeadByInvitation(brainWorkerId, invitationId);
     if (!lead) {
@@ -353,12 +354,21 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
 
     const respondedAt = new Date().toISOString();
     lead.invitationState = nextState;
+    if (nextState === 'DECLINED' && declineReason) {
+      lead.declineReason = declineReason;
+    }
     this.notify(brainWorkerId, {
       type: 'lead_updated',
       lead: projectLeadForProvider(lead),
     });
 
-    return { ok: true, invitationId, state: nextState, respondedAt };
+    return {
+      ok: true,
+      invitationId,
+      state: nextState,
+      respondedAt,
+      ...(declineReason ? { declineReason } : {}),
+    };
   }
 
   async submitQuote(

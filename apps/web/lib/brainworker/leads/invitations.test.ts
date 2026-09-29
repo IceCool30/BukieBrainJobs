@@ -112,7 +112,7 @@ describe('BW-003 Phase 3 GREEN: Invitation Responses (INV-001 to INV-010)', () =
   // -------------------------------------------------------------------------
   // INV-005: Decline valid invitation
   // -------------------------------------------------------------------------
-  it('INV-005: decline valid invitation transitions state to DECLINED', async () => {
+  it('INV-005: decline valid invitation transitions state to DECLINED and records reason', async () => {
     const { repository, seedLead } = createLeadsTestHarness();
     seedLead(FIXTURE_APPROVED_BRAINWORKER_A, leadOwnedByA());
     const consumer = createInvitationResponseConsumer(repository);
@@ -127,13 +127,14 @@ describe('BW-003 Phase 3 GREEN: Invitation Responses (INV-001 to INV-010)', () =
     if (result.ok) {
       expect(result.invitationId).toBe('inv-owned-a-001');
       expect(result.state).toBe('DECLINED');
+      expect(result.declineReason).toBe('SCHEDULE_CONFLICT');
     }
   });
 
   // -------------------------------------------------------------------------
-  // INV-006: Decline uses canonical taxonomy
+  // INV-006: Decline uses canonical taxonomy and persists reason
   // -------------------------------------------------------------------------
-  it('INV-006: decline accepts each reason in the approved canonical taxonomy', async () => {
+  it('INV-006: decline accepts each reason in the approved canonical taxonomy and persists it', async () => {
     const canonicalReasons: readonly DeclineReason[] = [
       'SCHEDULE_CONFLICT',
       'OUTSIDE_COVERAGE_AREA',
@@ -148,9 +149,10 @@ describe('BW-003 Phase 3 GREEN: Invitation Responses (INV-001 to INV-010)', () =
 
     for (const [index, reason] of canonicalReasons.entries()) {
       const invId = `inv-canonical-${index}`;
+      const leadId = `lead-canonical-${index}`;
       seedLead(
         FIXTURE_APPROVED_BRAINWORKER_A,
-        leadOwnedByA({ id: `lead-canonical-${index}`, invitationId: invId }),
+        leadOwnedByA({ id: leadId, invitationId: invId }),
       );
 
       const result = await consumer.decline(
@@ -162,7 +164,16 @@ describe('BW-003 Phase 3 GREEN: Invitation Responses (INV-001 to INV-010)', () =
       expect(result.ok).toBe(true);
       if (result.ok) {
         expect(result.state).toBe('DECLINED');
+        expect(result.declineReason).toBe(reason);
       }
+
+      // Authoritative state assertion: reason must persist on the lead in repository store
+      const persistedLead = await repository.getLead(
+        FIXTURE_APPROVED_BRAINWORKER_A,
+        leadId,
+      );
+      expect(persistedLead?.invitationState).toBe('DECLINED');
+      expect(persistedLead?.declineReason).toBe(reason);
     }
   });
 
@@ -210,6 +221,7 @@ describe('BW-003 Phase 3 GREEN: Invitation Responses (INV-001 to INV-010)', () =
     );
     expect(updatedLead?.jobId).toBe('job-customer-active-100');
     expect(updatedLead?.invitationState).toBe('DECLINED');
+    expect(updatedLead?.declineReason).toBe('RATE_BUDGET_MISMATCH');
   });
 
   // -------------------------------------------------------------------------

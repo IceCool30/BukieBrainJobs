@@ -1,5 +1,5 @@
 // apps/web/lib/brainworker/leads/types.ts
-// BW-003 Phase 2 RED: Repository contract types
+// BW-003 Phase 3 GREEN: Repository & Lead contract types
 // Governed by: BW-003 Architecture Contract v1.0 (Sections 5, 7, 10, 11)
 
 import type { ProviderProjectedLead, LeadPricingMode } from './domain';
@@ -25,7 +25,13 @@ export interface LeadPage {
 }
 
 export type LeadMutationResult =
-  | { ok: true; invitationId: string; state: LeadInvitationState; respondedAt: string }
+  | {
+      ok: true;
+      invitationId: string;
+      state: LeadInvitationState;
+      respondedAt: string;
+      declineReason?: DeclineReason | undefined;
+    }
   | { ok: false; reason: LeadMutationFailureReason };
 
 export type LeadMutationFailureReason =
