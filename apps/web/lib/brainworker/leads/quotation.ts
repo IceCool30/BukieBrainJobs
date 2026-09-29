@@ -1,5 +1,5 @@
 // apps/web/lib/brainworker/leads/quotation.ts
-// BW-003 Phase 4 RED: Quotation Consumer (stub)
+// BW-003 Phase 4 GREEN: Quotation Consumer (QUO-001 to QUO-010)
 // Governed by: BW-003 Architecture Contract v1.0 & Test-First Implementation Plan v1.0
 //
 // Invariant Rules:
@@ -33,31 +33,48 @@ export interface QuotationConsumer {
 }
 
 export class DefaultQuotationConsumer implements QuotationConsumer {
-  constructor(
-    private readonly repository: IBrainWorkerLeadsRepository = getBrainWorkerLeadsRepository()
-  ) {}
+  private readonly repository: IBrainWorkerLeadsRepository;
+
+  constructor(repository?: IBrainWorkerLeadsRepository) {
+    this.repository = repository ?? getBrainWorkerLeadsRepository();
+  }
 
   async acceptCustomerRate(
-    _brainWorkerId: string,
-    _invitationId: string
+    brainWorkerId: string,
+    invitationId: string
   ): Promise<LeadMutationResult> {
-    throw new Error('RED: acceptCustomerRate not implemented');
+    return this.repository.acceptCustomerRate(brainWorkerId, invitationId);
   }
 
   async submitQuote(
-    _brainWorkerId: string,
-    _invitationId: string,
-    _quote: WorkerQuoteDraft,
-    _clientSubmittedTotalKobo?: number
+    brainWorkerId: string,
+    invitationId: string,
+    quote: WorkerQuoteDraft,
+    clientSubmittedTotalKobo?: number
   ): Promise<WorkerQuote> {
-    throw new Error('RED: submitQuote not implemented');
+    // QUO-006: Client-supplied total validation at consumer boundary
+    if (clientSubmittedTotalKobo !== undefined) {
+      const derivedTotal =
+        quote.laborAmountKobo +
+        (quote.materialsAmountKobo ?? 0) +
+        quote.diagnosticFeeKobo;
+      if (clientSubmittedTotalKobo !== derivedTotal) {
+        throw new Error(
+          `Conflicting client-supplied total: totalAmountKobo (${clientSubmittedTotalKobo}) does not match derived line sum (${derivedTotal}).`
+        );
+      }
+    }
+
+    return this.repository.submitQuote(brainWorkerId, invitationId, quote);
   }
 }
 
 export function createQuotationConsumer(
   repository?: IBrainWorkerLeadsRepository
 ): QuotationConsumer {
-  return new DefaultQuotationConsumer(repository);
+  return new DefaultQuotationConsumer(
+    repository ?? getBrainWorkerLeadsRepository()
+  );
 }
 
 export async function acceptCustomerPostedRate(

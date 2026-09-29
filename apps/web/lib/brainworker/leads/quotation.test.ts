@@ -1,5 +1,5 @@
 // apps/web/lib/brainworker/leads/quotation.test.ts
-// BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)
+// BW-003 Phase 4 GREEN: Quotation (QUO-001 to QUO-010)
 // Authoritative References:
 // - docs/specs/BW-003-architecture-contract.md (Approved, Section 8)
 // - docs/specs/BW-003-test-first-implementation-plan.md (Approved, Phase 4)
@@ -24,7 +24,7 @@ import {
   createQuotationConsumer,
 } from './quotation';
 
-describe('BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)', () => {
+describe('BW-003 Phase 4 GREEN: Quotation (QUO-001 to QUO-010)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     if (typeof localStorage !== 'undefined') {

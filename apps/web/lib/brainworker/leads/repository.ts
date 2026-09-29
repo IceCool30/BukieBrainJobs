@@ -1,5 +1,5 @@
 // apps/web/lib/brainworker/leads/repository.ts
-// BW-003 Phase 2 GREEN: Repository & Tenant Isolation (REP-001 to REP-010)
+// BW-003 Phase 4 GREEN: Repository & Tenant Isolation (REP-001 to REP-010)
 // Governed by: BW-003 Architecture Contract v1.0 & Test-First Implementation Plan v1.0
 //
 // Invariant Rules:
@@ -56,6 +56,16 @@ export type OperationalProfileResolver = (
   | null
   | Promise<LeadProviderOperationalProfile | null>;
 
+/**
+ * Resolves the catalog diagnostic fee for a BrainWorker in integer kobo.
+ */
+export type CatalogDiagnosticFeeResolver = (
+  brainWorkerId: string,
+  serviceId?: string
+) => number | Promise<number>;
+
+export const DEFAULT_CATALOG_DIAGNOSTIC_FEE_KOBO = 50_000;
+
 export interface BrainWorkerLeadsRepositoryDependencies {
   /**
    * Bridge to the authoritative operational profile source.
@@ -63,6 +73,10 @@ export interface BrainWorkerLeadsRepositoryDependencies {
    * inject a deterministic resolver; the gate is enforced here either way.
    */
   resolveOperationalProfile?: OperationalProfileResolver | undefined;
+  /**
+   * Bridge to resolve the active catalog diagnostic fee in integer kobo.
+   */
+  resolveCatalogDiagnosticFee?: CatalogDiagnosticFeeResolver | undefined;
 }
 
 const ACCEPTED_DECLINE_REASONS: readonly DeclineReason[] = [
@@ -136,6 +150,22 @@ async function resolveProfileFromOperationsRepository(
   }
 }
 
+async function resolveDiagnosticFeeFromOperationsRepository(
+  brainWorkerId: string
+): Promise<number> {
+  try {
+    const profile = await getBrainWorkerOperationsRepository().getOperationalProfile(
+      brainWorkerId
+    );
+    if (profile?.catalog && typeof profile.catalog.diagnosticFeeNgn === 'number') {
+      return profile.catalog.diagnosticFeeNgn * 100;
+    }
+  } catch {
+    // Fall back to standard catalog default
+  }
+  return DEFAULT_CATALOG_DIAGNOSTIC_FEE_KOBO;
+}
+
 // ─────────────────────────────────────────────────────────────────
 // Tenant-scoped store
 // ─────────────────────────────────────────────────────────────────
@@ -151,6 +181,7 @@ interface BrainWorkerLeadPartition {
 
 export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
   private readonly resolveOperationalProfile: OperationalProfileResolver;
+  private readonly resolveCatalogDiagnosticFee: CatalogDiagnosticFeeResolver;
   /** Physically partitioned per-tenant state (REP-010). */
   private readonly partitions = new Map<string, BrainWorkerLeadPartition>();
   private readonly subscribers = new Map<
@@ -164,6 +195,9 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
     this.resolveOperationalProfile =
       dependencies.resolveOperationalProfile ??
       resolveProfileFromOperationsRepository;
+    this.resolveCatalogDiagnosticFee =
+      dependencies.resolveCatalogDiagnosticFee ??
+      resolveDiagnosticFeeFromOperationsRepository;
   }
 
   // ── Authorization ───────────────────────────────────────────────
@@ -406,12 +440,30 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
       throw new Error('Invalid quote draft: estimatedHours must be a positive number.');
     }
 
+    if (quote?.scopeNotes !== undefined) {
+      if (typeof quote.scopeNotes !== 'string') {
+        throw new Error('Invalid quote draft: scopeNotes must be a string.');
+      }
+      if (quote.scopeNotes.length > 1000) {
+        throw new Error('Invalid quote draft: scopeNotes cannot exceed 1000 characters.');
+      }
+    }
+
     const lead = this.findLeadByInvitation(brainWorkerId, invitationId);
     if (!lead) {
       throw new Error('INVITATION_NOT_FOUND: No such invitation for this BrainWorker.');
     }
     if (lead.invitationState !== 'PENDING') {
       throw new Error(`ALREADY_RESPONDED: Invitation is ${lead.invitationState}.`);
+    }
+
+    // QUO-004: Diagnostic fee must match active catalog diagnostic fee
+    const expectedCatalogDiagnosticFeeKobo =
+      await this.resolveCatalogDiagnosticFee(brainWorkerId, lead.serviceId);
+    if (diagnosticFeeKobo !== expectedCatalogDiagnosticFeeKobo) {
+      throw new Error(
+        `Invalid quote draft: diagnosticFeeKobo (${diagnosticFeeKobo}) must match active provider catalog fee (${expectedCatalogDiagnosticFeeKobo}).`
+      );
     }
 
     // Integer-kobo total is derived by the repository, never client-authored.
@@ -443,6 +495,15 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
     this.assertAuthorizedTenant(brainWorkerId);
     await this.assertCompleteProfile(brainWorkerId);
     this.assertNotOffline();
+
+    const lead = this.findLeadByInvitation(brainWorkerId, invitationId);
+    if (!lead) {
+      return { ok: false, reason: 'INVITATION_NOT_FOUND' };
+    }
+    // QUO-001: Pricing mode separation
+    if (lead.pricingMode !== 'CUSTOMER_POSTED_RATE') {
+      return { ok: false, reason: 'INVALID_STATE' };
+    }
 
     return this.respondToInvitation(brainWorkerId, invitationId, 'ACCEPTED');
   }
