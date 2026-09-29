@@ -304,7 +304,7 @@ describe('BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)', () => {
   // -------------------------------------------------------------------------
   // QUO-008: Optional scope-note validation
   // -------------------------------------------------------------------------
-  it('QUO-008: preserves optional scope notes and accepts quote when notes are omitted', async () => {
+  it('QUO-008: validates optional scope notes, preserving valid text and rejecting excessive length or non-string inputs', async () => {
     const { repository, seedLead } = createLeadsTestHarness();
     seedLead(
       FIXTURE_APPROVED_BRAINWORKER_A,
@@ -312,6 +312,7 @@ describe('BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)', () => {
     );
     const consumer = createQuotationConsumer(repository);
 
+    // 1. Valid scope notes preserved
     const withNotes = await consumer.submitQuote(
       FIXTURE_APPROVED_BRAINWORKER_A,
       'inv-owned-a-001',
@@ -325,6 +326,39 @@ describe('BW-003 Phase 4 RED: Quotation (QUO-001 to QUO-010)', () => {
     expect(withNotes.scopeNotes).toBe(
       'Includes preliminary generator diagnostic and filter cleaning.',
     );
+
+    // 2. Omitted scope notes accepted
+    const withoutNotes = await consumer.submitQuote(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      'inv-owned-a-001',
+      {
+        laborAmountKobo: 100000,
+        diagnosticFeeKobo: 50000,
+        estimatedHours: 1,
+      },
+    );
+    expect(withoutNotes.scopeNotes).toBeUndefined();
+
+    // 3. Excessive scope-note length rejected (bounded at 1000 characters)
+    const excessiveNotes = 'A'.repeat(1001);
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 100000,
+        diagnosticFeeKobo: 50000,
+        estimatedHours: 1,
+        scopeNotes: excessiveNotes,
+      }),
+    ).rejects.toThrow(/scopeNotes/);
+
+    // 4. Non-string scope note rejected if received at runtime boundary
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 100000,
+        diagnosticFeeKobo: 50000,
+        estimatedHours: 1,
+        scopeNotes: 12345 as unknown as string,
+      }),
+    ).rejects.toThrow(/scopeNotes/);
   });
 
   // -------------------------------------------------------------------------
