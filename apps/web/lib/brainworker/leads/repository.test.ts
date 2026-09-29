@@ -1,5 +1,5 @@
 // apps/web/lib/brainworker/leads/repository.test.ts
-// BW-003 Phase 2 RED: Repository & Tenant Isolation (REP-001 to REP-010)
+// BW-003 Phase 2 GREEN: Repository & Tenant Isolation (REP-001 to REP-010)
 // Authoritative References:
 // - docs/specs/BW-003-architecture-contract.md (Approved)
 // - docs/specs/BW-003-test-first-implementation-plan.md (Approved)
@@ -256,9 +256,10 @@ describe('BW-003 Phase 2: Repository & Tenant Isolation (REP-001 to REP-010)', (
     const pageB = await harnessB.repository.getLeads(FIXTURE_APPROVED_BRAINWORKER_B);
     expect(pageB.items.every((item) => item.id.startsWith('lead-owned-b'))).toBe(true);
 
-    // Cross-tenant read still rejected
+    // Cross-tenant read still rejected: authenticated tenant B cannot read tenant A
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerB);
     await expect(
-      harnessA.repository.getLeads(FIXTURE_APPROVED_BRAINWORKER_B),
+      harnessA.repository.getLeads(FIXTURE_APPROVED_BRAINWORKER_A),
     ).rejects.toThrow(ForbiddenTenantAccessError);
   });
 });
