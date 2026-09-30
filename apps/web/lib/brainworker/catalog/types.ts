@@ -1,12 +1,9 @@
 // apps/web/lib/brainworker/catalog/types.ts
 // BW-002: BrainWorker Service Catalog & Availability Management Domain Types
-// Authoritative References:
-// - docs/specs/BW-002-architecture-contract.md (Approved, Section 3)
-// - docs/specs/BW-002-brainworker-service-catalog-and-availability.md (Approved)
-// - docs/specs/BW-002-test-first-implementation-plan.md (Approved)
+// Governed by: BW-002 Architecture Contract v1.2 & Test-First Implementation Plan v1.2
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Canonical Trade Registry Types
+// Canonical Category & Service Registry
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 export type CanonicalTradeCategoryId =
@@ -18,6 +15,17 @@ export type CanonicalTradeCategoryId =
   | 'painting'
   | 'masonry'
   | 'welding';
+
+export const CANONICAL_TRADE_CATEGORIES: readonly CanonicalTradeCategoryId[] = [
+  'generator',
+  'ac',
+  'plumbing',
+  'electrical',
+  'carpentry',
+  'painting',
+  'masonry',
+  'welding',
+];
 
 export type ServiceComplexityTier = 'standard' | 'complex' | 'commercial';
 
@@ -35,7 +43,7 @@ export interface CanonicalServiceDefinition {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Constants & Allowed Bounds (Strictly matching BW-002 Approved Spec)
+// Constants & Allowed Bounds
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 export const DIAGNOSTIC_FEE_BOUNDS = {
@@ -48,12 +56,14 @@ export const HOURLY_RATE_BOUNDS = {
   MAX_NGN: 50000,
 } as const;
 
+export const DEFAULT_DIAGNOSTIC_FEE_NGN = 5000;
+
 export const VALID_TRAVEL_RADII_KM = [5, 10, 15, 25, 50] as const;
 export type ValidTravelRadiusKm = (typeof VALID_TRAVEL_RADII_KM)[number];
 
 export const VALID_WORKING_HOURS = {
-  MIN: 6,
-  MAX: 22,
+  MIN_HOUR: 6,
+  MAX_HOUR: 22,
   MIN_WINDOW_HOURS: 2,
 } as const;
 
@@ -73,14 +83,11 @@ export type DayOfWeek = (typeof ORDERED_DAYS)[number];
 // Schedule & Catalog Domain Models
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-export interface WorkingHoursWindow {
-  startHour: number; // 6 to 20
-  endHour: number; // 8 to 22 (endHour > startHour && endHour - startHour >= 2)
-}
-
 export interface DaySchedule {
+  day: DayOfWeek;
   isActive: boolean;
-  windows: WorkingHoursWindow[];
+  startHour: number; // 0-23 (24h format, valid: 6 to 20)
+  endHour: number;   // 0-23 (24h format, valid: 8 to 22)
 }
 
 export type ServiceItemStatus = 'ACTIVE' | 'PAUSED';
