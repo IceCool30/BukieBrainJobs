@@ -33,6 +33,7 @@ const FIXTURE_EMPTY_CATALOG: BrainWorkerServiceCatalog = {
 
 type MockOperationsRepository = {
   getOperationalProfile: Mock;
+  getConfiguredCatalog: Mock;
   getServiceCatalog: Mock;
   saveServiceCatalog: Mock;
   getAvailability: Mock;
@@ -50,6 +51,7 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
     useBrainWorkerOperationsStore.getState().resetStore();
     mockRepository = {
       getOperationalProfile: vi.fn(),
+      getConfiguredCatalog: vi.fn().mockResolvedValue(FIXTURE_EMPTY_CATALOG),
       getServiceCatalog: vi.fn().mockResolvedValue(FIXTURE_EMPTY_CATALOG),
       saveServiceCatalog: vi.fn().mockImplementation(
         async (

@@ -241,7 +241,7 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     }
 
     const hasActiveService = catalog.services.some(
-      (service) => service && service.status === 'ACTIVE'
+      (s: ConfiguredServiceItem) => Boolean(s && s.status === 'ACTIVE')
     );
     if (!hasActiveService) {
       return null;

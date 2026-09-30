@@ -77,7 +77,6 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
       getCoverage: vi.fn().mockResolvedValue(FIXTURE_COVERAGE_A),
       saveCoverage: vi.fn().mockResolvedValue(FIXTURE_COVERAGE_A),
       getMatchingHydrationProfile: vi.fn(),
-      subscribeToOperationalProfile: vi.fn().mockReturnValue(() => {}),
     };
 
     mockOnboardingRepo = {
