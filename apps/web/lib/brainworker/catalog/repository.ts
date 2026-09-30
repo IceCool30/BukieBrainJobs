@@ -1,120 +1,86 @@
 // apps/web/lib/brainworker/catalog/repository.ts
-// BW-002: BrainWorker Operations Repository (Phase 2 GREEN Implementation)
-// Governed by: BW-002 Architecture Contract v1.2 (Sections 6 & 7) & Test-First Implementation Plan v1.2 (Suite 2)
+// BW-002: BrainWorker Operations Repository & State Persistence
+// Authoritative References:
+// - docs/specs/BW-002-architecture-contract.md (Approved, Section 3.2)
+// - docs/specs/BW-002-test-first-implementation-plan.md (Approved, Phase 2)
 
-import type { IBrainWorkerOnboardingRepository } from '../types';
-import { getBrainWorkerOnboardingRepository } from '../repository';
-import { getMockAuthenticatedUser } from '../../auth/storage';
-import {
-  CANONICAL_SERVICES_REGISTRY,
-  DEFAULT_DIAGNOSTIC_FEE_NGN,
-  ForbiddenTenantAccessError,
-  OperationsValidationError,
-  type IBrainWorkerOperationsRepository,
-  type BrainWorkerOperationalProfile,
-  type BrainWorkerServiceCatalog,
-  type BrainWorkerAvailability,
-  type BrainWorkerCoverage,
-  type ConfiguredServiceItem,
-  type DayOfWeek,
-  type DaySchedule,
-  type ServiceItemStatus,
-  type ValidTravelRadiusKm,
-  type MatchingHydrationProfile,
+import type {
+  IBrainWorkerOperationsRepository,
+  BrainWorkerOperationalProfile,
+  BrainWorkerServiceCatalog,
+  BrainWorkerAvailability,
+  BrainWorkerCoverage,
+  ConfiguredServiceItem,
+  DayOfWeek,
+  DaySchedule,
+  ValidTravelRadiusKm,
+  MatchingHydrationProfile,
 } from './types';
+import { ORDERED_DAYS } from './types';
+import { CANONICAL_SERVICES_REGISTRY } from './canonical-registry';
 import {
-  validateDiagnosticFee,
-  validateHourlyRate,
-  validateDaySchedule,
-  validateTravelRadius,
-  validateCanonicalServiceId,
+  OperationsValidationError,
+  validateServiceCatalog,
+  validateAvailability,
+  validateCoverage,
   isOperationalProfileComplete,
 } from './validation';
-import { COVERAGE_CITY_ZONES } from './cityZones';
+import { getBrainWorkerOnboardingRepository } from '../repository';
+import type { IBrainWorkerOnboardingRepository } from '../types';
+import { getMockAuthenticatedUser } from '../auth/storage';
 
 const STORAGE_KEY_PREFIX = 'bukie_bw_operations_';
 
-const ORDERED_DAYS: readonly DayOfWeek[] = [
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
-  'sunday',
-];
+export class ForbiddenTenantAccessError extends Error {
+  constructor(message = 'FORBIDDEN_TENANT_ACCESS: Caller is not authorized to access this resource') {
+    super(message);
+    this.name = 'ForbiddenTenantAccessError';
+  }
+}
 
-const DEFAULT_WEEKLY_SCHEDULE: Record<DayOfWeek, DaySchedule> = {
-  monday: { day: 'monday', isActive: true, startHour: 8, endHour: 18 },
-  tuesday: { day: 'tuesday', isActive: true, startHour: 8, endHour: 18 },
-  wednesday: { day: 'wednesday', isActive: true, startHour: 8, endHour: 18 },
-  thursday: { day: 'thursday', isActive: true, startHour: 8, endHour: 18 },
-  friday: { day: 'friday', isActive: true, startHour: 8, endHour: 18 },
-  saturday: { day: 'saturday', isActive: false, startHour: 9, endHour: 17 },
-  sunday: { day: 'sunday', isActive: false, startHour: 9, endHour: 17 },
-};
-
-export interface BrainWorkerOperationsRepositoryDependencies {
+export interface OperationsRepositoryDependencies {
   onboardingRepository?: IBrainWorkerOnboardingRepository | undefined;
 }
 
 export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRepository {
   protected readonly onboardingRepository: IBrainWorkerOnboardingRepository;
   private readonly inMemoryProfiles = new Map<string, BrainWorkerOperationalProfile>();
-  private readonly subscribers = new Map<
-    string,
-    Set<(profile: BrainWorkerOperationalProfile) => void>
-  >();
+  private readonly subscribers = new Map<string, Set<(profile: BrainWorkerOperationalProfile) => void>>();
 
-  constructor(dependencies: BrainWorkerOperationsRepositoryDependencies = {}) {
+  constructor(dependencies: OperationsRepositoryDependencies = {}) {
     this.onboardingRepository =
       dependencies.onboardingRepository ?? getBrainWorkerOnboardingRepository();
   }
 
-  private assertCallerAuthorization(brainWorkerId: string): void {
-    if (!brainWorkerId || typeof brainWorkerId !== 'string' || brainWorkerId.trim() === '') {
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Tenant Isolation & Identity Boundary (REP-006)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  protected assertCallerAuthorization(targetBrainWorkerId: string): void {
+    const caller = getMockAuthenticatedUser();
+
+    if (!caller) {
       throw new ForbiddenTenantAccessError(
-        'FORBIDDEN_TENANT_ACCESS: Valid BrainWorker ID is required.'
+        'FORBIDDEN_TENANT_ACCESS: Unauthenticated callers cannot access operations profiles.'
       );
     }
 
-    const currentUser = getMockAuthenticatedUser();
-    if (!currentUser) {
+    if (caller.role !== 'brainworker') {
       throw new ForbiddenTenantAccessError(
-        'FORBIDDEN_TENANT_ACCESS: Caller authentication is required.'
+        `FORBIDDEN_TENANT_ACCESS: Caller with role '${caller.role}' is not authorized to access operations profiles.`
       );
     }
 
-    if (currentUser.role !== 'brainworker') {
+    if (caller.id !== targetBrainWorkerId) {
       throw new ForbiddenTenantAccessError(
-        'FORBIDDEN_TENANT_ACCESS: Customer accounts cannot access BrainWorker operations.'
-      );
-    }
-
-    if (!currentUser.isBrainWorkerApproved) {
-      throw new ForbiddenTenantAccessError(
-        'FORBIDDEN_TENANT_ACCESS: Unapproved BrainWorkers cannot access operational configuration.'
-      );
-    }
-
-    if (currentUser.id !== brainWorkerId) {
-      throw new ForbiddenTenantAccessError(
-        `FORBIDDEN_TENANT_ACCESS: Session '${currentUser.id}' cannot access profile for '${brainWorkerId}'.`
+        `FORBIDDEN_TENANT_ACCESS: BrainWorker '${caller.id}' cannot access profile of BrainWorker '${targetBrainWorkerId}'.`
       );
     }
   }
 
-  private async getVerifiedCoverageCities(brainWorkerId: string): Promise<string[]> {
-    try {
-      const record = await this.onboardingRepository.getOnboardingRecord(brainWorkerId);
-      if (record?.trade?.coverageCities && Array.isArray(record.trade.coverageCities)) {
-        return record.trade.coverageCities;
-      }
-    } catch {
-      // In case onboarding repository throws or is not accessible, fail closed
-    }
-    return [];
-  }
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Storage & Profile Retrieval
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   private readStoredProfile(brainWorkerId: string): BrainWorkerOperationalProfile | null {
     if (typeof localStorage !== 'undefined') {
@@ -143,51 +109,53 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     return null;
   }
 
-  private persistProfile(
-    brainWorkerId: string,
-    profile: BrainWorkerOperationalProfile
-  ): void {
-    const copy = JSON.parse(JSON.stringify(profile)) as BrainWorkerOperationalProfile;
-    this.inMemoryProfiles.set(brainWorkerId, copy);
+  private persistProfile(brainWorkerId: string, profile: BrainWorkerOperationalProfile): void {
+    this.inMemoryProfiles.set(
+      brainWorkerId,
+      JSON.parse(JSON.stringify(profile)) as BrainWorkerOperationalProfile
+    );
 
     if (typeof localStorage !== 'undefined') {
       try {
-        localStorage.setItem(`${STORAGE_KEY_PREFIX}${brainWorkerId}`, JSON.stringify(profile));
+        localStorage.setItem(
+          `${STORAGE_KEY_PREFIX}${brainWorkerId}`,
+          JSON.stringify(profile)
+        );
       } catch {
-        // Ignore quota/access errors in restricted browser contexts
+        // In-memory fallback
       }
     }
   }
 
-  private notifySubscribers(
-    brainWorkerId: string,
-    profile: BrainWorkerOperationalProfile
-  ): void {
-    const subs = this.subscribers.get(brainWorkerId);
-    if (subs) {
-      const cloned = JSON.parse(JSON.stringify(profile)) as BrainWorkerOperationalProfile;
-      for (const callback of subs) {
-        try {
-          callback(cloned);
-        } catch {
-          // Prevent listener exceptions from breaking repo execution
-        }
-      }
-    }
-  }
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Default Profile Hydration from BW-001 Onboarding (REP-001)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   private async createDefaultProfile(
     brainWorkerId: string
   ): Promise<BrainWorkerOperationalProfile> {
-    const now = new Date().toISOString();
-    const verifiedCities = await this.getVerifiedCoverageCities(brainWorkerId);
-    const defaultCity = verifiedCities.length > 0 ? (verifiedCities[0] ?? '') : '';
+    const onboarding = await this.onboardingRepository.getWorkerById(brainWorkerId);
 
-    const profile: BrainWorkerOperationalProfile = {
+    const primaryCityId = onboarding?.primaryCityId ?? 'abuja';
+    const primaryCityName = onboarding?.primaryCityName ?? 'Abuja';
+    const now = new Date().toISOString();
+
+    const defaultWeeklySchedule = ORDERED_DAYS.reduce(
+      (acc, day) => {
+        acc[day] = {
+          isActive: false,
+          windows: [],
+        };
+        return acc;
+      },
+      {} as Record<DayOfWeek, DaySchedule>
+    );
+
+    const defaultProfile: BrainWorkerOperationalProfile = {
       brainWorkerId,
       catalog: {
         brainWorkerId,
-        diagnosticFeeNgn: DEFAULT_DIAGNOSTIC_FEE_NGN,
+        diagnosticFeeNgn: 5000,
         services: [],
         updatedAt: now,
       },
@@ -195,25 +163,28 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
         brainWorkerId,
         isAvailable: false,
         isEmergencyAvailable: false,
-        weeklySchedule: JSON.parse(JSON.stringify(DEFAULT_WEEKLY_SCHEDULE)) as Record<
-          DayOfWeek,
-          DaySchedule
-        >,
+        weeklySchedule: defaultWeeklySchedule,
         updatedAt: now,
       },
       coverage: {
         brainWorkerId,
-        primaryCityId: defaultCity,
-        primaryCityName: defaultCity,
+        primaryCityId,
+        primaryCityName,
         coverageNeighbourhoods: [],
         travelRadiusKm: 15,
         updatedAt: now,
       },
       isComplete: false,
+      updatedAt: now,
     };
 
-    return profile;
+    defaultProfile.isComplete = isOperationalProfileComplete(defaultProfile);
+    return defaultProfile;
   }
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Profile Summary & Component Queries
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   async getOperationalProfile(brainWorkerId: string): Promise<BrainWorkerOperationalProfile | null> {
     this.assertCallerAuthorization(brainWorkerId);
@@ -234,6 +205,31 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     return JSON.parse(JSON.stringify(profile!.catalog)) as BrainWorkerServiceCatalog;
   }
 
+  async getConfiguredCatalog(
+    brainWorkerId: string
+  ): Promise<BrainWorkerServiceCatalog | null> {
+    this.assertCallerAuthorization(brainWorkerId);
+
+    const stored = this.readStoredProfile(brainWorkerId);
+    if (!stored) {
+      return null;
+    }
+
+    const catalog = stored.catalog;
+    if (!catalog || !Array.isArray(catalog.services)) {
+      return null;
+    }
+
+    const hasActiveService = catalog.services.some(
+      (service) => service && service.status === 'ACTIVE'
+    );
+    if (!hasActiveService) {
+      return null;
+    }
+
+    return JSON.parse(JSON.stringify(catalog)) as BrainWorkerServiceCatalog;
+  }
+
   async saveServiceCatalog(
     brainWorkerId: string,
     catalog: {
@@ -241,64 +237,41 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
       services: Array<{
         serviceId: string;
         hourlyRateNgn: number;
-        status: ServiceItemStatus;
+        status: 'ACTIVE' | 'PAUSED';
       }>;
     }
   ): Promise<BrainWorkerServiceCatalog> {
     this.assertCallerAuthorization(brainWorkerId);
 
-    const feeValidation = validateDiagnosticFee(catalog.diagnosticFeeNgn);
-    if (!feeValidation.valid) {
-      throw new OperationsValidationError(
-        feeValidation.error ?? 'Diagnostic fee fails numerical boundary invariant.'
-      );
-    }
-
-    if (!Array.isArray(catalog.services)) {
-      throw new OperationsValidationError('Services must be an array.');
-    }
+    validateServiceCatalog(catalog);
 
     const now = new Date().toISOString();
+
     const validatedServices: ConfiguredServiceItem[] = [];
-    const seenServiceIds = new Set<string>();
+    for (const service of catalog.services) {
+      const canonical = CANONICAL_SERVICES_REGISTRY.find(
+        (entry) => entry.serviceId === service.serviceId
+      );
 
-    for (const item of catalog.services) {
-      if (seenServiceIds.has(item.serviceId)) {
+      if (!canonical) {
         throw new OperationsValidationError(
-          `Duplicate service ID '${item.serviceId}' specified in service catalog.`
-        );
-      }
-      seenServiceIds.add(item.serviceId);
-
-      const canonicalResult = validateCanonicalServiceId(item.serviceId);
-      if (!canonicalResult.valid || !canonicalResult.service) {
-        throw new OperationsValidationError(
-          canonicalResult.error ??
-            `Service ID '${item.serviceId}' does not exist in canonical registry.`
+          `Unknown service ID '${service.serviceId}' not in canonical registry.`
         );
       }
 
-      const rateValidation = validateHourlyRate(item.hourlyRateNgn);
-      if (!rateValidation.valid) {
+      if (
+        service.hourlyRateNgn < canonical.minHourlyRateNgn ||
+        service.hourlyRateNgn > canonical.maxHourlyRateNgn
+      ) {
         throw new OperationsValidationError(
-          rateValidation.error ??
-            `Invalid hourly rate for canonical service '${item.serviceId}'.`
-        );
-      }
-
-      if (item.status !== 'ACTIVE' && item.status !== 'PAUSED') {
-        throw new OperationsValidationError(
-          `Invalid status '${String(item.status)}' for service '${item.serviceId}'.`
+          `Hourly rate ₦${service.hourlyRateNgn} for '${service.serviceId}' is outside canonical bounds [₦${canonical.minHourlyRateNgn}, ₦${canonical.maxHourlyRateNgn}].`
         );
       }
 
       validatedServices.push({
-        serviceId: canonicalResult.service.serviceId,
-        categoryId: canonicalResult.service.categoryId,
-        serviceName: canonicalResult.service.serviceName,
-        hourlyRateNgn: item.hourlyRateNgn,
-        status: item.status,
-        updatedAt: now,
+        serviceId: service.serviceId,
+        hourlyRateNgn: service.hourlyRateNgn,
+        status: service.status,
       });
     }
 
@@ -353,14 +326,9 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     for (const day of ORDERED_DAYS) {
       const schedule = availability.weeklySchedule[day];
       if (!schedule) {
-        throw new OperationsValidationError(`Missing day schedule definition for '${day}'.`);
+        throw new OperationsValidationError(`Missing schedule entry for day '${day}'.`);
       }
-      const dayResult = validateDaySchedule(schedule);
-      if (!dayResult.valid) {
-        throw new OperationsValidationError(
-          dayResult.error ?? `Invalid day schedule for '${day}'.`
-        );
-      }
+      validateAvailability(schedule);
     }
 
     const now = new Date().toISOString();
@@ -420,58 +388,20 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
       throw new OperationsValidationError('Primary city ID must be a non-empty string.');
     }
 
-    const verifiedCities = await this.getVerifiedCoverageCities(brainWorkerId);
-    if (!verifiedCities.includes(coverage.primaryCityId)) {
+    // REP-005 Invariant: primaryCityId must match verified onboarding record
+    const onboarding = await this.onboardingRepository.getWorkerById(brainWorkerId);
+    if (onboarding && onboarding.primaryCityId && coverage.primaryCityId !== onboarding.primaryCityId) {
       throw new OperationsValidationError(
-        `Primary city '${coverage.primaryCityId}' is not among verified onboarding coverage cities (${verifiedCities.join(', ')}).`
+        `Primary city ID '${coverage.primaryCityId}' does not match onboarding verified city '${onboarding.primaryCityId}'.`
       );
     }
 
-    if (
-      !coverage.primaryCityName ||
-      typeof coverage.primaryCityName !== 'string' ||
-      !coverage.primaryCityName.trim()
-    ) {
-      throw new OperationsValidationError('Primary city name must be a non-empty string.');
-    }
-
-    if (
-      !Array.isArray(coverage.coverageNeighbourhoods) ||
-      coverage.coverageNeighbourhoods.length === 0
-    ) {
-      throw new OperationsValidationError(
-        'At least one operational neighbourhood/LGA must be designated.'
-      );
-    }
-
-    const primaryCityZones = COVERAGE_CITY_ZONES[coverage.primaryCityId] ?? [];
-    const knownZones = new Map(
-      Object.values(COVERAGE_CITY_ZONES).flatMap((zones) =>
-        zones.map((zone) => [zone.toLowerCase(), zone] as const)
-      )
-    );
-    const coverageNeighbourhoods = coverage.coverageNeighbourhoods.map((n) => {
-      if (typeof n !== 'string' || !n.trim()) {
-        throw new OperationsValidationError(
-          'Operational neighbourhoods/LGAs must be non-empty strings.'
-        );
-      }
-      const trimmedZone = n.trim();
-      const canonicalZone = knownZones.get(trimmedZone.toLowerCase());
-      if (canonicalZone && !primaryCityZones.includes(canonicalZone)) {
-        throw new OperationsValidationError(
-          `Operational zone '${n}' does not belong to primary city '${coverage.primaryCityId}'.`
-        );
-      }
-      return canonicalZone ?? trimmedZone;
+    const coverageNeighbourhoods = validateCoverage({
+      primaryCityId: coverage.primaryCityId,
+      primaryCityName: coverage.primaryCityName,
+      coverageNeighbourhoods: coverage.coverageNeighbourhoods,
+      travelRadiusKm: coverage.travelRadiusKm,
     });
-
-    const radiusResult = validateTravelRadius(coverage.travelRadiusKm);
-    if (!radiusResult.valid) {
-      throw new OperationsValidationError(
-        radiusResult.error ?? 'Travel radius fails validation invariant.'
-      );
-    }
 
     const now = new Date().toISOString();
     const currentProfile = (await this.getOperationalProfile(brainWorkerId))!;
@@ -500,9 +430,11 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     return JSON.parse(JSON.stringify(updatedCoverage)) as BrainWorkerCoverage;
   }
 
-  async getMatchingHydrationProfile(
-    brainWorkerId: string
-  ): Promise<MatchingHydrationProfile> {
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Matching Engine Hydration Adapter (REP-007, REP-010)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  async getMatchingHydrationProfile(brainWorkerId: string): Promise<MatchingHydrationProfile> {
     this.assertCallerAuthorization(brainWorkerId);
 
     const profile = (await this.getOperationalProfile(brainWorkerId))!;
@@ -530,48 +462,68 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
         JSON.stringify(profile.availability.weeklySchedule)
       ) as Record<DayOfWeek, DaySchedule>,
       travelRadiusKm: profile.coverage.travelRadiusKm,
+      coverageNeighbourhoods: [...profile.coverage.coverageNeighbourhoods],
       primaryCityId: profile.coverage.primaryCityId,
+      isOperationalReady: profile.isComplete,
     };
   }
 
-  subscribe(
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // Observer Subscription (REP-008)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  subscribeToOperationalProfile(
     brainWorkerId: string,
     callback: (profile: BrainWorkerOperationalProfile) => void
   ): () => void {
-    let subs = this.subscribers.get(brainWorkerId);
-    if (!subs) {
-      subs = new Set();
-      this.subscribers.set(brainWorkerId, subs);
+    let set = this.subscribers.get(brainWorkerId);
+    if (!set) {
+      set = new Set();
+      this.subscribers.set(brainWorkerId, set);
     }
-    subs.add(callback);
+    set.add(callback);
 
     return () => {
-      const currentSubs = this.subscribers.get(brainWorkerId);
-      if (currentSubs) {
-        currentSubs.delete(callback);
-        if (currentSubs.size === 0) {
+      const current = this.subscribers.get(brainWorkerId);
+      if (current) {
+        current.delete(callback);
+        if (current.size === 0) {
           this.subscribers.delete(brainWorkerId);
         }
       }
     };
   }
+
+  private notifySubscribers(brainWorkerId: string, profile: BrainWorkerOperationalProfile): void {
+    const subs = this.subscribers.get(brainWorkerId);
+    if (subs) {
+      const cloned = JSON.parse(JSON.stringify(profile)) as BrainWorkerOperationalProfile;
+      for (const cb of subs) {
+        try {
+          cb(cloned);
+        } catch {
+          // Swallow subscriber errors to protect persistence flow
+        }
+      }
+    }
+  }
 }
 
-let defaultOperationsRepository: IBrainWorkerOperationsRepository | null = null;
+let defaultBrainWorkerOperationsRepository: IBrainWorkerOperationsRepository | null = null;
 
 export function getBrainWorkerOperationsRepository(): IBrainWorkerOperationsRepository {
-  if (!defaultOperationsRepository) {
-    defaultOperationsRepository = new BrainWorkerOperationsRepository();
+  if (!defaultBrainWorkerOperationsRepository) {
+    defaultBrainWorkerOperationsRepository = new BrainWorkerOperationsRepository();
   }
-  return defaultOperationsRepository;
-}
-
-export function createBrainWorkerOperationsRepository(
-  dependencies: BrainWorkerOperationsRepositoryDependencies = {}
-): IBrainWorkerOperationsRepository {
-  return new BrainWorkerOperationsRepository(dependencies);
+  return defaultBrainWorkerOperationsRepository;
 }
 
 export function resetDefaultBrainWorkerOperationsRepository(): void {
-  defaultOperationsRepository = null;
+  defaultBrainWorkerOperationsRepository = null;
+}
+
+export function createBrainWorkerOperationsRepository(
+  dependencies: OperationsRepositoryDependencies = {}
+): IBrainWorkerOperationsRepository {
+  return new BrainWorkerOperationsRepository(dependencies);
 }

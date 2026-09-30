@@ -1,85 +1,73 @@
 // apps/web/lib/brainworker/leads/testing/harness.ts
-// Deterministic test harness for BW-003 Phase 2 Repository & Tenant Isolation
-// Governed by: BW-003 Architecture Contract v1.0 & Test-First Implementation Plan v1.0
-// Strictly for testing. Must never be imported by production code.
+// BW-003: Leads Test Harness & Deterministic Fixtures
 
-import type { IBrainWorkerLeadsRepository } from '../types';
-import type { LeadProviderOperationalProfile, RawLeadData } from '../domain';
+import type {
+  IBrainWorkerLeadsRepository,
+  BrainWorkerLeadsRepositoryDependencies,
+  AuthoritativeLeadInvitation,
+  ProviderProjectedLead,
+} from '../types';
+import { BrainWorkerLeadsRepository } from '../repository';
+import type { BrainWorkerOperationalProfile } from '../../catalog/types';
 import {
-  createBrainWorkerLeadsRepository,
-  resetDefaultBrainWorkerLeadsRepository,
-  type BrainWorkerLeadsRepositoryDependencies,
-  type OperationalProfileResolver,
-} from '../repository';
-import {
-  FIXTURE_APPROVED_BRAINWORKER_A,
-  FIXTURE_APPROVED_BRAINWORKER_B,
-  FIXTURE_INCOMPLETE_BRAINWORKER,
-  completeProviderContextA,
-  incompleteProviderContext,
-} from './fixtures';
+  FIXTURE_OPERATIONAL_PROFILE_A,
+  FIXTURE_OPERATIONAL_PROFILE_B,
+} from '../../catalog/testing/fixtures';
+import { FIXTURE_APPROVED_BRAINWORKER_A, FIXTURE_APPROVED_BRAINWORKER_B } from './fixtures';
 
 export interface LeadsTestHarness {
   repository: IBrainWorkerLeadsRepository;
-  seedLead: (brainWorkerId: string, lead: RawLeadData) => void;
-  setOffline: (offline: boolean) => void;
+  seedLead: (brainWorkerId: string, lead: AuthoritativeLeadInvitation) => void;
+  getRawLeads: (brainWorkerId: string) => Promise<ProviderProjectedLead[]>;
 }
 
-/**
- * Deterministic fixture-driven operational profile source. The repository
- * still enforces the completeness gate itself (REP-004); this resolver only
- * supplies the authoritative profile data the way the BW-002 operations
- * repository would in production.
- */
-const fixtureOperationalProfileResolver: OperationalProfileResolver = (
+const fixtureOperationalProfileResolver = async (
   brainWorkerId: string
-): LeadProviderOperationalProfile | null => {
-  if (brainWorkerId === FIXTURE_INCOMPLETE_BRAINWORKER) {
-    return incompleteProviderContext().operationalProfile;
+): Promise<BrainWorkerOperationalProfile | null> => {
+  if (brainWorkerId === FIXTURE_APPROVED_BRAINWORKER_A) {
+    return JSON.parse(
+      JSON.stringify(FIXTURE_OPERATIONAL_PROFILE_A)
+    ) as BrainWorkerOperationalProfile;
   }
-  if (
-    brainWorkerId === FIXTURE_APPROVED_BRAINWORKER_A ||
-    brainWorkerId === FIXTURE_APPROVED_BRAINWORKER_B
-  ) {
-    return completeProviderContextA().operationalProfile;
+  if (brainWorkerId === FIXTURE_APPROVED_BRAINWORKER_B) {
+    return JSON.parse(
+      JSON.stringify(FIXTURE_OPERATIONAL_PROFILE_B)
+    ) as BrainWorkerOperationalProfile;
   }
-  // Unknown workers fail closed as incomplete.
   return null;
 };
 
+export interface LeadsTestHarnessOptions {
+  dependencies?: BrainWorkerLeadsRepositoryDependencies | undefined;
+  useRealCatalogAuthority?: boolean | undefined;
+}
+
 export function createLeadsTestHarness(
-  options: {
-    dependencies?: BrainWorkerLeadsRepositoryDependencies | undefined;
-  } = {}
+  options: LeadsTestHarnessOptions = {}
 ): LeadsTestHarness {
-  const repository = createBrainWorkerLeadsRepository({
+  const defaultDeps: BrainWorkerLeadsRepositoryDependencies = {
     resolveOperationalProfile: fixtureOperationalProfileResolver,
-    resolveCatalogDiagnosticFee: () => 50_000,
+    ...(options.useRealCatalogAuthority ? {} : { resolveCatalogDiagnosticFee: () => 50_000 }),
+  };
+
+  const repository = createBrainWorkerLeadsRepository({
+    ...defaultDeps,
     ...options.dependencies,
   });
 
   return {
     repository,
-    seedLead: (brainWorkerId: string, lead: RawLeadData) => {
-      // Seeding is provided by the concrete repository test surface.
-      const seedable = repository as unknown as {
-        __testSeedLead?: (brainWorkerId: string, lead: RawLeadData) => void;
-      };
-      if (typeof seedable.__testSeedLead === 'function') {
-        seedable.__testSeedLead(brainWorkerId, lead);
-      }
+    seedLead: (brainWorkerId: string, lead: AuthoritativeLeadInvitation) => {
+      (repository as BrainWorkerLeadsRepository).seedLead(brainWorkerId, lead);
     },
-    setOffline: (offline: boolean) => {
-      const offlineable = repository as unknown as {
-        __testSetOffline?: (offline: boolean) => void;
-      };
-      if (typeof offlineable.__testSetOffline === 'function') {
-        offlineable.__testSetOffline(offline);
-      }
+    getRawLeads: async (brainWorkerId: string) => {
+      return repository.getLeads(brainWorkerId);
     },
   };
 }
 
-export function resetLeadsRepository(): void {
-  resetDefaultBrainWorkerLeadsRepository();
+export function createBrainWorkerLeadsRepository(
+  dependencies: BrainWorkerLeadsRepositoryDependencies = {}
+): IBrainWorkerLeadsRepository {
+  return new BrainWorkerLeadsRepository(dependencies);
 }

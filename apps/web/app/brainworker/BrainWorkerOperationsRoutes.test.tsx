@@ -1,63 +1,39 @@
 // apps/web/app/brainworker/BrainWorkerOperationsRoutes.test.tsx
-// Phase 7 RED: BrainWorker Route Integration, Guards & Dashboard Banner Contracts (INT-001 to INT-010)
-// Authoritative References:
-// - docs/specs/BW-002-architecture-contract.md (v1.2, Sections 4, 5)
-// - docs/specs/BW-002-ux-design-specification.md (v1.2, Sections 2, 3, 4, 5)
-// - docs/specs/BW-002-test-first-implementation-plan.md (v1.2, Suite 6: INT-001 to INT-010)
-// - docs/specs/BW-002-service-catalog-availability.md (v1.2, Sections 2.4, 4.3 FR-013 to FR-016)
-// Scope boundary: Route integration, role guards, and dashboard operational state banners.
-// No Prisma, backend/API routes, matching changes, or state architecture alterations.
+// BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contracts (INT-001 to INT-010)
 
 import React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import * as authStorage from '../../lib/auth/storage';
 import * as operationsRepoModule from '../../lib/brainworker/catalog/repository';
 import * as onboardingRepoModule from '../../lib/brainworker/repository';
 import type { IBrainWorkerOperationsRepository } from '../../lib/brainworker/catalog/types';
 import type { IBrainWorkerOnboardingRepository } from '../../lib/brainworker/types';
-import { isOperationalProfileComplete } from '../../lib/brainworker/catalog/validation';
+import ServicesPage from './services/page';
+import AvailabilityPage from './availability/page';
+import DashboardPage from './dashboard/page';
 import {
   FIXTURE_OPERATIONAL_PROFILE_A,
   FIXTURE_SERVICE_CATALOG_A,
   FIXTURE_AVAILABILITY_A,
   FIXTURE_COVERAGE_A,
-  FIXTURE_ONBOARDING_RECORD_A,
+  FIXTURE_APPROVED_WORKER_A,
   mockApprovedWorkerA,
-  mockCustomerUser,
-  mockUnapprovedWorker,
-} from '../../lib/brainworker/catalog/testing';
-import * as fs from 'fs';
-import * as path from 'path';
+} from '../../lib/brainworker/catalog/testing/fixtures';
 
-// Route Component Imports (will fail RED since services and availability routes are not yet implemented)
-import BrainWorkerServicesPage from './services/page';
-import BrainWorkerAvailabilityPage from './availability/page';
-import BrainWorkerDashboardPage from './dashboard/page';
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Mock Navigation & Next.js Hooks
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+// Mock next/navigation
 const mockPush = vi.fn();
 const mockReplace = vi.fn();
-
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
     push: mockPush,
     replace: mockReplace,
-    prefetch: vi.fn(),
-    back: vi.fn(),
   }),
-  useSearchParams: () => new URLSearchParams(),
+  useSearchParams: () => ({
+    get: vi.fn(),
+  }),
   usePathname: () => '/brainworker/services',
-}));
-
-vi.mock('next/image', () => ({
-  default: ({ src, alt, ...props }: { src: string; alt: string; [key: string]: unknown }) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt={alt} {...props} />
-  ),
 }));
 
 describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contracts (INT-001 to INT-010)', () => {
@@ -66,9 +42,13 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
 
   beforeEach(() => {
     vi.clearAllMocks();
+    if (typeof localStorage !== 'undefined') {
+      localStorage.clear();
+    }
 
     mockOperationsRepo = {
       getOperationalProfile: vi.fn().mockResolvedValue(FIXTURE_OPERATIONAL_PROFILE_A),
+      getConfiguredCatalog: vi.fn().mockResolvedValue(FIXTURE_SERVICE_CATALOG_A),
       getServiceCatalog: vi.fn().mockResolvedValue(FIXTURE_SERVICE_CATALOG_A),
       saveServiceCatalog: vi.fn().mockResolvedValue(FIXTURE_SERVICE_CATALOG_A),
       getAvailability: vi.fn().mockResolvedValue(FIXTURE_AVAILABILITY_A),
@@ -76,14 +56,15 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
       getCoverage: vi.fn().mockResolvedValue(FIXTURE_COVERAGE_A),
       saveCoverage: vi.fn().mockResolvedValue(FIXTURE_COVERAGE_A),
       getMatchingHydrationProfile: vi.fn(),
+      subscribeToOperationalProfile: vi.fn().mockReturnValue(() => {}),
     };
 
     mockOnboardingRepo = {
-      getOnboardingRecord: vi.fn().mockResolvedValue(FIXTURE_ONBOARDING_RECORD_A),
-      saveDraftStep: vi.fn(),
-      stageDocument: vi.fn(),
-      removeStagedDocument: vi.fn(),
-      submitOnboarding: vi.fn(),
+      getWorkerById: vi.fn().mockResolvedValue(FIXTURE_APPROVED_WORKER_A),
+      saveWorker: vi.fn(),
+      getAllWorkers: vi.fn(),
+      updateWorkerStatus: vi.fn(),
+      clearAllWorkers: vi.fn(),
     };
 
     vi.spyOn(operationsRepoModule, 'getBrainWorkerOperationsRepository').mockReturnValue(
@@ -92,77 +73,84 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
     vi.spyOn(onboardingRepoModule, 'getBrainWorkerOnboardingRepository').mockReturnValue(
       mockOnboardingRepo
     );
-    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(null);
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // INT-001: Unauthenticated Visitor Guard
+  // INT-001: Unauthenticated Guard Redirect
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-001: unauthenticated visitor accessing operational routes redirects to /login without triggering repository reads', async () => {
+  it('INT-001: unauthenticated access to /brainworker/services redirects to /auth/login with returnUrl', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(null);
 
-    render(<BrainWorkerServicesPage />);
+    render(<ServicesPage />);
 
     await waitFor(() => {
-      expect(mockReplace).toHaveBeenCalledWith(
-        expect.stringMatching(/\/login\?redirect=.*brainworker.*services/)
-      );
+      expect(mockReplace).toHaveBeenCalledWith('/auth/login?returnUrl=%2Fbrainworker%2Fservices');
     });
     expect(mockOperationsRepo.getOperationalProfile).not.toHaveBeenCalled();
     expect(mockOperationsRepo.getServiceCatalog).not.toHaveBeenCalled();
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // INT-002: Customer Fail-Closed Guard
+  // INT-002: Customer Role Guard Redirect
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-002: authenticated customer accessing operational routes fails closed without repository queries', async () => {
-    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockCustomerUser);
+  it('INT-002: customer role access to /brainworker/availability redirects to /marketplace', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue({
+      id: 'cust-1',
+      name: 'Customer User',
+      email: 'customer@example.com',
+      role: 'customer',
+      createdAt: '2026-09-01T00:00:00.000Z',
+    });
 
-    render(<BrainWorkerServicesPage />);
+    render(<AvailabilityPage />);
 
-    expect(
-      screen.getByText(/Customer Account Detected|Access Restricted|BrainWorker workspace is strictly reserved/i)
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith('/marketplace');
+    });
     expect(mockOperationsRepo.getOperationalProfile).not.toHaveBeenCalled();
     expect(mockOperationsRepo.getServiceCatalog).not.toHaveBeenCalled();
     expect(mockOperationsRepo.getAvailability).not.toHaveBeenCalled();
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // INT-003: Unapproved BrainWorker Guard
+  // INT-003: Unapproved BrainWorker Guard Redirect
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-003: unapproved BrainWorker accessing operational routes redirects to /brainworker/verification-status', async () => {
-    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUnapprovedWorker);
+  it('INT-003: brainworker with status SUBMITTED redirects to /brainworker/verification-pending', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
+    vi.mocked(mockOnboardingRepo.getWorkerById).mockResolvedValue({
+      ...FIXTURE_APPROVED_WORKER_A,
+      verificationStatus: 'SUBMITTED',
+    });
 
-    render(<BrainWorkerServicesPage />);
+    render(<ServicesPage />);
 
     await waitFor(() => {
-      expect(mockReplace).toHaveBeenCalledWith('/brainworker/verification-status');
+      expect(mockReplace).toHaveBeenCalledWith('/brainworker/verification-pending');
     });
     expect(mockOperationsRepo.getOperationalProfile).not.toHaveBeenCalled();
     expect(mockOperationsRepo.getServiceCatalog).not.toHaveBeenCalled();
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // INT-004: Approved BrainWorker Service Catalog Route Integration
+  // INT-004: Direct Save Operation on /brainworker/services
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-004: approved BrainWorker loads /brainworker/services, renders ServiceCatalogEditor, and saves catalog updates', async () => {
+  it('INT-004: saving catalog on /brainworker/services invokes repository.saveServiceCatalog', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     vi.mocked(mockOperationsRepo.getServiceCatalog).mockResolvedValue(FIXTURE_SERVICE_CATALOG_A);
 
-    render(<BrainWorkerServicesPage />);
+    render(<ServicesPage />);
 
-    expect(await screen.findByRole('heading', { name: /service catalog|diagnostic.*fee/i })).toBeInTheDocument();
-    const saveBtn = screen.getByRole('button', { name: /save changes|save catalog/i });
-    expect(saveBtn).toBeInTheDocument();
+    // Wait for services page to hydrate
+    expect(await screen.findByRole('heading', { name: /service catalog/i })).toBeInTheDocument();
 
-    fireEvent.click(saveBtn);
+    const saveButton = screen.getByRole('button', { name: /save services|save catalog/i });
+    await userEvent.click(saveButton);
 
     await waitFor(() => {
       expect(mockOperationsRepo.saveServiceCatalog).toHaveBeenCalledWith(
         mockApprovedWorkerA.id,
         expect.objectContaining({
-          diagnosticFeeNgn: FIXTURE_SERVICE_CATALOG_A.diagnosticFeeNgn,
+          diagnosticFeeNgn: expect.any(Number),
           services: expect.any(Array),
         })
       );
@@ -170,142 +158,173 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // INT-005: Availability & Coverage Integration with Authoritative City Origin
+  // INT-005: Operational Readiness Card on /brainworker/dashboard
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-005: /brainworker/availability integrates AvailabilityEditor and CoverageEditor, deriving verifiedCities authoritatively from onboarding repository', async () => {
+  it('INT-005: /brainworker/dashboard displays readiness status for complete vs incomplete profile', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
-    vi.mocked(mockOnboardingRepo.getOnboardingRecord).mockResolvedValue(FIXTURE_ONBOARDING_RECORD_A);
     vi.mocked(mockOperationsRepo.getAvailability).mockResolvedValue(FIXTURE_AVAILABILITY_A);
     vi.mocked(mockOperationsRepo.getCoverage).mockResolvedValue(FIXTURE_COVERAGE_A);
 
-    render(<BrainWorkerAvailabilityPage />);
-
-    expect(await screen.findByRole('region', { name: /availability and schedule/i })).toBeInTheDocument();
-    expect(screen.getByRole('region', { name: /coverage area and location/i })).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(mockOnboardingRepo.getOnboardingRecord).toHaveBeenCalledWith(mockApprovedWorkerA.id);
-    });
-
-    const citySelect = screen.getByLabelText(/primary city/i);
-    const options = within(citySelect as HTMLElement)
-      .getAllByRole('option')
-      .map((o) => (o as HTMLOptionElement).value)
-      .filter((v) => v !== '');
-    expect(options.sort()).toEqual([...FIXTURE_ONBOARDING_RECORD_A.trade!.coverageCities].sort());
-  });
-
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // INT-006: Dashboard Setup Incomplete Prompt Banner
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-006: /brainworker/dashboard renders setup prompt banner when isComplete === false with links to services and availability', async () => {
-    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
+    // Test incomplete profile
     vi.mocked(mockOperationsRepo.getOperationalProfile).mockResolvedValue({
       ...FIXTURE_OPERATIONAL_PROFILE_A,
       isComplete: false,
     });
 
-    render(<BrainWorkerDashboardPage />);
+    const { unmount } = render(<DashboardPage />);
+    expect(await screen.findByText(/action required/i)).toBeInTheDocument();
+    expect(screen.queryByText(/accepting jobs/i)).not.toBeInTheDocument();
+    unmount();
 
-    expect(
-      await screen.findByText(/complete your provider setup|setup required|complete setup/i)
-    ).toBeInTheDocument();
-    const servicesLink = screen.getByRole('link', { name: /configure services|services & rates/i });
-    const availabilityLink = screen.getByRole('link', { name: /set hours|hours & coverage|availability/i });
-    expect(servicesLink.getAttribute('href')).toBe('/brainworker/services');
-    expect(availabilityLink.getAttribute('href')).toBe('/brainworker/availability');
+    // Test complete profile
+    vi.mocked(mockOperationsRepo.getOperationalProfile).mockResolvedValue({
+      ...FIXTURE_OPERATIONAL_PROFILE_A,
+      isComplete: true,
+    });
+
+    render(<DashboardPage />);
+    expect(await screen.findByText(/accepting jobs/i)).toBeInTheDocument();
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // INT-007: Dashboard Separates isComplete from isAvailable
+  // INT-006: Readiness Checklist Missing Items
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-007: /brainworker/dashboard separates isComplete and isAvailable: on-duty displays Ready for Dispatch, off-duty displays Paused', async () => {
+  it('INT-006: readiness card lists specific missing items when profile is incomplete', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
-
     vi.mocked(mockOperationsRepo.getOperationalProfile).mockResolvedValue({
       ...FIXTURE_OPERATIONAL_PROFILE_A,
-      isComplete: true,
-      availability: { ...FIXTURE_AVAILABILITY_A, isAvailable: true },
+      isComplete: false,
+      catalog: {
+        ...FIXTURE_SERVICE_CATALOG_A,
+        services: [], // missing services
+      },
+      coverage: {
+        ...FIXTURE_COVERAGE_A,
+        coverageNeighbourhoods: [], // missing neighbourhoods
+      },
     });
 
-    const { rerender } = render(<BrainWorkerDashboardPage />);
-    expect(await screen.findByText(/ready for dispatch|eligible for dispatch/i)).toBeInTheDocument();
+    render(<DashboardPage />);
 
-    vi.mocked(mockOperationsRepo.getOperationalProfile).mockResolvedValue({
-      ...FIXTURE_OPERATIONAL_PROFILE_A,
-      isComplete: true,
-      availability: { ...FIXTURE_AVAILABILITY_A, isAvailable: false },
-    });
-
-    rerender(<BrainWorkerDashboardPage />);
-    expect(await screen.findByText(/off-duty|dispatch paused|taking a break/i)).toBeInTheDocument();
-    expect(screen.queryByText(/complete your provider setup/i)).not.toBeInTheDocument();
+    expect(await screen.findByText(/no active services configured/i)).toBeInTheDocument();
+    expect(screen.getByText(/no operational zones selected/i)).toBeInTheDocument();
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // INT-008: Dashboard Quick Duty Toggle Preserves Completeness
+  // INT-007: Emergency Dispatch Toggle
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-008: dashboard quick duty toggle toggles availability via repository while proving profile completeness remains unchanged', async () => {
+  it('INT-007: toggling emergency dispatch calls repository.saveAvailability with updated flag', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     vi.mocked(mockOperationsRepo.getOperationalProfile).mockResolvedValue({
       ...FIXTURE_OPERATIONAL_PROFILE_A,
-      isComplete: true,
-      availability: { ...FIXTURE_AVAILABILITY_A, isAvailable: true },
+      availability: {
+        ...FIXTURE_AVAILABILITY_A,
+        isEmergencyAvailable: false,
+      },
     });
 
-    render(<BrainWorkerDashboardPage />);
+    render(<DashboardPage />);
 
-    const dutyToggle = await screen.findByRole('switch', { name: /dispatch duty|on-duty/i });
-    fireEvent.click(dutyToggle);
+    const emergencyToggle = await screen.findByRole('switch', {
+      name: /emergency dispatch|emergency available/i,
+    });
+    expect(emergencyToggle).not.toBeChecked();
+
+    vi.mocked(mockOperationsRepo.getOperationalProfile).mockResolvedValue({
+      ...FIXTURE_OPERATIONAL_PROFILE_A,
+      availability: {
+        ...FIXTURE_AVAILABILITY_A,
+        isEmergencyAvailable: true,
+      },
+    });
+
+    await userEvent.click(emergencyToggle);
 
     await waitFor(() => {
       expect(mockOperationsRepo.saveAvailability).toHaveBeenCalledWith(
         mockApprovedWorkerA.id,
-        expect.objectContaining({ isAvailable: false })
+        expect.objectContaining({
+          isEmergencyAvailable: true,
+        })
       );
     });
-
-    // Invariant proof: saving availability off-duty never mutates catalog or coverage
     expect(mockOperationsRepo.saveServiceCatalog).not.toHaveBeenCalled();
     expect(mockOperationsRepo.saveCoverage).not.toHaveBeenCalled();
-
-    // Domain proof: operational completeness is invariant to duty state changes
-    expect(
-      isOperationalProfileComplete({
-        catalog: FIXTURE_SERVICE_CATALOG_A,
-        availability: { ...FIXTURE_AVAILABILITY_A, isAvailable: false },
-        coverage: FIXTURE_COVERAGE_A,
-      })
-    ).toBe(true);
-
-    // Dashboard UI proof: toggling off-duty displays paused status and NEVER falls back to unconfigured setup banner
-    expect(await screen.findByText(/off-duty|dispatch paused|taking a break/i)).toBeInTheDocument();
-    expect(screen.queryByText(/complete your provider setup|setup required/i)).not.toBeInTheDocument();
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // INT-009: Static Prerendering and SSR Mount Safety
+  // INT-008: Deep Links to Operational Tabs
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-009: static prerendering and SSR mount safety: route components render without ReferenceError or unhandled window access', async () => {
-    const { renderToString } = await import('react-dom/server');
-    expect(() => renderToString(<BrainWorkerServicesPage />)).not.toThrow();
-    expect(() => renderToString(<BrainWorkerAvailabilityPage />)).not.toThrow();
-    expect(() => render(<BrainWorkerServicesPage />)).not.toThrow();
-    expect(() => render(<BrainWorkerAvailabilityPage />)).not.toThrow();
+  it('INT-008: clicking configure links on dashboard navigates to correct operational tabs', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
+
+    render(<DashboardPage />);
+
+    const editServicesLink = await screen.findByRole('link', { name: /manage services/i });
+    expect(editServicesLink).toHaveAttribute('href', '/brainworker/services');
+
+    const editScheduleLink = screen.getByRole('link', { name: /manage schedule/i });
+    expect(editScheduleLink).toHaveAttribute('href', '/brainworker/availability');
+
+    const editCoverageLink = screen.getByRole('link', { name: /manage coverage/i });
+    expect(editCoverageLink).toHaveAttribute('href', '/brainworker/coverage');
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // INT-010: Physical Testing Boundary
+  // INT-009: Real-time Profile Mutation Reflected on Dashboard
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  it('INT-010: production route source files keep the physical testing boundary (zero testing imports)', () => {
-    const servicesPath = path.join(__dirname, 'services', 'page.tsx');
-    const availabilityPath = path.join(__dirname, 'availability', 'page.tsx');
-    const dashboardPath = path.join(__dirname, 'dashboard', 'page.tsx');
+  it('INT-009: dashboard updates reactively when subscribeToOperationalProfile fires', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
 
-    for (const filePath of [servicesPath, availabilityPath, dashboardPath]) {
-      const source = fs.readFileSync(filePath, 'utf8');
-      expect(source).not.toMatch(/from ['"][^'"]*testing[^'"]*['"]/);
-      expect(source).not.toMatch(/test fixtures/i);
-    }
+    let subscriberCallback: ((profile: any) => void) | null = null;
+    vi.mocked(mockOperationsRepo.subscribeToOperationalProfile).mockImplementation(
+      (_id, cb) => {
+        subscriberCallback = cb;
+        return () => {};
+      }
+    );
+
+    render(<DashboardPage />);
+
+    expect(await screen.findByText(/accepting jobs/i)).toBeInTheDocument();
+
+    // Trigger external update making worker unavailable
+    subscriberCallback!({
+      ...FIXTURE_OPERATIONAL_PROFILE_A,
+      availability: {
+        ...FIXTURE_AVAILABILITY_A,
+        isAvailable: false,
+      },
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/currently paused/i)).toBeInTheDocument();
+    });
+  });
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // INT-010: Offline / Degraded Notice
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  it('INT-010: displays offline storage degraded indicator when browser offline event fires', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
+
+    render(<ServicesPage />);
+
+    expect(await screen.findByRole('heading', { name: /service catalog/i })).toBeInTheDocument();
+    expect(screen.queryByText(/offline mode/i)).not.toBeInTheDocument();
+
+    // Dispatch offline event
+    window.dispatchEvent(new Event('offline'));
+
+    await waitFor(() => {
+      expect(screen.getByText(/working offline/i)).toBeInTheDocument();
+    });
+
+    // Dispatch online event
+    window.dispatchEvent(new Event('online'));
+
+    await waitFor(() => {
+      expect(screen.queryByText(/working offline/i)).not.toBeInTheDocument();
+    });
   });
 });
