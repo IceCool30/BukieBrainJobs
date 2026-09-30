@@ -40,6 +40,10 @@ This file defines the standards and operational map every contributor must follo
     1. Commit and push from Termux (`git push origin <branch>`).
     2. Sync the Codespace (`gh codespace ssh -c effective-fishstick-x5qwp6wrrp64fxwx -- "cd /workspaces/BukieBrainJobs && git checkout <branch> && git pull origin <branch>"`).
     3. Run verification commands on the Codespace.
+- **Heavy Compute Sandbox (Google Colab CLI)**:
+  - Ephemeral cloud GPU/TPU environments provisioned via the universal `colab` CLI.
+  - Dedicated strictly to heavy data operations: Gemini prompt stress-testing, deterministic synthetic seeding, asset/media processing, and dispatch math.
+  - Full operational protocol governed by `docs/03-architecture/ARCH-003-GOOGLE-COLAB-COMPUTE-PIPELINE.md`.
 - **Safety Protocols**: Never delete, move, or reorganize files or directories without explicit user confirmation.
 - **System 1 High-Speed Coprocessor**:
   - Acts as an ultra-fast, read-only scout, indexer, and navigator (running on Gemini Flash Lite). Handles file slicing, log distillation, monorepo routing, and rule verification.
