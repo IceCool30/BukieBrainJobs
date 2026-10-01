@@ -14,7 +14,9 @@ import {
   FIXTURE_APPROVED_BRAINWORKER_A,
   leadOwnedByA,
   CANONICAL_DECLINE_REASONS,
+  mockApprovedWorkerA,
 } from '../../../lib/brainworker/leads/testing';
+import * as authStorage from '../../../lib/auth/storage';
 import {
   createLeadsTestHarness,
   type LeadsTestHarness,
@@ -31,6 +33,7 @@ describe('BW-003 Phase 5 RED: Lead Feed & Inspection UI Contracts (UI-001 throug
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     harness = createLeadsTestHarness();
   });
 
