@@ -58,8 +58,8 @@ This file defines the standards and operational map every contributor must follo
 
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
-- **Active Phase**: Phase 2 BrainWorker Web Platform (/develop [BUILD] Phase 5 RED: Lead Feed / Inspection UI)
-- **Active Slice**: 21. BW-003 BrainWorker Job Requests & Leads Inbox (Phase 4 GREEN Accepted, entering Phase 5 RED)
+- **Active Phase**: Phase 2 BrainWorker Web Platform (/test [COVER] Phase 6 RED: Route Integration & Security)
+- **Active Slice**: 21. BW-003 BrainWorker Job Requests & Leads Inbox (Phase 5 GREEN Accepted, entering Phase 6 RED)
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`
