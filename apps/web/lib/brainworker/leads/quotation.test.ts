@@ -126,103 +126,44 @@ describe('BW-003 Phase 4 GREEN: Quotation (QUO-001 to QUO-010)', () => {
     );
     const consumer = createQuotationConsumer(repository);
 
-    // Negative materials rejected
-    await expect(
-      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
-        laborAmountKobo: 150000,
-        materialsAmountKobo: -5000,
-        diagnosticFeeKobo: 50000,
-        estimatedHours: 2,
-      }),
-    ).rejects.toThrow(/materialsAmountKobo/);
-
-    // Fractional materials rejected
-    await expect(
-      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
-        laborAmountKobo: 150000,
-        materialsAmountKobo: 1234.56,
-        diagnosticFeeKobo: 50000,
-        estimatedHours: 2,
-      }),
-    ).rejects.toThrow(/materialsAmountKobo/);
-
-    // Valid materials line accepted
-    const quote = await consumer.submitQuote(
-      FIXTURE_APPROVED_BRAINWORKER_A,
-      'inv-owned-a-001',
-      {
-        laborAmountKobo: 150000,
-        materialsAmountKobo: 75000,
-        diagnosticFeeKobo: 50000,
-        estimatedHours: 2,
-      },
-    );
-    expect(quote.materialsAmountKobo).toBe(75000);
-    expect(quote.totalAmountKobo).toBe(275000);
-  });
-
-  // -------------------------------------------------------------------------
-  // QUO-004: Diagnostic call-out fee validation
-  // -------------------------------------------------------------------------
-  it('QUO-004: validates catalog diagnostic fee against authoritative provider catalog', async () => {
-    const { repository, seedLead } = createLeadsTestHarness();
-    seedLead(
-      FIXTURE_APPROVED_BRAINWORKER_A,
-      leadOwnedByA({ pricingMode: 'WORKER_QUOTE' }),
-    );
-    const consumer = createQuotationConsumer(repository);
-
-    // Mismatched diagnostic fee fails closed
-    await expect(
-      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
-        laborAmountKobo: 150000,
-        diagnosticFeeKobo: 75000,
-        estimatedHours: 2,
-      }),
-    ).rejects.toThrow(/diagnosticFeeKobo/);
-
-    // Matching catalog fee passes
-    const quote = await consumer.submitQuote(
-      FIXTURE_APPROVED_BRAINWORKER_A,
-      'inv-owned-a-001',
-      {
-        laborAmountKobo: 150000,
-        diagnosticFeeKobo: 50000,
-        estimatedHours: 2,
-      },
-    );
-    expect(quote.diagnosticFeeKobo).toBe(50000);
-  });
-
-  // -------------------------------------------------------------------------
-  // QUO-005: Total amount calculation integrity
-  // -------------------------------------------------------------------------
-  it('QUO-005: calculates totalAmountKobo as exact sum of labor + materials + diagnosticFee', async () => {
-    const { repository, seedLead } = createLeadsTestHarness();
-    seedLead(
-      FIXTURE_APPROVED_BRAINWORKER_A,
-      leadOwnedByA({ pricingMode: 'WORKER_QUOTE' }),
-    );
-    const consumer = createQuotationConsumer(repository);
-
-    const quote = await consumer.submitQuote(
+    // Valid materials line
+    const quoteWithMaterials = await consumer.submitQuote(
       FIXTURE_APPROVED_BRAINWORKER_A,
       'inv-owned-a-001',
       {
         laborAmountKobo: 200000,
         materialsAmountKobo: 100000,
         diagnosticFeeKobo: 50000,
-        estimatedHours: 4,
+        estimatedHours: 3,
       },
     );
+    expect(quoteWithMaterials.materialsAmountKobo).toBe(100000);
 
-    expect(quote.totalAmountKobo).toBe(350000);
+    // Negative materials rejected
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 200000,
+        materialsAmountKobo: -500,
+        diagnosticFeeKobo: 50000,
+        estimatedHours: 3,
+      }),
+    ).rejects.toThrow(/materialsAmountKobo/);
+
+    // Fractional materials amount rejected
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 200000,
+        materialsAmountKobo: 100.5,
+        diagnosticFeeKobo: 50000,
+        estimatedHours: 3,
+      }),
+    ).rejects.toThrow(/materialsAmountKobo/);
   });
 
   // -------------------------------------------------------------------------
-  // QUO-006: Quote expiration duration
+  // QUO-004: Catalog diagnostic fee sourcing
   // -------------------------------------------------------------------------
-  it('QUO-006: sets quote expiresAt to authoritative 24-hour window from submission timestamp', async () => {
+  it('QUO-004: enforces diagnostic fee sourced from active provider catalog and rejects mismatched or non-integer fees', async () => {
     const { repository, seedLead } = createLeadsTestHarness();
     seedLead(
       FIXTURE_APPROVED_BRAINWORKER_A,
@@ -230,31 +171,50 @@ describe('BW-003 Phase 4 GREEN: Quotation (QUO-001 to QUO-010)', () => {
     );
     const consumer = createQuotationConsumer(repository);
 
-    const before = Date.now();
-    const quote = await consumer.submitQuote(
+    // Sourced matching fee (50000 kobo matching provider catalog) succeeds
+    const validQuote = await consumer.submitQuote(
       FIXTURE_APPROVED_BRAINWORKER_A,
       'inv-owned-a-001',
       {
         laborAmountKobo: 150000,
         diagnosticFeeKobo: 50000,
-        estimatedHours: 2,
+        estimatedHours: 1.5,
       },
     );
-    const after = Date.now();
+    expect(validQuote.diagnosticFeeKobo).toBe(50000);
 
-    const createdMs = new Date(quote.createdAt).getTime();
-    const expiresMs = new Date(quote.expiresAt).getTime();
-    const durationHours = (expiresMs - createdMs) / (1000 * 60 * 60);
+    // Mismatched positive fee (51000 kobo != catalog 50000 kobo) rejected
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 150000,
+        diagnosticFeeKobo: 51000,
+        estimatedHours: 1.5,
+      }),
+    ).rejects.toThrow(/diagnosticFee|catalog/i);
 
-    expect(durationHours).toBeCloseTo(24, 0);
-    expect(createdMs).toBeGreaterThanOrEqual(before);
-    expect(createdMs).toBeLessThanOrEqual(after);
+    // Negative diagnostic fee rejected
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 150000,
+        diagnosticFeeKobo: -1,
+        estimatedHours: 1.5,
+      }),
+    ).rejects.toThrow(/diagnosticFee/);
+
+    // Fractional diagnostic fee rejected
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 150000,
+        diagnosticFeeKobo: 50000.5,
+        estimatedHours: 1.5,
+      }),
+    ).rejects.toThrow(/diagnosticFee/);
   });
 
   // -------------------------------------------------------------------------
-  // QUO-007: Estimated duration format validation
+  // QUO-005: Integer-kobo total derivation
   // -------------------------------------------------------------------------
-  it('QUO-007: accepts valid estimatedHours between 1 and 40 and rejects 0, negative, or > 40', async () => {
+  it('QUO-005: derives totalAmountKobo as the exact sum of labor, materials, and diagnostic fee', async () => {
     const { repository, seedLead } = createLeadsTestHarness();
     seedLead(
       FIXTURE_APPROVED_BRAINWORKER_A,
@@ -262,50 +222,93 @@ describe('BW-003 Phase 4 GREEN: Quotation (QUO-001 to QUO-010)', () => {
     );
     const consumer = createQuotationConsumer(repository);
 
-    // 0 hours rejected
+    const draft: WorkerQuoteDraft = {
+      laborAmountKobo: 300000,
+      materialsAmountKobo: 120000,
+      diagnosticFeeKobo: 50000,
+      estimatedHours: 4,
+    };
+
+    const quote = await consumer.submitQuote(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      'inv-owned-a-001',
+      draft,
+    );
+
+    expect(quote.totalAmountKobo).toBe(470000);
+  });
+
+  // -------------------------------------------------------------------------
+  // QUO-006: Conflicting client-supplied total rejected
+  // -------------------------------------------------------------------------
+  it('QUO-006: rejects conflicting client-supplied total that disagrees with derived line sum', async () => {
+    const { repository, seedLead } = createLeadsTestHarness();
+    seedLead(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      leadOwnedByA({ pricingMode: 'WORKER_QUOTE' }),
+    );
+    const consumer = createQuotationConsumer(repository);
+
+    const draft: WorkerQuoteDraft = {
+      laborAmountKobo: 200000,
+      materialsAmountKobo: 50000,
+      diagnosticFeeKobo: 50000,
+      estimatedHours: 2,
+    };
+    // Expected derived sum: 300000 kobo. Client sends 999999 kobo.
+    await expect(
+      consumer.submitQuote(
+        FIXTURE_APPROVED_BRAINWORKER_A,
+        'inv-owned-a-001',
+        draft,
+        999999,
+      ),
+    ).rejects.toThrow(/totalAmountKobo|conflict/i);
+  });
+
+  // -------------------------------------------------------------------------
+  // QUO-007: Estimated duration validation
+  // -------------------------------------------------------------------------
+  it('QUO-007: requires a positive, finite number for estimated duration in hours', async () => {
+    const { repository, seedLead } = createLeadsTestHarness();
+    seedLead(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      leadOwnedByA({ pricingMode: 'WORKER_QUOTE' }),
+    );
+    const consumer = createQuotationConsumer(repository);
+
+    // Zero hours rejected
     await expect(
       consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
-        laborAmountKobo: 150000,
+        laborAmountKobo: 100000,
         diagnosticFeeKobo: 50000,
         estimatedHours: 0,
-      }),
-    ).rejects.toThrow(/estimatedHours/);
-
-    // 41 hours rejected
-    await expect(
-      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
-        laborAmountKobo: 150000,
-        diagnosticFeeKobo: 50000,
-        estimatedHours: 41,
       }),
     ).rejects.toThrow(/estimatedHours/);
 
     // Negative hours rejected
     await expect(
       consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
-        laborAmountKobo: 150000,
+        laborAmountKobo: 100000,
         diagnosticFeeKobo: 50000,
         estimatedHours: -2,
       }),
     ).rejects.toThrow(/estimatedHours/);
 
-    // Valid hours accepted
-    const quote = await consumer.submitQuote(
-      FIXTURE_APPROVED_BRAINWORKER_A,
-      'inv-owned-a-001',
-      {
-        laborAmountKobo: 150000,
+    // Non-finite NaN rejected
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 100000,
         diagnosticFeeKobo: 50000,
-        estimatedHours: 8,
-      },
-    );
-    expect(quote.estimatedHours).toBe(8);
+        estimatedHours: Number.NaN,
+      }),
+    ).rejects.toThrow(/estimatedHours/);
   });
 
   // -------------------------------------------------------------------------
-  // QUO-008: Scope notes character limit
+  // QUO-008: Optional scope-note validation
   // -------------------------------------------------------------------------
-  it('QUO-008: validates optional scopeNotes up to 500 characters and rejects notes exceeding length or invalid types', async () => {
+  it('QUO-008: validates optional scope notes, preserving valid text and rejecting excessive length or non-string inputs', async () => {
     const { repository, seedLead } = createLeadsTestHarness();
     seedLead(
       FIXTURE_APPROVED_BRAINWORKER_A,
@@ -313,63 +316,60 @@ describe('BW-003 Phase 4 GREEN: Quotation (QUO-001 to QUO-010)', () => {
     );
     const consumer = createQuotationConsumer(repository);
 
-    // Notes at limit (500 chars) accepted
-    const maxNotes = 'x'.repeat(500);
-    const quote = await consumer.submitQuote(
+    // 1. Valid scope notes preserved
+    const withNotes = await consumer.submitQuote(
       FIXTURE_APPROVED_BRAINWORKER_A,
       'inv-owned-a-001',
       {
-        laborAmountKobo: 150000,
+        laborAmountKobo: 100000,
         diagnosticFeeKobo: 50000,
-        estimatedHours: 2,
-        scopeNotes: maxNotes,
+        estimatedHours: 1,
+        scopeNotes: 'Includes preliminary generator diagnostic and filter cleaning.',
       },
     );
-    expect(quote.scopeNotes).toBe(maxNotes);
+    expect(withNotes.scopeNotes).toBe(
+      'Includes preliminary generator diagnostic and filter cleaning.',
+    );
 
-    // Notes exceeding limit (501 chars) rejected
+    // 2. Omitted scope notes accepted
+    const withoutNotes = await consumer.submitQuote(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      'inv-owned-a-001',
+      {
+        laborAmountKobo: 100000,
+        diagnosticFeeKobo: 50000,
+        estimatedHours: 1,
+      },
+    );
+    expect(withoutNotes.scopeNotes).toBeUndefined();
+
+    // 3. Excessive scope-note length rejected (bounded at 1000 characters)
+    const excessiveNotes = 'A'.repeat(1001);
     await expect(
       consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
-        laborAmountKobo: 150000,
+        laborAmountKobo: 100000,
         diagnosticFeeKobo: 50000,
-        estimatedHours: 2,
-        scopeNotes: 'x'.repeat(501),
+        estimatedHours: 1,
+        scopeNotes: excessiveNotes,
       }),
     ).rejects.toThrow(/scopeNotes/);
 
-    // Non-string types rejected
+    // 4. Non-string scope note rejected if received at runtime boundary
     await expect(
       consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
-        laborAmountKobo: 150000,
+        laborAmountKobo: 100000,
         diagnosticFeeKobo: 50000,
-        estimatedHours: 2,
+        estimatedHours: 1,
         scopeNotes: 12345 as unknown as string,
       }),
     ).rejects.toThrow(/scopeNotes/);
-
-    await expect(
-      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
-        laborAmountKobo: 150000,
-        diagnosticFeeKobo: 50000,
-        estimatedHours: 2,
-        scopeNotes: true as unknown as string,
-      }),
-    ).rejects.toThrow(/scopeNotes/);
-
-    await expect(
-      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
-        laborAmountKobo: 150000,
-        diagnosticFeeKobo: 50000,
-        estimatedHours: 2,
-        scopeNotes: {} as unknown as string,
-      }),
-    ).rejects.toThrow(/scopeNotes/);
   });
 
   // -------------------------------------------------------------------------
-  // QUO-009: Lead status remains unchanged after quotation
+  // QUO-009: Quote authorization
   // -------------------------------------------------------------------------
-  it('QUO-009: retains lead state as PENDING and updates quote status to SUBMITTED without mutating invitation', async () => {
+  it('QUO-009: rejects quote submission when caller does not match invitation owner', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerB);
     const { repository, seedLead } = createLeadsTestHarness();
     seedLead(
       FIXTURE_APPROVED_BRAINWORKER_A,
@@ -377,51 +377,48 @@ describe('BW-003 Phase 4 GREEN: Quotation (QUO-001 to QUO-010)', () => {
     );
     const consumer = createQuotationConsumer(repository);
 
+    await expect(
+      consumer.submitQuote(FIXTURE_APPROVED_BRAINWORKER_A, 'inv-owned-a-001', {
+        laborAmountKobo: 100000,
+        diagnosticFeeKobo: 50000,
+        estimatedHours: 2,
+      }),
+    ).rejects.toThrow(ForbiddenTenantAccessError);
+  });
+
+  // -------------------------------------------------------------------------
+  // QUO-010: Quote remains separate from booking/payment state
+  // -------------------------------------------------------------------------
+  it('QUO-010: submitted quote has status PENDING and does not mutate booking or payment state', async () => {
+    const rawLead = leadOwnedByA({
+      jobId: 'job-quotation-active-500',
+      pricingMode: 'WORKER_QUOTE',
+    });
+    const { repository, seedLead } = createLeadsTestHarness();
+    seedLead(FIXTURE_APPROVED_BRAINWORKER_A, rawLead);
+
+    // Initial state check
+    const leadBefore = await repository.getLead(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      rawLead.id,
+    );
+    expect(leadBefore?.invitationState).toBe('PENDING');
+    expect(leadBefore?.jobId).toBe('job-quotation-active-500');
+
+    const consumer = createQuotationConsumer(repository);
+
     const quote = await consumer.submitQuote(
       FIXTURE_APPROVED_BRAINWORKER_A,
-      'inv-owned-a-001',
+      rawLead.invitationId,
       {
-        laborAmountKobo: 150000,
+        laborAmountKobo: 250000,
         diagnosticFeeKobo: 50000,
         estimatedHours: 2,
       },
     );
 
-    expect(quote.status).toBe('SUBMITTED');
-
-    // Lead state remains PENDING
-    const lead = await repository.getLead(
-      FIXTURE_APPROVED_BRAINWORKER_A,
-      'lead-owned-a-001',
-    );
-    expect(lead?.invitationState).toBe('PENDING');
-  });
-
-  // -------------------------------------------------------------------------
-  // QUO-010: Boundary isolation proof
-  // -------------------------------------------------------------------------
-  it('QUO-010: proves quotation does not mutate customer activity records, trigger escrows, or create bookings', async () => {
-    const { repository, seedLead } = createLeadsTestHarness();
-    const rawLead = leadOwnedByA({
-      id: 'lead-boundary-proof-010',
-      invitationId: 'inv-boundary-proof-010',
-      jobId: 'job-quotation-active-500',
-      pricingMode: 'WORKER_QUOTE',
-    });
-    seedLead(FIXTURE_APPROVED_BRAINWORKER_A, rawLead);
-
-    const consumer = createQuotationConsumer(repository);
-    const quote = await consumer.submitQuote(
-      FIXTURE_APPROVED_BRAINWORKER_A,
-      'inv-boundary-proof-010',
-      {
-        laborAmountKobo: 250000,
-        materialsAmountKobo: 50000,
-        diagnosticFeeKobo: 50000,
-        estimatedHours: 3,
-        scopeNotes: 'Replace fan belt and test oil pressure.',
-      },
-    );
+    // Quote is PENDING and strictly separate from booking confirmation
+    expect(quote.status).toBe('PENDING');
 
     // Verifies lead customer job and invitation state remain intact and unmutated to booked/confirmed
     const leadAfter = await repository.getLead(

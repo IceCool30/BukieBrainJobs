@@ -155,8 +155,6 @@ export interface BrainWorkerOperationalProfile {
 export interface IBrainWorkerOperationsRepository {
   getOperationalProfile(brainWorkerId: string): Promise<BrainWorkerOperationalProfile | null>;
 
-  getConfiguredCatalog(brainWorkerId: string): Promise<BrainWorkerServiceCatalog | null>;
-
   getServiceCatalog(brainWorkerId: string): Promise<BrainWorkerServiceCatalog>;
   saveServiceCatalog(
     brainWorkerId: string,
@@ -229,3 +227,4 @@ export class OperationsValidationError extends Error {
     this.name = 'OperationsValidationError';
   }
 }
+

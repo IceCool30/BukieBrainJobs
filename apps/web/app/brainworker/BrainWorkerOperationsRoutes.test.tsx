@@ -69,7 +69,6 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
 
     mockOperationsRepo = {
       getOperationalProfile: vi.fn().mockResolvedValue(FIXTURE_OPERATIONAL_PROFILE_A),
-      getConfiguredCatalog: vi.fn().mockResolvedValue(FIXTURE_SERVICE_CATALOG_A),
       getServiceCatalog: vi.fn().mockResolvedValue(FIXTURE_SERVICE_CATALOG_A),
       saveServiceCatalog: vi.fn().mockResolvedValue(FIXTURE_SERVICE_CATALOG_A),
       getAvailability: vi.fn().mockResolvedValue(FIXTURE_AVAILABILITY_A),
@@ -126,6 +125,7 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
     ).toBeInTheDocument();
     expect(mockOperationsRepo.getOperationalProfile).not.toHaveBeenCalled();
     expect(mockOperationsRepo.getServiceCatalog).not.toHaveBeenCalled();
+    expect(mockOperationsRepo.getAvailability).not.toHaveBeenCalled();
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -290,8 +290,8 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
     const { renderToString } = await import('react-dom/server');
     expect(() => renderToString(<BrainWorkerServicesPage />)).not.toThrow();
     expect(() => renderToString(<BrainWorkerAvailabilityPage />)).not.toThrow();
-    expect(() => renderToString(<BrainWorkerServicesPage />)).not.toThrow();
-    expect(() => renderToString(<BrainWorkerAvailabilityPage />)).not.toThrow();
+    expect(() => render(<BrainWorkerServicesPage />)).not.toThrow();
+    expect(() => render(<BrainWorkerAvailabilityPage />)).not.toThrow();
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

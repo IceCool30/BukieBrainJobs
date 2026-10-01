@@ -1,52 +1,160 @@
 // apps/web/lib/brainworker/leads/repository.ts
-// BW-003 Phase 2 GREEN: In-Memory / Local Storage Partitioned Leads Repository
-// Authoritative References:
-// - docs/specs/BW-003-architecture-contract.md (Approved, Section 4.2)
-// - docs/specs/BW-003-test-first-implementation-plan.md (Approved, Phase 2)
+// BW-003 Phase 4 GREEN: Repository & Tenant Isolation (REP-001 to REP-010)
+// Governed by: BW-003 Architecture Contract v1.0 & Test-First Implementation Plan v1.0
+//
+// Invariant Rules:
+// 1. Zero imports from testing/ (REP-009).
+// 2. Every operation binds to the authenticated BrainWorker identity (REP-001 to REP-003).
+// 3. Incomplete operational profiles fail closed (REP-004).
+// 4. Reads return privacy-projected leads only; raw contact data never leaves the store (REP-005, LEAD-006).
+// 5. Mutations verify invitation ownership and unresponded state (REP-006, REP-007).
+// 6. Mutations fail closed while offline; reads stay tenant-scoped (REP-008).
+// 7. Backing state is physically partitioned per BrainWorker ID (REP-010).
 
 import type {
   IBrainWorkerLeadsRepository,
-  BrainWorkerLeadsRepositoryDependencies,
-  BrainWorkerLeadPartition,
-  LeadStatus,
-  InvitationStatus,
-  WorkerQuoteDraft,
-  LeadTimelineEvent,
-  AuthoritativeLeadInvitation,
+  LeadPage,
+  LeadMutationResult,
+  LeadFeedEvent,
   WorkerQuote,
+  WorkerQuoteDraft,
   DeclineReason,
 } from './types';
 import {
   ForbiddenTenantAccessError,
-  LeadsRepositoryError,
-  type ProviderProjectedLead,
+  IncompleteProfileError,
+  OfflineMutationError,
 } from './types';
-import { getMockAuthenticatedUser } from '../auth/storage';
-import {
-  evaluateLeadEligibility,
-  canTransitionLeadStatus,
-  canTransitionInvitationStatus,
-  validateTimelineEvent,
-  maskLeadForProvider,
+import type {
+  ProviderProjectedLead,
+  RawLeadData,
+  LeadProviderOperationalProfile,
+  DayOfWeek,
+  ScheduleTimeWindow,
 } from './domain';
+import { projectLeadForProvider, sortAndPaginateLeads } from './domain';
+import { getMockAuthenticatedUser } from '../../auth/storage';
 import {
   CANONICAL_SERVICES_REGISTRY,
   type BrainWorkerOperationalProfile,
-  type BrainWorkerServiceCatalog,
   type DaySchedule,
 } from '../catalog/types';
 import { getBrainWorkerOperationsRepository } from '../catalog/repository';
 
-const STORAGE_KEY_PREFIX = 'bukie_bw_leads_';
+// ─────────────────────────────────────────────────────────────────
+// Dependencies
+// ─────────────────────────────────────────────────────────────────
 
-// ── Default catalog diagnostic fee resolver ──────────────────────
+/**
+ * Resolves the authoritative operational profile for a BrainWorker.
+ * Returning null means "no complete profile" and fails closed.
+ */
+export type OperationalProfileResolver = (
+  brainWorkerId: string
+) =>
+  | LeadProviderOperationalProfile
+  | null
+  | Promise<LeadProviderOperationalProfile | null>;
+
+/**
+ * Resolves the catalog diagnostic fee for a BrainWorker in integer kobo.
+ * Missing profiles, catalogs, storage errors, or invalid amounts must fail closed.
+ */
+export type CatalogDiagnosticFeeResolver = (
+  brainWorkerId: string,
+  serviceId?: string
+) => number | Promise<number>;
+
+export interface BrainWorkerLeadsRepositoryDependencies {
+  /**
+   * Bridge to the authoritative operational profile source.
+   * Defaults to the BW-002 operations repository. Test harnesses may
+   * inject a deterministic resolver; the gate is enforced here either way.
+   */
+  resolveOperationalProfile?: OperationalProfileResolver | undefined;
+  /**
+   * Bridge to resolve the active catalog diagnostic fee in integer kobo.
+   */
+  resolveCatalogDiagnosticFee?: CatalogDiagnosticFeeResolver | undefined;
+}
+
+const ACCEPTED_DECLINE_REASONS: readonly DeclineReason[] = [
+  'SCHEDULE_CONFLICT',
+  'OUTSIDE_COVERAGE_AREA',
+  'SKILL_TOOL_MISMATCH',
+  'RATE_BUDGET_MISMATCH',
+  'TEMPORARILY_UNAVAILABLE',
+  'OTHER',
+];
+
+function mapOperationsProfile(
+  profile: BrainWorkerOperationalProfile
+): LeadProviderOperationalProfile {
+  const padHour = (hour: number): string =>
+    `${String(Math.max(0, Math.min(23, Math.trunc(hour)))).padStart(2, '0')}:00`;
+
+  const weeklySchedule: Record<DayOfWeek, ScheduleTimeWindow[]> = {
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+    sunday: [],
+  };
+  const source = profile.availability?.weeklySchedule;
+  if (source && typeof source === 'object') {
+    (Object.keys(weeklySchedule) as DayOfWeek[]).forEach((day) => {
+      const daySchedule: DaySchedule | undefined = source[day];
+      if (daySchedule && daySchedule.isActive) {
+        weeklySchedule[day] = [
+          { start: padHour(daySchedule.startHour), end: padHour(daySchedule.endHour) },
+        ];
+      }
+    });
+  }
+
+  const activeServiceSkillIds = (profile.catalog?.services ?? [])
+    .filter((service) => service.status === 'ACTIVE')
+    .map((service) => {
+      const canonical = CANONICAL_SERVICES_REGISTRY.find(
+        (entry) => entry.serviceId === service.serviceId
+      );
+      return canonical?.skillId ?? service.serviceId;
+    });
+
+  return {
+    isComplete: profile.isComplete === true,
+    isAvailable: profile.availability?.isAvailable === true,
+    primaryCityId: profile.coverage?.primaryCityId ?? '',
+    operationalZones: [...(profile.coverage?.coverageNeighbourhoods ?? [])],
+    travelRadiusKm: profile.coverage?.travelRadiusKm ?? 0,
+    activeServiceSkillIds,
+    weeklySchedule,
+  };
+}
+
+async function resolveProfileFromOperationsRepository(
+  brainWorkerId: string
+): Promise<LeadProviderOperationalProfile | null> {
+  try {
+    const profile = await getBrainWorkerOperationsRepository().getOperationalProfile(
+      brainWorkerId
+    );
+    if (!profile) return null;
+    return mapOperationsProfile(profile);
+  } catch {
+    // Authorization or storage failures fail closed as an incomplete profile.
+    return null;
+  }
+}
 
 async function resolveDiagnosticFeeFromOperationsRepository(
   brainWorkerId: string
 ): Promise<number> {
-  let catalog: BrainWorkerServiceCatalog | null;
+  let profile: BrainWorkerOperationalProfile | null;
   try {
-    catalog = await getBrainWorkerOperationsRepository().getConfiguredCatalog(
+    profile = await getBrainWorkerOperationsRepository().getOperationalProfile(
       brainWorkerId
     );
   } catch (error) {
@@ -60,19 +168,28 @@ async function resolveDiagnosticFeeFromOperationsRepository(
       throw new ForbiddenTenantAccessError(error.message);
     }
     throw new Error(
-      `CATALOG_UNRESOLVED: Failed to resolve authoritative operational catalog for BrainWorker '${brainWorkerId}': ${
+      `CATALOG_UNRESOLVED: Failed to resolve authoritative operational profile for BrainWorker '${brainWorkerId}': ${
         error instanceof Error ? error.message : String(error)
       }`
     );
   }
 
-  if (!catalog) {
+  if (!profile || !profile.catalog) {
+    throw new Error(
+      `CATALOG_UNRESOLVED: Authoritative operational profile or catalog not found for BrainWorker '${brainWorkerId}'.`
+    );
+  }
+
+  const services = profile.catalog.services;
+  const hasActiveService =
+    Array.isArray(services) && services.some((s) => s && s.status === 'ACTIVE');
+  if (!hasActiveService) {
     throw new Error(
       `CATALOG_UNRESOLVED: Active configured service catalog not found for BrainWorker '${brainWorkerId}'.`
     );
   }
 
-  const rawFeeNgn = catalog.diagnosticFeeNgn;
+  const rawFeeNgn = profile.catalog.diagnosticFeeNgn;
   if (
     typeof rawFeeNgn !== 'number' ||
     !Number.isFinite(rawFeeNgn) ||
@@ -100,252 +217,181 @@ async function resolveDiagnosticFeeFromOperationsRepository(
   return feeKobo;
 }
 
-// ── Default operational profile resolver ───────────────────────────
+// ─────────────────────────────────────────────────────────────────
+// Tenant-scoped store
+// ─────────────────────────────────────────────────────────────────
 
-async function defaultResolveOperationalProfile(
-  brainWorkerId: string
-): Promise<BrainWorkerOperationalProfile | null> {
-  try {
-    return await getBrainWorkerOperationsRepository().getOperationalProfile(
-      brainWorkerId
-    );
-  } catch {
-    return null;
-  }
+/**
+ * Per-tenant backing state. Each BrainWorker ID receives a physically
+ * separate partition; no cross-tenant lookups exist in this class.
+ */
+interface BrainWorkerLeadPartition {
+  leads: Map<string, RawLeadData>;
+  quotes: Map<string, WorkerQuote>;
 }
 
-// ── Partitioned Leads Repository Implementation ────────────────────
-
 export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
+  private readonly resolveOperationalProfile: OperationalProfileResolver;
+  private readonly resolveCatalogDiagnosticFee: CatalogDiagnosticFeeResolver;
+  /** Physically partitioned per-tenant state (REP-010). */
   private readonly partitions = new Map<string, BrainWorkerLeadPartition>();
-  private readonly resolveOperationalProfile: (
-    brainWorkerId: string
-  ) => Promise<BrainWorkerOperationalProfile | null>;
-  private readonly resolveCatalogDiagnosticFee: (
-    brainWorkerId: string
-  ) => Promise<number> | number;
+  private readonly subscribers = new Map<
+    string,
+    Set<(event: LeadFeedEvent) => void>
+  >();
+  private offlineOverride = false;
+  private quoteCounter = 0;
 
   constructor(dependencies: BrainWorkerLeadsRepositoryDependencies = {}) {
     this.resolveOperationalProfile =
-      dependencies.resolveOperationalProfile ?? defaultResolveOperationalProfile;
+      dependencies.resolveOperationalProfile ??
+      resolveProfileFromOperationsRepository;
     this.resolveCatalogDiagnosticFee =
       dependencies.resolveCatalogDiagnosticFee ??
       resolveDiagnosticFeeFromOperationsRepository;
   }
 
-  // ── Tenant isolation ─────────────────────────────────────────────
+  // ── Authorization ───────────────────────────────────────────────
 
-  private assertCallerAuthorization(targetBrainWorkerId: string): void {
-    const caller = getMockAuthenticatedUser();
-
-    if (!caller) {
+  /**
+   * REP-001/002/003: every operation must be bound to the authenticated,
+   * approved BrainWorker session. The supplied brainWorkerId is never
+   * trusted on its own.
+   */
+  private assertAuthorizedTenant(brainWorkerId: string): void {
+    if (!brainWorkerId || typeof brainWorkerId !== 'string' || brainWorkerId.trim() === '') {
       throw new ForbiddenTenantAccessError(
-        'FORBIDDEN_TENANT_ACCESS: Unauthenticated caller cannot access leads.'
+        'FORBIDDEN_TENANT_ACCESS: Valid BrainWorker ID is required.'
       );
     }
 
-    if (caller.role !== 'brainworker') {
+    const currentUser = getMockAuthenticatedUser();
+    if (!currentUser) {
       throw new ForbiddenTenantAccessError(
-        `FORBIDDEN_TENANT_ACCESS: Caller role '${caller.role}' is not authorized to access leads.`
+        'FORBIDDEN_TENANT_ACCESS: Caller authentication is required.'
       );
     }
-
-    if (caller.id !== targetBrainWorkerId) {
+    if (currentUser.role !== 'brainworker') {
       throw new ForbiddenTenantAccessError(
-        `FORBIDDEN_TENANT_ACCESS: Caller '${caller.id}' cannot access leads partition of '${targetBrainWorkerId}'.`
+        'FORBIDDEN_TENANT_ACCESS: Customer accounts cannot access BrainWorker leads.'
+      );
+    }
+    if (!currentUser.isBrainWorkerApproved) {
+      throw new ForbiddenTenantAccessError(
+        'FORBIDDEN_TENANT_ACCESS: Unapproved BrainWorkers cannot access leads.'
+      );
+    }
+    if (currentUser.id !== brainWorkerId) {
+      throw new ForbiddenTenantAccessError(
+        `FORBIDDEN_TENANT_ACCESS: Session '${currentUser.id}' cannot access leads for '${brainWorkerId}'.`
       );
     }
   }
 
-  // ── Storage helpers ──────────────────────────────────────────────
-
-  private getStorageKey(brainWorkerId: string): string {
-    return `${STORAGE_KEY_PREFIX}${brainWorkerId}`;
-  }
-
-  private loadPartitionFromStorage(
-    brainWorkerId: string
-  ): BrainWorkerLeadPartition | null {
-    if (typeof localStorage === 'undefined') {
-      return null;
-    }
-    try {
-      const raw = localStorage.getItem(this.getStorageKey(brainWorkerId));
-      if (!raw) {
-        return null;
-      }
-      return JSON.parse(raw) as BrainWorkerLeadPartition;
-    } catch {
-      return null;
+  /**
+   * REP-004: incomplete operational profiles are blocked from reads and
+   * mutations. Unresolvable profiles fail closed.
+   */
+  private async assertCompleteProfile(brainWorkerId: string): Promise<void> {
+    const profile = await this.resolveOperationalProfile(brainWorkerId);
+    if (!profile || profile.isComplete !== true) {
+      throw new IncompleteProfileError();
     }
   }
 
-  private savePartitionToStorage(
-    brainWorkerId: string,
-    partition: BrainWorkerLeadPartition
-  ): void {
-    if (typeof localStorage === 'undefined') {
-      return;
-    }
-    try {
-      localStorage.setItem(
-        this.getStorageKey(brainWorkerId),
-        JSON.stringify(partition)
-      );
-    } catch {
-      // Storage unavailable or quota exceeded — in-memory partition survives
+  /**
+   * REP-008: mutations fail closed while offline. No offline mutation queue.
+   */
+  private assertNotOffline(): void {
+    const isOffline =
+      this.offlineOverride ||
+      (typeof navigator !== 'undefined' &&
+        typeof navigator.onLine === 'boolean' &&
+        !navigator.onLine);
+    if (isOffline) {
+      throw new OfflineMutationError();
     }
   }
 
-  // ── Partition access ───────────────────────────────────────────
+  // ── Partition access ────────────────────────────────────────────
 
   private getPartition(brainWorkerId: string): BrainWorkerLeadPartition {
     let partition = this.partitions.get(brainWorkerId);
     if (!partition) {
-      const fromStorage = this.loadPartitionFromStorage(brainWorkerId);
-      if (fromStorage) {
-        partition = fromStorage;
-        this.partitions.set(brainWorkerId, partition);
-      } else {
-        partition = {
-          brainWorkerId,
-          leads: [],
-          updatedAt: new Date().toISOString(),
-        };
-        this.partitions.set(brainWorkerId, partition);
-      }
+      partition = { leads: new Map(), quotes: new Map() };
+      this.partitions.set(brainWorkerId, partition);
     }
     return partition;
   }
 
-  private commitPartition(
+  private findLeadByInvitation(
     brainWorkerId: string,
-    partition: BrainWorkerLeadPartition
-  ): void {
-    partition.updatedAt = new Date().toISOString();
-    this.partitions.set(brainWorkerId, partition);
-    this.savePartitionToStorage(brainWorkerId, partition);
+    invitationId: string
+  ): RawLeadData | undefined {
+    const partition = this.partitions.get(brainWorkerId);
+    if (!partition) return undefined;
+    for (const lead of partition.leads.values()) {
+      if (lead.invitationId === invitationId) {
+        return lead;
+      }
+    }
+    return undefined;
   }
 
-  // ── Query methods ────────────────────────────────────────────────
+  private notify(brainWorkerId: string, event: LeadFeedEvent): void {
+    const listeners = this.subscribers.get(brainWorkerId);
+    if (!listeners) return;
+    for (const listener of listeners) {
+      try {
+        listener(event);
+      } catch {
+        // Listener failures never break repository execution.
+      }
+    }
+  }
+
+  // ── Reads ───────────────────────────────────────────────────────
 
   async getLeads(
     brainWorkerId: string,
-    options: { status?: LeadStatus | undefined } = {}
-  ): Promise<ProviderProjectedLead[]> {
-    this.assertCallerAuthorization(brainWorkerId);
+    options?: { cursor?: string | undefined; limit?: number | undefined }
+  ): Promise<LeadPage> {
+    this.assertAuthorizedTenant(brainWorkerId);
+    await this.assertCompleteProfile(brainWorkerId);
 
-    const partition = this.getPartition(brainWorkerId);
-    let leads = partition.leads;
+    const partition = this.partitions.get(brainWorkerId);
+    const rawLeads = partition ? [...partition.leads.values()] : [];
 
-    if (options.status) {
-      leads = leads.filter((l) => l.status === options.status);
-    }
+    // REP-005 / LEAD-006: only the provider-safe projection leaves the store.
+    const projected = rawLeads.map((lead) => projectLeadForProvider(lead));
 
-    return leads.map((lead) => maskLeadForProvider(lead));
+    // LEAD-007: deterministic ordering and pagination.
+    return sortAndPaginateLeads(projected, options);
   }
 
-  async getLeadById(
+  async getLead(
     brainWorkerId: string,
     leadId: string
   ): Promise<ProviderProjectedLead | null> {
-    this.assertCallerAuthorization(brainWorkerId);
+    this.assertAuthorizedTenant(brainWorkerId);
+    await this.assertCompleteProfile(brainWorkerId);
 
-    const partition = this.getPartition(brainWorkerId);
-    const lead = partition.leads.find((l) => l.id === leadId);
-    if (!lead) {
-      return null;
-    }
+    const partition = this.partitions.get(brainWorkerId);
+    const raw = partition?.leads.get(leadId);
+    if (!raw) return null;
 
-    return maskLeadForProvider(lead);
+    return projectLeadForProvider(raw);
   }
 
-  // ── Seeding (for test harness & dispatch pipeline) ────────────────
-
-  seedLead(brainWorkerId: string, lead: AuthoritativeLeadInvitation): void {
-    const partition = this.getPartition(brainWorkerId);
-    const existingIndex = partition.leads.findIndex((l) => l.id === lead.id);
-
-    if (existingIndex >= 0) {
-      partition.leads[existingIndex] = JSON.parse(
-        JSON.stringify(lead)
-      ) as AuthoritativeLeadInvitation;
-    } else {
-      partition.leads.push(
-        JSON.parse(JSON.stringify(lead)) as AuthoritativeLeadInvitation
-      );
-    }
-
-    this.commitPartition(brainWorkerId, partition);
-  }
-
-  // ── Mutation methods ─────────────────────────────────────────────
+  // ── Mutations ────────────────────────────────────────────────────
 
   async acceptInvitation(
     brainWorkerId: string,
     invitationId: string
-  ): Promise<{ ok: boolean; reason?: string | undefined }> {
-    this.assertCallerAuthorization(brainWorkerId);
-
-    const partition = this.getPartition(brainWorkerId);
-    const lead = partition.leads.find((l) => l.id === invitationId);
-
-    if (!lead) {
-      return { ok: false, reason: 'INVITATION_NOT_FOUND' };
-    }
-
-    // Phase 3 Invariant: Validate operational profile readiness
-    const profile = await this.resolveOperationalProfile(brainWorkerId);
-    if (!profile) {
-      return { ok: false, reason: 'PROFILE_UNRESOLVED' };
-    }
-
-    // Verify day schedule for matching day of week
-    const now = new Date();
-    const dayOfWeek = [
-      'sunday',
-      'monday',
-      'tuesday',
-      'wednesday',
-      'thursday',
-      'friday',
-      'saturday',
-    ][now.getDay()] as keyof typeof profile.availability.weeklySchedule;
-
-    const daySchedule = profile.availability.weeklySchedule[dayOfWeek];
-
-    const eligibility = evaluateLeadEligibility({
-      providerId: brainWorkerId,
-      profile: {
-        isAvailable: profile.availability.isAvailable,
-        isEmergencyAvailable: profile.availability.isEmergencyAvailable,
-        activeServiceSkillIds: profile.catalog.services
-          .filter((s) => s.status === 'ACTIVE')
-          .map((s) => {
-            const canonical = CANONICAL_SERVICES_REGISTRY.find(
-              (c) => c.serviceId === s.serviceId
-            );
-            return canonical?.skillId ?? s.serviceId;
-          }),
-        serviceNeighbourhoods: profile.coverage.coverageNeighbourhoods,
-        travelRadiusKm: profile.coverage.travelRadiusKm,
-        weeklySchedule: {
-          [dayOfWeek]: daySchedule as DaySchedule,
-        },
-      },
-      lead: {
-        requiredSkillId: lead.requiredSkillId,
-        urgency: lead.urgency,
-        neighbourhood: lead.neighbourhood,
-        city: lead.city,
-        distanceKm: lead.distanceKm,
-        scheduledSlot: lead.scheduledSlot,
-      },
-    });
-
-    if (!eligibility.eligible) {
-      return { ok: false, reason: eligibility.ineligibilityReason };
-    }
+  ): Promise<LeadMutationResult> {
+    this.assertAuthorizedTenant(brainWorkerId);
+    await this.assertCompleteProfile(brainWorkerId);
+    this.assertNotOffline();
 
     return this.respondToInvitation(brainWorkerId, invitationId, 'ACCEPTED');
   }
@@ -354,11 +400,13 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
     brainWorkerId: string,
     invitationId: string,
     reason: DeclineReason
-  ): Promise<{ ok: boolean; reason?: string | undefined }> {
-    this.assertCallerAuthorization(brainWorkerId);
+  ): Promise<LeadMutationResult> {
+    this.assertAuthorizedTenant(brainWorkerId);
+    await this.assertCompleteProfile(brainWorkerId);
+    this.assertNotOffline();
 
-    // Validate decline reason is non-empty
-    if (!reason || typeof reason !== 'string' || reason.trim() === '') {
+    if (!ACCEPTED_DECLINE_REASONS.includes(reason)) {
+      // Controlled taxonomy only; free-form reasons are rejected.
       return { ok: false, reason: 'INVALID_STATE' };
     }
 
@@ -366,248 +414,215 @@ export class BrainWorkerLeadsRepository implements IBrainWorkerLeadsRepository {
   }
 
   /**
-   * Internal transition handler for invitation responses.
+   * REP-006/007: invitation ownership is enforced by tenant partition
+   * (the invitation must live in the caller's own store), and only a
+   * PENDING invitation may be responded to. respondedAt is generated
+   * here, never accepted from the client.
    */
   private async respondToInvitation(
     brainWorkerId: string,
     invitationId: string,
-    action: 'ACCEPTED' | 'DECLINED',
-    declineReason?: DeclineReason | undefined
-  ): Promise<{ ok: boolean; reason?: string | undefined }> {
-    const partition = this.getPartition(brainWorkerId);
-    const lead = partition.leads.find((l) => l.id === invitationId);
-
+    nextState: 'ACCEPTED' | 'DECLINED',
+    declineReason?: DeclineReason
+  ): Promise<LeadMutationResult> {
+    const lead = this.findLeadByInvitation(brainWorkerId, invitationId);
     if (!lead) {
       return { ok: false, reason: 'INVITATION_NOT_FOUND' };
     }
 
-    // Invariant: Fail closed on terminal invitation state
-    if (lead.invitationStatus === 'EXPIRED') {
-      return { ok: false, reason: 'INVITATION_EXPIRED' };
+    if (lead.invitationState === 'ACCEPTED' || lead.invitationState === 'DECLINED') {
+      return { ok: false, reason: 'ALREADY_RESPONDED' };
     }
-
-    if (lead.invitationStatus === 'ACCEPTED') {
-      return { ok: false, reason: 'ALREADY_ACCEPTED' };
-    }
-
-    if (lead.invitationStatus === 'DECLINED') {
-      return { ok: false, reason: 'ALREADY_DECLINED' };
-    }
-
-    // Check expiry timestamp
-    const nowIso = new Date().toISOString();
-    if (lead.expiresAt && new Date(lead.expiresAt).getTime() <= new Date(nowIso).getTime()) {
-      // Transition to EXPIRED
-      lead.invitationStatus = 'EXPIRED';
-      lead.status = 'ARCHIVED';
-      lead.updatedAt = nowIso;
-      this.commitPartition(brainWorkerId, partition);
-      return { ok: false, reason: 'INVITATION_EXPIRED' };
-    }
-
-    const nextInvitationStatus: InvitationStatus = action;
-    const canTransition = canTransitionInvitationStatus(
-      lead.invitationStatus,
-      nextInvitationStatus
-    );
-
-    if (!canTransition) {
+    if (lead.invitationState === 'EXPIRED' || lead.invitationState === 'SUPERSEDED') {
       return { ok: false, reason: 'INVALID_STATE' };
     }
 
-    const nextLeadStatus: LeadStatus = action === 'ACCEPTED' ? 'ACCEPTED' : 'ARCHIVED';
-    if (!canTransitionLeadStatus(lead.status, nextLeadStatus)) {
-      return { ok: false, reason: 'INVALID_STATE' };
-    }
-
-    // Apply transitions
-    lead.invitationStatus = nextInvitationStatus;
-    lead.status = nextLeadStatus;
-    lead.updatedAt = nowIso;
-
-    if (action === 'DECLINED' && declineReason) {
+    const respondedAt = new Date().toISOString();
+    lead.invitationState = nextState;
+    if (nextState === 'DECLINED' && declineReason) {
       lead.declineReason = declineReason;
     }
+    this.notify(brainWorkerId, {
+      type: 'lead_updated',
+      lead: projectLeadForProvider(lead),
+    });
 
-    // Append timeline event
-    const eventType = action === 'ACCEPTED' ? 'ACCEPTED' : 'DECLINED';
-    const timelineEvent: LeadTimelineEvent = {
-      id: `evt-${invitationId}-${Date.now()}`,
-      leadId: invitationId,
-      eventType,
-      actor: 'BRAINWORKER',
-      timestamp: nowIso,
-      metadata: action === 'DECLINED' && declineReason ? { declineReason } : undefined,
+    return {
+      ok: true,
+      invitationId,
+      state: nextState,
+      respondedAt,
+      ...(declineReason ? { declineReason } : {}),
     };
-
-    if (validateTimelineEvent(timelineEvent)) {
-      lead.timeline.push(timelineEvent);
-    }
-
-    this.commitPartition(brainWorkerId, partition);
-    return { ok: true };
   }
 
   async submitQuote(
     brainWorkerId: string,
     invitationId: string,
-    quoteDraft: WorkerQuoteDraft
+    quote: WorkerQuoteDraft
   ): Promise<WorkerQuote> {
-    this.assertCallerAuthorization(brainWorkerId);
+    this.assertAuthorizedTenant(brainWorkerId);
+    await this.assertCompleteProfile(brainWorkerId);
+    this.assertNotOffline();
 
-    const partition = this.getPartition(brainWorkerId);
-    const lead = partition.leads.find((l) => l.id === invitationId);
+    const validateKobo = (value: number | undefined, field: string): number => {
+      if (
+        typeof value !== 'number' ||
+        !Number.isInteger(value) ||
+        value < 0
+      ) {
+        throw new Error(`Invalid quote draft: ${field} must be a non-negative integer kobo amount.`);
+      }
+      return value;
+    };
 
+    const laborAmountKobo = validateKobo(quote?.laborAmountKobo, 'laborAmountKobo');
+    const diagnosticFeeKobo = validateKobo(quote?.diagnosticFeeKobo, 'diagnosticFeeKobo');
+    const materialsAmountKobo =
+      quote?.materialsAmountKobo === undefined
+        ? undefined
+        : validateKobo(quote.materialsAmountKobo, 'materialsAmountKobo');
+
+    if (
+      typeof quote?.estimatedHours !== 'number' ||
+      !Number.isFinite(quote.estimatedHours) ||
+      quote.estimatedHours <= 0
+    ) {
+      throw new Error('Invalid quote draft: estimatedHours must be a positive number.');
+    }
+
+    if (quote?.scopeNotes !== undefined) {
+      if (typeof quote.scopeNotes !== 'string') {
+        throw new Error('Invalid quote draft: scopeNotes must be a string.');
+      }
+      if (quote.scopeNotes.length > 1000) {
+        throw new Error('Invalid quote draft: scopeNotes cannot exceed 1000 characters.');
+      }
+    }
+
+    const lead = this.findLeadByInvitation(brainWorkerId, invitationId);
     if (!lead) {
-      throw new LeadsRepositoryError('LEAD_NOT_FOUND', `Lead with ID '${invitationId}' not found.`);
+      throw new Error('INVITATION_NOT_FOUND: No such invitation for this BrainWorker.');
+    }
+    if (lead.invitationState !== 'PENDING') {
+      throw new Error(`ALREADY_RESPONDED: Invitation is ${lead.invitationState}.`);
     }
 
-    // QUO-001 Invariant: Only WORKER_QUOTE pricingMode can receive a quote
-    if (lead.pricingMode !== 'WORKER_QUOTE') {
-      throw new LeadsRepositoryError(
-        'INVALID_PRICING_MODE',
-        `Lead '${invitationId}' has pricing mode '${lead.pricingMode}' and cannot receive worker quotes.`
-      );
-    }
-
-    // QUO-002 Invariant: Lead must be in valid status (PENDING or ACCEPTED)
-    if (lead.status !== 'PENDING' && lead.status !== 'ACCEPTED') {
-      throw new LeadsRepositoryError(
-        'INVALID_LEAD_STATE',
-        `Lead '${invitationId}' is in status '${lead.status}' and cannot receive a quote.`
-      );
-    }
-
-    // QUO-003 Invariant: Invitation must not be terminal
+    // QUO-004: Diagnostic fee must match active catalog diagnostic fee
+    const expectedCatalogDiagnosticFeeKobo =
+      await this.resolveCatalogDiagnosticFee(brainWorkerId, lead.serviceId);
     if (
-      lead.invitationStatus === 'DECLINED' ||
-      lead.invitationStatus === 'EXPIRED'
+      typeof expectedCatalogDiagnosticFeeKobo !== 'number' ||
+      !Number.isInteger(expectedCatalogDiagnosticFeeKobo) ||
+      !Number.isFinite(expectedCatalogDiagnosticFeeKobo) ||
+      expectedCatalogDiagnosticFeeKobo < 0
     ) {
-      throw new LeadsRepositoryError(
-        'TERMINAL_INVITATION_STATE',
-        `Invitation '${invitationId}' is in terminal status '${lead.invitationStatus}'.`
+      throw new Error(
+        `INVALID_CATALOG_DIAGNOSTIC_FEE: Resolved catalog fee is not a valid non-negative integer kobo amount.`
+      );
+    }
+    if (diagnosticFeeKobo !== expectedCatalogDiagnosticFeeKobo) {
+      throw new Error(
+        `Invalid quote draft: diagnosticFeeKobo (${diagnosticFeeKobo}) must match active provider catalog fee (${expectedCatalogDiagnosticFeeKobo}).`
       );
     }
 
-    // Invariant: Labor amount bounds [5,000 NGN to 500,000 NGN] in kobo
-    const MIN_LABOR_KOBO = 500_000;
-    const MAX_LABOR_KOBO = 50_000_000;
-    if (
-      typeof quoteDraft.laborAmountKobo !== 'number' ||
-      !Number.isFinite(quoteDraft.laborAmountKobo) ||
-      quoteDraft.laborAmountKobo < MIN_LABOR_KOBO ||
-      quoteDraft.laborAmountKobo > MAX_LABOR_KOBO
-    ) {
-      throw new LeadsRepositoryError(
-        'INVALID_LABOR_AMOUNT',
-        `Labor amount (${quoteDraft.laborAmountKobo} kobo) is outside allowed bounds [5,000 NGN to 500,000 NGN].`
-      );
-    }
+    // Integer-kobo total is derived by the repository, never client-authored.
+    const totalAmountKobo =
+      laborAmountKobo + (materialsAmountKobo ?? 0) + diagnosticFeeKobo;
 
-    // Invariant: Estimated hours bounds [1 to 40]
-    if (
-      typeof quoteDraft.estimatedHours !== 'number' ||
-      !Number.isFinite(quoteDraft.estimatedHours) ||
-      quoteDraft.estimatedHours < 1 ||
-      quoteDraft.estimatedHours > 40
-    ) {
-      throw new LeadsRepositoryError(
-        'INVALID_ESTIMATED_HOURS',
-        `Estimated hours (${quoteDraft.estimatedHours}) must be between 1 and 40.`
-      );
-    }
-
-    // QUO-008 Invariant: Scope notes character limit (max 500 chars)
-    if (quoteDraft.scopeNotes !== undefined) {
-      if (typeof quoteDraft.scopeNotes !== 'string' || quoteDraft.scopeNotes.length > 500) {
-        throw new LeadsRepositoryError(
-          'INVALID_SCOPE_NOTES',
-          `Scope notes must be a string of at most 500 characters.`
-        );
-      }
-    }
-
-    // QUO-005 Invariant: Diagnostic fee resolution and validation
-    let resolvedDiagnosticFeeKobo: number;
-    try {
-      resolvedDiagnosticFeeKobo = await this.resolveCatalogDiagnosticFee(brainWorkerId);
-    } catch (error) {
-      if (error instanceof ForbiddenTenantAccessError) {
-        throw error;
-      }
-      throw error;
-    }
-
-    if (quoteDraft.diagnosticFeeKobo !== resolvedDiagnosticFeeKobo) {
-      throw new LeadsRepositoryError(
-        'DIAGNOSTIC_FEE_MISMATCH',
-        `Submitted diagnosticFeeKobo (${quoteDraft.diagnosticFeeKobo}) must match active provider catalog fee (${resolvedDiagnosticFeeKobo}).`
-      );
-    }
-
-    // Construct immutable WorkerQuote
-    const nowIso = new Date().toISOString();
-    const totalAmountKobo = quoteDraft.laborAmountKobo + resolvedDiagnosticFeeKobo;
-
-    const quote: WorkerQuote = {
-      id: `quo-${invitationId}-${Date.now()}`,
-      leadId: invitationId,
-      brainWorkerId,
-      laborAmountKobo: quoteDraft.laborAmountKobo,
-      diagnosticFeeKobo: resolvedDiagnosticFeeKobo,
+    this.quoteCounter += 1;
+    const submittedQuote: WorkerQuote = {
+      laborAmountKobo,
+      ...(materialsAmountKobo !== undefined ? { materialsAmountKobo } : {}),
+      diagnosticFeeKobo,
+      estimatedHours: quote.estimatedHours,
+      ...(quote.scopeNotes !== undefined ? { scopeNotes: quote.scopeNotes } : {}),
+      id: `quote_${invitationId}_${Date.now()}_${this.quoteCounter}`,
+      invitationId,
       totalAmountKobo,
-      estimatedHours: quoteDraft.estimatedHours,
-      scopeNotes: quoteDraft.scopeNotes,
-      status: 'SUBMITTED',
-      createdAt: nowIso,
-      updatedAt: nowIso,
+      submittedAt: new Date().toISOString(),
+      status: 'PENDING',
     };
 
-    // QUO-009 Invariant: Auto-accept lead if currently PENDING
-    if (lead.status === 'PENDING') {
-      lead.status = 'ACCEPTED';
-      lead.invitationStatus = 'ACCEPTED';
+    this.getPartition(brainWorkerId).quotes.set(submittedQuote.id, submittedQuote);
+    return submittedQuote;
+  }
+
+  async acceptCustomerRate(
+    brainWorkerId: string,
+    invitationId: string
+  ): Promise<LeadMutationResult> {
+    this.assertAuthorizedTenant(brainWorkerId);
+    await this.assertCompleteProfile(brainWorkerId);
+    this.assertNotOffline();
+
+    const lead = this.findLeadByInvitation(brainWorkerId, invitationId);
+    if (!lead) {
+      return { ok: false, reason: 'INVITATION_NOT_FOUND' };
+    }
+    // QUO-001: Pricing mode separation
+    if (lead.pricingMode !== 'CUSTOMER_POSTED_RATE') {
+      return { ok: false, reason: 'INVALID_STATE' };
     }
 
-    lead.quote = quote;
-    lead.updatedAt = nowIso;
+    return this.respondToInvitation(brainWorkerId, invitationId, 'ACCEPTED');
+  }
 
-    // Timeline event for quote submission
-    const timelineEvent: LeadTimelineEvent = {
-      id: `evt-quote-${invitationId}-${Date.now()}`,
-      leadId: invitationId,
-      eventType: 'QUOTED',
-      actor: 'BRAINWORKER',
-      timestamp: nowIso,
-      metadata: { quoteId: quote.id, totalAmountKobo },
+  // ── Realtime (transport-unspecified) ─────────────────────────────
+
+  subscribe(
+    brainWorkerId: string,
+    listener: (event: LeadFeedEvent) => void
+  ): () => void {
+    this.assertAuthorizedTenant(brainWorkerId);
+
+    let listeners = this.subscribers.get(brainWorkerId);
+    if (!listeners) {
+      listeners = new Set();
+      this.subscribers.set(brainWorkerId, listeners);
+    }
+    listeners.add(listener);
+
+    return () => {
+      const current = this.subscribers.get(brainWorkerId);
+      if (current) {
+        current.delete(listener);
+        if (current.size === 0) {
+          this.subscribers.delete(brainWorkerId);
+        }
+      }
     };
+  }
 
-    if (validateTimelineEvent(timelineEvent)) {
-      lead.timeline.push(timelineEvent);
-    }
+  // ── Test-only surface ───────────────────────────────────────────
+  // Used exclusively by the test harness. Must never be called from
+  // production routes (REP-009 boundary).
 
-    this.commitPartition(brainWorkerId, partition);
-    return quote;
+  __testSeedLead(brainWorkerId: string, lead: RawLeadData): void {
+    this.getPartition(brainWorkerId).leads.set(lead.id, { ...lead });
+  }
+
+  __testSetOffline(offline: boolean): void {
+    this.offlineOverride = offline === true;
   }
 }
 
-// ── Singleton Factory ──────────────────────────────────────────────
-
-let defaultBrainWorkerLeadsRepository: IBrainWorkerLeadsRepository | null = null;
-
-export function getBrainWorkerLeadsRepository(): IBrainWorkerLeadsRepository {
-  if (!defaultBrainWorkerLeadsRepository) {
-    defaultBrainWorkerLeadsRepository = new BrainWorkerLeadsRepository();
-  }
-  return defaultBrainWorkerLeadsRepository;
-}
-
-export function resetBrainWorkerLeadsRepository(): void {
-  defaultBrainWorkerLeadsRepository = null;
-}
+let defaultRepository: BrainWorkerLeadsRepository | null = null;
 
 export function createBrainWorkerLeadsRepository(
   dependencies: BrainWorkerLeadsRepositoryDependencies = {}
-): IBrainWorkerLeadsRepository {
+): BrainWorkerLeadsRepository {
   return new BrainWorkerLeadsRepository(dependencies);
+}
+
+export function getBrainWorkerLeadsRepository(): IBrainWorkerLeadsRepository {
+  if (!defaultRepository) {
+    defaultRepository = createBrainWorkerLeadsRepository();
+  }
+  return defaultRepository;
+}
+
+export function resetDefaultBrainWorkerLeadsRepository(): void {
+  defaultRepository = null;
 }

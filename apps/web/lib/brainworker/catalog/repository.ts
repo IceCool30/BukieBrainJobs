@@ -111,9 +111,9 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
         return record.trade.coverageCities;
       }
     } catch {
-      // Fallback
+      // In case onboarding repository throws or is not accessible, fail closed
     }
-    return ['Abuja', 'Lagos'];
+    return [];
   }
 
   private readStoredProfile(brainWorkerId: string): BrainWorkerOperationalProfile | null {
@@ -147,18 +147,31 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     brainWorkerId: string,
     profile: BrainWorkerOperationalProfile
   ): void {
-    const cloned = JSON.parse(JSON.stringify(profile)) as BrainWorkerOperationalProfile;
-    cloned.isComplete = isOperationalProfileComplete(cloned);
-    this.inMemoryProfiles.set(brainWorkerId, cloned);
+    const copy = JSON.parse(JSON.stringify(profile)) as BrainWorkerOperationalProfile;
+    this.inMemoryProfiles.set(brainWorkerId, copy);
 
     if (typeof localStorage !== 'undefined') {
       try {
-        localStorage.setItem(
-          `${STORAGE_KEY_PREFIX}${brainWorkerId}`,
-          JSON.stringify(cloned)
-        );
+        localStorage.setItem(`${STORAGE_KEY_PREFIX}${brainWorkerId}`, JSON.stringify(profile));
       } catch {
-        // Restricted storage environment fallback
+        // Ignore quota/access errors in restricted browser contexts
+      }
+    }
+  }
+
+  private notifySubscribers(
+    brainWorkerId: string,
+    profile: BrainWorkerOperationalProfile
+  ): void {
+    const subs = this.subscribers.get(brainWorkerId);
+    if (subs) {
+      const cloned = JSON.parse(JSON.stringify(profile)) as BrainWorkerOperationalProfile;
+      for (const callback of subs) {
+        try {
+          callback(cloned);
+        } catch {
+          // Prevent listener exceptions from breaking repo execution
+        }
       }
     }
   }
@@ -166,9 +179,9 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
   private async createDefaultProfile(
     brainWorkerId: string
   ): Promise<BrainWorkerOperationalProfile> {
-    const verifiedCities = await this.getVerifiedCoverageCities(brainWorkerId);
-    const primaryCity = verifiedCities[0] || 'Abuja';
     const now = new Date().toISOString();
+    const verifiedCities = await this.getVerifiedCoverageCities(brainWorkerId);
+    const defaultCity = verifiedCities.length > 0 ? (verifiedCities[0] ?? '') : '';
 
     const profile: BrainWorkerOperationalProfile = {
       brainWorkerId,
@@ -190,23 +203,19 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
       },
       coverage: {
         brainWorkerId,
-        primaryCityId: primaryCity,
-        primaryCityName: primaryCity,
+        primaryCityId: defaultCity,
+        primaryCityName: defaultCity,
         coverageNeighbourhoods: [],
         travelRadiusKm: 15,
         updatedAt: now,
       },
       isComplete: false,
-      updatedAt: now,
     };
 
-    profile.isComplete = isOperationalProfileComplete(profile);
     return profile;
   }
 
-  async getOperationalProfile(
-    brainWorkerId: string
-  ): Promise<BrainWorkerOperationalProfile | null> {
+  async getOperationalProfile(brainWorkerId: string): Promise<BrainWorkerOperationalProfile | null> {
     this.assertCallerAuthorization(brainWorkerId);
 
     const stored = this.readStoredProfile(brainWorkerId);
@@ -225,31 +234,6 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     return JSON.parse(JSON.stringify(profile!.catalog)) as BrainWorkerServiceCatalog;
   }
 
-  async getConfiguredCatalog(
-    brainWorkerId: string
-  ): Promise<BrainWorkerServiceCatalog | null> {
-    this.assertCallerAuthorization(brainWorkerId);
-
-    const stored = this.readStoredProfile(brainWorkerId);
-    if (!stored) {
-      return null;
-    }
-
-    const catalog = stored.catalog;
-    if (!catalog || !Array.isArray(catalog.services)) {
-      return null;
-    }
-
-    const hasActiveService = catalog.services.some(
-      (s: ConfiguredServiceItem) => Boolean(s && s.status === 'ACTIVE')
-    );
-    if (!hasActiveService) {
-      return null;
-    }
-
-    return JSON.parse(JSON.stringify(catalog)) as BrainWorkerServiceCatalog;
-  }
-
   async saveServiceCatalog(
     brainWorkerId: string,
     catalog: {
@@ -263,53 +247,63 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
   ): Promise<BrainWorkerServiceCatalog> {
     this.assertCallerAuthorization(brainWorkerId);
 
-    if (!catalog || typeof catalog !== 'object') {
-      throw new OperationsValidationError('Catalog payload must be an object.');
+    const feeValidation = validateDiagnosticFee(catalog.diagnosticFeeNgn);
+    if (!feeValidation.valid) {
+      throw new OperationsValidationError(
+        feeValidation.error ?? 'Diagnostic fee fails numerical boundary invariant.'
+      );
     }
 
-    validateDiagnosticFee(catalog.diagnosticFeeNgn);
-
-    if (!catalog.services || !Array.isArray(catalog.services) || catalog.services.length === 0) {
-      throw new OperationsValidationError('At least one service must be configured.');
-    }
-
-    const existingProfile = await this.getOperationalProfile(brainWorkerId);
-    const existingRatesMap = new Map<string, number>();
-    for (const item of existingProfile!.catalog.services) {
-      existingRatesMap.set(item.serviceId, item.hourlyRateNgn);
-    }
-
-    const seenServices = new Set<string>();
-    const validatedServices: ConfiguredServiceItem[] = [];
-
-    for (const item of catalog.services) {
-      if (!item || typeof item !== 'object') {
-        throw new OperationsValidationError('Service item must be an object.');
-      }
-
-      validateCanonicalServiceId(item.serviceId);
-
-      if (seenServices.has(item.serviceId)) {
-        throw new OperationsValidationError(`Duplicate service ID '${item.serviceId}'.`);
-      }
-      seenServices.add(item.serviceId);
-
-      if (item.status !== 'ACTIVE' && item.status !== 'PAUSED') {
-        throw new OperationsValidationError(
-          `Invalid service status '${item.status}'. Must be 'ACTIVE' or 'PAUSED'.`
-        );
-      }
-
-      validateHourlyRate(item.serviceId, item.hourlyRateNgn);
-
-      validatedServices.push({
-        serviceId: item.serviceId,
-        hourlyRateNgn: item.hourlyRateNgn,
-        status: item.status,
-      });
+    if (!Array.isArray(catalog.services)) {
+      throw new OperationsValidationError('Services must be an array.');
     }
 
     const now = new Date().toISOString();
+    const validatedServices: ConfiguredServiceItem[] = [];
+    const seenServiceIds = new Set<string>();
+
+    for (const item of catalog.services) {
+      if (seenServiceIds.has(item.serviceId)) {
+        throw new OperationsValidationError(
+          `Duplicate service ID '${item.serviceId}' specified in service catalog.`
+        );
+      }
+      seenServiceIds.add(item.serviceId);
+
+      const canonicalResult = validateCanonicalServiceId(item.serviceId);
+      if (!canonicalResult.valid || !canonicalResult.service) {
+        throw new OperationsValidationError(
+          canonicalResult.error ??
+            `Service ID '${item.serviceId}' does not exist in canonical registry.`
+        );
+      }
+
+      const rateValidation = validateHourlyRate(item.hourlyRateNgn);
+      if (!rateValidation.valid) {
+        throw new OperationsValidationError(
+          rateValidation.error ??
+            `Invalid hourly rate for canonical service '${item.serviceId}'.`
+        );
+      }
+
+      if (item.status !== 'ACTIVE' && item.status !== 'PAUSED') {
+        throw new OperationsValidationError(
+          `Invalid status '${String(item.status)}' for service '${item.serviceId}'.`
+        );
+      }
+
+      validatedServices.push({
+        serviceId: canonicalResult.service.serviceId,
+        categoryId: canonicalResult.service.categoryId,
+        serviceName: canonicalResult.service.serviceName,
+        hourlyRateNgn: item.hourlyRateNgn,
+        status: item.status,
+        updatedAt: now,
+      });
+    }
+
+    const currentProfile = (await this.getOperationalProfile(brainWorkerId))!;
+
     const updatedCatalog: BrainWorkerServiceCatalog = {
       brainWorkerId,
       diagnosticFeeNgn: catalog.diagnosticFeeNgn,
@@ -318,13 +312,12 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     };
 
     const updatedProfile: BrainWorkerOperationalProfile = {
-      ...existingProfile!,
+      ...currentProfile,
       catalog: updatedCatalog,
       isComplete: isOperationalProfileComplete({
-        ...existingProfile!,
+        ...currentProfile,
         catalog: updatedCatalog,
       }),
-      updatedAt: now,
     };
 
     this.persistProfile(brainWorkerId, updatedProfile);
@@ -353,14 +346,6 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
       throw new OperationsValidationError('Availability payload must be an object.');
     }
 
-    if (typeof availability.isAvailable !== 'boolean') {
-      throw new OperationsValidationError('isAvailable flag must be a boolean.');
-    }
-
-    if (typeof availability.isEmergencyAvailable !== 'boolean') {
-      throw new OperationsValidationError('isEmergencyAvailable flag must be a boolean.');
-    }
-
     if (!availability.weeklySchedule || typeof availability.weeklySchedule !== 'object') {
       throw new OperationsValidationError('Weekly schedule is required.');
     }
@@ -368,18 +353,23 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     for (const day of ORDERED_DAYS) {
       const schedule = availability.weeklySchedule[day];
       if (!schedule) {
-        throw new OperationsValidationError(`Missing schedule entry for day '${day}'.`);
+        throw new OperationsValidationError(`Missing day schedule definition for '${day}'.`);
       }
-      validateDaySchedule(schedule);
+      const dayResult = validateDaySchedule(schedule);
+      if (!dayResult.valid) {
+        throw new OperationsValidationError(
+          dayResult.error ?? `Invalid day schedule for '${day}'.`
+        );
+      }
     }
 
     const now = new Date().toISOString();
-    const existingProfile = await this.getOperationalProfile(brainWorkerId);
+    const currentProfile = (await this.getOperationalProfile(brainWorkerId))!;
 
     const updatedAvailability: BrainWorkerAvailability = {
       brainWorkerId,
-      isAvailable: availability.isAvailable,
-      isEmergencyAvailable: availability.isEmergencyAvailable,
+      isAvailable: Boolean(availability.isAvailable),
+      isEmergencyAvailable: Boolean(availability.isEmergencyAvailable),
       weeklySchedule: JSON.parse(
         JSON.stringify(availability.weeklySchedule)
       ) as Record<DayOfWeek, DaySchedule>,
@@ -387,13 +377,12 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     };
 
     const updatedProfile: BrainWorkerOperationalProfile = {
-      ...existingProfile!,
+      ...currentProfile,
       availability: updatedAvailability,
       isComplete: isOperationalProfileComplete({
-        ...existingProfile!,
+        ...currentProfile,
         availability: updatedAvailability,
       }),
-      updatedAt: now,
     };
 
     this.persistProfile(brainWorkerId, updatedProfile);
@@ -431,6 +420,13 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
       throw new OperationsValidationError('Primary city ID must be a non-empty string.');
     }
 
+    const verifiedCities = await this.getVerifiedCoverageCities(brainWorkerId);
+    if (!verifiedCities.includes(coverage.primaryCityId)) {
+      throw new OperationsValidationError(
+        `Primary city '${coverage.primaryCityId}' is not among verified onboarding coverage cities (${verifiedCities.join(', ')}).`
+      );
+    }
+
     if (
       !coverage.primaryCityName ||
       typeof coverage.primaryCityName !== 'string' ||
@@ -439,16 +435,12 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
       throw new OperationsValidationError('Primary city name must be a non-empty string.');
     }
 
-    const verifiedCities = await this.getVerifiedCoverageCities(brainWorkerId);
-    if (!verifiedCities.includes(coverage.primaryCityId)) {
+    if (
+      !Array.isArray(coverage.coverageNeighbourhoods) ||
+      coverage.coverageNeighbourhoods.length === 0
+    ) {
       throw new OperationsValidationError(
-        `Primary city '${coverage.primaryCityId}' is not among onboarding verified cities [${verifiedCities.join(', ')}].`
-      );
-    }
-
-    if (!Array.isArray(coverage.coverageNeighbourhoods)) {
-      throw new OperationsValidationError(
-        'Operational neighbourhoods/LGAs must be an array of strings.'
+        'At least one operational neighbourhood/LGA must be designated.'
       );
     }
 
@@ -477,12 +469,12 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     const radiusResult = validateTravelRadius(coverage.travelRadiusKm);
     if (!radiusResult.valid) {
       throw new OperationsValidationError(
-        `Invalid travel radius ${coverage.travelRadiusKm} km. Must be one of [5, 10, 15, 25, 50].`
+        radiusResult.error ?? 'Travel radius fails validation invariant.'
       );
     }
 
     const now = new Date().toISOString();
-    const existingProfile = await this.getOperationalProfile(brainWorkerId);
+    const currentProfile = (await this.getOperationalProfile(brainWorkerId))!;
 
     const updatedCoverage: BrainWorkerCoverage = {
       brainWorkerId,
@@ -494,13 +486,12 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
     };
 
     const updatedProfile: BrainWorkerOperationalProfile = {
-      ...existingProfile!,
+      ...currentProfile,
       coverage: updatedCoverage,
       isComplete: isOperationalProfileComplete({
-        ...existingProfile!,
+        ...currentProfile,
         coverage: updatedCoverage,
       }),
-      updatedAt: now,
     };
 
     this.persistProfile(brainWorkerId, updatedProfile);
@@ -514,21 +505,20 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
   ): Promise<MatchingHydrationProfile> {
     this.assertCallerAuthorization(brainWorkerId);
 
-    const profile = await this.getOperationalProfile(brainWorkerId);
-    if (!profile) {
-      throw new OperationsValidationError(
-        `Operational profile not found for BrainWorker '${brainWorkerId}'.`
-      );
-    }
+    const profile = (await this.getOperationalProfile(brainWorkerId))!;
 
-    const skills = profile.catalog.services.map((configured) => {
+    const skills = profile.catalog.services.map((service) => {
       const canonical = CANONICAL_SERVICES_REGISTRY.find(
-        (c) => c.serviceId === configured.serviceId
+        (entry) => entry.serviceId === service.serviceId
       );
+      const skillId = canonical?.skillId ?? service.serviceId;
+      const hourlyRateKobo = Math.round(service.hourlyRateNgn * 100);
+      const isActive = service.status === 'ACTIVE';
+
       return {
-        skillId: canonical ? canonical.skillId : configured.serviceId,
-        hourlyRateKobo: Math.round(configured.hourlyRateNgn * 100),
-        isActive: configured.status === 'ACTIVE',
+        skillId,
+        hourlyRateKobo,
+        isActive,
       };
     });
 
@@ -540,48 +530,30 @@ export class BrainWorkerOperationsRepository implements IBrainWorkerOperationsRe
         JSON.stringify(profile.availability.weeklySchedule)
       ) as Record<DayOfWeek, DaySchedule>,
       travelRadiusKm: profile.coverage.travelRadiusKm,
-      coverageNeighbourhoods: [...profile.coverage.coverageNeighbourhoods],
       primaryCityId: profile.coverage.primaryCityId,
-      isOperationalReady: profile.isComplete,
     };
   }
 
-  subscribeToOperationalProfile(
+  subscribe(
     brainWorkerId: string,
     callback: (profile: BrainWorkerOperationalProfile) => void
   ): () => void {
-    if (!this.subscribers.has(brainWorkerId)) {
-      this.subscribers.set(brainWorkerId, new Set());
+    let subs = this.subscribers.get(brainWorkerId);
+    if (!subs) {
+      subs = new Set();
+      this.subscribers.set(brainWorkerId, subs);
     }
-
-    const clientSet = this.subscribers.get(brainWorkerId)!;
-    clientSet.add(callback);
+    subs.add(callback);
 
     return () => {
-      clientSet.delete(callback);
-      if (clientSet.size === 0) {
-        this.subscribers.delete(brainWorkerId);
+      const currentSubs = this.subscribers.get(brainWorkerId);
+      if (currentSubs) {
+        currentSubs.delete(callback);
+        if (currentSubs.size === 0) {
+          this.subscribers.delete(brainWorkerId);
+        }
       }
     };
-  }
-
-  private notifySubscribers(
-    brainWorkerId: string,
-    profile: BrainWorkerOperationalProfile
-  ): void {
-    const clientSet = this.subscribers.get(brainWorkerId);
-    if (!clientSet || clientSet.size === 0) {
-      return;
-    }
-
-    const snapshot = JSON.parse(JSON.stringify(profile)) as BrainWorkerOperationalProfile;
-    for (const callback of clientSet) {
-      try {
-        callback(snapshot);
-      } catch {
-        // Protect persistence pipeline from subscriber errors
-      }
-    }
   }
 }
 
