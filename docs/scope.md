@@ -9,7 +9,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 ## Active Work Slice
 
 - [ ] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
-  - **Status**: Specifications Approved; entering /develop Phase 1
+  - **Status**: Phase 4 GREEN Accepted; entering Phase 5 RED (Lead Feed / Inspection UI)
   - **Spec**: `docs/specs/BW-003-leads-inbox.md` (Approved)
   - **Primary Route**: `/brainworker/leads`
   - **Primary User**: Approved BrainWorker
@@ -29,16 +29,16 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
     - No invented real-time guarantees, customer data, invitation state, quote totals, or match results.
   - **Acceptance Criteria**:
     - [ ] Approved BrainWorker can enter `/brainworker/leads` only through the existing authenticated/approved-provider boundary.
-    - [ ] Lead candidates are represented against authoritative provider skill/category and BW-002 coverage/radius inputs rather than a second UI-only taxonomy.
+    - [x] Lead candidates are represented against authoritative provider skill/category and BW-002 coverage/radius inputs rather than a second UI-only taxonomy.
     - [ ] Lead feed supports deterministic loading, populated, empty, degraded, offline, and failure states.
     - [ ] Lead detail exposes only fields authorized for the BrainWorker role and preserves customer privacy.
-    - [ ] Accept and Decline actions are explicitly modeled as invitation responses and are authorization-protected.
-    - [ ] Decline reasons use an approved canonical taxonomy and are persisted through the repository contract.
-    - [ ] Response timing is sourced from authoritative invitation timestamps and is never manufactured by the client.
-    - [ ] Quotation supports the approved pricing modes and itemized labor/material/call-out representation without conflating quotation with booking or payment.
-    - [ ] Cross-tenant provider access and mutations fail closed.
-    - [ ] Offline state never fabricates fresh leads, invitation responses, quotes, assignments, or booking confirmations.
-    - [ ] Production modules contain zero imports from testing-only helpers.
+    - [x] Accept and Decline actions are explicitly modeled as invitation responses and are authorization-protected.
+    - [x] Decline reasons use an approved canonical taxonomy and are persisted through the repository contract.
+    - [x] Response timing is sourced from authoritative invitation timestamps and is never manufactured by the client.
+    - [x] Quotation supports the approved pricing modes and itemized labor/material/call-out representation without conflating quotation with booking or payment.
+    - [x] Cross-tenant provider access and mutations fail closed.
+    - [x] Offline state never fabricates fresh leads, invitation responses, quotes, assignments, or booking confirmations.
+    - [x] Production modules contain zero imports from testing-only helpers.
     - [ ] Accessibility, responsive behavior, keyboard operation, reduced-motion behavior, and approved live-experience standards are preserved.
   - **Required pre-implementation artifacts**:
     1. Product/feature specification: `docs/specs/BW-003-leads-inbox.md`
