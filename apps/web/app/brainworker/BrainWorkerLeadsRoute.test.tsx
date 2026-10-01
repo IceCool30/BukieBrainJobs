@@ -202,7 +202,7 @@ describe('BW-003 Phase 6 RED: BrainWorker Leads Route Integration & Security Con
       markup = renderToString(<BrainWorkerLeadsPage />);
     }).not.toThrow();
     expect(markup).toContain('BukieBrainJobs');
-    expect(markup).toContain('Job Requests & Leads');
+    expect(markup).toMatch(/Job Requests.*Leads/);
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
