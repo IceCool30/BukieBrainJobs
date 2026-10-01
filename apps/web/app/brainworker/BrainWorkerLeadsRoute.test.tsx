@@ -186,8 +186,7 @@ describe('BW-003 Phase 6 RED: BrainWorker Leads Route Integration & Security Con
 
     await waitFor(() => {
       expect(mockLeadsRepo.getLeads).toHaveBeenCalledWith(
-        mockApprovedWorkerA.id,
-        expect.anything()
+        mockApprovedWorkerA.id
       );
     });
   });
