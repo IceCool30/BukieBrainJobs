@@ -9,7 +9,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 ## Active Work Slice
 
 - [ ] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
-  - **Status**: Phase 5 GREEN Accepted; entering Phase 6 RED (Route Integration & Security)
+  - **Status**: Phase 6 GREEN Accepted; entering Phase 7 (Production Verification)
   - **Spec**: `docs/specs/BW-003-leads-inbox.md` (Approved)
   - **Primary Route**: `/brainworker/leads`
   - **Primary User**: Approved BrainWorker
@@ -28,7 +28,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
     - No production backend/API activation merely because the eventual contract requires it.
     - No invented real-time guarantees, customer data, invitation state, quote totals, or match results.
   - **Acceptance Criteria**:
-    - [ ] Approved BrainWorker can enter `/brainworker/leads` only through the existing authenticated/approved-provider boundary.
+    - [x] Approved BrainWorker can enter `/brainworker/leads` only through the existing authenticated/approved-provider boundary.
     - [x] Lead candidates are represented against authoritative provider skill/category and BW-002 coverage/radius inputs rather than a second UI-only taxonomy.
     - [x] Lead feed supports deterministic loading, populated, empty, degraded, offline, and failure states.
     - [x] Lead detail exposes only fields authorized for the BrainWorker role and preserves customer privacy.

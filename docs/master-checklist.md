@@ -128,7 +128,7 @@ Phase 7: Launch Readiness
 - [ ] Quick toggles: Online/available for instant dispatch vs Off-duty.
 - [ ] Urgent local requests ticker.
 
-#### 2.3 Job Requests & Leads Inbox (`BW-003`, In Progress: Phases 1 to 5 Complete)
+#### 2.3 Job Requests & Leads Inbox (`BW-003`, In Progress: Phases 1 to 6 Complete)
 - [x] Lead domain contracts & eligibility rules (Phase 1, LEAD-001 to LEAD-007).
 - [x] Leads repository & tenant isolation (Phase 2, REP-001 to REP-010).
 - [x] Invitation response actions & canonical decline reasons (Phase 3, INV-001 to INV-010).
@@ -136,7 +136,7 @@ Phase 7: Launch Readiness
 - [x] Open requests feed: Filterable by trade, proximity, and urgency (`/brainworker/leads`, Phase 5 UI-001 to UI-006).
 - [x] Job lead detail inspection: Review customer problem description, photos, location area, and budget (Phase 5 UI-007 to UI-012).
 - [x] Quote submission drawer & direct invitation response UI surfaces (Phase 5 UI-009).
-- [ ] Route integration & security guards (Phase 6 INT-001 to INT-010).
+- [x] Route integration & security guards (Phase 6 INT-001 to INT-010).
 
 #### 2.4 Service Catalog & Availability Management (`BW-002`)
 - [x] Worker service catalog configuration: Add or remove individual services, set hourly rates and diagnostic call-out fees.
