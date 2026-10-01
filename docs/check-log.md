@@ -2,6 +2,32 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-10-01: BW-003 BrainWorker Leads & Job Requests Phase 4 GREEN Sign-Off Check
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM) + Vercel Preview
+- **Commit**: `3815eff119a90cbe5cce710d05e2abcda094ee67` on `feature/bw-003-leads-inbox`
+- **Trigger**: BW-003 Phase 4 GREEN Sign-Off Check (Fail-Closed Catalog Diagnostic Fee Authority Invariant & Quotation Verification)
+- **Commands Executed**:
+  - `pnpm vitest run lib/brainworker/leads/`: Passed 43/43 tests across 4 suites with 0 failures
+    - Suite 1: `apps/web/lib/brainworker/leads/quotation.test.ts` (16/16 tests, QUO-001 to QUO-010 + 6 fail-closed catalog authority invariant tests)
+    - Suite 2: `apps/web/lib/brainworker/leads/repository.test.ts` (10/10 tests, REP-001 to REP-010)
+    - Suite 3: `apps/web/lib/brainworker/leads/invitations.test.ts` (10/10 tests, INV-001 to INV-010)
+    - Suite 4: `apps/web/lib/brainworker/leads/domain.test.ts` (7/7 tests, LEAD-001 to LEAD-007)
+  - `pnpm vitest run lib/brainworker/`: Passed 164/164 tests across 12 suites with 0 failures across the entire BrainWorker platform
+  - `pnpm tsc --noEmit`: Passed with 0 errors (`exactOptionalPropertyTypes: true` compliant)
+  - `pnpm lint`: Passed with 0 errors
+  - `pnpm build`: Passed with 0 errors; generated 38/38 static pages and routes
+  - Physical boundary inspection: 0 forbidden `testing/` imports found across production quotation, invitation, repository, and domain files (REP-009 boundary verified)
+  - GitHub CI Run: Run `36812810547` for commit `3815eff` completed with conclusion `success`
+  - Vercel preview deployment: Verified live at deployment `7YxfPajmJumeKjuXvXrPJnEAN9Bv` (`state: SUCCESS`)
+- **Architecture & Domain Invariants Verified**:
+  - Catalog authority invariant: Diagnostic fee is strictly resolved from the provider's active operational profile and catalog. Missing profiles, missing catalogs, storage failures, non-finite values, and non-integer kobo conversions fail closed with `BrainWorkerLeadError.CATALOG_DIAGNOSTIC_FEE_RESOLUTION_FAILED`. No generic fallback is used for production resolution.
+  - Integer kobo currency validation: Monetary amounts validated as non-negative integer kobo.
+  - Derived total authority: `totalAmountKobo` is derived server/repository-side from line items and catalog diagnostic fee; client-supplied conflicting totals rejected at boundary.
+  - Non-mutation invariant: Quote submission keeps quotes in `PENDING` state and leaves lead, booking, escrow, payout, and settlement states completely untouched.
+  - Scope notes boundary: Enforces 1,000-character boundary and runtime string validation.
+- **Voice and Slop Audit**: Direct Nigerian marketplace terminology; 0 em dashes in UI components and documentation; 0 corporate filler terms.
+- **Status**: PASS (PHASE 4 GREEN ACCEPTED / CONDITIONAL REJECTION RESOLVED)
+
 ## 2026-09-26: BW-002 BrainWorker Service Catalog & Availability Management Production Sign-Off Check
 - **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM) + Vercel Preview
 - **Commit**: `64ad004b53c9fa9e6765b5ab6f0577160fb39cde` on `feature/bw-002-coverage-location` (41 ahead of `main`, 0 behind)
