@@ -389,7 +389,11 @@ export function LeadsInboxView({
       {!isLoading && !errorMessage && leads.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Feed List */}
-          <div className={selectedLead && !isMobile ? 'lg:col-span-7 space-y-4' : 'lg:col-span-12 space-y-4'}>
+          <div
+            role="feed"
+            aria-label="Incoming job requests feed"
+            className={selectedLead && !isMobile ? 'lg:col-span-7 space-y-4' : 'lg:col-span-12 space-y-4'}
+          >
             {leads.map((lead) => {
               const isSelected = lead.id === selectedLeadId;
               const budgetDisplay = formatBudget(lead.customerBudgetKobo);

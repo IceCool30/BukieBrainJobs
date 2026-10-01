@@ -119,7 +119,7 @@ describe('BW-003 Phase 6 RED: BrainWorker Leads Route Integration & Security Con
     render(<BrainWorkerLeadsPage />);
 
     expect(
-      screen.getByText(/Customer Account Detected|Access Restricted|BrainWorker workspace is strictly reserved/i)
+      screen.getByText('Customer Account Detected')
     ).toBeInTheDocument();
     expect(mockLeadsRepo.getLeads).not.toHaveBeenCalled();
     expect(mockOperationsRepo.getOperationalProfile).not.toHaveBeenCalled();
