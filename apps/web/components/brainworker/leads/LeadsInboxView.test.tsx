@@ -89,7 +89,7 @@ describe('BW-003 Phase 5 RED: Lead Feed & Inspection UI Contracts (UI-001 throug
     });
 
     expect(screen.getByText(/Gwarinpa/i)).toBeInTheDocument();
-    expect(screen.getByText(/EMERGENCY/i)).toBeInTheDocument();
+    expect(screen.getByText('EMERGENCY')).toBeInTheDocument();
     expect(screen.getByText(/₦25,000/i)).toBeInTheDocument();
   });
 
