@@ -2,6 +2,122 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-10-02: BW-003 BrainWorker Leads & Job Requests Phase 7 RED Contract Establishment
+- **Environment**: Local development (Termux) + Cloud Codespace target
+- **Branch**: `feature/bw-003-leads-inbox`
+- **Trigger**: BW-003 Phase 7 RED: Production Verification / Final Feature Audit
+- **Phase**: RED Contract Establishment (Pre-GREEN Verification)
+- **Status**: CONTRACTS ESTABLISHED - Awaiting GREEN execution
+
+### Contract Scope: Complete BW-003 System Boundary
+
+#### Production Route and Shell (PROD-001 to PROD-003)
+- **PROD-001**: Production route `/brainworker/leads` renders without SSR hydration errors
+- **PROD-002**: Production route file contains zero imports from `testing/` directory
+- **PROD-003**: Production route does not expose test-only surfaces in export
+
+#### Authentication and Authorization Gates (PROD-004 to PROD-008)
+- **PROD-004**: Unauthenticated access redirects to login without repository interaction
+- **PROD-005**: Customer role fails closed at route boundary without data leakage
+- **PROD-006**: Unapproved BrainWorker redirects to verification-status without repository reads
+- **PROD-007**: Incomplete operational profile blocks leads feed and renders setup navigation
+- **PROD-008**: Approved complete BrainWorker binds repository to authenticated user.id
+
+#### Tenant Isolation and Session Binding (PROD-009 to PROD-010)
+- **PROD-009**: Repository rejects cross-tenant lead access attempts
+- **PROD-010**: Repository enforces authenticated session identity match on all operations
+
+#### Lead Eligibility and Authority (PROD-011 to PROD-013)
+- **PROD-011**: Repository filters leads by authoritative provider eligibility
+- **PROD-012**: Privacy projection masks sensitive customer data at repository boundary
+- **PROD-013**: Privacy projection masks sensitive data at rendered UI boundary
+
+#### Feed State and Ordering (PROD-014 to PROD-017)
+- **PROD-014**: Leads feed renders loading state before data resolution
+- **PROD-015**: Leads feed renders empty state when no leads available
+- **PROD-016**: Leads feed renders populated state with multiple leads ordered deterministically
+- **PROD-017**: Leads feed renders error state with retry action when repository fails
+
+#### Invitation Mutations (PROD-018 to PROD-021)
+- **PROD-018**: Accept invitation mutation enforces canonical state transition
+- **PROD-019**: Decline invitation mutation uses canonical reason taxonomy
+- **PROD-020**: Decline invitation rejects invalid reason outside canonical taxonomy
+- **PROD-021**: Invitation mutations reject already-responded invitations
+
+#### Quotation Authority (PROD-022 to PROD-025)
+- **PROD-022**: Submit quote enforces authoritative diagnostic fee from BW-002 catalog
+- **PROD-023**: Submit quote derives total from line items, rejecting client-authored totals
+- **PROD-024**: Accept customer rate is separate from quotation submission
+- **PROD-025**: Accept customer rate rejects when pricing mode is WORKER_QUOTE
+
+#### Offline and Degraded Behavior (PROD-026 to PROD-029)
+- **PROD-026**: Offline mode prevents mutation operations
+- **PROD-027**: Offline mode allows read operations for cached data
+- **PROD-028**: LeadsInboxView renders offline banner and disables actions
+- **PROD-029**: LeadsInboxView renders degraded notice when isDegraded is true
+
+#### Accessibility Requirements (PROD-030 to PROD-033)
+- **PROD-030**: Lead cards have minimum 44px interactive targets
+- **PROD-031**: Decline reason modal has accessible form controls
+- **PROD-032**: Leads feed region has proper ARIA labels
+- **PROD-033**: Modal dialog has proper ARIA attributes
+
+#### Production/Testing Physical Separation (PROD-034 to PROD-039)
+- **PROD-034**: Production repository module has zero imports from testing/ directory
+- **PROD-035**: Production domain module has zero imports from testing/ directory
+- **PROD-036**: Production types module has zero imports from testing/ directory
+- **PROD-037**: LeadsInboxView production component has zero imports from testing/ directory
+- **PROD-038**: Test utilities are physically separated in testing/ subtree
+- **PROD-039**: testing/ directory contains fixtures, harness, and utilities
+
+#### Non-Goals: No Booking/Payment/Escrow Mutation (PROD-040 to PROD-043)
+- **PROD-040**: BW-003 repository does not import or reference booking state mutation
+- **PROD-041**: BW-003 types do not define booking or payment mutation contracts
+- **PROD-042**: Invitation accept does not transition booking state
+- **PROD-043**: Quote submission does not mutate booking or payment state
+
+#### Complete BW-003 Regression Integration (PROD-044 to PROD-045)
+- **PROD-044**: End-to-end flow from route through repository to UI preserves authorization
+- **PROD-045**: All Phase 1-6 contracts remain satisfied in production route
+
+### RED Contract Artifacts
+- **Test File**: `apps/web/app/brainworker/BW003Phase7ProductionVerification.test.tsx`
+- **Total Contracts**: 45 verification contracts across 12 categories
+- **Test Structure**: Comprehensive end-to-end system boundary verification
+
+### RED Gate Status
+- **Contracts Established**: 45/45 Phase 7 RED verification contracts written
+- **Test Boundary**: Physically separated from production code (`apps/web/app/brainworker/` vs `apps/web/lib/`)
+- **Existing Tests**: Phases 1-6 tests remain untouched and must remain green
+- **PR #53**: Remains open and unmerged per Phase 7 requirements
+- **Next Step**: Execute GREEN phase to verify all contracts pass
+
+### Commands for GREEN Execution
+```bash
+# TypeScript verification
+pnpm turbo type-check
+
+# Lint verification  
+pnpm turbo lint
+
+# Phase 7 test execution (on Cloud Codespace)
+cd /workspaces/BukieBrainJobs && pnpm --filter @bukiebrainjobs/web test apps/web/app/brainworker/BW003Phase7ProductionVerification.test.tsx
+
+# Full regression suite
+pnpm test
+
+# Production build
+pnpm build
+
+# Vercel deployment verification
+vercel --prod
+```
+
+- **Voice and Slop Audit**: Direct Nigerian marketplace terminology; zero em dashes; zero corporate filler; zero generic icons/taglines.
+- **Status**: RED CONTRACTS ESTABLISHED - READY FOR GREEN EXECUTION
+
+---
+
 ## 2026-10-01: BW-003 BrainWorker Leads & Job Requests Phase 6 GREEN Implementation Check
 - **Environment**: GitHub Actions CI (Run `36905014658`) + Vercel Preview Deployment (`5N3czUNn...`)
 - **Commit**: `b47bb41` on `feature/bw-003-leads-inbox`
