@@ -22,6 +22,8 @@
   gtest   # Runs pnpm test on Google Cloud Shell
   gbuild  # Runs pnpm build on Google Cloud Shell
   gsync   # Syncs git branch to Google Cloud Shell
+  gvercel # Runs vercel CLI on Google Cloud Shell
+  gexec   # Runs command on Google Cloud Shell
   gvibe   # Runs vibe CLI on Google Cloud Shell
   gssh    # Opens interactive session on Google Cloud Shell
   ```
