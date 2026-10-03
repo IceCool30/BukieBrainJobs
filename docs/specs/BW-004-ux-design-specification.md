@@ -6,10 +6,12 @@
 **Package:** 3 of 4
 **Depends on:** BW-004-PROD decisions D1 to D10, BW-004-ARCH
 
-> **Revision A.** REVIEWED, NOT YET APPROVED. Address unlock and check-in are
-> restated as authority decisions over escrow, funding is never implied by a
-> lifecycle label, the scope screen no longer leaves room for BW-004 to approve
-> anything, and notification copy is framed as an event pipeline into WEB-018.
+> **Revision A.** REVIEWED, NOT YET APPROVED (historical verdict, superseded by
+> the 2026-10-03 approval; the locks below remain binding). Address unlock and
+> check-in are restated as authority decisions over escrow, funding is never
+> implied by a lifecycle label, the scope screen no longer leaves room for
+> BW-004 to approve anything, and notification copy is framed as an event
+> pipeline into WEB-018.
 
 ## 1. Experience Goal
 
