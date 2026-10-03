@@ -265,7 +265,22 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 ## Upcoming Planned Slices
 
 - [ ] **22. BW-004 BrainWorker Booking Management & Fulfillment**
-  - **Spec**: `docs/specs/BW-004-booking-management.md`
+  - **Scope**: `docs/specs/BW-004-scope-and-product-decision.md` (v0.2 Approved 2026-10-03; canonical identity only, no implementation authorized)
+  - **Specification Package** (APPROVED as the implementation baseline: product, architecture, and implementation gates closed by Product Owner decision 2026-10-03; implementation authorized only on `feature/bw-004-booking-management`):
+    - Product Specification: `docs/specs/BW-004-booking-management.md`
+    - Architecture Contract: `docs/specs/BW-004-architecture-contract.md`
+    - UX Design Specification: `docs/specs/BW-004-ux-design-specification.md`
+    - Test-First Implementation Plan: `docs/specs/BW-004-test-first-implementation-plan.md`
+  - **Open Owner Decisions** (product spec Revision A, 8 items flagged `[OWNER]`):
+    - Customer-side scope approval surface does not exist and must be a separately governed customer slice or an approved extension to one, before BW-004 may ship the request action.
+    - Payment and settlement treatment of an approved scope adjustment has no owner; decided out of scope for BW-004 (Gate 3).
+    - Governed cross-spec correction required: WEB-017 describes `CONFIRMED` as escrow funded, which contradicts WEB-015. Resolution locked in BW-004 (D8): `CONFIRMED` is independent of funding, WEB-015 governs. BW-004 does not edit WEB-017.
+    - Check-in proximity threshold value (200 meters proposed) is a product decision, not a platform invariant.
+    - Provider cancellation consequences, and address visibility while `DISPUTED`.
+  - **Implementation Gates (Resolved 2026-10-03 by Product Owner decision; each closed as a standing restriction, not as an approval):**
+    - Gate 1, scope-adjustment customer approval: RESOLVED. BW-004 can originate and submit the BrainWorker's scope-adjustment request. It cannot approve, reject, or expire that request, and cannot expose an authority-less `APPROVED` state. Customer approval stays a separate customer-side capability that BW-004 does not create.
+    - Gate 2, WEB-017 correction: RESOLVED BY GOVERNANCE, not locally patched. `CONFIRMED` is independent of funding and is a booking/job state, not shorthand for escrow funded. WEB-017 is identified for governed correction; BW-004 does not edit it and does not reconcile WEB-015 and WEB-017 locally. Authoritative financial model stays `JobStatus` + `BookingStatus` + `PaymentAuthorizationStatus` + `EscrowStatus`.
+    - Gate 3, scope-adjustment settlement: RESOLVED AS OUT OF SCOPE. BW-004 cannot mutate pricing, customer authorization, payment authorization, escrow, ledger, refunds, or additional-payment state, and cannot manufacture a settlement outcome.
   - **Acceptance Criteria**:
     - [ ] Active bookings management and customer contact shortcuts
     - [ ] On-site check-in confirmation and arrival tracking

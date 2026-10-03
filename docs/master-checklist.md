@@ -122,7 +122,7 @@ Phase 7: Launch Readiness
 - [x] Application pending / verification in review status screen (`/brainworker/verification-status`).
 - [x] Completed and verified live in production (commit `36b8385`; 137/137 BrainWorker tests, 1,079/1,079 web regression tests; Vercel deployment verified).
 
-#### 2.2 BrainWorker Dashboard & Operating Workspace
+#### 2.2 BrainWorker Dashboard & Operating Workspace (separate outstanding surface, not BW-004)
 - [ ] BrainWorker authenticated home (`/brainworker/dashboard`).
 - [ ] Active jobs metric cards: Today's jobs, pending quotes, total weekly earnings, client rating.
 - [ ] Quick toggles: Online/available for instant dispatch vs Off-duty.
