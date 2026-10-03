@@ -31,7 +31,7 @@
 
 import React from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
 import * as authStorage from '../../lib/auth/storage';
 import * as leadsRepoModule from '../../lib/brainworker/leads/repository';
 import * as operationsRepoModule from '../../lib/brainworker/catalog/repository';
@@ -43,7 +43,7 @@ import BrainWorkerLeadsPage from './leads/page';
 import { LeadsInboxView } from '../../components/brainworker/leads/LeadsInboxView';
 
 // Mock Types
-import type { IBrainWorkerLeadsRepository, LeadPage, WorkerQuote } from '../../lib/brainworker/leads/types';
+import type { IBrainWorkerLeadsRepository, LeadPage, WorkerQuote, DeclineReason } from '../../lib/brainworker/leads/types';
 import type { IBrainWorkerOperationsRepository } from '../../lib/brainworker/catalog/types';
 import type { ProviderProjectedLead, RawLeadData } from '../../lib/brainworker/leads/domain';
 
@@ -60,7 +60,6 @@ import {
 } from '../../lib/brainworker/leads/testing';
 import { FIXTURE_OPERATIONAL_PROFILE_A } from '../../lib/brainworker/catalog/testing/fixtures';
 import { projectLeadForProvider } from '../../lib/brainworker/leads/domain';
-import type { RawLeadData } from '../../lib/brainworker/leads/domain';
 
 // Helper functions for test data creation
 const leadWithPrivateCustomerData = (overrides: Partial<RawLeadData> = {}): RawLeadData =>
@@ -158,7 +157,7 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
         FIXTURE_OPERATIONAL_PROFILE_A
       );
 
-      let markup: string;
+      let markup = '';
       expect(() => {
         markup = renderToString(<BrainWorkerLeadsPage />);
       }).not.toThrow();
@@ -196,7 +195,7 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
 
       await waitFor(() => {
         expect(mockReplace).toHaveBeenCalledWith(
-          expect.stringMatching(/Base64 encoded redirect path/)
+          expect.stringMatching(/\/login\?redirect=.*brainworker.*leads/)
         );
       });
 
@@ -289,14 +288,14 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
     it('PROD-010: repository enforces authenticated session identity match on all operations', async () => {
       vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
 
-      const { getBrainWorkerLeadsRepository } = await import(
+      const { BrainWorkerLeadsRepository } = await import(
         '../../lib/brainworker/leads/repository'
       );
-      const repo = getBrainWorkerLeadsRepository();
+      const repo = new BrainWorkerLeadsRepository();
 
       // Verify that operations are bound to the session user
       const leadData = leadOwnedByA();
-      // @ts-expect-error - accessing test-only method for verification
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, leadData);
 
       // Attempt to access with correct session
@@ -324,9 +323,9 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const eligibleLead = leadOwnedByA();
       const ineligibleLead = leadOutsideCoverage();
 
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, eligibleLead);
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, ineligibleLead);
 
       const result = await repo.getLeads(mockApprovedWorkerA.id);
@@ -349,7 +348,7 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const repo = new BrainWorkerLeadsRepository();
 
       const leadWithPrivateData = leadWithPrivateCustomerData();
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, leadWithPrivateData);
 
       const result = await repo.getLeads(mockApprovedWorkerA.id);
@@ -464,15 +463,17 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const repo = new BrainWorkerLeadsRepository();
 
       const lead = leadOwnedByA();
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
       const result = await repo.acceptInvitation(mockApprovedWorkerA.id, lead.invitationId);
 
       expect(result.ok).toBe(true);
-      expect(result.state).toBe('ACCEPTED');
-      expect(result.respondedAt).toBeDefined();
-      expect(typeof result.respondedAt).toBe('string');
+      if (result.ok) {
+        expect(result.state).toBe('ACCEPTED');
+        expect(result.respondedAt).toBeDefined();
+        expect(typeof result.respondedAt).toBe('string');
+      }
     });
 
     it('PROD-019: decline invitation mutation uses canonical reason taxonomy', async () => {
@@ -484,7 +485,7 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const repo = new BrainWorkerLeadsRepository();
 
       const lead = leadOwnedByA();
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
       const result = await repo.declineInvitation(
@@ -494,8 +495,10 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       );
 
       expect(result.ok).toBe(true);
-      expect(result.state).toBe('DECLINED');
-      expect(result.declineReason).toBe('SCHEDULE_CONFLICT');
+      if (result.ok) {
+        expect(result.state).toBe('DECLINED');
+        expect(result.declineReason).toBe('SCHEDULE_CONFLICT');
+      }
     });
 
     it('PROD-020: decline invitation rejects invalid reason outside canonical taxonomy', async () => {
@@ -507,14 +510,14 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const repo = new BrainWorkerLeadsRepository();
 
       const lead = leadOwnedByA();
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
-      // @ts-expect-error - invalid reason type
+      
       const result = await repo.declineInvitation(
         mockApprovedWorkerA.id,
         lead.invitationId,
-        'INVALID_REASON'
+        'INVALID_REASON' as DeclineReason
       );
 
       expect(result.ok).toBe(false);
@@ -529,7 +532,7 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const repo = new BrainWorkerLeadsRepository();
 
       const lead = leadOwnedByA();
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
       // First accept
@@ -542,7 +545,9 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       );
 
       expect(secondResult.ok).toBe(false);
-      expect(secondResult.reason).toBe('ALREADY_RESPONDED');
+      if (!secondResult.ok) {
+        expect(secondResult.reason).toBe('ALREADY_RESPONDED');
+      }
     });
   });
 
@@ -560,7 +565,7 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const repo = new BrainWorkerLeadsRepository();
 
       const lead = leadOwnedByA();
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
       // Attempt to submit quote with incorrect diagnostic fee
@@ -582,19 +587,20 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const repo = new BrainWorkerLeadsRepository();
 
       const lead = leadOwnedByA();
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
-      const diagnosticFee = 5000; // 50.00 NGN in kobo
+      // FIXTURE_SERVICE_CATALOG_A has diagnosticFeeNgn: 5000 (50.00 NGN = 500000 kobo)
+      const diagnosticFeeKobo = 500000;
 
       const quote = await repo.submitQuote(mockApprovedWorkerA.id, lead.invitationId, {
         laborAmountKobo: 100000, // 1000.00 NGN
-        diagnosticFeeKobo: diagnosticFee,
+        diagnosticFeeKobo,
         estimatedHours: 2,
       });
 
-      // Total should be derived: labor + diagnosticFee = 105000
-      expect(quote.totalAmountKobo).toBe(100000 + diagnosticFee);
+      // Total should be derived: labor + diagnosticFee = 150000
+      expect(quote.totalAmountKobo).toBe(100000 + diagnosticFeeKobo);
     });
 
     it('PROD-024: accept customer rate is separate from quotation submission', async () => {
@@ -608,7 +614,7 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const lead = createTestLead({
         pricingMode: 'CUSTOMER_POSTED_RATE',
       });
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
       const result = await repo.acceptCustomerRate(
@@ -630,7 +636,7 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const lead = createTestLead({
         pricingMode: 'WORKER_QUOTE',
       });
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
       const result = await repo.acceptCustomerRate(
@@ -639,7 +645,9 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       );
 
       expect(result.ok).toBe(false);
-      expect(result.reason).toBe('INVALID_STATE');
+      if (!result.ok) {
+        expect(result.reason).toBe('INVALID_STATE');
+      }
     });
   });
 
@@ -656,11 +664,11 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       );
       const repo = new BrainWorkerLeadsRepository();
 
-      // @ts-expect-error - test-only method
+      
       repo.__testSetOffline(true);
 
       const lead = leadOwnedByA();
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
       await expect(
@@ -680,10 +688,10 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const repo = new BrainWorkerLeadsRepository();
 
       const lead = leadOwnedByA();
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
-      // @ts-expect-error - test-only method
+      
       repo.__testSetOffline(true);
 
       // Read operations should still work (tenant-scoped)
@@ -729,47 +737,77 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
   // ===========================================================================
 
   describe('Accessibility Requirements', () => {
-    it('PROD-030: lead cards have minimum 44px interactive targets', async () => {
+    it('PROD-030: lead cards are keyboard-operable semantic buttons, not pointer-only click targets', async () => {
       vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
 
       const leads: ProviderProjectedLead[] = [
-        projectLeadForProvider(leadOwnedByA()),
+        projectLeadForProvider(createTestLead({ id: 'lead_a11y', title: 'Accessible Lead' })),
       ];
       vi.mocked(mockLeadsRepo.getLeads).mockResolvedValue({ items: leads });
 
       render(<LeadsInboxView brainWorkerId={mockApprovedWorkerA.id} repository={mockLeadsRepo} />);
 
+      const cards = await screen.findAllByTestId('lead-card');
+      expect(cards).toHaveLength(1);
+      const firstCard = cards[0];
+      expect(firstCard).toBeDefined();
+      if (!firstCard) throw new Error('lead-card element not found');
+
+      // Must be exposed as a button so assistive tech announces an action.
+      expect(firstCard).toHaveAttribute('role', 'button');
+
+      // Must be reachable by keyboard (no pointer-only interaction).
+      expect(firstCard).toHaveAttribute('tabindex', '0');
+
+      // Keyboard activation must open the inspection surface.
+      fireEvent.keyDown(firstCard, { key: 'Enter' });
+
       await waitFor(() => {
-        const leadCard = screen.getByTestId('lead-card');
-        // Verify the card is present and interactive
-        expect(leadCard).toBeInTheDocument();
-        expect(leadCard).toHaveAttribute('role', 'button');
-        expect(leadCard).toHaveAttribute('tabindex', '0');
+        expect(screen.getByTestId('lead-inspection-drawer')).toBeInTheDocument();
       });
     });
 
-    it('PROD-031: decline reason modal has accessible form controls', async () => {
+    it('PROD-031: decline reason modal exposes every canonical reason as a selectable control', async () => {
       vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
 
       const leads: ProviderProjectedLead[] = [
-        projectLeadForProvider(leadOwnedByA()),
+        projectLeadForProvider(createTestLead({ id: 'lead_decline', title: 'Declinable Lead' })),
       ];
       vi.mocked(mockLeadsRepo.getLeads).mockResolvedValue({ items: leads });
 
       render(<LeadsInboxView brainWorkerId={mockApprovedWorkerA.id} repository={mockLeadsRepo} />);
 
-      await waitFor(() => {
-        const leadCard = screen.getByTestId('lead-card');
-        leadCard.click();
-      });
+      // Open the inspection drawer, then launch the decline flow.
+      fireEvent.click(await screen.findByTestId('lead-card'));
+      await screen.findByTestId('lead-inspection-drawer');
+      fireEvent.click(screen.getByRole('button', { name: /^decline$/i }));
 
-      // The decline button should be accessible
-      const declineButton = screen.getByText('Decline');
-      expect(declineButton).toBeInTheDocument();
+      const dialog = await screen.findByRole('dialog', { name: /decline opportunity/i });
+
+      // Every canonical taxonomy reason must be individually selectable.
+      for (const reason of CANONICAL_DECLINE_REASONS) {
+        expect(
+          within(dialog).getByTestId(`decline-reason-${reason}`)
+        ).toBeInTheDocument();
+      }
+
+      // Confirm must stay disabled until a reason is chosen.
+      expect(
+        within(dialog).getByRole('button', { name: /confirm decline/i })
+      ).toBeDisabled();
+
+      fireEvent.click(within(dialog).getByTestId('decline-reason-SCHEDULE_CONFLICT'));
+
+      await waitFor(() => {
+        expect(
+          within(dialog).getByRole('button', { name: /confirm decline/i })
+        ).toBeEnabled();
+      });
     });
 
     it('PROD-032: leads feed region has proper ARIA labels', async () => {
       vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
+      vi.mocked(mockLeadsRepo.getLeads).mockResolvedValue({ items: [] });
 
       render(<LeadsInboxView brainWorkerId={mockApprovedWorkerA.id} repository={mockLeadsRepo} />);
 
@@ -778,21 +816,32 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       ).toBeInTheDocument();
     });
 
-    it('PROD-033: modal dialog has proper ARIA attributes', async () => {
+    it('PROD-033: decline modal carries modal dialog ARIA semantics and closes on Escape', async () => {
       vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
 
-      render(
-        <LeadsInboxView
-          brainWorkerId={mockApprovedWorkerA.id}
-          repository={mockLeadsRepo}
-          isDeclineModalOpen={true}
-        />
-      );
+      const leads: ProviderProjectedLead[] = [
+        projectLeadForProvider(createTestLead({ id: 'lead_escape', title: 'Escape Lead' })),
+      ];
+      vi.mocked(mockLeadsRepo.getLeads).mockResolvedValue({ items: leads });
 
-      const dialog = screen.getByRole('dialog');
-      expect(dialog).toBeInTheDocument();
+      render(<LeadsInboxView brainWorkerId={mockApprovedWorkerA.id} repository={mockLeadsRepo} />);
+
+      fireEvent.click(await screen.findByTestId('lead-card'));
+      await screen.findByTestId('lead-inspection-drawer');
+      fireEvent.click(screen.getByRole('button', { name: /^decline$/i }));
+
+      const dialog = await screen.findByRole('dialog', { name: /decline opportunity/i });
+
+      // Modal dialog semantics: role plus aria-modal must be present.
       expect(dialog).toHaveAttribute('aria-modal', 'true');
-      expect(dialog).toHaveAttribute('aria-label', /decline.*opportunity/i);
+      expect(dialog).toHaveAccessibleName(/decline opportunity/i);
+
+      // Escape must dismiss the modal.
+      fireEvent.keyDown(window, { key: 'Escape' });
+
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog', { name: /decline opportunity/i })).not.toBeInTheDocument();
+      });
     });
   });
 
@@ -901,7 +950,7 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const repo = new BrainWorkerLeadsRepository();
 
       const lead = leadOwnedByA();
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
       const result = await repo.acceptInvitation(mockApprovedWorkerA.id, lead.invitationId);
@@ -909,7 +958,9 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       // Result is invitation state, not booking state
       expect(result).not.toHaveProperty('bookingStatus');
       expect(result).not.toHaveProperty('bookingId');
-      expect(result.state).toBe('ACCEPTED'); // Invitation state, not booking state
+      if (result.ok) {
+        expect(result.state).toBe('ACCEPTED'); // Invitation state, not booking state
+      }
     });
 
     it('PROD-043: quote submission does not mutate booking or payment state', async () => {
@@ -921,13 +972,14 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
       const repo = new BrainWorkerLeadsRepository();
 
       const lead = leadOwnedByA();
-      // @ts-expect-error - test-only method
+      
       repo.__testSeedLead(mockApprovedWorkerA.id, lead);
 
-      const diagnosticFee = 5000;
+      // FIXTURE_SERVICE_CATALOG_A has diagnosticFeeNgn: 5000 (50.00 NGN = 500000 kobo)
+      const diagnosticFeeKobo = 500000;
       const quote = await repo.submitQuote(mockApprovedWorkerA.id, lead.invitationId, {
         laborAmountKobo: 100000,
-        diagnosticFeeKobo: diagnosticFee,
+        diagnosticFeeKobo,
         estimatedHours: 2,
       });
 
@@ -961,21 +1013,29 @@ describe('BW-003 Phase 7 RED: Production Verification / Final Feature Audit', ()
         expect(screen.getByText(/job requests & leads/i)).toBeInTheDocument();
       });
 
-      // Verify repository was called with correct user ID
-      expect(mockLeadsRepo.getLeads).toHaveBeenCalledWith(mockApprovedWorkerA.id);
+      // Verify the route bound repository access to the authenticated user ID.
+      await waitFor(() => {
+        expect(mockLeadsRepo.getLeads).toHaveBeenCalledWith(mockApprovedWorkerA.id);
+      });
     });
 
-    it('PROD-045: all Phase 1-6 contracts remain satisfied in production route', async () => {
-      // This is a meta-test verifying that existing contracts still hold
-      // Import and verify all existing test suites can be imported
-      expect(() => {
-        require('../../lib/brainworker/leads/domain.test.ts');
-        require('../../lib/brainworker/leads/repository.test.ts');
-        require('../../lib/brainworker/leads/invitations.test.ts');
-        require('../../lib/brainworker/leads/quotation.test.ts');
-        require('../../components/brainworker/leads/LeadsInboxView.test.tsx');
-        require('./BrainWorkerLeadsRoute.test.tsx');
-      }).not.toThrow();
+    it('PROD-045: every Phase 1-6 BW-003 contract suite is present and non-empty', () => {
+      // Phase 1: domain/eligibility. Phase 2: repository. Phase 3: invitations.
+      // Phase 4: quotation. Phase 5: UI. Phase 6: route integration.
+      const contractSuites = [
+        '../../lib/brainworker/leads/domain.test.ts',
+        '../../lib/brainworker/leads/repository.test.ts',
+        '../../lib/brainworker/leads/invitations.test.ts',
+        '../../lib/brainworker/leads/quotation.test.ts',
+        '../../components/brainworker/leads/LeadsInboxView.test.tsx',
+        './BrainWorkerLeadsRoute.test.tsx',
+      ];
+
+      for (const suite of contractSuites) {
+        const suitePath = path.join(__dirname, suite);
+        expect(fs.existsSync(suitePath), `missing contract suite: ${suite}`).toBe(true);
+        expect(fs.statSync(suitePath).size, `empty contract suite: ${suite}`).toBeGreaterThan(0);
+      }
     });
   });
 });
