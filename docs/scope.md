@@ -9,7 +9,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 ## Active Work Slice
 
 - [x] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
-  - **Status**: Phase 7 VERIFIED; 45/45 production contracts passed at `cdb7e54`
+  - **Status**: Phase 7 VERIFIED and MERGED; PR #53 merged to `main` at `db968bc` (implementation `cdb7e54`, closure `b2c7f10`); post-merge CI SUCCESS, 45/45 Phase 7 contracts re-passed on `main`
   - **Spec**: `docs/specs/BW-003-leads-inbox.md` (Approved)
   - **Primary Route**: `/brainworker/leads`
   - **Primary User**: Approved BrainWorker
