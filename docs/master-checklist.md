@@ -20,7 +20,7 @@ This document provides a single, unified checklist of what has been built, what 
 | **Customer Reviews & Reputation** | **Complete** | Completed & live in production. 608 passing tests across 32 suites. Verified on Vercel deployment 6586791746 (commit 962a870). |
 | **Customer Notifications & Messaging** | **Complete** | Messaging (WEB-017) and Notification Center (WEB-018) both complete and live in production. |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
-| **BrainWorker Platform** | **In Progress** | BW-001 Onboarding & Identity and BW-002 Service Catalog & Availability complete and verified. BW-003 next. |
+| **BrainWorker Platform** | **Complete** | BW-001 Onboarding & Identity, BW-002 Service Catalog & Availability, and BW-003 Leads Inbox complete and verified (45/45 Phase 7 contracts; 1,369/1,369 tests). |
 | **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Customer state machine is built. Worker accept/decline and check-in are missing. |
 | **Mobile Application (`apps/mobile`)** | **Not Built** | Expo starter only. Full native reconstruction required. |
 | **Admin & Operational Console** | **Not Built** | Worker vetting, dispute mediation, category management, analytics. |
@@ -128,7 +128,7 @@ Phase 7: Launch Readiness
 - [ ] Quick toggles: Online/available for instant dispatch vs Off-duty.
 - [ ] Urgent local requests ticker.
 
-#### 2.3 Job Requests & Leads Inbox (`BW-003`, In Progress: Phases 1 to 6 Complete)
+#### 2.3 Job Requests & Leads Inbox (`BW-003`, Complete: Phases 1 to 7 Verified)
 - [x] Lead domain contracts & eligibility rules (Phase 1, LEAD-001 to LEAD-007).
 - [x] Leads repository & tenant isolation (Phase 2, REP-001 to REP-010).
 - [x] Invitation response actions & canonical decline reasons (Phase 3, INV-001 to INV-010).
@@ -137,6 +137,7 @@ Phase 7: Launch Readiness
 - [x] Job lead detail inspection: Review customer problem description, photos, location area, and budget (Phase 5 UI-007 to UI-012).
 - [x] Quote submission drawer & direct invitation response UI surfaces (Phase 5 UI-009).
 - [x] Route integration & security guards (Phase 6 INT-001 to INT-010).
+- [x] Production verification & final audit (Phase 7 PROD-001 to PROD-045): 45/45 contracts verified on `feature/bw-003-leads-inbox` at `cdb7e54`; full suite 1,369/1,369 passed (1,320 web + 42 validation + 7 utils); type-check clean; lint zero errors; production build passed with `/brainworker/leads` static.
 
 #### 2.4 Service Catalog & Availability Management (`BW-002`)
 - [x] Worker service catalog configuration: Add or remove individual services, set hourly rates and diagnostic call-out fees.

@@ -8,8 +8,8 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- [ ] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
-  - **Status**: Phase 6 GREEN Accepted; entering Phase 7 (Production Verification)
+- [x] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
+  - **Status**: Phase 7 VERIFIED; 45/45 production contracts passed at `cdb7e54`
   - **Spec**: `docs/specs/BW-003-leads-inbox.md` (Approved)
   - **Primary Route**: `/brainworker/leads`
   - **Primary User**: Approved BrainWorker
