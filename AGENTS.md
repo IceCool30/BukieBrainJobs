@@ -22,16 +22,17 @@ This file defines the standards and operational map every contributor must follo
 - **Install**: `pnpm install`
 - **Dev (Web)**: `pnpm web:dev`
 - **Dev (Mobile)**: `pnpm mobile:start`
-- **Build**: `gbuild` (execute on Google Cloud Shell) or `cbuild` (fallback Codespace)
-- **Typecheck**: `pnpm type-check` (execute on Google Cloud Shell / Codespace)
-- **Lint**: `pnpm lint` (execute on Google Cloud Shell / Codespace)
-- **Test**: `gtest` (execute on Google Cloud Shell) or `ctest` (fallback Codespace)
+- **Typecheck**: `gcheck` (execute `pnpm type-check` on Google Cloud Shell)
+- **Test**: `gtest [args]` (execute Vitest on Google Cloud Shell) or `ctest` (fallback Codespace)
+- **Build**: `gbuild [args]` (execute Next.js/Turbo build on Google Cloud Shell) or `cbuild` (fallback Codespace)
+- **Remote Sync**: `gsync <branch>` (Google Cloud Shell: fetches and resets to `origin/<branch>`)
+- **Remote Exec**: `gexec "<command>"` (execute arbitrary shell command on Google Cloud Shell)
+- **Remote SSH**: `gssh` (interactive session on Google Cloud Shell) or `cssh` (fallback Codespace)
+- **Vibe on Cloud**: `gvibe` (execute Mistral Vibe on Google Cloud Shell)
+- **PR Checks / Vercel**: `gh pr checks <pr#>` and `gh pr view <pr#> --json statusCheckRollup`
 - **Database Generate**: `pnpm db:generate` (execute on Google Cloud Shell / Codespace)
-- **Remote Sync**: `gsync <branch>` (Google Cloud Shell)
-- **Remote SSH**: `gssh` (Google Cloud Shell) or `cssh` (fallback Codespace)
-- **Remote Vercel**: `gvercel <args>` or `vercel <args>` (execute Vercel CLI on Google Cloud Shell)
-- **Remote Exec**: `gexec <command>` (execute arbitrary command on Google Cloud Shell)
 - **Loop Status**: `bash scripts/nine-status.sh` or `pnpm run loop:status`
+- **Canonical Remote Guide**: `docs/19-deployment-operations/REMOTE-EXECUTION-GUIDE.md`
 
 ## Environment & Execution Constraints
 - **Local Environment**: Termux on Android. Strict physical RAM limits and aggressive Android Low Memory Killer (LMK).
@@ -42,20 +43,26 @@ This file defines the standards and operational map every contributor must follo
   - Dedicated strictly to heavy data operations: Gemini prompt stress-testing, deterministic synthetic seeding, asset/media processing, and dispatch math.
   - Full operational protocol governed by `docs/03-architecture/ARCH-003-GOOGLE-COLAB-COMPUTE-PIPELINE.md`.
 - **Execution Pipeline**:
-  - Never run heavy commands locally on Termux (`pnpm test`, `turbo run test`, `pnpm build`).
+  - NEVER run heavy commands locally on Termux (`pnpm build`, `tsc --noEmit`, `pnpm type-check`, `pnpm test`, `turbo run test`). Doing so triggers Android LMK `SIGKILL` (exit 137).
   - **PRIMARY: Dispatch Builds and Tests to Google Cloud Shell**:
     Always use the free Google Cloud Shell compute layer as the primary execution venue:
     ```bash
-    gtest   # Runs pnpm test on Google Cloud Shell
-    gbuild  # Runs pnpm build on Google Cloud Shell
-    gsync   # Syncs git branch to Google Cloud Shell
+    gsync   # Syncs git branch to Google Cloud Shell (resets to origin/<branch>)
+    gcheck  # Runs pnpm type-check on Google Cloud Shell
+    gtest   # Runs pnpm test on Google Cloud Shell (supports test path args)
+    gbuild  # Runs pnpm build on Google Cloud Shell (supports build args)
+    gexec   # Runs arbitrary command inside ~/BukieBrainJobs on Google Cloud Shell
     gvibe   # Runs vibe CLI on Google Cloud Shell
     gssh    # Opens interactive session on Google Cloud Shell
     ```
-    Synchronization Pipeline for Google Cloud Shell:
-    1. Commit and push from Termux (`git push origin <branch>`).
-    2. Sync Google Cloud Shell (`gsync <branch>` or `gcloud cloud-shell ssh --authorize-session --command="cd ~/BukieBrainJobs && git checkout <branch> && git pull origin <branch>"`).
-    3. Run verification commands on Google Cloud Shell (`gtest` or `gbuild`).
+  - **The 5-Step Synchronization Pipeline**:
+    1. Edit code locally on Termux.
+    2. Commit and push from Termux (`git add <files> && git commit -m "..." && git push origin <branch>`).
+    3. Sync Google Cloud Shell (`gsync <branch>`).
+    4. Run verification on Google Cloud Shell (`gcheck`, `gtest <path>`, `gbuild`).
+    5. Check GitHub CI and Vercel preview status on GitHub (`gh pr checks <pr#>`).
+  - **Vercel Deployments**: Vercel triggers automatically on `git push origin <branch>` via GitHub integration. Do not run unauthenticated `vercel` CLI commands; inspect deployment results with `gh pr checks <pr#>`. If CLI access is needed, supply `--token <token>` or export `VERCEL_TOKEN=<token>`.
+  - **SSH Tunnel Logs**: Output like `Listening on local port [xxxxx]` and `Tunnel stopped` are normal gcloud SSH connection logs. Wait 2 to 5 seconds for remote output.
   - **FALLBACK: Cloud Codespace**:
     Use GitHub Codespaces only when Cloud Shell is unreachable or during maintenance:
     ```bash
