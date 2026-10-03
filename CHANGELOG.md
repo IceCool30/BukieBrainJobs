@@ -7,6 +7,7 @@ The format follows practical release notes written plainly in engineering langua
 ## [Unreleased]
 
 ### Added
+- BW-003 BrainWorker Job Requests & Leads Inbox Phase 7 verified and closed: 45/45 production contracts passed on `feature/bw-003-leads-inbox` at `cdb7e54`; full monorepo suite 1,369/1,369 tests passed with 0 failures; type-check clean; lint zero errors; production build clean with `/brainworker/leads`, `/brainworker/dashboard`, `/brainworker/services`, `/brainworker/availability`, and `/brainworker/verification-status` all static; CI run 37102592351 SUCCESS.
 - Integrated the Mr. Solomon 9-Command Engineering Loop as the primary engineering framework across the monorepo.
 - Created `docs/scope.md` tracking active, completed, and upcoming work slices with explicit verification commands.
 - Established `docs/specs/` directory and index bridging architecture specifications to the build loop.

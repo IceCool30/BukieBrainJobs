@@ -307,13 +307,16 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
               </div>
             </div>
 
-            {/* Quick Links to Services & Availability */}
+            {/* Quick Links to Services, Availability, and Leads */}
             <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center gap-4 text-xs font-semibold text-[#001A41]">
               <Link href="/brainworker/services" className="hover:underline">
                 Configure Services & Rates →
               </Link>
               <Link href="/brainworker/availability" className="hover:underline">
                 Set Hours & Coverage →
+              </Link>
+              <Link href="/brainworker/leads" className="hover:underline">
+                View Job Requests & Leads →
               </Link>
             </div>
           </div>

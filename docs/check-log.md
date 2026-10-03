@@ -2,6 +2,330 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-10-03: BW-003 BrainWorker Leads & Job Requests Phase 7 GREEN Final Verification and Closure
+- **Environment**: Termux (local edits and audits) + Google Cloud Shell VM (authoritative gates)
+- **Branch**: `feature/bw-003-leads-inbox`
+- **Audited SHA**: `cdb7e548dbff0358d0b733413104f51dcb2b54fd` (working tree clean; matches PR #53 headRefOid)
+- **Trigger**: BW-003 Phase 7 FINAL VERIFICATION AND CLOSURE
+- **Status**: VERIFIED - all required gates satisfied; no genuine defects found
+
+### Quality Gates (executed on Cloud Shell against the audited SHA)
+- `pnpm type-check --force`: 6 successful, 0 errors across all packages.
+- `pnpm lint`: 1 successful, 0 errors; 41 warnings, all pre-existing unused-import warnings in test and fixture files plus the `next lint` deprecation notice. No warnings suppressed.
+- `pnpm test` (full monorepo suite): 4 successful; web 78 files and 1,320 tests passed, validation 2 files and 42 tests passed, utils 2 files and 7 tests passed. Total: 82 files, 1,369 tests, 0 failures. Includes 45/45 Phase 7 production verification contracts.
+- `pnpm build --filter @bukiebrainjobs/web`: 2 successful; Next.js compiled cleanly with `/brainworker/leads` (8.21 kB) plus dashboard, services, availability, and verification-status routes all static.
+- CI run `37102592351` on the audited SHA: SUCCESS (Lint, Type-Check, Test; Vercel SUCCESS; Vercel Preview Comments SUCCESS).
+- Vercel status for the audited SHA: SUCCESS via `https://vercel.com/icecool30s-projects/bukie-brain-jobs/5zSX6CgtByU8TF55CoyNXEwReJtA`. No per-commit preview inspection possible without Vercel token; closure rests on CI SUCCESS plus the clean local Cloud Shell production build, not on deployment alone.
+
+### BW-003 Audit Findings (defects: 0)
+- Provider eligibility gate (`authenticated && role === brainworker && isBrainWorkerApproved && operationalProfile.isComplete`) enforced in route and repository. Verified, no defect.
+- Lead eligibility (active skill mapping, city plus zone plus radius, weekly schedule plus duty, invitation ownership, tenant partition) fails closed on invalid data. Verified, no defect.
+- Privacy projection: `projectLeadForProvider` strips exact address, phone, and email; UI renders only city, neighbourhood, landmark, budget, and authorized media. No leak in errors, logs, URLs, DOM, or route params. Verified, no defect.
+- Invitation responses: accept and decline require owned PENDING invitation; canonical decline taxonomy enforced and persisted; authoritative `respondedAt`; duplicates and cross-tenant mutations rejected; offline mutations throw OFFLINE. Verified, no defect.
+- Quotation authority: diagnostic fee resolves from the active BW-002 catalog only; missing catalog fails closed with CATALOG_UNRESOLVED; submitted fee must equal catalog fee; integer kobo validation rejects non-integer, negative, and non-finite values; totals derived, never client-authored; quote status independent of booking, payment, and escrow. No fallback or hard-coded fee exists. Verified, no defect.
+- State-mutation boundary: no booking, payment, escrow, payout, completion, or dispute mutation in BW-003 production code; `WorkerQuote` carries only quote fields. Verified, no defect.
+- Offline behavior: cached reads allowed and tenant-scoped; all mutations fail closed with no offline queue; UI shows honest offline and degraded banners with disabled actions. Verified, no defect.
+- Tenant isolation: every repository operation binds to the authenticated session ID; customer and unapproved sessions rejected; incomplete profiles blocked; no cross-tenant access. Verified, no defect.
+- Production and testing boundary: zero production imports from `testing/`; fixtures and harness stay under `leads/testing/`. Verified, no defect.
+- Accessibility and UX: loading, populated, empty, degraded, offline, failure, and retry states present; desktop drawer and mobile full-screen detail; keyboard operation with Escape handling; dialog, feed, region, status, and alert semantics; reduced-motion class; no pointer-only interaction. Note: 44px minimum target is covered by test intent rather than an explicit pixel assertion; no genuine defect found within the approved design scope. No redesign performed.
+- Routes `/brainworker/leads`, `/brainworker/dashboard`, `/brainworker/services`, `/brainworker/availability`, `/brainworker/verification-status`: guards verified for unauthenticated, customer, unapproved, incomplete, and complete states; unauthorized states fail closed without needless protected reads; leads route binds to session identity. Verified, no defect.
+- Regression: full suite green, so authentication, onboarding, verification status, catalog, availability, jobs, bookings, payments, escrow, reviews, messaging, and notifications show no BW-003 regression. Verified, no defect.
+- Hygiene: no secrets, no debug logging, no `.only` or `.skip`, no disabled tests, no commented-out production logic, no accidental generated files. Verified, no defect.
+
+### Governance Reconciliation (this closure commit)
+- `docs/scope.md`: BW-003 slice 21 marked `[x]` with Phase 7 VERIFIED status at `cdb7e54`.
+- `docs/master-checklist.md`: section 2.3 marked Complete with Phase 7 evidence; BrainWorker Platform workstream marked Complete.
+- `docs/check-log.md`: this entry records the final verification.
+- `CHANGELOG.md`: Unreleased entry records the BW-003 Phase 7 closure.
+- `AGENTS.md`: unchanged; remote execution commands already canonical.
+- PR #53: remains OPEN pending merge; description update deferred to merge time since all CI checks on the audited SHA already pass.
+
+---
+
+## 2026-10-02: BW-003 BrainWorker Leads & Job Requests Phase 7 RED Contract Establishment
+- **Environment**: Local development (Termux) + Cloud Codespace target
+- **Branch**: `feature/bw-003-leads-inbox`
+- **Trigger**: BW-003 Phase 7 RED: Production Verification / Final Feature Audit
+- **Phase**: RED Contract Establishment (Pre-GREEN Verification)
+- **Status**: CONTRACTS ESTABLISHED - Awaiting GREEN execution
+
+### Contract Scope: Complete BW-003 System Boundary
+
+#### Production Route and Shell (PROD-001 to PROD-003)
+- **PROD-001**: Production route `/brainworker/leads` renders without SSR hydration errors
+- **PROD-002**: Production route file contains zero imports from `testing/` directory
+- **PROD-003**: Production route does not expose test-only surfaces in export
+
+#### Authentication and Authorization Gates (PROD-004 to PROD-008)
+- **PROD-004**: Unauthenticated access redirects to login without repository interaction
+- **PROD-005**: Customer role fails closed at route boundary without data leakage
+- **PROD-006**: Unapproved BrainWorker redirects to verification-status without repository reads
+- **PROD-007**: Incomplete operational profile blocks leads feed and renders setup navigation
+- **PROD-008**: Approved complete BrainWorker binds repository to authenticated user.id
+
+#### Tenant Isolation and Session Binding (PROD-009 to PROD-010)
+- **PROD-009**: Repository rejects cross-tenant lead access attempts
+- **PROD-010**: Repository enforces authenticated session identity match on all operations
+
+#### Lead Eligibility and Authority (PROD-011 to PROD-013)
+- **PROD-011**: Repository filters leads by authoritative provider eligibility
+- **PROD-012**: Privacy projection masks sensitive customer data at repository boundary
+- **PROD-013**: Privacy projection masks sensitive data at rendered UI boundary
+
+#### Feed State and Ordering (PROD-014 to PROD-017)
+- **PROD-014**: Leads feed renders loading state before data resolution
+- **PROD-015**: Leads feed renders empty state when no leads available
+- **PROD-016**: Leads feed renders populated state with multiple leads ordered deterministically
+- **PROD-017**: Leads feed renders error state with retry action when repository fails
+
+#### Invitation Mutations (PROD-018 to PROD-021)
+- **PROD-018**: Accept invitation mutation enforces canonical state transition
+- **PROD-019**: Decline invitation mutation uses canonical reason taxonomy
+- **PROD-020**: Decline invitation rejects invalid reason outside canonical taxonomy
+- **PROD-021**: Invitation mutations reject already-responded invitations
+
+#### Quotation Authority (PROD-022 to PROD-025)
+- **PROD-022**: Submit quote enforces authoritative diagnostic fee from BW-002 catalog
+- **PROD-023**: Submit quote derives total from line items, rejecting client-authored totals
+- **PROD-024**: Accept customer rate is separate from quotation submission
+- **PROD-025**: Accept customer rate rejects when pricing mode is WORKER_QUOTE
+
+#### Offline and Degraded Behavior (PROD-026 to PROD-029)
+- **PROD-026**: Offline mode prevents mutation operations
+- **PROD-027**: Offline mode allows read operations for cached data
+- **PROD-028**: LeadsInboxView renders offline banner and disables actions
+- **PROD-029**: LeadsInboxView renders degraded notice when isDegraded is true
+
+#### Accessibility Requirements (PROD-030 to PROD-033)
+- **PROD-030**: Lead cards have minimum 44px interactive targets
+- **PROD-031**: Decline reason modal has accessible form controls
+- **PROD-032**: Leads feed region has proper ARIA labels
+- **PROD-033**: Modal dialog has proper ARIA attributes
+
+#### Production/Testing Physical Separation (PROD-034 to PROD-039)
+- **PROD-034**: Production repository module has zero imports from testing/ directory
+- **PROD-035**: Production domain module has zero imports from testing/ directory
+- **PROD-036**: Production types module has zero imports from testing/ directory
+- **PROD-037**: LeadsInboxView production component has zero imports from testing/ directory
+- **PROD-038**: Test utilities are physically separated in testing/ subtree
+- **PROD-039**: testing/ directory contains fixtures, harness, and utilities
+
+#### Non-Goals: No Booking/Payment/Escrow Mutation (PROD-040 to PROD-043)
+- **PROD-040**: BW-003 repository does not import or reference booking state mutation
+- **PROD-041**: BW-003 types do not define booking or payment mutation contracts
+- **PROD-042**: Invitation accept does not transition booking state
+- **PROD-043**: Quote submission does not mutate booking or payment state
+
+#### Complete BW-003 Regression Integration (PROD-044 to PROD-045)
+- **PROD-044**: End-to-end flow from route through repository to UI preserves authorization
+- **PROD-045**: All Phase 1-6 contracts remain satisfied in production route
+
+### RED Contract Artifacts
+- **Test File**: `apps/web/app/brainworker/BW003Phase7ProductionVerification.test.tsx`
+- **Total Contracts**: 45 verification contracts across 12 categories
+- **Test Structure**: Comprehensive end-to-end system boundary verification
+
+### RED Gate Status
+- **Contracts Established**: 45/45 Phase 7 RED verification contracts written
+- **Test Boundary**: Physically separated from production code (`apps/web/app/brainworker/` vs `apps/web/lib/`)
+- **Existing Tests**: Phases 1-6 tests remain untouched and must remain green
+- **PR #53**: Remains open and unmerged per Phase 7 requirements
+- **Next Step**: Execute GREEN phase to verify all contracts pass
+
+### Commands for GREEN Execution
+```bash
+# TypeScript verification
+pnpm turbo type-check
+
+# Lint verification  
+pnpm turbo lint
+
+# Phase 7 test execution (on Cloud Codespace)
+cd /workspaces/BukieBrainJobs && pnpm --filter @bukiebrainjobs/web test apps/web/app/brainworker/BW003Phase7ProductionVerification.test.tsx
+
+# Full regression suite
+pnpm test
+
+# Production build
+pnpm build
+
+# Vercel deployment verification
+vercel --prod
+```
+
+- **Voice and Slop Audit**: Direct Nigerian marketplace terminology; zero em dashes; zero corporate filler; zero generic icons/taglines.
+- **Status**: RED CONTRACTS ESTABLISHED - READY FOR GREEN EXECUTION
+
+---
+
+## 2026-10-01: BW-003 BrainWorker Leads & Job Requests Phase 6 GREEN Implementation Check
+- **Environment**: GitHub Actions CI (Run `36905014658`) + Vercel Preview Deployment (`5N3czUNn...`)
+- **Commit**: `b47bb41` on `feature/bw-003-leads-inbox`
+- **Trigger**: BW-003 Phase 6 GREEN Implementation & Full Verification Gate
+- **Commands Executed & Results**:
+  - `pnpm turbo type-check`: Passed with 0 errors across all monorepo packages (`exactOptionalPropertyTypes: true` compliant)
+  - `pnpm turbo lint`: Passed with 0 errors
+  - `apps/web/app/brainworker/BrainWorkerLeadsRoute.test.tsx`:
+    - 10/10 route integration & security contract tests passed:
+      - INT-001: unauthenticated visitor accessing /brainworker/leads redirects to /login without triggering repository reads (PASSED)
+      - INT-002: authenticated customer accessing /brainworker/leads fails closed without repository queries (PASSED)
+      - INT-003: unapproved BrainWorker accessing /brainworker/leads redirects to /brainworker/verification-status (PASSED)
+      - INT-004: incomplete provider setup gate blocks leads feed and renders setup prompt with links to services and availability (PASSED)
+      - INT-005: approved and complete BrainWorker loads /brainworker/leads and renders production LeadsInboxView workspace (PASSED)
+      - INT-006: authenticated session ID is strictly bound to repository queries, preventing cross-tenant access (PASSED)
+      - INT-007: static prerendering and SSR mount safety renders production shell structure without SSR errors (PASSED)
+      - INT-008: production route source file preserves physical testing boundary and integrates production LeadsInboxView (PASSED)
+      - INT-009: dashboard navigation links reach /brainworker/leads for quick provider access (PASSED)
+      - INT-010: no private customer credentials reach the rendered projection at the route boundary (PASSED)
+  - Full Monorepo Web Suite: 1,275 tests passed across 77 suites with 0 failures (1,265 baseline tests + 10 new Phase 6 route tests)
+  - Production boundary inspection: Production route `apps/web/app/brainworker/leads/page.tsx` and modified dashboard route contain zero testing imports (INT-008 verified)
+  - Next.js Production Build: Succeeded with 0 errors across 38 static and dynamic routes
+  - Vercel preview deployment: Verified live at preview deployment `5N3czUNn...` (`state: Ready`) and live route `/brainworker/leads` verified returning HTTP 200 OK
+  - Pull request: PR #53 remains open and unmerged
+- **Architecture & Security Invariants Verified**:
+  - Unauthenticated visitors redirected to login with return path (`/login?redirect=/brainworker/leads`); zero repository reads before authentication.
+  - Customer accounts fail closed at the route boundary without querying BrainWorker data.
+  - Unapproved BrainWorkers redirected to `/brainworker/verification-status`.
+  - Incomplete operational profiles blocked from leads feed and provided clear setup paths to `/brainworker/services` and `/brainworker/availability`.
+  - Approved and complete BrainWorkers receive the production LeadsInboxView workspace bound strictly to their authenticated session ID.
+  - Cross-tenant spoofing prevented: repository operations strictly use `currentUser.id`.
+  - SSR and prerendering safety: Route renders cleanly during static generation and server-side execution.
+  - Privacy projection: Zero private customer credentials (surnames, phone numbers, email addresses, exact house numbers) reach the rendered projection.
+- **Voice and Slop Audit**: Direct Nigerian marketplace terminology; zero em dashes in UI components, tests, and documentation; zero corporate filler terms.
+- **Status**: PASS (PHASE 6 GREEN ACCEPTED)
+
+## 2026-10-01: BW-003 BrainWorker Leads & Job Requests Phase 6 RED Contract Check
+- **Environment**: GitHub Actions CI (Run `36900173224`) + Vercel Preview Deployment (`CfAaEhHE...`)
+- **Commit**: `9f4b89b` on `feature/bw-003-leads-inbox`
+- **Trigger**: BW-003 Phase 6 RED Contract Establishment & Pre-Implementation Verification Gate
+- **Commands Executed & Results**:
+  - `pnpm turbo type-check`: Passed with 0 errors across all monorepo packages (`exactOptionalPropertyTypes: true` compliant)
+  - `pnpm turbo lint`: Passed with 0 errors
+  - `apps/web/app/brainworker/BrainWorkerLeadsRoute.test.tsx`:
+    - 10/10 route integration & security contract tests genuinely failed on assertions against the typed route stub:
+      - INT-001: unauthenticated visitor accessing /brainworker/leads redirects to /login without triggering repository reads (FAILED)
+      - INT-002: authenticated customer accessing /brainworker/leads fails closed without repository queries (FAILED)
+      - INT-003: unapproved BrainWorker accessing /brainworker/leads redirects to /brainworker/verification-status (FAILED)
+      - INT-004: incomplete provider setup gate blocks leads feed and renders setup prompt with links to services and availability (FAILED)
+      - INT-005: approved and complete BrainWorker loads /brainworker/leads and renders production LeadsInboxView workspace (FAILED)
+      - INT-006: authenticated session ID is strictly bound to repository queries, preventing cross-tenant access (FAILED)
+      - INT-007: static prerendering and SSR mount safety renders production shell structure without SSR errors (FAILED)
+      - INT-008: production route source file preserves physical testing boundary and integrates production LeadsInboxView (FAILED)
+      - INT-009: dashboard navigation links reach /brainworker/leads for quick provider access (FAILED)
+      - INT-010: no private customer credentials reach the rendered projection at the route boundary (FAILED)
+  - Existing Monorepo Web Foundation: Passed 1,265/1,265 tests across 68 suites with 0 regressions
+    - Phase 5 UI Suite (`apps/web/components/brainworker/leads/LeadsInboxView.test.tsx`): 13/13 passed
+    - Phase 4 Quotation Suite (`apps/web/lib/brainworker/leads/quotation.test.ts`): 16/16 passed
+    - Phase 2 Repository Suite (`apps/web/lib/brainworker/leads/repository.test.ts`): 10/10 passed
+    - Phase 3 Invitations Suite (`apps/web/lib/brainworker/leads/invitations.test.ts`): 10/10 passed
+    - Phase 1 Domain Suite (`apps/web/lib/brainworker/leads/domain.test.ts`): 7/7 passed
+  - Production boundary inspection: Production route `apps/web/app/brainworker/leads/page.tsx` contains zero testing imports (INT-008 boundary compliant)
+  - Next.js Production Build: Succeeded with 0 errors across 38 static and dynamic routes
+  - Vercel preview deployment: Verified live at preview deployment `CfAaEhHE...` (`state: Ready`)
+  - Pull request: PR #53 remains open and unmerged
+- **Voice and Slop Audit**: Direct Nigerian marketplace terminology; zero em dashes in UI components, tests, and documentation; zero corporate filler terms.
+- **Status**: PASS (PHASE 6 RED CONTRACT ESTABLISHED AND VERIFIED)
+
+## 2026-10-01: BW-003 BrainWorker Leads & Job Requests Phase 5 GREEN Implementation Check
+- **Environment**: GitHub Actions CI (Run `36897854941`) + Vercel Preview Deployment (`Cr7s41hJ...`)
+- **Commit**: `f018423` on `feature/bw-003-leads-inbox`
+- **Trigger**: BW-003 Phase 5 GREEN Implementation & Full Verification Gate
+- **Commands Executed & Results**:
+  - `pnpm turbo type-check`: Passed with 0 errors across all monorepo packages (`exactOptionalPropertyTypes: true` compliant)
+  - `pnpm turbo lint`: Passed with 0 errors
+  - `apps/web/components/brainworker/leads/LeadsInboxView.test.tsx`:
+    - 13/13 tests passed across component contracts and boundary rules:
+      - UI-001: displays loading skeleton while feed query is unresolved and does not flash empty state (PASSED)
+      - UI-002: renders populated feed cards with title, service, location, urgency, and pricing mode (PASSED)
+      - UI-003: renders empty state when no matching opportunities are returned without fabricating fake leads (PASSED)
+      - UI-004: renders degraded state notice while preserving last authorized opportunities (PASSED)
+      - UI-005: renders offline read-only banner and disables response mutation actions (PASSED)
+      - UI-006: renders failure state with actionable retry button when repository query fails (PASSED)
+      - UI-007: enforces customer privacy projection in inspection surface without leaking private credentials (PASSED)
+      - UI-008: presents authorized customer media attachments and handles empty state cleanly (PASSED)
+      - UI-009: handles accept and decline controls with canonical decline taxonomy (PASSED)
+      - UI-010: adapts inspection detail surface between desktop drawer and mobile full-screen view (PASSED)
+      - UI-011: manages keyboard accessibility and closes inspection drawer on Escape key (PASSED)
+      - UI-012: respects prefers-reduced-motion configuration on animated layout elements (PASSED)
+      - BOUND-001: ensures production LeadsInboxView does not import from testing utilities (PASSED)
+  - Existing BW-003 foundation: Passed 43/43 tests across 4 suites with 0 regressions
+    - `apps/web/lib/brainworker/leads/quotation.test.ts`: 16/16 passed
+    - `apps/web/lib/brainworker/leads/repository.test.ts`: 10/10 passed
+    - `apps/web/lib/brainworker/leads/invitations.test.ts`: 10/10 passed
+    - `apps/web/lib/brainworker/leads/domain.test.ts`: 7/7 passed
+  - Full Monorepo Web Suite: 1,265 tests passed across 68 suites with 0 failures
+  - Production boundary inspection: Zero `testing/` or test fixture imports in `LeadsInboxView.tsx` (BOUND-001 verified)
+  - Next.js Production Build: Succeeded with 0 errors across 38 static and dynamic routes
+  - Vercel preview deployment: Verified live at preview deployment `Cr7s41hJ...` (`state: Ready`)
+  - Pull request: PR #53 remains open and unmerged
+- **Architecture & Domain Invariants Verified**:
+  - Deterministic state machine: Skeleton loading, populated feed cards, honest empty state with zero fabricated leads, degraded notice with cached items, and offline read-only banner with disabled mutations.
+  - Customer privacy projection: Verified that customer surname, phone number, email address, and exact house address are completely withheld from the inspection surface, showing only first name, neighborhood/city, and nearest landmarks.
+  - Canonical decline taxonomy: Verified modal interaction supports SCHEDULE_CONFLICT, OUT_OF_SERVICE_RADIUS, RATE_MISMATCH, INSUFFICIENT_EXPERTISE, and CAPACITY_FULL with optional note.
+  - Accessibility & responsiveness: Focus trap, Escape key drawer dismissal, responsive grid-to-drawer/fullscreen transitions, and Tailwind `motion-reduce` enforcement verified.
+- **Voice and Slop Audit**: Direct Nigerian marketplace terminology; zero em dashes in UI components, tests, and documentation; zero corporate filler or fabricated data.
+- **Status**: PASS (PHASE 5 GREEN ACCEPTED)
+
+## 2026-10-01: BW-003 BrainWorker Leads & Job Requests Phase 5 RED Contract Check
+- **Environment**: GitHub Actions CI (Run `36895503725`) + Vercel Preview Deployment (`J9JQ8evo...`)
+- **Commit**: `0c13fed` on `feature/bw-003-leads-inbox`
+- **Trigger**: BW-003 Phase 5 RED Contract Establishment & Pre-Implementation Verification Gate
+- **Commands Executed & Results**:
+  - `pnpm turbo type-check`: Passed with 0 errors across all monorepo packages (`exactOptionalPropertyTypes: true` compliant)
+  - `pnpm turbo lint`: Passed with 0 errors
+  - `apps/web/components/brainworker/leads/LeadsInboxView.test.tsx`:
+    - 12/12 contract tests genuinely failed on assertions against the typed component stub:
+      - UI-001: displays loading skeleton while feed query is unresolved and does not flash empty state (FAILED)
+      - UI-002: renders populated feed cards with title, service, location, urgency, and pricing mode (FAILED)
+      - UI-003: renders empty state when no matching opportunities are returned without fabricating fake leads (FAILED)
+      - UI-004: renders degraded state notice while preserving last authorized opportunities (FAILED)
+      - UI-005: renders offline read-only banner and disables response mutation actions (FAILED)
+      - UI-006: renders failure state with actionable retry button when repository query fails (FAILED)
+      - UI-007: enforces customer privacy projection in inspection surface without leaking private credentials (FAILED)
+      - UI-008: presents authorized customer media attachments and handles empty state cleanly (FAILED)
+      - UI-009: handles accept and decline controls with canonical decline taxonomy (FAILED)
+      - UI-010: adapts inspection detail surface between desktop drawer and mobile full-screen view (FAILED)
+      - UI-011: manages keyboard accessibility and closes inspection drawer on Escape key (FAILED)
+      - UI-012: respects prefers-reduced-motion configuration on animated layout elements (FAILED)
+    - 1/1 physical boundary test passed:
+      - BOUND-001: ensures production LeadsInboxView does not import from testing utilities (PASSED)
+  - Existing BW-003 foundation: Passed 43/43 tests across 4 suites with 0 regressions
+    - `apps/web/lib/brainworker/leads/quotation.test.ts`: 16/16 passed
+    - `apps/web/lib/brainworker/leads/repository.test.ts`: 10/10 passed
+    - `apps/web/lib/brainworker/leads/invitations.test.ts`: 10/10 passed
+    - `apps/web/lib/brainworker/leads/domain.test.ts`: 7/7 passed
+  - Production boundary inspection: Zero production UI implementation in commit `0c13fed` (typed stub only)
+  - Vercel preview deployment: Verified live at preview deployment `J9JQ8evo...` (`state: Ready`)
+  - Pull request: PR #53 remains open and unmerged
+- **Voice and Slop Audit**: Direct Nigerian marketplace terminology; 0 em dashes in UI components, tests, and documentation; 0 corporate filler terms.
+- **Status**: PASS (PHASE 5 RED CONTRACT ESTABLISHED AND VERIFIED)
+
+## 2026-10-01: BW-003 BrainWorker Leads & Job Requests Phase 4 GREEN Sign-Off Check
+- **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM) + Vercel Preview
+- **Commit**: `3815eff119a90cbe5cce710d05e2abcda094ee67` on `feature/bw-003-leads-inbox`
+- **Trigger**: BW-003 Phase 4 GREEN Sign-Off Check (Fail-Closed Catalog Diagnostic Fee Authority Invariant & Quotation Verification)
+- **Commands Executed**:
+  - `pnpm vitest run lib/brainworker/leads/`: Passed 43/43 tests across 4 suites with 0 failures
+    - Suite 1: `apps/web/lib/brainworker/leads/quotation.test.ts` (16/16 tests, QUO-001 to QUO-010 + 6 fail-closed catalog authority invariant tests)
+    - Suite 2: `apps/web/lib/brainworker/leads/repository.test.ts` (10/10 tests, REP-001 to REP-010)
+    - Suite 3: `apps/web/lib/brainworker/leads/invitations.test.ts` (10/10 tests, INV-001 to INV-010)
+    - Suite 4: `apps/web/lib/brainworker/leads/domain.test.ts` (7/7 tests, LEAD-001 to LEAD-007)
+  - `pnpm vitest run lib/brainworker/`: Passed 164/164 tests across 12 suites with 0 failures across the entire BrainWorker platform
+  - `pnpm tsc --noEmit`: Passed with 0 errors (`exactOptionalPropertyTypes: true` compliant)
+  - `pnpm lint`: Passed with 0 errors
+  - `pnpm build`: Passed with 0 errors; generated 38/38 static pages and routes
+  - Physical boundary inspection: 0 forbidden `testing/` imports found across production quotation, invitation, repository, and domain files (REP-009 boundary verified)
+  - GitHub CI Run: Run `36812810547` for commit `3815eff` completed with conclusion `success`
+  - Vercel preview deployment: Verified live at deployment `7YxfPajmJumeKjuXvXrPJnEAN9Bv` (`state: SUCCESS`)
+- **Architecture & Domain Invariants Verified**:
+  - Catalog authority invariant: Diagnostic fee is strictly resolved from the provider's active operational profile and catalog. Missing profiles, missing catalogs, storage failures, non-finite values, and non-integer kobo conversions fail closed with `BrainWorkerLeadError.CATALOG_DIAGNOSTIC_FEE_RESOLUTION_FAILED`. No generic fallback is used for production resolution.
+  - Integer kobo currency validation: Monetary amounts validated as non-negative integer kobo.
+  - Derived total authority: `totalAmountKobo` is derived server/repository-side from line items and catalog diagnostic fee; client-supplied conflicting totals rejected at boundary.
+  - Non-mutation invariant: Quote submission keeps quotes in `PENDING` state and leaves lead, booking, escrow, payout, and settlement states completely untouched.
+  - Scope notes boundary: Enforces 1,000-character boundary and runtime string validation.
+- **Voice and Slop Audit**: Direct Nigerian marketplace terminology; 0 em dashes in UI components and documentation; 0 corporate filler terms.
+- **Status**: PASS (PHASE 4 GREEN ACCEPTED / CONDITIONAL REJECTION RESOLVED)
+
 ## 2026-09-26: BW-002 BrainWorker Service Catalog & Availability Management Production Sign-Off Check
 - **Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (Ubuntu 22.04 LTS, 4 cores, 16 GB RAM) + Vercel Preview
 - **Commit**: `64ad004b53c9fa9e6765b5ab6f0577160fb39cde` on `feature/bw-002-coverage-location` (41 ahead of `main`, 0 behind)

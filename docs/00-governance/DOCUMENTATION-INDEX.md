@@ -67,6 +67,7 @@ This index is the canonical navigation map for all documentation in the BukieBra
 - `README.md`: Architecture hub and package boundary overview.
 - `ARCH-002-CONTRACT-DECISIONS.md`: Canonical decision record for production-first mock data contracts.
 - `ARCH-002-PRODUCTION-FIRST-MOCK-DATA-DEVELOPMENT-MODEL.md`: Full architectural specification for domain models and state machines.
+- `ARCH-003-GOOGLE-COLAB-COMPUTE-PIPELINE.md`: Google Colab GPU/TPU heavy-compute sandbox standards and integration.
 - `reference/`: Supplied foundational specifications preserved for technical reference:
   - `TECH-SPEC-01-ARCHITECTURE-AND-TOOLCHAIN.md`: Toolchain and monorepo design.
   - `TECH-SPEC-02-27-INDEX.md` & `TECH-SPEC-02-27-CANONICAL-REGISTER.md`: Domain topic registers.

@@ -8,13 +8,46 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- [ ] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
-  - **Spec**: `docs/specs/BW-003-leads-inbox.md` (Candidate Next Scope)
+- [x] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
+  - **Status**: Phase 7 VERIFIED; 45/45 production contracts passed at `cdb7e54`
+  - **Spec**: `docs/specs/BW-003-leads-inbox.md` (Approved)
+  - **Primary Route**: `/brainworker/leads`
+  - **Primary User**: Approved BrainWorker
+  - **Dependencies**: BW-001 verified trade categories and provider identity; BW-002 service catalog, weekly availability, operational zones, travel radius, and dispatch-readiness model; existing customer job/request foundation from WEB-009/WEB-012; authenticated BrainWorker route/security baseline.
+  - **Scope Objective**: Give an approved BrainWorker a production-oriented workspace for receiving, inspecting, and responding to customer job opportunities without bypassing authoritative matching, invitation, booking, pricing, or authorization rules.
+  - **Functional Boundaries**:
+    1. **Incoming Leads Feed**: `/brainworker/leads` presents incoming customer job opportunities relevant to the provider's verified trade categories and BW-002 operational coverage/radius. The UI must distinguish available, loading, empty, degraded, offline, and failure states.
+    2. **Lead Inspection**: A lead detail surface exposes the customer problem description, uploaded media where available, service/location area and landmarks, urgency, requested schedule, and customer pricing/budget mode without exposing unauthorized customer data.
+    3. **Invitation Response**: An authorized provider can accept or decline an invitation. Declines use a structured reason taxonomy. Response timing is represented as domain data, not fabricated client timestamps.
+    4. **Quotation**: Where the request permits provider pricing, the worker can prepare an itemized estimate covering labor, materials, and applicable call-out fee, or accept the customer's posted rate where that mode is authoritative. Quotation state must remain distinct from booking confirmation and payment.
+    5. **Session and Tenant Isolation**: Every provider query and mutation is bound to the authenticated BrainWorker identity and approved role. Missing, unapproved, or mismatched identities fail closed. Offline mode is deterministic and read-only for mutations that require connectivity.
+  - **Non-Goals for /scope**:
+    - No production matching-engine rewrite or ranking formula changes.
+    - No new payment, escrow, payout, or settlement behavior.
+    - No booking fulfillment, arrival/check-in, scope-change, completion, or dispute workflow. Those belong to later governed slices.
+    - No production backend/API activation merely because the eventual contract requires it.
+    - No invented real-time guarantees, customer data, invitation state, quote totals, or match results.
   - **Acceptance Criteria**:
-    - [ ] Real-time incoming leads feed on `/brainworker/leads` matching verified skills and coverage radius
-    - [ ] Job invitation response interface with direct Accept and Decline actions
-    - [ ] Decline reason taxonomy and response time metrics
+    - [x] Approved BrainWorker can enter `/brainworker/leads` only through the existing authenticated/approved-provider boundary.
+    - [x] Lead candidates are represented against authoritative provider skill/category and BW-002 coverage/radius inputs rather than a second UI-only taxonomy.
+    - [x] Lead feed supports deterministic loading, populated, empty, degraded, offline, and failure states.
+    - [x] Lead detail exposes only fields authorized for the BrainWorker role and preserves customer privacy.
+    - [x] Accept and Decline actions are explicitly modeled as invitation responses and are authorization-protected.
+    - [x] Decline reasons use an approved canonical taxonomy and are persisted through the repository contract.
+    - [x] Response timing is sourced from authoritative invitation timestamps and is never manufactured by the client.
+    - [x] Quotation supports the approved pricing modes and itemized labor/material/call-out representation without conflating quotation with booking or payment.
+    - [x] Cross-tenant provider access and mutations fail closed.
+    - [x] Offline state never fabricates fresh leads, invitation responses, quotes, assignments, or booking confirmations.
+    - [x] Production modules contain zero imports from testing-only helpers.
+    - [x] Accessibility, responsive behavior, keyboard operation, reduced-motion behavior, and approved live-experience standards are preserved.
+  - **Required pre-implementation artifacts**:
+    1. Product/feature specification: `docs/specs/BW-003-leads-inbox.md`
+    2. UX/UI specification covering feed, detail/drawer, response actions, quotation states, responsive behavior, and accessibility.
+    3. Architecture contract defining lead/invitation/quotation boundaries, repository interfaces, authorization, offline behavior, and relationship to BW-001/BW-002.
+    4. Test-first implementation plan with explicit RED/GREEN phases and route/security/boundary coverage.
+    5. Any material product or architecture decisions recorded in the decision log.
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web type-check && pnpm --filter @bukiebrainjobs/web lint && pnpm --filter @bukiebrainjobs/web test`
+  - **Execution Gate**: No implementation code until `/scope`, `/audit`, and `/architect` are completed and the required BW-003 specification package is approved.
 
 ## Completed & Verified Slices
 
@@ -230,14 +263,6 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test app/job/MatchResultsScreen.test.tsx lib/matching/matching.test.ts`
 
 ## Upcoming Planned Slices
-
-- [ ] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
-  - **Spec**: `docs/specs/BW-003-leads-inbox.md`
-  - **Acceptance Criteria**:
-    - [ ] Real-time incoming leads feed on `/brainworker/leads` matching verified skills and coverage radius
-    - [ ] Job invitation response interface with direct Accept and Decline actions
-    - [ ] Decline reason taxonomy and response time metrics
-  - **Verification Command**: `pnpm test`
 
 - [ ] **22. BW-004 BrainWorker Booking Management & Fulfillment**
   - **Spec**: `docs/specs/BW-004-booking-management.md`
