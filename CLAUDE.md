@@ -1,0 +1,34 @@
+# BukieBrainJobs — Claude Code Project Guidelines
+
+## 1. Local Resource Constraints (Termux on Android)
+- **Local Environment**: Termux on Android with 1.8 GB RAM limit and aggressive Android Low Memory Killer (LMK).
+- **CRITICAL**: NEVER run heavy builds or monorepo-wide tests locally in Termux (`pnpm test`, `turbo run test`, `pnpm build`).
+
+## 2. Cloud Compute Hierarchy (Remote Execution)
+- **PRIMARY: Google Cloud Shell VM (100% Free / $0)**:
+  Always dispatch builds, tests, and heavy commands to Google Cloud Shell:
+  - `gtest` — Runs `pnpm test` on Google Cloud Shell
+  - `gbuild` — Runs `pnpm build` on Google Cloud Shell
+  - `gsync <branch>` — Syncs git branch to Google Cloud Shell
+  - `gvercel <args>` — Runs Vercel CLI on Google Cloud Shell
+  - `gexec <command>` — Dispatches arbitrary commands to Google Cloud Shell
+  - `gssh` — Interactive session on Google Cloud Shell
+- **FALLBACK: GitHub Codespaces**:
+  Use `effective-fishstick-x5qwp6wrrp64fxwx` (`ctest`, `cbuild`, `cssh`) only when Cloud Shell is unavailable.
+- **HEAVY COMPUTE: Google Colab**:
+  Dispatch synthetic seeding and heavy benchmarks via `colab` CLI.
+
+## 3. GitHub Integration
+- GitHub CLI (`gh`) is authenticated on both Termux and Google Cloud Shell as `IceCool30`.
+- Use `gh pr`, `gh run`, `gh repo` for pull requests, CI logs, and repository checks.
+
+## 4. Vercel Integration
+- Vercel CLI is installed on Google Cloud Shell and accessible locally via `vercel` / `gvercel`.
+- Production deployments run via GitHub Actions on push to `main`.
+- Preview deployments run automatically on PRs. Check deployment logs with `vercel inspect <deployment-id> --logs` or `gh run view --log-failed`.
+
+## 5. Engineering Standards
+- **Mandatory Approval**: NEVER delete, move, or reorganize files without explicit confirmation.
+- **TDD Rigor**: Write failing tests before implementation (RED -> GREEN -> REFACTOR).
+- **Mr. Solomon Voice**: Direct, human, clear, anti-generic. No corporate slop, no fake enthusiasm, no em dashes.
+- **Canonical Context Map**: Consult `AGENTS.md` and `docs/specs/` for architectural boundaries.

@@ -29,6 +29,8 @@ This file defines the standards and operational map every contributor must follo
 - **Database Generate**: `pnpm db:generate` (execute on Google Cloud Shell / Codespace)
 - **Remote Sync**: `gsync <branch>` (Google Cloud Shell)
 - **Remote SSH**: `gssh` (Google Cloud Shell) or `cssh` (fallback Codespace)
+- **Remote Vercel**: `gvercel <args>` or `vercel <args>` (execute Vercel CLI on Google Cloud Shell)
+- **Remote Exec**: `gexec <command>` (execute arbitrary command on Google Cloud Shell)
 - **Loop Status**: `bash scripts/nine-status.sh` or `pnpm run loop:status`
 
 ## Environment & Execution Constraints
