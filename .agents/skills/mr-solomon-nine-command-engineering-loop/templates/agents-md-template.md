@@ -14,7 +14,7 @@
 - **Test**: `pnpm test`
 
 ## Environment & Execution Constraints
-- [e.g., Strict Termux RAM limit; heavy builds must run on Cloud Codespace]
+- [e.g., Strict Termux RAM limit; heavy builds must run on Google Cloud Shell (primary) or Cloud Codespace (fallback)]
 - [e.g., Mandatory approval required before deleting or reorganizing files]
 
 ## Conventions & Standards

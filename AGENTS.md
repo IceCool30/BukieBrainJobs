@@ -22,24 +22,46 @@ This file defines the standards and operational map every contributor must follo
 - **Install**: `pnpm install`
 - **Dev (Web)**: `pnpm web:dev`
 - **Dev (Mobile)**: `pnpm mobile:start`
-- **Build**: `pnpm build` (execute on cloud Codespace)
-- **Typecheck**: `pnpm type-check` (execute on cloud Codespace)
-- **Lint**: `pnpm lint` (execute on cloud Codespace)
-- **Test**: `pnpm test` (execute on cloud Codespace)
-- **Database Generate**: `pnpm db:generate` (execute on cloud Codespace)
+- **Build**: `gbuild` (execute on Google Cloud Shell) or `cbuild` (fallback Codespace)
+- **Typecheck**: `pnpm type-check` (execute on Google Cloud Shell / Codespace)
+- **Lint**: `pnpm lint` (execute on Google Cloud Shell / Codespace)
+- **Test**: `gtest` (execute on Google Cloud Shell) or `ctest` (fallback Codespace)
+- **Database Generate**: `pnpm db:generate` (execute on Google Cloud Shell / Codespace)
+- **Remote Sync**: `gsync <branch>` (Google Cloud Shell)
+- **Remote SSH**: `gssh` (Google Cloud Shell) or `cssh` (fallback Codespace)
 - **Loop Status**: `bash scripts/nine-status.sh` or `pnpm run loop:status`
 
 ## Environment & Execution Constraints
 - **Local Environment**: Termux on Android. Strict physical RAM limits and aggressive Android Low Memory Killer (LMK).
-- **Remote Environment**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (4 cores, 16 GB RAM, Ubuntu 22.04 LTS).
+- **Primary Cloud Compute (100% Free / $0)**: Google Cloud Shell VM via `gcloud cloud-shell ssh` (tied to `solomonogarbukie@gmail.com`).
+- **Paid Fallback Compute**: Cloud Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (4 cores, 16 GB RAM, Ubuntu 22.04 LTS).
+- **Heavy Compute Sandbox (Google Colab CLI)**:
+  - Ephemeral cloud GPU/TPU environments provisioned via the universal `colab` CLI.
+  - Dedicated strictly to heavy data operations: Gemini prompt stress-testing, deterministic synthetic seeding, asset/media processing, and dispatch math.
+  - Full operational protocol governed by `docs/03-architecture/ARCH-003-GOOGLE-COLAB-COMPUTE-PIPELINE.md`.
 - **Execution Pipeline**:
   - Never run heavy commands locally on Termux (`pnpm test`, `turbo run test`, `pnpm build`).
-  - Always dispatch builds, full test suites, and database migrations to the cloud Codespace over SSH:
-    `gh codespace ssh -c effective-fishstick-x5qwp6wrrp64fxwx -- "cd /workspaces/BukieBrainJobs && <COMMAND>"`
-  - Synchronization Pipeline:
+  - **PRIMARY: Dispatch Builds and Tests to Google Cloud Shell**:
+    Always use the free Google Cloud Shell compute layer as the primary execution venue:
+    ```bash
+    gtest   # Runs pnpm test on Google Cloud Shell
+    gbuild  # Runs pnpm build on Google Cloud Shell
+    gsync   # Syncs git branch to Google Cloud Shell
+    gvibe   # Runs vibe CLI on Google Cloud Shell
+    gssh    # Opens interactive session on Google Cloud Shell
+    ```
+    Synchronization Pipeline for Google Cloud Shell:
     1. Commit and push from Termux (`git push origin <branch>`).
-    2. Sync the Codespace (`gh codespace ssh -c effective-fishstick-x5qwp6wrrp64fxwx -- "cd /workspaces/BukieBrainJobs && git checkout <branch> && git pull origin <branch>"`).
-    3. Run verification commands on the Codespace.
+    2. Sync Google Cloud Shell (`gsync <branch>` or `gcloud cloud-shell ssh --authorize-session --command="cd ~/BukieBrainJobs && git checkout <branch> && git pull origin <branch>"`).
+    3. Run verification commands on Google Cloud Shell (`gtest` or `gbuild`).
+  - **FALLBACK: Cloud Codespace**:
+    Use GitHub Codespaces only when Cloud Shell is unreachable or during maintenance:
+    ```bash
+    ctest   # Runs pnpm test on Codespace
+    cbuild  # Runs pnpm build on Codespace
+    cssh    # Opens SSH session to Codespace
+    ```
+    Codespace Dispatch: `gh codespace ssh -c effective-fishstick-x5qwp6wrrp64fxwx -- "cd /workspaces/BukieBrainJobs && <COMMAND>"`
 - **Safety Protocols**: Never delete, move, or reorganize files or directories without explicit user confirmation.
 - **System 1 High-Speed Coprocessor**:
   - Acts as an ultra-fast, read-only scout, indexer, and navigator (running on Gemini Flash Lite). Handles file slicing, log distillation, monorepo routing, and rule verification.
