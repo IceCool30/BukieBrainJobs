@@ -1,18 +1,8 @@
 // apps/web/lib/brainworker/bookings/domain.ts
 // BW-004 Phase 1: Domain Contracts and Projection (BOOK-001 to BOOK-017)
 // Governed by: BW-004-ARCH v0.2, BW-004-PROD v0.2
-//
-// RED phase. Every export below is a stub that throws. The signatures are the
-// approved contract surface; the behaviour is not written yet. No implementation
-// in this file decides an [OWNER] item.
-//
-// Invariants this module must never violate:
-//   - Booking lifecycle, dispatch, and financial readiness stay three
-//     independent dimensions. No value is derived across them.
-//   - Escrow is read-only here and never inferred from a lifecycle value.
-//   - No composite status, no third escrow vocabulary, no testing imports.
 
-import { JOB_STATUS_TRANSITIONS } from '@bukiebrainjobs/api-types';
+import { JOB_STATUS_TRANSITIONS, canTransition } from '@bukiebrainjobs/api-types';
 import type { EscrowStatus } from '../../payment/types';
 import type {
   AddressUnlockInputs,
@@ -24,6 +14,51 @@ import type {
   RawBookingRecord,
   ScopeAdjustmentDraft,
 } from './types';
+
+const PROVIDER_CANCELLATION_REASONS: ReadonlySet<string> = new Set([
+  'SCHEDULE_CONFLICT',
+  'UNABLE_TO_REACH_SITE',
+  'SCOPE_MISMATCH',
+  'CUSTOMER_UNRESPONSIVE',
+  'OTHER',
+]);
+
+const TERMINAL_JOB_STATUSES: ReadonlySet<string> = new Set([
+  'PENDING_COMPLETION',
+  'COMPLETED',
+  'PAID',
+  'CANCELLED',
+  'EXPIRED',
+  'DISPUTED',
+  'RESOLVED',
+]);
+
+const READ_ONLY_JOB_STATUSES: ReadonlySet<string> = new Set([
+  'PENDING_COMPLETION',
+  'COMPLETED',
+  'PAID',
+  'CANCELLED',
+  'EXPIRED',
+  'DISPUTED',
+  'RESOLVED',
+]);
+
+const FULFILMENT_ACTIONS: ReadonlySet<ProviderBookingAction> = new Set([
+  'MARK_EN_ROUTE',
+  'MARK_ARRIVED',
+  'CHECK_IN',
+  'CANCEL_BOOKING',
+]);
+
+const MASKED_STATUSES: ReadonlySet<string> = new Set([
+  'COMPLETED',
+  'PAID',
+  'CANCELLED',
+  'EXPIRED',
+  'RESOLVED',
+]);
+
+const HELD_ESCROW_STATUSES: ReadonlySet<EscrowStatus> = new Set(['held_in_escrow']);
 
 // BOOK-001 to BOOK-004: provider gate and booking resolution.
 //
@@ -49,7 +84,27 @@ export function evaluateBookingGate(
   },
   booking: Pick<RawBookingRecord, 'taskerProfileId'> | null
 ): BookingGateResult {
-  throw new Error('RED: evaluateBookingGate not implemented');
+  if (!context.authenticated || context.role !== 'brainworker') {
+    return { admitted: false, reason: 'UNAUTHENTICATED' };
+  }
+
+  if (!context.isBrainWorkerApproved) {
+    return { admitted: false, reason: 'NOT_APPROVED' };
+  }
+
+  if (!context.operationalProfileIsComplete) {
+    return { admitted: false, reason: 'PROFILE_INCOMPLETE' };
+  }
+
+  if (!booking) {
+    return { admitted: false, reason: 'NOT_FOUND' };
+  }
+
+  if (booking.taskerProfileId !== context.brainWorkerId) {
+    return { admitted: false, reason: 'NOT_FOUND' };
+  }
+
+  return { admitted: true };
 }
 
 // BOOK-005: privacy projection. The projection carries no customer phone, no
@@ -58,13 +113,61 @@ export function evaluateBookingGate(
 export function projectBookingSummary(
   booking: RawBookingRecord
 ): ProviderBookingSummary {
-  throw new Error('RED: projectBookingSummary not implemented');
+  const hasPendingScopeAdjustment = booking.scopeAdjustments.some(
+    (adj) => adj.status === 'PENDING'
+  );
+
+  return {
+    bookingId: booking.bookingId,
+    referenceCode: booking.referenceCode,
+    jobStatus: booking.jobStatus,
+    dispatchStatus: booking.dispatchStatus,
+    title: booking.title,
+    serviceId: booking.serviceId,
+    scheduledStartAt: booking.scheduledStartAt,
+    generalLocation: {
+      cityId: booking.generalLocation.cityId,
+      neighbourhoodOrZone: booking.generalLocation.neighbourhoodOrZone,
+    },
+    escrowStatus: booking.escrowStatus,
+    hasPendingScopeAdjustment,
+    unreadMessageCount: booking.unreadMessageCount,
+  };
 }
 
 export function projectBookingDetail(
   booking: RawBookingRecord
 ): ProviderBookingDetail {
-  throw new Error('RED: projectBookingDetail not implemented');
+  const summary = projectBookingSummary(booking);
+  const unlockResult = evaluateAddressUnlock(
+    {
+      bookingResolved: true,
+      privacyConsentRecorded: booking.privacyConsentRecorded,
+      escrowStatus: booking.escrowStatus,
+      jobStatus: booking.jobStatus,
+    },
+    booking.exactAddress
+  );
+
+  const allowedActions = computeAllowedActions({
+    jobStatus: booking.jobStatus,
+    dispatchStatus: booking.dispatchStatus,
+    escrowStatus: booking.escrowStatus,
+    scopeAdjustments: booking.scopeAdjustments,
+    cancellationReason: booking.cancellationReason,
+  });
+
+  return {
+    ...summary,
+    description: booking.description,
+    landmark: booking.generalLocation.landmark,
+    exactAddress: unlockResult.unlocked ? unlockResult.exactAddress : undefined,
+    dispatchUpdatedAt: booking.dispatchUpdatedAt,
+    actualStartAt: booking.actualStartAt,
+    scopeAdjustments: booking.scopeAdjustments,
+    allowedActions,
+    conversationId: booking.conversationId,
+  };
 }
 
 // BOOK-006, BOOK-007, BOOK-008: address precision (D8).
@@ -76,7 +179,23 @@ export function evaluateAddressUnlock(
   inputs: AddressUnlockInputs,
   exactAddress: string
 ): AddressUnlockResult {
-  throw new Error('RED: evaluateAddressUnlock not implemented');
+  if (!inputs.bookingResolved) {
+    return { unlocked: false, reason: 'BOOKING_NOT_RESOLVED' };
+  }
+
+  if (!inputs.privacyConsentRecorded) {
+    return { unlocked: false, reason: 'PRIVACY_CONSENT_ABSENT' };
+  }
+
+  if (!HELD_ESCROW_STATUSES.has(inputs.escrowStatus)) {
+    return { unlocked: false, reason: 'ESCROW_NOT_HELD' };
+  }
+
+  if (MASKED_STATUSES.has(inputs.jobStatus)) {
+    return { unlocked: false, reason: 'LIFECYCLE_MASKED' };
+  }
+
+  return { unlocked: true, exactAddress };
 }
 
 // BOOK-009, BOOK-010: allowedActions computed by the authority from state,
@@ -88,7 +207,53 @@ export function computeAllowedActions(
     'jobStatus' | 'dispatchStatus' | 'escrowStatus' | 'scopeAdjustments' | 'cancellationReason'
   >
 ): ProviderBookingAction[] {
-  throw new Error('RED: computeAllowedActions not implemented');
+  const { jobStatus, dispatchStatus, escrowStatus, scopeAdjustments, cancellationReason } = booking;
+
+  const actions: ProviderBookingAction[] = [];
+
+  if (READ_ONLY_JOB_STATUSES.has(jobStatus)) {
+    return actions;
+  }
+
+  const hasPendingScope = scopeAdjustments.some((adj) => adj.status === 'PENDING');
+
+  if (hasPendingScope) {
+    actions.push('WITHDRAW_SCOPE_ADJUSTMENT');
+  } else {
+    actions.push('REQUEST_SCOPE_ADJUSTMENT');
+  }
+
+  actions.push('OPEN_CONVERSATION');
+
+  if (jobStatus === 'CONFIRMED') {
+    if (dispatchStatus === 'NOT_STARTED') {
+      actions.push('MARK_EN_ROUTE');
+      actions.push('CANCEL_BOOKING');
+    } else if (dispatchStatus === 'EN_ROUTE') {
+      actions.push('MARK_ARRIVED');
+      actions.push('CANCEL_BOOKING');
+    } else if (dispatchStatus === 'ARRIVED') {
+      if (HELD_ESCROW_STATUSES.has(escrowStatus)) {
+        actions.push('CHECK_IN');
+      }
+      actions.push('CANCEL_BOOKING');
+    }
+  } else if (jobStatus === 'IN_PROGRESS') {
+    if (HELD_ESCROW_STATUSES.has(escrowStatus)) {
+      actions.push('CHECK_IN');
+    }
+    actions.push('CANCEL_BOOKING');
+  } else if (jobStatus === 'PENDING_ACCEPTANCE') {
+    actions.push('CANCEL_BOOKING');
+  } else if (jobStatus === 'OPEN') {
+    actions.push('CANCEL_BOOKING');
+  }
+
+  if (jobStatus === 'DISPUTED') {
+    actions.push('CANCEL_BOOKING');
+  }
+
+  return actions;
 }
 
 // BOOK-012: deterministic grouping and sort by scheduledStartAt from the
@@ -97,17 +262,59 @@ export function groupAndSortBookings(
   bookings: ProviderBookingSummary[],
   now: Date
 ): { today: ProviderBookingSummary[]; upcoming: ProviderBookingSummary[]; closed: ProviderBookingSummary[] } {
-  throw new Error('RED: groupAndSortBookings not implemented');
+  const todayStart = new Date(now);
+  todayStart.setHours(0, 0, 0, 0);
+
+  const todayEnd = new Date(now);
+  todayEnd.setHours(23, 59, 59, 999);
+
+  const today: ProviderBookingSummary[] = [];
+  const upcoming: ProviderBookingSummary[] = [];
+  const closed: ProviderBookingSummary[] = [];
+
+  for (const booking of bookings) {
+    const scheduled = new Date(booking.scheduledStartAt);
+
+    if (TERMINAL_JOB_STATUSES.has(booking.jobStatus)) {
+      closed.push(booking);
+    } else if (scheduled >= todayStart && scheduled <= todayEnd) {
+      today.push(booking);
+    } else if (scheduled > todayEnd) {
+      upcoming.push(booking);
+    } else {
+      closed.push(booking);
+    }
+  }
+
+  const sortByScheduled = (a: ProviderBookingSummary, b: ProviderBookingSummary) =>
+    new Date(a.scheduledStartAt).getTime() - new Date(b.scheduledStartAt).getTime();
+
+  today.sort(sortByScheduled);
+  upcoming.sort(sortByScheduled);
+  closed.sort(sortByScheduled);
+
+  return { today, upcoming, closed };
 }
 
 // BOOK-015: guard against a composite status ever entering the module. The
 // single JobStatus machine stays authoritative in packages/api-types.
+const COMPOSITE_CANDIDATES: ReadonlySet<string> = new Set([
+  'READY_FOR_CHECK_IN',
+  'ESCROW_FUNDED',
+]);
+
 export function isCompositeStatusCandidate(value: string): boolean {
-  throw new Error('RED: isCompositeStatusCandidate not implemented');
+  return COMPOSITE_CANDIDATES.has(value);
 }
 
 export function assertJobStatusIsAuthoritative(status: string): void {
-  throw new Error('RED: assertJobStatusIsAuthoritative not implemented');
+  if (!Object.keys(JOB_STATUS_TRANSITIONS).includes(status)) {
+    throw new Error(`Invalid JobStatus: ${status}`);
+  }
+
+  if (isCompositeStatusCandidate(status)) {
+    throw new Error(`Composite status not permitted: ${status}`);
+  }
 }
 
 // BOOK-011 and BOOK-016 are proven by type and structure rather than by a
