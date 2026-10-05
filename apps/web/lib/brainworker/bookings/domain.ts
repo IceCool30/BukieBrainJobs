@@ -58,6 +58,11 @@ const MASKED_STATUSES: ReadonlySet<string> = new Set([
   'RESOLVED',
 ]);
 
+const PRE_CONFIRMED_STATUSES: ReadonlySet<string> = new Set([
+  'OPEN',
+  'PENDING_ACCEPTANCE',
+]);
+
 const HELD_ESCROW_STATUSES: ReadonlySet<EscrowStatus> = new Set(['held_in_escrow']);
 
 // BOOK-001 to BOOK-004: provider gate and booking resolution.
@@ -187,12 +192,16 @@ export function evaluateAddressUnlock(
     return { unlocked: false, reason: 'PRIVACY_CONSENT_ABSENT' };
   }
 
-  if (!HELD_ESCROW_STATUSES.has(inputs.escrowStatus)) {
-    return { unlocked: false, reason: 'ESCROW_NOT_HELD' };
+  if (PRE_CONFIRMED_STATUSES.has(inputs.jobStatus)) {
+    return { unlocked: false, reason: 'LIFECYCLE_MASKED' };
   }
 
   if (MASKED_STATUSES.has(inputs.jobStatus)) {
     return { unlocked: false, reason: 'LIFECYCLE_MASKED' };
+  }
+
+  if (!HELD_ESCROW_STATUSES.has(inputs.escrowStatus)) {
+    return { unlocked: false, reason: 'ESCROW_NOT_HELD' };
   }
 
   return { unlocked: true, exactAddress };
@@ -229,14 +238,21 @@ export function computeAllowedActions(
     if (dispatchStatus === 'NOT_STARTED') {
       actions.push('MARK_EN_ROUTE');
       actions.push('CANCEL_BOOKING');
-    } else if (dispatchStatus === 'EN_ROUTE') {
-      actions.push('MARK_ARRIVED');
-      actions.push('CANCEL_BOOKING');
-    } else if (dispatchStatus === 'ARRIVED') {
       if (HELD_ESCROW_STATUSES.has(escrowStatus)) {
         actions.push('CHECK_IN');
       }
+    } else if (dispatchStatus === 'EN_ROUTE') {
+      actions.push('MARK_ARRIVED');
       actions.push('CANCEL_BOOKING');
+      if (HELD_ESCROW_STATUSES.has(escrowStatus)) {
+        actions.push('CHECK_IN');
+      }
+    } else if (dispatchStatus === 'ARRIVED') {
+      actions.push('MARK_ARRIVED');
+      actions.push('CANCEL_BOOKING');
+      if (HELD_ESCROW_STATUSES.has(escrowStatus)) {
+        actions.push('CHECK_IN');
+      }
     }
   } else if (jobStatus === 'IN_PROGRESS') {
     if (HELD_ESCROW_STATUSES.has(escrowStatus)) {
