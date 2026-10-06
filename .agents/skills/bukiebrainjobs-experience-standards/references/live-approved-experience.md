@@ -22,15 +22,16 @@ The approved product feels **calm, capable, photo-led, clear, and premium withou
 
 | Token or pattern | Current approved usage |
 |---|---|
-| Canvas | `#F8F9FF` is the default page background. |
-| Navy | `#001A41` anchors headings, primary controls, the hero, footer, and shadow depth. |
-| Green | `#296A4B` supports service actions and selected secondary emphasis. |
-| Mint | `#ABEEC8` provides short highlight, focus, and brand-name emphasis. |
-| Heading type | Use the implemented display font with strong weight and tight but readable tracking. |
-| Body type | Use the implemented body font with plain language and comfortable line height. |
-| Card surface | Use white, a thin slate border, soft navy-tinted elevation, and clear padding. |
-| Radius | Use a compact, slightly softened radius. The product favours `rounded-xl` and `rounded-2xl`, not excessive pill forms. |
-| Page rhythm | Use clear section separation and purposeful whitespace rather than colour blocks. |
+| Canvas | Dual-Theme: `#F7F9FC` (Architectural Off-White light) & `#0B0E13` (Obsidian Gunmetal dark). |
+| Navy | `#001A41` anchors display headings, column labels, top telemetry strip, and dispatch depth. |
+| Green | `#10B981` (mint `#2FE896` in dark mode) indicates escrow milestone clearance and live telemetry. |
+| Action Catalyst | `#FF6B35` (Molten Amber) reserved strictly for primary conversion buttons and hero highlights. |
+| Heading type | `Cabinet Grotesk` (or `Hanken Grotesk`) with 800/900 weight, uppercase, and tight `-0.04em` tracking. |
+| Body type | `Inter` for interface and reading copy; `JetBrains Mono` for rates, reference IDs, and telemetry. |
+| Card surface | White (`#FFFFFF`) with thin slate border in light mode; Titanium Charcoal (`#13171E`) in dark mode. |
+| Radius | Compact architectural geometry: `4px` (`rounded-sm`), `8px` (`rounded-md`), and `12px` (`rounded-lg`). |
+| Command table | The Requisition Index table format with discipline filters and click-to-inspect spec drawers. |
+| Skill Authority | `bukiebrainjobs-trades-design-system` (`https://github.com/IceCool30/bukiebrainjobs-trades-design-system`). |
 
 Avoid copying visual trends that conflict with this language. In particular, do not add broad frosted glass, heavy blur, fluorescent gradients, oversize blobs, ornamental illustration, or decorative statistics.
 

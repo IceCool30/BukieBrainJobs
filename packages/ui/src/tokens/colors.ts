@@ -1,7 +1,16 @@
 // packages/ui/src/tokens/colors.ts
 // Brand design tokens - JavaScript constants for non-CSS consumers
 // CSS design tokens live in apps/web/app/globals.css under @theme
-// Must match DESIGN.md: Deep Navy primary, Emerald secondary, Amber accent
+//
+// CANONICAL DESIGN SPECIFICATION:
+// See DESIGN.md (v2.0) and docs/02-design-system/DESIGN-SYSTEM-v1.0.md
+// REFERENCE SKILL: bukiebrainjobs-trades-design-system
+// REPO: https://github.com/IceCool30/bukiebrainjobs-trades-design-system
+//
+// Dual-Theme Model:
+// - Structural Anchor: Deep Navy (#001A41)
+// - Trust, Verification & Escrow: Brand Green (#10B981) / Mint (#2FE896)
+// - Action Catalyst: Molten Amber (#FF6B35) for high-conversion CTAs
 
 // Tailwind slate hex values inlined to remove tailwindcss runtime import
 const slate = {

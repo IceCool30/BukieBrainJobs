@@ -48,7 +48,7 @@ This file defines the standards and operational map every contributor must follo
 ## Conventions & Standards
 - **Voice**: Mr. Solomon Natural Voice across all copy, commits, PRs, and documentation. Never use em dashes.
 - **Customer-Facing Content**: Whenever customer-facing content is written, it must activate, first, `mr-solomon-natural-voice` and `bukiebrainjobs-content-style`. These are the two mandatory skills that must be used together for any customer-facing copy.
-- **Visual**: Design tokens extracted directly from code and `globals.css` `@theme`; no arbitrary hex values. Deep Navy is primary, Emerald is strategic emphasis/success.
+- **Visual**: Dual-Theme system (`bukiebrainjobs-trades-design-system`). Design tokens extracted directly from code and `globals.css` `@theme`; no arbitrary hex values. Deep Navy (`#001A41`) is structural anchor, Brand Green (`#10B981` / `#2FE896`) is trust and escrow verification, Molten Amber (`#FF6B35`) is the primary action catalyst.
 - **Quality**: Anti-generic guardrails strictly enforced (zero slop: no generic icons, taglines, captions, explainers, subheadlines, fake cheerleading, or unsupported absolute claims).
 - **Data Integrity**: Production-first architecture with deterministic mock data. Never fabricate rates, coordinates, ratings, verification results, or booking confirmations.
 
@@ -73,8 +73,9 @@ These skills are required for all work in this repository without exception. Loa
 | `mr-solomon-nine-command-engineering-loop` | `.agents/skills/mr-solomon-nine-command-engineering-loop/SKILL.md` | Primary operating system for all tasks: planning, architecture spec, development loop, verification, documentation, or debugging phase. |
 | `mr-solomon-natural-voice` | `.agents/skills/mr-solomon-natural-voice/SKILL.md` | Required for all communications, documentation, and (first) for all customer-facing content. |
 | `bukiebrainjobs-content-style` | `.agents/skills/bukiebrainjobs-content-style/SKILL.md` | Customer-facing copy, marketplace terminology, and microcopy (must be applied together with `mr-solomon-natural-voice`). |
-| `bukiebrainjobs-experience-standards` | `.agents/skills/bukiebrainjobs-experience-standards/SKILL.md` | Any customer-facing UI, copy, motion, responsive layout, component, accessibility, or interaction work. |
-| `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Any visual design decision, page structure, component quality review, typography, color, animation, or UX pattern. |
+| `bukiebrainjobs-trades-design-system` | `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md` | Mandatory design authority for all customer-facing UI, dual-theme styling (Light & Dark), colors, layout, and component architecture. (Repo: `https://github.com/IceCool30/bukiebrainjobs-trades-design-system`). |
+| `bukiebrainjobs-experience-standards` | `.agents/skills/bukiebrainjobs-experience-standards/SKILL.md` | Customer-facing UI flow, copy, motion, responsive layout, component, accessibility, and interaction work. |
+| `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Visual design execution, typography, token compliance, and UX patterns. |
 | `agent-skills-test-driven-development` | `.agents/skills/agent-skills-test-driven-development/SKILL.md` | Any logic change, bug fix, behavior modification, or new feature implementation. |
 
 All mandatory skills must be read before work begins on any substantive task. If a task spans multiple domains, apply all relevant skills together.

@@ -39,16 +39,15 @@ Use the live experience as the pattern, not as a rigid collection of copied layo
 
 | Element | Required direction |
 |---|---|
-| Page canvas | Use the quiet off-white base `#F8F9FF` for ordinary page surfaces. |
-| Primary brand colour | Use navy `#001A41` for headings, primary actions, focused states, and controlled hero depth. |
-| Supporting brand colour | Use green `#296A4B` for selected links and restrained secondary emphasis. |
-| Highlight colour | Use mint `#ABEEC8` for focus rings, short highlights, and limited accents. |
-| Colour restraint | Keep dense navy primarily in the header, hero, footer, and deliberate primary actions. Do not use full-brand-colour section backgrounds by default. |
-| Typography | Preserve the implemented display and body font roles. Use concise, high-contrast headings and readable body text. Do not introduce an unrelated typeface. |
-| Geometry | Use the live compact radius language, usually `rounded-xl` or `rounded-2xl` where the current components use it. Do not default to pills or over-rounded containers. |
-| Cards | Use honest white surfaces, thin neutral borders, restrained navy-tinted elevation, clear internal spacing, and real imagery when the service or person benefits from it. |
-| Imagery | Let photos carry visual interest. Keep artisan faces, key work, product context, and text unobscured. Use `object-cover` only with intentional focal positioning. |
-| Effects | Prefer clean layering, soft shadows, and contrast. Do not add broad glass effects, heavy gradients, decorative glow, or blur over operational content. |
+| Page canvas | Dual-Theme: Use architectural off-white `#F7F9FC` for Light mode, and obsidian gunmetal `#0B0E13` for Dark mode. |
+| Primary structural colour | Use deep navy `#001A41` for headings, column labels, telemetry panels, and controlled dispatch depth. |
+| Trust & verification colour | Use brand green `#10B981` (mint `#2FE896` in dark mode) for escrow milestone verification badges and live telemetry. |
+| Action catalyst | Use molten amber `#FF6B35` strictly for primary conversion buttons (`[Book BrainWorker]`, `[Post a Job]`, `[Inspect Spec]`) and title highlights. |
+| Typography | Pair `Cabinet Grotesk` (or `Hanken Grotesk`) at 800/900 weight (uppercase display) with `Inter` (readable body) and `JetBrains Mono` (rates, codes, stack tags). |
+| Geometry & Radii | Use compact architectural radii: 4px (`rounded-sm`), 8px (`rounded-md`), and 12px (`rounded-lg`). Avoid over-rounded pill containers. |
+| Command table | Format discovery views into structured Requisition Index tables with discipline filter pills, stack tags, and click-to-inspect drawers. |
+| Dual-theme switcher | Implement the industrial segmented theme switcher (`[ ☀ LIGHT | ☾ DARK ]`) with `localStorage` persistence. |
+| Reference skill | Consult `bukiebrainjobs-trades-design-system` (`https://github.com/IceCool30/bukiebrainjobs-trades-design-system`). |
 
 Maintain a calm information hierarchy. Every screen should make the primary benefit, primary action, supporting information, and secondary actions easy to distinguish.
 

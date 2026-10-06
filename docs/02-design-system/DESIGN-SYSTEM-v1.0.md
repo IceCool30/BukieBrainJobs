@@ -1,74 +1,60 @@
-# BukieBrainJobs Design System v1.0
+# BukieBrainJobs Design System v2.0 (Dual-Theme Canonical Standard)
 
-**Document ID:** DS-000
-**Version:** 1.0
-**Status:** Locked
+**Document ID:** DS-000  
+**Version:** 2.0 (Dual-Theme Trades Standard)  
+**Status:** Locked & Canonical  
+**Official Skill Repository:** [https://github.com/IceCool30/bukiebrainjobs-trades-design-system](https://github.com/IceCool30/bukiebrainjobs-trades-design-system)  
+**Agent Skill Name:** `bukiebrainjobs-trades-design-system`  
 
-## Authority
+---
 
-The root `DESIGN.md` remains the visual source of truth. This document records the approved design-system status and directs agents to the individual DS artifacts when those are consolidated into this repository.
+## Authority & Developer Guidance
 
-## Approved artifacts
+The root `DESIGN.md` and this document represent the **official design authority** for BukieBrainJobs. 
 
-| ID | Artifact | Status |
-|---|---|---|
-| DS-001 | Brand Identity | Approved |
-| DS-002 | Logo System | Approved |
-| DS-003 | Color System | Approved |
-| DS-004 | Typography System | Approved |
-| DS-005 | Grid and Layout System | Approved |
-| DS-006 | Spacing System | Approved |
-| DS-007 | Iconography System | Approved |
-| DS-008 | Component Library Foundation | Approved |
-| DS-009 | Motion System | Approved |
-| DS-010 | Accessibility Standards | Approved |
-| DS-011 | Design Token System | Approved |
-| DS-012 | Final Design System Review | Approved |
+All agents, engineers, and designers working on customer-facing features, discovery interfaces, or design token packages must align with the **BukieBrainJobs Trades Design System**.
 
-## Core visual rules
+> **POINTER TO SKILL REPOSITORY:**  
+> Before building or refactoring any screens, developers and agents should inspect the reference code and component implementations in:  
+> - **GitHub Repo:** `https://github.com/IceCool30/bukiebrainjobs-trades-design-system`  
+> - **Local Skill Path:** `C:\Users\john.bisong\.gemini\config\skills\bukiebrainjobs-trades-design-system\SKILL.md`  
+> - **Reference Implementation:** `index.html` (in the skill repo) for exact markup of the telemetry bar, segmented theme toggle, command index table, and spec inspector modal.
 
-- Corporate Modern direction
-- Premium Minimalism
-- Deep Navy as primary brand and action system
-- Emerald as strategic emphasis and success signal
-- Hanken Grotesk for display and headings
-- Inter for body and interface content
-- 12-column desktop grid
-- 8-column tablet grid
-- 4-column mobile grid
-- 1280px maximum content container
-- 24px standard gutters
-- 8px primary spacing rhythm with approved 4px micro-unit
-- Approved radius and elevation system
-- Outline-first, rounded iconography
-- Subtle, purposeful motion
-- WCAG 2.2 AA accessibility target
+---
 
-## Product adaptation
+## Approved Core Visual Rules
 
-The original visual source contains recruitment-oriented examples. BukieBrainJobs retains the visual system while adapting product terminology to the marketplace domain.
+1. **Dual-Theme Engine**:
+   - **Light Mode (`[data-theme="light"]`)**: Architectural Gallery Off-White (`#F7F9FC`) with crisp pure white card chambers (`#FFFFFF`) and deep Brand Navy text (`#001A41`).
+   - **Dark Mode (`[data-theme="dark"]`)**: Obsidian Titanium Gunmetal (`#0B0E13` / `#13171E`) with platinum display typography (`#F0F4F9`) and razor-sharp hairline borders (`#202734`).
+2. **Three-Tier Color Discipline**:
+   - **Structural Anchor**: Deep Navy (`#001A41`) for headings, top telemetry panel, and footer dispatch container.
+   - **Trust & Escrow**: Brand Green (`#10B981` in light, `#2FE896` in dark) for escrow milestone verification badges, telemetry indicators, and vetting tags.
+   - **Action Catalyst**: Molten Amber (`#FF6B35`) strictly for primary conversion buttons (`[Book BrainWorker]`, `[Post Requisition]`, `[Inspect Spec]`) and hero accents.
+3. **Typography**:
+   - **Display / Headings**: `Cabinet Grotesk` (or `Hanken Grotesk`) at 800/900 weight, uppercase, ultra-tight tracking (`-0.04em`).
+   - **Body**: `Inter` for clean reading copy and form controls.
+   - **Technical Data**: `JetBrains Mono` for `REQ-` codes, milestone pricing (`₦`), and hardware stack tags.
+4. **Layout & Discovery Pattern**:
+   - **Requisition Index Command Table**: Replaces generic floating card grids with an engineered, high-density discovery index table with live filtering pills and an instant spec-inspection drawer.
+5. **Theme Switcher**:
+   - Industrial segmented switcher (`[ ☀ LIGHT | ☾ DARK ]`) with `localStorage` persistence.
 
-Examples:
+---
 
-| Generic / source example | BukieBrainJobs |
-|---|---|
-| Candidate | BrainWorker |
-| Employer | Client |
-| Job Listing | Service / Job |
-| Apply Now | Book a Service |
-| Recruitment Dashboard | Booking Dashboard |
+## Token Resolution & Conflict Prevention
 
-## Token conflict resolution
+An older specification previously mapped single-theme values without dark-mode support. The approved mapping is now:
 
-An older technical specification example maps green as a generic `primary` token. That mapping is not authoritative for BukieBrainJobs.
+| Token Name | Light Mode | Dark Mode | Semantic Role |
+| :--- | :--- | :--- | :--- |
+| `primary` | `#001A41` | `#001A41` | Structural Navy |
+| `surface` | `#F7F9FC` | `#0B0E13` | Canvas background |
+| `card` | `#FFFFFF` | `#13171E` | Card surface |
+| `action` | `#FF6B35` | `#FF6B35` | Molten Amber CTA |
+| `trust` | `#10B981` | `#2FE896` | Escrow & Verification |
 
-The approved mapping is:
+---
 
-- Primary brand/action: Deep Navy `#001A41`
-- Strategic emphasis/success: Emerald `#296A4B`
-
-The engineering token package must follow this approved semantic mapping.
-
-## Design gate
-
-No screen may introduce a new foundational visual rule without an explicit design-system revision and decision record.
+## Design Gate
+No screen or component may introduce competing color palettes (e.g. generic purple or cyan gradients) or revert to single-theme templates without an explicit revision to this design system.

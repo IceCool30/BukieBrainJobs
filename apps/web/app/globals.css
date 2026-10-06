@@ -1,4 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* ==========================================================================
+   BUKIEBRAINJOBS CANONICAL DESIGN SYSTEM TOKENS (v2.0)
+   Reference Skill: bukiebrainjobs-trades-design-system
+   Skill Repository: https://github.com/IceCool30/bukiebrainjobs-trades-design-system
+   Specification: See root DESIGN.md and docs/02-design-system/DESIGN-SYSTEM-v1.0.md
+   
+   Dual-Theme Architecture:
+   - Structural Anchor: Deep Navy (#001A41)
+   - Trust & Escrow: Brand Green (#10B981 in light, #2FE896 in dark)
+   - Action Catalyst: Molten Amber (#FF6B35) for primary CTAs
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 @import "tailwindcss";
 
