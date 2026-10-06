@@ -13,6 +13,8 @@ import {
   LayoutDashboard,
 } from 'lucide-react';
 import { getMockAuthenticatedUser } from '../lib/auth/storage';
+import TelemetryStrip from './TelemetryStrip';
+import ThemeToggle from './ThemeToggle';
 
 interface NavbarProps {
   onPostJobClick?: () => void;
@@ -153,10 +155,11 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     <header
       className={`fixed top-0 inset-x-0 z-50 w-full text-white transition-all duration-300 pointer-events-auto ${
         solid
-          ? 'bg-[#001A41]/90 backdrop-blur-md border-b border-white/10 shadow-sm'
-          : 'bg-gradient-to-b from-[#001A41]/75 to-transparent border-b border-transparent'
+          ? 'bg-[#001A41]/95 backdrop-blur-md border-b border-white/10 shadow-sm'
+          : 'bg-gradient-to-b from-[#001A41]/85 via-[#001A41]/60 to-transparent border-b border-transparent'
       }`}
     >
+      <TelemetryStrip />
       {/* Main Header Container */}
       <div
         className={`max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between transition-all duration-300 ${
@@ -174,6 +177,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             className="hidden sm:block h-10 w-auto rounded-xl object-contain transition-transform duration-[180ms] ease-[var(--ease-ui-out)] group-hover:scale-[1.03]"
             priority
           />
+          <span className="brand-badge-tag hidden md:inline-block">Verified Trades Index</span>
           <Image
             src="/images/logo-icon.png"
             alt="BukieBrainJobs"
@@ -185,7 +189,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]">
+        <nav className="hidden lg:flex items-center gap-7 font-mono text-[13px] font-semibold uppercase tracking-wide text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]">
           <Link href="/services" className="hover:text-[#ABEEC8] transition-colors flex items-center gap-1.5">
             <Search className="w-4 h-4 text-[#ABEEC8]" />
             Services
@@ -205,6 +209,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
 
         {/* Action Buttons */}
         <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle idPrefix="nav-theme" />
           {/* Secondary action: Become a BrainWorker */}
           <button
             onClick={onBecomeWorkerClick}
@@ -214,11 +219,11 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             Become a BrainWorker
           </button>
 
-          {/* Level 2 Secondary: Post a Job */}
+          {/* Level 1 Primary: Post a Job (Molten Amber action catalyst) */}
           {onPostJobClick ? (
             <button
               onClick={onPostJobClick}
-              className="motion-press px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/70 bg-[#001A41]/55 backdrop-blur-sm hover:bg-[#296A4B]/60 rounded-full transition-colors flex items-center gap-1.5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.45)]"
+              className="btn-action motion-press"
             >
               <Briefcase className="w-3.5 h-3.5" />
               Post a Job
@@ -226,7 +231,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           ) : (
             <Link
               href="/post-job"
-              className="motion-press px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/70 bg-[#001A41]/55 backdrop-blur-sm hover:bg-[#296A4B]/60 rounded-full transition-colors flex items-center gap-1.5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.45)]"
+              className="btn-action motion-press"
             >
               <Briefcase className="w-3.5 h-3.5" />
               Post a Job
@@ -358,9 +363,12 @@ function DrawerPanel({
 
             {/* Action zone */}
             <div className="mt-auto px-5 pb-8 pt-4 space-y-2.5 border-t border-[#1E3A60]">
+              <div className="flex justify-start pb-1">
+                <ThemeToggle idPrefix="drawer-theme" />
+              </div>
               <button
                 onClick={() => { onClose(); onPostJob?.(); }}
-                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-[#ABEEC8] bg-[#296A4B] hover:bg-[#1f5239] active:bg-[#17402c] rounded-xl transition-colors flex items-center justify-center gap-2"
+                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-white bg-[var(--amber)] hover:bg-[var(--amber-hover)] active:bg-[var(--amber-hover)] rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <Briefcase className="w-4 h-4" />
                 Post a Job

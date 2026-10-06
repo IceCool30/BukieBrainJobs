@@ -68,20 +68,26 @@ const JSON_LD = {
   ],
 };
 
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('bukie_theme');if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
       </head>
-      <body className="min-h-screen bg-[#f8f9ff] font-sans text-[#0b1c30] antialiased">
+      <body
+        className="min-h-screen font-sans antialiased"
+        style={{ backgroundColor: 'var(--bg)', color: 'var(--text-main)' }}
+      >
         {children}
       </body>
     </html>

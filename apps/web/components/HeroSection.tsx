@@ -312,7 +312,7 @@ export default function HeroSection({
   };
 
   return (
-    <section className="relative bg-[#001A41] text-white pt-28 sm:pt-32 pb-12 overflow-visible">
+    <section className="relative bg-[#001A41] text-white pt-36 sm:pt-40 pb-12 overflow-visible">
       {/* Hero portrait backdrop */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <picture className="relative block h-full w-full">

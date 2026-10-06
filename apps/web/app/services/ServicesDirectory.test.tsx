@@ -1,15 +1,17 @@
 /** @vitest-environment jsdom */
 /**
- * ServicesDirectory component tests: WEB-006
+ * ServicesDirectory component tests: WEB-006 + Trades Design System
  *
  * Tests observable behavior of the public services discovery page:
- * - Page renders with expected heading, search input, and service cards
- * - Search input filters displayed service cards in real time
+ * - Page renders with expected heading, search input, and requisition rows
+ * - Search input filters displayed requisition rows in real time
  * - Category buttons (aria-pressed) filter results correctly
+ * - Discipline pills filter the Requisition Index command table
+ * - "Inspect Spec" opens the spec inspector drawer with scope and booking triggers
  * - Invalid URL query parameters show informational notices (role="status")
  * - Empty state appears when no services match the current filters
- * - Reset filters clears all active filters and restores all 8 cards
- * - "Review details" navigates to the correct service detail URL with context
+ * - Reset filters clears all active filters and restores all 8 rows
+ * - "Review details" (inside the drawer) navigates to the correct detail URL
  *
  * Underlying pure logic is covered in lib/services/services.test.ts.
  * These tests prove the React layer wires that logic correctly.
@@ -72,14 +74,20 @@ describe('ServicesPage: initial render', () => {
     expect(input).toBeInTheDocument();
   });
 
-  it('renders all 8 service category cards as <article> elements', () => {
+  it('renders all 8 service categories as requisition <article> rows', () => {
     render(<ServicesPage />);
     expect(screen.getAllByRole('article')).toHaveLength(8);
   });
 
-  it('renders a "Review details" button on each service card', () => {
+  it('renders an "Inspect Spec" button on each requisition row', () => {
     render(<ServicesPage />);
-    expect(screen.getAllByRole('button', { name: /review details/i })).toHaveLength(8);
+    expect(screen.getAllByRole('button', { name: /inspect spec/i })).toHaveLength(8);
+  });
+
+  it('renders deterministic REQ reference codes in monospace rows', () => {
+    render(<ServicesPage />);
+    expect(screen.getByText('REQ-8801')).toBeInTheDocument();
+    expect(screen.getByText('REQ-8808')).toBeInTheDocument();
   });
 
   it('renders the "Back to home" link pointing to "/"', () => {
@@ -128,7 +136,7 @@ describe('ServicesPage: search input', () => {
     expect((screen.getByRole('searchbox') as HTMLInputElement).value).toHaveLength(100);
   });
 
-  it('filters service cards to matching categories when a keyword is typed', () => {
+  it('filters requisition rows to matching categories when a keyword is typed', () => {
     render(<ServicesPage />);
 
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'generator' } });
@@ -147,7 +155,7 @@ describe('ServicesPage: search input', () => {
     expect(screen.queryAllByRole('article')).toHaveLength(0);
   });
 
-  it('clears the input and restores all 8 cards when "Clear search" is clicked', () => {
+  it('clears the input and restores all 8 rows when "Clear search" is clicked', () => {
     render(<ServicesPage />);
 
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'plumbing' } });
@@ -181,7 +189,7 @@ describe('ServicesPage: category button filters', () => {
     expect(allBtn).toHaveAttribute('aria-pressed', 'false');
   });
 
-  it('filters cards to only the selected category when a category button is clicked', () => {
+  it('filters rows to only the selected category when a category button is clicked', () => {
     render(<ServicesPage />);
 
     fireEvent.click(screen.getByRole('button', { name: /ac repair/i }));
@@ -202,7 +210,7 @@ describe('ServicesPage: category button filters', () => {
     );
   });
 
-  it('shows all 8 cards when the "All services" button is the active category', () => {
+  it('shows all 8 rows when the "All services" button is the active category', () => {
     render(<ServicesPage />);
     expect(screen.getAllByRole('article')).toHaveLength(8);
   });
@@ -283,7 +291,7 @@ describe('ServicesPage: empty state and reset filters', () => {
     expect(mockPush).toHaveBeenCalledWith('/services', expect.anything());
   });
 
-  it('restores all 8 cards after "Reset filters" is clicked', () => {
+  it('restores all 8 rows after "Reset filters" is clicked', () => {
     render(<ServicesPage />);
 
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'zzznomatch' } });
@@ -305,11 +313,40 @@ describe('ServicesPage: Review details navigation', () => {
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
   });
 
-  it('calls router.push with a /services/[serviceId] path when "Review details" is clicked', () => {
+  function openFirstInspector() {
     render(<ServicesPage />);
-
-    const buttons = screen.getAllByRole('button', { name: /review details/i });
+    const buttons = screen.getAllByRole('button', { name: /inspect spec/i });
     fireEvent.click(buttons[0]!);
+    return screen.getByRole('dialog');
+  }
+
+  it('opens the spec inspector drawer when "Inspect Spec" is clicked', () => {
+    const dialog = openFirstInspector();
+    expect(dialog).toBeInTheDocument();
+    expect(
+      within(dialog).getByRole('heading', { name: /generator servicing/i }),
+    ).toBeInTheDocument();
+    expect(within(dialog).getByText(/100% escrow milestone/i)).toBeInTheDocument();
+  });
+
+  it('drawer offers a "Book BrainWorker" link carrying service and price params', () => {
+    const dialog = openFirstInspector();
+    const bookLink = within(dialog).getByRole('link', { name: /book brainworker/i });
+    expect(bookLink.getAttribute('href') ?? '').toContain('/book?');
+    expect(bookLink.getAttribute('href') ?? '').toContain('service=');
+  });
+
+  it('closes the inspector when Escape is pressed', () => {
+    openFirstInspector();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('calls router.push with a /services/[serviceId] path when drawer "Review details" is clicked', () => {
+    const dialog = openFirstInspector();
+
+    fireEvent.click(within(dialog).getByRole('button', { name: /review details/i }));
 
     expect(mockPush).toHaveBeenCalledWith(
       expect.stringMatching(/^\/services\//),
@@ -320,8 +357,9 @@ describe('ServicesPage: Review details navigation', () => {
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ city: 'Lagos' }));
     render(<ServicesPage />);
 
-    const buttons = screen.getAllByRole('button', { name: /review details/i });
+    const buttons = screen.getAllByRole('button', { name: /inspect spec/i });
     fireEvent.click(buttons[0]!);
+    fireEvent.click(screen.getByRole('button', { name: /review details/i }));
 
     expect(mockPush).toHaveBeenCalledWith(
       expect.stringContaining('city=Lagos'),
@@ -333,13 +371,41 @@ describe('ServicesPage: Review details navigation', () => {
 
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'repair' } });
 
-    const reviewButtons = screen.getAllByRole('button', { name: /review details/i });
+    const reviewButtons = screen.getAllByRole('button', { name: /inspect spec/i });
     fireEvent.click(reviewButtons[0]!);
+    fireEvent.click(screen.getByRole('button', { name: /review details/i }));
 
     const calls = mockPush.mock.calls;
     const lastCall = calls[calls.length - 1];
     const lastPushArg = String(lastCall?.[0] ?? '');
     expect(lastPushArg).toContain('returnQ=repair');
+  });
+});
+
+describe('ServicesPage: discipline pills', () => {
+  beforeEach(() => {
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
+    vi.mocked(useRouter).mockReturnValue(makeRouter());
+  });
+
+  it('filters the index to the solar discipline when "Solar & Inverters" is pressed', () => {
+    render(<ServicesPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: /solar & inverters/i }));
+
+    const rows = screen.getAllByRole('article');
+    expect(rows).toHaveLength(1);
+    expect(within(rows[0]!).getByRole('heading', { name: /solar/i })).toBeInTheDocument();
+  });
+
+  it('restores all 8 rows when "All Dispatches" is pressed', () => {
+    render(<ServicesPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: /commercial hvac/i }));
+    expect(screen.getAllByRole('article')).toHaveLength(1);
+
+    fireEvent.click(screen.getByRole('button', { name: /all dispatches/i }));
+    expect(screen.getAllByRole('article')).toHaveLength(8);
   });
 });
 
@@ -372,20 +438,29 @@ describe('ServicesPage: accessibility', () => {
     expect(resultCountEl).toBeDefined();
   });
 
-  it('each service card image has a non-empty alt attribute', () => {
+  it('each requisition row shows a milestone figure and an escrow badge', () => {
     render(<ServicesPage />);
-    const images = screen
-      .getAllByRole('img')
-      .filter((img) => img.getAttribute('alt') !== '');
-    expect(images.length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/100% escrow milestone/i).length).toBeGreaterThanOrEqual(8);
+    expect(screen.getByText('₦25,000')).toBeInTheDocument();
   });
 
   it('category buttons have accessible aria-pressed state', () => {
     render(<ServicesPage />);
-    const categoryBtns = screen
+    const rail = screen.getByRole('group', { name: /filter service categories/i });
+    const categoryBtns = within(rail)
       .getAllByRole('button')
       .filter((btn) => btn.hasAttribute('aria-pressed'));
     // 1 "All services" + 8 category buttons = 9
     expect(categoryBtns).toHaveLength(9);
+  });
+
+  it('discipline pills have accessible aria-pressed state', () => {
+    render(<ServicesPage />);
+    const toolbar = screen.getByRole('group', { name: /technical discipline/i });
+    const pills = within(toolbar)
+      .getAllByRole('button')
+      .filter((btn) => btn.hasAttribute('aria-pressed'));
+    // All Dispatches + 4 discipline pills = 5
+    expect(pills).toHaveLength(5);
   });
 });

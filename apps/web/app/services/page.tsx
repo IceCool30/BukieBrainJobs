@@ -3,7 +3,6 @@
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   ArrowLeft,
   ArrowRight,
@@ -31,6 +30,12 @@ import {
   validateCity,
 } from '../../lib/services';
 import ServiceTaskIcon from '../../components/ServiceTaskIcon';
+import {
+  DispatchBox,
+  RequisitionIndex,
+  VerificationProtocol,
+} from '../../components/RequisitionIndex';
+import { toRequisitionIndex } from '../../lib/requisitions';
 
 const TASK_LABELS: Record<string, string> = {
   generator: 'Generator',
@@ -42,74 +47,6 @@ const TASK_LABELS: Record<string, string> = {
   'tv-mounting': 'TV mounting',
   moving: 'Moving',
 };
-
-function ServiceCard({
-  category,
-  onReview,
-}: {
-  category: ServiceCategory;
-  onReview: () => void;
-}) {
-  return (
-    <article className="bbj-card-interactive flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white transition-all">
-      <div className="relative aspect-[5/3] overflow-hidden bg-slate-100">
-        <Image
-          src={category.photoUrl}
-          alt={`Service photo for ${category.title}`}
-          fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-          className="object-cover transition-transform duration-300 hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#001A41]/60 via-transparent to-transparent" />
-        <span className="absolute left-4 top-4 inline-flex items-center rounded-full border border-slate-200/80 bg-white/95 px-2.5 py-1 text-[11px] font-bold text-[#001A41] shadow-xs backdrop-blur-xs">
-          From {category.startingPrice}
-        </span>
-        <span className="absolute right-4 top-4 rounded-md bg-[#001A41]/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#ABEEC8] backdrop-blur-sm">
-          {category.group}
-        </span>
-      </div>
-
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <div>
-          <h2 className="font-display text-lg font-bold tracking-tight text-[#001A41]">
-            {category.title}
-          </h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600 line-clamp-2">
-            {category.description}
-          </p>
-        </div>
-
-        <ul className="mt-5 space-y-2" aria-label={`Common ${category.title.toLowerCase()} jobs`}>
-          {category.popularServices.map((service) => (
-            <li key={service} className="flex items-center gap-2 text-xs font-medium text-slate-700">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#296A4B]" aria-hidden="true" />
-              {service}
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-6 flex items-end justify-between gap-4 border-t border-slate-100 pt-4">
-          <div>
-            <span className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500">
-              Starting from
-            </span>
-            <span className="font-display text-lg font-extrabold text-[#001A41]">
-              {category.startingPrice}
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={onReview}
-            className="motion-press inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#001A41] px-4 text-xs font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
-          >
-            Review details
-            <ArrowRight className="h-4 w-4 text-[#ABEEC8]" aria-hidden="true" />
-          </button>
-        </div>
-      </div>
-    </article>
-  );
-}
 
 function ServicesDirectory() {
   const searchParams = useSearchParams();
@@ -294,6 +231,12 @@ function ServicesDirectory() {
     [selectedCategory, searchQuery],
   );
 
+  // Requisition Index rows derived deterministically from the catalog
+  const requisitionEntries = useMemo(
+    () => toRequisitionIndex(filteredCategories, SERVICE_CATEGORIES),
+    [filteredCategories],
+  );
+
   const resultLabel = `${filteredCategories.length} ${
     filteredCategories.length === 1 ? "service category" : "service categories"
   } shown`;
@@ -310,6 +253,12 @@ function ServicesDirectory() {
     router.push(detailUrl);
   };
 
+  // Spec inspector drawer action: resolve the catalog entry, then reuse detail flow
+  const reviewEntry = (categoryId: string) => {
+    const category = SERVICE_CATEGORIES.find((item) => item.id === categoryId);
+    if (category) reviewCategory(category);
+  };
+
   const activeCities = NIGERIAN_LOCATIONS.filter((loc) => loc.status === "active");
   const showInvalidCityNotice = Boolean(rawCity && !validCity && !dismissedCityNotice);
   const showInvalidCategoryNotice = Boolean(
@@ -317,16 +266,16 @@ function ServicesDirectory() {
   );
 
   return (
-    <main className="min-h-screen bg-[#F8F9FF]">
+    <main className="min-h-screen bg-[var(--bg)]">
       {/* Main Content Area */}
       <section className="mx-auto max-w-[1280px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         {/* Navigation Breadcrumb / Back link */}
         <div className="mb-4 sm:mb-6">
           <Link
             href="/"
-            className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-slate-600 transition-colors hover:text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] rounded-lg"
+            className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] rounded-lg"
           >
-            <ArrowLeft className="h-4 w-4 text-[#296A4B]" aria-hidden="true" />
+            <ArrowLeft className="h-4 w-4 text-[var(--brand-green)]" aria-hidden="true" />
             Back to home
           </Link>
         </div>
@@ -385,12 +334,12 @@ function ServicesDirectory() {
         )}
 
         {/* Controls & Filter Bar */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-5">
+        <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-5">
           <div className="flex flex-col gap-1">
-            <h1 className="font-display text-xl font-bold tracking-tight text-[#001A41] sm:text-2xl">
+            <h1 className="font-display text-xl font-bold tracking-tight text-[var(--text-main)] sm:text-2xl">
               Browse by category
             </h1>
-            <p className="text-xs text-slate-500 sm:text-sm" role="status" aria-live="polite">
+            <p className="text-xs text-[var(--text-muted)] sm:text-sm" role="status" aria-live="polite">
               {resultLabel}
               {selectedCity ? ` in ${selectedCity}` : ''}
             </p>
@@ -416,7 +365,7 @@ function ServicesDirectory() {
                   onBlur={handleSearchBlur}
                   maxLength={MAX_SEARCH_QUERY_LENGTH}
                   placeholder="Search by service, trade, or job"
-                  className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-10 pr-10 text-xs font-medium text-slate-900 placeholder:text-slate-400 shadow-xs outline-none transition focus:border-[#296A4B] focus:bg-white focus:ring-2 focus:ring-[#ABEEC8] sm:text-sm"
+                  className="h-11 w-full rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] pl-10 pr-10 text-xs font-medium text-[var(--text-main)] placeholder:text-[var(--text-muted)] shadow-xs outline-none transition focus:border-[#296A4B] focus:bg-[var(--card-bg)] focus:ring-2 focus:ring-[#ABEEC8] sm:text-sm"
                 />
                 {searchQuery && (
                   <button
@@ -454,7 +403,7 @@ function ServicesDirectory() {
                 className={`motion-press inline-flex min-h-11 items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] ${
                   selectedCity
                     ? "border-[#296A4B] bg-[#EAF7EF] text-[#296A4B]"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
+                    : "border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:border-slate-300"
                 }`}
               >
                 <MapPin className="h-3.5 w-3.5 shrink-0 text-[#296A4B]" aria-hidden="true" />
@@ -466,7 +415,7 @@ function ServicesDirectory() {
                 <div
                   role="listbox"
                   aria-label="Active Nigerian cities"
-                  className="absolute left-0 sm:left-auto sm:right-0 top-full z-40 mt-2 w-64 rounded-xl border border-slate-200 bg-white py-2 shadow-[0_16px_32px_rgba(0,26,65,0.14)]"
+                  className="absolute left-0 sm:left-auto sm:right-0 top-full z-40 mt-2 w-64 rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] py-2 shadow-[0_16px_32px_rgba(0,26,65,0.14)]"
                 >
                   <button
                     type="button"
@@ -521,13 +470,13 @@ function ServicesDirectory() {
               aria-pressed={selectedCategory === "All"}
               className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
                 selectedCategory === "All"
-                  ? "border-[#296A4B] text-[#001A41]"
-                  : "border-transparent text-slate-700 hover:border-slate-200 hover:text-[#001A41]"
+                  ? "border-[#296A4B] text-[var(--text-main)]"
+                  : " border-transparent text-[var(--text-muted)] hover:border-slate-200 hover:text-[var(--text-main)]"
               }`}
             >
               <span
                 className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors sm:h-11 sm:w-11 ${
-                  selectedCategory === "All" ? "bg-[#E5F6EB]" : "bg-slate-50"
+                  selectedCategory === "All" ? "bg-[#E5F6EB]" : "bg-[var(--tag-bg)]"
                 }`}
               >
                 <ServiceTaskIcon categoryId="all" className="h-8 w-8 sm:h-9 sm:w-9" />
@@ -545,13 +494,13 @@ function ServicesDirectory() {
                   aria-pressed={isSelected}
                   className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
                     isSelected
-                      ? "border-[#296A4B] text-[#001A41]"
-                      : "border-transparent text-slate-700 hover:border-slate-200 hover:text-[#001A41]"
+                      ? "border-[#296A4B] text-[var(--text-main)]"
+                      : " border-transparent text-[var(--text-muted)] hover:border-slate-200 hover:text-[var(--text-main)]"
                   }`}
                 >
                   <span
                     className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors sm:h-11 sm:w-11 ${
-                      isSelected ? "bg-[#E5F6EB]" : "bg-slate-50"
+                      isSelected ? "bg-[#E5F6EB]" : "bg-[var(--tag-bg)]"
                     }`}
                   >
                     <ServiceTaskIcon categoryId={category.id} className="h-8 w-8 sm:h-9 sm:w-9" />
@@ -609,7 +558,7 @@ function ServicesDirectory() {
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="ml-auto text-xs font-semibold text-[#296A4B] hover:text-[#1F523A] underline cursor-pointer"
+                className="ml-auto text-xs font-semibold text-[var(--brand-green)] hover:text-[#1F523A] underline cursor-pointer"
               >
                 Clear all filters
               </button>
@@ -617,51 +566,59 @@ function ServicesDirectory() {
           )}
         </div>
 
-        {/* Results Grid or Empty State */}
+        {/* Requisition Index or Empty State */}
         {filteredCategories.length === 0 ? (
-          <div className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm">
-            <h2 className="font-display text-xl font-bold text-[#001A41]">
+          <div className="mt-8 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] px-6 py-12 text-center shadow-sm">
+            <h2 className="font-display text-xl font-bold text-[var(--text-main)]">
               No services match that search
             </h2>
-            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
+            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[var(--text-muted)]">
               Try a broader service name, or reset the filters to browse every category.
             </p>
             <button
               type="button"
               onClick={handleResetFilters}
-              className="motion-press mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+              className="btn-action motion-press mt-5 inline-flex min-h-11 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-green)] focus-visible:ring-offset-2"
             >
               Reset filters
             </button>
           </div>
         ) : (
-          <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-            {filteredCategories.map((category) => (
-              <ServiceCard
-                key={category.id}
-                category={category}
-                onReview={() => reviewCategory(category)}
-              />
-            ))}
+          <div className="mt-8">
+            <RequisitionIndex
+              entries={requisitionEntries}
+              city={selectedCity}
+              onReviewDetails={reviewEntry}
+            />
           </div>
         )}
 
+        {/* Verification Protocol */}
+        <div className="mt-10 sm:mt-14">
+          <VerificationProtocol />
+        </div>
+
+        {/* Dispatch Callout */}
+        <div className="mt-10 sm:mt-14">
+          <DispatchBox />
+        </div>
+
         {/* Trust Notice Aside */}
-        <aside className="mt-10 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+        <aside className="mt-10 flex flex-col gap-4 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">
               Before you continue
             </p>
-            <h2 className="mt-2 font-display text-xl font-bold tracking-tight text-[#001A41]">
+            <h2 className="mt-2 font-display text-xl font-bold tracking-tight text-[var(--text-main)]">
               Get clear on the job details.
             </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--text-muted)]">
               Use the service details to prepare the scope, location, and budget for your booking review.
             </p>
           </div>
           <Link
             href="/guarantee"
-            className="motion-press inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-[#001A41] px-4 text-sm font-bold text-[#001A41] transition-colors hover:bg-[#001A41] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+            className="motion-press inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-[var(--text-main)] px-4 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--text-main)] hover:text-[var(--bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
           >
             Read BukieGuarantee
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -674,7 +631,7 @@ function ServicesDirectory() {
 
 export default function ServicesPage() {
   return (
-    <Suspense fallback={<main className="min-h-screen bg-[#F8F9FF]" />}>
+    <Suspense fallback={<main className="min-h-screen bg-[var(--bg)]" />}>
       <ServicesDirectory />
     </Suspense>
   );
