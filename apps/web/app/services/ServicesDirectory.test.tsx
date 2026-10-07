@@ -5,7 +5,7 @@
  * Tests observable behavior of the public services discovery page:
  * - Page renders with expected heading, search input, and requisition rows
  * - Search input filters displayed requisition rows in real time
- * - Category buttons (aria-pressed) filter results correctly
+ * - Category deep links filter rows; the active chip clears the filter
  * - Discipline pills filter the Requisition Index command table
  * - "Inspect Spec" opens the spec inspector drawer with scope and booking triggers
  * - Invalid URL query parameters show informational notices (role="status")
@@ -63,7 +63,7 @@ describe('ServicesPage: initial render', () => {
   it('renders the page heading', () => {
     render(<ServicesPage />);
     expect(
-      screen.getByRole('heading', { name: /browse by category/i }),
+      screen.getByRole('heading', { name: /browse the requisition index/i }),
     ).toBeInTheDocument();
   });
 
@@ -95,10 +95,17 @@ describe('ServicesPage: initial render', () => {
     expect(screen.getByRole('link', { name: /back to home/i })).toHaveAttribute('href', '/');
   });
 
-  it('renders the "All services" category button as pressed by default', () => {
+  it('renders the "All Dispatches" discipline pill as pressed by default', () => {
     render(<ServicesPage />);
-    const allBtn = screen.getByRole('button', { name: /all services/i });
+    const allBtn = screen.getByRole('button', { name: /all dispatches/i });
     expect(allBtn).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('renders the site header with telemetry strip and theme toggle', () => {
+    render(<ServicesPage />);
+    expect(screen.getByRole('complementary', { name: /marketplace status/i })).toBeInTheDocument();
+    expect(screen.getByRole('radiogroup', { name: /appearance/i })).toBeInTheDocument();
+    expect(screen.getByText(/verified trades index/i)).toBeInTheDocument();
   });
 });
 
@@ -169,48 +176,45 @@ describe('ServicesPage: search input', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Category button filter behaviour
+// Category deep-link filter behaviour (single command toolbar: no icon rail)
 // ---------------------------------------------------------------------------
 
-describe('ServicesPage: category button filters', () => {
+describe('ServicesPage: category deep-link filters', () => {
   beforeEach(() => {
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams());
     vi.mocked(useRouter).mockReturnValue(makeRouter());
   });
 
-  it('pre-presses the correct category button when category param is present', () => {
+  it('filters rows to the linked category when the category param is present', () => {
     vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ category: 'plumbing' }));
     render(<ServicesPage />);
 
-    const plumbingBtn = screen.getByRole('button', { name: /plumbing/i });
-    expect(plumbingBtn).toHaveAttribute('aria-pressed', 'true');
-
-    const allBtn = screen.getByRole('button', { name: /all services/i });
-    expect(allBtn).toHaveAttribute('aria-pressed', 'false');
+    const rows = screen.getAllByRole('article');
+    expect(rows).toHaveLength(1);
+    expect(within(rows[0]!).getByRole('heading', { name: /plumbing/i })).toBeInTheDocument();
   });
 
-  it('filters rows to only the selected category when a category button is clicked', () => {
+  it('shows the active category chip with a removal control', () => {
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ category: 'plumbing' }));
     render(<ServicesPage />);
 
-    fireEvent.click(screen.getByRole('button', { name: /ac repair/i }));
-
-    const cards = screen.getAllByRole('article');
-    expect(cards).toHaveLength(1);
-    expect(within(cards[0]!).getByRole('heading', { name: /ac/i })).toBeInTheDocument();
+    expect(screen.getByText('Plumbing')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /remove category filter/i })).toBeInTheDocument();
   });
 
-  it('calls router.push with the correct category param when a category button is clicked', () => {
+  it('clears the category param when the category chip removal is clicked', () => {
+    vi.mocked(useSearchParams).mockReturnValue(makeSearchParams({ category: 'cleaning' }));
     render(<ServicesPage />);
 
-    fireEvent.click(screen.getByRole('button', { name: /cleaning/i }));
+    fireEvent.click(screen.getByRole('button', { name: /remove category filter/i }));
 
     expect(mockPush).toHaveBeenCalledWith(
-      expect.stringContaining('category=cleaning'),
+      expect.not.stringContaining('category=cleaning'),
       expect.anything(),
     );
   });
 
-  it('shows all 8 rows when the "All services" button is the active category', () => {
+  it('shows all 8 rows when no category param is present', () => {
     render(<ServicesPage />);
     expect(screen.getAllByRole('article')).toHaveLength(8);
   });
@@ -407,6 +411,15 @@ describe('ServicesPage: discipline pills', () => {
     fireEvent.click(screen.getByRole('button', { name: /all dispatches/i }));
     expect(screen.getAllByRole('article')).toHaveLength(8);
   });
+
+  it('groups carpentry, cleaning, tv, and relocation rows under "General Trades"', () => {
+    render(<ServicesPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: /general trades/i }));
+
+    const rows = screen.getAllByRole('article');
+    expect(rows).toHaveLength(4);
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -444,23 +457,13 @@ describe('ServicesPage: accessibility', () => {
     expect(screen.getByText('₦25,000')).toBeInTheDocument();
   });
 
-  it('category buttons have accessible aria-pressed state', () => {
-    render(<ServicesPage />);
-    const rail = screen.getByRole('group', { name: /filter service categories/i });
-    const categoryBtns = within(rail)
-      .getAllByRole('button')
-      .filter((btn) => btn.hasAttribute('aria-pressed'));
-    // 1 "All services" + 8 category buttons = 9
-    expect(categoryBtns).toHaveLength(9);
-  });
-
   it('discipline pills have accessible aria-pressed state', () => {
     render(<ServicesPage />);
     const toolbar = screen.getByRole('group', { name: /technical discipline/i });
     const pills = within(toolbar)
       .getAllByRole('button')
       .filter((btn) => btn.hasAttribute('aria-pressed'));
-    // All Dispatches + 4 discipline pills = 5
-    expect(pills).toHaveLength(5);
+    // All Dispatches + 5 discipline pills = 6
+    expect(pills).toHaveLength(6);
   });
 });

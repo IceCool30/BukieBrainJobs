@@ -29,7 +29,7 @@ import {
   normalizeSearchQuery,
   validateCity,
 } from '../../lib/services';
-import ServiceTaskIcon from '../../components/ServiceTaskIcon';
+import Navbar from '../../components/Navbar';
 import {
   DispatchBox,
   RequisitionIndex,
@@ -266,7 +266,9 @@ function ServicesDirectory() {
   );
 
   return (
-    <main className="min-h-screen bg-[var(--bg)]">
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-[var(--bg)] pt-[var(--header-height)]">
       {/* Main Content Area */}
       <section className="mx-auto max-w-[1280px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         {/* Navigation Breadcrumb / Back link */}
@@ -337,7 +339,7 @@ function ServicesDirectory() {
         <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-5">
           <div className="flex flex-col gap-1">
             <h1 className="font-display text-xl font-bold tracking-tight text-[var(--text-main)] sm:text-2xl">
-              Browse by category
+              Browse the requisition index
             </h1>
             <p className="text-xs text-[var(--text-muted)] sm:text-sm" role="status" aria-live="polite">
               {resultLabel}
@@ -354,7 +356,7 @@ function ServicesDirectory() {
               </label>
               <div className="relative">
                 <Search
-                  className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 pointer-events-none"
+                  className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none"
                   aria-hidden="true"
                 />
                 <input
@@ -372,7 +374,7 @@ function ServicesDirectory() {
                     type="button"
                     onClick={handleClearSearch}
                     aria-label="Clear search"
-                    className="absolute right-1 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
                   >
                     <X className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -403,12 +405,12 @@ function ServicesDirectory() {
                 className={`motion-press inline-flex min-h-11 items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] ${
                   selectedCity
                     ? "border-[#296A4B] bg-[#EAF7EF] text-[#296A4B]"
-                    : "border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:border-slate-300"
+                    : "border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:border-[var(--rule)]"
                 }`}
               >
                 <MapPin className="h-3.5 w-3.5 shrink-0 text-[#296A4B]" aria-hidden="true" />
                 <span>{selectedCity ? selectedCity : "All cities"}</span>
-                <ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-400" aria-hidden="true" />
+                <ChevronDown className="h-3.5 w-3.5 shrink-0 text-[var(--text-muted)]" aria-hidden="true" />
               </button>
 
               {cityDropdownOpen && (
@@ -422,15 +424,15 @@ function ServicesDirectory() {
                     role="option"
                     aria-selected={!selectedCity}
                     onClick={() => handleSelectCity(undefined)}
-                    className={`flex min-h-11 min-h-[44px] w-full items-center justify-between px-4 py-2.5 text-left text-xs font-semibold transition-colors hover:bg-slate-50 ${
-                      !selectedCity ? "bg-[#EAF7EF] text-[#296A4B]" : "text-slate-700"
+                    className={`flex min-h-11 min-h-[44px] w-full items-center justify-between px-4 py-2.5 text-left text-xs font-semibold transition-colors hover:bg-[var(--tag-bg)] ${
+                      !selectedCity ? "bg-[var(--tag-bg)] text-[var(--text-main)] font-bold" : "text-[var(--text-main)]"
                     }`}
                   >
                     <span>All cities (Nationwide)</span>
                     {!selectedCity && <Check className="h-4 w-4 text-[#296A4B]" aria-hidden="true" />}
                   </button>
 
-                  <div className="my-1 border-t border-slate-100" />
+                  <div className="my-1 border-t border-[var(--lead)]" />
 
                   {activeCities.map((city) => {
                     const isSelected = selectedCity === city.name;
@@ -441,13 +443,13 @@ function ServicesDirectory() {
                         role="option"
                         aria-selected={isSelected}
                         onClick={() => handleSelectCity(city.name)}
-                        className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-xs font-semibold transition-colors hover:bg-slate-50 ${
-                          isSelected ? "bg-[#EAF7EF] text-[#296A4B]" : "text-slate-700"
+                        className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-xs font-semibold transition-colors hover:bg-[var(--tag-bg)] ${
+                          isSelected ? "bg-[var(--tag-bg)] text-[var(--text-main)] font-bold" : "text-[var(--text-main)]"
                         }`}
                       >
                         <div>
                           <div>{city.name}</div>
-                          <div className="text-[10px] font-normal text-slate-400">{city.state}</div>
+                          <div className="text-[10px] font-normal text-[var(--text-muted)]">{city.state}</div>
                         </div>
                         {isSelected && <Check className="h-4 w-4 text-[#296A4B]" aria-hidden="true" />}
                       </button>
@@ -458,63 +460,10 @@ function ServicesDirectory() {
             </div>
           </div>
 
-          {/* Horizontal Category Rail */}
-          <div
-            className="mt-4 -mx-1 flex items-start gap-1 overflow-x-auto px-1 pb-1 sm:gap-2"
-            role="group"
-            aria-label="Filter service categories"
-          >
-            <button
-              type="button"
-              onClick={() => handleSelectCategory("All")}
-              aria-pressed={selectedCategory === "All"}
-              className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
-                selectedCategory === "All"
-                  ? "border-[#296A4B] text-[var(--text-main)]"
-                  : " border-transparent text-[var(--text-muted)] hover:border-slate-200 hover:text-[var(--text-main)]"
-              }`}
-            >
-              <span
-                className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors sm:h-11 sm:w-11 ${
-                  selectedCategory === "All" ? "bg-[#E5F6EB]" : "bg-[var(--tag-bg)]"
-                }`}
-              >
-                <ServiceTaskIcon categoryId="all" className="h-8 w-8 sm:h-9 sm:w-9" />
-              </span>
-              All services
-            </button>
-
-            {SERVICE_CATEGORIES.map((category) => {
-              const isSelected = selectedCategory === category.id;
-              return (
-                <button
-                  key={category.id}
-                  type="button"
-                  onClick={() => handleSelectCategory(category.id)}
-                  aria-pressed={isSelected}
-                  className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
-                    isSelected
-                      ? "border-[#296A4B] text-[var(--text-main)]"
-                      : " border-transparent text-[var(--text-muted)] hover:border-slate-200 hover:text-[var(--text-main)]"
-                  }`}
-                >
-                  <span
-                    className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors sm:h-11 sm:w-11 ${
-                      isSelected ? "bg-[#E5F6EB]" : "bg-[var(--tag-bg)]"
-                    }`}
-                  >
-                    <ServiceTaskIcon categoryId={category.id} className="h-8 w-8 sm:h-9 sm:w-9" />
-                  </span>
-                  {TASK_LABELS[category.id] ?? category.title}
-                </button>
-              );
-            })}
-          </div>
-
           {/* Active Filters Bar */}
           {(selectedCategory !== "All" || selectedCity || searchQuery) && (
-            <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3 text-xs">
-              <span className="font-semibold text-slate-500">Active filters:</span>
+            <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-[var(--lead)] pt-3 text-xs">
+              <span className="font-semibold text-[var(--text-muted)]">Active filters:</span>
               {selectedCategory !== "All" && (
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E5F6EB] px-3 py-1 font-semibold text-[#296A4B]">
                   {TASK_LABELS[selectedCategory] ?? selectedCategory}
@@ -543,13 +492,13 @@ function ServicesDirectory() {
                 </span>
               )}
               {searchQuery && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-700">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--tag-bg)] border border-[var(--lead)] px-3 py-1 font-semibold text-[var(--text-main)]">
                   &quot;{searchQuery}&quot;
                   <button
                     type="button"
                     onClick={handleClearSearch}
                     aria-label="Remove search filter"
-                    className="hover:text-slate-900 cursor-pointer"
+                    className="hover:text-[var(--text-main)] cursor-pointer"
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -625,7 +574,8 @@ function ServicesDirectory() {
           </Link>
         </aside>
       </section>
-    </main>
+      </main>
+    </>
   );
 }
 

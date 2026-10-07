@@ -52,7 +52,7 @@ export default function CustomerHomepage() {
 
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] flex flex-col font-sans selection:bg-[#ABEEC8] selection:text-[#001A41]">
+    <div className={`min-h-screen bg-[var(--bg)] text-[var(--text-main)] flex flex-col font-sans selection:bg-[#ABEEC8] selection:text-[#001A41]${isPwa ? '' : ' pt-[var(--header-height)]'}`}>
       {/* Navigation Header */}
       <Navbar
         onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}

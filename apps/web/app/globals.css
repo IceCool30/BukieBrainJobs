@@ -383,7 +383,10 @@ body {
    TRADES DESIGN SYSTEM COMPONENT LAYER (DESIGN.md v2.0)
    Telemetry strip, industrial theme toggle, amber CTAs, requisition index,
    verification protocol cards, dispatch box, spec inspector drawer.
+   Wrapped in @layer components so utilities keep override precedence.
    ========================================================================== */
+
+@layer components {
 
 .telemetry-strip {
   background: var(--strip-bg);
@@ -1021,4 +1024,29 @@ body {
   .sheet-overlay {
     animation: none;
   }
+}
+
+} /* end @layer components */
+
+/* ==========================================================================
+   Sticky header geometry + theme-aware partner logos (unlayered globals)
+   --header-height: telemetry strip (36px) + nav (80px) + hairline (1px),
+   plus 1px clearance so fixed-header content never clips.
+   ========================================================================== */
+
+:root {
+  --header-height: 118px;
+}
+
+@media (max-width: 640px) {
+  .telemetry-strip {
+    justify-content: center;
+  }
+  .telemetry-strip .telemetry-hide-sm {
+    display: none;
+  }
+}
+
+[data-theme="dark"] .partner-logo {
+  filter: invert(1) hue-rotate(180deg);
 }

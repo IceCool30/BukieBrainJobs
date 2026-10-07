@@ -11,7 +11,7 @@ export default function PartnerBar({ compact = false }: PartnerBarProps) {
   const logoHeight = compact ? 'h-4' : 'h-5';
 
   return (
-    <section aria-label="Payment and identity partners" className="border-b border-slate-200 bg-white">
+    <section aria-label="Payment and identity partners" className="border-b border-[var(--lead)] bg-[var(--card-bg)]">
       <div className={compact ? 'px-4 py-3' : 'mx-auto max-w-[1280px] px-4 py-5 sm:px-6 lg:px-8'}>
         <div className={layout}>
           <Image
@@ -19,21 +19,21 @@ export default function PartnerBar({ compact = false }: PartnerBarProps) {
             alt="Paystack"
             width={157}
             height={28}
-            className={`${logoHeight} w-auto max-w-full justify-self-center`}
+            className={`${logoHeight} partner-logo w-auto max-w-full justify-self-center`}
           />
           <Image
             src="/images/partners/flutterwave-official.svg"
             alt="Flutterwave"
             width={1013}
             height={241}
-            className={`${logoHeight} w-auto max-w-full justify-self-center`}
+            className={`${logoHeight} partner-logo w-auto max-w-full justify-self-center`}
           />
           <Image
             src="/images/partners/dojah-official.svg"
             alt="Dojah"
             width={67}
             height={30}
-            className={`${logoHeight} w-auto max-w-full justify-self-center`}
+            className={`${logoHeight} partner-logo w-auto max-w-full justify-self-center`}
           />
         </div>
       </div>

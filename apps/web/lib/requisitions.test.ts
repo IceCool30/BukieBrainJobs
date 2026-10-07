@@ -17,12 +17,13 @@ import {
 } from './requisitions';
 
 describe('requisition mapping', () => {
-  it('exposes the four approved discipline pills', () => {
+  it('exposes the five approved discipline pills', () => {
     expect(REQUISITION_DISCIPLINES.map((item) => item.id)).toEqual([
       'power',
       'solar',
       'industrial',
       'cooling',
+      'general',
     ]);
   });
 
@@ -43,13 +44,17 @@ describe('requisition mapping', () => {
     expect(entry.description).toBe(generator.description);
   });
 
-  it('maps generator, electrical, ac, and plumbing to their disciplines', () => {
+  it('maps every catalog category to a discipline (no orphaned rows)', () => {
     const entries = toRequisitionIndex(SERVICE_CATEGORIES, SERVICE_CATEGORIES);
+    expect(entries).toHaveLength(SERVICE_CATEGORIES.length);
+    for (const entry of entries) {
+      expect(entry.disciplineId).not.toBeNull();
+    }
     const byId = Object.fromEntries(entries.map((entry) => [entry.categoryId, entry]));
-    expect(byId['generator']?.disciplineId).toBe('power');
-    expect(byId['electrical']?.disciplineId).toBe('solar');
-    expect(byId['ac']?.disciplineId).toBe('cooling');
-    expect(byId['plumbing']?.disciplineId).toBe('industrial');
+    expect(byId['cleaning']?.disciplineId).toBe('general');
+    expect(byId['carpentry']?.disciplineId).toBe('general');
+    expect(byId['tv-mounting']?.disciplineId).toBe('general');
+    expect(byId['moving']?.disciplineId).toBe('general');
   });
 
   it('filters rows by discipline and restores all rows on "all"', () => {
@@ -61,6 +66,9 @@ describe('requisition mapping', () => {
     expect(filterByDiscipline(entries, 'solar').map((entry) => entry.categoryId)).toEqual([
       'electrical',
     ]);
+    expect(
+      filterByDiscipline(entries, 'general').map((entry) => entry.categoryId),
+    ).toEqual(['cleaning', 'carpentry', 'tv-mounting', 'moving']);
   });
 
   it('formats locations from the selected city and catalog group', () => {

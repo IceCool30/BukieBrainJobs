@@ -18,22 +18,24 @@ export const REQUISITION_DISCIPLINES: RequisitionDiscipline[] = [
   { id: 'solar', label: 'Solar & Inverters' },
   { id: 'industrial', label: 'Plant Automation' },
   { id: 'cooling', label: 'Commercial HVAC' },
+  { id: 'general', label: 'General Trades' },
 ];
 
 /**
- * Nearest technical discipline for each catalog category. Categories
- * without an industrial-discipline equivalent map to `null` and appear
- * under the unfiltered "All Dispatches" view only.
+ * Nearest technical discipline for each catalog category. General
+ * trades (carpentry, cleaning, TV and relocation work) map to the
+ * `general` discipline so every catalog entry has a requisition home
+ * and no category is orphaned by the discipline filter.
  */
 export const CATEGORY_DISCIPLINE: Record<string, string | null> = {
   generator: 'power',
   electrical: 'solar',
   ac: 'cooling',
   plumbing: 'industrial',
-  cleaning: null,
-  carpentry: null,
-  'tv-mounting': null,
-  moving: null,
+  cleaning: 'general',
+  carpentry: 'general',
+  'tv-mounting': 'general',
+  moving: 'general',
 };
 
 export interface RequisitionEntry {

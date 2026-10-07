@@ -24,12 +24,12 @@ interface NavbarProps {
 }
 
 const DRAWER_LINKS = [
-  { href: '/services', label: 'Services', icon: Search, tint: '#296A4B' },
-  { href: '/guarantee', label: 'BukieGuarantee', icon: ShieldCheck, tint: '#296A4B' },
-  { href: '/#how-it-works', label: 'How It Works', icon: Briefcase, tint: '#296A4B' },
-  { href: '/guarantee#verification', label: 'Verification', icon: UserCheck, tint: '#296A4B' },
-  { href: '/enterprise', label: 'For Business', icon: Briefcase, tint: '#ABEEC8' },
-  { href: '/login', label: 'Sign In', icon: UserCheck, tint: '#ABEEC8' },
+  { href: '/services', label: 'Services', icon: Search },
+  { href: '/guarantee', label: 'BukieGuarantee', icon: ShieldCheck },
+  { href: '/#how-it-works', label: 'How It Works', icon: Briefcase },
+  { href: '/guarantee#verification', label: 'Verification', icon: UserCheck },
+  { href: '/enterprise', label: 'For Business', icon: Briefcase },
+  { href: '/login', label: 'Sign In', icon: UserCheck },
 ];
 
 export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpenRef, hideOnPwa }: NavbarProps) {
@@ -312,10 +312,10 @@ function DrawerPanel({
             role="dialog"
             aria-modal="true"
             aria-label="Navigation Menu"
-            className={`lg:hidden fixed top-0 right-0 z-50 h-full w-[300px] max-w-[85vw] bg-[#001A41] border-l border-[#1E3A60] flex flex-col transition-transform duration-[240ms] ease-[var(--ease-ui-out)] ${visible ? 'translate-x-0' : 'translate-x-full'}`}
+            className={`lg:hidden fixed top-0 right-0 z-50 h-full w-[300px] max-w-[85vw] bg-[var(--card-bg)] text-[var(--text-main)] border-l border-[var(--lead)] flex flex-col transition-transform duration-[240ms] ease-[var(--ease-ui-out)] ${visible ? 'translate-x-0' : 'translate-x-full'}`}
           >
             {/* Drawer header */}
-            <div className="flex items-center justify-between px-5 h-20 border-b border-[#1E3A60]">
+            <div className="flex items-center justify-between px-5 h-20 border-b border-[var(--lead)]">
               <div className="flex items-center gap-2.5">
                 <Image
                   src="/images/logo-icon.png"
@@ -325,13 +325,13 @@ function DrawerPanel({
                   className="object-contain h-9 w-9 rounded-xl"
                   priority
                 />
-                <span className="font-display font-extrabold text-base tracking-tight text-white">
-                  Bukie<span className="text-[#ABEEC8]">BrainJobs</span>
+                <span className="font-display font-extrabold text-base tracking-tight text-[var(--text-main)]">
+                  Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
                 </span>
               </div>
               <button
                 onClick={onClose}
-                className="-mr-2 flex h-11 w-11 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-white hover:bg-white/10"
+                className="-mr-2 flex h-11 w-11 items-center justify-center rounded-lg text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] hover:bg-[var(--tag-bg)]"
                 aria-label="Close navigation menu"
               >
                 <X className="w-5 h-5" />
@@ -343,26 +343,26 @@ function DrawerPanel({
               {isAuthenticated && (
                 <button
                   onClick={() => onNavigate('/dashboard')}
-                  className="motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-bold text-[#ABEEC8] bg-[#ABEEC8]/10 hover:bg-[#ABEEC8]/20 transition-colors mb-1"
+                  className="motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-bold text-[var(--text-main)] bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] transition-colors mb-1"
                 >
-                  <LayoutDashboard className="w-[18px] h-[18px] text-[#ABEEC8]" />
+                  <LayoutDashboard className="w-[18px] h-[18px] text-[var(--brand-green)]" />
                   Customer Dashboard
                 </button>
               )}
-              {DRAWER_LINKS.map(({ href, label, icon: Icon, tint }) => (
+              {DRAWER_LINKS.map(({ href, label, icon: Icon }) => (
                 <button
                   key={label}
                   onClick={() => onNavigate(href)}
-                  className="motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-[#ABEEC8]/10 hover:text-[#ABEEC8] active:bg-[#ABEEC8]/15 transition-colors"
+                  className="motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-medium text-[var(--text-muted)] hover:bg-[var(--tag-bg)] hover:text-[var(--text-main)] active:bg-[var(--card-hover)] transition-colors"
                 >
-                  <Icon className={`w-[18px] h-[18px] ${tint === '#ABEEC8' ? 'text-[#ABEEC8]' : 'text-[#ABEEC8]/80'}`} />
+                  <Icon className="w-[18px] h-[18px] text-[var(--brand-green)]" />
                   {label}
                 </button>
               ))}
             </nav>
 
             {/* Action zone */}
-            <div className="mt-auto px-5 pb-8 pt-4 space-y-2.5 border-t border-[#1E3A60]">
+            <div className="mt-auto px-5 pb-8 pt-4 space-y-2.5 border-t border-[var(--lead)]">
               <div className="flex justify-start pb-1">
                 <ThemeToggle idPrefix="drawer-theme" />
               </div>
@@ -375,7 +375,7 @@ function DrawerPanel({
               </button>
               <button
                 onClick={() => { onClose(); onBecomeWorker?.(); }}
-                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-white bg-white/10 hover:bg-white/15 active:bg-white/20 border border-white/15 rounded-xl transition-colors"
+                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-[var(--text-main)] bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] active:bg-[var(--card-hover)] border border-[var(--lead)] rounded-xl transition-colors"
               >
                 Become a BrainWorker
               </button>

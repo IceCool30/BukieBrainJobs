@@ -13,7 +13,7 @@ interface TelemetryStripProps {
 export default function TelemetryStrip({ activeCount, latencyLabel }: TelemetryStripProps) {
   return (
     <aside className="telemetry-strip" aria-label="Marketplace status">
-      <span className="telemetry-item">
+      <span className="telemetry-item telemetry-hide-sm">
         <span className="live-indicator" aria-hidden="true" />
         BukieBrainJobs Stream{latencyLabel ? ` // ${latencyLabel}` : ''}
       </span>

@@ -312,7 +312,7 @@ export default function HeroSection({
   };
 
   return (
-    <section className="relative bg-[#001A41] text-white pt-36 sm:pt-40 pb-12 overflow-visible">
+    <section className="relative bg-[#001A41] text-white pt-10 sm:pt-14 pb-12 overflow-visible">
       {/* Hero portrait backdrop */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <picture className="relative block h-full w-full">
@@ -345,10 +345,10 @@ export default function HeroSection({
           <div ref={containerRef} className="relative w-full max-w-xl pt-4 lg:max-w-[46rem]">
             <form
               onSubmit={handleFormSubmit}
-              className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-2xl border border-slate-200/90 bg-white p-2 ring-4 ring-white/10 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.6)] transition-all"
+              className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-2 ring-4 ring-white/10 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.6)] transition-all"
             >
-              <div className="relative col-span-2 flex items-center border-b border-slate-100">
-                <Search className="absolute left-4 h-5 w-5 shrink-0 text-slate-400" />
+              <div className="relative col-span-2 flex items-center border-b border-[var(--lead)]">
+                <Search className="absolute left-4 h-5 w-5 shrink-0 text-[var(--text-muted)]" />
                 <input
                   ref={inputRef}
                   id="hero-service-input"
@@ -376,7 +376,7 @@ export default function HeroSection({
                   }}
                   onKeyDown={handleKeyDownInput}
                   placeholder="What service do you need? (e.g. AC, Generator)"
-                  className="h-14 w-full rounded-xl bg-transparent pl-12 pr-10 text-base font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none lg:h-16 lg:text-xl"
+                  className="h-14 w-full rounded-xl bg-transparent pl-12 pr-10 text-base font-medium text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:outline-none lg:h-16 lg:text-xl"
                 />
                 {serviceQuery && (
                   <button
@@ -387,7 +387,7 @@ export default function HeroSection({
                       setShowSuggestions(true);
                       inputRef.current?.focus();
                     }}
-                    className="absolute right-2 flex h-10 w-10 items-center justify-center rounded-full text-slate-400 hover:text-slate-600"
+                    className="absolute right-2 flex h-10 w-10 items-center justify-center rounded-full text-[var(--text-muted)] hover:text-[var(--text-main)]"
                     aria-label="Clear search"
                   >
                     <X className="w-3.5 h-3.5" />
@@ -405,13 +405,13 @@ export default function HeroSection({
                   }}
                   aria-expanded={showLocationDropdown}
                   aria-controls="hero-location-options"
-                  className="motion-press flex h-12 w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 lg:h-14 lg:px-5 lg:text-base"
+                  className="motion-press flex h-12 w-full items-center justify-between gap-2 rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] px-4 text-sm font-semibold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] lg:h-14 lg:px-5 lg:text-base"
                 >
                   <MapPin className="h-4 w-4 shrink-0 text-[#296A4B]" />
                   <span className="max-w-[160px] truncate lg:max-w-[220px]">
                     {selectedLocation.name}
                   </span>
-                  <ChevronDown className="h-4 w-4 shrink-0 text-slate-400" />
+                  <ChevronDown className="h-4 w-4 shrink-0 text-[var(--text-muted)]" />
                 </button>
 
                 {/* Location Selection Dropdown */}
@@ -420,9 +420,9 @@ export default function HeroSection({
                     id="hero-location-options"
                     role="listbox"
                     aria-label="Choose a location"
-                    className="absolute left-0 top-full mt-2 w-full min-w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-fadeIn"
+                    className="absolute left-0 top-full mt-2 w-full min-w-56 bg-[var(--card-bg)] rounded-xl shadow-xl border border-[var(--lead)] py-2 z-50 animate-fadeIn"
                   >
-                    <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    <div className="px-3 py-1.5 text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
                       Available locations
                     </div>
                     {NIGERIAN_LOCATIONS.filter((l) => l.status === 'active').map((loc) => (
@@ -434,15 +434,15 @@ export default function HeroSection({
                         aria-selected={selectedLocation.id === loc.id}
                         className={`w-full px-3 py-2 text-left text-xs font-medium flex items-center justify-between transition-colors ${
                           selectedLocation.id === loc.id
-                            ? 'bg-[#EFF4FF] text-[#001A41] font-bold'
-                            : 'text-slate-700 hover:bg-slate-50'
+                            ? 'bg-[var(--tag-bg)] text-[var(--text-main)] font-bold'
+                            : 'text-[var(--text-main)] hover:bg-[var(--tag-bg)]'
                         }`}
                       >
                         <div className="flex items-center gap-2">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                           <span>{loc.name}</span>
                         </div>
-                        <span className="text-[10px] text-slate-400">{loc.popularArea}</span>
+                        <span className="text-[10px] text-[var(--text-muted)]">{loc.popularArea}</span>
                       </button>
                     ))}
 
@@ -466,7 +466,7 @@ export default function HeroSection({
                 id="hero-service-suggestions"
                 role={serviceQuery.trim() ? 'listbox' : undefined}
                 aria-label={serviceQuery.trim() ? 'Service suggestions' : undefined}
-                className="motion-popover relative z-50 mt-2 max-h-[380px] space-y-3 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)]"
+                className="motion-popover relative z-50 mt-2 max-h-[380px] space-y-3 overflow-y-auto rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-3 shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)]"
               >
                 {/* Zero State: Recent & Trending */}
                 {!serviceQuery.trim() && (
@@ -474,7 +474,7 @@ export default function HeroSection({
                     {/* Recent Searches */}
                     {recentSearches.length > 0 && (
                       <div className="space-y-1.5">
-                        <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                        <div className="flex items-center justify-between text-[11px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
                           <span className="flex items-center gap-1.5">
                             <History className="w-3.5 h-3.5" />
                             Recent searches
@@ -482,7 +482,7 @@ export default function HeroSection({
                           <button
                             type="button"
                             onClick={clearRecentSearches}
-                            className="text-[10px] text-slate-400 hover:text-slate-600 lowercase cursor-pointer"
+                            className="text-[10px] text-[var(--text-muted)] hover:text-[var(--text-main)] lowercase cursor-pointer"
                           >
                             Clear
                           </button>
@@ -496,7 +496,7 @@ export default function HeroSection({
                                 setServiceQuery(term);
                                 executeSearch(term);
                               }}
-                              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+                              className="px-2.5 py-1 rounded-lg bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-main)] text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
                             >
                               <span>{term}</span>
                             </button>
@@ -506,8 +506,8 @@ export default function HeroSection({
                     )}
 
                     {/* Suggested services */}
-                    <div className="space-y-1.5 pt-1 border-t border-slate-100">
-                      <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <div className="space-y-1.5 pt-1 border-t border-[var(--lead)]">
+                      <div className="text-[11px] font-bold text-[var(--text-muted)] uppercase tracking-wider flex items-center gap-1.5">
                         <TrendingUp className="w-3.5 h-3.5 text-[#296A4B]" />
                         Services to explore
                       </div>
@@ -520,10 +520,10 @@ export default function HeroSection({
                               setServiceQuery(term);
                               executeSearch(term);
                             }}
-                            className="p-2 rounded-xl text-left text-xs font-medium text-slate-700 hover:bg-[#EFF4FF] hover:text-[#001A41] flex items-center justify-between border border-transparent hover:border-slate-200 transition-colors cursor-pointer"
+                            className="p-2 rounded-xl text-left text-xs font-medium text-[var(--text-main)] hover:bg-[var(--tag-bg)] hover:text-[var(--text-main)] flex items-center justify-between border border-transparent hover:border-[var(--lead)] transition-colors cursor-pointer"
                           >
                             <span className="truncate">{term}</span>
-                            <ArrowRight className="w-3 h-3 text-slate-400 shrink-0" />
+                            <ArrowRight className="w-3 h-3 text-[var(--text-muted)] shrink-0" />
                           </button>
                         ))}
                       </div>
@@ -534,11 +534,11 @@ export default function HeroSection({
                 {/* Active State: Matched Categories */}
                 {serviceQuery.trim().length > 0 && (
                   <div className="space-y-1">
-                    <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-2 py-1">
+                    <div className="text-[11px] font-bold text-[var(--text-muted)] uppercase tracking-wider px-2 py-1">
                       Matching services ({matches.length})
                     </div>
                     {matches.length === 0 ? (
-                      <div className="px-3 py-4 text-center text-xs text-slate-500">
+                      <div className="px-3 py-4 text-center text-xs text-[var(--text-muted)]">
                         We couldn&apos;t find a close match for &quot;{serviceQuery}&quot;. Search to browse the services shown here.
                       </div>
                     ) : (
@@ -560,11 +560,11 @@ export default function HeroSection({
                           aria-selected={highlightedIndex === idx}
                           className={`motion-press w-full px-3 py-2.5 rounded-xl text-left transition-colors flex items-center gap-3 ${
                             highlightedIndex === idx
-                              ? 'bg-[#EFF4FF] text-[#001A41] font-semibold'
-                              : 'text-slate-800 hover:bg-slate-50'
+                              ? 'bg-[var(--tag-bg)] text-[var(--text-main)] font-semibold'
+                              : 'text-[var(--text-main)] hover:bg-[var(--tag-bg)]'
                           }`}
                         >
-                          <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
+                          <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-[var(--tag-bg)] shrink-0 border border-[var(--lead)]">
                             <Image
                               src={cat.photoUrl}
                               alt={cat.title}
@@ -574,10 +574,10 @@ export default function HeroSection({
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="text-xs sm:text-sm font-bold text-[#001A41] truncate">
+                            <div className="text-xs sm:text-sm font-bold text-[var(--text-main)] truncate">
                               {cat.title}
                             </div>
-                            <div className="text-[11px] text-slate-500 truncate">
+                            <div className="text-[11px] text-[var(--text-muted)] truncate">
                               {cat.popularServices.slice(0, 2).join(' · ')}
                             </div>
                           </div>
