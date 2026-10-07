@@ -30,6 +30,7 @@ import {
   validateCity,
 } from '../../lib/services';
 import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 import {
   DispatchBox,
   RequisitionIndex,
@@ -574,6 +575,7 @@ function ServicesDirectory() {
           </Link>
         </aside>
       </section>
+      <Footer />
       </main>
     </>
   );

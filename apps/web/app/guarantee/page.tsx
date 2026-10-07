@@ -8,6 +8,8 @@ import {
   ShieldCheck,
   UserCheck,
 } from 'lucide-react';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 
 const BOOKING_STEPS = [
   {
@@ -35,9 +37,11 @@ const BOOKING_CHECKS = [
 
 export default function GuaranteePage() {
   return (
-    <main className="min-h-screen bg-[#F8F9FF] text-[#001A41]">
+    <>
+    <Navbar />
+    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] pt-[var(--header-height)]">
       <section className="bg-[#001A41] text-white">
-        <div className="mx-auto grid max-w-[1280px] gap-6 px-4 pb-9 pt-20 sm:gap-8 sm:px-6 sm:pb-12 sm:pt-24 lg:grid-cols-[minmax(0,1fr)_320px] lg:px-8 lg:pb-14">
+        <div className="mx-auto grid max-w-[1280px] gap-6 px-4 pb-9 pt-8 sm:gap-8 sm:px-6 sm:pb-12 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:px-8 lg:pb-14">
           <div className="max-w-2xl space-y-4 sm:space-y-5">
             <div>
               <Link
@@ -89,41 +93,41 @@ export default function GuaranteePage() {
         <div className="max-w-2xl space-y-3">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">What to review</p>
           <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl">A simple way to prepare for the next step.</h2>
-          <p className="text-sm leading-relaxed text-slate-600 sm:text-base">
+          <p className="text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
             BukieGuarantee brings the service and profile details together, so you can decide what to do next with a clearer picture.
           </p>
         </div>
 
         <div className="mt-6 grid gap-3 md:grid-cols-3 md:gap-4">
           {BOOKING_STEPS.map(({ title, description, icon: Icon }, index) => (
-            <article key={title} className="rounded-xl border border-slate-200 bg-white p-5 shadow-[0_8px_20px_-18px_rgba(0,26,65,0.28)] sm:p-6">
+            <article key={title} className="rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-[0_8px_20px_-18px_rgba(0,26,65,0.28)] sm:p-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ABEEC8]/70 bg-[#EAF7EF] text-[#296A4B]">
                   <Icon className="h-5 w-5" />
                 </div>
-                <span className="font-display text-xl font-extrabold text-[#001A41]/20">0{index + 1}</span>
+                <span className="font-display text-xl font-extrabold text-[var(--text-main)] opacity-20">0{index + 1}</span>
               </div>
               <h3 className="mt-5 font-display text-base font-bold tracking-tight sm:text-lg">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">{description}</p>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{description}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="border-y border-slate-200 bg-white">
+      <section className="border-y border-[var(--lead)] bg-[var(--card-bg)]">
         <div className="mx-auto grid max-w-[1280px] gap-6 px-4 py-9 sm:px-6 sm:py-10 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.7fr)] lg:items-center lg:px-8 lg:py-12">
           <div className="max-w-2xl space-y-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ABEEC8]/70 bg-[#EAF7EF] text-[#296A4B]">
               <Lock className="h-5 w-5" />
             </div>
             <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl">Take a moment to review.</h2>
-            <p className="text-sm leading-relaxed text-slate-600 sm:text-base">
+            <p className="text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
               Check the scope, starting price, location, and timing before you move to the next step.
             </p>
           </div>
-          <div className="rounded-xl border border-slate-200 bg-[#F8F9FF] p-5">
+          <div className="rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] p-5">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">A clearer view</p>
-            <p className="mt-3 text-sm leading-relaxed text-slate-700">
+            <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
               Use the booking preparation pages to keep the job details you have reviewed close at hand.
             </p>
           </div>
@@ -131,22 +135,22 @@ export default function GuaranteePage() {
       </section>
 
       <section id="verification" className="mx-auto max-w-[1280px] px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-[0_8px_20px_-18px_rgba(0,26,65,0.28)] sm:p-7">
+        <div className="rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-[0_8px_20px_-18px_rgba(0,26,65,0.28)] sm:p-7">
           <div className="max-w-2xl space-y-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ABEEC8]/70 bg-[#EAF7EF] text-[#296A4B]">
               <UserCheck className="h-5 w-5" />
             </div>
             <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl">Look through the profile details.</h2>
-            <p className="text-sm leading-relaxed text-slate-600 sm:text-base">
+            <p className="text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
               Check the service information shown on a BrainWorker profile alongside the job details before you continue.
             </p>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-slate-200 bg-white">
+      <footer className="border-t border-[var(--lead)] bg-[var(--card-bg)]">
         <div className="mx-auto flex max-w-[1280px] flex-col items-start justify-between gap-4 px-4 py-6 sm:flex-row sm:items-center sm:px-6 lg:px-8">
-          <p className="text-sm leading-relaxed text-slate-600">Questions about the details you are reviewing? Contact support with what you already have.</p>
+          <p className="text-sm leading-relaxed text-[var(--text-muted)]">Questions about the details you are reviewing? Contact support with what you already have.</p>
           <a
             href="mailto:support@bukiebrainjobs.ng"
             className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#296A4B] transition-colors hover:text-[#001A41] focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2"
@@ -157,5 +161,7 @@ export default function GuaranteePage() {
         </div>
       </footer>
     </main>
+    <Footer />
+    </>
   );
 }
