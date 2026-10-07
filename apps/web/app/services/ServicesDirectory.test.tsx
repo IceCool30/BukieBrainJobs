@@ -101,11 +101,10 @@ describe('ServicesPage: initial render', () => {
     expect(allBtn).toHaveAttribute('aria-pressed', 'true');
   });
 
-  it('renders the site header with telemetry strip and theme toggle', () => {
+  it('renders the site header with theme toggle', () => {
     render(<ServicesPage />);
-    expect(screen.getByRole('complementary', { name: /marketplace status/i })).toBeInTheDocument();
     expect(screen.getByRole('radiogroup', { name: /appearance/i })).toBeInTheDocument();
-    expect(screen.getByText(/verified trades index/i)).toBeInTheDocument();
+    expect(screen.getAllByRole('link', { name: /bukiebrainjobs/i })[0]).toBeInTheDocument();
   });
 });
 

@@ -257,8 +257,8 @@ export default function PostJobScreen() {
         : SERVICE_CATEGORIES.find((c) => c.id === formData.category)?.title || 'General Service Request';
 
     return (
-      <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30]">
-        <header className="border-b border-slate-200 bg-white">
+      <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
+        <header className="border-b border-[var(--lead)] bg-[var(--card-bg)]">
           <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
             <Link
               href="/"
@@ -423,9 +423,9 @@ export default function PostJobScreen() {
 
   // MAIN FORM VIEW
   return (
-    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30]">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
       {/* Global Header */}
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-[var(--lead)] bg-[var(--card-bg)]">
         <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link
             href="/services"

@@ -13,7 +13,6 @@ import {
   LayoutDashboard,
 } from 'lucide-react';
 import { getMockAuthenticatedUser } from '../lib/auth/storage';
-import TelemetryStrip from './TelemetryStrip';
 import ThemeToggle from './ThemeToggle';
 
 interface NavbarProps {
@@ -159,7 +158,6 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           : 'bg-gradient-to-b from-[#001A41]/85 via-[#001A41]/60 to-transparent border-b border-transparent'
       }`}
     >
-      <TelemetryStrip />
       {/* Main Header Container */}
       <div
         className={`max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between transition-all duration-300 ${
@@ -177,7 +175,6 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             className="hidden sm:block h-10 w-auto rounded-xl object-contain transition-transform duration-[180ms] ease-[var(--ease-ui-out)] group-hover:scale-[1.03]"
             priority
           />
-          <span className="brand-badge-tag hidden xl:inline-block">Verified Trades Index</span>
           <Image
             src="/images/logo-icon.png"
             alt="BukieBrainJobs"
@@ -312,7 +309,8 @@ function DrawerPanel({
             role="dialog"
             aria-modal="true"
             aria-label="Navigation Menu"
-            className={`xl:hidden fixed top-0 right-0 z-50 h-full w-[300px] max-w-[85vw] bg-[var(--card-bg)] text-[var(--text-main)] border-l border-[var(--lead)] flex flex-col transition-transform duration-[240ms] ease-[var(--ease-ui-out)] ${visible ? 'translate-x-0' : 'translate-x-full'}`}
+            className={`xl:hidden fixed top-0 right-0 z-50 h-full w-[300px] max-w-[85vw] bg-white dark:bg-[#13171E] text-[var(--text-main)] border-l border-[var(--lead)] shadow-2xl flex flex-col transition-transform duration-[240ms] ease-[var(--ease-ui-out)] ${visible ? 'translate-x-0' : 'translate-x-full'}`}
+            style={{ backgroundColor: 'var(--card-bg)' }}
           >
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 h-20 border-b border-[var(--lead)]">

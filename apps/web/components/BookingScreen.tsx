@@ -61,18 +61,18 @@ interface BookingFormData {
 
 function BookingHeader({ returnUrl }: { returnUrl: string }) {
   return (
-    <header className="border-b border-slate-200 bg-white">
+    <header className="border-b border-[var(--lead)] bg-[var(--card-bg)]">
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href={returnUrl}
-          className="motion-press inline-flex min-h-12 items-center gap-2 text-sm font-bold text-[#001A41] transition-colors hover:text-[#296A4B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B]"
+          className="motion-press inline-flex min-h-12 items-center gap-2 text-sm font-bold text-[var(--text-main)] transition-colors hover:text-[#296A4B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Back to services
         </Link>
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] rounded-lg"
+          className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] rounded-lg"
         >
           <Image
             src="/images/logo-icon.png"
@@ -325,7 +325,7 @@ export default function BookingScreen() {
   // Safe Recovery Screen for Missing Service Context
   if (context.serviceStatus === 'missing') {
     return (
-      <main className="min-h-screen bg-[#F8F9FF] text-[#0B1C30]">
+      <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
         <BookingHeader returnUrl="/services" />
         <div className="mx-auto max-w-xl px-4 py-12 sm:px-6 sm:py-16">
           <section className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8">
@@ -355,7 +355,7 @@ export default function BookingScreen() {
   // Safe Recovery Screen for Invalid / Unrecognized Service Context
   if (context.serviceStatus === 'invalid') {
     return (
-      <main className="min-h-screen bg-[#F8F9FF] text-[#0B1C30]">
+      <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
         <BookingHeader returnUrl="/services" />
         <div className="mx-auto max-w-xl px-4 py-12 sm:px-6 sm:py-16">
           <section className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8">
@@ -388,7 +388,7 @@ export default function BookingScreen() {
   // Confirmation View
   if (status === 'success') {
     return (
-      <main className="min-h-screen bg-[#F8F9FF] text-[#0B1C30]">
+      <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
         <BookingHeader returnUrl={returnUrl} />
         <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-14">
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_16px_36px_rgba(0,26,65,0.08)] sm:p-8">
@@ -529,7 +529,7 @@ export default function BookingScreen() {
 
   // Normal Form Screen
   return (
-    <main className="min-h-screen bg-[#F8F9FF] text-[#0B1C30]">
+    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
       <BookingHeader returnUrl={returnUrl} />
 
       <div className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">

@@ -1030,21 +1030,11 @@ body {
 
 /* ==========================================================================
    Sticky header geometry + theme-aware partner logos (unlayered globals)
-   --header-height: telemetry strip (36px) + nav (80px) + hairline (1px),
-   plus 1px clearance so fixed-header content never clips.
+   --header-height: nav (80px), matches the fixed h-20 navigation header.
    ========================================================================== */
 
 :root {
-  --header-height: 118px;
-}
-
-@media (max-width: 640px) {
-  .telemetry-strip {
-    justify-content: center;
-  }
-  .telemetry-strip .telemetry-hide-sm {
-    display: none;
-  }
+  --header-height: 80px;
 }
 
 [data-theme="dark"] .partner-logo {
