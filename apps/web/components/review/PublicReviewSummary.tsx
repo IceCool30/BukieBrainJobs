@@ -34,24 +34,24 @@ export function PublicReviewSummary({ summary }: PublicReviewSummaryProps) {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs space-y-6">
+    <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 sm:p-8 shadow-xs space-y-6">
       <div>
-        <h3 className="font-display text-2xl font-bold text-[#001A41]">
+        <h3 className="font-display text-2xl font-bold text-[var(--text-main)]">
           BrainWorker Reputation
         </h3>
-        <p className="text-xs text-slate-500 mt-1">
+        <p className="text-xs text-[var(--text-muted)] mt-1">
           Verified feedback from completed BukieBrainJobs bookings
         </p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-[180px_1fr] items-start">
         {/* Overall Score Box */}
-        <div className="flex flex-col items-center justify-center p-6 rounded-2xl bg-slate-50/80 border border-slate-100 text-center space-y-2">
-          <span className="font-display text-5xl font-extrabold text-[#001A41]">
+        <div className="flex flex-col items-center justify-center p-6 rounded-2xl bg-[var(--tag-bg)] border border-[var(--lead)] text-center space-y-2">
+          <span className="font-display text-5xl font-extrabold text-[var(--text-main)]">
             {averageRating.toFixed(1)}
           </span>
           {renderStars(averageRating)}
-          <div className="text-xs font-semibold text-slate-500">
+          <div className="text-xs font-semibold text-[var(--text-muted)]">
             {totalReviews} {totalReviews === 1 ? 'review' : 'reviews'}
           </div>
           <div className="pt-1">
@@ -64,7 +64,7 @@ export function PublicReviewSummary({ summary }: PublicReviewSummaryProps) {
 
         {/* Breakdown by Criteria */}
         <div className="space-y-3">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
             Rating Breakdown
           </h4>
           <div className="space-y-2.5">
@@ -75,13 +75,13 @@ export function PublicReviewSummary({ summary }: PublicReviewSummaryProps) {
               { label: 'Overall', value: criteriaAverages.overall },
             ].map(({ label, value }) => (
               <div key={label} className="flex items-center gap-3 text-xs">
-                <span className="w-28 font-medium text-slate-700 shrink-0">{label}</span>
-                <span className="w-7 font-bold text-[#001A41] text-right shrink-0">
+                <span className="w-28 font-medium text-[var(--text-main)] shrink-0">{label}</span>
+                <span className="w-7 font-bold text-[var(--text-main)] text-right shrink-0">
                   {value.toFixed(1)}
                 </span>
-                <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                <div className="flex-1 h-2 rounded-full bg-[var(--tag-bg)] overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-[#001A41] transition-all"
+                    className="h-full rounded-full bg-[var(--text-main)] transition-all"
                     style={{ width: `${Math.min(100, Math.max(0, (value / 5) * 100))}%` }}
                   />
                 </div>
@@ -92,8 +92,8 @@ export function PublicReviewSummary({ summary }: PublicReviewSummaryProps) {
       </div>
 
       {/* Rating Distribution */}
-      <div className="pt-4 border-t border-slate-100 space-y-2.5">
-        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+      <div className="pt-4 border-t border-[var(--lead)] space-y-2.5">
+        <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
           Rating Distribution
         </h4>
         <div className="space-y-1.5">
@@ -103,16 +103,16 @@ export function PublicReviewSummary({ summary }: PublicReviewSummaryProps) {
 
             return (
               <div key={star} className="flex items-center gap-3 text-xs">
-                <span className="w-16 font-medium text-slate-600 shrink-0">
+                <span className="w-16 font-medium text-[var(--text-muted)] shrink-0">
                   {star} {star === 1 ? 'star' : 'stars'}
                 </span>
-                <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                <div className="flex-1 h-2 rounded-full bg-[var(--tag-bg)] overflow-hidden">
                   <div
                     className="h-full rounded-full bg-amber-500 transition-all"
                     style={{ width: `${pct}%` }}
                   />
                 </div>
-                <span className="w-10 text-right font-medium text-slate-400 shrink-0">
+                <span className="w-10 text-right font-medium text-[var(--text-muted)] shrink-0">
                   ({count})
                 </span>
               </div>

@@ -438,12 +438,12 @@ export default function AuthScreen({
   // RENDER: Success / Post-Authentication State
   if (authenticatedUser) {
     return (
-      <main className="min-h-screen bg-[#F8F9FF] text-[#0B1C30]">
-        <header className="border-b border-slate-200 bg-white">
+      <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
+        <header className="border-b border-[var(--lead)] bg-[var(--card-bg)]">
           <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
             <Link
               href="/"
-              className="inline-flex min-h-11 items-center font-display text-base font-extrabold tracking-tight text-[#001A41]"
+              className="inline-flex min-h-11 items-center font-display text-base font-extrabold tracking-tight text-[var(--text-main)]"
             >
               BukieBrainJobs
             </Link>
@@ -451,7 +451,7 @@ export default function AuthScreen({
         </header>
 
         <div className="mx-auto max-w-md px-4 py-12 sm:px-6 sm:py-16">
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8">
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 text-center shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-[#059669]">
               <CheckCircle2 className="h-8 w-8 text-[#059669]" aria-hidden="true" />
             </div>
@@ -459,13 +459,13 @@ export default function AuthScreen({
             <h1
               ref={successRef}
               tabIndex={-1}
-              className="mt-4 font-display text-2xl font-bold tracking-tight text-[#001A41] focus:outline-none"
+              className="mt-4 font-display text-2xl font-bold tracking-tight text-[var(--text-main)] focus:outline-none"
             >
               Authentication successful
             </h1>
 
-            <p className="mt-2 text-sm text-slate-600">
-              Welcome, <span className="font-semibold text-[#001A41]">{authenticatedUser.name}</span>!
+            <p className="mt-2 text-sm text-[var(--text-muted)]">
+              Welcome, <span className="font-semibold text-[var(--text-main)]">{authenticatedUser.name}</span>!
             </p>
 
             {isBookingHandoff ? (
@@ -473,11 +473,11 @@ export default function AuthScreen({
                 <p className="text-xs font-bold uppercase tracking-wider text-[#296A4B]">
                   Booking preserved
                 </p>
-                <p className="mt-1 text-sm text-slate-700">
+                <p className="mt-1 text-sm text-[var(--text-main)]">
                   {preservedBooking?.service || 'Your service request'} in{' '}
                   <span className="font-semibold">{preservedBooking?.city || 'selected city'}</span> is ready.
                 </p>
-                <p className="mt-2 text-xs text-slate-500">
+                <p className="mt-2 text-xs text-[var(--text-muted)]">
                   Returning you automatically to complete your request...
                 </p>
               </div>
@@ -486,16 +486,16 @@ export default function AuthScreen({
                 <p className="text-xs font-bold uppercase tracking-wider text-[#296A4B]">
                   Job request preserved
                 </p>
-                <p className="mt-1 text-sm text-slate-700">
+                <p className="mt-1 text-sm text-[var(--text-main)]">
                   {preservedJob?.title || 'Your job post'} in{' '}
                   <span className="font-semibold">{preservedJob?.city || 'selected city'}</span> is ready.
                 </p>
-                <p className="mt-2 text-xs text-slate-500">
+                <p className="mt-2 text-xs text-[var(--text-muted)]">
                   Returning you automatically to finalize your job request...
                 </p>
               </div>
             ) : (
-              <p className="mt-3 text-sm text-slate-600">
+              <p className="mt-3 text-sm text-[var(--text-muted)]">
                 You are now signed in to your account.
               </p>
             )}
@@ -509,7 +509,7 @@ export default function AuthScreen({
                       ? `${validatedReturnUrl}${validatedReturnUrl.includes('?') ? '&' : '?'}jobContinuation=1`
                       : validatedReturnUrl
                 }
-                className="motion-press inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+                className="motion-press inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
               >
                 Continue immediately
               </Link>
@@ -521,13 +521,13 @@ export default function AuthScreen({
   }
 
   return (
-    <main className="min-h-screen bg-[#F8F9FF] text-[#0B1C30]">
+    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
       {/* Navigation Header */}
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-[var(--lead)] bg-[var(--card-bg)]">
         <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link
             href={validatedReturnUrl}
-            className="motion-press inline-flex min-h-12 items-center gap-2 text-sm font-bold text-[#001A41] transition-colors hover:text-[#296A4B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
+            className="motion-press inline-flex min-h-12 items-center gap-2 text-sm font-bold text-[var(--text-main)] transition-colors hover:text-[#296A4B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             {isBookingHandoff
@@ -538,7 +538,7 @@ export default function AuthScreen({
           </Link>
           <Link
             href="/"
-            className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] rounded-lg"
+            className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] rounded-lg"
           >
             <Image
               src="/images/logo-icon.png"
@@ -564,29 +564,29 @@ export default function AuthScreen({
             <div className="flex items-start gap-3">
               <ShieldCheck className="h-5 w-5 shrink-0 text-[#059669]" aria-hidden="true" />
               <div>
-                <h2 className="text-sm font-bold text-[#001A41]">
+                <h2 className="text-sm font-bold text-[var(--text-main)]">
                   Sign in or create an account to post your job request
                 </h2>
-                <p className="mt-1 text-xs text-slate-600">
+                <p className="mt-1 text-xs text-[var(--text-muted)]">
                   Your job request details have been saved and will be restored immediately after account access.
                 </p>
 
                 {preservedJob && (
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-[var(--text-main)]">
                     {preservedJob.title && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-white/90 px-2.5 py-1 border border-emerald-100 shadow-xs">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--tag-bg)] px-2.5 py-1 border border-emerald-100 shadow-xs">
                         <Briefcase className="h-3 w-3 text-[#059669]" />
                         {preservedJob.title.length > 35 ? `${preservedJob.title.slice(0, 35)}...` : preservedJob.title}
                       </span>
                     )}
                     {preservedJob.city && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-white/90 px-2.5 py-1 border border-emerald-100 shadow-xs">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--tag-bg)] px-2.5 py-1 border border-emerald-100 shadow-xs">
                         <MapPin className="h-3 w-3 text-[#059669]" />
                         {preservedJob.city}
                       </span>
                     )}
                     {preservedJob.urgency && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-white/90 px-2.5 py-1 border border-emerald-100 shadow-xs capitalize">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--tag-bg)] px-2.5 py-1 border border-emerald-100 shadow-xs capitalize">
                         <Clock className="h-3 w-3 text-[#059669]" />
                         {preservedJob.urgency.replace('_', ' ')}
                       </span>
@@ -607,29 +607,29 @@ export default function AuthScreen({
             <div className="flex items-start gap-3">
               <ShieldCheck className="h-5 w-5 shrink-0 text-[#059669]" aria-hidden="true" />
               <div>
-                <h2 className="text-sm font-bold text-[#001A41]">
+                <h2 className="text-sm font-bold text-[var(--text-main)]">
                   Sign in or create an account to continue with your service request
                 </h2>
-                <p className="mt-1 text-xs text-slate-600">
+                <p className="mt-1 text-xs text-[var(--text-muted)]">
                   Your prepared booking details have been saved and will be restored immediately after account access.
                 </p>
 
                 {preservedBooking && (
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-[var(--text-main)]">
                     {preservedBooking.service && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-white/90 px-2.5 py-1 border border-emerald-100 shadow-xs">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--tag-bg)] px-2.5 py-1 border border-emerald-100 shadow-xs">
                         <Briefcase className="h-3 w-3 text-[#059669]" />
                         {preservedBooking.service}
                       </span>
                     )}
                     {preservedBooking.city && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-white/90 px-2.5 py-1 border border-emerald-100 shadow-xs">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--tag-bg)] px-2.5 py-1 border border-emerald-100 shadow-xs">
                         <MapPin className="h-3 w-3 text-[#059669]" />
                         {preservedBooking.city}
                       </span>
                     )}
                     {preservedBooking.date && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-white/90 px-2.5 py-1 border border-emerald-100 shadow-xs">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--tag-bg)] px-2.5 py-1 border border-emerald-100 shadow-xs">
                         <Clock className="h-3 w-3 text-[#059669]" />
                         {preservedBooking.date}
                       </span>
@@ -644,7 +644,7 @@ export default function AuthScreen({
         {/* Main Authentication Card */}
         <section
           aria-labelledby="auth-heading"
-          className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8"
+          className="relative overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8"
         >
           {/* Subtle Trademark Watermark */}
           <div
@@ -661,7 +661,7 @@ export default function AuthScreen({
           </div>
 
           {/* Top Brand Icon Anchor */}
-          <div className="relative z-10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#001A41]/5 p-2 border border-slate-100 shadow-xs">
+          <div className="relative z-10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#001A41]/5 p-2 border border-[var(--lead)] shadow-xs">
             <Image
               src="/images/logo-icon.png"
               alt="BukieBrainJobs Logo"
@@ -676,7 +676,7 @@ export default function AuthScreen({
             <h1
               id="auth-heading"
               ref={headingRef}
-              className="font-display text-2xl font-bold tracking-tight text-[#001A41] sm:text-3xl"
+              className="font-display text-2xl font-bold tracking-tight text-[var(--text-main)] sm:text-3xl"
             >
               {mode === 'signin' && 'Welcome back'}
               {mode === 'register' && 'Create your account'}
@@ -685,7 +685,7 @@ export default function AuthScreen({
               {mode === 'reset_password' && 'Create new password'}
               {mode === 'welcome' && 'Sign in to BukieBrainJobs'}
             </h1>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-[var(--text-muted)]">
               {mode === 'signin' && 'Sign in with your preferred method to access your bookings.'}
               {mode === 'register' && 'Join BukieBrainJobs to hire professionals or offer services.'}
               {mode === 'phone_otp' && `Enter the 6-digit code sent to ${maskedPhone || 'your phone'}.`}
@@ -697,7 +697,7 @@ export default function AuthScreen({
 
           {/* Mode Switcher Tabs (Sign In vs Create Account) */}
           {(mode === 'signin' || mode === 'register') && (
-            <div className="mt-6 flex rounded-xl bg-slate-100 p-1" role="tablist" aria-label="Account access options">
+            <div className="mt-6 flex rounded-xl bg-[var(--tag-bg)] p-1" role="tablist" aria-label="Account access options">
               <button
                 type="button"
                 role="tab"
@@ -705,8 +705,8 @@ export default function AuthScreen({
                 onClick={() => handleModeSwitch('signin')}
                 className={`motion-press flex-1 min-h-[44px] rounded-lg text-sm font-bold transition-all ${
                   mode === 'signin'
-                    ? 'bg-white text-[#001A41] shadow-xs'
-                    : 'text-slate-600 hover:text-[#001A41]'
+                    ? 'bg-[var(--card-bg)] text-[var(--text-main)] shadow-xs'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
                 }`}
               >
                 Sign In
@@ -718,8 +718,8 @@ export default function AuthScreen({
                 onClick={() => handleModeSwitch('register')}
                 className={`motion-press flex-1 min-h-[44px] rounded-lg text-sm font-bold transition-all ${
                   mode === 'register'
-                    ? 'bg-white text-[#001A41] shadow-xs'
-                    : 'text-slate-600 hover:text-[#001A41]'
+                    ? 'bg-[var(--card-bg)] text-[var(--text-main)] shadow-xs'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
                 }`}
               >
                 Create Account
@@ -750,7 +750,7 @@ export default function AuthScreen({
                 <button
                   type="button"
                   onClick={() => handleModeSwitch('signin')}
-                  className="mt-2 text-xs font-bold text-[#001A41] underline hover:text-[#296A4B]"
+                  className="mt-2 text-xs font-bold text-[var(--text-main)] underline hover:text-[#296A4B]"
                 >
                   Return to Sign In
                 </button>
@@ -766,10 +766,10 @@ export default function AuthScreen({
                 type="button"
                 onClick={() => handleSocialAuth('google')}
                 disabled={isSubmitting}
-                className="motion-press flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full border border-slate-300 bg-white px-5 text-sm font-bold text-[#001A41] shadow-xs transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] disabled:opacity-60"
+                className="motion-press flex min-h-[48px] w-full items-center justify-center gap-3 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-5 text-sm font-bold text-[var(--text-main)] shadow-xs transition-colors hover:bg-[var(--tag-bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] disabled:opacity-60"
               >
                 {submittingProvider === 'google' ? (
-                  <Loader2 className="h-5 w-5 animate-spin text-slate-600" />
+                  <Loader2 className="h-5 w-5 animate-spin text-[var(--text-muted)]" />
                 ) : (
                   <GoogleIcon className="h-5 w-5" />
                 )}
@@ -801,8 +801,8 @@ export default function AuthScreen({
 
               {/* Divider */}
               <div className="relative my-5 flex items-center justify-center">
-                <div className="w-full border-t border-slate-200" />
-                <span className="absolute bg-white px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                <div className="w-full border-t border-[var(--lead)]" />
+                <span className="absolute bg-[var(--card-bg)] px-3 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                   Or continue with
                 </span>
               </div>
@@ -818,7 +818,7 @@ export default function AuthScreen({
                   className={`motion-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border px-3 text-xs font-bold transition-all ${
                     authMethod === 'phone'
                       ? 'border-[#001A41] bg-[#001A41]/5 text-[#001A41]'
-                      : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                      : 'border-[var(--lead)] text-[var(--text-muted)] hover:border-[var(--lead)]'
                   }`}
                 >
                   <Phone className="h-3.5 w-3.5" />
@@ -834,7 +834,7 @@ export default function AuthScreen({
                   className={`motion-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border px-3 text-xs font-bold transition-all ${
                     authMethod === 'email'
                       ? 'border-[#001A41] bg-[#001A41]/5 text-[#001A41]'
-                      : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                      : 'border-[var(--lead)] text-[var(--text-muted)] hover:border-[var(--lead)]'
                   }`}
                 >
                   <Mail className="h-3.5 w-3.5" />
@@ -860,12 +860,12 @@ export default function AuthScreen({
                 <div>
                   <label
                     htmlFor="auth-phone"
-                    className="block text-xs font-bold uppercase tracking-wider text-slate-700"
+                    className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)]"
                   >
                     Nigerian Phone Number
                   </label>
                   <div className="relative mt-1.5">
-                    <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                    <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[var(--text-muted)]">
                       <Phone className="h-4 w-4" aria-hidden="true" />
                     </span>
                     <input
@@ -880,14 +880,14 @@ export default function AuthScreen({
                       placeholder="e.g. 0801 234 5678 or +234..."
                       aria-invalid={Boolean(fieldErrors.phone)}
                       aria-describedby={fieldErrors.phone ? 'phone-error' : 'phone-hint'}
-                      className={`block w-full min-h-[48px] rounded-xl border pl-10 pr-4 text-sm text-[#001A41] transition-colors placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 ${
+                      className={`block w-full min-h-[48px] rounded-xl border pl-10 pr-4 text-sm text-[var(--text-main)] transition-colors placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#296A4B]/20 ${
                         fieldErrors.phone
                           ? 'border-red-500 focus:border-red-500'
-                          : 'border-slate-300 focus:border-[#001A41]'
+                          : 'border-[var(--lead)] focus:border-[#296A4B]'
                       }`}
                     />
                   </div>
-                  <p id="phone-hint" className="mt-1 text-xs text-slate-500">
+                  <p id="phone-hint" className="mt-1 text-xs text-[var(--text-muted)]">
                     Supports 080..., 234..., or +234... formats.
                   </p>
                   {fieldErrors.phone && (
@@ -900,7 +900,7 @@ export default function AuthScreen({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 disabled:opacity-60"
+                  className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 disabled:opacity-60"
                 >
                   {isSubmitting ? (
                     <span className="inline-flex items-center gap-2">
@@ -920,7 +920,7 @@ export default function AuthScreen({
               <div>
                 <label
                   htmlFor="auth-otp"
-                  className="block text-xs font-bold uppercase tracking-wider text-slate-700"
+                  className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)]"
                 >
                   6-Digit Verification Code
                 </label>
@@ -938,10 +938,10 @@ export default function AuthScreen({
                   placeholder="123456"
                   aria-invalid={Boolean(fieldErrors.otp)}
                   aria-describedby={fieldErrors.otp ? 'otp-error' : undefined}
-                  className={`mt-1.5 block w-full min-h-[52px] rounded-xl border text-center font-mono text-2xl font-bold tracking-widest text-[#001A41] transition-colors placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 ${
+                  className={`mt-1.5 block w-full min-h-[52px] rounded-xl border text-center font-mono text-2xl font-bold tracking-widest text-[var(--text-main)] transition-colors placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#296A4B]/20 ${
                     fieldErrors.otp
                       ? 'border-red-500 focus:border-red-500'
-                      : 'border-slate-300 focus:border-[#001A41]'
+                      : 'border-[var(--lead)] focus:border-[#296A4B]'
                   }`}
                 />
                 {fieldErrors.otp && (
@@ -955,7 +955,7 @@ export default function AuthScreen({
                 <button
                   type="button"
                   onClick={() => handleModeSwitch('signin')}
-                  className="font-semibold text-slate-600 hover:text-[#001A41] underline"
+                  className="font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] underline"
                 >
                   Change phone number
                 </button>
@@ -973,8 +973,8 @@ export default function AuthScreen({
                   }}
                   className={`inline-flex items-center gap-1 font-bold ${
                     resendCooldown > 0
-                      ? 'text-slate-400 cursor-not-allowed'
-                      : 'text-[#001A41] hover:text-[#296A4B] cursor-pointer'
+                      ? 'text-[var(--text-muted)] cursor-not-allowed'
+                      : 'text-[var(--text-main)] hover:text-[#296A4B] cursor-pointer'
                   }`}
                 >
                   <RotateCcw className="h-3 w-3" />
@@ -985,7 +985,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press mt-2 flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 disabled:opacity-60"
+                className="motion-press mt-2 flex min-h-[48px] w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 disabled:opacity-60"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -1019,12 +1019,12 @@ export default function AuthScreen({
               <div>
                 <label
                   htmlFor="auth-email"
-                  className="block text-xs font-bold uppercase tracking-wider text-slate-700"
+                  className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)]"
                 >
                   Email Address
                 </label>
                 <div className="relative mt-1.5">
-                  <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                  <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[var(--text-muted)]">
                     <Mail className="h-4 w-4" aria-hidden="true" />
                   </span>
                   <input
@@ -1039,10 +1039,10 @@ export default function AuthScreen({
                     placeholder="you@example.com"
                     aria-invalid={Boolean(fieldErrors.email)}
                     aria-describedby={fieldErrors.email ? 'email-error' : undefined}
-                    className={`block w-full min-h-[48px] rounded-xl border pl-10 pr-4 text-sm text-[#001A41] transition-colors placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 ${
+                    className={`block w-full min-h-[48px] rounded-xl border pl-10 pr-4 text-sm text-[var(--text-main)] transition-colors placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#296A4B]/20 ${
                       fieldErrors.email
                         ? 'border-red-500 focus:border-red-500'
-                        : 'border-slate-300 focus:border-[#001A41]'
+                        : 'border-[var(--lead)] focus:border-[#296A4B]'
                     }`}
                   />
                 </div>
@@ -1058,7 +1058,7 @@ export default function AuthScreen({
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="auth-password"
-                    className="block text-xs font-bold uppercase tracking-wider text-slate-700"
+                    className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)]"
                   >
                     Password
                   </label>
@@ -1066,14 +1066,14 @@ export default function AuthScreen({
                     <button
                       type="button"
                       onClick={() => handleModeSwitch('forgot_password')}
-                      className="text-xs font-semibold text-[#001A41] hover:text-[#296A4B] underline"
+                      className="text-xs font-semibold text-[var(--text-main)] hover:text-[#296A4B] underline"
                     >
                       Forgot password?
                     </button>
                   )}
                 </div>
                 <div className="relative mt-1.5">
-                  <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                  <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[var(--text-muted)]">
                     <Lock className="h-4 w-4" aria-hidden="true" />
                   </span>
                   <input
@@ -1088,10 +1088,10 @@ export default function AuthScreen({
                     placeholder="••••••••"
                     aria-invalid={Boolean(fieldErrors.password)}
                     aria-describedby={fieldErrors.password ? 'password-error' : undefined}
-                    className={`block w-full min-h-[48px] rounded-xl border pl-10 pr-4 text-sm text-[#001A41] transition-colors placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 ${
+                    className={`block w-full min-h-[48px] rounded-xl border pl-10 pr-4 text-sm text-[var(--text-main)] transition-colors placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#296A4B]/20 ${
                       fieldErrors.password
                         ? 'border-red-500 focus:border-red-500'
-                        : 'border-slate-300 focus:border-[#001A41]'
+                        : 'border-[var(--lead)] focus:border-[#296A4B]'
                     }`}
                   />
                 </div>
@@ -1105,7 +1105,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 disabled:opacity-60"
+                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 disabled:opacity-60"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -1127,12 +1127,12 @@ export default function AuthScreen({
               <div>
                 <label
                   htmlFor="auth-forgot-email"
-                  className="block text-xs font-bold uppercase tracking-wider text-slate-700"
+                  className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)]"
                 >
                   Your Account Email
                 </label>
                 <div className="relative mt-1.5">
-                  <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                  <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[var(--text-muted)]">
                     <Mail className="h-4 w-4" aria-hidden="true" />
                   </span>
                   <input
@@ -1146,10 +1146,10 @@ export default function AuthScreen({
                     placeholder="you@example.com"
                     aria-invalid={Boolean(fieldErrors.email)}
                     aria-describedby={fieldErrors.email ? 'forgot-email-error' : undefined}
-                    className={`block w-full min-h-[48px] rounded-xl border pl-10 pr-4 text-sm text-[#001A41] transition-colors placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 ${
+                    className={`block w-full min-h-[48px] rounded-xl border pl-10 pr-4 text-sm text-[var(--text-main)] transition-colors placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#296A4B]/20 ${
                       fieldErrors.email
                         ? 'border-red-500 focus:border-red-500'
-                        : 'border-slate-300 focus:border-[#001A41]'
+                        : 'border-[var(--lead)] focus:border-[#296A4B]'
                     }`}
                   />
                 </div>
@@ -1163,7 +1163,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 disabled:opacity-60"
+                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 disabled:opacity-60"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -1179,7 +1179,7 @@ export default function AuthScreen({
                 <button
                   type="button"
                   onClick={() => handleModeSwitch('signin')}
-                  className="text-xs font-semibold text-slate-600 hover:text-[#001A41] underline"
+                  className="text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] underline"
                 >
                   Back to Sign In
                 </button>
@@ -1193,7 +1193,7 @@ export default function AuthScreen({
               <div>
                 <label
                   htmlFor="auth-reset-pass"
-                  className="block text-xs font-bold uppercase tracking-wider text-slate-700"
+                  className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)]"
                 >
                   New Password
                 </label>
@@ -1207,7 +1207,7 @@ export default function AuthScreen({
                   }}
                   placeholder="At least 8 characters"
                   aria-invalid={Boolean(fieldErrors.password)}
-                  className="mt-1.5 block w-full min-h-[48px] rounded-xl border border-slate-300 px-4 text-sm text-[#001A41] focus:border-[#001A41] focus:outline-none focus:ring-2 focus:ring-[#001A41]/20"
+                  className="mt-1.5 block w-full min-h-[48px] rounded-xl border border-[var(--lead)] px-4 text-sm text-[var(--text-main)] focus:border-[#296A4B] focus:outline-none focus:ring-2 focus:ring-[#296A4B]/20"
                 />
                 {fieldErrors.password && (
                   <p role="alert" className="mt-1.5 text-xs font-semibold text-red-600">
@@ -1219,7 +1219,7 @@ export default function AuthScreen({
               <div>
                 <label
                   htmlFor="auth-reset-confirm"
-                  className="block text-xs font-bold uppercase tracking-wider text-slate-700"
+                  className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)]"
                 >
                   Confirm New Password
                 </label>
@@ -1233,7 +1233,7 @@ export default function AuthScreen({
                   }}
                   placeholder="Repeat new password"
                   aria-invalid={Boolean(fieldErrors.confirmPassword)}
-                  className="mt-1.5 block w-full min-h-[48px] rounded-xl border border-slate-300 px-4 text-sm text-[#001A41] focus:border-[#001A41] focus:outline-none focus:ring-2 focus:ring-[#001A41]/20"
+                  className="mt-1.5 block w-full min-h-[48px] rounded-xl border border-[var(--lead)] px-4 text-sm text-[var(--text-main)] focus:border-[#296A4B] focus:outline-none focus:ring-2 focus:ring-[#296A4B]/20"
                 />
                 {fieldErrors.confirmPassword && (
                   <p role="alert" className="mt-1.5 text-xs font-semibold text-red-600">
@@ -1245,7 +1245,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 disabled:opacity-60"
+                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 disabled:opacity-60"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -1261,7 +1261,7 @@ export default function AuthScreen({
                 <button
                   type="button"
                   onClick={() => handleModeSwitch('signin')}
-                  className="text-xs font-semibold text-slate-600 hover:text-[#001A41] underline"
+                  className="text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] underline"
                 >
                   Back to Sign In
                 </button>
@@ -1270,14 +1270,14 @@ export default function AuthScreen({
           )}
 
           {/* Privacy & Trust Footnote */}
-          <div className="mt-6 border-t border-slate-100 pt-4 text-center text-xs text-slate-500">
+          <div className="mt-6 border-t border-[var(--lead)] pt-4 text-center text-xs text-[var(--text-muted)]">
             <p>
               Your account helps us keep your bookings and activity connected to you. By continuing, you agree to our{' '}
-              <Link href="/terms" className="underline hover:text-[#001A41]">
+              <Link href="/terms" className="underline hover:text-[var(--text-main)]">
                 Terms of Service
               </Link>{' '}
               and{' '}
-              <Link href="/privacy" className="underline hover:text-[#001A41]">
+              <Link href="/privacy" className="underline hover:text-[var(--text-main)]">
                 Privacy Policy
               </Link>.
             </p>
@@ -1300,7 +1300,7 @@ function RoleSelectionSelector({
 }) {
   return (
     <fieldset className="space-y-2">
-      <legend className="text-xs font-bold uppercase tracking-wider text-slate-700">
+      <legend className="text-xs font-bold uppercase tracking-wider text-[var(--text-main)]">
         I want to join BukieBrainJobs as:
       </legend>
       <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
@@ -1310,7 +1310,7 @@ function RoleSelectionSelector({
           className={`motion-press flex cursor-pointer items-start gap-3 rounded-xl border p-3.5 transition-all ${
             role === 'customer'
               ? 'border-[#001A41] bg-[#001A41]/5 ring-1 ring-[#001A41]'
-              : 'border-slate-200 hover:border-slate-300'
+              : 'border-[var(--lead)] hover:border-[var(--lead)]'
           }`}
         >
           <input
@@ -1324,7 +1324,7 @@ function RoleSelectionSelector({
           />
           <div>
             <span className="block text-xs font-bold text-[#001A41]">Customer</span>
-            <span className="mt-0.5 block text-xs text-slate-600">
+            <span className="mt-0.5 block text-xs text-[var(--text-muted)]">
               Find and hire trusted professionals, or post a job.
             </span>
           </div>
@@ -1336,7 +1336,7 @@ function RoleSelectionSelector({
           className={`motion-press flex cursor-pointer items-start gap-3 rounded-xl border p-3.5 transition-all ${
             role === 'brainworker'
               ? 'border-[#001A41] bg-[#001A41]/5 ring-1 ring-[#001A41]'
-              : 'border-slate-200 hover:border-slate-300'
+              : 'border-[var(--lead)] hover:border-[var(--lead)]'
           }`}
         >
           <input
@@ -1350,7 +1350,7 @@ function RoleSelectionSelector({
           />
           <div>
             <span className="block text-xs font-bold text-[#001A41]">BrainWorker</span>
-            <span className="mt-0.5 block text-xs text-slate-600">
+            <span className="mt-0.5 block text-xs text-[var(--text-muted)]">
               Offer your services and receive relevant jobs.
             </span>
           </div>

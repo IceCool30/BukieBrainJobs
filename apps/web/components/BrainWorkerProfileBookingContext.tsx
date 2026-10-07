@@ -29,18 +29,18 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
   const suggestion = !hasInitialService && profile.category ? `Suggested service focus: ${profile.category}` : undefined;
 
   return (
-    <aside className="bbj-card-interactive h-fit rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 lg:sticky lg:top-6">
+    <aside className="bbj-card-interactive h-fit rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 lg:sticky lg:top-[calc(var(--header-height)+1.5rem)]">
       <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Book this BrainWorker</p>
-      <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-[#001A41]">Confirm the service and location.</h2>
-      <p className="mt-3 text-sm leading-6 text-slate-600">Choose the service you need and the active city for your job.</p>
+      <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-[var(--text-main)]">Confirm the service and location.</h2>
+      <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">Choose the service you need and the active city for your job.</p>
 
       <div className="mt-6 space-y-4">
-        <label className="block text-sm font-semibold text-[#001A41]">
+        <label className="block text-sm font-semibold text-[var(--text-main)]">
           Service
           <select
             value={serviceId}
             onChange={(event) => setServiceId(event.target.value)}
-            className="mt-2 h-12 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
+            className="mt-2 h-12 w-full rounded-xl border border-[var(--lead)] bg-[var(--bg)] px-3 text-sm font-medium text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
           >
             <option value="">Choose a service</option>
             {SERVICE_CATEGORIES.map((category) => (
@@ -49,12 +49,12 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
           </select>
         </label>
 
-        <label className="block text-sm font-semibold text-[#001A41]">
+        <label className="block text-sm font-semibold text-[var(--text-main)]">
           City
           <select
             value={city}
             onChange={(event) => setCity(event.target.value)}
-            className="mt-2 h-12 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
+            className="mt-2 h-12 w-full rounded-xl border border-[var(--lead)] bg-[var(--bg)] px-3 text-sm font-medium text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
           >
             <option value="">Choose a city</option>
             {NIGERIAN_LOCATIONS.filter((location) => location.status === 'active').map((location) => (
@@ -70,7 +70,7 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
         </p>
       )}
 
-      <div className="mt-5 space-y-2 rounded-xl border border-slate-100 bg-[#F8F9FF] p-3 text-xs text-slate-600">
+      <div className="mt-5 space-y-2 rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-3 text-xs text-[var(--text-muted)]">
         <div className="flex items-center gap-2 font-medium">
           <Clock className="h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
           <span>Typically completed in 2 to 4 hours</span>
@@ -84,7 +84,7 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
       {bookingUrl ? (
         <Link
           href={bookingUrl}
-          className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+          className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--amber)] px-5 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
         >
           Continue to booking
           <ArrowRight className="h-4 w-4 text-[#ABEEC8]" aria-hidden="true" />
@@ -95,7 +95,7 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
         </button>
       )}
 
-      <div className="mt-4 flex items-start gap-2 text-xs leading-5 text-slate-500">
+      <div className="mt-4 flex items-start gap-2 text-xs leading-5 text-[var(--text-muted)]">
         <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
         <span>Starting rate: {profile.startingRate}. Confirm the final job details during booking.</span>
       </div>

@@ -328,20 +328,20 @@ export default function BookingScreen() {
       <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
         <BookingHeader returnUrl="/services" />
         <div className="mx-auto max-w-xl px-4 py-12 sm:px-6 sm:py-16">
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8">
-            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-600">
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 text-center shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8">
+            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--tag-bg)] text-[var(--text-muted)]">
               <HelpCircle className="h-6 w-6" aria-hidden="true" />
             </span>
-            <h1 className="mt-4 font-display text-2xl font-bold tracking-tight text-[#001A41]">
+            <h1 className="mt-4 font-display text-2xl font-bold tracking-tight text-[var(--text-main)]">
               No service selected
             </h1>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
+            <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
               Please choose a service from our directory to prepare your booking request.
             </p>
             <div className="mt-6">
               <Link
                 href="/services"
-                className="motion-press inline-flex min-h-12 items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+                className="motion-press inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
               >
                 Browse services
               </Link>
@@ -358,21 +358,21 @@ export default function BookingScreen() {
       <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
         <BookingHeader returnUrl="/services" />
         <div className="mx-auto max-w-xl px-4 py-12 sm:px-6 sm:py-16">
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8">
-            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-600">
-              <Info className="h-6 w-6 text-slate-500" aria-hidden="true" />
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 text-center shadow-[0_12px_30px_rgba(0,26,65,0.06)] sm:p-8">
+            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--tag-bg)] text-[var(--text-muted)]">
+              <Info className="h-6 w-6 text-[var(--text-muted)]" aria-hidden="true" />
             </span>
-            <h1 className="mt-4 font-display text-2xl font-bold tracking-tight text-[#001A41]">
+            <h1 className="mt-4 font-display text-2xl font-bold tracking-tight text-[var(--text-main)]">
               Service not found
             </h1>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
+            <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
               The service &ldquo;{context.rawService}&rdquo; was not recognized in our active catalog.
               Please select a verified service from our directory to continue.
             </p>
             <div className="mt-6">
               <Link
                 href="/services"
-                className="motion-press inline-flex min-h-12 items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+                className="motion-press inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
               >
                 Browse services
               </Link>
@@ -391,7 +391,7 @@ export default function BookingScreen() {
       <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
         <BookingHeader returnUrl={returnUrl} />
         <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-14">
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_16px_36px_rgba(0,26,65,0.08)] sm:p-8">
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-[0_16px_36px_rgba(0,26,65,0.08)] sm:p-8">
             <div className="text-center">
               <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#ABEEC8]/40 text-[#296A4B]">
                 <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
@@ -399,17 +399,17 @@ export default function BookingScreen() {
               <h1
                 ref={confirmationRef}
                 tabIndex={-1}
-                className="mt-4 font-display text-2xl font-extrabold tracking-tight text-[#001A41] sm:text-3xl focus:outline-none"
+                className="mt-4 font-display text-2xl font-extrabold tracking-tight text-[var(--text-main)] sm:text-3xl focus:outline-none"
               >
                 Service request prepared
               </h1>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
+              <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
                 This is a mock preparation step. No payment was taken and no BrainWorker has been dispatched.
               </p>
 
               {/* Reference Badge */}
               {submittedReference && (
-                <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 text-xs font-mono font-bold text-[#001A41]">
+                <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[var(--lead)] bg-[var(--tag-bg)] px-4 py-1.5 text-xs font-mono font-bold text-[var(--text-main)]">
                   <span>Reference:</span>
                   <span className="text-[#296A4B]">{submittedReference}</span>
                 </div>
@@ -417,7 +417,7 @@ export default function BookingScreen() {
             </div>
 
             {/* Request Summary */}
-            <div className="relative overflow-hidden mt-8 rounded-xl border border-slate-200 bg-[#F8F9FF] p-5">
+            <div className="relative overflow-hidden mt-8 rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-5">
               {/* Trademark Security Watermark */}
               <div
                 className="pointer-events-none absolute -right-6 -bottom-8 opacity-[0.04] select-none"
@@ -432,59 +432,59 @@ export default function BookingScreen() {
                 />
               </div>
 
-              <h2 className="relative z-10 text-xs font-bold uppercase tracking-wider text-slate-600">
+              <h2 className="relative z-10 text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
                 Prepared Request Summary
               </h2>
-              <dl className="mt-4 divide-y divide-slate-200 text-sm">
+              <dl className="mt-4 divide-y divide-[var(--lead)] text-sm">
                 {submittedReference && (
                   <div className="flex justify-between py-2.5">
-                    <dt className="text-slate-600">Reference</dt>
+                    <dt className="text-[var(--text-muted)]">Reference</dt>
                     <dd className="font-mono font-bold text-[#296A4B]">{submittedReference}</dd>
                   </div>
                 )}
                 <div className="flex justify-between py-2.5">
-                  <dt className="text-slate-600">Service</dt>
-                  <dd className="font-bold text-[#001A41]">{service.title}</dd>
+                  <dt className="text-[var(--text-muted)]">Service</dt>
+                  <dd className="font-bold text-[var(--text-main)]">{service.title}</dd>
                 </div>
                 <div className="flex justify-between py-2.5">
-                  <dt className="text-slate-600">Starting price</dt>
-                  <dd className="font-bold text-[#001A41]">{context.price}</dd>
+                  <dt className="text-[var(--text-muted)]">Starting price</dt>
+                  <dd className="font-bold text-[var(--text-main)]">{context.price}</dd>
                 </div>
                 {context.worker && (
                   <div className="flex justify-between py-2.5">
-                    <dt className="text-slate-600">Preferred BrainWorker</dt>
-                    <dd className="font-semibold text-slate-800">{context.worker}</dd>
+                    <dt className="text-[var(--text-muted)]">Preferred BrainWorker</dt>
+                    <dd className="font-semibold text-[var(--text-main)]">{context.worker}</dd>
                   </div>
                 )}
                 <div className="flex justify-between py-2.5">
-                  <dt className="text-slate-600">City</dt>
-                  <dd className="font-medium text-slate-800">{formData.city}</dd>
+                  <dt className="text-[var(--text-muted)]">City</dt>
+                  <dd className="font-medium text-[var(--text-main)]">{formData.city}</dd>
                 </div>
                 <div className="flex justify-between py-2.5">
-                  <dt className="text-slate-600">Street address</dt>
-                  <dd className="max-w-[60%] text-right font-medium text-slate-800">
+                  <dt className="text-[var(--text-muted)]">Street address</dt>
+                  <dd className="max-w-[60%] text-right font-medium text-[var(--text-main)]">
                     {formData.streetAddress}
                   </dd>
                 </div>
                 {formData.landmark && (
                   <div className="flex justify-between py-2.5">
-                    <dt className="text-slate-600">Landmark</dt>
-                    <dd className="max-w-[60%] text-right font-medium text-slate-800">
+                    <dt className="text-[var(--text-muted)]">Landmark</dt>
+                    <dd className="max-w-[60%] text-right font-medium text-[var(--text-main)]">
                       {formData.landmark}
                     </dd>
                   </div>
                 )}
                 <div className="flex justify-between py-2.5">
-                  <dt className="text-slate-600">Preferred date</dt>
-                  <dd className="font-medium text-slate-800">{selectedDateLabel}</dd>
+                  <dt className="text-[var(--text-muted)]">Preferred date</dt>
+                  <dd className="font-medium text-[var(--text-main)]">{selectedDateLabel}</dd>
                 </div>
                 <div className="flex justify-between py-2.5">
-                  <dt className="text-slate-600">Arrival window</dt>
-                  <dd className="font-medium text-slate-800">{formData.arrivalWindow}</dd>
+                  <dt className="text-[var(--text-muted)]">Arrival window</dt>
+                  <dd className="font-medium text-[var(--text-main)]">{formData.arrivalWindow}</dd>
                 </div>
                 <div className="flex justify-between py-2.5">
-                  <dt className="text-slate-600">Payment preference</dt>
-                  <dd className="font-semibold capitalize text-slate-800">
+                  <dt className="text-[var(--text-muted)]">Payment preference</dt>
+                  <dd className="font-semibold capitalize text-[var(--text-main)]">
                     {formData.paymentPreference === 'card'
                       ? 'Card'
                       : formData.paymentPreference === 'transfer'
@@ -502,21 +502,21 @@ export default function BookingScreen() {
                     ? `/dashboard?jobCreated=${encodeURIComponent(submittedReference)}&jobTitle=${encodeURIComponent(service.title)}`
                     : '/dashboard'
                 }
-                className="motion-press inline-flex min-h-12 items-center justify-center rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+                className="motion-press inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
               >
                 View on Dashboard
               </Link>
               {submittedReference && (
                 <Link
                   href={`/jobs?id=${encodeURIComponent(submittedReference)}`}
-                  className="motion-press inline-flex min-h-12 items-center justify-center rounded-full border border-[#001A41] bg-white px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2"
+                  className="motion-press inline-flex min-h-12 items-center justify-center rounded-full border border-[var(--text-main)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--tag-bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
                 >
                   View Request Details
                 </Link>
               )}
               <Link
                 href={returnUrl}
-                className="motion-press inline-flex min-h-12 items-center justify-center rounded-full border border-slate-200 bg-white px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
+                className="motion-press inline-flex min-h-12 items-center justify-center rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--tag-bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
               >
                 Return to services
               </Link>
@@ -538,10 +538,10 @@ export default function BookingScreen() {
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">
             Step 3 of 4: Request Preparation
           </p>
-          <h1 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-[#001A41] sm:text-4xl">
+          <h1 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-[var(--text-main)] sm:text-4xl">
             Prepare your service request
           </h1>
-          <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base">
+          <p className="mt-2 text-sm leading-6 text-[var(--text-muted)] sm:text-base">
             Review the service details, provide your location, and set your schedule preferences before submitting your request.
           </p>
         </div>
@@ -604,22 +604,22 @@ export default function BookingScreen() {
             {/* Left Form Column */}
             <div className="space-y-6">
               {/* Service Context Card */}
-              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6">
+              <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
-                    <span className="inline-block rounded-md bg-[#EFF4FF] px-2.5 py-1 text-xs font-bold text-[#001A41]">
+                    <span className="inline-block rounded-md bg-[var(--tag-bg)] px-2.5 py-1 text-xs font-bold text-[var(--text-main)]">
                       {service.group}
                     </span>
-                    <h2 className="mt-2 font-display text-xl font-bold tracking-tight text-[#001A41] sm:text-2xl">
+                    <h2 className="mt-2 font-display text-xl font-bold tracking-tight text-[var(--text-main)] sm:text-2xl">
                       {service.title}
                     </h2>
-                    <p className="mt-1 text-xs text-slate-600 sm:text-sm">
+                    <p className="mt-1 text-xs text-[var(--text-muted)] sm:text-sm">
                       {service.description}
                     </p>
                   </div>
-                  <div className="rounded-xl bg-[#F8F9FF] p-3 text-right">
-                    <p className="text-xs font-medium text-slate-600">Starting from</p>
-                    <p className="font-display text-lg font-extrabold text-[#001A41] sm:text-xl">
+                  <div className="rounded-xl bg-[var(--bg)] p-3 text-right">
+                    <p className="text-xs font-medium text-[var(--text-muted)]">Starting from</p>
+                    <p className="font-display text-lg font-extrabold text-[var(--text-main)] sm:text-xl">
                       {context.price}
                     </p>
                   </div>
@@ -638,15 +638,15 @@ export default function BookingScreen() {
                   </div>
                 )}
 
-                <p className="mt-4 flex items-center gap-2 text-xs text-slate-600">
+                <p className="mt-4 flex items-center gap-2 text-xs text-[var(--text-muted)]">
                   <ShieldCheck className="h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
                   Starting price only. Final pricing is confirmed with your BrainWorker before work begins.
                 </p>
               </section>
 
               {/* Location Section */}
-              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6">
-                <div className="flex items-center gap-2 text-[#001A41]">
+              <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6">
+                <div className="flex items-center gap-2 text-[var(--text-main)]">
                   <MapPin className="h-5 w-5 text-[#296A4B]" aria-hidden="true" />
                   <h2 className="font-display text-lg font-bold">Where is the job?</h2>
                 </div>
@@ -656,7 +656,7 @@ export default function BookingScreen() {
                   <div>
                     <label
                       htmlFor="booking-city"
-                      className="block text-xs font-bold tracking-wide text-slate-700 uppercase"
+                      className="block text-xs font-bold tracking-wide text-[var(--text-main)] uppercase"
                     >
                       City <span className="text-red-600">*</span>
                     </label>
@@ -666,7 +666,7 @@ export default function BookingScreen() {
                       onChange={(e) => updateField('city', e.target.value)}
                       aria-invalid={Boolean(errors.city)}
                       aria-describedby={errors.city ? 'booking-city-error' : undefined}
-                      className="mt-1.5 h-12 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm text-slate-800 outline-none transition-colors focus:border-[#001A41] focus:ring-2 focus:ring-[#ABEEC8] aria-[invalid=true]:border-red-500"
+                      className="mt-1.5 h-12 w-full rounded-xl border border-[var(--lead)] bg-[var(--bg)] px-3 text-sm text-[var(--text-main)] outline-none transition-colors focus:border-[#296A4B] focus:ring-2 focus:ring-[#ABEEC8] aria-[invalid=true]:border-red-500"
                     >
                       <option value="">Select an active city</option>
                       {activeLocations.map((loc) => (
@@ -682,7 +682,7 @@ export default function BookingScreen() {
                   <div>
                     <label
                       htmlFor="booking-address"
-                      className="block text-xs font-bold tracking-wide text-slate-700 uppercase"
+                      className="block text-xs font-bold tracking-wide text-[var(--text-main)] uppercase"
                     >
                       Street address and house number <span className="text-red-600">*</span>
                     </label>
@@ -698,7 +698,7 @@ export default function BookingScreen() {
                           : undefined
                       }
                       placeholder="e.g. 14 Admiralty Way, Lekki Phase 1"
-                      className="mt-1.5 h-12 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm text-slate-800 outline-none transition-colors focus:border-[#001A41] focus:ring-2 focus:ring-[#ABEEC8] aria-[invalid=true]:border-red-500"
+                      className="mt-1.5 h-12 w-full rounded-xl border border-[var(--lead)] bg-[var(--bg)] px-3 text-sm text-[var(--text-main)] outline-none transition-colors focus:border-[#296A4B] focus:ring-2 focus:ring-[#ABEEC8] aria-[invalid=true]:border-red-500"
                     />
                     <FieldError
                       id="booking-address-error"
@@ -710,7 +710,7 @@ export default function BookingScreen() {
                   <div>
                     <label
                       htmlFor="booking-landmark"
-                      className="block text-xs font-bold tracking-wide text-slate-700 uppercase"
+                      className="block text-xs font-bold tracking-wide text-[var(--text-main)] uppercase"
                     >
                       Closest landmark or estate gate
                     </label>
@@ -720,9 +720,9 @@ export default function BookingScreen() {
                       value={formData.landmark}
                       onChange={(e) => updateField('landmark', e.target.value)}
                       placeholder="e.g. Opposite Ebeano Supermarket, Gate 2"
-                      className="mt-1.5 h-12 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm text-slate-800 outline-none transition-colors focus:border-[#001A41] focus:ring-2 focus:ring-[#ABEEC8]"
+                      className="mt-1.5 h-12 w-full rounded-xl border border-[var(--lead)] bg-[var(--bg)] px-3 text-sm text-[var(--text-main)] outline-none transition-colors focus:border-[#296A4B] focus:ring-2 focus:ring-[#ABEEC8]"
                     />
-                    <p className="mt-1 text-xs text-slate-600">
+                    <p className="mt-1 text-xs text-[var(--text-muted)]">
                       Your landmark or estate gate helps the BrainWorker find the location easily.
                     </p>
                   </div>
@@ -730,14 +730,14 @@ export default function BookingScreen() {
               </section>
 
               {/* Schedule Section */}
-              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6">
-                <div className="flex items-center gap-2 text-[#001A41]">
+              <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6">
+                <div className="flex items-center gap-2 text-[var(--text-main)]">
                   <Calendar className="h-5 w-5 text-[#296A4B]" aria-hidden="true" />
                   <h2 className="font-display text-lg font-bold">When do you need it?</h2>
                 </div>
 
                 <div className="mt-5">
-                  <p className="text-xs font-bold tracking-wide text-slate-700 uppercase">
+                  <p className="text-xs font-bold tracking-wide text-[var(--text-main)] uppercase">
                     Preferred service date <span className="text-red-600">*</span>
                   </p>
                   <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -752,8 +752,8 @@ export default function BookingScreen() {
                           aria-pressed={active}
                           className={`motion-press min-h-12 rounded-xl border px-3 text-center text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] ${
                             active
-                              ? 'border-[#001A41] bg-[#001A41] text-white shadow-sm'
-                              : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                              ? 'border-[#001A41] bg-[var(--amber)] text-white shadow-sm'
+                              : 'border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:border-[var(--lead)]'
                           }`}
                         >
                           {option}
@@ -766,7 +766,7 @@ export default function BookingScreen() {
                     <div className="mt-3">
                       <label
                         htmlFor="booking-specific-date"
-                        className="block text-xs font-medium text-slate-700"
+                        className="block text-xs font-medium text-[var(--text-main)]"
                       >
                         Choose date
                       </label>
@@ -778,7 +778,7 @@ export default function BookingScreen() {
                         onChange={(e) => updateField('customDate', e.target.value)}
                         aria-invalid={Boolean(errors.date)}
                         aria-describedby={errors.date ? 'booking-date-error' : undefined}
-                        className="mt-1 h-12 w-full max-w-xs rounded-xl border border-slate-300 px-3 text-sm text-slate-800 outline-none focus:border-[#001A41] focus:ring-2 focus:ring-[#ABEEC8] aria-[invalid=true]:border-red-500"
+                        className="mt-1 h-12 w-full max-w-xs rounded-xl border border-[var(--lead)] px-3 text-sm text-[var(--text-main)] outline-none focus:border-[#296A4B] focus:ring-2 focus:ring-[#ABEEC8] aria-[invalid=true]:border-red-500"
                       />
                     </div>
                   )}
@@ -787,7 +787,7 @@ export default function BookingScreen() {
 
                 {/* Arrival Window Selection */}
                 <div className="mt-6">
-                  <p className="text-xs font-bold tracking-wide text-slate-700 uppercase">
+                  <p className="text-xs font-bold tracking-wide text-[var(--text-main)] uppercase">
                     Arrival window <span className="text-red-600">*</span>
                   </p>
                   <div className="mt-2 grid gap-2 sm:grid-cols-3">
@@ -802,10 +802,10 @@ export default function BookingScreen() {
                           className={`motion-press flex min-h-12 items-center justify-start gap-2.5 rounded-xl border p-3 text-left text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] ${
                             active
                               ? 'border-[#296A4B] bg-emerald-50/60 text-[#001A41] ring-1 ring-[#296A4B]'
-                              : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                              : 'border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:border-[var(--lead)]'
                           }`}
                         >
-                          <Clock className={`h-4 w-4 shrink-0 ${active ? 'text-[#296A4B]' : 'text-slate-600'}`} aria-hidden="true" />
+                          <Clock className={`h-4 w-4 shrink-0 ${active ? 'text-[#296A4B]' : 'text-[var(--text-muted)]'}`} aria-hidden="true" />
                           <span>{time}</span>
                         </button>
                       );
@@ -816,8 +816,8 @@ export default function BookingScreen() {
               </section>
 
               {/* Job Details Section */}
-              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6">
-                <div className="flex items-center gap-2 text-[#001A41]">
+              <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6">
+                <div className="flex items-center gap-2 text-[var(--text-main)]">
                   <FileText className="h-5 w-5 text-[#296A4B]" aria-hidden="true" />
                   <h2 className="font-display text-lg font-bold">Job details</h2>
                 </div>
@@ -825,7 +825,7 @@ export default function BookingScreen() {
                 <div className="mt-5">
                   <label
                     htmlFor="booking-job-details"
-                    className="block text-xs font-bold tracking-wide text-slate-700 uppercase"
+                    className="block text-xs font-bold tracking-wide text-[var(--text-main)] uppercase"
                   >
                     Job details <span className="text-red-600">*</span>
                   </label>
@@ -841,26 +841,26 @@ export default function BookingScreen() {
                         : undefined
                     }
                     placeholder="Tell the BrainWorker what you need help with. Describe the issue, brand/model, or requirements."
-                    className="mt-1.5 w-full rounded-xl border border-slate-300 p-3 text-sm text-slate-800 outline-none transition-colors focus:border-[#001A41] focus:ring-2 focus:ring-[#ABEEC8] aria-[invalid=true]:border-red-500"
+                    className="mt-1.5 w-full rounded-xl border border-[var(--lead)] p-3 text-sm text-[var(--text-main)] outline-none transition-colors focus:border-[#296A4B] focus:ring-2 focus:ring-[#ABEEC8] aria-[invalid=true]:border-red-500"
                   />
                   <FieldError
                     id="booking-job-details-error"
                     message={errors.jobDescription || errors.jobDetails || errors.notes}
                   />
-                  <p className="mt-1 text-xs text-slate-600">
+                  <p className="mt-1 text-xs text-[var(--text-muted)]">
                     A clear description helps the BrainWorker prepare tools and provide accurate estimates.
                   </p>
                 </div>
               </section>
 
               {/* Payment Preference Section */}
-              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6">
-                <div className="flex items-center gap-2 text-[#001A41]">
+              <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6">
+                <div className="flex items-center gap-2 text-[var(--text-main)]">
                   <CreditCard className="h-5 w-5 text-[#296A4B]" aria-hidden="true" />
                   <h2 className="font-display text-lg font-bold">Payment preference</h2>
                 </div>
 
-                <p className="mt-2 text-xs text-slate-600">
+                <p className="mt-2 text-xs text-[var(--text-muted)]">
                   This is a payment preference for the later payment step. No payment is taken here.
                 </p>
 
@@ -878,7 +878,7 @@ export default function BookingScreen() {
                         className={`motion-press flex cursor-pointer items-start gap-3 rounded-xl border p-3.5 transition-colors ${
                           active
                             ? 'border-[#296A4B] bg-emerald-50/50 ring-1 ring-[#296A4B]'
-                            : 'border-slate-200 bg-white hover:border-slate-300'
+                            : 'border-[var(--lead)] bg-[var(--card-bg)] hover:border-[var(--lead)]'
                         }`}
                       >
                         <input
@@ -891,8 +891,8 @@ export default function BookingScreen() {
                         />
                         <Icon className="mt-0.5 h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
                         <div>
-                          <p className="text-xs font-bold text-[#001A41]">{method.label}</p>
-                          <p className="text-[11px] text-slate-600">{method.desc}</p>
+                          <p className="text-xs font-bold text-[var(--text-main)]">{method.label}</p>
+                          <p className="text-[11px] text-[var(--text-muted)]">{method.desc}</p>
                         </div>
                       </label>
                     );
@@ -904,7 +904,7 @@ export default function BookingScreen() {
                   <ShieldCheck className="h-4 w-4 shrink-0 text-[#296A4B] mt-0.5" aria-hidden="true" />
                   <div>
                     <span className="font-bold">BukieGuarantee Escrow Protection:</span>
-                    <span className="ml-1 text-slate-600">Your funds stay secure and are only released after you confirm the work is completed satisfactorily.</span>
+                    <span className="ml-1 text-[var(--text-muted)]">Your funds stay secure and are only released after you confirm the work is completed satisfactorily.</span>
                   </div>
                 </div>
               </section>
@@ -912,7 +912,7 @@ export default function BookingScreen() {
 
             {/* Right Summary & Submit Column */}
             <div className="space-y-6">
-              <aside className="bbj-card-interactive relative overflow-hidden h-fit rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 lg:sticky lg:top-6">
+              <aside className="bbj-card-interactive relative overflow-hidden h-fit rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 lg:sticky lg:top-6">
                 {/* Security Watermark */}
                 <div
                   className="pointer-events-none absolute -right-6 -bottom-8 opacity-[0.03] select-none"
@@ -928,43 +928,43 @@ export default function BookingScreen() {
                 </div>
 
                 <div className="relative z-10">
-                  <h2 className="font-display text-lg font-bold text-[#001A41]">
+                  <h2 className="font-display text-lg font-bold text-[var(--text-main)]">
                     Review your request
                   </h2>
 
-                <div className="mt-4 space-y-3 rounded-xl bg-[#F8F9FF] p-4 text-xs sm:text-sm">
-                  <div className="flex justify-between text-slate-600">
+                <div className="mt-4 space-y-3 rounded-xl bg-[var(--bg)] p-4 text-xs sm:text-sm">
+                  <div className="flex justify-between text-[var(--text-muted)]">
                     <span>Service</span>
-                    <span className="font-bold text-[#001A41]">{service.title}</span>
+                    <span className="font-bold text-[var(--text-main)]">{service.title}</span>
                   </div>
 
-                  <div className="flex justify-between text-slate-600">
+                  <div className="flex justify-between text-[var(--text-muted)]">
                     <span>Starting price</span>
-                    <span className="font-bold text-[#001A41]">{context.price}</span>
+                    <span className="font-bold text-[var(--text-main)]">{context.price}</span>
                   </div>
 
                   {context.worker && (
-                    <div className="flex justify-between border-t border-slate-200/80 pt-2 text-slate-600">
+                    <div className="flex justify-between border-t border-[var(--lead)] pt-2 text-[var(--text-muted)]">
                       <span>Preferred worker</span>
-                      <span className="font-semibold text-[#001A41]">{context.worker}</span>
+                      <span className="font-semibold text-[var(--text-main)]">{context.worker}</span>
                     </div>
                   )}
 
-                  <div className="flex justify-between border-t border-slate-200/80 pt-2 text-slate-600">
+                  <div className="flex justify-between border-t border-[var(--lead)] pt-2 text-[var(--text-muted)]">
                     <span>Location</span>
-                    <span className="font-semibold text-[#001A41]">
+                    <span className="font-semibold text-[var(--text-main)]">
                       {formData.city || 'Not set'}
                     </span>
                   </div>
 
-                  <div className="flex justify-between text-slate-600">
+                  <div className="flex justify-between text-[var(--text-muted)]">
                     <span>Schedule</span>
-                    <span className="font-semibold text-[#001A41]">{selectedDateLabel}</span>
+                    <span className="font-semibold text-[var(--text-main)]">{selectedDateLabel}</span>
                   </div>
 
-                  <div className="flex justify-between text-slate-600">
+                  <div className="flex justify-between text-[var(--text-muted)]">
                     <span>Payment preference</span>
-                    <span className="font-semibold capitalize text-[#001A41]">
+                    <span className="font-semibold capitalize text-[var(--text-main)]">
                       {formData.paymentPreference}
                     </span>
                   </div>
@@ -981,7 +981,7 @@ export default function BookingScreen() {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] disabled:cursor-wait disabled:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+                  className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--amber)] px-5 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] disabled:cursor-wait disabled:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
                 >
                   {isPending ? 'Submitting request...' : 'Submit service request'}
                 </button>
@@ -989,7 +989,7 @@ export default function BookingScreen() {
                 <button
                   type="button"
                   onClick={handleSaveAndSignIn}
-                  className="motion-press mt-3 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+                  className="motion-press mt-3 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-5 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--tag-bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
                 >
                   Save & sign in with account
                 </button>
@@ -997,7 +997,7 @@ export default function BookingScreen() {
                   <div className="mt-4 text-center">
                     <Link
                       href={returnUrl}
-                      className="inline-flex min-h-10 items-center text-xs font-semibold text-slate-600 transition-colors hover:text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
+                      className="inline-flex min-h-10 items-center text-xs font-semibold text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
                     >
                       Return to services
                     </Link>

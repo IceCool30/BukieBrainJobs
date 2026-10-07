@@ -33,7 +33,7 @@ export default function EnterprisePage() {
     <>
     <Navbar />
     <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] pt-[var(--header-height)]">
-      <section className="relative isolate min-h-[480px] overflow-hidden border-b border-slate-200 sm:min-h-[580px]">
+      <section className="relative isolate min-h-[480px] overflow-hidden border-b border-[var(--lead)] sm:min-h-[580px]">
         <Image
           src="/images/enterprise-cityscape-backdrop.jpg"
           alt="Modern business buildings in a city district"
@@ -44,22 +44,6 @@ export default function EnterprisePage() {
         />
 
         <div className="relative z-10 mx-auto max-w-[1280px] px-4 py-6 sm:px-6 lg:px-8">
-          <header className="flex min-h-11 items-center justify-between gap-4 rounded-xl border border-white/80 bg-white/95 px-4 shadow-[0_10px_30px_rgba(0,26,65,0.08)] sm:px-5">
-            <Link
-              href="/"
-              className="font-display text-base font-bold tracking-tight text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
-            >
-              BukieBrainJobs
-            </Link>
-            <Link
-              href="/services"
-              className="motion-press inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#001A41] transition-colors hover:text-[#296A4B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
-            >
-              Explore services
-              <ArrowRight className="h-4 w-4 text-[#296A4B]" />
-            </Link>
-          </header>
-
           <div className="flex min-h-[408px] items-end py-8 sm:min-h-[508px] sm:py-14">
             <div className="max-w-xl rounded-2xl border border-white/40 bg-black/45 p-5 shadow-[0_20px_45px_rgba(0,0,0,0.28)] sm:p-8">
               <div className="inline-flex items-center gap-2 rounded-xl border border-white/40 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#ABEEC8]">

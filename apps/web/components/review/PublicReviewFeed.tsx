@@ -85,7 +85,7 @@ export function PublicReviewFeed({
   return (
     <div className="space-y-6">
       {/* Sub-Navigation Tabs */}
-      <div className="flex border-b border-slate-200" role="tablist">
+      <div className="flex border-b border-[var(--lead)]" role="tablist">
         <button
           type="button"
           role="tab"
@@ -95,8 +95,8 @@ export function PublicReviewFeed({
           onClick={() => setActiveTab('service')}
           className={`pb-3 px-4 text-sm font-bold border-b-2 transition-colors ${
             activeTab === 'service'
-              ? 'border-[#001A41] text-[#001A41]'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-[var(--text-main)] text-[var(--text-main)]'
+              : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-main)]'
           }`}
         >
           Service focus
@@ -111,8 +111,8 @@ export function PublicReviewFeed({
           onClick={() => setActiveTab('reviews')}
           className={`pb-3 px-4 text-sm font-bold border-b-2 transition-colors ${
             activeTab === 'reviews'
-              ? 'border-[#001A41] text-[#001A41]'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-[var(--text-main)] text-[var(--text-main)]'
+              : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-main)]'
           }`}
         >
           Customer reviews ({totalCount})
@@ -122,15 +122,15 @@ export function PublicReviewFeed({
       {/* Tab Panel 1: Service Focus */}
       {activeTab === 'service' && (
         <div id="panel-service" role="tabpanel" aria-labelledby="tab-service" className="space-y-6">
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-7 shadow-xs space-y-4">
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 sm:p-7 shadow-xs space-y-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-[#296A4B]">
                 Service focus
               </p>
-              <h3 className="text-xl font-bold text-[#001A41] mt-1">
+              <h3 className="text-xl font-bold text-[var(--text-main)] mt-1">
                 What this BrainWorker lists
               </h3>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-[var(--text-muted)] mt-1">
                 Review the listed skills and choose the service that matches your requirement.
               </p>
             </div>
@@ -140,7 +140,7 @@ export function PublicReviewFeed({
                 {skills.map((skill) => (
                   <li
                     key={skill}
-                    className="flex items-center gap-2.5 rounded-xl border border-slate-100 bg-[#F8F9FF] p-3 text-sm font-semibold text-slate-700"
+                    className="flex items-center gap-2.5 rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-3 text-sm font-semibold text-[var(--text-main)]"
                   >
                     <CheckCircle2 className="w-4 h-4 text-[#296A4B] shrink-0" />
                     <span>{skill}</span>
@@ -148,7 +148,7 @@ export function PublicReviewFeed({
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-slate-500 italic">No specific skills listed.</p>
+              <p className="text-sm text-[var(--text-muted)] italic">No specific skills listed.</p>
             )}
 
             {serviceCategories.length > 0 && (
@@ -156,7 +156,7 @@ export function PublicReviewFeed({
                 {serviceCategories.map((category) => (
                   <span
                     key={category}
-                    className="px-3 py-1 rounded-lg bg-slate-100 text-xs font-semibold text-[#001A41]"
+                    className="px-3 py-1 rounded-lg bg-[var(--tag-bg)] text-xs font-semibold text-[var(--text-main)]"
                   >
                     {category}
                   </span>
@@ -171,8 +171,8 @@ export function PublicReviewFeed({
       {activeTab === 'reviews' && (
         <div id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews" className="space-y-6">
           {isLoading ? (
-            <div className="p-8 text-center text-sm text-slate-500 flex items-center justify-center gap-2">
-              <RefreshCw className="w-4 h-4 animate-spin text-[#001A41]" />
+            <div className="p-8 text-center text-sm text-[var(--text-muted)] flex items-center justify-center gap-2">
+              <RefreshCw className="w-4 h-4 animate-spin text-[var(--text-main)]" />
               <span>Loading reviews...</span>
             </div>
           ) : error ? (
@@ -188,14 +188,14 @@ export function PublicReviewFeed({
             </div>
           ) : totalCount === 0 ? (
             /* Empty Review State */
-            <div className="rounded-2xl border border-slate-200 bg-white p-8 sm:p-12 text-center space-y-3 shadow-xs">
-              <div className="w-12 h-12 mx-auto rounded-full bg-slate-100 text-slate-400 flex items-center justify-center">
+            <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-8 sm:p-12 text-center space-y-3 shadow-xs">
+              <div className="w-12 h-12 mx-auto rounded-full bg-[var(--tag-bg)] text-[var(--text-muted)] flex items-center justify-center">
                 <MessageSquare className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-[#001A41]">
+              <h3 className="text-base font-bold text-[var(--text-main)]">
                 No customer reviews yet
               </h3>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto">
+              <p className="text-xs text-[var(--text-muted)] max-w-sm mx-auto">
                 Reviews appear here once customers complete bookings with this BrainWorker.
               </p>
             </div>
@@ -224,7 +224,7 @@ export function PublicReviewFeed({
                     type="button"
                     onClick={handleLoadMore}
                     disabled={isLoadingMore}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl border border-slate-200 bg-white text-[#001A41] text-sm font-semibold hover:bg-slate-50 transition-colors disabled:opacity-50 min-h-[44px]"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] text-sm font-semibold hover:bg-[var(--tag-bg)] transition-colors disabled:opacity-50 min-h-[44px]"
                   >
                     {isLoadingMore ? (
                       <>
@@ -238,7 +238,7 @@ export function PublicReviewFeed({
                 )}
 
                 {isAllLoaded && (
-                  <p className="text-xs font-medium text-slate-400">
+                  <p className="text-xs font-medium text-[var(--text-muted)]">
                     Showing all {totalCount} reviews
                   </p>
                 )}

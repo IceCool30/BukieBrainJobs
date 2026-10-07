@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, MapPin } from 'lucide-react';
+import Navbar from '../../../components/Navbar';
+import Footer from '../../../components/Footer';
 import BrainWorkerProfileBookingContext from '../../../components/BrainWorkerProfileBookingContext';
 import { PublicReviewFeed } from '../../../components/review';
 import {
@@ -39,7 +41,9 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
   const initialTab = rawTab === 'reviews' ? 'reviews' : 'service';
 
   return (
-    <main className="min-h-screen bg-[#F8F9FF] text-[#0B1C30]">
+    <>
+    <Navbar />
+    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] pt-[var(--header-height)]">
       <section className="relative isolate overflow-hidden bg-[#001A41] text-white">
         <div className="absolute inset-0 sm:left-[42%]">
           <Image
@@ -87,13 +91,13 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
             serviceCategories={[profile.category]}
           />
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-7">
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-7">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Location context</p>
-            <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-[#001A41]">Choose an active city for your job.</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">The city you confirm will be carried into booking preparation.</p>
+            <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-[var(--text-main)]">Choose an active city for your job.</h2>
+            <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">The city you confirm will be carried into booking preparation.</p>
             <div className="mt-5 flex flex-wrap gap-2" aria-label="Active cities">
               {activeLocations.map((location) => (
-                <span key={location.id} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-[#001A41]">{location.name}</span>
+                <span key={location.id} className="rounded-full border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-1.5 text-xs font-semibold text-[var(--text-main)]">{location.name}</span>
               ))}
             </div>
           </section>
@@ -102,5 +106,7 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
         <BrainWorkerProfileBookingContext profile={profile} initialContext={context} />
       </section>
     </main>
+    <Footer />
+    </>
   );
 }
