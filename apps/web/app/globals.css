@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Hanken Grotesk", system-ui, sans-serif;
+  --font-display: "Cabinet Grotesk", "Hanken Grotesk", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
-  --font-headline: "Hanken Grotesk", system-ui, sans-serif;
+  --font-headline: "Cabinet Grotesk", "Hanken Grotesk", system-ui, sans-serif;
   --font-label: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
@@ -58,6 +58,25 @@
   --color-background: #f8f9ff;
   --color-on-background: #0b1c30;
   --color-surface-variant: #d3e4fe;
+
+  /* Trades Design System - Semantic Color Tokens */
+  --color-trades-bg: var(--bg);
+  --color-trades-card: var(--card-bg);
+  --color-trades-card-hover: var(--card-hover);
+  --color-trades-lead: var(--lead);
+  --color-trades-rule: var(--rule);
+  --color-trades-text-main: var(--text-main);
+  --color-trades-text-muted: var(--text-muted);
+  --color-trades-amber: var(--amber);
+  --color-trades-amber-hover: var(--amber-hover);
+  --color-trades-brand-green: var(--brand-green);
+  --color-trades-brand-navy: var(--brand-navy);
+  --color-trades-strip-bg: var(--strip-bg);
+  --color-trades-strip-text: var(--strip-text);
+  --color-trades-table-header: var(--table-header-bg);
+  --color-trades-tag-bg: var(--tag-bg);
+  --background-image-trades-dispatch: var(--dispatch-bg);
+  --tracking-trades-display: -0.04em;
 
   /* Typography */
   --text-display-lg: 48px;
@@ -118,6 +137,95 @@
   --ease-ui-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-ui-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* BukieBrainJobs Trades Design System - Dual-Theme CSS Variables */
+:root,
+[data-theme="light"] {
+  --bg: #F7F9FC;
+  --card-bg: #FFFFFF;
+  --card-hover: #F2F5FB;
+  --lead: #E2E8F0;
+  --rule: #CBD5E1;
+  --text-main: #001A41;
+  --text-muted: #53647A;
+  --amber: #FF6B35;
+  --amber-hover: #F15A24;
+  --brand-green: #10B981;
+  --brand-navy: #001A41;
+  --strip-bg: #001A41;
+  --strip-text: #D6E4F5;
+  --table-header-bg: #EEF4FB;
+  --tag-bg: #F1F5F9;
+  --dispatch-bg: linear-gradient(135deg, #001A41 0%, #002A62 100%);
+}
+
+[data-theme="dark"],
+.dark {
+  --bg: #0B0E13;
+  --card-bg: #13171E;
+  --card-hover: #191E27;
+  --lead: #202734;
+  --rule: #2D3748;
+  --text-main: #F0F4F9;
+  --text-muted: #8897AB;
+  --amber: #FF6B35;
+  --amber-hover: #FF7D4D;
+  --brand-green: #2FE896;
+  --brand-navy: #001A41;
+  --strip-bg: #07090D;
+  --strip-text: #9FB2C8;
+  --table-header-bg: #0F131A;
+  --tag-bg: rgba(255, 255, 255, 0.04);
+  --dispatch-bg: linear-gradient(135deg, #07090D 0%, #13171E 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B0E13;
+    --card-bg: #13171E;
+    --card-hover: #191E27;
+    --lead: #202734;
+    --rule: #2D3748;
+    --text-main: #F0F4F9;
+    --text-muted: #8897AB;
+    --amber: #FF6B35;
+    --amber-hover: #FF7D4D;
+    --brand-green: #2FE896;
+    --brand-navy: #001A41;
+    --strip-bg: #07090D;
+    --strip-text: #9FB2C8;
+    --table-header-bg: #0F131A;
+    --tag-bg: rgba(255, 255, 255, 0.04);
+    --dispatch-bg: linear-gradient(135deg, #07090D 0%, #13171E 100%);
+  }
+}
+
+@keyframes telemetry-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.telemetry-beacon {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background-color: var(--brand-green);
+  box-shadow: 0 0 8px var(--brand-green);
+  display: inline-block;
+  animation: telemetry-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .telemetry-beacon {
+    animation: none;
+  }
 }
 
 body {

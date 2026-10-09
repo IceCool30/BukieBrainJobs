@@ -2,6 +2,7 @@
 // Import this in your tailwind.config.ts: import { tailwindBrandTheme } from '@bukiebrainjobs/ui';
 
 import { brandColors } from './tokens/colors';
+import { typography } from './tokens/typography';
 
 /**
  * Spread this into your Tailwind config's `theme.extend` to get
@@ -18,9 +19,11 @@ export const tailwindBrandTheme = {
   fontFamily: {
     sans: ['Inter', 'system-ui', 'sans-serif'],
     mono: ['JetBrains Mono', 'monospace'],
-    headline: ['Hanken Grotesk', 'sans-serif'],
+    headline: ['Cabinet Grotesk', 'Hanken Grotesk', 'sans-serif'],
+    display: ['Cabinet Grotesk', 'Hanken Grotesk', 'sans-serif'],
     body: ['Inter', 'sans-serif'],
   },
+  letterSpacing: typography.letterSpacing,
   borderRadius: {
     button: '9999px',
     input: '1rem',

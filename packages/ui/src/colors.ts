@@ -65,6 +65,10 @@ export const BrandColors = {
   },
 } as const;
 
+import { tradesColorTokens } from './tokens/colors';
+
 export const Shadows = {
   ambientHover: '0 4px 20px rgba(0, 26, 65, 0.15)',
 } as const;
+
+export const TradesColors = tradesColorTokens;

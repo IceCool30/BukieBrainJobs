@@ -115,7 +115,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     return (
       <>
         {solid && !drawerOnly && (
-          <div className="fixed top-3 right-4 z-50 h-11 w-11 rounded-xl bg-[#001A41]/90 border border-white/15 shadow-[0_6px_20px_-8px_rgba(0,26,65,0.45)] flex items-center justify-center pointer-events-auto">
+          <div className="fixed top-11 sm:top-12 right-4 z-50 h-11 w-11 rounded-xl bg-[#001A41]/90 border border-white/15 shadow-[0_6px_20px_-8px_rgba(0,26,65,0.45)] flex items-center justify-center pointer-events-auto">
             <button
               ref={triggerRef}
               onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
@@ -151,7 +151,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     <>
     {/* Desktop header, never rendered on the PWA home */}
     <header
-      className={`fixed top-0 inset-x-0 z-50 w-full text-white transition-all duration-300 pointer-events-auto ${
+      className={`fixed top-8 sm:top-9 inset-x-0 z-50 w-full text-white transition-all duration-300 pointer-events-auto ${
         solid
           ? 'bg-[#001A41]/90 backdrop-blur-md border-b border-white/10 shadow-sm'
           : 'bg-gradient-to-b from-[#001A41]/75 to-transparent border-b border-transparent'

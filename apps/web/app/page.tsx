@@ -12,6 +12,7 @@ import HowItWorks from '../components/HowItWorks';
 import FeaturedBrainWorkers from '../components/FeaturedBrainWorkers';
 import FAQSection from '../components/FAQSection';
 import PartnerBar from '../components/PartnerBar';
+import TradesRequisitionBoard from '../components/trades/TradesRequisitionBoard';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
 import {
   ServiceCategory,
@@ -56,7 +57,7 @@ export default function CustomerHomepage() {
 
 
   return (
-    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans selection:bg-[#ABEEC8] selection:text-[#001A41]">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] flex flex-col font-sans selection:bg-[var(--amber)] selection:text-white transition-colors duration-200">
       {/* Navigation Header */}
       <Navbar
         onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}
@@ -81,6 +82,9 @@ export default function CustomerHomepage() {
 
             {/* Muted partner credibility bar */}
             <PartnerBar />
+
+            {/* Approved Trades Requisition Index */}
+            <TradesRequisitionBoard />
 
             {/* Popular Service Categories */}
             <PopularServices onSelectCategory={handleSelectCategory} />

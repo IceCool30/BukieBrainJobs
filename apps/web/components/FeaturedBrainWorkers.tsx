@@ -17,10 +17,10 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
   return (
     <Link
       href={href}
-      className="bbj-card-interactive service-card-motion motion-press group block overflow-hidden rounded-2xl border border-slate-200/90 bg-white text-left transition-[transform,box-shadow,border-color] duration-[180ms] ease-[var(--ease-ui-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
+      className="bbj-card-interactive service-card-motion motion-press group block overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--card-hover)] text-left transition-[transform,box-shadow,border-color] duration-[180ms] ease-[var(--ease-ui-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
       aria-label={`View ${worker.name}'s profile`}
     >
-      <div className="relative aspect-[5/4] overflow-hidden bg-slate-100">
+      <div className="relative aspect-[5/4] overflow-hidden bg-slate-100/10">
         <Image
           src={worker.avatarUrl}
           alt={`Portrait of ${worker.name}`}
@@ -28,27 +28,27 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="service-card-image object-cover"
         />
-        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full border border-slate-200/80 bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-[#001A41] shadow-xs backdrop-blur-xs">
-          <BadgeCheck className="h-3.5 w-3.5 text-[#296A4B]" aria-hidden="true" />
+        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-2.5 py-1 text-[11px] font-semibold text-[var(--text-main)] shadow-xs backdrop-blur-xs">
+          <BadgeCheck className="h-3.5 w-3.5 text-[var(--brand-green)]" aria-hidden="true" />
           Featured
         </span>
-        <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#001A41]/85 px-2.5 py-1 text-[10px] font-semibold text-[#ABEEC8] shadow-xs backdrop-blur-xs">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#ABEEC8]" aria-hidden="true" />
+        <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[var(--strip-bg)] px-2.5 py-1 text-[10px] font-semibold text-[var(--brand-green)] shadow-xs backdrop-blur-xs">
+          <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-green)]" aria-hidden="true" />
           Available today
         </span>
-        <span className="service-card-arrow absolute right-3 top-3 flex h-8 w-8 translate-x-1 items-center justify-center rounded-full bg-[#001A41] text-white opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">
+        <span className="service-card-arrow absolute right-3 top-3 flex h-8 w-8 translate-x-1 items-center justify-center rounded-full bg-[var(--amber)] text-white opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">
           <ArrowRight className="h-4 w-4" />
         </span>
       </div>
       <div className="space-y-2 p-4">
         <div>
-          <p className="text-xs font-semibold text-[#296A4B]">{worker.category}</p>
-          <h3 className="mt-1 text-[15px] font-semibold leading-snug text-[#001A41] transition-colors group-hover:text-[#296A4B]">{worker.name}</h3>
-          <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-500">{worker.title}</p>
+          <p className="text-xs font-semibold text-[var(--brand-green)]">{worker.category}</p>
+          <h3 className="mt-1 text-[15px] font-semibold leading-snug text-[var(--text-main)] transition-colors group-hover:text-[var(--amber)]">{worker.name}</h3>
+          <p className="mt-1 line-clamp-2 text-xs leading-5 text-[var(--text-muted)]">{worker.title}</p>
         </div>
-        <div className="flex items-center justify-between gap-2 text-xs text-slate-500">
+        <div className="flex items-center justify-between gap-2 text-xs text-[var(--text-muted)]">
           <span>{worker.location}</span>
-          <span className="shrink-0 font-bold text-[#296A4B]">From {worker.startingRate}</span>
+          <span className="shrink-0 font-bold text-[var(--brand-green)]">From {worker.startingRate}</span>
         </div>
       </div>
     </Link>
@@ -57,11 +57,11 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
 
 export default function FeaturedBrainWorkers({ profileCity }: FeaturedBrainWorkersProps) {
   return (
-    <section id="workers" className="border-b border-slate-200 bg-[#F8F9FF] py-12 sm:py-16">
+    <section id="workers" className="border-b border-[var(--lead)] bg-[var(--bg)] text-[var(--text-main)] py-12 sm:py-16 transition-colors duration-200">
       <div className="mx-auto max-w-[1280px] space-y-6 px-4 sm:space-y-8 sm:px-6 lg:px-8">
         <div>
-          <h2 className="font-display text-2xl font-bold text-[#001A41] sm:text-3xl">Meet the featured BrainWorkers</h2>
-          <p className="mt-1 text-sm text-slate-500">Take a closer look at the services and profile details shown for each BrainWorker.</p>
+          <h2 className="font-display tracking-trades text-2xl font-bold text-[var(--text-main)] sm:text-3xl">Meet the featured BrainWorkers</h2>
+          <p className="mt-1 text-sm text-[var(--text-muted)]">Take a closer look at the services and profile details shown for each BrainWorker.</p>
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
           {featuredWorkers.map((worker) => (

@@ -51,7 +51,7 @@ function ServiceCard({
   onReview: () => void;
 }) {
   return (
-    <article className="bbj-card-interactive flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white transition-all">
+    <article className="bbj-card-interactive flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] transition-all">
       <div className="relative aspect-[5/3] overflow-hidden bg-slate-100">
         <Image
           src={category.photoUrl}
@@ -317,7 +317,7 @@ function ServicesDirectory() {
   );
 
   return (
-    <main className="min-h-screen bg-[#F8F9FF]">
+    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors duration-200">
       {/* Main Content Area */}
       <section className="mx-auto max-w-[1280px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         {/* Navigation Breadcrumb / Back link */}
@@ -385,12 +385,12 @@ function ServicesDirectory() {
         )}
 
         {/* Controls & Filter Bar */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-5">
+        <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] p-4 shadow-xs sm:p-5">
           <div className="flex flex-col gap-1">
-            <h1 className="font-display text-xl font-bold tracking-tight text-[#001A41] sm:text-2xl">
+            <h1 className="font-display tracking-trades text-xl font-bold uppercase text-[var(--text-main)] sm:text-2xl">
               Browse by category
             </h1>
-            <p className="text-xs text-slate-500 sm:text-sm" role="status" aria-live="polite">
+            <p className="text-xs text-[var(--text-muted)] sm:text-sm" role="status" aria-live="polite">
               {resultLabel}
               {selectedCity ? ` in ${selectedCity}` : ''}
             </p>
@@ -405,25 +405,26 @@ function ServicesDirectory() {
               </label>
               <div className="relative">
                 <Search
-                  className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 pointer-events-none"
+                  className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none"
                   aria-hidden="true"
                 />
                 <input
                   id="service-directory-search"
                   type="search"
+                  suppressHydrationWarning
                   value={searchQuery}
                   onChange={(event) => handleSearchChange(event.target.value)}
                   onBlur={handleSearchBlur}
                   maxLength={MAX_SEARCH_QUERY_LENGTH}
                   placeholder="Search by service, trade, or job"
-                  className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-10 pr-10 text-xs font-medium text-slate-900 placeholder:text-slate-400 shadow-xs outline-none transition focus:border-[#296A4B] focus:bg-white focus:ring-2 focus:ring-[#ABEEC8] sm:text-sm"
+                  className="h-11 w-full rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] pl-10 pr-10 text-xs font-medium text-[var(--text-main)] placeholder:text-[var(--text-muted)] shadow-xs outline-none transition focus:border-[var(--amber)] focus:bg-[var(--card-bg)] sm:text-sm"
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={handleClearSearch}
                     aria-label="Clear search"
-                    className="absolute right-1 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#ABEEC8]"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
                   >
                     <X className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -451,30 +452,30 @@ function ServicesDirectory() {
                 aria-haspopup="listbox"
                 aria-expanded={cityDropdownOpen}
                 aria-label={`Filter by city: currently ${selectedCity || "All cities"}`}
-                className={`motion-press inline-flex min-h-11 items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] ${
+                className={`motion-press inline-flex min-h-11 items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-green)] ${
                   selectedCity
-                    ? "border-[#296A4B] bg-[#EAF7EF] text-[#296A4B]"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
+                    ? "border-[var(--brand-green)] bg-[var(--tag-bg)] text-[var(--brand-green)]"
+                    : "border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--card-hover)]"
                 }`}
               >
-                <MapPin className="h-3.5 w-3.5 shrink-0 text-[#296A4B]" aria-hidden="true" />
+                <MapPin className="h-3.5 w-3.5 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
                 <span>{selectedCity ? selectedCity : "All cities"}</span>
-                <ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-400" aria-hidden="true" />
+                <ChevronDown className="h-3.5 w-3.5 shrink-0 text-[var(--text-muted)]" aria-hidden="true" />
               </button>
 
               {cityDropdownOpen && (
                 <div
                   role="listbox"
                   aria-label="Active Nigerian cities"
-                  className="absolute left-0 sm:left-auto sm:right-0 top-full z-40 mt-2 w-64 rounded-xl border border-slate-200 bg-white py-2 shadow-[0_16px_32px_rgba(0,26,65,0.14)]"
+                  className="absolute left-0 sm:left-auto sm:right-0 top-full z-40 mt-2 w-64 rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] py-2 shadow-lg"
                 >
                   <button
                     type="button"
                     role="option"
                     aria-selected={!selectedCity}
                     onClick={() => handleSelectCity(undefined)}
-                    className={`flex min-h-11 min-h-[44px] w-full items-center justify-between px-4 py-2.5 text-left text-xs font-semibold transition-colors hover:bg-slate-50 ${
-                      !selectedCity ? "bg-[#EAF7EF] text-[#296A4B]" : "text-slate-700"
+                    className={`flex min-h-11 min-h-[44px] w-full items-center justify-between px-4 py-2.5 text-left text-xs font-semibold transition-colors hover:bg-[var(--card-hover)] ${
+                      !selectedCity ? "bg-[var(--tag-bg)] text-[var(--brand-green)]" : "text-[var(--text-main)]"
                     }`}
                   >
                     <span>All cities (Nationwide)</span>

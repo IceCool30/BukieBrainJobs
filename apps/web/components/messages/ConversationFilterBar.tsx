@@ -37,7 +37,7 @@ export function ConversationFilterBar({
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search conversations..."
-          className="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl text-[#001A41] placeholder:text-slate-400 outline-none focus:bg-white focus:border-[#001A41] focus:ring-1 focus:ring-[#001A41] transition-all"
+          className="w-full pl-10 pr-4 py-2 text-sm bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl text-[var(--text-main)] placeholder:text-[var(--text-muted)] outline-none focus:bg-[var(--card-bg)] focus:border-[var(--amber)] focus:ring-1 focus:ring-[var(--amber)] transition-all"
         />
       </div>
 
@@ -45,7 +45,7 @@ export function ConversationFilterBar({
       <div
         role="tablist"
         aria-label="Conversation filters"
-        className="flex items-center gap-1.5 p-1 bg-slate-100/80 rounded-xl border border-slate-200/60"
+        className="flex items-center gap-1.5 p-1 bg-[var(--tag-bg)] rounded-xl border border-[var(--lead)]"
       >
         {TABS.map((tab) => {
           const isSelected = activeTab === tab.id;
@@ -58,10 +58,10 @@ export function ConversationFilterBar({
               aria-controls={`tabpanel-${tab.id}`}
               aria-selected={isSelected}
               onClick={() => onTabChange(tab.id)}
-              className={`flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] ${
+              className={`flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] cursor-pointer ${
                 isSelected
-                  ? 'bg-white text-[#001A41] shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                  ? 'bg-[var(--card-bg)] text-[var(--amber)] shadow-xs font-bold'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)]'
               }`}
             >
               {tab.label}

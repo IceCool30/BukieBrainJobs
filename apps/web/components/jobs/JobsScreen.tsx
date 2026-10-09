@@ -267,27 +267,27 @@ export default function JobsScreen() {
   // 1. Unauthenticated state check
   if (authChecked && !currentUser && viewModel.stateMode !== 'auth_failure') {
     return (
-      <div className="min-h-screen bg-[#F8F9FF] flex items-center justify-center p-6 text-slate-800 font-sans">
-        <div className="max-w-md w-full bg-white rounded-2xl p-8 border border-slate-200 shadow-xs text-center">
-          <div className="mx-auto w-14 h-14 rounded-full bg-blue-50 text-[#001A41] flex items-center justify-center mb-5">
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-6 text-[var(--text-main)] font-sans">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl p-8 border border-[var(--lead)] shadow-xs text-center">
+          <div className="mx-auto w-14 h-14 rounded-full bg-[var(--tag-bg)] text-[var(--amber)] flex items-center justify-center mb-5">
             <Briefcase className="h-7 w-7" />
           </div>
-          <h1 className="text-2xl font-bold font-display text-[#001A41] mb-2">
+          <h1 className="text-2xl font-bold font-display tracking-trades uppercase text-[var(--text-main)] mb-2">
             Sign in to view your activity
           </h1>
-          <p className="text-slate-600 text-sm mb-6">
+          <p className="text-[var(--text-muted)] text-sm mb-6">
             Please sign in to access your BukieBrainJobs service requests, active bookings, and scheduled work.
           </p>
           <div className="space-y-3">
             <Link
               href="/login?redirect=/jobs"
-              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-xl bg-[#001A41] text-white font-medium hover:bg-[#002661] transition"
+              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-xl bg-[var(--amber)] text-white font-medium hover:bg-[var(--amber-hover)] transition cursor-pointer"
             >
               Sign In
             </Link>
             <Link
               href="/"
-              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-xl bg-slate-100 text-slate-700 font-medium hover:bg-slate-200 transition"
+              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-xl bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--text-main)] font-medium hover:bg-[var(--card-hover)] transition"
             >
               Back to Home
             </Link>
@@ -334,7 +334,7 @@ export default function JobsScreen() {
 
   // 3. Main Authenticated Surface
   return (
-    <div className="min-h-screen bg-[#F8F9FF] text-slate-800 font-sans pb-24 lg:pb-12">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] font-sans pb-24 lg:pb-12 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:flex lg:gap-8">
         {/* Desktop Authenticated Sidebar */}
         <JobsSidebar
@@ -347,10 +347,10 @@ export default function JobsScreen() {
         <main className="flex-1 flex flex-col min-w-0">
           {/* Page Heading */}
           <div className="mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold font-display text-[#001A41]">
+            <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-trades uppercase text-[var(--text-main)]">
               Jobs & Bookings
             </h1>
-            <p className="text-slate-600 text-sm mt-1">
+            <p className="text-[var(--text-muted)] text-sm mt-1">
               Keep track of your service requests, bookings, and activity in one place.
             </p>
           </div>

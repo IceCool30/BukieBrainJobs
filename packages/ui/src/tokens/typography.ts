@@ -5,9 +5,9 @@ export const typography = {
   fontFamily: {
     sans: ['Inter', 'system-ui', 'sans-serif'],
     mono: ['JetBrains Mono', 'monospace'],
-    display: ['Hanken Grotesk', 'sans-serif'],
+    display: ['Cabinet Grotesk', 'Hanken Grotesk', 'sans-serif'],
     body: ['Inter', 'sans-serif'],
-    headline: ['Hanken Grotesk', 'sans-serif'],
+    headline: ['Cabinet Grotesk', 'Hanken Grotesk', 'sans-serif'],
   },
   fontSize: {
     xs: '0.75rem',      // 12px
@@ -52,6 +52,7 @@ export const typography = {
   },
   letterSpacing: {
     tighter: '-0.05em',
+    trades: '-0.04em',
     tight: '-0.025em',
     normal: '0',
     wide: '0.025em',

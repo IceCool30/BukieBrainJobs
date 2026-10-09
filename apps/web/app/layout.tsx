@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import TradesTelemetryBar from '../components/TradesTelemetryBar';
 
 export const viewport: Viewport = {
   themeColor: '#001A41',
@@ -74,14 +75,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem('bukiebrainjobs-theme');var p=window.matchMedia('(prefers-color-scheme: dark)').matches;var t=s||(p?'dark':'light');document.documentElement.setAttribute('data-theme',t);if(t==='dark'){document.documentElement.classList.add('dark');}else{document.documentElement.classList.remove('dark');}}catch(e){}})();`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
       </head>
-      <body className="min-h-screen bg-[#f8f9ff] font-sans text-[#0b1c30] antialiased">
+      <body className="min-h-screen bg-[var(--bg)] font-sans text-[var(--text-main)] antialiased transition-colors duration-200 pt-8 sm:pt-9">
+        <TradesTelemetryBar />
         {children}
       </body>
     </html>

@@ -10,6 +10,47 @@ const slate = {
   800: '#1e293b', 900: '#0f172a', 950: '#020617',
 };
 
+export const tradesColorTokens = {
+  light: {
+    bg: '#F7F9FC',
+    cardBg: '#FFFFFF',
+    cardHover: '#F2F5FB',
+    lead: '#E2E8F0',
+    rule: '#CBD5E1',
+    textMain: '#001A41',
+    textMuted: '#53647A',
+    amber: '#FF6B35',
+    amberHover: '#F15A24',
+    brandGreen: '#10B981',
+    stripBg: '#001A41',
+    stripText: '#D6E4F5',
+    tableHeaderBg: '#EEF4FB',
+    tagBg: '#F1F5F9',
+    dispatchBg: 'linear-gradient(135deg, #001A41 0%, #002A62 100%)',
+  },
+  dark: {
+    bg: '#0B0E13',
+    cardBg: '#13171E',
+    cardHover: '#191E27',
+    lead: '#202734',
+    rule: '#2D3748',
+    textMain: '#F0F4F9',
+    textMuted: '#8897AB',
+    amber: '#FF6B35',
+    amberHover: '#FF7D4D',
+    brandGreen: '#2FE896',
+    stripBg: '#07090D',
+    stripText: '#9FB2C8',
+    tableHeaderBg: '#0F131A',
+    tagBg: 'rgba(255, 255, 255, 0.04)',
+    dispatchBg: 'linear-gradient(135deg, #07090D 0%, #13171E 100%)',
+  },
+} as const;
+
+export type TradesColorTokens = typeof tradesColorTokens;
+export type TradesThemeMode = 'light' | 'dark';
+export const TradesColors = tradesColorTokens;
+
 export const brandColors = {
   navy: {
     DEFAULT: '#001A41',
@@ -51,6 +92,9 @@ export const brandColors = {
   // Use Tailwind's native slate as required by DESIGN.md (derived from #64748B)
   slate,
   
+  // Trades design system semantic colors
+  trades: tradesColorTokens,
+
   // Material Design 3 (M3) Semantic Tokens from DESIGN.md frontmatter
   surface: {
     DEFAULT: '#f8f9ff',
