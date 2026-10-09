@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AERODYNE // Orbital Dynamics & Avionics Requisition Index</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       BUKIEBRAINJOBS TRADES DESIGN SYSTEM: DUAL-THEME IMPLEMENTATION
+       Subject Domain: AERODYNE Orbital Spacecraft & Flight Avionics Marketplace
+       ========================================================================== */
+    :root, [data-theme="light"] {
+      --bg: #F7F9FC;
+      --card-bg: #FFFFFF;
+      --card-hover: #F2F5FB;
+      --header-bg: #F7F9FC;
+      --lead: #E2E8F0;
+      --rule: #CBD5E1;
+      
+      --brand-navy: #001A41;
+      --text-main: #001A41;
+      --text-muted: #53647A;
+      --text-column-header: #001A41;
+      
+      --brand-green: #10B981;
+      --brand-green-dim: rgba(16, 185, 129, 0.1);
+      --brand-green-border: rgba(16, 185, 129, 0.35);
+
+      --amber: #FF6B35;
+      --amber-hover: #F15A24;
+      --amber-dim: rgba(255, 107, 53, 0.08);
+
+      --strip-bg: #001A41;
+      --strip-text: #D6E4F5;
+      
+      --table-header-bg: #EEF4FB;
+      --tag-bg: #F1F5F9;
+      --tag-border: #E2E8F0;
+      --tag-text: #001A41;
+      
+      --manifesto-bg: #FFFFFF;
+      --dispatch-bg: linear-gradient(135deg, #001A41 0%, #061326 100%);
+      --dispatch-title: #FFFFFF;
+      --dispatch-desc: #B4C6DF;
+      
+      --modal-bg: #FFFFFF;
+      --modal-overlay: rgba(0, 26, 65, 0.55);
+      --toggle-bg: #E8EEF6;
+      --toggle-border: #CBD5E1;
+      --toggle-active-bg: #FFFFFF;
+      --toggle-active-text: #001A41;
+
+      --grid-line: rgba(0, 26, 65, 0.02);
+      --ambient-glow: rgba(255, 107, 53, 0.04);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0B0E13;
+      --card-bg: #13171E;
+      --card-hover: #191E27;
+      --header-bg: #0B0E13;
+      --lead: #202734;
+      --rule: #2D3748;
+      
+      --brand-navy: #001A41;
+      --text-main: #F0F4F9;
+      --text-muted: #8897AB;
+      --text-column-header: #8897AB;
+      
+      --brand-green: #2FE896;
+      --brand-green-dim: rgba(47, 232, 150, 0.12);
+      --brand-green-border: rgba(47, 232, 150, 0.35);
+
+      --amber: #FF6B35;
+      --amber-hover: #FF7D4D;
+      --amber-dim: rgba(255, 107, 53, 0.14);
+
+      --strip-bg: #07090D;
+      --strip-text: #9FB2C8;
+      
+      --table-header-bg: #0F131A;
+      --tag-bg: rgba(255, 255, 255, 0.04);
+      --tag-border: rgba(255, 255, 255, 0.08);
+      --tag-text: #BAC9DC;
+      
+      --manifesto-bg: rgba(19, 23, 30, 0.7);
+      --dispatch-bg: linear-gradient(135deg, #151A24 0%, #0F131A 100%);
+      --dispatch-title: #F0F4F9;
+      --dispatch-desc: #8897AB;
+      
+      --modal-bg: #13171E;
+      --modal-overlay: rgba(5, 7, 10, 0.82);
+      --toggle-bg: #1A202C;
+      --toggle-border: #2D3748;
+      --toggle-active-bg: #2B3342;
+      --toggle-active-text: #F0F4F9;
+
+      --grid-line: rgba(255, 255, 255, 0.015);
+      --ambient-glow: rgba(255, 107, 53, 0.06);
+    }
+
+    :root {
+      --font-display: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(ellipse at 85% 0%, var(--ambient-glow) 0%, transparent 50%),
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+      background-size: 100% 100%, 48px 48px, 48px 48px;
+    }
+
+    /* Top Telemetry Strip */
+    .telemetry-strip {
+      background: var(--strip-bg);
+      color: var(--strip-text);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--lead);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .telemetry-strip span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .telemetry-strip .live-indicator {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--brand-green);
+      box-shadow: 0 0 8px var(--brand-green);
+      animation: pulse 2.2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .shell {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header */
+    header {
+      padding: 1.5rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--lead);
+      background: var(--header-bg);
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+    }
+
+    .brand-symbol-box {
+      width: 32px;
+      height: 32px;
+      background: var(--text-main);
+      color: var(--bg);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.85rem;
+      clip-path: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text-main);
+    }
+
+    .brand-badge-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border: 1px solid var(--lead);
+      border-left: 2px solid var(--brand-green);
+      color: var(--text-main);
+      background: var(--card-bg);
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .nav-link {
+      color: var(--text-main);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      transition: color 0.15s;
+    }
+
+    .nav-link:hover {
+      color: var(--amber);
+    }
+
+    /* Industrial Segmented Theme Toggle */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      background: var(--toggle-bg);
+      border: 1px solid var(--toggle-border);
+      border-radius: 20px;
+      padding: 2px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .theme-toggle-btn {
+      border: none;
+      background: transparent;
+      padding: 4px 9px;
+      border-radius: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.18s ease;
+    }
+
+    .theme-toggle-btn.active {
+      background: var(--toggle-active-bg);
+      color: var(--toggle-active-text);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+
+    /* Primary Action: Molten Amber */
+    .btn-action {
+      background: var(--amber);
+      color: #FFFFFF;
+      border: 1px solid var(--amber);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(255, 107, 53, 0.22);
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-action:hover {
+      background: var(--amber-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(255, 107, 53, 0.38);
+    }
+
+    .btn-ghost {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--lead);
+      box-shadow: none;
+    }
+
+    .btn-ghost:hover {
+      background: var(--card-hover);
+      border-color: var(--text-main);
+      box-shadow: none;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 4.75rem 0 3.75rem;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 3.5rem;
+      align-items: end;
+      border-bottom: 1px solid var(--lead);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+    }
+
+    .hero-eyebrow .dot {
+      color: var(--brand-green);
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5.2vw, 4.3rem);
+      font-weight: 900;
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      margin-bottom: 1.35rem;
+    }
+
+    .hero-headline span.accent {
+      color: var(--amber);
+    }
+
+    .hero-thesis {
+      font-size: 1.08rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 530px;
+    }
+
+    .hero-manifesto {
+      border-left: 3px solid var(--text-main);
+      padding-left: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      background: var(--manifesto-bg);
+      padding: 1.75rem 2rem;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      border: 1px solid var(--lead);
+      border-left: 3px solid var(--amber);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    }
+
+    .stat-lockup {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-number {
+      font-family: var(--font-mono);
+      font-size: 2.1rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+    }
+
+    .stat-label {
+      font-size: 0.74rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    /* Filter Toolbar */
+    .station-toolbar {
+      padding: 2.5rem 0 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .pill-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--lead);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.5rem 0.95rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+      transition: all 0.16s ease;
+    }
+
+    .pill-btn:hover {
+      border-color: var(--text-main);
+      color: var(--text-main);
+    }
+
+    .pill-btn.active {
+      background: var(--text-main);
+      border-color: var(--text-main);
+      color: var(--bg);
+      font-weight: 700;
+    }
+
+    .feed-count {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* The Requisition Index (Command Table) */
+    .market-index {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--lead);
+      background: var(--card-bg);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 4rem;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .index-header {
+      display: grid;
+      grid-template-columns: 120px 2.2fr 1.3fr 1.1fr 140px;
+      gap: 1rem;
+      padding: 0.85rem 1.25rem;
+      background: var(--table-header-bg);
+      border-bottom: 1px solid var(--lead);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-column-header);
+      font-weight: 700;
+    }
+
+    .job-row {
+      display: grid;
+      grid-template-columns: 120px 2.2fr 1.3fr 1.1fr 140px;
+      gap: 1rem;
+      padding: 1.25rem;
+      border-bottom: 1px solid var(--lead);
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-main);
+      cursor: pointer;
+      background: var(--card-bg);
+      transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .job-row:last-child {
+      border-bottom: none;
+    }
+
+    .job-row:hover {
+      background: var(--card-hover);
+      border-left: 3px solid var(--text-main);
+      padding-left: calc(1.25rem - 3px);
+    }
+
+    .req-code {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    .role-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .role-name {
+      font-family: var(--font-display);
+      font-size: 1.08rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--text-main);
+    }
+
+    .stack-tags {
+      display: flex;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .stack-tags span {
+      background: var(--tag-bg);
+      padding: 2px 7px;
+      border-radius: 2px;
+      border: 1px solid var(--tag-border);
+      font-weight: 500;
+      color: var(--tag-text);
+    }
+
+    .facility-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .org-name {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--text-main);
+    }
+
+    .site-loc {
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      color: var(--text-muted);
+    }
+
+    .comp-range {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .comp-equity {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--brand-green);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .comp-equity .shield-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand-green);
+      display: inline-block;
+      box-shadow: 0 0 4px var(--brand-green);
+    }
+
+    .row-cta {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .pill-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid var(--lead);
+      background: var(--card-bg);
+      color: var(--text-main);
+      font-weight: 700;
+      transition: all 0.15s ease;
+    }
+
+    .job-row:hover .pill-status {
+      background: var(--amber);
+      color: #FFFFFF;
+      border-color: var(--amber);
+      font-weight: 700;
+    }
+
+    /* Verification Standards Grid */
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      padding-bottom: 4.5rem;
+      border-bottom: 1px solid var(--lead);
+    }
+
+    .protocol-card {
+      background: var(--card-bg);
+      border: 1px solid var(--lead);
+      border-radius: var(--radius-sm);
+      padding: 1.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      position: relative;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .protocol-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 28px;
+      height: 3px;
+      background: var(--brand-green);
+      transition: width 0.18s;
+    }
+
+    .protocol-card:hover::before {
+      width: 48px;
+    }
+
+    .protocol-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .protocol-tag .badge-mint {
+      color: var(--brand-green);
+      background: var(--brand-green-dim);
+      border: 1px solid var(--brand-green-border);
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+
+    .protocol-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+    }
+
+    .protocol-card p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    /* Dispatch Section */
+    .dispatch-box {
+      margin: 4.5rem 0;
+      background: var(--dispatch-bg);
+      border-radius: var(--radius-sm);
+      padding: 3.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
+    }
+
+    .dispatch-box::after {
+      content: "ORBIT_2026";
+      position: absolute;
+      right: -10px;
+      bottom: -15px;
+      font-family: var(--font-mono);
+      font-size: 4.8rem;
+      font-weight: 800;
+      color: rgba(255,255,255,0.035);
+      pointer-events: none;
+    }
+
+    .dispatch-info h2 {
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      color: var(--dispatch-title);
+    }
+
+    .dispatch-info p {
+      color: var(--dispatch-desc);
+      max-width: 530px;
+      font-size: 0.96rem;
+      line-height: 1.55;
+    }
+
+    /* Footer */
+    footer {
+      padding: 2.5rem 0 3.5rem;
+      border-top: 1px solid var(--lead);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .footer-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-link:hover {
+      color: var(--text-main);
+    }
+
+    /* Modal / Inspector Drawer */
+    .sheet-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--modal-overlay);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      place-items: center;
+      padding: 1rem;
+    }
+
+    .sheet-overlay.open {
+      display: grid;
+    }
+
+    .sheet-modal {
+      background: var(--modal-bg);
+      border: 1px solid var(--lead);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 620px;
+      padding: 2.25rem;
+      position: relative;
+      border-radius: var(--radius-sm);
+    }
+
+    .close-sheet {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: transparent;
+      border: 1px solid var(--lead);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.35rem 0.65rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .close-sheet:hover {
+      color: var(--text-main);
+      border-color: var(--text-main);
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .index-header {
+        display: none;
+      }
+      .job-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        padding: 1.25rem 1rem;
+      }
+      .protocol-grid {
+        grid-template-columns: 1fr;
+      }
+      .dispatch-box {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .row-cta {
+        justify-content: flex-start;
+      }
+      .brand-badge-tag {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Telemetry Strip -->
+  <aside class="telemetry-strip" aria-label="System status">
+    <span><span class="live-indicator"></span> Deep Space Network Link // Latency: 42ms</span>
+    <span>Active Flight Requisitions: 184</span>
+    <span>Security Clearance: NASA / ITAR Level 4</span>
+  </aside>
+
+  <div class="shell">
+    <!-- Header with Theme Toggle -->
+    <header>
+      <a href="#" class="brand-mark">
+        <div class="brand-symbol-box">A</div>
+        <div class="brand-title">Aerodyne</div>
+        <span class="brand-badge-tag">Orbital Requisitions</span>
+      </a>
+      <nav class="nav-actions">
+        <a href="#requisitions" class="nav-link">Flight Index</a>
+        <a href="#protocol" class="nav-link">Vetting Specs</a>
+        
+        <!-- Segmented Industrial Theme Toggle -->
+        <div class="theme-toggle" role="radiogroup" aria-label="Appearance toggle">
+          <button class="theme-toggle-btn active" id="lightBtn" onclick="setTheme('light')">
+            ☀ LIGHT
+          </button>
+          <button class="theme-toggle-btn" id="darkBtn" onclick="setTheme('dark')">
+            ☾ DARK
+          </button>
+        </div>
+
+        <a href="#dispatch" class="btn-action btn-ghost">Post Launch Role</a>
+        <a href="#requisitions" class="btn-action">Access Mission Board</a>
+      </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="dot">●</span> Flight Avionics & Spacecraft Propulsion
+        </div>
+        <h1 class="hero-headline">
+          The Requisition Index for <span class="accent">Deep Orbit & Beyond</span>.
+        </h1>
+        <p class="hero-thesis">
+          Direct engineering placement for Hall-effect propulsion leads, radiation-hardened FPGA architects, guidance navigation & control (GNC) leads, and cleanroom vacuum test directors. Direct to flight directors. Zero staffing brokers.
+        </p>
+      </div>
+
+      <div class="hero-manifesto">
+        <div class="stat-lockup">
+          <div class="stat-item">
+            <span class="stat-number">$245k</span>
+            <span class="stat-label">Median Base</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Flight Bench Vetted</span>
+          </div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
+          Every requisition provides confirmed thermal-vacuum chamber access, flight payload integration budgets, and ITAR compliance backing.
+        </p>
+      </div>
+    </section>
+
+    <!-- Filter & Station Bar -->
+    <section id="requisitions">
+      <div class="station-toolbar">
+        <div class="filter-pills" role="tablist" aria-label="Discipline filter">
+          <button class="pill-btn active" data-filter="all">All Missions (184)</button>
+          <button class="pill-btn" data-filter="gnc">Guidance & Navigation (GNC)</button>
+          <button class="pill-btn" data-filter="propulsion">Electric Propulsion</button>
+          <button class="pill-btn" data-filter="avionics">Rad-Hard Avionics</button>
+          <button class="pill-btn" data-filter="structures">Thermal-Vacuum & Structures</button>
+        </div>
+        <div class="feed-count">
+          Showing <span id="visible-count">5</span> verified flight billets
+        </div>
+      </div>
+
+      <!-- The Requisition Index (Command Board) -->
+      <main class="market-index" id="jobs-container">
+        <div class="index-header">
+          <div>Ref ID</div>
+          <div>Role & Flight Stack</div>
+          <div>Facility / Cleanroom</div>
+          <div>Compensation & Equity</div>
+          <div style="text-align: right;">Action</div>
+        </div>
+
+        <!-- Job Item 1 -->
+        <article class="job-row" data-discipline="propulsion" onclick="inspectRole('AERO-9041')">
+          <div class="req-code">
+            <span>AERO-9041</span>
+          </div>
+          <div class="role-title-block">
+            <div class="role-name">Principal Hall Thruster Plasma Physicist</div>
+            <div class="stack-tags">
+              <span>Xenon/Krypton</span>
+              <span>Anode Layer</span>
+              <span>COMSOL Multi</span>
+              <span>Magnetic Shielding</span>
+            </div>
+          </div>
+          <div class="facility-meta">
+            <div class="org-name">Helios Propulsion Labs</div>
+            <div class="site-loc">Mojave, CA // Chamber TVAC-7</div>
+          </div>
+          <div>
+            <div class="comp-range">$235,000 – $285,000</div>
+            <div class="comp-equity"><span class="shield-dot"></span> 0.6% Series B Equity</div>
+          </div>
+          <div class="row-cta">
+            <span class="pill-status">Inspect Spec</span>
+          </div>
+        </article>
+
+        <!-- Job Item 2 -->
+        <article class="job-row" data-discipline="gnc" onclick="inspectRole('AERO-9038')">
+          <div class="req-code">
+            <span>AERO-9038</span>
+          </div>
+          <div class="role-title-block">
+            <div class="role-name">Autonomous Orbital Rendezvous GNC Lead</div>
+            <div class="stack-tags">
+              <span>Kalman Filters</span>
+              <span>LiDAR Docking</span>
+              <span>Simulink</span>
+              <span>C++20 Embedded</span>
+            </div>
+          </div>
+          <div class="facility-meta">
+            <div class="org-name">Astraea Space Logistics</div>
+            <div class="site-loc">Long Beach, CA // Simulation Bay 3</div>
+          </div>
+          <div>
+            <div class="comp-range">$215,000 – $260,000</div>
+            <div class="comp-equity"><span class="shield-dot"></span> 0.45% Series A Equity</div>
+          </div>
+          <div class="row-cta">
+            <span class="pill-status">Inspect Spec</span>
+          </div>
+        </article>
+
+        <!-- Job Item 3 -->
+        <article class="job-row" data-discipline="avionics" onclick="inspectRole('AERO-9029')">
+          <div class="req-code">
+            <span>AERO-9029</span>
+          </div>
+          <div class="role-title-block">
+            <div class="role-name">Radiation-Hardened FPGA Flight Architect</div>
+            <div class="stack-tags">
+              <span>Microchip RTG4</span>
+              <span>SpaceWire</span>
+              <span>MIL-STD-1553</span>
+              <span>VHDL / Verilog</span>
+            </div>
+          </div>
+          <div class="facility-meta">
+            <div class="org-name">Centauri Deep Space</div>
+            <div class="site-loc">Boulder, CO // Cleanroom ISO 6</div>
+          </div>
+          <div>
+            <div class="comp-range">$205,000 – $250,000</div>
+            <div class="comp-equity"><span class="shield-dot"></span> Restricted Stock Units</div>
+          </div>
+          <div class="row-cta">
+            <span class="pill-status">Inspect Spec</span>
+          </div>
+        </article>
+
+        <!-- Job Item 4 -->
+        <article class="job-row" data-discipline="structures" onclick="inspectRole('AERO-9014')">
+          <div class="req-code">
+            <span>AERO-9014</span>
+          </div>
+          <div class="role-title-block">
+            <div class="role-name">Satellite Bus Thermal-Mechanical Lead</div>
+            <div class="stack-tags">
+              <span>Nastran / Patran</span>
+              <span>Cryocoolers</span>
+              <span>Multi-Layer Insulation</span>
+              <span>CFRP Composites</span>
+            </div>
+          </div>
+          <div class="facility-meta">
+            <div class="org-name">NovaCraft Orbital</div>
+            <div class="site-loc">Tukwila, WA // Testing Complex</div>
+          </div>
+          <div>
+            <div class="comp-range">$195,000 – $240,000</div>
+            <div class="comp-equity"><span class="shield-dot"></span> 0.35% Equity Pool</div>
+          </div>
+          <div class="row-cta">
+            <span class="pill-status">Inspect Spec</span>
+          </div>
+        </article>
+
+        <!-- Job Item 5 -->
+        <article class="job-row" data-discipline="avionics" onclick="inspectRole('AERO-8998')">
+          <div class="req-code">
+            <span>AERO-8998</span>
+          </div>
+          <div class="role-title-block">
+            <div class="role-name">Flight Software Director (Hard-Realtime RTEMS)</div>
+            <div class="stack-tags">
+              <span>RTEMS</span>
+              <span>Rust for Space</span>
+              <span>Fault Isolation</span>
+              <span>cFS (NASA Core)</span>
+            </div>
+          </div>
+          <div class="facility-meta">
+            <div class="org-name">Pioneer Space Station</div>
+            <div class="site-loc">Houston, TX // Flight Software Lab</div>
+          </div>
+          <div>
+            <div class="comp-range">$240,000 – $300,000</div>
+            <div class="comp-equity"><span class="shield-dot"></span> 0.5% Founder Equity</div>
+          </div>
+          <div class="row-cta">
+            <span class="pill-status">Inspect Spec</span>
+          </div>
+        </article>
+      </main>
+    </section>
+
+    <!-- Verification / Integrity Standards -->
+    <section id="protocol" class="protocol-grid">
+      <div class="protocol-card">
+        <div class="protocol-tag">
+          <span>Flight Spec // 01</span>
+          <span class="badge-mint">Hardware In Loop</span>
+        </div>
+        <h3>Hardware-in-the-Loop Testbeds</h3>
+        <p>No synthetic or paper openings. Every participating space program verifies dedicated bench power, HIL simulators, and flight qualification hardware.</p>
+      </div>
+      <div class="protocol-card">
+        <div class="protocol-tag">
+          <span>Flight Spec // 02</span>
+          <span class="badge-mint">Capital Verified</span>
+        </div>
+        <h3>Confirmed Mission Reserves</h3>
+        <p>Positions must verify secured Series A/B funding or prime government contract backing before receiving launch requisition clearance.</p>
+      </div>
+      <div class="protocol-card">
+        <div class="protocol-tag">
+          <span>Flight Spec // 03</span>
+          <span class="badge-mint">Direct Link</span>
+        </div>
+        <h3>Direct Mission Director Link</h3>
+        <p>Direct screening with Chief Engineers, Flight Directors, and Avionics Leads. Zero intermediate agency filtering or third-party recruiters.</p>
+      </div>
+    </section>
+
+    <!-- Dispatch Section -->
+    <section id="dispatch" class="dispatch-box">
+      <div class="dispatch-info">
+        <h2>Deploy a Specialized Flight Requisition</h2>
+        <p>Screened spaceflight avionics engineers, propulsion physicists, and GNC architects reviewed directly by your engineering team within 72 hours.</p>
+      </div>
+      <div>
+        <a href="#dispatch" class="btn-action">Commission Mission Billet</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-left">
+        <div class="brand-symbol-box" style="width: 20px; height: 20px; font-size: 0.65rem;">A</div>
+        <span>&copy; 2026 AERODYNE SPACE MARKETPLACE LTD.</span>
+        <a href="#" class="footer-link">ITAR Compliance</a>
+        <a href="#" class="footer-link">Cleanroom Standards</a>
+        <a href="#" class="footer-link">Telemetry API</a>
+      </div>
+      <div>
+        <span>ALL FLIGHT TEST RIGS VERIFIED ONSITE &bull; ITAR COMPLIANT</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Role Detail Modal / Inspector -->
+  <div class="sheet-overlay" id="sheetModal" onclick="closeSheetOnBackdrop(event)">
+    <div class="sheet-modal" role="dialog" aria-modal="true">
+      <button class="close-sheet" onclick="closeSheet()">[ESC] CLOSE</button>
+      <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--amber); margin-bottom: 0.5rem;" id="modalId">AERO-9041 // DIRECT DISPATCH</div>
+      <h2 style="font-family: var(--font-display); font-size: 1.45rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.25rem;" id="modalTitle">Principal Hall Thruster Plasma Physicist</h2>
+      <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1.5rem;" id="modalOrg">Helios Propulsion Labs // Mojave, CA</div>
+      
+      <div style="border-top: 1px solid var(--lead); border-bottom: 1px solid var(--lead); padding: 1.25rem 0; margin-bottom: 1.5rem;">
+        <div style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Flight Hardware Scope</div>
+        <p style="font-size: 0.94rem; color: var(--text-main); line-height: 1.6;" id="modalScope">
+          Responsible for plasma plume erosion analysis, magnetic field topology design, and 10,000-hour life-testing inside the 6m vacuum chamber. Direct ownership of cathode discharge stability.
+        </p>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">COMPENSATION BAND</div>
+          <div style="font-family: var(--font-mono); font-weight: 700; color: var(--text-main); font-size: 1.1rem;" id="modalComp">$235k – $285k + 0.6% Equity</div>
+        </div>
+        <button class="btn-action" onclick="alert('Billet submission sent directly to the Chief Propulsion Scientist.')">Transmit Flight Portfolio</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Theme Switcher & Storage Engine
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('aerodyne_theme', theme);
+      
+      const lightBtn = document.getElementById('lightBtn');
+      const darkBtn = document.getElementById('darkBtn');
+      
+      if (theme === 'dark') {
+        lightBtn.classList.remove('active');
+        darkBtn.classList.add('active');
+      } else {
+        darkBtn.classList.remove('active');
+        lightBtn.classList.add('active');
+      }
+    }
+
+    // Auto-detect or restore saved theme on load
+    (function initTheme() {
+      const savedTheme = localStorage.getItem('aerodyne_theme');
+      if (savedTheme) {
+        setTheme(savedTheme);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark');
+      } else {
+        setTheme('light');
+      }
+    })();
+
+    // Discipline filter interaction
+    const filterBtns = document.querySelectorAll('.pill-btn');
+    const jobRows = document.querySelectorAll('.job-row');
+    const countDisplay = document.getElementById('visible-count');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        let visible = 0;
+
+        jobRows.forEach(row => {
+          if (filter === 'all' || row.dataset.discipline === filter) {
+            row.style.display = 'grid';
+            visible++;
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        countDisplay.textContent = visible;
+      });
+    });
+
+    // Requisition details dictionary
+    const roleDetails = {
+      'AERO-9041': {
+        title: 'Principal Hall Thruster Plasma Physicist',
+        org: 'Helios Propulsion Labs // Mojave, CA (Chamber TVAC-7)',
+        comp: '$235,000 – $285,000 + 0.6% Series B Equity',
+        scope: 'Design, simulate, and fire 5kW magnetic shielding Hall-effect thrusters. Direct access to high-vacuum cryogenic pumping facility and retarding potential analyzer diagnostics.'
+      },
+      'AERO-9038': {
+        title: 'Autonomous Orbital Rendezvous GNC Lead',
+        org: 'Astraea Space Logistics // Long Beach, CA (Simulation Bay 3)',
+        comp: '$215,000 – $260,000 + 0.45% Series A Equity',
+        scope: 'Develop relative navigation estimation filters and proximity operations collision avoidance algorithms for active debris capture and commercial orbital resupply missions.'
+      },
+      'AERO-9029': {
+        title: 'Radiation-Hardened FPGA Flight Architect',
+        org: 'Centauri Deep Space // Boulder, CO (Cleanroom ISO 6)',
+        comp: '$205,000 – $250,000 + RSU Equity Grant',
+        scope: 'Design fault-tolerant SpaceWire router architecture and triple modular redundancy (TMR) cores on Microchip RTG4 silicon for cislunar exploration satellites.'
+      },
+      'AERO-9014': {
+        title: 'Satellite Bus Thermal-Mechanical Lead',
+        org: 'NovaCraft Orbital // Tukwila, WA (Testing Complex)',
+        comp: '$195,000 – $240,000 + 0.35% Equity Pool',
+        scope: 'Own finite-element structural launch stress analysis and transient orbital thermal balance modeling in Thermal Desktop for 500kg low-earth-orbit communication constellations.'
+      },
+      'AERO-8998': {
+        title: 'Flight Software Director (Hard-Realtime RTEMS)',
+        org: 'Pioneer Space Station // Houston, TX (Flight Software Lab)',
+        comp: '$240,000 – $300,000 + 0.5% Founder Equity',
+        scope: 'Architect safety-critical flight executive and telemetry control processes on NASA Core Flight System (cFS) and RTEMS for human-rated commercial orbital habitats.'
+      }
+    };
+
+    function inspectRole(id) {
+      const data = roleDetails[id];
+      if (!data) return;
+      document.getElementById('modalId').textContent = id + ' // DIRECT DISPATCH';
+      document.getElementById('modalTitle').textContent = data.title;
+      document.getElementById('modalOrg').textContent = data.org;
+      document.getElementById('modalComp').textContent = data.comp;
+      document.getElementById('modalScope').textContent = data.scope;
+      document.getElementById('sheetModal').classList.add('open');
+    }
+
+    function closeSheet() {
+      document.getElementById('sheetModal').classList.remove('open');
+    }
+
+    function closeSheetOnBackdrop(e) {
+      if (e.target.id === 'sheetModal') {
+        closeSheet();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSheet();
+    });
+  </script>
+</body>
+</html>

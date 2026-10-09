@@ -9,13 +9,13 @@
 
 ## 2. CLOUD COMPUTE HIERARCHY & EXECUTION PIPELINE
 * **Environment Context**:
-  * **Local Terminal**: Termux on Android (strict RAM limits and Android Low Memory Killer / LMK).
+  * **Local Terminal**: Termux on Android (strict RAM limits and Android Low Memory Killer / LMK). When running in a non-Termux environment (e.g. dedicated cloud Linux VM), execution runs directly locally without needing Cloud Shell or Codespace.
   * **Primary Cloud Compute (100% Free / $0)**: Google Cloud Shell VM via `gcloud cloud-shell ssh` (tied to `solomonogarbukie@gmail.com`).
   * **Paid Fallback Compute**: GitHub Codespace `effective-fishstick-x5qwp6wrrp64fxwx` (4 CPU cores, 16 GB RAM, Ubuntu 22.04 LTS).
   * **Heavy Compute Sandbox**: Google Colab ephemeral GPU/TPU instances (T4, L4, A100) via universal `colab` CLI.
 
 ### Execution Rules
-* **NEVER Run Heavy Commands Locally in Termux**: DO NOT run monorepo-wide tests (`pnpm test`, `turbo run test`), Vitest across multiple suites, TypeScript compiler checks (`tsc --noEmit`, `pnpm type-check`), or Next.js production builds (`pnpm build`) locally on Termux. Doing so causes Android LMK `SIGKILL` (exit 137).
+* **NEVER Run Heavy Commands Locally in Termux**: DO NOT run monorepo-wide tests (`pnpm test`, `turbo run test`), Vitest across multiple suites, TypeScript compiler checks (`tsc --noEmit`, `pnpm type-check`), or Next.js production builds (`pnpm build`) locally on Termux. Doing so causes Android LMK `SIGKILL` (exit 137). When running in a full Linux VM environment, commands run directly locally.
 * **PRIMARY: Dispatch Builds and Tests to Google Cloud Shell**:
   Always use the free Google Cloud Shell compute layer as the primary execution venue:
   ```bash
@@ -62,6 +62,6 @@
 * **Execution Rhythm**: Every task adheres to phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`), scaled to the task size.
 * **Dynamic Skill Orchestration**: Specialized skills are pulled in on-demand as each phase dictates:
   * `/develop` & `/test` ➔ Activates `agent-skills-test-driven-development`.
-  * Frontend & UI phases ➔ Activates `bukiebrainjobs-experience-standards` and `ui-ux-pro-max`.
+  * Frontend & UI phases ➔ Activates `bukiebrainjobs-trades-design-system`, `bukiebrainjobs-experience-standards`, and `ui-ux-pro-max`.
   * Customer-facing content ➔ Activates, first, `mr-solomon-natural-voice` and `bukiebrainjobs-content-style`. These are the two mandatory skills that must be used together for any customer-facing copy.
   * All communication and documentation ➔ Follow the direct human standard of `mr-solomon-natural-voice`.

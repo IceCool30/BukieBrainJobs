@@ -44,7 +44,7 @@ BukieBrainJobs_PWA_Icons.zip
 
 # Agent execution state
 # The .agents directory holds local agent execution state and is ignored,
-# EXCEPT the five mandatory skills mandated by AGENTS.md, which are tracked
+# EXCEPT the mandatory skills mandated by AGENTS.md, which are tracked
 # so any agent cloning this repo receives them locally and remotely.
 .agents/*
 !.agents/skills/
@@ -54,4 +54,6 @@ BukieBrainJobs_PWA_Icons.zip
 !.agents/skills/ui-ux-pro-max/
 !.agents/skills/agent-skills-test-driven-development/
 !.agents/skills/mr-solomon-natural-voice/
+!.agents/skills/bukiebrainjobs-content-style/
+!.agents/skills/bukiebrainjobs-trades-design-system/
 .env*

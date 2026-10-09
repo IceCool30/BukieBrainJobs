@@ -99,7 +99,7 @@ This file defines the standards and operational map every contributor must follo
 
 These skills are required for all work in this repository without exception. Load each one at the start of every session and apply it whenever the task falls within its domain. Do not skip, defer, or partially apply these skills.
 
-**This is enforced as a hard gate, not a preference.** Before your first file edit, load all six through the skills tool, triage each one as `APPLIED` or `OUT OF SCOPE`, and print the `SKILL GATE` block exactly as specified in `.clinerules` section 6 (mirrored in `CLAUDE.md`). The declaration must appear in your reply before any edit. A missing line fails the gate. `OUT OF SCOPE` requires a specific reason, not a vague one. Re-run the gate whenever the task materially changes.
+**This is enforced as a hard gate, not a preference.** Before your first file edit, load all seven through the skills tool, triage each one as `APPLIED` or `OUT OF SCOPE`, and print the `SKILL GATE` block exactly as specified in `.clinerules` section 6 (mirrored in `CLAUDE.md`). The declaration must appear in your reply before any edit. A missing line fails the gate. `OUT OF SCOPE` requires a specific reason, not a vague one. Re-run the gate whenever the task materially changes.
 
 Every agent is bound by this: primary agent, subagent, teammate, spawned worker. Whoever edits, declares. When spawning a subordinate, include the gate in its system prompt.
 
@@ -108,6 +108,7 @@ Every agent is bound by this: primary agent, subagent, teammate, spawned worker.
 | `mr-solomon-nine-command-engineering-loop` | `.agents/skills/mr-solomon-nine-command-engineering-loop/SKILL.md` | Primary operating system for all tasks: planning, architecture spec, development loop, verification, documentation, or debugging phase. |
 | `mr-solomon-natural-voice` | `.agents/skills/mr-solomon-natural-voice/SKILL.md` | Required for all communications, documentation, and (first) for all customer-facing content. |
 | `bukiebrainjobs-content-style` | `.agents/skills/bukiebrainjobs-content-style/SKILL.md` | Customer-facing copy, marketplace terminology, and microcopy (must be applied together with `mr-solomon-natural-voice`). |
+| `bukiebrainjobs-trades-design-system` | `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md` | Mandatory design authority for all customer-facing UI, dual-theme styling (Light & Dark), colors, layout, and component architecture. (Repo: `https://github.com/IceCool30/bukiebrainjobs-trades-design-system`). |
 | `bukiebrainjobs-experience-standards` | `.agents/skills/bukiebrainjobs-experience-standards/SKILL.md` | Any customer-facing UI, copy, motion, responsive layout, component, accessibility, or interaction work. |
 | `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Any visual design decision, page structure, component quality review, typography, color, animation, or UX pattern. |
 | `agent-skills-test-driven-development` | `.agents/skills/agent-skills-test-driven-development/SKILL.md` | Any logic change, bug fix, behavior modification, or new feature implementation. |
@@ -116,7 +117,7 @@ All mandatory skills must be read before work begins on any substantive task. If
 
 Two skills are almost never out of scope: `mr-solomon-nine-command-engineering-loop` governs the task itself, and `mr-solomon-natural-voice` governs everything written. If you cannot state a concrete reason a skill is out of scope, treat it as in scope.
 
-Verify rather than claim: run `bash scripts/check-skill-gate.sh` from the repository root before review. It fails loudly if any rule file lost the gate or dropped one of the six skills. Treat a failure as a blocker for the task, not a warning.
+Verify rather than claim: run `bash scripts/check-skill-gate.sh` from the repository root before review. It fails loudly if any rule file lost the gate or dropped one of the seven skills. Treat a failure as a blocker for the task, not a warning.
 
 
 ## Before changing anything

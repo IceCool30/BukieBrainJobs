@@ -41,13 +41,13 @@ Whenever you modify code, follow this exact sequence:
 
 ## 6. Mandatory Skill Gate (Every Task, No Exceptions)
 
-These six skills are required on every task. They are load-bearing rules, not suggestions:
+These seven skills are required on every task. They are load-bearing rules, not suggestions:
 
-`mr-solomon-nine-command-engineering-loop`, `mr-solomon-natural-voice`, `bukiebrainjobs-content-style`, `bukiebrainjobs-experience-standards`, `ui-ux-pro-max`, `agent-skills-test-driven-development`
+`mr-solomon-nine-command-engineering-loop`, `mr-solomon-natural-voice`, `bukiebrainjobs-content-style`, `bukiebrainjobs-trades-design-system`, `bukiebrainjobs-experience-standards`, `ui-ux-pro-max`, `agent-skills-test-driven-development`
 
 **The gate:**
 
-1. **Load before you touch anything.** Do not create, edit, or delete any file until all six skills have been loaded through the skills tool and triaged. Reading these rules is not loading a skill. `AGENTS.md` names the paths.
+1. **Load before you touch anything.** Do not create, edit, or delete any file until all seven skills have been loaded through the skills tool and triaged. Reading these rules is not loading a skill. `AGENTS.md` names the paths.
 2. **Declare before the first edit.** Print this block in your reply before any file change:
 
 ```
@@ -55,6 +55,7 @@ SKILL GATE
 - mr-solomon-nine-command-engineering-loop: APPLIED
 - mr-solomon-natural-voice: APPLIED
 - bukiebrainjobs-content-style: OUT OF SCOPE (no customer-facing copy in this task)
+- bukiebrainjobs-trades-design-system: OUT OF SCOPE (no trades styling or dual-theme layout change)
 - bukiebrainjobs-experience-standards: OUT OF SCOPE (no UI or interaction change)
 - ui-ux-pro-max: OUT OF SCOPE (no visual or layout decision)
 - agent-skills-test-driven-development: APPLIED
@@ -68,4 +69,4 @@ GATE PASSED
 7. **If work already started without the gate, stop.** Load, declare, then continue from where you are.
 8. **Every agent, no exceptions.** Primary agent, subagent, teammate, spawned worker. Whoever edits, declares. When you spawn a subordinate, put this gate in its system prompt.
 9. **A task is not finished while the gate is unpassed.** An unpassed gate makes any result inadmissible for review.
-10. **Verify the gate, do not just claim it.** Run `bash scripts/check-skill-gate.sh` from the repository root. It fails loudly if any rule file lost the gate or dropped one of the six skills. Run it before review, and treat a failure as a blocker for the task, not a warning.
+10. **Verify the gate, do not just claim it.** Run `bash scripts/check-skill-gate.sh` from the repository root. It fails loudly if any rule file lost the gate or dropped one of the seven skills. Run it before review, and treat a failure as a blocker for the task, not a warning.
