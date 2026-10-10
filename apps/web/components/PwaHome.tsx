@@ -511,8 +511,8 @@ export default function PwaHome({
         </div>
 
         <div className="motion-reveal-item flex items-baseline justify-between pt-5">
-          <h2 className="font-display font-bold text-[17px] text-[var(--text-main)]">Browse services</h2>
-          <Link href="/services" className="motion-press text-[13px] font-semibold text-[var(--brand-green)]">
+          <h2 className="font-display font-bold text-[17px] text-[#001A41]">Browse services</h2>
+          <Link href="/services" className="motion-press text-[13px] font-semibold text-[#296A4B]">
             View all
           </Link>
         </div>
@@ -523,42 +523,21 @@ export default function PwaHome({
               key={cat.id}
               type="button"
               onClick={() => onSelectCategory?.(cat, selectedLocation.name)}
-              aria-label={cat.title}
-              className="motion-press motion-reveal-item group text-left block rounded-[24px] p-2 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.04] backdrop-blur-xl shadow-xs hover:shadow-md hover:border-[var(--amber)]/70 transition-all duration-200 active:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F8F9FF]"
+              className="motion-press motion-reveal-item group text-left block rounded-2xl active:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F8F9FF]"
             >
-              <div className="rounded-[18px] overflow-hidden bg-[#F8F9FC] dark:bg-[#13171F] border border-black/[0.03] dark:border-white/[0.04] p-1.5 flex flex-col justify-between h-full w-full">
-                <div>
-                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[14px] bg-slate-200/60 dark:bg-zinc-800">
-                    <Image
-                      src={cat.photoUrl}
-                      alt={cat.title}
-                      fill
-                      sizes="50vw"
-                      className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
-                    />
-                    <span className="absolute bottom-1.5 left-1.5 inline-flex items-center rounded-full bg-black/65 backdrop-blur-md px-2 py-0.5 text-[10px] font-bold text-white border border-white/20 shadow-xs">
-                      From {cat.startingPrice}
-                    </span>
-                  </div>
-                  <div className="mt-2 px-0.5">
-                    <span className="block text-xs font-bold leading-snug text-[var(--text-main)] group-hover:text-[var(--amber)] transition-colors line-clamp-1">
-                      {cat.title}
-                    </span>
-                    <span className="mt-1 block text-[10px] text-[var(--text-muted)] truncate">
-                      {cat.popularServices.slice(0, 2).join(' · ')}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-2 flex items-center justify-between pt-1.5 border-t border-black/[0.04] dark:border-white/[0.05] px-0.5">
-                  <span className="text-[10px] font-semibold text-[var(--brand-green)]">
-                    Verified
-                  </span>
-                  <span className="flex items-center gap-0.5 text-[10px] font-bold text-[var(--text-main)] group-hover:text-[var(--amber)] transition-colors">
-                    Book <ArrowRight className="h-2.5 w-2.5" />
-                  </span>
-                </div>
+              <div className="relative aspect-[5/4] overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-sm">
+                <Image
+                  src={cat.photoUrl}
+                  alt={cat.title}
+                  fill
+                  sizes="50vw"
+                  className="object-cover transition-transform duration-[180ms] group-active:scale-[1.035]"
+                />
+                <span className="absolute left-2.5 top-2.5 rounded-full bg-white px-2 py-1 text-[10px] font-semibold text-[#001A41] shadow-sm">
+                  From {cat.startingPrice}
+                </span>
               </div>
+              <p className="mt-2 line-clamp-2 text-xs font-bold leading-snug text-[#001A41]">{cat.title}</p>
             </button>
           ))}
         </div>
