@@ -1,127 +1,187 @@
 ---
 name: bukiebrainjobs-trades-design-system
-description: Complete design system, dual-theme architecture (Architectural Light & Obsidian Titanium Dark), typography, token system, and requisition index layout specification for BukieBrainJobs. Use when designing, building, or refactoring BukieBrainJobs customer-facing pages, discovery views, landing screens, or component libraries to ensure exact aesthetic fidelity.
+description: Design system and dual-theme transformation engine (Architectural Gallery Light & Obsidian Titanium Gunmetal Dark) for BukieBrainJobs. Guides agents and engineers in restyling existing UI components, pages, cards, typography, and interactive states to the approved design system without injecting unsolicited layout components.
 ---
 
 # BukieBrainJobs Trades Design System
 
 ## Overview
-This design system formalizes the approved **Architectural Dual-Theme Design** for BukieBrainJobs. It bridges the authority of an engineered technical requisition board with Bukie's trusted marketplace standards (escrow milestones, workshop vetting, and direct technician booking).
-
-Use this skill whenever any agent or engineer is asked to implement, restyle, or extend BukieBrainJobs screens, landing pages, or components to match the approved experience exactly.
+This skill formalizes the **Architectural Dual-Theme Design System** for BukieBrainJobs. It provides the typography, semantic color tokens, surface architecture, card styling, and motion standards needed to transform and restyle existing BukieBrainJobs pages, components, and views into the approved aesthetic.
 
 ---
 
-## 1. Design Principles & Character
+## 1. Prime Transformation Directive: Reskin, Do Not Invent
 
-1. **Grounded in Physical Competence**:
-   BukieBrainJobs serves high-value technical hands (Diesel Generator Overhaulers, High-Voltage Solar Microgrids, Industrial PLC Automators, Commercial HVAC Leads, Precision Trades). The interface looks like a precision instrument panel, not generic SaaS marketing slop.
-2. **Authority Through Structure**:
-   High-density information hierarchy using structured tabular data (`Ref ID`, `Role & Stack`, `Location`, `Milestone & Escrow`, and direct action triggers).
-3. **Restraint & Dual-Theme Harmony**:
-   - **Light Mode**: Gallery architectural off-white (`#F7F9FC`) with crisp pure white card surfaces (`#FFFFFF`) and deep Brand Navy typography (`#001A41`).
-   - **Dark Mode**: Obsidian Titanium Gunmetal (`#0B0E13` / `#13171E`) with razor-sharp wireframe dividers and platinum text (`#F0F4F9`).
-   - **Action Catalyst**: Molten Amber (`#FF6B35`) is reserved strictly for primary interactive actions and the hero accent.
-   - **Verification & Security**: Brand Green (`#10B981` / `#2FE896`) is reserved for trust badges, escrow clearance, and the pulsing live telemetry beacon.
+When an agent or developer applies this design system to a page or component:
+
+1. **Transform What Exists**:
+   Your job is to update the styling, tokens, typography, and theme compatibility of existing UI elements.
+2. **Never Inject Unsolicited Components**:
+   Do NOT add foreign layout sections that were not requested. Specifically:
+   - Do NOT add a Top Telemetry Bar to worker dashboards, customer portals, or settings pages.
+   - Do NOT add a Requisition Command Table to booking, lead, or account management screens.
+   - Do NOT add landing-page hero banners, manifesto callouts, or fake stat counters to application flows.
+3. **Preserve Information Architecture & Logic**:
+   Keep existing routes, form structures, state management, validations, and interactive logic intact. Change how things look and feel, not what they do.
 
 ---
 
-## 2. Color Palette & Semantic Token Architecture
+## 2. Dual-Theme Engine (Light & Dark)
 
-All implementations **must** use semantic CSS variables mapping seamlessly between `[data-theme="light"]` and `[data-theme="dark"]`.
+The design system operates on a dual-theme architecture with full CSS variable mapping. All surfaces, borders, and text colors must adapt cleanly between light and dark modes.
 
-| Semantic Variable | Light Mode Value | Dark Mode Value | Intended Usage |
+### 2.1 Theme Modes
+* **Architectural Gallery Light (`[data-theme="light"]`)**:
+  Canvas is gallery architectural off-white (`#F7F9FC`), card surfaces are crisp pure white (`#FFFFFF`), dividers are clean hairline slate (`#E2E8F0`), and primary typography is authoritative Brand Navy (`#001A41`).
+* **Obsidian Titanium Gunmetal Dark (`[data-theme="dark"]`)**:
+  Canvas is deep obsidian gunmetal (`#0B0E13`), card surfaces are dark titanium panels (`#13171E`), dividers are subtle wireframe lines (`#202734`), and primary typography is platinum white (`#F0F4F9`).
+
+### 2.2 Semantic CSS Variables & Token Architecture
+Always use these CSS variables or their Tailwind utility equivalents. Never hardcode arbitrary hex values.
+
+| Token / Variable | Light Mode | Dark Mode | Semantic Usage |
 | :--- | :--- | :--- | :--- |
-| `--bg` | `#F7F9FC` | `#0B0E13` | Root canvas surface |
-| `--card-bg` | `#FFFFFF` | `#13171E` | Card surfaces, board background |
-| `--card-hover` | `#F2F5FB` | `#191E27` | Interactive table row hover |
-| `--lead` | `#E2E8F0` | `#202734` | Hairline structural dividers |
-| `--rule` | `#CBD5E1` | `#2D3748` | Active boundary lines |
-| `--text-main` | `#001A41` | `#F0F4F9` | Display titles, table row titles |
-| `--text-muted` | `#53647A` | `#8897AB` | Secondary descriptions, locations |
-| `--amber` | `#FF6B35` | `#FF6B35` | Primary CTA buttons, action catalyst |
-| `--amber-hover` | `#F15A24` | `#FF7D4D` | CTA button hover state |
-| `--brand-green` | `#10B981` | `#2FE896` | Escrow badges, telemetry live beacon |
-| `--strip-bg` | `#001A41` | `#07090D` | Top telemetry utility bar |
-| `--strip-text` | `#D6E4F5` | `#9FB2C8` | Top telemetry label text |
-| `--table-header-bg`| `#EEF4FB` | `#0F131A` | Index table column header row |
-| `--tag-bg` | `#F1F5F9` | `rgba(255,255,255,0.04)` | Tech stack tags |
-| `--dispatch-bg` | `linear-gradient(...)` | `linear-gradient(...)` | Bottom callout container |
+| `--bg` | `#F7F9FC` | `#0B0E13` | Main canvas / page background |
+| `--card-bg` | `#FFFFFF` | `#13171E` | Card containers, panels, and dropdown menus |
+| `--card-hover` | `#F2F5FB` | `#191E27` | Interactive card or table row hover background |
+| `--lead` | `#E2E8F0` | `#202734` | Hairline card borders and subtle section dividers |
+| `--rule` | `#CBD5E1` | `#2D3748` | Active boundary lines and input field borders |
+| `--text-main` | `#001A41` | `#F0F4F9` | Primary headings, table row titles, active labels |
+| `--text-muted` | `#53647A` | `#8897AB` | Secondary descriptions, timestamps, subtext |
+| `--amber` | `#FF6B35` | `#FF6B35` | Primary action catalyst (main CTA buttons) |
+| `--amber-hover` | `#F15A24` | `#FF7D4D` | Primary action button hover state |
+| `--amber-dim` | `rgba(255, 107, 53, 0.08)` | `rgba(255, 107, 53, 0.14)` | Amber badge backgrounds, focus glows |
+| `--brand-green` | `#10B981` | `#2FE896` | Trust badges, verified status, active escrow |
+| `--brand-green-dim` | `rgba(16, 185, 129, 0.1)` | `rgba(47, 232, 150, 0.12)` | Verified badge background tint |
+| `--brand-green-border` | `rgba(16, 185, 129, 0.35)` | `rgba(47, 232, 150, 0.35)` | Verified badge hairline border |
+| `--brand-navy` | `#001A41` | `#001A41` | Core brand anchor identity |
+| `--tag-bg` | `#F1F5F9` | `rgba(255, 255, 255, 0.04)` | Metadata pills and category tags |
+| `--tag-border` | `#E2E8F0` | `rgba(255, 255, 255, 0.08)` | Metadata pill borders |
+| `--tag-text` | `#001A41` | `#BAC9DC` | Metadata pill label text |
+
+### 2.3 Theme Switcher Pattern
+When a theme toggle is present on a screen or in user preferences:
+* Use a segmented pill (`LIGHT` / `DARK`) or a compact sun/moon toggle.
+* Persist the active selection to `localStorage` under the key `bbj_theme`.
+* Set `data-theme="light"` or `data-theme="dark"` on the `html` root element.
 
 ---
 
 ## 3. Typography Hierarchy
 
-Three distinct type roles must be paired deliberately:
+The typography pairs three distinct type families deliberately:
 
-1. **Display Headings**: `Cabinet Grotesk` (weights: 800, 900)
-   - *Alternative fallback*: `Hanken Grotesk` (weight 800)
-   - Tracking: `-0.04em` (ultra-tight, muscular, authoritative)
-   - Transform: Uppercase for primary hero headlines and board titles.
-2. **Body & Controls**: `Inter` (weights: 400, 500, 600, 700)
-   - Line height: `1.55` - `1.6` for readable descriptions and manifesto copy.
-3. **Telemetry & Technical Codes**: `JetBrains Mono` (weights: 500, 600, 700)
-   - Used for `REQ-8820` reference codes, stack tags, compensation amounts (`₦2,800,000 / mo`), filter pills, and telemetry indicators.
+### 3.1 Display Headings (`Cabinet Grotesk` or fallback `Hanken Grotesk`)
+* **Role**: Primary page titles, section headers, card titles.
+* **Weights**: 800 (Bold) or 900 (Black).
+* **Tracking**: `-0.03em` to `-0.04em` (compact, muscular, authoritative).
+* **Usage**: Clean uppercase or title case for high-impact titles. Never use decorative script or generic fonts.
+
+### 3.2 Body & Interface Controls (`Inter`)
+* **Role**: Form inputs, paragraphs, descriptions, modal copy, navigation labels.
+* **Weights**: 400 (Regular), 500 (Medium), 600 (Semi-Bold).
+* **Line Height**: `1.5` to `1.6` for clean readability across desktop and mobile.
+
+### 3.3 Telemetry, Codes & Financial Data (`JetBrains Mono`)
+* **Role**: Reference codes (`BK-9021`), currency values (`₦45,000`), status pills, technical parameters, timestamps, counters.
+* **Weights**: 500 (Medium) or 600 (Semi-Bold).
+* **Tracking**: `0.02em` to `0.05em`.
+* **Rule**: Always render currency amounts, codes, and telemetry metrics in monospace.
 
 ---
 
-## 4. Key UI Components & Anatomy
+## 4. Component Transformation Guide
 
-### 4.1 Top Telemetry Bar
-- Height: Compact (`0.55rem 1.5rem`).
-- Left item: Pulsing green/mint indicator (`7px` circle with pulse animation) + live market status.
-- Middle item: Active verified requisition counter.
-- Right item: `Escrow Security: BukieGuarantee™`.
+Apply these visual patterns to restyle existing UI components:
 
-### 4.2 Header & Brand Navigation
-- Left: BukieBrainJobs wordmark banner image (`36px` height) paired with a monospace border-left tag: `VERIFIED TRADES INDEX`.
-- Center/Right: Monospace navigation links (`MARKET`, `VERIFICATION`).
-- Right Toggle: **Segmented Industrial Theme Switcher**:
-  ```html
-  <div class="theme-toggle" role="radiogroup">
-    <button class="theme-toggle-btn active" id="lightBtn" onclick="setTheme('light')">☀ LIGHT</button>
-    <button class="theme-toggle-btn" id="darkBtn" onclick="setTheme('dark')">☾ DARK</button>
-  </div>
+### 4.1 Cards & Containers
+* Background: `var(--card-bg)`.
+* Border: `1px solid var(--lead)`.
+* Border Radius: `4px` (subtle industrial) to `8px` (standard card).
+* Padding: Generous and structured (`1.25rem` to `1.75rem`).
+* Interactive Hover: Transition background to `var(--card-hover)` with a slight hairline contrast lift on hover.
+
+### 4.2 Buttons & Action Triggers
+* **Primary Interactive Button (Action Catalyst)**:
+  - Background: `var(--amber)` (`#FF6B35`).
+  - Text: `#FFFFFF`, bold, uppercase tracking (`0.04em`), font: `JetBrains Mono` or `Inter`.
+  - Border: `1px solid var(--amber)`.
+  - Hover: `var(--amber-hover)` with a subtle `-1px` transform lift.
+* **Secondary / Ghost Button**:
+  - Background: `var(--card-bg)`.
+  - Text: `var(--text-main)`.
+  - Border: `1px solid var(--lead)`.
+  - Hover: Background shifts to `var(--card-hover)` with border darkening to `var(--rule)`.
+* **Danger / Destructive Button**:
+  - Muted red surface with clear red text and border; never use amber for destructive actions.
+
+### 4.3 Tables & Data Lists
+* Header Row: Background `var(--table-header-bg)`, text uppercase monospace in `var(--text-muted)`.
+* Row Borders: Hairline `1px solid var(--lead)`.
+* Row Hover: Background `var(--card-hover)`.
+* Reference IDs / Monetary Values: Formatted in `JetBrains Mono`.
+
+### 4.4 Status Badges & Pills
+* **Verified / Escrow / Success**:
+  - Background: `var(--brand-green-dim)`.
+  - Text: `var(--brand-green)`.
+  - Border: `1px solid var(--brand-green-border)`.
+  - Font: `JetBrains Mono` (0.7rem, uppercase).
+* **Neutral / Tag**:
+  - Background: `var(--tag-bg)`.
+  - Text: `var(--tag-text)`.
+  - Border: `1px solid var(--tag-border)`.
+
+### 4.5 Form Controls & Inputs
+* Background: `var(--card-bg)`.
+* Text: `var(--text-main)`.
+* Border: `1px solid var(--rule)`.
+* Focus Ring: `2px solid var(--amber)` with `var(--amber-dim)` outer glow.
+* Placeholder: `var(--text-muted)`.
+
+---
+
+## 5. Motion & Micro-Interactions
+
+* **Transition Timing**: Standard transitions must be snappy: `0.18s` to `0.25s ease`.
+* **Theme Switching**: Apply smooth cross-fade to backgrounds, borders, and text colors during theme toggle:
+  ```css
+  * {
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  }
   ```
-- Right CTA: Ghost button (`POST REQUISITION`) + Amber button (`ACCESS BOARD`).
-
-### 4.3 Hero Section
-- Left column (60%):
-  - Monospace eyebrow with green dot: `● VERIFIED INFRASTRUCTURE & TECHNICAL HANDS`.
-  - Display H1: `THE REQUISITION INDEX FOR <span class="accent">HANDS THAT BUILD</span>.`
-  - Direct, confident thesis statement without corporate filler.
-- Right manifesto box (40%):
-  - Left border anchor (`3px solid var(--text-main)`).
-  - 2-column stat lockup (`₦3.2M Avg Milestone` / `100% Escrow Protected`).
-  - Clear escrow guarantee statement.
-
-### 4.4 The Requisition Index (Command Table)
-- **Station Toolbar**: Filter pills for technical disciplines (`Power Generation`, `Solar & Inverters`, `Plant Automation`, `Industrial HVAC`) + live filtered counter.
-- **Header Row**: Monospace uppercase headers (`REF ID`, `ROLE & TECHNICAL STACK`, `WORKSHOP / LOCATION`, `MILESTONE & ESCROW`, `ACTION`).
-- **Data Rows**:
-  - `REQ-XXXX` code in monospace.
-  - Role title in bold Cabinet Grotesk + tech stack tags in neutral monospace pills.
-  - Workshop entity name + Nigerian city location (e.g. `Ikeja, Lagos // Industrial Bay 04`).
-  - Exact milestone compensation (`₦2,800,000 / mo`) + green escrow badge (`● 100% Escrow Milestone`).
-  - Action CTA button: `INSPECT SPEC` (turns solid amber on row hover).
-
-### 4.5 Spec Inspection Modal (Drawer)
-- Backdrop blur overlay.
-- Technical project scope, verified tooling requirements, milestone value, and `Submit Credentials / Book Opportunity` action.
-
-### 4.6 Verification Protocol Cards
-- 3-column card grid explaining:
-  1. `Physical Rig & Bench Vetting` (Calibrated diagnostic gear).
-  2. `Milestone Escrow Protection` (Funds locked before commencement).
-  3. `Direct Engineering Link` (Direct link to workshop lead).
-- Green corner marker on card hover.
+* **Accessibility**: Always respect user motion preferences:
+  ```css
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  ```
 
 ---
 
-## 5. Implementation Rules for Developers & Agents
+## 6. Verification Checklist for Reskinned Screens
 
-1. **Never Revert to Pure Generic White or Uncalibrated Black**: Always use the defined CSS variables (`--bg`, `--card-bg`, `--brand-navy`, `--brand-green`, `--amber`).
-2. **Preserve Monospace Data**: Never render reference codes, tech tags, or monthly rates in standard sans-serif; keep them in `JetBrains Mono`.
-3. **Escrow Badges Must Remain Green**: Security and verification indicators must always use `--brand-green` (`#10B981` in light, `#2FE896` in dark).
-4. **Primary CTAs Must Remain Amber**: Do not change the primary action buttons to blue or grey; they must remain Molten Amber (`#FF6B35`) for high-contrast action clarity.
-5. **Reduced Motion**: Respect `prefers-reduced-motion` by disabling the beacon pulse and modal transitions when requested.
+Before concluding any design transformation task, verify:
+- [ ] No unsolicited components were added (no unauthorized telemetry bars, requisition tables, or landing heroes).
+- [ ] Light mode matches Architectural Gallery Light (`#F7F9FC` canvas, `#FFFFFF` cards, `#001A41` text).
+- [ ] Dark mode matches Obsidian Titanium Gunmetal (`#0B0E13` canvas, `#13171E` cards, `#F0F4F9` text).
+- [ ] Primary CTA buttons use Molten Amber (`#FF6B35`).
+- [ ] Trust, escrow, and verification badges use Brand Green (`#10B981` / `#2FE896`).
+- [ ] Monetary figures (`₦`), codes, and telemetry tags use `JetBrains Mono`.
+- [ ] Headings use `Cabinet Grotesk` with tight tracking.
+- [ ] All forms, buttons, links, and interactive logic remain fully functional.
+
+---
+
+## 7. Reference Blueprints (Illustrative Only)
+
+The `references/` directory contains complete static reference implementations:
+* `references/index.html`: Reference implementation demonstrating the CSS variable architecture and dark/light mode toggle mechanics.
+* `references/aerodyne.html`: Thematic demonstration of high-density technical cards and typography.
+
+These files serve as visual guides for tokens and styling. Do not copy their page-specific layout components into unrelated BukieBrainJobs screens.
