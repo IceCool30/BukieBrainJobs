@@ -60,8 +60,8 @@ export function MessageBubble({
   const isSent = status === 'sent';
 
   const bubbleClasses = isCurrentUser
-    ? 'bg-[#001A41] text-white rounded-br-sm'
-    : 'bg-white text-slate-700 border border-slate-200 rounded-bl-sm';
+    ? 'bg-[#001A41] text-white border border-[#001A41] rounded-lg rounded-br-xs shadow-xs'
+    : 'bg-[var(--card-bg)] text-[var(--text-main)] border border-[var(--lead)] ring-white/0 rounded-lg rounded-bl-xs shadow-xs';
 
   const timestamp = formatMessageTimestamp(message.createdAt);
 
@@ -74,7 +74,7 @@ export function MessageBubble({
           aria-label={dateLabel}
           className="flex items-center justify-center my-2"
         >
-          <span className="px-3 py-1 bg-slate-100 text-slate-500 text-xs font-medium rounded-full">
+          <span className="px-3 py-1 bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text-muted)] text-xs font-mono font-medium rounded-md shadow-xs">
             {dateLabel}
           </span>
         </div>
@@ -92,11 +92,11 @@ export function MessageBubble({
               <img
                 src={message.senderAvatar}
                 alt={message.senderName}
-                className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                className="w-8 h-8 rounded-lg object-cover border border-[var(--lead)]"
               />
             ) : (
               <div
-                className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center select-none"
+                className="w-8 h-8 rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--text-main)] font-bold text-xs flex items-center justify-center select-none"
                 aria-hidden="true"
               >
                 {getSenderInitials(message.senderName)}
@@ -108,7 +108,7 @@ export function MessageBubble({
         {/* Message bubble */}
         <div className={`max-w-[80%] lg:max-w-[60%] ${isCurrentUser ? 'order-first' : ''}`}>
           <div
-            className={`relative px-4 py-2.5 text-sm rounded-2xl ${bubbleClasses} ${isSending ? 'opacity-60' : ''}`}
+            className={`relative px-4 py-2.5 text-sm ${bubbleClasses} ${isSending ? 'opacity-60' : ''}`}
           >
             <p className="whitespace-pre-wrap break-words" style={{ float: isCurrentUser ? 'right' : 'left' }}>
               {message.content}
@@ -116,25 +116,25 @@ export function MessageBubble({
 
             {/* Message meta: timestamp and status */}
             <div
-              className={`flex items-center justify-end gap-1.5 mt-1.5 ${isCurrentUser ? 'text-white/60' : 'text-slate-400'}`}
+              className={`flex items-center justify-end gap-1.5 mt-1.5 ${isCurrentUser ? 'text-white/70' : 'text-[var(--text-muted)]'}`}
             >
-              <span className="text-[10px]">{timestamp}</span>
+              <span className="text-[10px] font-mono">{timestamp}</span>
               
               {/* Delivery status icons for current user's messages */}
               {isCurrentUser && (
                 <>
                   {isSending && (
-                    <span className="flex items-center gap-0.5 text-white/60">
+                    <span className="flex items-center gap-0.5 text-white/70">
                       <DeliveryStatusIcon status="sending" />
                     </span>
                   )}
                   {isSent && (
-                    <span className="flex items-center gap-0.5 text-white/60">
+                    <span className="flex items-center gap-0.5 text-white/70">
                       <DeliveryStatusIcon status="sent" />
                     </span>
                   )}
                   {isDelivered && (
-                    <span className="flex items-center gap-0.5 text-white/60">
+                    <span className="flex items-center gap-0.5 text-white/70">
                       <DeliveryStatusIcon status="delivered" />
                     </span>
                   )}
@@ -151,7 +151,7 @@ export function MessageBubble({
                       <button
                         type="button"
                         onClick={onRetry}
-                        className="text-[10px] font-medium hover:underline whitespace-nowrap"
+                        className="text-[10px] font-semibold text-[var(--amber)] hover:underline whitespace-nowrap cursor-pointer"
                       >
                         Retry
                       </button>
@@ -166,7 +166,7 @@ export function MessageBubble({
           {isFailed && !isCurrentUser && (
             <div
               role="alert"
-              className="mt-1 px-3 py-1.5 bg-red-50 border border-red-200 rounded-lg text-[11px] text-red-600"
+              className="mt-1 px-3 py-1.5 bg-red-500/10 border border-red-500/30 rounded-lg text-[11px] text-red-500 font-medium"
             >
               Message failed to deliver
             </div>

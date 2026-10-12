@@ -18,10 +18,10 @@ const ICONS = {
 } as const;
 
 const COLOR_CLASSES = {
-  sending: 'text-amber-500',
-  sent: 'text-slate-400',
-  delivered: 'text-slate-600',
-  read: 'text-emerald-600',
+  sending: 'text-[var(--amber)]',
+  sent: 'text-[var(--text-muted)]',
+  delivered: 'text-[var(--text-muted)]',
+  read: 'text-emerald-600 dark:text-emerald-400',
   failed: 'text-red-500',
 } as const;
 

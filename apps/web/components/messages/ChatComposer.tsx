@@ -105,13 +105,13 @@ export function ChatComposer({
       <div
         role="status"
         aria-live="polite"
-        className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-center"
+        className="bg-[var(--card-bg)] border border-[var(--lead)] rounded-lg px-4 py-3 text-center"
       >
         {bookingStatus === 'COMPLETED' && (
-          <p className="text-sm text-slate-600">This job was completed. Messaging is closed.</p>
+          <p className="text-sm text-[var(--text-muted)] font-medium">This job was completed. Messaging is closed.</p>
         )}
         {bookingStatus === 'CANCELLED' && (
-          <p className="text-sm text-slate-600">This booking was cancelled. Messaging is closed.</p>
+          <p className="text-sm text-[var(--text-muted)] font-medium">This booking was cancelled. Messaging is closed.</p>
         )}
       </div>
     );
@@ -122,7 +122,7 @@ export function ChatComposer({
       {error && (
         <div
           role="alert"
-          className="flex items-center gap-2 px-3 py-2 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600"
+          className="flex items-center gap-2 px-3 py-2 bg-red-500/10 border border-red-500/30 rounded-lg text-sm text-red-500 font-medium"
         >
           <AlertCircle className="w-4 h-4 flex-shrink-0" />
           <span>{error}</span>
@@ -134,9 +134,9 @@ export function ChatComposer({
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-full text-[11px] font-medium text-amber-600"
+          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded-lg text-[11px] font-medium text-[var(--amber)]"
         >
-          <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+          <span className="w-2 h-2 bg-[var(--amber)] rounded-full animate-pulse" />
           <span>Connecting... Polling for updates every 4s</span>
         </div>
       )}
@@ -145,9 +145,9 @@ export function ChatComposer({
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-full text-[11px] font-medium text-amber-600"
+          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded-lg text-[11px] font-medium text-[var(--amber)]"
         >
-          <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+          <span className="w-2 h-2 bg-[var(--amber)] rounded-full animate-pulse" />
           <span>Reconnecting...</span>
         </div>
       )}
@@ -156,9 +156,9 @@ export function ChatComposer({
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-full text-[11px] font-medium text-slate-600"
+          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--card-bg)] border border-[var(--lead)] rounded-lg text-[11px] font-medium text-[var(--text-muted)]"
         >
-          <span className="w-2 h-2 bg-slate-400 rounded-full" />
+          <span className="w-2 h-2 bg-[var(--text-muted)] rounded-full" />
           <span>Offline. Messages will be queued.</span>
         </div>
       )}
@@ -173,13 +173,13 @@ export function ChatComposer({
           disabled={isDisabled}
           aria-label="Message input"
           aria-describedby={showCharacterCounter ? 'char-counter' : undefined}
-          className="w-full min-h-[44px] max-h-[200px] px-4 py-3 pr-12 text-sm text-slate-700 bg-white border border-slate-300 rounded-2xl resize-none placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:border-[#001A41] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          className="w-full min-h-[44px] max-h-[200px] px-4 py-3 pr-12 text-sm text-[var(--text-main)] bg-[var(--bg)] border border-[var(--rule)] rounded-lg resize-none placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--amber)] focus:border-[var(--amber)] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           rows={1}
         />
         {showCharacterCounter && (
           <div
             id="char-counter"
-            className="absolute bottom-1 right-2 text-[11px] text-slate-400"
+            className="absolute bottom-1 right-2 text-[11px] font-mono text-[var(--text-muted)]"
           >
             {characterCount} / {MAX_CHARACTERS}
           </div>
@@ -188,7 +188,7 @@ export function ChatComposer({
           type="submit"
           disabled={!hasContent || isDisabled}
           aria-label="Send message"
-          className="absolute bottom-1.5 right-1.5 p-1.5 text-[#001A41] disabled:text-slate-300 disabled:cursor-not-allowed hover:bg-slate-100 rounded-full transition-colors"
+          className="absolute bottom-1.5 right-1.5 p-1.5 text-[var(--amber)] hover:text-[var(--amber-hover)] disabled:text-[var(--text-muted)]/40 disabled:cursor-not-allowed hover:bg-[var(--card-hover)] rounded-md transition-colors cursor-pointer"
         >
           <Send className="w-5 h-5" />
         </button>

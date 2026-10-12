@@ -228,7 +228,7 @@ export function ChatScreen({
   };
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full bg-[var(--bg)] text-[var(--text-main)]">
       {/* Header */}
       <ChatHeader
         participantName={participantName}
@@ -243,10 +243,10 @@ export function ChatScreen({
       <div
         role="region"
         aria-label="Escrow protection banner"
-        className="bg-[#296A4B]/5 border border-[#296A4B]/20 px-4 py-2.5 text-center"
+        className="bg-[var(--brand-green-dim)] border-y border-[var(--brand-green-border)] px-4 py-2.5 text-center"
       >
-        <p className="text-xs text-[#296A4B] font-medium">
-          <ShieldCheck className="w-3.5 h-3.5 inline align-middle mr-1" />
+        <p className="text-xs text-[var(--brand-green)] font-semibold">
+          <ShieldCheck className="w-3.5 h-3.5 inline align-middle mr-1.5" />
           BukieGuarantee: Your payment is escrow-protected until you confirm satisfaction
         </p>
       </div>
@@ -257,7 +257,7 @@ export function ChatScreen({
         role="region"
         aria-label="Message list"
         aria-live="polite"
-        className="flex-1 overflow-y-auto px-4 py-4 space-y-2"
+        className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-[var(--bg)]"
       >
         {/* New message announcement for screen readers */}
         <div className="sr-only" aria-live="polite" aria-atomic="true">
@@ -268,11 +268,11 @@ export function ChatScreen({
 
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center py-12">
-            <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-              <Clock className="w-8 h-8 text-slate-400" />
+            <div className="w-14 h-14 rounded-lg bg-[var(--card-bg)] border border-[var(--lead)] flex items-center justify-center mb-4 text-[var(--amber)] shadow-xs">
+              <Clock className="w-7 h-7" />
             </div>
-            <h2 className="text-lg font-bold text-[#001A41] mb-2">No messages yet</h2>
-            <p className="text-sm text-slate-500 max-w-md">
+            <h2 className="text-lg font-bold font-display text-[var(--text-main)] mb-2">No messages yet</h2>
+            <p className="text-sm text-[var(--text-muted)] max-w-md">
               Your booking with {participantName} is confirmed. Use this space to confirm
               arrival time, clarify tools, or give specific house directions.
             </p>
@@ -285,7 +285,7 @@ export function ChatScreen({
       </div>
 
       {/* Composer */}
-      <div className="px-4 py-3 border-t border-slate-200 bg-white">
+      <div className="px-4 py-3 border-t border-[var(--lead)] bg-[var(--card-bg)]">
         <ChatComposer
           currentUserId={currentUserId}
           bookingStatus={bookingStatus}

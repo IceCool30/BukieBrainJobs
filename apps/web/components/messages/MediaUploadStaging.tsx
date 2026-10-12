@@ -138,7 +138,7 @@ export function MediaUploadStaging({
         type="button"
         onClick={() => fileInputRef.current?.click()}
         disabled={disabled}
-        className="p-2.5 text-slate-600 hover:bg-slate-100 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="p-2.5 text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         <span className="sr-only">Upload photo</span>
         <Camera className="w-5 h-5" aria-hidden="true" />
@@ -158,7 +158,7 @@ export function MediaUploadStaging({
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center gap-2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600"
+          className="flex items-center gap-2 px-3 py-2 bg-[var(--card-bg)] border border-[var(--lead)] rounded-lg text-sm text-[var(--text-muted)]"
         >
           <AlertCircle className="w-4 h-4 flex-shrink-0" />
           <span>Offline. Cannot upload photos.</span>
@@ -168,7 +168,7 @@ export function MediaUploadStaging({
       {error && !stagedFile && (
         <div
           role="alert"
-          className="flex items-center gap-2 px-3 py-2 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600"
+          className="flex items-center gap-2 px-3 py-2 bg-red-500/10 border border-red-500/30 rounded-lg text-sm text-red-500 font-medium"
         >
           <AlertCircle className="w-4 h-4 flex-shrink-0" />
           <span>{error}</span>
@@ -177,7 +177,7 @@ export function MediaUploadStaging({
 
       {stagedFile && !uploadedUrl && (
         <div className="relative flex flex-col gap-2">
-          <div className="relative w-40 h-40 overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
+          <div className="relative w-40 h-40 overflow-hidden rounded-lg border border-[var(--lead)] bg-[var(--card-bg)]">
             <img
               src={previewUrl || "mock-preview-url"}
               alt="Preview"
@@ -190,10 +190,10 @@ export function MediaUploadStaging({
               aria-valuenow={progress}
               aria-valuemin={0}
               aria-valuemax={100}
-              className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-200"
+              className="absolute bottom-0 left-0 right-0 h-1.5 bg-[var(--tag-bg)]"
             >
               <div
-                className="h-full bg-[#001A41] transition-all duration-200"
+                className="h-full bg-[var(--amber)] transition-all duration-200"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -202,13 +202,13 @@ export function MediaUploadStaging({
               type="button"
               onClick={handleCancel}
               aria-label="Cancel upload"
-              className="absolute top-1 right-1 w-6 h-6 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full border border-white/40 hover:bg-white transition-colors"
+              className="absolute top-1 right-1 w-6 h-6 flex items-center justify-center bg-[var(--card-bg)]/90 backdrop-blur-xs rounded-md border border-[var(--lead)] hover:bg-[var(--card-bg)] text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors cursor-pointer"
             >
-              <X className="w-4 h-4 text-slate-600" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
-          <p className="text-xs text-slate-500 truncate max-w-[160px]">
+          <p className="text-xs text-[var(--text-muted)] font-mono truncate max-w-[160px]">
             {stagedFile.name}
             {isUploading && <span className="sr-only"> (uploading)</span>}
           </p>
@@ -216,7 +216,7 @@ export function MediaUploadStaging({
       )}
 
       {uploadedUrl && (
-        <div className="relative aspect-square max-w-xs overflow-hidden rounded-lg border border-slate-200">
+        <div className="relative aspect-square max-w-xs overflow-hidden rounded-lg border border-[var(--lead)]">
           <img
             src={uploadedUrl}
             alt="Photo"

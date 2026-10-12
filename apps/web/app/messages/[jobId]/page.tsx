@@ -66,10 +66,10 @@ export default function ChatPage(props: ChatPageProps) {
 
   if (convData.isUnauthorized) {
     return (
-      <main className="min-h-screen bg-[#F8F9FF] flex items-center justify-center p-6 text-slate-800 font-sans">
-        <div role="alert" className="max-w-md w-full bg-white rounded-2xl p-8 border border-red-200 shadow-sm text-center">
-          <h1 className="text-xl font-bold font-display text-red-600 mb-2">Access Denied</h1>
-          <p className="text-sm text-slate-600 mb-6 leading-relaxed">
+      <main className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-6 text-[var(--text-main)] font-sans">
+        <div role="alert" className="max-w-md w-full bg-[var(--card-bg)] rounded-lg p-8 border border-red-500/30 shadow-xs text-center">
+          <h1 className="text-xl font-bold font-display text-red-500 mb-2">Access Denied</h1>
+          <p className="text-sm text-[var(--text-muted)] mb-6 leading-relaxed">
             You do not have permission to view this conversation, or the booking is invalid.
           </p>
         </div>
@@ -92,7 +92,7 @@ export default function ChatPage(props: ChatPageProps) {
   };
 
   return (
-    <main className="h-screen flex flex-col bg-white">
+    <main className="h-screen flex flex-col bg-[var(--bg)] text-[var(--text-main)]">
       <ChatScreen
         jobId={activeJobId}
         currentUserId={user.id}
