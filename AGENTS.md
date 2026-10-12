@@ -112,6 +112,7 @@ Every agent is bound by this: primary agent, subagent, teammate, spawned worker.
 | `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Any visual design decision, page structure, component quality review, typography, color, animation, or UX pattern. |
 | `agent-skills-test-driven-development` | `.agents/skills/agent-skills-test-driven-development/SKILL.md` | Any logic change, bug fix, behavior modification, or new feature implementation. |
 | `reverse-engineer-anything` | `.agents/skills/reverse-engineer-anything/SKILL.md` | Any task touching compiled/bundled artifacts, mobile APKs, minified production bundles, HAR network captures, or reverse-engineering external APIs. |
+| `bukiebrainjobs-trades-design-system` | `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md` | Dual-theme transformation engine (Architectural Light & Obsidian Dark) for restyling existing UI components, pages, cards, and typography to the trades design system. |
 
 All mandatory skills must be read before work begins on any substantive task. If a task spans multiple domains, apply all relevant skills together.
 
@@ -132,6 +133,7 @@ Every developer, AI agent, and remote execution environment (Google Cloud Shell 
 | `bukiebrainjobs-experience-standards` | BukieBrainJobs Skill Suite | Customer-facing UI, motion language, accessibility, responsive design | Active in `.agents/skills/bukiebrainjobs-experience-standards/` |
 | `ui-ux-pro-max` | BukieBrainJobs Skill Suite | Visual design intelligence, component hierarchy, typography, design tokens | Active in `.agents/skills/ui-ux-pro-max/` |
 | `agent-skills-test-driven-development` | [agent-skills-tdd](https://github.com/obra/superpowers) | Test-driven development for all logic changes, bug fixes, and new features | Active in `.agents/skills/agent-skills-test-driven-development/` |
+| `bukiebrainjobs-trades-design-system` | [IceCool30/bukiebrainjobs-trades-design-system](https://github.com/IceCool30/bukiebrainjobs-trades-design-system) | Dual-theme transformation engine (Architectural Light & Obsidian Dark) for restyling existing UI components and pages | Active in `.agents/skills/bukiebrainjobs-trades-design-system/` |
 
 
 

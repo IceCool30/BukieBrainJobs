@@ -81,4 +81,5 @@ Every developer, AI agent, and CI worker operating on BukieBrainJobs must have a
 | `bukiebrainjobs-experience-standards` | BukieBrainJobs Skill Suite | Customer-facing UI, motion language, accessibility, responsive design | Active in `.agents/skills/bukiebrainjobs-experience-standards/` |
 | `ui-ux-pro-max` | BukieBrainJobs Skill Suite | Visual design intelligence, component hierarchy, typography, design tokens | Active in `.agents/skills/ui-ux-pro-max/` |
 | `agent-skills-test-driven-development` | [agent-skills-tdd](https://github.com/obra/superpowers) | Test-driven development for all logic changes, bug fixes, and new features | Active in `.agents/skills/agent-skills-test-driven-development/` |
+| `bukiebrainjobs-trades-design-system` | [IceCool30/bukiebrainjobs-trades-design-system](https://github.com/IceCool30/bukiebrainjobs-trades-design-system) | Dual-theme transformation engine (Architectural Light & Obsidian Dark) for restyling existing UI components and pages | Active in `.agents/skills/bukiebrainjobs-trades-design-system/` |
 
