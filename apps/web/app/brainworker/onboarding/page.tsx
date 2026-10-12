@@ -157,27 +157,27 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
   // Customer boundary notice (rendered immediately without repository call)
   if (user?.role === 'customer') {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <div className="max-w-lg w-full bg-white rounded-2xl border border-amber-200 p-8 shadow-sm space-y-4 text-center">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 border border-amber-300 px-3 py-1 text-xs font-semibold text-amber-900">
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0B1528] flex items-center justify-center p-4 transition-colors">
+        <div className="max-w-lg w-full bg-white dark:bg-[#111927] rounded-lg border border-amber-300 dark:border-amber-800/60 p-6 sm:p-8 shadow-xs space-y-4 text-center">
+          <div className="inline-flex items-center gap-1.5 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800/60 px-2.5 py-1 text-xs font-semibold text-amber-900 dark:text-amber-200">
             Boundary Conflict
           </div>
-          <h2 className="text-xl font-bold text-[#001A41]">
+          <h2 className="text-xl font-bold text-[#001A41] dark:text-[#F8FAFC]">
             BrainWorker Registration Required
           </h2>
-          <p className="text-sm text-slate-600 leading-relaxed">
+          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             You are currently signed in as a customer. Provider onboarding requires an active BrainWorker provider account. Customer accounts cannot access provider onboarding.
           </p>
           <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/brainworker/register"
-              className="inline-flex items-center justify-center rounded-xl bg-[#001A41] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#002661]"
+              className="inline-flex items-center justify-center rounded-lg bg-[#001A41] dark:bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#002661] dark:hover:bg-emerald-500 transition-colors"
             >
               Create Provider Account
             </Link>
             <Link
               href="/"
-              className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              className="inline-flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-800 px-5 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
             >
               Return Home
             </Link>
@@ -189,8 +189,8 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
 
   if (!user || isInitializing) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-[#0B1528] transition-colors">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-500 border-t-transparent" />
       </div>
     );
   }
@@ -272,7 +272,7 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-slate-50 dark:bg-[#0B1528] py-10 px-4 sm:px-6 lg:px-8 transition-colors">
       <div className="max-w-3xl mx-auto space-y-8">
         <div>
           <FunnelProgressBar

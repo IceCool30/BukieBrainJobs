@@ -130,14 +130,14 @@ export function ReviewStepForm({
       id={formId}
       onSubmit={handleSubmit}
       noValidate
-      className={`w-full max-w-3xl mx-auto space-y-8 bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm ${className}`}
+      className={`w-full max-w-3xl mx-auto space-y-8 bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-800 rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
     >
       {/* Header */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-[#001A41]">
+        <h2 className="text-xl sm:text-2xl font-bold text-[#001A41] dark:text-[#F8FAFC]">
           Step 4: Review & Submit Application
         </h2>
-        <p className="mt-2 text-sm text-slate-500 leading-relaxed">
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
           Please confirm your details before submitting for operational review. Once submitted, your application is locked while our verification team confirms your records.
         </p>
       </div>
@@ -145,28 +145,28 @@ export function ReviewStepForm({
       {/* 1. Identity Summary Card (REV-001) */}
       <section
         aria-labelledby={`${formId}-identity-heading`}
-        className="rounded-2xl border border-slate-200 bg-slate-50/50 p-5 sm:p-6 transition hover:border-slate-300"
+        className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0E1522] p-5 sm:p-6 transition hover:border-slate-300 dark:hover:border-slate-700"
       >
-        <div className="flex items-center justify-between pb-4 border-b border-slate-200/80">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-slate-800">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-100/70 text-[#001A41]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100/70 dark:bg-blue-950/50 text-[#001A41] dark:text-blue-300">
               <User className="h-5 w-5" />
             </div>
             <div>
               <h3
                 id={`${formId}-identity-heading`}
-                className="text-base font-bold text-[#001A41]"
+                className="text-base font-bold text-[#001A41] dark:text-[#F8FAFC]"
               >
                 Identity Information
               </h3>
-              <p className="text-xs text-slate-500">Legal identity and verified residential address</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Legal identity and verified residential address</p>
             </div>
           </div>
           <button
             type="button"
             onClick={() => onEditStep('identity')}
             aria-label="Edit Identity Information"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 hover:text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+            className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-2xs transition hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-[#001A41] dark:hover:text-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
           >
             <Pencil className="h-3.5 w-3.5" />
             <span>Edit</span>
@@ -175,35 +175,35 @@ export function ReviewStepForm({
 
         <dl className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-sm">
           <div>
-            <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Legal Full Name
             </dt>
-            <dd className="mt-1 font-semibold text-slate-900">{fullName}</dd>
+            <dd className="mt-1 font-semibold text-slate-900 dark:text-slate-100">{fullName}</dd>
           </div>
 
           <div>
-            <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Date of Birth
             </dt>
-            <dd className="mt-1 font-semibold text-slate-900">
+            <dd className="mt-1 font-semibold text-slate-900 dark:text-slate-100">
               {identityData.dateOfBirth}
             </dd>
           </div>
 
           <div>
-            <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               {identityData.identifierType} Number (Masked)
             </dt>
-            <dd className="mt-1 font-mono font-semibold text-slate-900 tracking-wider">
+            <dd className="mt-1 font-mono font-semibold text-slate-900 dark:text-slate-100 tracking-wider">
               {identityData.maskedIdentifier}
             </dd>
           </div>
 
           <div>
-            <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Residential Address
             </dt>
-            <dd className="mt-1 font-semibold text-slate-900">{fullAddress}</dd>
+            <dd className="mt-1 font-semibold text-slate-900 dark:text-slate-100">{fullAddress}</dd>
           </div>
         </dl>
       </section>
@@ -211,28 +211,28 @@ export function ReviewStepForm({
       {/* 2. Trade & Coverage Profile Card (REV-002) */}
       <section
         aria-labelledby={`${formId}-trade-heading`}
-        className="rounded-2xl border border-slate-200 bg-slate-50/50 p-5 sm:p-6 transition hover:border-slate-300"
+        className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0E1522] p-5 sm:p-6 transition hover:border-slate-300 dark:hover:border-slate-700"
       >
-        <div className="flex items-center justify-between pb-4 border-b border-slate-200/80">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-slate-800">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100/70 text-[#001A41]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-100/70 dark:bg-amber-950/50 text-[#001A41] dark:text-amber-300">
               <Wrench className="h-5 w-5" />
             </div>
             <div>
               <h3
                 id={`${formId}-trade-heading`}
-                className="text-base font-bold text-[#001A41]"
+                className="text-base font-bold text-[#001A41] dark:text-[#F8FAFC]"
               >
                 Trade & Coverage Profile
               </h3>
-              <p className="text-xs text-slate-500">Selected trade competency, experience, and service cities</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Selected trade competency, experience, and service cities</p>
             </div>
           </div>
           <button
             type="button"
             onClick={() => onEditStep('trade')}
             aria-label="Edit Trade Profile"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 hover:text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+            className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-2xs transition hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-[#001A41] dark:hover:text-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
           >
             <Pencil className="h-3.5 w-3.5" />
             <span>Edit</span>
@@ -241,26 +241,26 @@ export function ReviewStepForm({
 
         <dl className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-sm">
           <div>
-            <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Primary Trade Category
             </dt>
-            <dd className="mt-1 font-semibold text-slate-900">
+            <dd className="mt-1 font-semibold text-slate-900 dark:text-slate-100">
               {TRADE_CATEGORY_LABELS[tradeData.primaryCategory] || tradeData.primaryCategory}
             </dd>
           </div>
 
           <div>
-            <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Experience Level & Years
             </dt>
-            <dd className="mt-1 font-semibold text-slate-900">
+            <dd className="mt-1 font-semibold text-slate-900 dark:text-slate-100">
               <span>{EXPERIENCE_TIER_LABELS[tradeData.experienceLevel] || tradeData.experienceLevel}</span>
-              <span className="text-slate-500 text-xs ml-2">({tradeData.yearsInTrade} years)</span>
+              <span className="text-slate-500 dark:text-slate-400 text-xs ml-2">({tradeData.yearsInTrade} years)</span>
             </dd>
           </div>
 
           <div className="sm:col-span-2">
-            <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Sub-Specialties
             </dt>
             <dd className="mt-1.5 flex flex-wrap gap-1.5">
@@ -268,7 +268,7 @@ export function ReviewStepForm({
                 tradeData.subSpecialties.map((spec) => (
                   <span
                     key={spec}
-                    className="inline-flex items-center rounded-lg bg-white border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-800 shadow-2xs"
+                    className="inline-flex items-center rounded-md bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-700 px-2.5 py-1 text-xs font-medium text-slate-800 dark:text-slate-200 shadow-2xs"
                   >
                     {spec}
                   </span>
@@ -280,10 +280,10 @@ export function ReviewStepForm({
           </div>
 
           <div className="sm:col-span-2">
-            <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Operating Coverage Cities
             </dt>
-            <dd className="mt-1 font-semibold text-slate-900">
+            <dd className="mt-1 font-semibold text-slate-900 dark:text-slate-100">
               {tradeData.coverageCities.join(', ')}
             </dd>
           </div>
@@ -293,28 +293,28 @@ export function ReviewStepForm({
       {/* 3. Documents & Credentials Summary Card (REV-003) */}
       <section
         aria-labelledby={`${formId}-credentials-heading`}
-        className="rounded-2xl border border-slate-200 bg-slate-50/50 p-5 sm:p-6 transition hover:border-slate-300"
+        className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0E1522] p-5 sm:p-6 transition hover:border-slate-300 dark:hover:border-slate-700"
       >
-        <div className="flex items-center justify-between pb-4 border-b border-slate-200/80">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-slate-800">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100/70 text-[#001A41]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100/70 dark:bg-emerald-950/50 text-[#001A41] dark:text-emerald-300">
               <FileCheck className="h-5 w-5" />
             </div>
             <div>
               <h3
                 id={`${formId}-credentials-heading`}
-                className="text-base font-bold text-[#001A41]"
+                className="text-base font-bold text-[#001A41] dark:text-[#F8FAFC]"
               >
                 Documents & Credentials
               </h3>
-              <p className="text-xs text-slate-500">Staged identification and trade certifications</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Staged identification and trade certifications</p>
             </div>
           </div>
           <button
             type="button"
             onClick={() => onEditStep('credentials')}
             aria-label="Edit Documents & Credentials"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 hover:text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+            className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-2xs transition hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-[#001A41] dark:hover:text-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
           >
             <Pencil className="h-3.5 w-3.5" />
             <span>Edit</span>
@@ -327,26 +327,26 @@ export function ReviewStepForm({
             return (
               <div
                 key={doc.id}
-                className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-3.5 shadow-2xs"
+                className="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111927] p-3.5 shadow-2xs"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                     <FileText className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-slate-900 truncate">
+                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
                       {doc.fileName}
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                       {formattedSize} MB •{' '}
-                      <span className="font-medium text-slate-700">
+                      <span className="font-medium text-slate-700 dark:text-slate-300">
                         {DOCUMENT_CATEGORY_LABELS[doc.category] || doc.category}
                       </span>
                     </p>
                   </div>
                 </div>
 
-                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 border border-emerald-200/60">
+                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 dark:bg-emerald-950/40 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60">
                   <CheckCircle2 className="h-3.5 w-3.5" />
                   <span>Staged</span>
                 </span>
@@ -357,22 +357,22 @@ export function ReviewStepForm({
       </section>
 
       {/* 4. Legal Truthfulness Declaration & Acknowledgements (REV-005) */}
-      <div className="rounded-2xl border-2 border-slate-300 bg-blue-50/40 p-5 sm:p-6 space-y-4">
-        <div className="flex items-center gap-2.5 text-[#001A41]">
+      <div className="rounded-lg border-2 border-slate-300 dark:border-slate-700 bg-blue-50/40 dark:bg-[#0B1528] p-5 sm:p-6 space-y-4">
+        <div className="flex items-center gap-2.5 text-[#001A41] dark:text-emerald-400">
           <ShieldCheck className="h-5 w-5 shrink-0" />
           <h4 className="text-sm font-bold uppercase tracking-wider">
             Applicant Declaration & Agreement
           </h4>
         </div>
 
-        <div className="space-y-3.5 text-xs sm:text-sm text-slate-700">
+        <div className="space-y-3.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
           <label className="flex items-start gap-3 cursor-pointer select-none">
             <input
               type="checkbox"
               id={`${formId}-truth`}
               checked={truthfulnessAcknowledged}
               onChange={(e) => setTruthfulnessAcknowledged(e.target.checked)}
-              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#001A41] focus:ring-[#001A41]"
+              className="mt-0.5 h-4 w-4 rounded border-slate-300 dark:border-slate-700 text-[#001A41] dark:text-emerald-500 focus:ring-emerald-500"
             />
             <span className="leading-snug">
               I solemnly declare that all personal details, trade experience, and credentials provided in this application are genuine, accurate, and belong to me. I understand that submitting fraudulent credentials results in immediate disqualification and account termination.
@@ -385,7 +385,7 @@ export function ReviewStepForm({
               id={`${formId}-terms`}
               checked={termsAccepted}
               onChange={(e) => setTermsAccepted(e.target.checked)}
-              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#001A41] focus:ring-[#001A41]"
+              className="mt-0.5 h-4 w-4 rounded border-slate-300 dark:border-slate-700 text-[#001A41] dark:text-emerald-500 focus:ring-emerald-500"
             />
             <span className="leading-snug">
               I agree to the BukieBrainJobs Provider Terms of Service, background verification protocols, and code of professional conduct.
@@ -395,20 +395,20 @@ export function ReviewStepForm({
       </div>
 
       {/* Action Footer */}
-      <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
+      <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+          className="inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 px-5 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 shadow-xs transition hover:bg-slate-50 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
         >
-          <ArrowLeft className="h-4 w-4 text-slate-500" />
+          <ArrowLeft className="h-4 w-4 text-slate-500 dark:text-slate-400" />
           <span>Back to Credentials</span>
         </button>
 
         <button
           type="submit"
           disabled={!canSubmit}
-          className={`inline-flex items-center gap-2 rounded-xl bg-[#001A41] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#002661] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 ${
+          className={`inline-flex items-center gap-2 rounded-lg bg-[#001A41] dark:bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-[#002661] dark:hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 ${
             !canSubmit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
           }`}
         >
