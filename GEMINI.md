@@ -64,4 +64,21 @@
   * `/develop` & `/test` ➔ Activates `agent-skills-test-driven-development`.
   * Frontend & UI phases ➔ Activates `bukiebrainjobs-experience-standards` and `ui-ux-pro-max`.
   * Customer-facing content ➔ Activates, first, `mr-solomon-natural-voice` and `bukiebrainjobs-content-style`. These are the two mandatory skills that must be used together for any customer-facing copy.
+  * Reverse engineering, APK audits, bundle inspections, external API synthesis, network traces & opaque debugging ➔ Activates `reverse-engineer-anything` (REA). Must be actively evaluated and used on every task touching compiled/bundled artifacts, mobile APKs, HAR network captures, or undocumented integrations.
   * All communication and documentation ➔ Follow the direct human standard of `mr-solomon-natural-voice`.
+
+---
+
+## 6. MANDATORY & SPECIALIST SKILLS DIRECTORY (ONBOARDING & INSTALLATION)
+Every developer, AI agent, and CI worker operating on BukieBrainJobs must have access to these core skills. If a skill or its underlying MCP engine is absent from the active environment, install and link it using the canonical instructions below:
+
+| Skill | Canonical Repository / Source | Scope & Trigger | Installation / Activation Command |
+|---|---|---|---|
+| `reverse-engineer-anything` (REA) | [morluto/rea](https://github.com/morluto/rea) (npm: `rea-agents`) | APK audits, network HAR captures, external API reverse engineering, minified production bundles, opaque native debugging | `npx -y rea-agents@latest setup -y --client antigravity`<br/>(or `bun add -g rea-agents && rea setup`)<br/>Verify: `rea mcp doctor` |
+| `mr-solomon-nine-command-engineering-loop` | BukieBrainJobs Skill Suite | Governing operating system for all 9 development phases (`/scope` to `/debug`) | Active in `.agents/skills/mr-solomon-nine-command-engineering-loop/` |
+| `mr-solomon-natural-voice` | BukieBrainJobs Skill Suite | Human-standard tone across all communication, PRs, docs, and customer copy (no corporate fluff, no em dashes) | Active in `.agents/skills/mr-solomon-natural-voice/` |
+| `bukiebrainjobs-content-style` | BukieBrainJobs Skill Suite | Marketplace terminology, microcopy, UI labels, trust language (paired with `mr-solomon-natural-voice`) | Active in `.agents/skills/bukiebrainjobs-content-style/` |
+| `bukiebrainjobs-experience-standards` | BukieBrainJobs Skill Suite | Customer-facing UI, motion language, accessibility, responsive design | Active in `.agents/skills/bukiebrainjobs-experience-standards/` |
+| `ui-ux-pro-max` | BukieBrainJobs Skill Suite | Visual design intelligence, component hierarchy, typography, design tokens | Active in `.agents/skills/ui-ux-pro-max/` |
+| `agent-skills-test-driven-development` | [agent-skills-tdd](https://github.com/obra/superpowers) | Test-driven development for all logic changes, bug fixes, and new features | Active in `.agents/skills/agent-skills-test-driven-development/` |
+

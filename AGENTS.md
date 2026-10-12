@@ -111,12 +111,28 @@ Every agent is bound by this: primary agent, subagent, teammate, spawned worker.
 | `bukiebrainjobs-experience-standards` | `.agents/skills/bukiebrainjobs-experience-standards/SKILL.md` | Any customer-facing UI, copy, motion, responsive layout, component, accessibility, or interaction work. |
 | `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Any visual design decision, page structure, component quality review, typography, color, animation, or UX pattern. |
 | `agent-skills-test-driven-development` | `.agents/skills/agent-skills-test-driven-development/SKILL.md` | Any logic change, bug fix, behavior modification, or new feature implementation. |
+| `reverse-engineer-anything` | `.agents/skills/reverse-engineer-anything/SKILL.md` | Any task touching compiled/bundled artifacts, mobile APKs, minified production bundles, HAR network captures, or reverse-engineering external APIs. |
 
 All mandatory skills must be read before work begins on any substantive task. If a task spans multiple domains, apply all relevant skills together.
 
 Two skills are almost never out of scope: `mr-solomon-nine-command-engineering-loop` governs the task itself, and `mr-solomon-natural-voice` governs everything written. If you cannot state a concrete reason a skill is out of scope, treat it as in scope.
 
 Verify rather than claim: run `bash scripts/check-skill-gate.sh` from the repository root before review. It fails loudly if any rule file lost the gate or dropped one of the six skills. Treat a failure as a blocker for the task, not a warning.
+
+### Universal Skills Directory & Installation Reference
+
+Every developer, AI agent, and remote execution environment (Google Cloud Shell VM, GitHub Codespaces, local Termux) must have access to these core skills. If a skill or its underlying MCP engine is absent from the active environment, install and link it using the canonical instructions below:
+
+| Skill | Canonical Repository / Source | Scope & Trigger | Installation / Activation Command |
+|---|---|---|---|
+| `reverse-engineer-anything` (REA) | [morluto/rea](https://github.com/morluto/rea) (npm: `rea-agents`) | APK audits, network HAR captures, external API reverse engineering, minified production bundles, opaque native debugging | `npx -y rea-agents@latest setup -y --client antigravity`<br/>(or `bun add -g rea-agents && rea setup`)<br/>Verify: `rea mcp doctor` |
+| `mr-solomon-nine-command-engineering-loop` | BukieBrainJobs Skill Suite | Governing operating system for all 9 development phases (`/scope` to `/debug`) | Active in `.agents/skills/mr-solomon-nine-command-engineering-loop/` |
+| `mr-solomon-natural-voice` | BukieBrainJobs Skill Suite | Human-standard tone across all communication, PRs, docs, and customer copy (no corporate fluff, no em dashes) | Active in `.agents/skills/mr-solomon-natural-voice/` |
+| `bukiebrainjobs-content-style` | BukieBrainJobs Skill Suite | Marketplace terminology, microcopy, UI labels, trust language (paired with `mr-solomon-natural-voice`) | Active in `.agents/skills/bukiebrainjobs-content-style/` |
+| `bukiebrainjobs-experience-standards` | BukieBrainJobs Skill Suite | Customer-facing UI, motion language, accessibility, responsive design | Active in `.agents/skills/bukiebrainjobs-experience-standards/` |
+| `ui-ux-pro-max` | BukieBrainJobs Skill Suite | Visual design intelligence, component hierarchy, typography, design tokens | Active in `.agents/skills/ui-ux-pro-max/` |
+| `agent-skills-test-driven-development` | [agent-skills-tdd](https://github.com/obra/superpowers) | Test-driven development for all logic changes, bug fixes, and new features | Active in `.agents/skills/agent-skills-test-driven-development/` |
+
 
 
 ## Before changing anything
