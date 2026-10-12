@@ -51,8 +51,8 @@ function ServiceCard({
   onReview: () => void;
 }) {
   return (
-    <article className="bbj-card-interactive flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] transition-all">
-      <div className="relative aspect-[5/3] overflow-hidden bg-slate-100">
+    <article className="bbj-card-interactive flex h-full flex-col overflow-hidden rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:border-[var(--rule)] transition-all">
+      <div className="relative aspect-[5/3] overflow-hidden bg-slate-100/10">
         <Image
           src={category.photoUrl}
           alt={`Service photo for ${category.title}`}
@@ -61,49 +61,49 @@ function ServiceCard({
           className="object-cover transition-transform duration-300 hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#001A41]/60 via-transparent to-transparent" />
-        <span className="absolute left-4 top-4 inline-flex items-center rounded-full border border-slate-200/80 bg-white/95 px-2.5 py-1 text-[11px] font-bold text-[#001A41] shadow-xs backdrop-blur-xs">
+        <span className="absolute left-3.5 top-3.5 inline-flex items-center rounded border border-[var(--tag-border)] bg-[var(--card-bg)]/95 dark:bg-[var(--card-bg)]/90 px-2 py-0.5 font-mono text-[11px] font-medium text-[var(--text-main)] shadow-xs backdrop-blur-xs">
           From {category.startingPrice}
         </span>
-        <span className="absolute right-4 top-4 rounded-md bg-[#001A41]/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#ABEEC8] backdrop-blur-sm">
+        <span className="absolute right-3.5 top-3.5 rounded border border-white/10 bg-[var(--brand-navy)]/90 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--brand-green)] backdrop-blur-xs">
           {category.group}
         </span>
       </div>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
         <div>
-          <h2 className="font-display text-lg font-bold tracking-tight text-[#001A41]">
+          <h2 className="font-display text-lg font-bold tracking-tight text-[var(--text-main)]">
             {category.title}
           </h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600 line-clamp-2">
+          <p className="mt-2 text-sm leading-6 text-[var(--text-muted)] line-clamp-2">
             {category.description}
           </p>
         </div>
 
         <ul className="mt-5 space-y-2" aria-label={`Common ${category.title.toLowerCase()} jobs`}>
           {category.popularServices.map((service) => (
-            <li key={service} className="flex items-center gap-2 text-xs font-medium text-slate-700">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#296A4B]" aria-hidden="true" />
+            <li key={service} className="flex items-center gap-2 text-xs font-medium text-[var(--text-muted)]">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-green)]" aria-hidden="true" />
               {service}
             </li>
           ))}
         </ul>
 
-        <div className="mt-6 flex items-end justify-between gap-4 border-t border-slate-100 pt-4">
+        <div className="mt-6 flex items-end justify-between gap-4 border-t border-[var(--lead)] pt-4">
           <div>
-            <span className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+            <span className="block font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
               Starting from
             </span>
-            <span className="font-display text-lg font-extrabold text-[#001A41]">
+            <span className="font-mono text-lg font-bold text-[var(--brand-green)]">
               {category.startingPrice}
             </span>
           </div>
           <button
             type="button"
             onClick={onReview}
-            className="motion-press inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#001A41] px-4 text-xs font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+            className="motion-press inline-flex min-h-11 items-center gap-2 rounded-lg bg-[var(--amber)] px-4 text-xs font-bold text-white transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
           >
             Review details
-            <ArrowRight className="h-4 w-4 text-[#ABEEC8]" aria-hidden="true" />
+            <ArrowRight className="h-3.5 w-3.5 text-white" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -324,9 +324,9 @@ function ServicesDirectory() {
         <div className="mb-4 sm:mb-6">
           <Link
             href="/"
-            className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-slate-600 transition-colors hover:text-[#001A41] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] rounded-lg"
+            className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
           >
-            <ArrowLeft className="h-4 w-4 text-[#296A4B]" aria-hidden="true" />
+            <ArrowLeft className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
             Back to home
           </Link>
         </div>
@@ -334,13 +334,13 @@ function ServicesDirectory() {
         {showInvalidCityNotice && (
           <div
             role="status"
-            className="mb-6 flex items-start justify-between gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-slate-800"
+            className="mb-6 flex items-start justify-between gap-3 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-sm text-[var(--text-main)]"
           >
             <div className="flex items-start gap-3">
-              <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#296A4B]" aria-hidden="true" />
+              <Info className="mt-0.5 h-5 w-5 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
               <div>
-                <p className="font-semibold text-[#001A41]">Location not active</p>
-                <p className="mt-1 text-xs leading-5 text-slate-600">
+                <p className="font-semibold text-[var(--text-main)]">Location not active</p>
+                <p className="mt-1 text-xs leading-5 text-[var(--text-muted)]">
                   We currently operate in 7 active Nigerian cities. Location &quot;{rawCity}&quot; is
                   not active yet, so we&apos;re displaying services available nationwide.
                 </p>
@@ -350,7 +350,7 @@ function ServicesDirectory() {
               type="button"
               onClick={() => setDismissedCityNotice(true)}
               aria-label="Dismiss notice"
-              className="inline-flex h-12 w-12 min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-blue-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#296A4B]"
+              className="inline-flex h-12 w-12 min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-lg text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -361,13 +361,13 @@ function ServicesDirectory() {
         {showInvalidCategoryNotice && (
           <div
             role="status"
-            className="mb-6 flex items-start justify-between gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-slate-800"
+            className="mb-6 flex items-start justify-between gap-3 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-sm text-[var(--text-main)]"
           >
             <div className="flex items-start gap-3">
-              <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#296A4B]" aria-hidden="true" />
+              <Info className="mt-0.5 h-5 w-5 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
               <div>
-                <p className="font-semibold text-[#001A41]">Category not recognized</p>
-                <p className="mt-1 text-xs leading-5 text-slate-600">
+                <p className="font-semibold text-[var(--text-main)]">Category not recognized</p>
+                <p className="mt-1 text-xs leading-5 text-[var(--text-muted)]">
                   The requested category &quot;{rawCategory}&quot; was not recognized. Showing all
                   available service categories.
                 </p>
@@ -377,7 +377,7 @@ function ServicesDirectory() {
               type="button"
               onClick={() => setDismissedCategoryNotice(true)}
               aria-label="Dismiss notice"
-              className="inline-flex h-12 w-12 min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-blue-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#296A4B]"
+              className="inline-flex h-12 w-12 min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-lg text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -385,7 +385,7 @@ function ServicesDirectory() {
         )}
 
         {/* Controls & Filter Bar */}
-        <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] p-4 shadow-xs sm:p-5">
+        <div className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] p-4 shadow-xs sm:p-5">
           <div className="flex flex-col gap-1">
             <h1 className="font-display tracking-trades text-xl font-bold uppercase text-[var(--text-main)] sm:text-2xl">
               Browse by category
@@ -417,7 +417,7 @@ function ServicesDirectory() {
                   onBlur={handleSearchBlur}
                   maxLength={MAX_SEARCH_QUERY_LENGTH}
                   placeholder="Search by service, trade, or job"
-                  className="h-11 w-full rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] pl-10 pr-10 text-xs font-medium text-[var(--text-main)] placeholder:text-[var(--text-muted)] shadow-xs outline-none transition focus:border-[var(--amber)] focus:bg-[var(--card-bg)] sm:text-sm"
+                  className="h-11 w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] pl-10 pr-10 text-xs font-medium text-[var(--text-main)] placeholder:text-[var(--text-muted)] shadow-xs outline-none transition focus:border-[var(--amber)] focus:bg-[var(--card-bg)] sm:text-sm"
                 />
                 {searchQuery && (
                   <button
@@ -452,9 +452,9 @@ function ServicesDirectory() {
                 aria-haspopup="listbox"
                 aria-expanded={cityDropdownOpen}
                 aria-label={`Filter by city: currently ${selectedCity || "All cities"}`}
-                className={`motion-press inline-flex min-h-11 items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-green)] ${
+                className={`motion-press inline-flex min-h-11 items-center gap-2 rounded-lg border px-3.5 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] ${
                   selectedCity
-                    ? "border-[var(--brand-green)] bg-[var(--tag-bg)] text-[var(--brand-green)]"
+                    ? "border-[var(--brand-green)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]"
                     : "border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--card-hover)]"
                 }`}
               >
@@ -467,7 +467,7 @@ function ServicesDirectory() {
                 <div
                   role="listbox"
                   aria-label="Active Nigerian cities"
-                  className="absolute left-0 sm:left-auto sm:right-0 top-full z-40 mt-2 w-64 rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] py-2 shadow-lg"
+                  className="absolute left-0 sm:left-auto sm:right-0 top-full z-40 mt-2 w-64 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] py-2 shadow-lg"
                 >
                   <button
                     type="button"
@@ -475,14 +475,14 @@ function ServicesDirectory() {
                     aria-selected={!selectedCity}
                     onClick={() => handleSelectCity(undefined)}
                     className={`flex min-h-11 min-h-[44px] w-full items-center justify-between px-4 py-2.5 text-left text-xs font-semibold transition-colors hover:bg-[var(--card-hover)] ${
-                      !selectedCity ? "bg-[var(--tag-bg)] text-[var(--brand-green)]" : "text-[var(--text-main)]"
+                      !selectedCity ? "bg-[var(--brand-green-dim)] text-[var(--brand-green)]" : "text-[var(--text-main)]"
                     }`}
                   >
                     <span>All cities (Nationwide)</span>
-                    {!selectedCity && <Check className="h-4 w-4 text-[#296A4B]" aria-hidden="true" />}
+                    {!selectedCity && <Check className="h-4 w-4 text-[var(--brand-green)]" aria-hidden="true" />}
                   </button>
 
-                  <div className="my-1 border-t border-slate-100" />
+                  <div className="my-1 border-t border-[var(--lead)]" />
 
                   {activeCities.map((city) => {
                     const isSelected = selectedCity === city.name;
@@ -493,15 +493,15 @@ function ServicesDirectory() {
                         role="option"
                         aria-selected={isSelected}
                         onClick={() => handleSelectCity(city.name)}
-                        className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-xs font-semibold transition-colors hover:bg-slate-50 ${
-                          isSelected ? "bg-[#EAF7EF] text-[#296A4B]" : "text-slate-700"
+                        className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-xs font-semibold transition-colors hover:bg-[var(--card-hover)] ${
+                          isSelected ? "bg-[var(--brand-green-dim)] text-[var(--brand-green)]" : "text-[var(--text-main)]"
                         }`}
                       >
                         <div>
                           <div>{city.name}</div>
-                          <div className="text-[10px] font-normal text-slate-400">{city.state}</div>
+                          <div className="text-[10px] font-normal text-[var(--text-muted)]">{city.state}</div>
                         </div>
-                        {isSelected && <Check className="h-4 w-4 text-[#296A4B]" aria-hidden="true" />}
+                        {isSelected && <Check className="h-4 w-4 text-[var(--brand-green)]" aria-hidden="true" />}
                       </button>
                     );
                   })}
@@ -520,15 +520,15 @@ function ServicesDirectory() {
               type="button"
               onClick={() => handleSelectCategory("All")}
               aria-pressed={selectedCategory === "All"}
-              className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
+              className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--amber)] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
                 selectedCategory === "All"
-                  ? "border-[#296A4B] text-[#001A41]"
-                  : "border-transparent text-slate-700 hover:border-slate-200 hover:text-[#001A41]"
+                  ? "border-[var(--amber)] text-[var(--text-main)]"
+                  : "border-transparent text-[var(--text-muted)] hover:border-[var(--lead)] hover:text-[var(--text-main)]"
               }`}
             >
               <span
-                className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors sm:h-11 sm:w-11 ${
-                  selectedCategory === "All" ? "bg-[#E5F6EB]" : "bg-slate-50"
+                className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors sm:h-11 sm:w-11 ${
+                  selectedCategory === "All" ? "bg-[var(--brand-green-dim)]" : "bg-[var(--tag-bg)]"
                 }`}
               >
                 <ServiceTaskIcon categoryId="all" className="h-8 w-8 sm:h-9 sm:w-9" />
@@ -544,15 +544,15 @@ function ServicesDirectory() {
                   type="button"
                   onClick={() => handleSelectCategory(category.id)}
                   aria-pressed={isSelected}
-                  className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
+                  className={`motion-press flex w-15 flex-none flex-col items-center gap-1 border-b-2 px-0.5 py-1.5 text-center text-[10px] font-bold leading-tight whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--amber)] sm:w-20 sm:gap-1.5 sm:py-2 sm:text-[11px] ${
                     isSelected
-                      ? "border-[#296A4B] text-[#001A41]"
-                      : "border-transparent text-slate-700 hover:border-slate-200 hover:text-[#001A41]"
+                      ? "border-[var(--amber)] text-[var(--text-main)]"
+                      : "border-transparent text-[var(--text-muted)] hover:border-[var(--lead)] hover:text-[var(--text-main)]"
                   }`}
                 >
                   <span
-                    className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors sm:h-11 sm:w-11 ${
-                      isSelected ? "bg-[#E5F6EB]" : "bg-slate-50"
+                    className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors sm:h-11 sm:w-11 ${
+                      isSelected ? "bg-[var(--brand-green-dim)]" : "bg-[var(--tag-bg)]"
                     }`}
                   >
                     <ServiceTaskIcon categoryId={category.id} className="h-8 w-8 sm:h-9 sm:w-9" />
@@ -565,43 +565,43 @@ function ServicesDirectory() {
 
           {/* Active Filters Bar */}
           {(selectedCategory !== "All" || selectedCity || searchQuery) && (
-            <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3 text-xs">
-              <span className="font-semibold text-slate-500">Active filters:</span>
+            <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-[var(--lead)] pt-3 text-xs">
+              <span className="font-semibold text-[var(--text-muted)]">Active filters:</span>
               {selectedCategory !== "All" && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E5F6EB] px-3 py-1 font-semibold text-[#296A4B]">
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--tag-border)] bg-[var(--brand-green-dim)] px-2.5 py-1 font-mono text-[11px] font-semibold text-[var(--brand-green)]">
                   {TASK_LABELS[selectedCategory] ?? selectedCategory}
                   <button
                     type="button"
                     onClick={() => handleSelectCategory("All")}
                     aria-label="Remove category filter"
-                    className="hover:text-emerald-900 cursor-pointer"
+                    className="hover:opacity-75 cursor-pointer"
                   >
                     <X className="h-3 w-3" />
                   </button>
                 </span>
               )}
               {selectedCity && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#EAF7EF] px-3 py-1 font-semibold text-[#296A4B]">
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--tag-border)] bg-[var(--brand-green-dim)] px-2.5 py-1 font-mono text-[11px] font-semibold text-[var(--brand-green)]">
                   <MapPin className="h-3 w-3" />
                   {selectedCity}
                   <button
                     type="button"
                     onClick={() => handleSelectCity(undefined)}
                     aria-label="Remove city filter"
-                    className="hover:text-emerald-900 cursor-pointer"
+                    className="hover:opacity-75 cursor-pointer"
                   >
                     <X className="h-3 w-3" />
                   </button>
                 </span>
               )}
               {searchQuery && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-700">
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--tag-border)] bg-[var(--tag-bg)] px-2.5 py-1 font-mono text-[11px] font-semibold text-[var(--text-main)]">
                   &quot;{searchQuery}&quot;
                   <button
                     type="button"
                     onClick={handleClearSearch}
                     aria-label="Remove search filter"
-                    className="hover:text-slate-900 cursor-pointer"
+                    className="hover:opacity-75 cursor-pointer"
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -610,7 +610,7 @@ function ServicesDirectory() {
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="ml-auto text-xs font-semibold text-[#296A4B] hover:text-[#1F523A] underline cursor-pointer"
+                className="ml-auto text-xs font-semibold text-[var(--brand-green)] hover:underline cursor-pointer"
               >
                 Clear all filters
               </button>
@@ -620,17 +620,17 @@ function ServicesDirectory() {
 
         {/* Results Grid or Empty State */}
         {filteredCategories.length === 0 ? (
-          <div className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm">
-            <h2 className="font-display text-xl font-bold text-[#001A41]">
+          <div className="mt-8 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-6 py-12 text-center shadow-xs">
+            <h2 className="font-display text-xl font-bold text-[var(--text-main)]">
               No services match that search
             </h2>
-            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
+            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[var(--text-muted)]">
               Try a broader service name, or reset the filters to browse every category.
             </p>
             <button
               type="button"
               onClick={handleResetFilters}
-              className="motion-press mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+              className="motion-press mt-5 inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--amber)] px-5 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
             >
               Reset filters
             </button>
@@ -648,24 +648,24 @@ function ServicesDirectory() {
         )}
 
         {/* Trust Notice Aside */}
-        <aside className="mt-10 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+        <aside className="mt-10 flex flex-col gap-4 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">
               Before you continue
             </p>
-            <h2 className="mt-2 font-display text-xl font-bold tracking-tight text-[#001A41]">
+            <h2 className="mt-2 font-display text-xl font-bold tracking-tight text-[var(--text-main)]">
               Get clear on the job details.
             </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--text-muted)]">
               Use the service details to prepare the scope, location, and budget for your booking review.
             </p>
           </div>
           <Link
             href="/guarantee"
-            className="motion-press inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-[#001A41] px-4 text-sm font-bold text-[#001A41] transition-colors hover:bg-[#001A41] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+            className="motion-press inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-4 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] hover:border-[var(--rule)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
           >
             Read BukieGuarantee
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <ArrowRight className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
           </Link>
         </aside>
       </section>
@@ -675,7 +675,7 @@ function ServicesDirectory() {
 
 export default function ServicesPage() {
   return (
-    <Suspense fallback={<main className="min-h-screen bg-[#F8F9FF]" />}>
+    <Suspense fallback={<main className="min-h-screen bg-[var(--bg)]" />}>
       <ServicesDirectory />
     </Suspense>
   );
