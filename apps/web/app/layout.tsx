@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import TradesTelemetryBar from '../components/TradesTelemetryBar';
 
 export const viewport: Viewport = {
   themeColor: '#001A41',
@@ -87,8 +86,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
       </head>
-      <body className="min-h-screen bg-[var(--bg)] font-sans text-[var(--text-main)] antialiased transition-colors duration-200 pt-8 sm:pt-9">
-        <TradesTelemetryBar />
+      <body className="min-h-screen bg-[var(--bg)] font-sans text-[var(--text-main)] antialiased transition-colors duration-200">
         {children}
       </body>
     </html>

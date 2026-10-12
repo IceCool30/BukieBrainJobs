@@ -43,19 +43,19 @@ export default function HowItWorks() {
           {steps.map((s, idx) => (
             <div
               key={s.num}
-              className="bg-[var(--card-bg)] text-[var(--text-main)] p-5 sm:p-7 rounded-xl border border-[var(--lead)] shadow-xs relative flex flex-col justify-between space-y-4 hover:border-[var(--amber)] hover:-translate-y-1 transition-all"
+              className="bg-[var(--card-bg)] text-[var(--text-main)] p-5 sm:p-6 rounded-lg border border-[var(--lead)] shadow-xs relative flex flex-col justify-between space-y-4 hover:border-[var(--amber)] hover:bg-[var(--card-hover)] transition-all duration-200"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-display font-extrabold text-3xl text-[var(--text-main)]/85">
+                  <span className="font-mono font-extrabold text-3xl tracking-tight text-[var(--text-muted)]/70">
                     {s.num}
                   </span>
-                  <div className="w-10 h-10 rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] flex items-center justify-center">
+                  <div className="w-9 h-9 rounded border border-[var(--lead)] bg-[var(--tag-bg)] flex items-center justify-center">
                     {s.icon}
                   </div>
                 </div>
 
-                <h3 className="font-display font-bold text-base text-[var(--text-main)]">
+                <h3 className="font-display tracking-trades font-bold text-base text-[var(--text-main)]">
                   {s.title}
                 </h3>
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed">

@@ -11,6 +11,8 @@ import {
   X,
   UserCheck,
   LayoutDashboard,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { getMockAuthenticatedUser } from '../lib/auth/storage';
 
@@ -32,6 +34,7 @@ const DRAWER_LINKS = [
 
 export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpenRef, hideOnPwa }: NavbarProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [chipShown, setChipShown] = useState(false);
@@ -44,7 +47,34 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     if (user) {
       setIsAuthenticated(true);
     }
+
+    try {
+      const stored = localStorage.getItem('bbj_theme') || localStorage.getItem('bukiebrainjobs-theme');
+      if (stored === 'dark' || stored === 'light') {
+        setTheme(stored);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark');
+      }
+    } catch {
+      // Safe fallback
+    }
   }, []);
+
+  const handleThemeChange = (newTheme: 'light' | 'dark') => {
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    try {
+      localStorage.setItem('bbj_theme', newTheme);
+      localStorage.setItem('bukiebrainjobs-theme', newTheme);
+    } catch {
+      // Storage unavailable
+    }
+  };
 
   const openDrawer = useCallback(() => {
     setMobileMenuOpen(true);
@@ -115,7 +145,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     return (
       <>
         {solid && !drawerOnly && (
-          <div className="fixed top-11 sm:top-12 right-4 z-50 h-11 w-11 rounded-xl bg-[#001A41]/90 border border-white/15 shadow-[0_6px_20px_-8px_rgba(0,26,65,0.45)] flex items-center justify-center pointer-events-auto">
+          <div className="fixed top-3 right-4 z-50 h-11 w-11 rounded-xl bg-[#001A41]/90 border border-white/15 shadow-[0_6px_20px_-8px_rgba(0,26,65,0.45)] flex items-center justify-center pointer-events-auto">
             <button
               ref={triggerRef}
               onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
@@ -140,6 +170,8 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
               onPostJob={doPostJob}
               onBecomeWorker={doBecomeWorker}
               isAuthenticated={isAuthenticated}
+              theme={theme}
+              onThemeChange={handleThemeChange}
             />
           </>
         )}
@@ -151,7 +183,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     <>
     {/* Desktop header, never rendered on the PWA home */}
     <header
-      className={`fixed top-8 sm:top-9 inset-x-0 z-50 w-full text-white transition-all duration-300 pointer-events-auto ${
+      className={`fixed top-0 inset-x-0 z-50 w-full text-white transition-all duration-300 pointer-events-auto ${
         solid
           ? 'bg-[#001A41]/90 backdrop-blur-md border-b border-white/10 shadow-sm'
           : 'bg-gradient-to-b from-[#001A41]/75 to-transparent border-b border-transparent'
@@ -250,6 +282,36 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
               Sign In
             </Link>
           )}
+
+          {/* Theme switcher */}
+          <div className="flex items-center rounded-full border border-white/20 bg-white/10 p-0.5 text-xs ml-1" role="group" aria-label="Theme mode switcher">
+            <button
+              type="button"
+              onClick={() => handleThemeChange('light')}
+              className={`px-2 py-1 rounded-full text-[10px] font-mono transition-colors flex items-center gap-1 cursor-pointer ${
+                theme === 'light'
+                  ? 'bg-white text-[#001A41] font-bold shadow-xs'
+                  : 'text-white/80 hover:text-white'
+              }`}
+              aria-label="Switch to light theme"
+            >
+              <Sun className="w-3 h-3" />
+              <span>LIGHT</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleThemeChange('dark')}
+              className={`px-2 py-1 rounded-full text-[10px] font-mono transition-colors flex items-center gap-1 cursor-pointer ${
+                theme === 'dark'
+                  ? 'bg-[var(--amber)] text-white font-bold shadow-xs'
+                  : 'text-white/80 hover:text-white'
+              }`}
+              aria-label="Switch to dark theme"
+            >
+              <Moon className="w-3 h-3" />
+              <span>DARK</span>
+            </button>
+          </div>
         </div>
 
         {/* Mobile Hamburger Toggle */}
@@ -279,6 +341,8 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             onPostJob={doPostJob}
             onBecomeWorker={doBecomeWorker}
             isAuthenticated={isAuthenticated}
+            theme={theme}
+            onThemeChange={handleThemeChange}
           />
         </>
       )}
@@ -294,6 +358,8 @@ function DrawerPanel({
   onPostJob,
   onBecomeWorker,
   isAuthenticated,
+  theme,
+  onThemeChange,
 }: {
   visible: boolean;
   onClose: () => void;
@@ -301,6 +367,8 @@ function DrawerPanel({
   onPostJob: () => void;
   onBecomeWorker: () => void;
   isAuthenticated?: boolean;
+  theme?: 'light' | 'dark';
+  onThemeChange?: (theme: 'light' | 'dark') => void;
 }) {
   return (
           <aside
@@ -332,6 +400,41 @@ function DrawerPanel({
                 <X className="w-5 h-5" />
               </button>
             </div>
+
+            {/* Mobile Theme Toggle Strip */}
+            {onThemeChange && (
+              <div className="flex items-center justify-between px-5 py-3 border-b border-[#1E3A60] bg-white/[0.03]">
+                <span className="text-xs font-semibold text-slate-300">Theme</span>
+                <div className="flex items-center rounded-full border border-white/20 bg-white/10 p-0.5 text-xs" role="group" aria-label="Mobile theme toggle">
+                  <button
+                    type="button"
+                    onClick={() => onThemeChange('light')}
+                    className={`px-2.5 py-1 rounded-full text-[10px] font-mono transition-colors flex items-center gap-1 cursor-pointer ${
+                      theme === 'light'
+                        ? 'bg-white text-[#001A41] font-bold shadow-xs'
+                        : 'text-white/80 hover:text-white'
+                    }`}
+                    aria-label="Switch to light theme"
+                  >
+                    <Sun className="w-3 h-3" />
+                    <span>LIGHT</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onThemeChange('dark')}
+                    className={`px-2.5 py-1 rounded-full text-[10px] font-mono transition-colors flex items-center gap-1 cursor-pointer ${
+                      theme === 'dark'
+                        ? 'bg-[var(--amber)] text-white font-bold shadow-xs'
+                        : 'text-white/80 hover:text-white'
+                    }`}
+                    aria-label="Switch to dark theme"
+                  >
+                    <Moon className="w-3 h-3" />
+                    <span>DARK</span>
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Link zone */}
             <nav className="flex flex-col gap-1 px-4 py-5 overflow-y-auto">

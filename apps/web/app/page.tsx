@@ -12,7 +12,6 @@ import HowItWorks from '../components/HowItWorks';
 import FeaturedBrainWorkers from '../components/FeaturedBrainWorkers';
 import FAQSection from '../components/FAQSection';
 import PartnerBar from '../components/PartnerBar';
-import TradesRequisitionBoard from '../components/trades/TradesRequisitionBoard';
 import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
 import {
   ServiceCategory,
@@ -82,9 +81,6 @@ export default function CustomerHomepage() {
 
             {/* Muted partner credibility bar */}
             <PartnerBar />
-
-            {/* Approved Trades Requisition Index */}
-            <TradesRequisitionBoard />
 
             {/* Popular Service Categories */}
             <PopularServices onSelectCategory={handleSelectCategory} />

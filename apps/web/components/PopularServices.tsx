@@ -35,7 +35,7 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
             <button
               key={cat.id}
               onClick={() => onSelectCategory?.(cat)}
-              className="bbj-card-interactive service-card-motion motion-press group overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-left transition-[transform,box-shadow,border-color] duration-[180ms] ease-[var(--ease-ui-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+              className="bbj-card-interactive service-card-motion motion-press group overflow-hidden rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] hover:border-[var(--rule)] text-left transition-all duration-[180ms] ease-[var(--ease-ui-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
             >
               <div className="relative aspect-[5/4] overflow-hidden bg-slate-100/10">
                 <Image
@@ -45,14 +45,14 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className="service-card-image object-cover transition-transform duration-[180ms] ease-[var(--ease-ui-out)]"
                 />
-                <span className="absolute left-3 top-3 inline-flex items-center rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-2.5 py-1 text-[11px] font-bold text-[var(--text-main)] shadow-xs backdrop-blur-xs">
+                <span className="absolute left-3 top-3 inline-flex items-center rounded border border-[var(--tag-border)] bg-[var(--card-bg)]/95 dark:bg-[var(--card-bg)]/90 px-2 py-0.5 font-mono text-[11px] font-medium text-[var(--text-main)] shadow-xs backdrop-blur-xs">
                   From {cat.startingPrice}
                 </span>
-                <span className="service-card-arrow absolute right-3 top-3 flex h-8 w-8 translate-x-1 items-center justify-center rounded-full bg-[var(--amber)] text-base text-white opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">
-                  <ArrowRight className="h-4 w-4" />
+                <span className="service-card-arrow absolute right-3 top-3 flex h-7 w-7 translate-x-1 items-center justify-center rounded bg-[var(--amber)] text-white opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </span>
               </div>
-              <div className="p-4">
+              <div className="p-3.5 sm:p-4">
                 <span className="block text-[15px] font-semibold leading-snug text-[var(--text-main)] transition-colors group-hover:text-[var(--amber)]">
                   {cat.title}
                 </span>

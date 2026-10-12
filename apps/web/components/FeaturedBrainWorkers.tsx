@@ -17,7 +17,7 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
   return (
     <Link
       href={href}
-      className="bbj-card-interactive service-card-motion motion-press group block overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--card-hover)] text-left transition-[transform,box-shadow,border-color] duration-[180ms] ease-[var(--ease-ui-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+      className="bbj-card-interactive service-card-motion motion-press group block overflow-hidden rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--card-hover)] hover:border-[var(--rule)] text-left transition-all duration-[180ms] ease-[var(--ease-ui-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
       aria-label={`View ${worker.name}'s profile`}
     >
       <div className="relative aspect-[5/4] overflow-hidden bg-slate-100/10">
@@ -28,19 +28,19 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="service-card-image object-cover"
         />
-        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-2.5 py-1 text-[11px] font-semibold text-[var(--text-main)] shadow-xs backdrop-blur-xs">
-          <BadgeCheck className="h-3.5 w-3.5 text-[var(--brand-green)]" aria-hidden="true" />
+        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--brand-green)] shadow-xs backdrop-blur-xs">
+          <BadgeCheck className="h-3 w-3 text-[var(--brand-green)]" aria-hidden="true" />
           Featured
         </span>
-        <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[var(--strip-bg)] px-2.5 py-1 text-[10px] font-semibold text-[var(--brand-green)] shadow-xs backdrop-blur-xs">
-          <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-green)]" aria-hidden="true" />
+        <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded border border-[var(--lead)] bg-[var(--card-bg)]/95 dark:bg-[var(--card-bg)]/90 px-2 py-0.5 font-mono text-[10px] text-[var(--text-muted)] shadow-xs backdrop-blur-xs">
+          <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-green)] animate-pulse" aria-hidden="true" />
           Available today
         </span>
-        <span className="service-card-arrow absolute right-3 top-3 flex h-8 w-8 translate-x-1 items-center justify-center rounded-full bg-[var(--amber)] text-white opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">
-          <ArrowRight className="h-4 w-4" />
+        <span className="service-card-arrow absolute right-3 top-3 flex h-7 w-7 translate-x-1 items-center justify-center rounded bg-[var(--amber)] text-white opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">
+          <ArrowRight className="h-3.5 w-3.5" />
         </span>
       </div>
-      <div className="space-y-2 p-4">
+      <div className="space-y-2 p-3.5 sm:p-4">
         <div>
           <p className="text-xs font-semibold text-[var(--brand-green)]">{worker.category}</p>
           <h3 className="mt-1 text-[15px] font-semibold leading-snug text-[var(--text-main)] transition-colors group-hover:text-[var(--amber)]">{worker.name}</h3>
@@ -48,7 +48,7 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
         </div>
         <div className="flex items-center justify-between gap-2 text-xs text-[var(--text-muted)]">
           <span>{worker.location}</span>
-          <span className="shrink-0 font-bold text-[var(--brand-green)]">From {worker.startingRate}</span>
+          <span className="shrink-0 font-mono font-bold text-[var(--brand-green)]">From {worker.startingRate}</span>
         </div>
       </div>
     </Link>
