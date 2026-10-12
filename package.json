@@ -34,7 +34,7 @@
     "node": ">=20"
   },
   "overrides": {
-    "fast-uri": "^4.1.4",
+    "fast-uri": "^4.1.5",
     "@xmldom/xmldom": "^0.9.12",
     "xmldom": "^0.6.0",
     "tar": "^7.5.21",
@@ -50,6 +50,7 @@
     "source-map-js": "^1.2.2",
     "http-cache-semantics": "^4.3.0",
     "engine.io": "^6.6.10",
+    "undici@>=6.0.0 <7": "^6.28.1",
     "brace-expansion@<2": "^1.1.21",
     "brace-expansion@>=2.0.0 <3": "^2.1.7",
     "brace-expansion@>=4.0.0 <6": "^5.0.12",
@@ -58,7 +59,7 @@
   },
   "pnpm": {
     "overrides": {
-      "fast-uri": "^4.1.4",
+      "fast-uri": "^4.1.5",
       "@xmldom/xmldom": "^0.9.12",
       "xmldom": "^0.6.0",
       "tar": "^7.5.21",
@@ -74,6 +75,7 @@
       "source-map-js": "^1.2.2",
       "http-cache-semantics": "^4.3.0",
       "engine.io": "^6.6.10",
+      "undici@>=6.0.0 <7": "^6.28.1",
       "brace-expansion@<2": "^1.1.21",
       "brace-expansion@>=2.0.0 <3": "^2.1.7",
       "brace-expansion@>=4.0.0 <6": "^5.0.12",
