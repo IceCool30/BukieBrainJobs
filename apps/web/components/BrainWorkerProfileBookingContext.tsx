@@ -29,54 +29,60 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
   const suggestion = !hasInitialService && profile.category ? `Suggested service focus: ${profile.category}` : undefined;
 
   return (
-    <aside className="bbj-card-interactive h-fit rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 lg:sticky lg:top-6">
-      <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Book this BrainWorker</p>
-      <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-[#001A41]">Confirm the service and location.</h2>
-      <p className="mt-3 text-sm leading-6 text-slate-600">Choose the service you need and the active city for your job.</p>
+    <aside className="bbj-card-interactive h-fit rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 lg:sticky lg:top-6 shadow-xs">
+      <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">Book this BrainWorker</p>
+      <h2 className="mt-2 font-display text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-main)]">Confirm service & location</h2>
+      <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">Choose the service you need and the active city for your job.</p>
 
       <div className="mt-6 space-y-4">
-        <label className="block text-sm font-semibold text-[#001A41]">
-          Service
+        <div>
+          <label htmlFor="bw-select-service" className="block font-mono text-[11px] font-bold uppercase tracking-wide text-[var(--text-muted)]">
+            Service
+          </label>
           <select
+            id="bw-select-service"
             value={serviceId}
             onChange={(event) => setServiceId(event.target.value)}
-            className="mt-2 h-12 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
+            className="mt-1.5 h-12 w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-3 text-sm font-medium text-[var(--text-main)] outline-none transition-colors focus:border-[var(--amber)] focus:bg-[var(--card-bg)] focus:ring-1 focus:ring-[var(--amber)]"
           >
             <option value="">Choose a service</option>
             {SERVICE_CATEGORIES.map((category) => (
               <option key={category.id} value={category.id}>{category.title}</option>
             ))}
           </select>
-        </label>
+        </div>
 
-        <label className="block text-sm font-semibold text-[#001A41]">
-          City
+        <div>
+          <label htmlFor="bw-select-city" className="block font-mono text-[11px] font-bold uppercase tracking-wide text-[var(--text-muted)]">
+            City
+          </label>
           <select
+            id="bw-select-city"
             value={city}
             onChange={(event) => setCity(event.target.value)}
-            className="mt-2 h-12 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
+            className="mt-1.5 h-12 w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-3 text-sm font-medium text-[var(--text-main)] outline-none transition-colors focus:border-[var(--amber)] focus:bg-[var(--card-bg)] focus:ring-1 focus:ring-[var(--amber)]"
           >
             <option value="">Choose a city</option>
             {NIGERIAN_LOCATIONS.filter((location) => location.status === 'active').map((location) => (
               <option key={location.id} value={location.name}>{location.name}</option>
             ))}
           </select>
-        </label>
+        </div>
       </div>
 
       {suggestion && (
-        <p className="mt-4 rounded-xl border border-[#ABEEC8]/80 bg-[#F1FBF5] p-3 text-xs leading-5 text-[#296A4B]">
+        <p className="mt-4 rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-3 text-xs leading-5 text-[var(--text-main)]">
           {suggestion}. Select the service that matches your job before continuing.
         </p>
       )}
 
-      <div className="mt-5 space-y-2 rounded-xl border border-slate-100 bg-[#F8F9FF] p-3 text-xs text-slate-600">
+      <div className="mt-5 space-y-2 rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] p-3.5 text-xs text-[var(--text-muted)]">
         <div className="flex items-center gap-2 font-medium">
-          <Clock className="h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
+          <Clock className="h-4 w-4 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
           <span>Typically completed in 2 to 4 hours</span>
         </div>
         <div className="flex items-center gap-2 font-medium">
-          <ShieldCheck className="h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
+          <ShieldCheck className="h-4 w-4 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
           <span>Protected by BukieGuarantee escrow</span>
         </div>
       </div>
@@ -84,20 +90,24 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
       {bookingUrl ? (
         <Link
           href={bookingUrl}
-          className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#001A41] px-5 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+          className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
         >
-          Continue to booking
-          <ArrowRight className="h-4 w-4 text-[#ABEEC8]" aria-hidden="true" />
+          <span>Continue to booking</span>
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       ) : (
-        <button type="button" disabled className="mt-6 inline-flex min-h-12 w-full cursor-not-allowed items-center justify-center rounded-xl bg-slate-200 px-5 text-sm font-bold text-slate-500">
+        <button
+          type="button"
+          disabled
+          className="mt-6 inline-flex min-h-12 w-full cursor-not-allowed items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-5 text-sm font-bold text-[var(--text-muted)]"
+        >
           Choose a service and city
         </button>
       )}
 
-      <div className="mt-4 flex items-start gap-2 text-xs leading-5 text-slate-500">
-        <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#296A4B]" aria-hidden="true" />
-        <span>Starting rate: {profile.startingRate}. Confirm the final job details during booking.</span>
+      <div className="mt-4 flex items-start gap-2 text-xs leading-5 text-[var(--text-muted)]">
+        <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
+        <span>Starting rate: <strong className="font-mono text-[var(--brand-green)]">{profile.startingRate}</strong>. Confirm the final job details during booking.</span>
       </div>
     </aside>
   );
