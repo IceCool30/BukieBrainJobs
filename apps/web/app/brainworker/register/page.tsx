@@ -38,16 +38,16 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
   // Customer boundary check - fail closed immediately on render
   if (user?.role === 'customer') {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-2xl border border-amber-200 p-8 shadow-sm text-center space-y-4">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 border border-amber-300 px-3 py-1 text-xs font-semibold text-amber-900">
-            <AlertTriangle className="h-3.5 w-3.5 text-amber-600" />
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0B1528] flex items-center justify-center p-4 transition-colors">
+        <div className="max-w-md w-full bg-white dark:bg-[#111927] rounded-lg border border-amber-300 dark:border-amber-800/60 p-6 sm:p-8 shadow-xs text-center space-y-4">
+          <div className="inline-flex items-center gap-1.5 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800/60 px-2.5 py-1 text-xs font-semibold text-amber-900 dark:text-amber-200">
+            <AlertTriangle className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
             <span>Boundary Conflict</span>
           </div>
-          <h2 className="text-xl font-bold text-[#001A41]">
+          <h2 className="text-xl font-bold text-[#001A41] dark:text-[#F8FAFC]">
             Customer Account Detected
           </h2>
-          <p className="text-sm text-slate-600 leading-relaxed">
+          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Please sign out or create a separate provider account to register as a BrainWorker. Existing customer accounts cannot be converted to provider accounts.
           </p>
           <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
@@ -57,13 +57,13 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
                 setMockAuthenticatedUser(null);
                 setUser(null);
               }}
-              className="inline-flex items-center justify-center rounded-xl bg-[#001A41] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#002661]"
+              className="inline-flex items-center justify-center rounded-lg bg-[#001A41] dark:bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#002661] dark:hover:bg-emerald-500 transition-colors"
             >
               Sign Out
             </button>
             <Link
               href="/"
-              className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              className="inline-flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-800 px-5 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
             >
               Return Home
             </Link>
@@ -101,30 +101,30 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-      <div className="max-w-md w-full bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-sm space-y-6">
+    <main className="min-h-screen bg-slate-50 dark:bg-[#0B1528] py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center transition-colors">
+      <div className="max-w-md w-full bg-white dark:bg-[#111927] rounded-lg border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-xs space-y-6">
         <div>
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 border border-blue-200 px-3 py-1 text-xs font-semibold text-blue-700 mb-3">
-            <ShieldCheck className="h-3.5 w-3.5" />
+          <div className="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-2.5 py-1 text-xs font-semibold text-emerald-800 dark:text-emerald-300 mb-3">
+            <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
             <span>BrainWorker Registration</span>
           </div>
-          <h1 className="text-2xl font-bold text-[#001A41]">
+          <h1 className="text-2xl font-bold text-[#001A41] dark:text-[#F8FAFC]">
             Become a BrainWorker
           </h1>
-          <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Join BukieBrainJobs as a BrainWorker. Complete your registration to begin onboarding and profile verification.
           </p>
         </div>
 
         {error && (
-          <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-xs font-medium text-red-700">
+          <div className="rounded-lg border border-rose-200 dark:border-rose-900/60 bg-rose-50 dark:bg-rose-950/30 p-3.5 text-xs font-medium text-rose-700 dark:text-rose-300">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+            <label htmlFor="name" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
               Full Name
             </label>
             <div className="relative">
@@ -136,13 +136,13 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Chidi Anozie"
-                className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#001A41] focus:ring-1 focus:ring-[#001A41] outline-none"
+                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0B1528] px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-1 focus:ring-[#001A41] dark:focus:ring-emerald-500 outline-none transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+            <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
               Email Address
             </label>
             <div className="relative">
@@ -154,13 +154,13 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="chidi@example.com"
-                className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#001A41] focus:ring-1 focus:ring-[#001A41] outline-none"
+                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0B1528] px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-1 focus:ring-[#001A41] dark:focus:ring-emerald-500 outline-none transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+            <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
               Phone Number
             </label>
             <div className="relative">
@@ -172,7 +172,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+234 800 000 0000"
-                className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#001A41] focus:ring-1 focus:ring-[#001A41] outline-none"
+                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0B1528] px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-1 focus:ring-[#001A41] dark:focus:ring-emerald-500 outline-none transition-colors"
               />
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
           <div className="pt-2">
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#001A41] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#002661] transition"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#001A41] dark:bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-xs hover:bg-[#002661] dark:hover:bg-emerald-500 transition-colors"
             >
               <span>Continue to Onboarding</span>
               <ArrowRight className="h-4 w-4" />
