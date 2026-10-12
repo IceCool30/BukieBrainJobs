@@ -33,7 +33,7 @@ export default function NotificationsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F8F9FF]">
+    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)]">
       <NotificationCenter
         customerId={user.id}
         onNavigate={(url) => router.push(url)}
@@ -41,16 +41,16 @@ export default function NotificationsPage() {
 
       {/* Footer Channel Preferences Entry Point (Section 11) */}
       <div className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="p-6 rounded-2xl bg-white border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+        <div className="p-6 rounded-lg bg-[var(--card-bg)] text-[var(--text-main)] border border-[var(--lead)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
-              <Sliders className="w-5 h-5 text-slate-600" aria-hidden="true" />
+            <div className="w-10 h-10 rounded-lg bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center shrink-0">
+              <Sliders className="w-5 h-5 text-[var(--amber)]" aria-hidden="true" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-[#001A41]">
+              <h3 className="text-sm font-bold font-display text-[var(--text-main)]">
                 Looking to update SMS, WhatsApp, or Email alerts?
               </h3>
-              <p className="text-xs text-slate-600 mt-0.5">
+              <p className="text-xs text-[var(--text-muted)] mt-0.5">
                 Configure external delivery channels and multi-channel notification preferences.
               </p>
             </div>
@@ -58,10 +58,10 @@ export default function NotificationsPage() {
           <button
             type="button"
             onClick={() => router.push('/profile?tab=notifications')}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 text-[#001A41] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 min-h-[44px] shrink-0"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-main)] border border-[var(--lead)] hover:border-[var(--amber)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] shrink-0 cursor-pointer"
           >
             Manage Notification Channels in Profile
-            <ChevronRight className="w-4 h-4 text-slate-400" aria-hidden="true" />
+            <ChevronRight className="w-4 h-4 text-[var(--text-muted)]" aria-hidden="true" />
           </button>
         </div>
       </div>

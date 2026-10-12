@@ -87,7 +87,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({
       }
       className={
         className ??
-        'relative min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl text-slate-700 hover:text-[#001A41] hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2'
+        'relative min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 cursor-pointer'
       }
     >
       <Bell className="w-5 h-5" aria-hidden="true" />
@@ -96,7 +96,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({
         <span
           data-testid="notification-bell-badge"
           aria-label={`${badgeText} unread notifications`}
-          className="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-bold leading-none text-white bg-[#296A4B] rounded-full ring-2 ring-white"
+          className="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-bold leading-none text-white bg-emerald-600 rounded-full ring-2 ring-[var(--card-bg)]"
         >
           {badgeText}
         </span>

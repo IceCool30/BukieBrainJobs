@@ -48,7 +48,7 @@ function CategoryIcon({ category }: { category: NotificationCategory }) {
       return (
         <div
           data-testid="category-icon-bookings"
-          className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0"
+          className="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center shrink-0"
         >
           <Calendar className="w-5 h-5" aria-hidden="true" />
         </div>
@@ -57,7 +57,7 @@ function CategoryIcon({ category }: { category: NotificationCategory }) {
       return (
         <div
           data-testid="category-icon-messages_payments"
-          className="w-10 h-10 rounded-xl bg-emerald-50 text-[#296A4B] flex items-center justify-center shrink-0"
+          className="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0"
         >
           <MessageSquare className="w-5 h-5" aria-hidden="true" />
         </div>
@@ -66,7 +66,7 @@ function CategoryIcon({ category }: { category: NotificationCategory }) {
       return (
         <div
           data-testid="category-icon-account"
-          className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center shrink-0"
+          className="w-10 h-10 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 flex items-center justify-center shrink-0"
         >
           <Shield className="w-5 h-5" aria-hidden="true" />
         </div>
@@ -75,7 +75,7 @@ function CategoryIcon({ category }: { category: NotificationCategory }) {
       return (
         <div
           data-testid="category-icon-default"
-          className="w-10 h-10 rounded-xl bg-slate-50 text-slate-700 flex items-center justify-center shrink-0"
+          className="w-10 h-10 rounded-lg bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center shrink-0"
         >
           <Bell className="w-5 h-5" aria-hidden="true" />
         </div>
@@ -110,10 +110,10 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
       data-testid={`notification-card-${notification.id}`}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className={`group relative flex items-start gap-4 p-4 rounded-xl border transition-all cursor-pointer min-h-[44px] sm:min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 ${
+      className={`group relative flex items-start gap-4 p-4 rounded-lg border transition-all cursor-pointer min-h-[44px] sm:min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] dark:focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
         notification.isRead
-          ? 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm'
-          : 'bg-[#EFF4FF] border-blue-200 hover:border-blue-300 hover:shadow-sm'
+          ? 'bg-white dark:bg-[var(--card-bg)] border-slate-200 dark:border-[var(--lead)] hover:border-slate-300 dark:hover:border-[var(--text-muted)] hover:shadow-xs'
+          : 'bg-[#EFF4FF] dark:bg-[var(--tag-bg)]/40 border-blue-200 dark:border-[var(--amber)]/40 hover:border-blue-300 dark:hover:border-[var(--amber)] shadow-xs'
       }`}
     >
       {/* Category Icon Container */}
@@ -125,8 +125,8 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           <h3
             className={`text-sm tracking-tight truncate ${
               notification.isRead
-                ? 'font-medium text-slate-900'
-                : 'font-semibold text-[#001A41]'
+                ? 'font-medium text-slate-900 dark:text-[var(--text-main)]'
+                : 'font-bold text-[#001A41] dark:text-[var(--text-main)]'
             }`}
           >
             {notification.title}
@@ -136,21 +136,21 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             {!notification.isRead && (
               <span
                 data-testid="unread-indicator"
-                className="w-2.5 h-2.5 rounded-full bg-[#296A4B]"
+                className="w-2.5 h-2.5 rounded-full bg-[#296A4B] dark:bg-emerald-400 shadow-xs"
                 aria-label="Unread"
               />
             )}
             <time
               data-testid="notification-timestamp"
               dateTime={notification.createdAt}
-              className="text-xs text-slate-500 whitespace-nowrap"
+              className="text-xs text-slate-500 dark:text-[var(--text-muted)] whitespace-nowrap"
             >
               {relativeTime}
             </time>
           </div>
         </div>
 
-        <p className="mt-1 text-sm text-slate-600 line-clamp-2 leading-relaxed">
+        <p className="mt-1 text-sm text-slate-600 dark:text-[var(--text-muted)] line-clamp-2 leading-relaxed">
           {notification.message}
         </p>
 
@@ -158,7 +158,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           <div className="mt-2 flex items-center gap-2">
             <span
               data-testid="reference-code-badge"
-              className="inline-flex items-center text-xs font-mono font-medium text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200"
+              className="inline-flex items-center text-xs font-mono font-medium text-slate-700 dark:text-[var(--text-main)] bg-slate-100 dark:bg-[var(--tag-bg)] px-2 py-0.5 rounded-md border border-slate-200 dark:border-[var(--lead)]"
             >
               {notification.referenceCode}
             </span>
@@ -167,7 +167,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
       </div>
 
       {/* Trailing Chevron indicator */}
-      <div className="hidden sm:flex items-center self-center text-slate-300 group-hover:text-slate-500 transition-colors">
+      <div className="hidden sm:flex items-center self-center text-slate-300 dark:text-[var(--text-muted)] group-hover:text-slate-500 dark:group-hover:text-[var(--amber)] transition-colors">
         <ChevronRight className="w-4 h-4" aria-hidden="true" />
       </div>
     </div>

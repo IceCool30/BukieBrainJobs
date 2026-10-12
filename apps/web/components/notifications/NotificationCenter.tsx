@@ -216,7 +216,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-8 bg-[#F8F9FF] min-h-screen">
+    <div className="w-full max-w-4xl mx-auto px-4 py-8 bg-[var(--bg)] min-h-screen text-[var(--text-main)]">
       {/* Polite Accessibility Live Region */}
       <div role="status" aria-live="polite" className="sr-only">
         {statusMessage}
@@ -226,10 +226,10 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-[#001A41]">Notifications</h1>
+            <h1 className="text-2xl font-bold font-display text-[var(--text-main)]">Notifications</h1>
             {pushPermission === 'granted' && <PushStatusGranted />}
           </div>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <p className="text-sm text-[var(--text-muted)] mt-0.5">
             Operational alerts and updates for your bookings
           </p>
         </div>
@@ -238,7 +238,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
           type="button"
           onClick={() => void handleMarkAllAsRead()}
           disabled={unreadCounts.all === 0 || isMutating}
-          className="text-sm font-medium text-[#296A4B] hover:text-[#001A41] disabled:text-slate-400 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 rounded px-2 py-1 min-h-[44px]"
+          className="text-sm font-semibold text-[var(--amber)] hover:text-[var(--amber-hover)] disabled:text-[var(--text-muted)]/50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 rounded-lg px-2 py-1 min-h-[44px] cursor-pointer"
         >
           Mark all as read
         </button>
@@ -259,7 +259,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
       <div
         role="tablist"
         aria-label="Notification categories"
-        className="flex space-x-2 border-b border-slate-200 mb-6 overflow-x-auto pb-1"
+        className="flex space-x-2 border-b border-[var(--lead)] mb-6 overflow-x-auto pb-1"
       >
         {TABS.map((tab, idx) => {
           const isSelected = activeTab === tab.id;
@@ -278,17 +278,17 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
               tabIndex={isSelected ? 0 : -1}
               onClick={() => setActiveTab(tab.id)}
               onKeyDown={(e) => handleTabKeyDown(idx, e)}
-              className={`flex items-center whitespace-nowrap px-4 py-2 text-sm font-medium rounded-t-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] ${
+              className={`flex items-center whitespace-nowrap px-4 py-2 text-sm font-medium rounded-t-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] cursor-pointer ${
                 isSelected
-                  ? 'text-[#001A41] border-b-2 border-[#001A41] bg-white font-semibold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  ? 'text-[var(--text-main)] border-b-2 border-[var(--amber)] bg-[var(--card-bg)] font-bold'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)]'
               }`}
             >
               <span>{tab.label}</span>
               {badgeCount > 0 && (
                 <span
                   data-testid={tab.badgeTestId}
-                  className="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-semibold rounded-full bg-[#ABEEC8] text-[#001A41]"
+                  className="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25"
                 >
                   {badgeCount}
                 </span>
