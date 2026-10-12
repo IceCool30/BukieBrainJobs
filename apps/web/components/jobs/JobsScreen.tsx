@@ -268,8 +268,8 @@ export default function JobsScreen() {
   if (authChecked && !currentUser && viewModel.stateMode !== 'auth_failure') {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-6 text-[var(--text-main)] font-sans">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl p-8 border border-[var(--lead)] shadow-xs text-center">
-          <div className="mx-auto w-14 h-14 rounded-full bg-[var(--tag-bg)] text-[var(--amber)] flex items-center justify-center mb-5">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg p-8 border border-[var(--lead)] shadow-xs text-center">
+          <div className="mx-auto w-14 h-14 rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--amber)] flex items-center justify-center mb-5">
             <Briefcase className="h-7 w-7" />
           </div>
           <h1 className="text-2xl font-bold font-display tracking-trades uppercase text-[var(--text-main)] mb-2">
@@ -281,13 +281,13 @@ export default function JobsScreen() {
           <div className="space-y-3">
             <Link
               href="/login?redirect=/jobs"
-              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-xl bg-[var(--amber)] text-white font-medium hover:bg-[var(--amber-hover)] transition cursor-pointer"
+              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-lg bg-[var(--amber)] text-white font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
             >
               Sign In
             </Link>
             <Link
               href="/"
-              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-xl bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--text-main)] font-medium hover:bg-[var(--card-hover)] transition"
+              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-lg bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text-main)] font-bold hover:bg-[var(--card-hover)] transition shadow-xs"
             >
               Back to Home
             </Link>
@@ -300,29 +300,29 @@ export default function JobsScreen() {
   // 2. Full failure state
   if (viewModel.stateMode === 'auth_failure') {
     return (
-      <div className="min-h-screen bg-[#F8F9FF] flex items-center justify-center p-6 text-slate-800 font-sans">
-        <div className="max-w-md w-full bg-white rounded-2xl p-8 border border-rose-200 shadow-xs text-center">
-          <div className="mx-auto w-14 h-14 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mb-5">
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-6 text-[var(--text-main)] font-sans">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg p-8 border border-rose-500/30 shadow-xs text-center text-[var(--text-main)]">
+          <div className="mx-auto w-14 h-14 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-500 flex items-center justify-center mb-5">
             <AlertTriangle className="h-7 w-7" />
           </div>
-          <h1 className="text-2xl font-bold font-display text-rose-950 mb-2">
+          <h1 className="text-2xl font-bold font-display text-[var(--text-main)] mb-2">
             We could not load your activity
           </h1>
-          <p className="text-slate-600 text-sm mb-6">
+          <p className="text-[var(--text-muted)] text-sm mb-6">
             There was a connection issue loading your current jobs and bookings. Please refresh or retry.
           </p>
           <div className="space-y-3">
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#001A41] text-white font-medium hover:bg-[#002661] transition cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-[var(--amber)] text-white font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
             >
               <RotateCcw className="h-4 w-4" />
               <span>Retry</span>
             </button>
             <Link
               href="/dashboard"
-              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-xl bg-slate-100 text-slate-700 font-medium hover:bg-slate-200 transition"
+              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-lg bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text-main)] font-bold hover:bg-[var(--card-hover)] transition shadow-xs"
             >
               Back to Dashboard
             </Link>

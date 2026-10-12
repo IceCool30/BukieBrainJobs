@@ -76,7 +76,7 @@ export function LifecycleStepIndicator({ jobStatus, isDeclined = false }: Lifecy
                 {idx < LIFECYCLE_STEPS.length - 1 && (
                   <div
                     className={`absolute top-4 left-1/2 w-full h-0.5 -z-0 transition-colors duration-300 ${
-                      isCompleted ? 'bg-[#296A4B]' : 'bg-slate-200'
+                      isCompleted ? 'bg-[var(--brand-green)]' : 'bg-[var(--lead)]'
                     }`}
                     aria-hidden="true"
                   />
@@ -86,20 +86,20 @@ export function LifecycleStepIndicator({ jobStatus, isDeclined = false }: Lifecy
                 <div
                   className={`relative z-10 flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all ${
                     isTerminalNegative && idx === currentStepIndex
-                      ? 'bg-slate-200 text-slate-600 ring-4 ring-slate-100'
+                      ? 'bg-[var(--tag-bg)] text-[var(--text-muted)] ring-4 ring-[var(--lead)]'
                       : isDeclined && idx === 1
-                      ? 'bg-amber-100 text-amber-800 ring-4 ring-amber-50'
+                      ? 'bg-amber-500/20 text-amber-600 dark:text-amber-400 ring-4 ring-amber-500/10'
                       : isCompleted
-                      ? 'bg-[#296A4B] text-white'
+                      ? 'bg-[var(--brand-green)] text-white'
                       : isCurrent
-                      ? 'bg-[#001A41] text-white ring-4 ring-blue-100 scale-105'
-                      : 'bg-white border-2 border-slate-200 text-slate-400'
+                      ? 'bg-[var(--amber)] text-white ring-4 ring-[var(--amber)]/20 scale-105'
+                      : 'bg-[var(--card-bg)] border-2 border-[var(--lead)] text-[var(--text-muted)]'
                   }`}
                 >
                   {isTerminalNegative && idx === currentStepIndex ? (
-                    <X className="w-4 h-4 text-slate-600" aria-hidden="true" />
+                    <X className="w-4 h-4 text-[var(--text-muted)]" aria-hidden="true" />
                   ) : isDeclined && idx === 1 ? (
-                    <AlertCircle className="w-4 h-4 text-amber-800" aria-hidden="true" />
+                    <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" aria-hidden="true" />
                   ) : isCompleted ? (
                     <Check className="w-4 h-4 text-white" aria-hidden="true" />
                   ) : (
@@ -112,15 +112,15 @@ export function LifecycleStepIndicator({ jobStatus, isDeclined = false }: Lifecy
                   <span
                     className={`block text-xs font-semibold ${
                       isCurrent
-                        ? 'text-[#001A41]'
+                        ? 'text-[var(--text-main)]'
                         : isCompleted
-                        ? 'text-[#296A4B]'
-                        : 'text-slate-400'
+                        ? 'text-[var(--brand-green)]'
+                        : 'text-[var(--text-muted)]'
                     }`}
                   >
                     {step.label}
                   </span>
-                  <span className="block text-[11px] text-slate-400 mt-0.5">
+                  <span className="block text-[11px] text-[var(--text-muted)] mt-0.5">
                     {isDeclined && idx === 1 ? 'Declined' : step.sublabel}
                   </span>
                 </div>
@@ -139,22 +139,22 @@ export function LifecycleStepIndicator({ jobStatus, isDeclined = false }: Lifecy
           return (
             <div
               key={step.key}
-              className={`flex items-center gap-3 p-2 rounded-xl transition ${
-                isCurrent ? 'bg-blue-50/60 border border-blue-100' : 'bg-transparent'
+              className={`flex items-center gap-3 p-2 rounded-lg transition ${
+                isCurrent ? 'bg-[var(--amber)]/10 border border-[var(--amber)]/20' : 'bg-transparent'
               }`}
               aria-current={isCurrent ? 'step' : undefined}
             >
               <div
                 className={`flex items-center justify-center w-6 h-6 rounded-full text-[11px] font-bold shrink-0 ${
                   isTerminalNegative && idx === currentStepIndex
-                    ? 'bg-slate-200 text-slate-600'
+                    ? 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
                     : isDeclined && idx === 1
-                    ? 'bg-amber-100 text-amber-800'
+                    ? 'bg-amber-500/20 text-amber-600 dark:text-amber-400'
                     : isCompleted
-                    ? 'bg-[#296A4B] text-white'
+                    ? 'bg-[var(--brand-green)] text-white'
                     : isCurrent
-                    ? 'bg-[#001A41] text-white ring-2 ring-blue-100'
-                    : 'bg-white border border-slate-200 text-slate-400'
+                    ? 'bg-[var(--amber)] text-white ring-2 ring-[var(--amber)]/20'
+                    : 'bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text-muted)]'
                 }`}
               >
                 {isCompleted ? (
@@ -167,15 +167,15 @@ export function LifecycleStepIndicator({ jobStatus, isDeclined = false }: Lifecy
                 <span
                   className={`font-semibold ${
                     isCurrent
-                      ? 'text-[#001A41]'
+                      ? 'text-[var(--text-main)]'
                       : isCompleted
-                      ? 'text-[#296A4B]'
-                      : 'text-slate-400'
+                      ? 'text-[var(--brand-green)]'
+                      : 'text-[var(--text-muted)]'
                   }`}
                 >
                   {step.label}
                 </span>
-                <span className="text-[11px] text-slate-400">
+                <span className="text-[11px] text-[var(--text-muted)]">
                   {isDeclined && idx === 1
                     ? 'Declined'
                     : isCompleted

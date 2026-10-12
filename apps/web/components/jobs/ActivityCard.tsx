@@ -19,10 +19,10 @@ export function ActivityCard({ activity, isSelected, onSelect }: ActivityCardPro
       role="button"
       aria-pressed={isSelected}
       aria-label={`Select ${activity.title}, ${activity.statusLabel}`}
-      className={`w-full text-left p-4 sm:p-5 rounded-2xl border transition group cursor-pointer ${
+      className={`w-full text-left p-4 sm:p-5 rounded-lg border transition group cursor-pointer ${
         isSelected
-          ? 'bg-blue-50/40 border-[#001A41] ring-1 ring-[#001A41] shadow-xs'
-          : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-xs'
+          ? 'bg-[var(--amber)]/10 border-[var(--amber)] ring-1 ring-[var(--amber)] shadow-xs'
+          : 'bg-[var(--card-bg)] border-[var(--lead)] hover:border-[var(--lead)]/80 hover:shadow-xs'
       }`}
     >
       {/* Header: Type & Status Badges */}
@@ -31,38 +31,38 @@ export function ActivityCard({ activity, isSelected, onSelect }: ActivityCardPro
           <TypeBadge type={activity.type} />
           <StatusBadge status={activity.status} label={activity.statusLabel} />
         </div>
-        <span className="text-[11px] font-mono text-slate-400 shrink-0">
+        <span className="text-[11px] font-mono text-[var(--text-muted)] shrink-0">
           {activity.createdAt}
         </span>
       </div>
 
       {/* Title */}
-      <h3 className="font-bold text-sm sm:text-base text-[#001A41] group-hover:text-[#002661] transition line-clamp-1">
+      <h3 className="font-bold text-sm sm:text-base text-[var(--text-main)] group-hover:text-[var(--amber)] transition line-clamp-1">
         {activity.title}
       </h3>
 
       {/* Sub-meta: Location & Schedule */}
-      <div className="mt-2.5 space-y-1 text-xs text-slate-600">
+      <div className="mt-2.5 space-y-1 text-xs text-[var(--text-muted)]">
         <div className="flex items-center gap-1.5 truncate">
-          <MapPin className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+          <MapPin className="h-3.5 w-3.5 text-[var(--text-muted)] shrink-0" />
           <span className="truncate">{activity.location}</span>
         </div>
         <div className="flex items-center gap-1.5 truncate">
-          <Calendar className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+          <Calendar className="h-3.5 w-3.5 text-[var(--text-muted)] shrink-0" />
           <span className="truncate">{activity.schedule}</span>
         </div>
       </div>
 
       {/* Footer info: Budget & Action */}
-      <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+      <div className="mt-3 pt-3 border-t border-[var(--lead)] flex items-center justify-between text-xs">
         {activity.budgetOrPrice ? (
-          <span className="font-semibold text-slate-700 truncate">
+          <span className="font-semibold text-[var(--text-main)] truncate">
             {activity.budgetOrPrice}
           </span>
         ) : (
-          <span className="text-slate-400">Ref: {activity.referenceCode}</span>
+          <span className="text-[var(--text-muted)]">Ref: {activity.referenceCode}</span>
         )}
-        <span className="text-[#001A41] font-bold inline-flex items-center gap-1">
+        <span className="text-[var(--amber)] font-bold inline-flex items-center gap-1">
           Details <ArrowRight className="h-3 w-3" />
         </span>
       </div>

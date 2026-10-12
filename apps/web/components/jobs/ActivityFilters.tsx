@@ -32,7 +32,7 @@ export function ActivityFilters({
     <nav
       role="navigation"
       aria-label="Activity Filters"
-      className="flex items-center gap-2 overflow-x-auto pb-2 mb-6 border-b border-slate-200 scrollbar-none"
+      className="flex items-center gap-2 overflow-x-auto pb-2 mb-6 border-b border-[var(--lead)] scrollbar-none"
     >
       {FILTERS.map(({ id, label }) => {
         const isActive = activeFilter === id;
@@ -44,16 +44,16 @@ export function ActivityFilters({
             type="button"
             onClick={() => onFilterChange(id)}
             aria-pressed={isActive}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
               isActive
-                ? 'bg-[#001A41] text-white shadow-xs'
-                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-slate-900'
+                ? 'bg-[var(--amber)] text-white shadow-xs font-bold'
+                : 'bg-[var(--card-bg)] text-[var(--text-muted)] border border-[var(--lead)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)]'
             }`}
           >
             <span>{label}</span>
             <span
-              className={`text-[11px] px-1.5 py-0.5 rounded-full ${
-                isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+              className={`text-[11px] px-1.5 py-0.5 rounded-md ${
+                isActive ? 'bg-white/20 text-white font-bold' : 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
               }`}
             >
               {count}

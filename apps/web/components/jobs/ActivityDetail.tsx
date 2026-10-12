@@ -39,26 +39,26 @@ export function ActivityDetail({
         <div
           className={`${colSpanClass} ${
             isMobileOpen
-              ? 'fixed inset-0 z-50 bg-[#F8F9FF] p-4 sm:p-6 overflow-y-auto lg:static lg:p-0 lg:z-auto'
+              ? 'fixed inset-0 z-50 bg-[var(--bg)] p-4 sm:p-6 overflow-y-auto lg:static lg:p-0 lg:z-auto'
               : 'hidden lg:block'
           }`}
           role="region"
           aria-label="Activity Detail"
         >
-          <div className="bg-white rounded-2xl p-8 border border-slate-200 text-center shadow-xs max-w-xl mx-auto">
-            <div className="mx-auto w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mb-3">
+          <div className="bg-[var(--card-bg)] rounded-lg p-8 border border-[var(--lead)] text-center shadow-xs max-w-xl mx-auto text-[var(--text-main)]">
+            <div className="mx-auto w-12 h-12 rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--amber)] flex items-center justify-center mb-3">
               <FileText className="h-6 w-6" />
             </div>
-            <h3 className="text-lg font-bold font-display text-[#001A41] mb-1">
+            <h3 className="text-lg font-bold font-display text-[var(--text-main)] mb-1">
               Activity not found
             </h3>
-            <p className="text-xs text-slate-500 max-w-xs mx-auto mb-5">
+            <p className="text-xs text-[var(--text-muted)] max-w-xs mx-auto mb-5">
               The requested activity identifier ({requestedId}) was not found in your account history.
             </p>
             <button
               type="button"
               onClick={onResetSelected}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#001A41] text-white text-xs font-semibold hover:bg-[#002661] transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--amber)] text-white text-xs font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
             >
               View all activity
             </button>
@@ -68,10 +68,10 @@ export function ActivityDetail({
     }
 
     return (
-      <div className="hidden lg:flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-200 text-center text-slate-400 min-h-[400px]">
-        <FileText className="h-10 w-10 text-slate-300 mb-3" />
-        <p className="text-sm font-medium text-slate-600">No activity selected</p>
-        <p className="text-xs text-slate-400 mt-1 max-w-xs">
+      <div className="hidden lg:flex flex-col items-center justify-center p-12 bg-[var(--card-bg)] rounded-lg border border-[var(--lead)] text-center text-[var(--text-muted)] min-h-[400px]">
+        <FileText className="h-10 w-10 text-[var(--lead)] mb-3" />
+        <p className="text-sm font-semibold text-[var(--text-main)]">No activity selected</p>
+        <p className="text-xs text-[var(--text-muted)] mt-1 max-w-xs">
           Select a service request or booking from the list to view its complete progress and details.
         </p>
       </div>
@@ -82,13 +82,13 @@ export function ActivityDetail({
     <div
       className={`${colSpanClass} ${
         isMobileOpen
-          ? 'fixed inset-0 z-50 bg-[#F8F9FF] p-4 sm:p-6 overflow-y-auto lg:static lg:p-0 lg:z-auto'
+          ? 'fixed inset-0 z-50 bg-[var(--bg)] p-4 sm:p-6 overflow-y-auto lg:static lg:p-0 lg:z-auto'
           : 'hidden lg:block'
       }`}
       role="region"
       aria-label="Activity Detail"
     >
-      <div className="relative bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs overflow-hidden">
+      <div className="relative bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 sm:p-8 border border-[var(--lead)] shadow-xs overflow-hidden">
         {/* Decorative Watermark: Subtle brand signature at 3.5% opacity */}
         <Image
           src="/images/logo-badge-512.png"
@@ -100,17 +100,17 @@ export function ActivityDetail({
         />
 
         {/* Mobile Sticky Back Header with >=48px Touch Target */}
-        <div className="lg:hidden flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+        <div className="lg:hidden flex items-center justify-between pb-4 mb-4 border-b border-[var(--lead)]">
           <button
             type="button"
             onClick={onCloseMobile}
             aria-label="Back to activity list"
-            className="min-h-[48px] min-w-[48px] -ml-2 px-3 py-2 inline-flex items-center gap-2 rounded-xl text-slate-700 bg-slate-100 hover:bg-slate-200 font-semibold text-xs transition cursor-pointer"
+            className="min-h-[48px] min-w-[48px] -ml-2 px-3 py-2 inline-flex items-center gap-2 rounded-lg text-[var(--text-main)] bg-[var(--tag-bg)] border border-[var(--lead)] hover:bg-[var(--card-hover)] font-semibold text-xs transition cursor-pointer"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>Back to list</span>
           </button>
-          <span className="text-xs font-mono text-slate-400">
+          <span className="text-xs font-mono text-[var(--text-muted)]">
             {activity.referenceCode}
           </span>
         </div>

@@ -353,22 +353,22 @@ export function LifecycleStateSurface({
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section
         aria-label="Current Booking State"
-        className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5"
+        className="rounded-lg border border-[var(--lead)] bg-[var(--bg)] p-4 sm:p-5 shadow-xs"
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <TypeBadge type={activity.type} />
             <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider ${
                 stateCopy.badgeStyle === 'navy'
-                  ? 'bg-[#001A41] text-white'
+                  ? 'bg-[var(--amber)] text-white shadow-xs'
                   : stateCopy.badgeStyle === 'emerald'
-                  ? 'bg-emerald-100 text-[#296A4B] border border-emerald-200'
+                  ? 'bg-emerald-500/10 text-[var(--brand-green)] border border-emerald-500/20'
                   : stateCopy.badgeStyle === 'amber'
-                  ? 'bg-amber-100 text-amber-900 border border-amber-200'
+                  ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
                   : stateCopy.badgeStyle === 'rose'
-                  ? 'bg-rose-100 text-rose-900 border border-rose-200'
-                  : 'bg-slate-200 text-slate-800'
+                  ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20'
+                  : 'bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]'
               }`}
             >
               {stateCopy.icon === 'check' && (
@@ -390,25 +390,25 @@ export function LifecycleStateSurface({
             </span>
           </div>
 
-          <span className="text-xs font-mono text-slate-500">
-            Ref: <span className="font-bold text-slate-700">{activity.referenceCode}</span>
+          <span className="text-xs font-mono text-[var(--text-muted)]">
+            Ref: <span className="font-bold text-[var(--text-main)]">{activity.referenceCode}</span>
           </span>
         </div>
 
         <div className="mt-3">
           <p
-            className="text-sm sm:text-base font-semibold text-[#001A41] font-display"
+            className="text-sm sm:text-base font-bold text-[var(--text-main)] font-display"
             aria-live="polite"
           >
             {stateCopy.meaningLine}
           </p>
           {isDeclined && activity.declineResponse?.declineReason && (
-            <p className="text-xs text-slate-600 mt-1">
+            <p className="text-xs text-[var(--text-muted)] mt-1">
               Note from BrainWorker: {activity.declineResponse.declineReason}
             </p>
           )}
           {currentJobStatus === 'CANCELLED' && activity.cancellationReason && (
-            <p className="text-xs text-slate-600 mt-1">
+            <p className="text-xs text-[var(--text-muted)] mt-1">
               Cancellation reason: {activity.cancellationReason}
             </p>
           )}
@@ -432,12 +432,12 @@ export function LifecycleStateSurface({
             <div
               role="alert"
               aria-label="Offline Mode: Read-Only Financial State"
-              className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-xs text-amber-900 flex items-start gap-3"
+              className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-xs text-amber-600 dark:text-amber-400 flex items-start gap-3"
             >
-              <WifiOff className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" aria-hidden="true" />
+              <WifiOff className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" aria-hidden="true" />
               <div className="space-y-0.5">
                 <p className="font-bold">Offline: Read-Only Financial State</p>
-                <p className="text-amber-800 leading-relaxed">
+                <p className="text-amber-700 dark:text-amber-300 leading-relaxed">
                   You are currently offline. Financial mutations (funding escrow, releasing funds, requesting refunds, and filing disputes) are disabled until your connection is restored. Booking details and receipts remain accessible in read-only mode.
                 </p>
               </div>
@@ -462,15 +462,15 @@ export function LifecycleStateSurface({
 
           {/* Prompt to Fund Escrow for CONFIRMED bookings */}
           {currentJobStatus === 'CONFIRMED' && paymentContext.escrowStatus === 'unfunded' && (
-            <div className="rounded-2xl border-2 border-emerald-500/40 bg-emerald-50/50 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+            <div className="rounded-lg border-2 border-[var(--amber)]/40 bg-[var(--amber)]/10 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
               <div className="space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#296A4B]">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--amber)]">
                   Funding Required to Authorize Service
                 </span>
-                <h4 className="text-sm sm:text-base font-display font-bold text-[#001A41]">
+                <h4 className="text-sm sm:text-base font-display font-bold text-[var(--text-main)]">
                   Deposit agreed fee into secure BukieGuarantee escrow
                 </h4>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-[var(--text-muted)]">
                   Total Payable: ₦{paymentContext.pricing.totalPayableNaira.toLocaleString()} (including transparent protection fee and VAT).
                 </p>
               </div>
@@ -481,7 +481,7 @@ export function LifecycleStateSurface({
                 disabled={isOffline}
                 aria-disabled={isOffline}
                 title={isOffline ? 'Escrow funding requires an active internet connection' : undefined}
-                className="min-h-[48px] px-5 py-2.5 rounded-xl bg-[#296A4B] hover:bg-[#20543B] text-white text-xs font-semibold inline-flex items-center justify-center gap-2 transition cursor-pointer shrink-0 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
+                className="min-h-[48px] px-5 py-2.5 rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-bold inline-flex items-center justify-center gap-2 transition cursor-pointer shrink-0 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ShieldCheck className="h-4 w-4" aria-hidden="true" />
                 <span>Fund Escrow (₦{paymentContext.pricing.totalPayableNaira.toLocaleString()})</span>
@@ -504,11 +504,11 @@ export function LifecycleStateSurface({
 
           {/* Dispute Notice Banner */}
           {currentJobStatus === 'DISPUTED' && (
-            <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-xs text-amber-900 flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" aria-hidden="true" />
+            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-xs text-amber-600 dark:text-amber-400 flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-bold">BukieGuarantee Dispute In Progress</p>
-                <p className="mt-0.5 text-amber-800">
+                <p className="mt-0.5 text-amber-700 dark:text-amber-300">
                   Payouts for this job are frozen under escrow. A mediation specialist is reviewing the case to resolve the claim.
                 </p>
               </div>
@@ -522,11 +522,11 @@ export function LifecycleStateSurface({
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section aria-label="Job Details and Context" className="space-y-4">
         <div>
-          <h3 className="text-xl sm:text-2xl font-bold font-display text-[#001A41]">
+          <h3 className="text-xl sm:text-2xl font-bold font-display text-[var(--text-main)]">
             {activity.title}
           </h3>
           {activity.service && (
-            <p className="text-xs sm:text-sm font-semibold text-[#296A4B] mt-0.5">
+            <p className="text-xs sm:text-sm font-semibold text-[var(--brand-green)] mt-0.5">
               {activity.service}
             </p>
           )}
@@ -535,15 +535,15 @@ export function LifecycleStateSurface({
         {/* Quick Details Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Schedule Context vs Confirmed Commitment */}
-          <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100 flex items-start gap-3">
-            <Calendar className="h-4 w-4 text-[#001A41] shrink-0 mt-0.5" aria-hidden="true" />
+          <div className="bg-[var(--bg)] rounded-lg p-3.5 border border-[var(--lead)] flex items-start gap-3">
+            <Calendar className="h-4 w-4 text-[var(--amber)] shrink-0 mt-0.5" aria-hidden="true" />
             <div className="text-xs">
-              <span className="block text-slate-400 font-medium">
+              <span className="block text-[var(--text-muted)] font-medium">
                 {activity.confirmedSchedule ? 'Confirmed Schedule' : 'Requested Schedule'}
               </span>
               <span
                 className={`mt-0.5 block font-semibold ${
-                  activity.confirmedSchedule ? 'text-[#296A4B]' : 'text-slate-900'
+                  activity.confirmedSchedule ? 'text-[var(--brand-green)]' : 'text-[var(--text-main)]'
                 }`}
               >
                 {activity.confirmedSchedule || activity.schedule}
@@ -551,24 +551,24 @@ export function LifecycleStateSurface({
             </div>
           </div>
 
-          <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100 flex items-start gap-3">
-            <MapPin className="h-4 w-4 text-[#001A41] shrink-0 mt-0.5" aria-hidden="true" />
+          <div className="bg-[var(--bg)] rounded-lg p-3.5 border border-[var(--lead)] flex items-start gap-3">
+            <MapPin className="h-4 w-4 text-[var(--amber)] shrink-0 mt-0.5" aria-hidden="true" />
             <div className="text-xs">
-              <span className="block text-slate-400 font-medium">Location</span>
-              <span className="font-semibold text-slate-900 mt-0.5 block">
+              <span className="block text-[var(--text-muted)] font-medium">Location</span>
+              <span className="font-semibold text-[var(--text-main)] mt-0.5 block">
                 {activity.location}
               </span>
             </div>
           </div>
 
           {activity.budgetOrPrice && (
-            <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100 flex items-start gap-3">
-              <Clock className="h-4 w-4 text-[#001A41] shrink-0 mt-0.5" aria-hidden="true" />
+            <div className="bg-[var(--bg)] rounded-lg p-3.5 border border-[var(--lead)] flex items-start gap-3">
+              <Clock className="h-4 w-4 text-[var(--amber)] shrink-0 mt-0.5" aria-hidden="true" />
               <div className="text-xs">
-                <span className="block text-slate-400 font-medium">
+                <span className="block text-[var(--text-muted)] font-medium">
                   {activity.type === 'booking' ? 'Estimated Fee' : 'Budget'}
                 </span>
-                <span className="font-semibold text-slate-900 mt-0.5 block">
+                <span className="font-semibold text-[var(--text-main)] mt-0.5 block">
                   {activity.budgetOrPrice}
                 </span>
               </div>
@@ -579,23 +579,23 @@ export function LifecycleStateSurface({
         {/* Selected or Preferred BrainWorker */}
         {activity.preferredWorker && (
           <div className="pt-1">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mb-2">
               {currentJobStatus === 'CONFIRMED' ||
               currentJobStatus === 'IN_PROGRESS' ||
               currentJobStatus === 'COMPLETED'
                 ? 'Confirmed Professional'
                 : 'Preferred Professional'}
             </h4>
-            <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100 flex items-center justify-between">
+            <div className="bg-[var(--bg)] rounded-lg p-3.5 border border-[var(--lead)] flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#001A41] text-white flex items-center justify-center font-bold text-xs">
+                <div className="w-9 h-9 rounded-lg bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] flex items-center justify-center font-bold text-xs">
                   <User className="h-4 w-4" />
                 </div>
                 <div>
-                  <div className="text-xs sm:text-sm font-bold text-[#001A41]">
+                  <div className="text-xs sm:text-sm font-bold text-[var(--text-main)]">
                     {activity.preferredWorker.name}
                   </div>
-                  <div className="text-[11px] text-slate-500">
+                  <div className="text-[11px] text-[var(--text-muted)]">
                     {currentJobStatus === 'CONFIRMED' ||
                     currentJobStatus === 'IN_PROGRESS' ||
                     currentJobStatus === 'COMPLETED'
@@ -611,10 +611,10 @@ export function LifecycleStateSurface({
         {/* Job Overview Description */}
         {activity.description && (
           <div className="pt-1">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mb-2">
               Job Overview & Requirements
             </h4>
-            <div className="bg-slate-50/70 rounded-xl p-4 border border-slate-100 text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line">
+            <div className="bg-[var(--bg)] rounded-lg p-4 border border-[var(--lead)] text-xs sm:text-sm text-[var(--text-main)] leading-relaxed whitespace-pre-line">
               {activity.description}
             </div>
           </div>
@@ -626,7 +626,7 @@ export function LifecycleStateSurface({
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section
         aria-label="Lifecycle Actions"
-        className="pt-4 border-t border-slate-100 space-y-4"
+        className="pt-4 border-t border-[var(--lead)] space-y-4"
       >
         {/* Post-Completion Review Prompt Card (WEB-016) */}
         {currentJobStatus === 'COMPLETED' && (
@@ -639,8 +639,8 @@ export function LifecycleStateSurface({
         )}
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="text-xs text-slate-500">
-            Reference code: <span className="font-mono font-bold text-slate-700">{activity.referenceCode}</span>
+          <div className="text-xs text-[var(--text-muted)]">
+            Reference code: <span className="font-mono font-bold text-[var(--text-main)]">{activity.referenceCode}</span>
           </div>
 
           <div className="flex items-center gap-2.5 flex-wrap">
@@ -649,9 +649,9 @@ export function LifecycleStateSurface({
               <button
                 type="button"
                 onClick={handleOpenReceipt}
-                className="px-3.5 py-2 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 border border-slate-300 text-slate-700 hover:bg-slate-50 transition cursor-pointer"
+                className="px-3.5 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer shadow-xs"
               >
-                <Receipt className="h-3.5 w-3.5 text-[#001A41]" aria-hidden="true" />
+                <Receipt className="h-3.5 w-3.5 text-[var(--brand-green)]" aria-hidden="true" />
                 <span>View Receipt</span>
               </button>
             )}
@@ -667,7 +667,7 @@ export function LifecycleStateSurface({
                   disabled={isOffline}
                   aria-disabled={isOffline}
                   title={isOffline ? 'Refund requests require an active internet connection' : undefined}
-                  className="px-3.5 py-2 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3.5 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 border border-rose-500/30 bg-rose-500/10 text-rose-500 hover:bg-rose-500/20 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
                 >
                   <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Request Refund</span>
@@ -678,7 +678,7 @@ export function LifecycleStateSurface({
             {isDeclined && (
               <Link
                 href={`/job/${encodeURIComponent(activity.referenceCode || activity.id)}/matches`}
-                className="px-4 py-2 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition bg-[#001A41] text-white hover:bg-[#002661] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
               >
                 <span>Review Alternatives</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -688,7 +688,7 @@ export function LifecycleStateSurface({
             {currentJobStatus === 'EXPIRED' && (
               <Link
                 href="/post-job"
-                className="px-4 py-2 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition bg-[#001A41] text-white hover:bg-[#002661] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
               >
                 <span>Recreate Request</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -698,7 +698,7 @@ export function LifecycleStateSurface({
             {currentJobStatus === 'CANCELLED' && (
               <Link
                 href="/post-job"
-                className="px-4 py-2 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition bg-slate-100 text-slate-700 hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text-main)] hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
               >
                 <span>Post a New Job</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -708,7 +708,7 @@ export function LifecycleStateSurface({
             {currentJobStatus === 'OPEN' && (
               <Link
                 href={`/job/${encodeURIComponent(activity.referenceCode || activity.id)}/matches`}
-                className="px-4 py-2 rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition border border-[#001A41] text-[#001A41] hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
               >
                 <span>View BrainWorker matches</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -721,7 +721,7 @@ export function LifecycleStateSurface({
                 type="button"
                 onClick={() => setIsCancelModalOpen(true)}
                 disabled={isPending}
-                className="px-4 py-2 rounded-xl text-xs font-semibold border border-rose-200 text-rose-700 hover:bg-rose-50 transition disabled:opacity-50 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                className="px-4 py-2 rounded-lg text-xs font-semibold border border-rose-500/30 text-rose-500 hover:bg-rose-500/10 transition disabled:opacity-50 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 shadow-xs"
               >
                 {currentJobStatus === 'CONFIRMED' ? 'Cancel Booking' : 'Cancel Request'}
               </button>
@@ -736,20 +736,20 @@ export function LifecycleStateSurface({
       {mutationError && (
         <section
           aria-label="Action Error Notice"
-          className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-rose-900 flex items-start justify-between gap-3"
+          className="rounded-lg border border-rose-500/30 bg-rose-500/10 p-4 text-rose-500 flex items-start justify-between gap-3 shadow-xs"
         >
           <div className="flex items-start gap-2.5">
-            <AlertTriangle className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" aria-hidden="true" />
+            <AlertTriangle className="h-5 w-5 text-rose-500 shrink-0 mt-0.5" aria-hidden="true" />
             <div className="text-xs">
               <p className="font-bold">Action could not complete</p>
-              <p className="text-rose-700 mt-0.5">{mutationError}</p>
+              <p className="text-rose-400 mt-0.5">{mutationError}</p>
             </div>
           </div>
           {onClearMutationError && (
             <button
               type="button"
               onClick={onClearMutationError}
-              className="p-1 text-rose-600 hover:text-rose-800 text-xs font-semibold cursor-pointer"
+              className="p-1 text-rose-500 hover:text-rose-400 text-xs font-semibold cursor-pointer"
               aria-label="Dismiss error notice"
             >
               Dismiss

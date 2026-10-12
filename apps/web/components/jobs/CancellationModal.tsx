@@ -114,19 +114,19 @@ export function CancellationModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#001A41]/40 backdrop-blur-xs animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-labelledby="cancel-modal-title"
     >
       <div
         ref={modalRef}
-        className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200 p-6 space-y-4 overflow-hidden"
+        className="w-full max-w-md bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg shadow-xl border border-[var(--lead)] p-6 space-y-4 overflow-hidden"
       >
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-          <div className="flex items-center gap-2 text-rose-700">
-            <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0" aria-hidden="true" />
-            <h3 id="cancel-modal-title" className="text-base font-bold text-slate-900 font-display">
+        <div className="flex items-center justify-between border-b border-[var(--lead)] pb-3">
+          <div className="flex items-center gap-2 text-rose-500">
+            <AlertTriangle className="w-5 h-5 shrink-0" aria-hidden="true" />
+            <h3 id="cancel-modal-title" className="text-base font-bold text-[var(--text-main)] font-display">
               {jobStatus === 'CONFIRMED' ? 'Cancel Booking' : 'Cancel Service Request'}
             </h3>
           </div>
@@ -134,22 +134,22 @@ export function CancellationModal({
             type="button"
             onClick={onClose}
             disabled={isPending}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition disabled:opacity-50 cursor-pointer"
+            className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition disabled:opacity-50 cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <p className="text-xs text-slate-600 leading-relaxed">
+        <p className="text-xs text-[var(--text-muted)] leading-relaxed">
           Are you sure you want to cancel {jobStatus === 'CONFIRMED' ? 'booking' : 'request'}{' '}
-          <span className="font-semibold text-slate-900 font-mono">{referenceCode}</span>?
+          <span className="font-semibold text-[var(--text-main)] font-mono">{referenceCode}</span>?
           This action will update the status to Cancelled.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="cancel-reason-select" className="block text-xs font-semibold text-slate-700 mb-1">
+            <label htmlFor="cancel-reason-select" className="block text-xs font-semibold text-[var(--text-main)] mb-1">
               Primary reason for cancellation
             </label>
             <select
@@ -157,7 +157,7 @@ export function CancellationModal({
               value={selectedReason}
               onChange={(e) => setSelectedReason(e.target.value)}
               disabled={isPending}
-              className="w-full text-xs rounded-xl border border-slate-200 bg-slate-50/50 p-2.5 text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#001A41]"
+              className="w-full text-xs rounded-lg border border-[var(--lead)] bg-[var(--bg)] p-2.5 text-[var(--text-main)] focus:bg-[var(--card-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]/20 focus:border-[var(--amber)]"
             >
               {CANCELLATION_REASONS.map((r) => (
                 <option key={r} value={r}>
@@ -168,7 +168,7 @@ export function CancellationModal({
           </div>
 
           <div>
-            <label htmlFor="cancel-details-text" className="block text-xs font-semibold text-slate-700 mb-1">
+            <label htmlFor="cancel-details-text" className="block text-xs font-semibold text-[var(--text-main)] mb-1">
               Additional notes (optional)
             </label>
             <textarea
@@ -178,23 +178,23 @@ export function CancellationModal({
               onChange={(e) => setCustomDetails(e.target.value)}
               disabled={isPending}
               placeholder="Provide any helpful context..."
-              className="w-full text-xs rounded-xl border border-slate-200 bg-slate-50/50 p-2.5 text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#001A41] resize-none"
+              className="w-full text-xs rounded-lg border border-[var(--lead)] bg-[var(--bg)] p-2.5 text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:bg-[var(--card-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]/20 focus:border-[var(--amber)] resize-none"
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+          <div className="flex items-center justify-end gap-2 pt-2 border-t border-[var(--lead)]">
             <button
               type="button"
               onClick={onClose}
               disabled={isPending}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition disabled:opacity-50 cursor-pointer"
+              className="px-4 py-2 rounded-lg text-xs font-semibold border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--card-hover)] transition disabled:opacity-50 cursor-pointer shadow-xs"
             >
               {jobStatus === 'CONFIRMED' ? 'Keep booking' : 'Keep request'}
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-rose-700 hover:bg-rose-800 transition flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+              className="px-4 py-2 rounded-lg text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 transition flex items-center gap-1.5 disabled:opacity-50 cursor-pointer shadow-xs"
             >
               {isPending ? (
                 <>
