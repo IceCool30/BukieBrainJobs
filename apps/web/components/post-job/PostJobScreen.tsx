@@ -50,7 +50,7 @@ type SubmitStatus = 'idle' | 'pending' | 'error' | 'success';
 function FieldError({ id, message }: { id: string; message?: string | undefined }) {
   if (!message) return null;
   return (
-    <p id={id} className="mt-1.5 text-xs font-semibold text-red-700 flex items-center gap-1" role="alert">
+    <p id={id} className="mt-1.5 text-xs font-semibold text-red-600 dark:text-red-400 flex items-center gap-1" role="alert">
       <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
       {message}
     </p>
