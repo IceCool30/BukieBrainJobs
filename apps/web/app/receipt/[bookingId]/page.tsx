@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Printer, Download, AlertCircle, ShieldCheck, CheckCircle2, Clock } from 'lucide-react';
 import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
@@ -25,7 +26,6 @@ export default function ReceiptPage() {
     }
 
     const repo = getCustomerPaymentRepository();
-    // Default seed or fetch
     repo
       .getReceipt(user.id, bookingId)
       .then((res) => {
@@ -33,7 +33,6 @@ export default function ReceiptPage() {
         setLoading(false);
       })
       .catch((err: unknown) => {
-        // Fallback: If not funded yet or not found, try fallback for demo
         const msg = err instanceof Error ? err.message : 'Receipt not available.';
         setError(msg);
         setLoading(false);
@@ -59,10 +58,10 @@ export default function ReceiptPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#F8F9FF] p-6 sm:p-12 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center max-w-sm w-full space-y-3 shadow-xs">
-          <div className="w-8 h-8 rounded-full border-2 border-[#001A41] border-t-transparent animate-spin mx-auto" />
-          <p className="text-xs font-semibold text-slate-600">Retrieving verified transaction receipt...</p>
+      <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] p-6 sm:p-12 flex items-center justify-center transition-colors duration-200">
+        <div className="bg-[var(--card-bg)] p-8 rounded-lg border border-[var(--lead)] text-center max-w-sm w-full space-y-3 shadow-xs">
+          <div className="w-8 h-8 rounded-full border-2 border-[var(--amber)] border-t-transparent animate-spin mx-auto" />
+          <p className="text-xs font-semibold text-[var(--text-muted)]">Retrieving verified transaction receipt...</p>
         </div>
       </main>
     );
@@ -70,19 +69,19 @@ export default function ReceiptPage() {
 
   if (error || !receipt) {
     return (
-      <main className="min-h-screen bg-[#F8F9FF] p-6 sm:p-12 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center max-w-md w-full space-y-4 shadow-xs">
-          <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto">
+      <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] p-6 sm:p-12 flex items-center justify-center transition-colors duration-200">
+        <div className="bg-[var(--card-bg)] p-8 rounded-lg border border-[var(--lead)] text-center max-w-md w-full space-y-4 shadow-xs">
+          <div className="w-12 h-12 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 flex items-center justify-center mx-auto">
             <AlertCircle className="h-6 w-6" />
           </div>
-          <h1 className="text-lg font-display font-bold text-[#001A41]">Receipt Unavailable</h1>
-          <p className="text-xs text-slate-500 leading-relaxed">
+          <h1 className="text-lg font-display font-bold text-[var(--text-main)]">Receipt Unavailable</h1>
+          <p className="text-xs text-[var(--text-muted)] leading-relaxed">
             {error || 'No verified payment record exists for this booking.'}
           </p>
           <div className="pt-2">
             <Link
               href="/jobs"
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#001A41] text-white text-xs font-semibold hover:bg-[#002661] transition"
+              className="motion-press inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-[var(--amber)] text-white text-xs font-bold hover:bg-[var(--amber-hover)] transition shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               <span>Return to Jobs & Bookings</span>
@@ -98,14 +97,14 @@ export default function ReceiptPage() {
       case 'settled':
         return {
           label: 'Payment Settled & Released',
-          color: 'bg-emerald-50 text-[#296A4B] border-emerald-200',
+          color: 'bg-emerald-500/10 text-[var(--brand-green)] border-emerald-500/20',
           icon: CheckCircle2,
           date: receipt.settlementDate ? `Released on ${new Date(receipt.settlementDate).toLocaleDateString()}` : undefined,
         };
       case 'release_pending':
         return {
           label: 'Release Pending Verification',
-          color: 'bg-amber-50 text-amber-800 border-amber-200',
+          color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
           icon: Clock,
           date: 'Payout transfer undergoing banking settlement',
         };
@@ -113,7 +112,7 @@ export default function ReceiptPage() {
       default:
         return {
           label: 'Funds Secured in Escrow',
-          color: 'bg-blue-50 text-blue-800 border-blue-200',
+          color: 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20',
           icon: ShieldCheck,
           date: 'Held safely under BukieGuarantee until completion approval',
         };
@@ -124,15 +123,15 @@ export default function ReceiptPage() {
   const Icon = badge.icon;
 
   return (
-    <main className="min-h-screen bg-[#F8F9FF] py-8 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
       <div className="max-w-2xl mx-auto space-y-6">
         {/* Navigation Bar (Hidden on print) */}
         <div className="print:hidden flex items-center justify-between">
           <Link
             href="/jobs"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 hover:text-slate-900 transition"
+            className="motion-press inline-flex items-center gap-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] transition rounded-lg"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 text-[var(--amber)]" />
             <span>Back to Activity</span>
           </Link>
 
@@ -140,41 +139,55 @@ export default function ReceiptPage() {
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 shadow-xs transition cursor-pointer"
+              className="motion-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] shadow-xs transition cursor-pointer"
             >
-              <Printer className="h-3.5 w-3.5" />
+              <Printer className="h-3.5 w-3.5 text-[var(--text-muted)]" />
               <span>Print</span>
             </button>
             <button
               type="button"
               onClick={handleDownloadJson}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 shadow-xs transition cursor-pointer"
+              className="motion-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] shadow-xs transition cursor-pointer"
             >
-              <Download className="h-3.5 w-3.5" />
+              <Download className="h-3.5 w-3.5 text-[var(--text-muted)]" />
               <span>Export JSON</span>
             </button>
           </div>
         </div>
 
         {/* Receipt Canvas */}
-        <div className="bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-6">
+        <div className="relative overflow-hidden bg-[var(--card-bg)] rounded-lg p-6 sm:p-10 border border-[var(--lead)] shadow-xs space-y-6">
+          {/* Subtle Security Watermark */}
+          <div
+            className="pointer-events-none absolute -right-6 -bottom-8 opacity-[0.03] select-none"
+            aria-hidden="true"
+          >
+            <Image
+              src="/images/logo-badge-512.png"
+              alt=""
+              width={220}
+              height={220}
+              className="object-contain"
+            />
+          </div>
+
           {/* Header */}
-          <div className="flex items-start justify-between gap-4 pb-6 border-b border-slate-200">
+          <div className="relative z-10 flex items-start justify-between gap-4 pb-6 border-b border-[var(--lead)]">
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-display font-black text-2xl text-[#001A41] tracking-tight">
-                  BukieBrain<span className="text-[#296A4B]">Jobs</span>
+                <span className="font-display font-extrabold text-2xl text-[var(--text-main)] tracking-tight">
+                  BukieBrain<span className="text-[var(--brand-green)]">Jobs</span>
                 </span>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded-md bg-[var(--tag-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
                   Escrow Receipt
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-1">BukieBrainJobs Technologies Limited • Lagos, Nigeria</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">BukieBrainJobs Technologies Limited • Lagos, Nigeria</p>
             </div>
 
             <div className="text-right">
-              <span className="font-mono text-xs font-bold text-slate-900 block">{receipt.receiptNumber}</span>
-              <span className="text-[11px] text-slate-500 block">
+              <span className="font-mono text-xs font-bold text-[var(--text-main)] block">{receipt.receiptNumber}</span>
+              <span className="font-mono text-[11px] text-[var(--text-muted)] block">
                 {new Date(receipt.paidAt).toLocaleDateString()}
               </span>
             </div>
@@ -182,13 +195,13 @@ export default function ReceiptPage() {
 
           {/* Sandbox Simulated Watermark */}
           {receipt.isSimulatedTestDocument && (
-            <div className="rounded-xl bg-slate-100 p-2.5 text-center text-[10px] font-mono uppercase tracking-wider text-slate-500 border border-dashed border-slate-300">
+            <div className="relative z-10 rounded-lg bg-[var(--tag-bg)] p-2.5 text-center text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] border border-dashed border-[var(--lead)]">
               SIMULATED TEST RECEIPT (PHASE 1 MOCK BOUNDARY)
             </div>
           )}
 
           {/* Settlement Badge */}
-          <div className={`rounded-xl p-3.5 border flex items-center justify-between gap-3 text-xs ${badge.color}`}>
+          <div className={`relative z-10 rounded-lg p-3.5 border flex items-center justify-between gap-3 text-xs ${badge.color}`}>
             <div className="flex items-center gap-2 font-bold">
               <Icon className="h-4 w-4 shrink-0" />
               <span>{badge.label}</span>
@@ -197,57 +210,57 @@ export default function ReceiptPage() {
           </div>
 
           {/* Metadata */}
-          <div className="grid grid-cols-2 gap-4 text-xs bg-slate-50 p-5 rounded-xl border border-slate-200">
+          <div className="relative z-10 grid grid-cols-2 gap-4 text-xs bg-[var(--tag-bg)] p-5 rounded-lg border border-[var(--lead)]">
             <div>
-              <span className="text-slate-400 block text-[11px]">Billed To</span>
-              <span className="font-bold text-slate-900 block mt-0.5">{receipt.customerName}</span>
-              <span className="text-slate-500">{receipt.customerPhoneMasked}</span>
+              <span className="text-[var(--text-muted)] block text-[11px] font-mono uppercase tracking-wider">Billed To</span>
+              <span className="font-bold text-[var(--text-main)] block mt-0.5">{receipt.customerName}</span>
+              <span className="text-[var(--text-muted)]">{receipt.customerPhoneMasked}</span>
             </div>
 
             <div>
-              <span className="text-slate-400 block text-[11px]">Verified BrainWorker</span>
-              <span className="font-bold text-slate-900 block mt-0.5">{receipt.workerName}</span>
-              <span className="text-slate-500">{receipt.serviceTitle}</span>
+              <span className="text-[var(--text-muted)] block text-[11px] font-mono uppercase tracking-wider">Verified BrainWorker</span>
+              <span className="font-bold text-[var(--text-main)] block mt-0.5">{receipt.workerName}</span>
+              <span className="text-[var(--text-muted)]">{receipt.serviceTitle}</span>
             </div>
 
             <div>
-              <span className="text-slate-400 block text-[11px]">Payment Reference</span>
-              <span className="font-mono text-[11px] font-semibold text-slate-700 block mt-0.5">
+              <span className="text-[var(--text-muted)] block text-[11px] font-mono uppercase tracking-wider">Payment Reference</span>
+              <span className="font-mono text-[11px] font-bold text-[var(--brand-green)] block mt-0.5">
                 {receipt.paymentReference}
               </span>
             </div>
 
             <div>
-              <span className="text-slate-400 block text-[11px]">Service Location</span>
-              <span className="text-slate-700 block mt-0.5 truncate">{receipt.address}</span>
+              <span className="text-[var(--text-muted)] block text-[11px] font-mono uppercase tracking-wider">Service Location</span>
+              <span className="text-[var(--text-main)] block mt-0.5 truncate">{receipt.address}</span>
             </div>
           </div>
 
           {/* Itemized Table */}
-          <div className="space-y-2 text-xs">
-            <h2 className="font-bold uppercase tracking-wider text-slate-400 text-[10px]">
+          <div className="relative z-10 space-y-2 text-xs">
+            <h2 className="font-mono font-bold uppercase tracking-wider text-[var(--text-muted)] text-[10px]">
               Itemized Financial Summary
             </h2>
-            <div className="rounded-xl border border-slate-200 overflow-hidden divide-y divide-slate-100">
-              <div className="p-3.5 flex justify-between">
+            <div className="rounded-lg border border-[var(--lead)] overflow-hidden divide-y divide-[var(--lead)]">
+              <div className="p-3.5 flex justify-between bg-[var(--card-bg)] text-[var(--text-muted)]">
                 <span>Base Service Estimate</span>
-                <span className="font-mono font-semibold">₦{receipt.pricing.baseServiceAmountNaira.toLocaleString()}</span>
+                <span className="font-mono font-semibold text-[var(--text-main)]">₦{receipt.pricing.baseServiceAmountNaira.toLocaleString()}</span>
               </div>
-              <div className="p-3.5 flex justify-between">
+              <div className="p-3.5 flex justify-between bg-[var(--card-bg)] text-[var(--text-muted)]">
                 <span>Platform Service Fee</span>
-                <span className="font-mono font-semibold">₦{receipt.pricing.platformServiceFeeNaira.toLocaleString()}</span>
+                <span className="font-mono font-semibold text-[var(--text-main)]">₦{receipt.pricing.platformServiceFeeNaira.toLocaleString()}</span>
               </div>
-              <div className="p-3.5 flex justify-between">
+              <div className="p-3.5 flex justify-between bg-[var(--card-bg)] text-[var(--text-muted)]">
                 <span>BukieGuarantee Escrow Protection Fee</span>
-                <span className="font-mono font-semibold">₦{receipt.pricing.escrowProtectionFeeNaira.toLocaleString()}</span>
+                <span className="font-mono font-semibold text-[var(--text-main)]">₦{receipt.pricing.escrowProtectionFeeNaira.toLocaleString()}</span>
               </div>
-              <div className="p-3.5 flex justify-between">
+              <div className="p-3.5 flex justify-between bg-[var(--card-bg)] text-[var(--text-muted)]">
                 <span>Statutory Value Added Tax (VAT 7.5%)</span>
-                <span className="font-mono font-semibold">₦{receipt.pricing.statutoryVatNaira.toLocaleString()}</span>
+                <span className="font-mono font-semibold text-[var(--text-main)]">₦{receipt.pricing.statutoryVatNaira.toLocaleString()}</span>
               </div>
-              <div className="p-4 bg-slate-50 flex justify-between text-sm font-bold text-[#001A41]">
+              <div className="p-4 bg-[var(--tag-bg)] flex justify-between text-sm font-bold text-[var(--text-main)]">
                 <span>Total Amount Charged</span>
-                <span className="font-mono text-lg text-[#296A4B]">
+                <span className="font-mono text-lg font-extrabold text-[var(--brand-green)]">
                   ₦{receipt.pricing.totalPayableNaira.toLocaleString()}
                 </span>
               </div>
@@ -255,9 +268,12 @@ export default function ReceiptPage() {
           </div>
 
           {/* Footer Notes */}
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+          <div className="relative z-10 pt-3 border-t border-[var(--lead)] flex items-center justify-between text-[11px] text-[var(--text-muted)]">
             <span>Payment Instrument: {receipt.paymentMethodUsed}</span>
-            <span>BukieGuarantee Protected</span>
+            <span className="flex items-center gap-1 text-[var(--brand-green)] font-semibold">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              BukieGuarantee Protected
+            </span>
           </div>
         </div>
       </div>
