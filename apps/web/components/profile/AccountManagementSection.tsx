@@ -88,12 +88,12 @@ export function AccountManagementSection({
   return (
     <div className="space-y-6">
       {/* Export Account Data Card */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4">
-        <div className="pb-4 border-b border-slate-100">
-          <h2 className="text-xl font-bold font-display text-[#001A41]">
+      <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-[var(--lead)] shadow-xs space-y-4">
+        <div className="pb-4 border-b border-[var(--lead)]">
+          <h2 className="text-xl font-bold font-display text-[var(--text-main)]">
             Account Data & Privacy
           </h2>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-[var(--text-muted)]">
             Request an export of your personal information, saved service addresses, and preferences.
           </p>
         </div>
@@ -101,17 +101,17 @@ export function AccountManagementSection({
         {exportSuccess && (
           <div
             role="status"
-            className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2.5"
+            className="p-3.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2.5"
           >
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             <span>{exportSuccess}</span>
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-lg bg-[var(--tag-bg)]/40 border border-[var(--lead)]">
           <div>
-            <p className="text-xs font-bold text-slate-900">Export Customer Archive</p>
-            <p className="text-[11px] text-slate-500">
+            <p className="text-xs font-bold text-[var(--text-main)]">Export Customer Archive</p>
+            <p className="text-[11px] text-[var(--text-muted)]">
               Download a machine-readable JSON copy of your marketplace customer record.
             </p>
           </div>
@@ -120,7 +120,7 @@ export function AccountManagementSection({
             type="button"
             disabled={isExporting || isOffline}
             onClick={handleExport}
-            className="min-h-[48px] px-4 py-2 bg-[#001A41] text-white text-xs font-semibold rounded-xl hover:bg-[#002661] transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
+            className="min-h-[48px] px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-semibold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
           >
             {isExporting ? (
               <>
@@ -138,19 +138,19 @@ export function AccountManagementSection({
       </div>
 
       {/* Danger Zone: Account Deletion Card */}
-      <div className="bg-white rounded-2xl p-6 border border-red-200 shadow-xs space-y-4">
-        <div className="pb-4 border-b border-red-100">
-          <h3 className="text-sm font-bold font-display text-red-700 flex items-center gap-2">
+      <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-red-500/30 shadow-xs space-y-4">
+        <div className="pb-4 border-b border-red-500/20">
+          <h3 className="text-sm font-bold font-display text-red-500 flex items-center gap-2">
             <AlertTriangle className="h-4 w-4" />
             <span>Danger Zone: Account Deletion</span>
           </h3>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-[var(--text-muted)]">
             Permanently close your BukieBrainJobs customer account.
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <p className="text-xs text-slate-600 max-w-md">
+          <p className="text-xs text-[var(--text-muted)] max-w-md">
             Closing your account removes saved addresses and credentials. If you have active in-progress bookings, they must be resolved or cancelled first.
           </p>
 
@@ -159,7 +159,7 @@ export function AccountManagementSection({
             type="button"
             disabled={isOffline}
             onClick={openDeleteModal}
-            className="min-h-[48px] px-4 py-2 border border-red-300 text-red-600 hover:bg-red-50 text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
+            className="min-h-[48px] px-4 py-2 border border-red-500/30 text-red-500 hover:bg-red-500/10 text-xs font-semibold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
           >
             <Trash2 className="h-4 w-4" />
             <span>Delete Account</span>
@@ -169,38 +169,38 @@ export function AccountManagementSection({
 
       {/* Delete Confirmation Modal */}
       {deleteModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="delete-account-title"
-            className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 relative space-y-4"
+            className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg max-w-md w-full p-6 shadow-xl border border-[var(--lead)] relative space-y-4"
           >
             <button
               type="button"
               onClick={closeDeleteModal}
               aria-label="Close dialog"
-              className="absolute top-4 right-4 p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+              className="absolute top-4 right-4 p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer"
             >
               <X className="h-5 w-5" />
             </button>
 
-            <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 flex items-center justify-center">
               <AlertTriangle className="h-6 w-6" />
             </div>
 
-            <h3 id="delete-account-title" className="text-lg font-bold font-display text-slate-900">
+            <h3 id="delete-account-title" className="text-lg font-bold font-display text-[var(--text-main)]">
               Confirm Account Deletion
             </h3>
 
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
               This action cannot be undone. All saved service locations, contact details, and account credentials will be permanently removed.
             </p>
 
             {deleteError && (
               <div
                 role="alert"
-                className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2"
+                className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2"
               >
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{deleteError}</span>
@@ -209,7 +209,7 @@ export function AccountManagementSection({
 
             <form onSubmit={handleDelete} className="space-y-4">
               <div>
-                <label htmlFor="delete-reason" className="block text-xs font-semibold text-slate-700 mb-1">
+                <label htmlFor="delete-reason" className="block text-xs font-semibold text-[var(--text-main)] mb-1">
                   Reason for leaving (optional)
                 </label>
                 <input
@@ -218,12 +218,12 @@ export function AccountManagementSection({
                   value={deleteReason}
                   onChange={(e) => setDeleteReason(e.target.value)}
                   placeholder="e.g. Relocating, no longer need services"
-                  className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-red-500 focus:bg-white transition"
+                  className="w-full px-3.5 py-2.5 text-xs bg-[var(--bg)] text-[var(--text-main)] border border-[var(--lead)] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-red-500 focus:bg-[var(--card-bg)] transition"
                 />
               </div>
 
               <div>
-                <label htmlFor="delete-confirm" className="block text-xs font-semibold text-slate-700 mb-1">
+                <label htmlFor="delete-confirm" className="block text-xs font-semibold text-[var(--text-main)] mb-1">
                   Type <span className="text-red-600 font-bold">DELETE</span> to confirm
                 </label>
                 <input
@@ -233,7 +233,7 @@ export function AccountManagementSection({
                   value={deleteConfirmationText}
                   onChange={(e) => setDeleteConfirmationText(e.target.value)}
                   placeholder="DELETE"
-                  className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-red-500 focus:bg-white transition"
+                  className="w-full px-3.5 py-2.5 text-xs bg-[var(--bg)] text-[var(--text-main)] border border-[var(--lead)] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-red-500 focus:bg-[var(--card-bg)] transition"
                   required
                 />
               </div>
@@ -242,14 +242,14 @@ export function AccountManagementSection({
                 <button
                   type="button"
                   onClick={closeDeleteModal}
-                  className="min-h-[48px] flex-1 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl transition cursor-pointer"
+                  className="min-h-[48px] flex-1 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] border border-[var(--lead)] rounded-lg transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isDeleting || deleteConfirmationText.trim().toUpperCase() !== 'DELETE'}
-                  className="min-h-[48px] flex-1 py-2 bg-red-600 text-white text-xs font-semibold rounded-xl hover:bg-red-700 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                  className="min-h-[48px] flex-1 py-2 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
                   {isDeleting ? (
                     <>

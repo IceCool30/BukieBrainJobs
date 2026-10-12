@@ -54,12 +54,12 @@ export function NotificationPreferencesSection({
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-6">
-      <div className="pb-6 border-b border-slate-100">
-        <h2 className="text-xl font-bold font-display text-[#001A41]">
+    <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-[var(--lead)] shadow-xs space-y-6">
+      <div className="pb-6 border-b border-[var(--lead)]">
+        <h2 className="text-xl font-bold font-display text-[var(--text-main)]">
           Notification Preferences
         </h2>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-[var(--text-muted)]">
           Choose where and when you receive service dispatch notices, chat messages, and receipts.
         </p>
       </div>
@@ -67,7 +67,7 @@ export function NotificationPreferencesSection({
       {statusMessage && (
         <div
           role="status"
-          className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2.5"
         >
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           <span>{statusMessage}</span>
@@ -77,7 +77,7 @@ export function NotificationPreferencesSection({
       {errorMessage && (
         <div
           role="alert"
-          className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2.5"
         >
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{errorMessage}</span>
@@ -86,19 +86,19 @@ export function NotificationPreferencesSection({
 
       {/* Communication Channels */}
       <div className="space-y-4">
-        <h3 className="text-sm font-bold font-display text-[#001A41]">
+        <h3 className="text-sm font-bold font-display text-[var(--text-main)]">
           Delivery Channels
         </h3>
 
-        <div className="divide-y divide-slate-100">
+        <div className="divide-y divide-[var(--lead)]">
           <div className="py-3 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#001A41] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center">
                 <Smartphone className="h-4 w-4" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-900">SMS Alerts</p>
-                <p className="text-[11px] text-slate-500">Critical booking confirmation and arrival SMS</p>
+                <p className="text-xs font-semibold text-[var(--text-main)]">SMS Alerts</p>
+                <p className="text-[11px] text-[var(--text-muted)]">Critical booking confirmation and arrival SMS</p>
               </div>
             </div>
             <button
@@ -111,7 +111,7 @@ export function NotificationPreferencesSection({
             >
               <div
                 className={`w-11 h-6 rounded-full transition-colors relative flex items-center p-0.5 ${
-                  prefs.smsEnabled ? 'bg-[#001A41]' : 'bg-slate-200'
+                  prefs.smsEnabled ? 'bg-[var(--amber)]' : 'bg-[var(--lead)]'
                 }`}
               >
                 <div
@@ -125,12 +125,12 @@ export function NotificationPreferencesSection({
 
           <div className="py-3 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center">
                 <MessageSquare className="h-4 w-4" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-900">WhatsApp Dispatch Updates</p>
-                <p className="text-[11px] text-slate-500">Technician departure and arrival updates on WhatsApp</p>
+                <p className="text-xs font-semibold text-[var(--text-main)]">WhatsApp Dispatch Updates</p>
+                <p className="text-[11px] text-[var(--text-muted)]">Technician departure and arrival updates on WhatsApp</p>
               </div>
             </div>
             <button
@@ -143,7 +143,7 @@ export function NotificationPreferencesSection({
             >
               <div
                 className={`w-11 h-6 rounded-full transition-colors relative flex items-center p-0.5 ${
-                  prefs.whatsappEnabled ? 'bg-emerald-600' : 'bg-slate-200'
+                  prefs.whatsappEnabled ? 'bg-emerald-600' : 'bg-[var(--lead)]'
                 }`}
               >
                 <div
@@ -157,12 +157,12 @@ export function NotificationPreferencesSection({
 
           <div className="py-3 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] flex items-center justify-center">
                 <Mail className="h-4 w-4" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-900">Email Summaries & Receipts</p>
-                <p className="text-[11px] text-slate-500">Service invoices, job contracts, and monthly digests</p>
+                <p className="text-xs font-semibold text-[var(--text-main)]">Email Summaries & Receipts</p>
+                <p className="text-[11px] text-[var(--text-muted)]">Service invoices, job contracts, and monthly digests</p>
               </div>
             </div>
             <button
@@ -175,7 +175,7 @@ export function NotificationPreferencesSection({
             >
               <div
                 className={`w-11 h-6 rounded-full transition-colors relative flex items-center p-0.5 ${
-                  prefs.emailEnabled ? 'bg-[#001A41]' : 'bg-slate-200'
+                  prefs.emailEnabled ? 'bg-[var(--amber)]' : 'bg-[var(--lead)]'
                 }`}
               >
                 <div
@@ -189,12 +189,12 @@ export function NotificationPreferencesSection({
 
           <div className="py-3 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#001A41] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center">
                 <Bell className="h-4 w-4" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-900">In-App Notification Center</p>
-                <p className="text-[11px] text-slate-500">Badges and status updates inside the BukieBrainJobs workspace</p>
+                <p className="text-xs font-semibold text-[var(--text-main)]">In-App Notification Center</p>
+                <p className="text-[11px] text-[var(--text-muted)]">Badges and status updates inside the BukieBrainJobs workspace</p>
               </div>
             </div>
             <button
@@ -207,7 +207,7 @@ export function NotificationPreferencesSection({
             >
               <div
                 className={`w-11 h-6 rounded-full transition-colors relative flex items-center p-0.5 ${
-                  prefs.inAppEnabled ? 'bg-[#001A41]' : 'bg-slate-200'
+                  prefs.inAppEnabled ? 'bg-[var(--amber)]' : 'bg-[var(--lead)]'
                 }`}
               >
                 <div
@@ -222,16 +222,16 @@ export function NotificationPreferencesSection({
       </div>
 
       {/* Notification Topics */}
-      <div className="pt-4 border-t border-slate-100 space-y-4">
-        <h3 className="text-sm font-bold font-display text-[#001A41]">
+      <div className="pt-4 border-t border-[var(--lead)] space-y-4">
+        <h3 className="text-sm font-bold font-display text-[var(--text-main)]">
           Notification Topics
         </h3>
 
-        <div className="divide-y divide-slate-100">
+        <div className="divide-y divide-[var(--lead)]">
           <div className="py-3 flex items-center justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold text-slate-900">Job Requests & Booking Milestones</p>
-              <p className="text-[11px] text-slate-500">Technician acceptance, departure, and completion confirmations</p>
+              <p className="text-xs font-semibold text-[var(--text-main)]">Job Requests & Booking Milestones</p>
+              <p className="text-[11px] text-[var(--text-muted)]">Technician acceptance, departure, and completion confirmations</p>
             </div>
             <button
               type="button"
@@ -243,7 +243,7 @@ export function NotificationPreferencesSection({
             >
               <div
                 className={`w-11 h-6 rounded-full transition-colors relative flex items-center p-0.5 ${
-                  prefs.bookingUpdates ? 'bg-[#001A41]' : 'bg-slate-200'
+                  prefs.bookingUpdates ? 'bg-[var(--amber)]' : 'bg-[var(--lead)]'
                 }`}
               >
                 <div
@@ -257,8 +257,8 @@ export function NotificationPreferencesSection({
 
           <div className="py-3 flex items-center justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold text-slate-900">Direct Messages from BrainWorkers</p>
-              <p className="text-[11px] text-slate-500">Real-time alerts when a technician messages you</p>
+              <p className="text-xs font-semibold text-[var(--text-main)]">Direct Messages from BrainWorkers</p>
+              <p className="text-[11px] text-[var(--text-muted)]">Real-time alerts when a technician messages you</p>
             </div>
             <button
               type="button"
@@ -270,7 +270,7 @@ export function NotificationPreferencesSection({
             >
               <div
                 className={`w-11 h-6 rounded-full transition-colors relative flex items-center p-0.5 ${
-                  prefs.messageAlerts ? 'bg-[#001A41]' : 'bg-slate-200'
+                  prefs.messageAlerts ? 'bg-[var(--amber)]' : 'bg-[var(--lead)]'
                 }`}
               >
                 <div
@@ -284,8 +284,8 @@ export function NotificationPreferencesSection({
 
           <div className="py-3 flex items-center justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold text-slate-900">Service Announcements & Discounts</p>
-              <p className="text-[11px] text-slate-500">Occasional updates on seasonal services and promotions</p>
+              <p className="text-xs font-semibold text-[var(--text-main)]">Service Announcements & Discounts</p>
+              <p className="text-[11px] text-[var(--text-muted)]">Occasional updates on seasonal services and promotions</p>
             </div>
             <button
               type="button"
@@ -297,7 +297,7 @@ export function NotificationPreferencesSection({
             >
               <div
                 className={`w-11 h-6 rounded-full transition-colors relative flex items-center p-0.5 ${
-                  prefs.marketingAlerts ? 'bg-[#001A41]' : 'bg-slate-200'
+                  prefs.marketingAlerts ? 'bg-[var(--amber)]' : 'bg-[var(--lead)]'
                 }`}
               >
                 <div

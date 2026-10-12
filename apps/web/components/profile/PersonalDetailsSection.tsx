@@ -72,24 +72,24 @@ export function PersonalDetailsSection({
   const initials = `${firstName ? firstName.charAt(0) : ''}${lastName ? lastName.charAt(0) : ''}`.toUpperCase() || 'C';
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+    <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-[var(--lead)] shadow-xs space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--lead)]">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-[#001A41] text-[#ABEEC8] font-bold text-xl flex items-center justify-center shadow-xs">
+          <div className="w-16 h-16 rounded-lg bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] font-bold text-xl flex items-center justify-center shadow-xs">
             {initials}
           </div>
           <div>
-            <h2 className="text-xl font-bold font-display text-[#001A41]">
+            <h2 className="text-xl font-bold font-display text-[var(--text-main)]">
               Personal Information
             </h2>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-[var(--text-muted)]">
               Update your identity, contact phone number, and service delivery email.
             </p>
           </div>
         </div>
 
         {profile.emailVerified && (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold border border-emerald-500/20">
             <CheckCircle2 className="h-3.5 w-3.5" />
             <span>Verified Customer</span>
           </div>
@@ -99,7 +99,7 @@ export function PersonalDetailsSection({
       {validationError && (
         <div
           role="alert"
-          className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2.5"
         >
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{validationError}</span>
@@ -109,7 +109,7 @@ export function PersonalDetailsSection({
       {successMessage && (
         <div
           role="status"
-          className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2.5"
         >
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           <span>{successMessage}</span>
@@ -119,7 +119,7 @@ export function PersonalDetailsSection({
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="first-name" className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label htmlFor="first-name" className="block text-xs font-semibold text-[var(--text-main)] mb-1.5">
               First Name
             </label>
             <input
@@ -128,13 +128,13 @@ export function PersonalDetailsSection({
               value={firstName}
               disabled={isSaving || isOffline}
               onChange={(e) => setFirstName(e.target.value)}
-              className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-[#001A41] focus:bg-white transition disabled:opacity-60"
+              className="w-full px-3.5 py-2.5 text-xs bg-[var(--bg)] text-[var(--text-main)] border border-[var(--lead)] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[var(--amber)] focus:bg-[var(--card-bg)] transition disabled:opacity-60"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="last-name" className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label htmlFor="last-name" className="block text-xs font-semibold text-[var(--text-main)] mb-1.5">
               Last Name
             </label>
             <input
@@ -143,7 +143,7 @@ export function PersonalDetailsSection({
               value={lastName}
               disabled={isSaving || isOffline}
               onChange={(e) => setLastName(e.target.value)}
-              className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-[#001A41] focus:bg-white transition disabled:opacity-60"
+              className="w-full px-3.5 py-2.5 text-xs bg-[var(--bg)] text-[var(--text-main)] border border-[var(--lead)] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[var(--amber)] focus:bg-[var(--card-bg)] transition disabled:opacity-60"
               required
             />
           </div>
@@ -151,7 +151,7 @@ export function PersonalDetailsSection({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="phone-number" className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label htmlFor="phone-number" className="block text-xs font-semibold text-[var(--text-main)] mb-1.5">
               Phone Number
             </label>
             <input
@@ -161,16 +161,16 @@ export function PersonalDetailsSection({
               disabled={isSaving || isOffline}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="08023456789 or +2348023456789"
-              className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-[#001A41] focus:bg-white transition disabled:opacity-60"
+              className="w-full px-3.5 py-2.5 text-xs bg-[var(--bg)] text-[var(--text-main)] border border-[var(--lead)] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[var(--amber)] focus:bg-[var(--card-bg)] transition disabled:opacity-60"
               required
             />
-            <p className="mt-1 text-[11px] text-slate-500">
+            <p className="mt-1 text-[11px] text-[var(--text-muted)]">
               Format: 080... or +23480... (used for technician booking calls).
             </p>
           </div>
 
           <div>
-            <label htmlFor="email-address" className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label htmlFor="email-address" className="block text-xs font-semibold text-[var(--text-main)] mb-1.5">
               Email Address
             </label>
             <input
@@ -179,10 +179,10 @@ export function PersonalDetailsSection({
               value={email}
               disabled={isSaving || isOffline}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-[#001A41] focus:bg-white transition disabled:opacity-60"
+              className="w-full px-3.5 py-2.5 text-xs bg-[var(--bg)] text-[var(--text-main)] border border-[var(--lead)] rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[var(--amber)] focus:bg-[var(--card-bg)] transition disabled:opacity-60"
               required
             />
-            <p className="mt-1 text-[11px] text-slate-500">
+            <p className="mt-1 text-[11px] text-[var(--text-muted)]">
               Receipts and appointment updates are sent here.
             </p>
           </div>
@@ -192,7 +192,7 @@ export function PersonalDetailsSection({
           <button
             type="submit"
             disabled={isSaving || isOffline}
-            className="min-h-[48px] px-6 py-2.5 bg-[#001A41] text-white text-xs font-semibold rounded-xl hover:bg-[#002661] focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-[#001A41] transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+            className="min-h-[48px] px-6 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-semibold rounded-lg focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-[var(--amber)] transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
           >
             {isSaving ? (
               <>
