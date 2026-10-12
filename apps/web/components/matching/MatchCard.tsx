@@ -17,7 +17,7 @@ import { getExplanationLabel } from '../../lib/matching/explanations';
 
 function ExplanationChip({ tag }: { tag: MatchExplanationTag }) {
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#abeec8]/30 border border-[#abeec8] text-[#075135] text-[11px] font-medium leading-snug">
+    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green)] text-[var(--brand-green)] text-xs font-mono font-medium leading-snug">
       <CheckCircle2 className="h-3 w-3 shrink-0" aria-hidden="true" />
       {getExplanationLabel(tag)}
     </span>
@@ -46,7 +46,7 @@ function CandidateAvatar({
       <img
         src={avatarUrl}
         alt={`${displayName} profile photo`}
-        className="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm shrink-0"
+        className="w-14 h-14 rounded-lg object-cover border border-[var(--lead)] shadow-sm shrink-0"
         loading="lazy"
       />
     );
@@ -54,7 +54,7 @@ function CandidateAvatar({
 
   return (
     <div
-      className="w-14 h-14 rounded-full bg-[#001A41] text-white flex items-center justify-center text-lg font-bold shrink-0 select-none"
+      className="w-14 h-14 rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--text)] flex items-center justify-center text-lg font-bold font-mono shrink-0 select-none"
       aria-label={`${displayName} profile avatar`}
     >
       {initials}
@@ -74,15 +74,15 @@ function RatingDisplay({
   if (rating === undefined && completedJobCount === undefined) return null;
 
   return (
-    <div className="flex items-center gap-1.5 text-xs text-slate-600">
+    <div className="flex items-center gap-1.5 text-xs text-[var(--muted)]">
       {rating !== undefined && (
-        <span className="flex items-center gap-0.5 font-semibold text-amber-600">
-          <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" aria-hidden="true" />
-          <span>{rating.toFixed(1)}</span>
+        <span className="flex items-center gap-0.5 font-semibold text-[var(--amber)]">
+          <Star className="h-3.5 w-3.5 fill-[var(--amber)] text-[var(--amber)]" aria-hidden="true" />
+          <span className="font-mono">{rating.toFixed(1)}</span>
         </span>
       )}
       {completedJobCount !== undefined && (
-        <span className="text-slate-400">
+        <span className="text-[var(--muted)]">
           {rating !== undefined && '·'} {completedJobCount} jobs completed
         </span>
       )}
@@ -115,10 +115,10 @@ export function MatchCard({
   return (
     <article
       aria-label={`Match ${rank}: ${profile.displayName}`}
-      className={`bg-white border rounded-2xl p-5 transition-shadow ${
+      className={`bg-[var(--card-bg)] border rounded-lg p-5 transition-shadow shadow-sm ${
         isInterested
-          ? 'border-[#001A41] ring-1 ring-[#001A41] shadow-sm'
-          : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'
+          ? 'border-[var(--brand-green)] ring-1 ring-[var(--brand-green)]'
+          : 'border-[var(--lead)] hover:border-[var(--muted)]'
       }`}
     >
       {/* Rank badge */}
@@ -130,12 +130,12 @@ export function MatchCard({
           />
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <h3 className="font-bold text-[#001A41] text-base leading-snug">
+              <h3 className="font-bold text-[var(--text)] text-base leading-snug">
                 {profile.displayName}
               </h3>
               {profile.identityVerified && (
                 <span
-                  className="inline-flex items-center gap-0.5 text-[#075135] bg-[#abeec8]/30 border border-[#abeec8] rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
+                  className="inline-flex items-center gap-0.5 text-[var(--brand-green)] bg-[var(--brand-green-dim)] border border-[var(--brand-green)] rounded-lg px-2 py-0.5 text-[10px] font-semibold"
                   aria-label="Identity verified"
                 >
                   <ShieldCheck className="h-3 w-3" aria-hidden="true" />
@@ -150,7 +150,7 @@ export function MatchCard({
           </div>
         </div>
         <span
-          className="shrink-0 text-[11px] font-mono text-slate-400 bg-slate-50 border border-slate-200 rounded-full px-2 py-0.5"
+          className="shrink-0 text-[11px] font-mono text-[var(--muted)] bg-[var(--tag-bg)] border border-[var(--lead)] rounded-lg px-2 py-0.5"
           aria-label={`Ranked ${rank}`}
         >
           #{rank}
@@ -158,29 +158,29 @@ export function MatchCard({
       </div>
 
       {/* Meta info */}
-      <dl className="space-y-1.5 text-xs text-slate-600 mb-4">
+      <dl className="space-y-1.5 text-xs text-[var(--muted)] mb-4">
         {profile.servicesLabel && (
           <div className="flex items-start gap-1.5">
-            <Briefcase className="h-3.5 w-3.5 text-slate-400 shrink-0 mt-0.5" aria-hidden="true" />
-            <dd>{profile.servicesLabel}</dd>
+            <Briefcase className="h-3.5 w-3.5 text-[var(--muted)] shrink-0 mt-0.5" aria-hidden="true" />
+            <dd className="text-[var(--text)]">{profile.servicesLabel}</dd>
           </div>
         )}
         {profile.serviceAreaLabel && (
           <div className="flex items-start gap-1.5">
-            <MapPin className="h-3.5 w-3.5 text-slate-400 shrink-0 mt-0.5" aria-hidden="true" />
-            <dd>{profile.serviceAreaLabel}</dd>
+            <MapPin className="h-3.5 w-3.5 text-[var(--muted)] shrink-0 mt-0.5" aria-hidden="true" />
+            <dd className="text-[var(--text)]">{profile.serviceAreaLabel}</dd>
           </div>
         )}
         {profile.availabilityLabel && (
           <div className="flex items-start gap-1.5">
-            <Calendar className="h-3.5 w-3.5 text-slate-400 shrink-0 mt-0.5" aria-hidden="true" />
-            <dd>{profile.availabilityLabel}</dd>
+            <Calendar className="h-3.5 w-3.5 text-[var(--muted)] shrink-0 mt-0.5" aria-hidden="true" />
+            <dd className="text-[var(--text)]">{profile.availabilityLabel}</dd>
           </div>
         )}
         {profile.rateLabel && (
           <div className="flex items-start gap-1.5">
-            <DollarSign className="h-3.5 w-3.5 text-slate-400 shrink-0 mt-0.5" aria-hidden="true" />
-            <dd>{profile.rateLabel}</dd>
+            <DollarSign className="h-3.5 w-3.5 text-[var(--muted)] shrink-0 mt-0.5" aria-hidden="true" />
+            <dd className="font-mono text-[var(--brand-green)] font-semibold">{profile.rateLabel}</dd>
           </div>
         )}
       </dl>
@@ -188,7 +188,7 @@ export function MatchCard({
       {/* Why this matches */}
       {explanations && explanations.length > 0 && (
         <section aria-label="Why this BrainWorker matches" className="mb-4">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+          <p className="text-[11px] font-mono font-semibold text-[var(--muted)] uppercase tracking-wider mb-2">
             Why this matches
           </p>
           <div className="flex flex-wrap gap-1.5" role="list">
@@ -206,18 +206,18 @@ export function MatchCard({
         <p
           role="status"
           aria-live="polite"
-          className="text-xs text-[#075135] bg-[#abeec8]/20 border border-[#abeec8] rounded-xl px-3 py-2 mb-3"
+          className="text-xs text-[var(--brand-green)] bg-[var(--brand-green-dim)] border border-[var(--brand-green)] rounded-lg px-3 py-2 mb-3"
         >
           Your interest has been noted. This is not a booking or an acceptance.
         </p>
       )}
 
       {/* Actions */}
-      <div className="flex items-center gap-2 pt-3 border-t border-slate-100">
+      <div className="flex items-center gap-2 pt-3 border-t border-[var(--lead)]">
         <button
           type="button"
           onClick={() => onViewProfile(profile.brainWorkerId)}
-          className="flex-1 text-center text-sm font-medium text-[#001A41] border border-slate-200 rounded-xl py-2 px-3 hover:bg-slate-50 hover:border-slate-300 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+          className="flex-1 text-center text-sm font-medium text-[var(--text)] border border-[var(--lead)] rounded-lg py-2 px-3 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           aria-label={`View profile of ${profile.displayName}`}
         >
           View profile
@@ -228,10 +228,10 @@ export function MatchCard({
           disabled={isPending}
           aria-label={selectAriaLabel}
           aria-pressed={isInterested}
-          className={`flex-1 text-center text-sm font-semibold rounded-xl py-2 px-3 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] disabled:opacity-60 disabled:cursor-not-allowed ${
+          className={`flex-1 text-center text-sm font-semibold rounded-lg py-2 px-3 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed ${
             isInterested
-              ? 'bg-white border border-[#001A41] text-[#001A41] hover:bg-slate-50'
-              : 'bg-[#001A41] text-white hover:bg-[#002661]'
+              ? 'bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text)] hover:bg-[var(--tag-bg)]'
+              : 'bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] shadow-sm'
           }`}
         >
           {isPending ? (

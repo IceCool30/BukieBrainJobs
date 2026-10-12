@@ -176,8 +176,8 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
   // ── Render: auth check pending ──────────────────────────────────────────────
   if (!authChecked) {
     return (
-      <div className="min-h-screen bg-[#f8f9ff] flex items-center justify-center" aria-busy="true" aria-label="Checking session">
-        <div className="h-8 w-8 rounded-full border-2 border-[#001A41] border-t-transparent animate-spin" />
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center" aria-busy="true" aria-label="Checking session">
+        <div className="h-8 w-8 rounded-full border-2 border-[var(--amber)] border-t-transparent animate-spin" />
       </div>
     );
   }
@@ -185,7 +185,7 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
   // ── Render: session expired ─────────────────────────────────────────────────
   if (authChecked && !customerId) {
     return (
-      <main className="min-h-screen bg-[#f8f9ff] flex items-center justify-center p-4">
+      <main className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4">
         <MatchStatePanel
           state="auth_required"
           jobReferenceCode={referenceCode}
@@ -199,7 +199,7 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
   // ── Render: initial loading ─────────────────────────────────────────────────
   if (isLoading && !result) {
     return (
-      <div className="min-h-screen bg-[#f8f9ff]">
+      <div className="min-h-screen bg-[var(--bg)]">
         <ScreenShell referenceCode={referenceCode}>
           <MatchingLoadingSkeleton />
         </ScreenShell>
@@ -210,7 +210,7 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
   // ── Render: programming error (unexpected repository throw) ─────────────────
   if (loadError) {
     return (
-      <div className="min-h-screen bg-[#f8f9ff]">
+      <div className="min-h-screen bg-[var(--bg)]">
         <ScreenShell referenceCode={referenceCode}>
           <MatchStatePanel
             state="failed"
@@ -229,7 +229,7 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
   // Invalid / unowned context: render isolated notice without job context panel
   if (result.state === 'invalid_context') {
     return (
-      <div className="min-h-screen bg-[#f8f9ff]">
+      <div className="min-h-screen bg-[var(--bg)]">
         <ScreenShell referenceCode={referenceCode} maxWidth="narrow">
           <MatchStatePanel
             state="invalid_context"
@@ -237,10 +237,10 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
             onRetry={fetchMatches}
             returnPath={returnPath}
           />
-          <div className="mt-8 pt-6 border-t border-slate-200">
+          <div className="mt-8 pt-6 border-t border-[var(--lead)]">
             <Link
               href="/jobs"
-              className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-[#001A41] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] rounded"
+              className="inline-flex items-center gap-1.5 text-sm text-[var(--muted)] hover:text-[var(--text)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               Back to jobs
@@ -261,7 +261,7 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
   );
 
   return (
-    <div className="min-h-screen bg-[#f8f9ff]">
+    <div className="min-h-screen bg-[var(--bg)]">
       <ScreenShell referenceCode={referenceCode}>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Job context summary: persistent sticky panel on desktop */}
@@ -277,7 +277,7 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
                 role="status"
                 aria-live="polite"
                 aria-atomic="true"
-                className="px-4 py-3 bg-[#abeec8]/20 border border-[#abeec8] rounded-xl text-sm text-[#075135]"
+                className="px-4 py-3 bg-[var(--brand-green-dim)] border border-[var(--brand-green)] rounded-lg text-sm text-[var(--brand-green)]"
               >
                 {selectionMessage}
               </div>
@@ -311,17 +311,17 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
             {showCandidates && sortedCandidates.length > 0 && (
               <section aria-labelledby={headingId}>
                 <header className="flex items-center gap-2 mb-4">
-                  <Users className="h-5 w-5 text-[#001A41]" aria-hidden="true" />
+                  <Users className="h-5 w-5 text-[var(--brand-green)]" aria-hidden="true" />
                   <h2
                     id={headingId}
-                    className="font-display font-bold text-[#001A41] text-base"
+                    className="font-display font-bold text-[var(--text)] text-base"
                   >
                     {sortedCandidates.length === 1
                       ? '1 BrainWorker found'
                       : `${sortedCandidates.length} BrainWorkers found`}
                   </h2>
                 </header>
-                <p className="text-xs text-slate-500 mb-5">
+                <p className="text-xs text-[var(--muted)] mb-5">
                   We found BrainWorkers who may be a good fit for your request. Expressing interest does not
                   confirm a booking or assign a BrainWorker.
                 </p>
@@ -343,10 +343,10 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
         </div>
 
         {/* Bottom return link */}
-        <div className="mt-8 pt-6 border-t border-slate-200">
+        <div className="mt-8 pt-6 border-t border-[var(--lead)]">
           <Link
             href="/jobs"
-            className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-[#001A41] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] rounded"
+            className="inline-flex items-center gap-1.5 text-sm text-[var(--muted)] hover:text-[var(--text)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back to jobs
@@ -379,15 +379,15 @@ function ScreenShell({
       <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-6 text-sm">
         <Link
           href="/jobs"
-          className="text-slate-500 hover:text-[#001A41] transition inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] rounded"
+          className="text-[var(--muted)] hover:text-[var(--text)] transition inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Jobs
         </Link>
-        <span className="text-slate-300" aria-hidden="true">/</span>
-        <span className="text-slate-500 truncate max-w-[160px]">{referenceCode}</span>
-        <span className="text-slate-300" aria-hidden="true">/</span>
-        <span className="text-[#001A41] font-medium">Matches</span>
+        <span className="text-[var(--lead)]" aria-hidden="true">/</span>
+        <span className="text-[var(--muted)] font-mono text-xs truncate max-w-[160px]">{referenceCode}</span>
+        <span className="text-[var(--lead)]" aria-hidden="true">/</span>
+        <span className="text-[var(--text)] font-medium">Matches</span>
       </nav>
 
       <main id="main-content">{children}</main>

@@ -30,62 +30,64 @@ export function JobContextPanel({ result }: JobContextPanelProps) {
   return (
     <section
       aria-labelledby="job-context-heading"
-      className="bg-[#001A41] text-white rounded-2xl p-5 sm:p-6 mb-6 lg:mb-0"
+      className="bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text)] rounded-lg p-5 sm:p-6 mb-6 lg:mb-0 shadow-sm"
     >
       {/* Reference + title */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="min-w-0">
-          <p className="text-[11px] font-mono text-slate-400 mb-1 flex items-center gap-1">
+          <p className="text-[11px] font-mono text-[var(--muted)] mb-1 flex items-center gap-1">
             <Hash className="h-3 w-3" aria-hidden="true" />
             {jobReferenceCode}
           </p>
           <h2
             id="job-context-heading"
-            className="font-display font-bold text-lg sm:text-xl text-white leading-snug"
+            className="font-display font-bold text-lg sm:text-xl text-[var(--text)] leading-snug"
           >
             {jobTitle}
           </h2>
           {jobServiceLabel && (
-            <p className="text-[#abeec8] text-sm mt-0.5 font-medium">{jobServiceLabel}</p>
+            <p className="text-[var(--brand-green)] text-xs font-mono font-semibold uppercase tracking-wider mt-1">
+              {jobServiceLabel}
+            </p>
           )}
         </div>
       </div>
 
       {/* Meta fields */}
-      <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 mt-3 text-sm text-slate-300">
+      <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 mt-4 text-sm text-[var(--muted)]">
         {jobLocation && (
           <div className="flex items-start gap-1.5">
-            <MapPin className="h-4 w-4 text-slate-400 shrink-0 mt-0.5" aria-hidden="true" />
+            <MapPin className="h-4 w-4 text-[var(--muted)] shrink-0 mt-0.5" aria-hidden="true" />
             <div>
               <dt className="sr-only">Location</dt>
-              <dd>{jobLocation}</dd>
+              <dd className="text-[var(--text)]">{jobLocation}</dd>
             </div>
           </div>
         )}
         {jobSchedule && (
           <div className="flex items-start gap-1.5">
-            <Calendar className="h-4 w-4 text-slate-400 shrink-0 mt-0.5" aria-hidden="true" />
+            <Calendar className="h-4 w-4 text-[var(--muted)] shrink-0 mt-0.5" aria-hidden="true" />
             <div>
               <dt className="sr-only">Schedule</dt>
-              <dd>{jobSchedule}</dd>
+              <dd className="text-[var(--text)]">{jobSchedule}</dd>
             </div>
           </div>
         )}
         {jobBudgetLabel && (
           <div className="flex items-start gap-1.5">
-            <DollarSign className="h-4 w-4 text-slate-400 shrink-0 mt-0.5" aria-hidden="true" />
+            <DollarSign className="h-4 w-4 text-[var(--muted)] shrink-0 mt-0.5" aria-hidden="true" />
             <div>
               <dt className="sr-only">Budget</dt>
-              <dd>{jobBudgetLabel}</dd>
+              <dd className="font-mono text-[var(--brand-green)] font-semibold">{jobBudgetLabel}</dd>
             </div>
           </div>
         )}
         {jobServiceLabel && !jobLocation && !jobSchedule && (
           <div className="flex items-start gap-1.5">
-            <Briefcase className="h-4 w-4 text-slate-400 shrink-0 mt-0.5" aria-hidden="true" />
+            <Briefcase className="h-4 w-4 text-[var(--muted)] shrink-0 mt-0.5" aria-hidden="true" />
             <div>
               <dt className="sr-only">Service</dt>
-              <dd>{jobServiceLabel}</dd>
+              <dd className="text-[var(--text)]">{jobServiceLabel}</dd>
             </div>
           </div>
         )}
@@ -93,7 +95,7 @@ export function JobContextPanel({ result }: JobContextPanelProps) {
 
       {/* Description: safely rendered as text content only */}
       {jobDescription && (
-        <p className="mt-4 text-sm text-slate-300 leading-relaxed border-t border-white/10 pt-3 line-clamp-3">
+        <p className="mt-4 text-sm text-[var(--muted)] leading-relaxed border-t border-[var(--lead)] pt-3 line-clamp-3">
           {jobDescription}
         </p>
       )}

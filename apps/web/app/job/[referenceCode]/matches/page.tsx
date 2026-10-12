@@ -35,11 +35,11 @@ export default async function MatchResultsPage({ params }: Props) {
     <Suspense
       fallback={
         <div
-          className="min-h-screen bg-[#f8f9ff] flex items-center justify-center"
+          className="min-h-screen bg-[var(--bg)] flex items-center justify-center"
           aria-busy="true"
           aria-label="Loading match results"
         >
-          <div className="h-8 w-8 rounded-full border-2 border-[#001A41] border-t-transparent animate-spin" />
+          <div className="h-8 w-8 rounded-full border-2 border-[var(--amber)] border-t-transparent animate-spin" />
         </div>
       }
     >

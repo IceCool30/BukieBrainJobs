@@ -149,6 +149,8 @@
   --rule: #CBD5E1;
   --text-main: #001A41;
   --text-muted: #53647A;
+  --text: var(--text-main);
+  --muted: var(--text-muted);
   --amber: #FF6B35;
   --amber-hover: #F15A24;
   --amber-dim: rgba(255, 107, 53, 0.08);
@@ -174,6 +176,8 @@
   --rule: #2D3748;
   --text-main: #F0F4F9;
   --text-muted: #8897AB;
+  --text: var(--text-main);
+  --muted: var(--text-muted);
   --amber: #FF6B35;
   --amber-hover: #FF7D4D;
   --amber-dim: rgba(255, 107, 53, 0.14);
@@ -199,6 +203,8 @@
     --rule: #2D3748;
     --text-main: #F0F4F9;
     --text-muted: #8897AB;
+    --text: var(--text-main);
+    --muted: var(--text-muted);
     --amber: #FF6B35;
     --amber-hover: #FF7D4D;
     --amber-dim: rgba(255, 107, 53, 0.14);
