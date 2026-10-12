@@ -129,18 +129,18 @@ export default function DashboardScreen() {
   // Handle unauthenticated state
   if (authChecked && !currentUser && viewModel.stateMode !== 'auth_failure') {
     return (
-      <div className="min-h-screen bg-[#F8F9FF] flex items-center justify-center p-6 text-slate-800 font-sans">
-        <div className="max-w-md w-full bg-white rounded-2xl p-8 border border-slate-200 shadow-sm text-center">
-          <div className="h-14 w-14 mx-auto rounded-full bg-[#001A41]/10 flex items-center justify-center text-[#001A41] mb-4">
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-6 text-[var(--text-main)] font-sans">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl p-8 border border-[var(--lead)] shadow-xs text-center">
+          <div className="h-14 w-14 mx-auto rounded-full bg-[var(--tag-bg)] flex items-center justify-center text-[var(--amber)] mb-4">
             <User className="h-7 w-7" />
           </div>
-          <h1 className="text-xl font-bold font-display text-[#001A41] mb-2">Authentication required</h1>
-          <p className="text-sm text-slate-600 mb-6 leading-relaxed">
+          <h1 className="text-xl font-bold font-display tracking-trades uppercase text-[var(--text-main)] mb-2">Authentication required</h1>
+          <p className="text-sm text-[var(--text-muted)] mb-6 leading-relaxed">
             Please sign in to access your customer dashboard and manage your service requests.
           </p>
           <Link
             href="/login?returnUrl=%2Fdashboard"
-            className="inline-flex items-center justify-center w-full px-5 py-3 rounded-xl bg-[#001A41] text-white font-semibold text-sm hover:bg-[#00265E] transition-colors shadow-sm"
+            className="inline-flex items-center justify-center w-full px-5 py-3 rounded-xl bg-[var(--amber)] text-white font-semibold text-sm hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
           >
             Sign In Now
           </Link>
@@ -184,7 +184,7 @@ export default function DashboardScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FF] text-slate-800 font-sans pb-24 lg:pb-12">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] font-sans pb-24 lg:pb-12 transition-colors duration-200">
       {/* 1. Offline or Degraded Banner */}
       {viewModel.isOffline && (
         <div className="bg-amber-500 text-[#001A41] px-4 py-2.5 text-sm font-semibold flex items-center justify-between border-b border-amber-600/30">
@@ -255,25 +255,25 @@ export default function DashboardScreen() {
             className="hidden lg:block lg:col-span-3 sticky top-24 space-y-6"
           >
             {/* Customer Identity Card */}
-            <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm">
+            <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-5 border border-[var(--lead)] shadow-xs">
               <div className="flex items-center gap-3 mb-4">
-                <div className="h-12 w-12 rounded-xl bg-[#001A41] text-[#ABEEC8] flex items-center justify-center font-display font-bold text-lg border border-[#001A41]/20">
+                <div className="h-12 w-12 rounded-xl bg-[var(--amber)] text-white flex items-center justify-center font-display font-bold text-lg border border-[var(--lead)]">
                   {viewModel.customer.name.charAt(0)}
                 </div>
                 <div className="overflow-hidden">
-                  <h3 className="font-display font-bold text-base text-[#001A41] truncate">
+                  <h3 className="font-display font-bold text-base text-[var(--text-main)] truncate">
                     {viewModel.customer.name}
                   </h3>
-                  <p className="text-xs text-slate-500 truncate">
+                  <p className="text-xs text-[var(--text-muted)] truncate">
                     {viewModel.customer.email || viewModel.customer.phone || 'Verified Customer'}
                   </p>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span className="text-slate-500">Account status</span>
-                <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+              <div className="pt-3 border-t border-[var(--lead)] flex items-center justify-between text-xs">
+                <span className="text-[var(--text-muted)]">Account status</span>
+                <span className="inline-flex items-center gap-1 text-[var(--brand-green)] font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-md">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-green)]" />
                   Active
                 </span>
               </div>
@@ -282,14 +282,14 @@ export default function DashboardScreen() {
             {/* Navigation Menu */}
             <nav
               aria-label="Desktop Sidebar"
-              className="bg-white rounded-2xl p-3 border border-slate-200/80 shadow-sm space-y-1"
+              className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-3 border border-[var(--lead)] shadow-xs space-y-1"
             >
               <button
                 onClick={() => setActiveTab('home')}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold transition-colors cursor-pointer ${
                   activeTab === 'home'
-                    ? 'bg-[#001A41] text-white shadow-sm'
-                    : 'text-slate-700 hover:bg-slate-50 hover:text-[#001A41]'
+                    ? 'bg-[var(--amber)] text-white shadow-xs'
+                    : 'text-[var(--text-main)] hover:bg-[var(--card-hover)]'
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -397,27 +397,27 @@ export default function DashboardScreen() {
             )}
 
             {/* Greeting & Operational Context Bar */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 border border-[var(--lead)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold font-display text-[#001A41] tracking-tight">
+                <h1 className="text-2xl font-bold font-display tracking-trades text-[var(--text-main)]">
                   Good day, {viewModel.customer.name}
                 </h1>
-                <p className="text-sm text-slate-500 mt-1 flex items-center gap-2">
+                <p className="text-sm text-[var(--text-muted)] mt-1 flex items-center gap-2">
                   <span>Operational Dashboard</span>
                   <span>•</span>
                   <span className="flex items-center gap-1">
-                    <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                    <MapPin className="h-3.5 w-3.5 text-[var(--text-muted)]" />
                     Lagos, Nigeria
                   </span>
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-500/10 text-[var(--brand-green)] border border-emerald-500/30 flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-[var(--brand-green)]" />
                   Account Active
                 </span>
-                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#001A41]/5 text-[#001A41] border border-[#001A41]/10">
+                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]">
                   Customer
                 </span>
               </div>

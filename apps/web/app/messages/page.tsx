@@ -8,22 +8,26 @@ import {
   defaultMessagingRepository,
   getSynchronousConversations,
 } from '../../lib/messaging/defaultRepository';
+import type { AuthUser } from '../../lib/auth/types';
 import type { ConversationSummary } from '../../lib/messaging/types';
 
 export default function MessagesHubPage() {
   const router = useRouter();
-  const user = getMockAuthenticatedUser();
+  const [user, setUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
 
   // If unauthenticated, redirect to /login immediately
   useEffect(() => {
-    if (!user) {
+    const currentUser = getMockAuthenticatedUser();
+    setUser(currentUser);
+    if (!currentUser) {
       router.replace('/login');
     }
-  }, [user, router]);
+  }, [router]);
 
   const [conversations, setConversations] = useState<ConversationSummary[]>(() => {
-    if (!user) return [];
-    return getSynchronousConversations(user.id);
+    const initialUser = getMockAuthenticatedUser();
+    if (!initialUser) return [];
+    return getSynchronousConversations(initialUser.id);
   });
 
   useEffect(() => {
@@ -46,14 +50,11 @@ export default function MessagesHubPage() {
   }, [user]);
 
   if (!user) {
-    if (typeof window !== 'undefined') {
-      router.replace('/login');
-    }
     return null;
   }
 
   return (
-    <main className="min-h-screen bg-[#F8F9FF] py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] py-6 sm:py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
       <div className="max-w-4xl mx-auto">
         <ConversationHub
           conversations={conversations}

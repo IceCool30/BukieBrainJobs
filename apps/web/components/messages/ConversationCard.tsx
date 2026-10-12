@@ -90,8 +90,8 @@ export function ConversationCard({
       role="article"
       className={`group relative flex items-start gap-3.5 p-4 rounded-2xl border transition-all ${
         isActive
-          ? 'bg-slate-50/80 border-[#001A41] shadow-xs'
-          : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/40 shadow-xs'
+          ? 'bg-[var(--card-hover)] border-[var(--amber)] shadow-xs'
+          : 'bg-[var(--card-bg)] border-[var(--lead)] hover:border-[var(--amber)] hover:bg-[var(--card-hover)] shadow-xs'
       }`}
     >
       {/* Avatar Container with Verification Badge */}
@@ -100,11 +100,11 @@ export function ConversationCard({
           <img
             src={participant.avatarUrl}
             alt={participant.name}
-            className="w-12 h-12 rounded-full object-cover border border-slate-200"
+            className="w-12 h-12 rounded-full object-cover border border-[var(--lead)]"
           />
         ) : (
           <div
-            className="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-bold text-sm flex items-center justify-center select-none"
+            className="w-12 h-12 rounded-full bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--text-main)] font-bold text-sm flex items-center justify-center select-none"
             aria-hidden="true"
           >
             {getInitials(participant.name)}
@@ -113,7 +113,7 @@ export function ConversationCard({
 
         {participant.isVerified && (
           <span
-            className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-[#296A4B] text-white flex items-center justify-center ring-2 ring-white"
+            className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-[var(--brand-green)] text-white flex items-center justify-center ring-2 ring-[var(--card-bg)]"
             aria-label="Verified BrainWorker"
             title="Verified BrainWorker"
           >
@@ -126,13 +126,13 @@ export function ConversationCard({
       <div className="flex-1 min-w-0">
         {/* Row 1: Participant Name + Relative Timestamp */}
         <div className="flex items-baseline justify-between gap-2">
-          <h2 className="text-sm font-bold text-[#001A41] truncate">
+          <h2 className="text-sm font-bold text-[var(--text-main)] truncate">
             {participant.name}
           </h2>
           {formattedTime && (
             <time
               dateTime={lastMessageAt}
-              className="text-[11px] font-medium text-slate-400 flex-shrink-0"
+              className="text-[11px] font-medium text-[var(--text-muted)] flex-shrink-0"
             >
               {formattedTime}
             </time>
@@ -140,21 +140,21 @@ export function ConversationCard({
         </div>
 
         {/* Row 2: Service Title + Reference Code */}
-        <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5 truncate">
-          <span className="truncate font-medium text-slate-600">
+        <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mt-0.5 truncate">
+          <span className="truncate font-medium text-[var(--text-main)]">
             {serviceTitle}
           </span>
-          <span aria-hidden="true" className="text-slate-300">
+          <span aria-hidden="true" className="text-[var(--rule)]">
             •
           </span>
-          <span className="font-mono text-[11px] text-slate-400 flex-shrink-0">
+          <span className="font-mono text-[11px] text-[var(--text-muted)] flex-shrink-0">
             {referenceCode}
           </span>
         </div>
 
         {/* Row 3: Latest Message Snippet & Unread Badge */}
         <div className="flex items-center justify-between gap-2 mt-1.5">
-          <p className="text-xs text-slate-500 truncate flex-1">
+          <p className="text-xs text-[var(--text-muted)] truncate flex-1">
             {lastMessage ? (
               `${getSenderPrefix(
                 lastMessage.senderId,
@@ -162,7 +162,7 @@ export function ConversationCard({
                 lastMessage.senderName
               )}${lastMessage.content}`
             ) : (
-              <span className="italic text-slate-400">No messages yet</span>
+              <span className="italic text-[var(--text-muted)]">No messages yet</span>
             )}
           </p>
 

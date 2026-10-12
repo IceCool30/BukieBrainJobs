@@ -91,22 +91,22 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors duration-200">
       {/* Top Navigation */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-20">
+      <header className="bg-[var(--card-bg)] border-b border-[var(--lead)] sticky top-0 z-20 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
               href="/brainworker/dashboard"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#001A41] hover:text-[#002866] transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-main)] hover:opacity-80 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               <span>Dashboard</span>
             </Link>
-            <span className="text-slate-300">|</span>
-            <span className="font-black text-xl tracking-tight text-[#001A41]">BukieBrainJobs</span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 text-xs font-semibold text-emerald-800">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+            <span className="text-[var(--rule)]">|</span>
+            <span className="font-black text-xl tracking-tight text-[var(--text-main)] font-display">BukieBrainJobs</span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 text-xs font-semibold text-[var(--brand-green)]">
+              <ShieldCheck className="h-3.5 w-3.5 text-[var(--brand-green)]" />
               <span>Verified Provider</span>
             </span>
           </div>
@@ -114,13 +114,13 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
           {user && user.role === 'brainworker' && user.isBrainWorkerApproved && (
             <div className="flex items-center gap-4">
               <div className="text-right hidden sm:block">
-                <div className="text-sm font-bold text-slate-900">{user.name}</div>
-                <div className="text-xs text-slate-500">{user.email || user.phone}</div>
+                <div className="text-sm font-bold text-[var(--text-main)]">{user.name}</div>
+                <div className="text-xs text-[var(--text-muted)]">{user.email || user.phone}</div>
               </div>
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-red-600 transition"
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-muted)] hover:text-red-500 transition cursor-pointer"
                 title="Sign Out"
               >
                 <LogOut className="h-4 w-4" />
@@ -134,46 +134,46 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#001A41]">Job Requests & Leads</h1>
-          <p className="mt-1 text-sm text-slate-600">
+          <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-trades uppercase text-[var(--text-main)]">Job Requests & Leads</h1>
+          <p className="mt-1 text-sm text-[var(--text-muted)]">
             Inspect and respond to customer job requests matching your trade and coverage zones.
           </p>
         </div>
 
         {/* Loading state while resolving auth and profile */}
         {(!user || !isProfileLoaded) && (
-          <div className="p-12 text-center bg-white rounded-2xl border border-slate-200 shadow-sm">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] border-t-transparent" />
-            <p className="mt-3 text-sm text-slate-500">Checking provider authorization...</p>
+          <div className="p-12 text-center bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl border border-[var(--lead)] shadow-sm">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-[var(--amber)] border-t-transparent" />
+            <p className="mt-3 text-sm text-[var(--text-muted)]">Checking provider authorization...</p>
           </div>
         )}
 
         {/* Incomplete Operational Profile Banner */}
         {user && isProfileLoaded && operationalProfile && !operationalProfile.isComplete && (
-          <div className="p-6 rounded-2xl bg-amber-50 border border-amber-200 shadow-sm space-y-4">
+          <div className="p-6 rounded-2xl bg-[var(--card-bg)] border border-[var(--lead)] shadow-sm space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 border border-amber-300 px-2.5 py-0.5 text-xs font-bold text-amber-900">
-                  <AlertTriangle className="h-3.5 w-3.5 text-amber-700" />
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 px-2.5 py-0.5 text-xs font-bold text-[var(--amber)]">
+                  <AlertTriangle className="h-3.5 w-3.5 text-[var(--amber)]" />
                   <span>Action Needed</span>
                 </div>
-                <h2 className="text-lg font-bold text-slate-900">
+                <h2 className="text-lg font-bold text-[var(--text-main)]">
                   Complete Your Provider Setup to Receive Leads
                 </h2>
-                <p className="text-sm text-slate-600 max-w-2xl leading-relaxed">
+                <p className="text-sm text-[var(--text-muted)] max-w-2xl leading-relaxed">
                   Before you can inspect customer job requests, configure your trade services, hourly rates, operating hours, and coverage zones.
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/brainworker/services"
-                  className="inline-flex items-center justify-center rounded-xl bg-[#001A41] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#002661] transition-colors"
+                  className="inline-flex items-center justify-center rounded-xl bg-[var(--amber)] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] transition-colors"
                 >
                   Configure Services & Rates
                 </Link>
                 <Link
                   href="/brainworker/availability"
-                  className="inline-flex items-center justify-center rounded-xl bg-white border border-slate-300 px-4 py-2.5 text-sm font-semibold text-[#001A41] shadow-sm hover:bg-slate-50 transition-colors"
+                  className="inline-flex items-center justify-center rounded-xl bg-[var(--tag-bg)] border border-[var(--lead)] px-4 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-sm hover:bg-[var(--card-hover)] transition-colors"
                 >
                   Set Hours & Coverage
                 </Link>

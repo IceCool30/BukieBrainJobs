@@ -83,7 +83,20 @@ export function clearPreservedJobDraft(): void {
 
 export function getMockAuthenticatedUser(): AuthUser | null {
   try {
-    const raw = getStorage().getItem(AUTH_USER_KEY);
+    const storage = getStorage();
+    let raw = storage.getItem(AUTH_USER_KEY);
+    if (!raw && typeof window !== 'undefined') {
+      try {
+        if (window.sessionStorage) {
+          raw = window.sessionStorage.getItem(AUTH_USER_KEY) || window.sessionStorage.getItem('bukie_auth_user');
+        }
+        if (!raw && window.localStorage) {
+          raw = window.localStorage.getItem(AUTH_USER_KEY) || window.localStorage.getItem('bukie_auth_user');
+        }
+      } catch {
+        // fail safely
+      }
+    }
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     if (parsed && typeof parsed === 'object' && parsed.id) {
@@ -99,8 +112,15 @@ export function setMockAuthenticatedUser(user: AuthUser | null): void {
   try {
     if (user) {
       getStorage().setItem(AUTH_USER_KEY, JSON.stringify(user));
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+      }
     } else {
       getStorage().removeItem(AUTH_USER_KEY);
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.removeItem(AUTH_USER_KEY);
+        window.localStorage.removeItem('bukie_auth_user');
+      }
     }
   } catch {
     // Fail safely

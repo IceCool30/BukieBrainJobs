@@ -28,6 +28,7 @@ REQUIRED=(
   "mr-solomon-nine-command-engineering-loop"
   "mr-solomon-natural-voice"
   "bukiebrainjobs-content-style"
+  "bukiebrainjobs-trades-design-system"
   "bukiebrainjobs-experience-standards"
   "ui-ux-pro-max"
   "agent-skills-test-driven-development"
@@ -86,5 +87,5 @@ if [ "$fail" -ne 0 ]; then
   exit 1
 fi
 
-echo "PASS: gate present in all required files, all six skills named."
+echo "PASS: gate present in all required files, all seven skills named."
 echo "Every agent must print the SKILL GATE block before its first edit."
