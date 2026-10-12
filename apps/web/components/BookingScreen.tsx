@@ -93,7 +93,7 @@ function BookingHeader({ returnUrl }: { returnUrl: string }) {
 function FieldError({ id, message }: { id: string; message?: string | undefined }) {
   if (!message) return null;
   return (
-    <p id={id} className="mt-1.5 text-xs font-semibold text-red-700" role="alert">
+    <p id={id} className="mt-1.5 text-xs font-semibold text-red-600 dark:text-red-400" role="alert">
       {message}
     </p>
   );
