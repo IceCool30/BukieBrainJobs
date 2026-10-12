@@ -235,12 +235,12 @@ export function CoverageEditor({
       aria-label="Coverage Area and Location"
       className={className ? `space-y-8 ${className}` : 'space-y-8'}
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800 transition-colors">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
             Coverage Area and Operational Base
           </h2>
-          <p className="mt-1 text-sm text-slate-600 max-w-2xl leading-relaxed">
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
             Choose your primary operating city, operational zones, and travel
             radius. Keep this accurate to receive nearby job dispatches.
           </p>
@@ -253,8 +253,8 @@ export function CoverageEditor({
             onClick={handleSave}
             className={
               isSaving
-                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-slate-200 text-slate-400 cursor-not-allowed transition-colors'
-                : 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[#001A41] text-white hover:bg-[#002866] transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed transition-colors'
+                : 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[#001A41] dark:bg-emerald-600 text-white dark:text-slate-950 hover:bg-[#002866] dark:hover:bg-emerald-500 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[#001A41]'
             }
           >
             {isSaving ? 'Saving changes...' : 'Save changes'}
@@ -265,7 +265,7 @@ export function CoverageEditor({
       {displayAlertError && (
         <div
           role="alert"
-          className="p-4 rounded-xl bg-red-50 border border-red-200 text-sm text-red-800 font-medium"
+          className="p-4 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-sm text-red-800 dark:text-red-300 font-medium"
         >
           {displayAlertError}
         </div>
@@ -275,17 +275,17 @@ export function CoverageEditor({
         <div
           role="status"
           aria-live="polite"
-          className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-sm text-emerald-800 font-medium"
+          className="p-4 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-sm text-emerald-800 dark:text-emerald-300 font-medium"
         >
           {successToast}
         </div>
       )}
 
       {/* Primary City */}
-      <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm space-y-4">
+      <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111927] shadow-xs space-y-4 transition-colors">
         <div>
-          <h3 className="text-lg font-bold text-slate-900">Primary operating city</h3>
-          <p className="mt-1 text-sm text-slate-600 leading-relaxed">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">Primary operating city</h3>
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Only cities approved during your onboarding verification can be selected
             as your operational base.
           </p>
@@ -293,7 +293,7 @@ export function CoverageEditor({
         <div>
           <label
             htmlFor="primary-city"
-            className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2"
+            className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2"
           >
             Primary city
           </label>
@@ -308,10 +308,10 @@ export function CoverageEditor({
               const selected = e.target.value;
               setPrimaryCity(selected, selected);
             }}
-            className="block w-full max-w-md rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 font-medium focus:border-[#001A41] focus:ring-2 focus:ring-[#001A41] focus:outline-none sm:text-sm bg-white"
+            className="block w-full max-w-md rounded-lg border border-slate-300 dark:border-slate-700 px-3.5 py-2.5 text-slate-900 dark:text-white font-medium focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm bg-white dark:bg-[#0D1424]"
           >
             {availableCities.map((city) => (
-              <option key={city} value={city}>
+              <option key={city} value={city} className="bg-white dark:bg-[#0D1424] text-slate-900 dark:text-white">
                 {city}
               </option>
             ))}
@@ -320,10 +320,10 @@ export function CoverageEditor({
       </div>
 
       {/* Operational Zones / LGAs */}
-      <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm space-y-4">
+      <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111927] shadow-xs space-y-4 transition-colors">
         <div>
-          <h3 className="text-lg font-bold text-slate-900">Operational zones</h3>
-          <p className="mt-1 text-sm text-slate-600 leading-relaxed">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">Operational zones</h3>
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Pick the local government areas and neighbourhoods where you accept work.
           </p>
         </div>
@@ -341,8 +341,8 @@ export function CoverageEditor({
                 htmlFor={inputId}
                 className={
                   isChecked
-                    ? 'flex items-center gap-3 p-3 rounded-xl border-2 border-[#001A41] bg-[#001A41]/5 cursor-pointer font-semibold text-[#001A41] transition-colors'
-                    : 'flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer font-medium text-slate-700 transition-colors'
+                    ? 'flex items-center gap-3 p-3 rounded-lg border-2 border-[#001A41] dark:border-emerald-500 bg-[#001A41]/5 dark:bg-emerald-500/10 cursor-pointer font-semibold text-[#001A41] dark:text-emerald-400 transition-colors'
+                    : 'flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1424] hover:bg-slate-50 dark:hover:bg-[#1A2538] cursor-pointer font-medium text-slate-700 dark:text-slate-300 transition-colors'
                 }
               >
                 <input
@@ -363,7 +363,7 @@ export function CoverageEditor({
                     }
                     setCoverageNeighbourhoods(next);
                   }}
-                  className="h-4 w-4 rounded border-slate-300 text-[#001A41] focus:ring-[#001A41]"
+                  className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-[#111927] text-[#001A41] dark:text-emerald-500 focus:ring-[#001A41] dark:focus:ring-emerald-500"
                 />
                 <span className="text-sm select-none">{zone}</span>
               </label>
@@ -373,10 +373,10 @@ export function CoverageEditor({
       </div>
 
       {/* Travel Radius */}
-      <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm space-y-4">
+      <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111927] shadow-xs space-y-4 transition-colors">
         <div>
-          <h3 className="text-lg font-bold text-slate-900">Travel radius</h3>
-          <p className="mt-1 text-sm text-slate-600 leading-relaxed">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">Travel radius</h3>
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Maximum travel distance from your primary base for standard customer dispatches.
           </p>
         </div>
@@ -392,8 +392,8 @@ export function CoverageEditor({
                 key={radius}
                 className={
                   isSelected
-                    ? 'flex items-center justify-between p-3.5 rounded-xl border-2 border-[#001A41] bg-[#001A41]/5 cursor-pointer font-semibold text-[#001A41] transition-colors'
-                    : 'flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer font-medium text-slate-700 transition-colors'
+                    ? 'flex items-center justify-between p-3.5 rounded-lg border-2 border-[#001A41] dark:border-emerald-500 bg-[#001A41]/5 dark:bg-emerald-500/10 cursor-pointer font-semibold text-[#001A41] dark:text-emerald-400 transition-colors'
+                    : 'flex items-center justify-between p-3.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1424] hover:bg-slate-50 dark:hover:bg-[#1A2538] cursor-pointer font-medium text-slate-700 dark:text-slate-300 transition-colors'
                 }
               >
                 <span className="text-sm">{radius} km</span>
@@ -409,7 +409,7 @@ export function CoverageEditor({
                     setSaveError(null);
                     setTravelRadius(radius);
                   }}
-                  className="h-4 w-4 border-slate-300 text-[#001A41] focus:ring-[#001A41]"
+                  className="h-4 w-4 border-slate-300 dark:border-slate-700 bg-white dark:bg-[#111927] text-[#001A41] dark:text-emerald-500 focus:ring-[#001A41] dark:focus:ring-emerald-500"
                 />
               </label>
             );

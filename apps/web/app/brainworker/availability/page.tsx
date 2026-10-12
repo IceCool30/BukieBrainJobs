@@ -61,26 +61,26 @@ export default function BrainWorkerAvailabilityPage(): React.ReactElement {
 
   if (!user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-[#0B1528] transition-colors">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-400 border-t-transparent" />
       </div>
     );
   }
 
   if (user.role !== 'brainworker') {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-2xl border border-red-200 p-8 shadow-sm text-center space-y-4">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-red-50 border border-red-200 px-3 py-1 text-xs font-semibold text-red-800">
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0B1528] flex items-center justify-center p-4 transition-colors">
+        <div className="max-w-md w-full bg-white dark:bg-[#111927] rounded-lg border border-red-200 dark:border-red-900/40 p-8 shadow-xs text-center space-y-4 transition-colors">
+          <div className="inline-flex items-center gap-1.5 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 px-3 py-1 text-xs font-semibold text-red-800 dark:text-red-300">
             {user.role === 'customer' ? 'Customer Account Detected' : 'Unauthorized Access'}
           </div>
-          <h2 className="text-xl font-bold text-slate-900">Workspace Unavailable</h2>
-          <p className="text-sm text-slate-600 leading-relaxed">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Workspace Unavailable</h2>
+          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             This section requires a verified service provider profile.
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-xl bg-[#001A41] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#002661]"
+            className="inline-flex items-center justify-center rounded-lg bg-[#001A41] dark:bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white dark:text-slate-950 shadow-sm hover:bg-[#002661] dark:hover:bg-emerald-500 transition"
           >
             {user.role === 'customer' ? 'Return to Customer Dashboard' : 'Return Home'}
           </Link>
@@ -91,8 +91,8 @@ export default function BrainWorkerAvailabilityPage(): React.ReactElement {
 
   if (!user.isBrainWorkerApproved) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-[#0B1528] transition-colors">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-400 border-t-transparent" />
       </div>
     );
   }
@@ -103,35 +103,35 @@ export default function BrainWorkerAvailabilityPage(): React.ReactElement {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0B1528] transition-colors">
       {/* Top Navigation */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-20">
+      <header className="bg-white dark:bg-[#111927] border-b border-slate-200 dark:border-slate-800 sticky top-0 z-20 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
               href="/brainworker/dashboard"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#001A41] hover:text-[#002866] transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#001A41] dark:text-white hover:text-primary-hover dark:hover:text-emerald-400 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               <span>Dashboard</span>
             </Link>
-            <span className="text-slate-300">|</span>
-            <span className="font-black text-xl tracking-tight text-[#001A41]">BukieBrainJobs</span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 text-xs font-semibold text-emerald-800">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+            <span className="text-slate-300 dark:text-slate-700">|</span>
+            <span className="font-black text-xl tracking-tight text-[#001A41] dark:text-white">BukieBrainJobs</span>
+            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Verified Provider</span>
             </span>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <div className="text-sm font-bold text-slate-900">{user.name}</div>
-              <div className="text-xs text-slate-500">{user.email || user.phone}</div>
+              <div className="text-sm font-bold text-slate-900 dark:text-white">{user.name}</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">{user.email || user.phone}</div>
             </div>
             <button
               type="button"
               onClick={handleSignOut}
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-red-600 transition"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition"
               title="Sign Out"
             >
               <LogOut className="h-4 w-4" />

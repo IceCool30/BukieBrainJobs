@@ -224,12 +224,12 @@ export function AvailabilityEditor({
       aria-label="Availability and Schedule"
       className={className ? `space-y-8 ${className}` : 'space-y-8'}
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
             Availability and Weekly Schedule
           </h2>
-          <p className="mt-1 text-sm text-slate-600 max-w-2xl leading-relaxed">
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
             Set the days and hours you are open for jobs. Keep this honest so every
             request matches what you can deliver.
           </p>
@@ -242,8 +242,8 @@ export function AvailabilityEditor({
             onClick={handleSave}
             className={
               isSaveDisabled
-                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-slate-200 text-slate-400 cursor-not-allowed transition-colors'
-                : 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[#001A41] text-white hover:bg-[#002866] transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed transition-colors'
+                : 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[#001A41] dark:bg-emerald-600 text-white dark:text-slate-950 hover:bg-[#002866] dark:hover:bg-emerald-500 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[#001A41]'
             }
           >
             {isSaving ? 'Saving Changes...' : 'Save changes'}
@@ -254,7 +254,7 @@ export function AvailabilityEditor({
       {saveError && (
         <div
           role="alert"
-          className="p-4 rounded-xl bg-red-50 border border-red-200 text-sm text-red-800 font-medium"
+          className="p-4 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-sm text-red-800 dark:text-red-300 font-medium"
         >
           {saveError}
         </div>
@@ -264,17 +264,17 @@ export function AvailabilityEditor({
         <div
           role="status"
           aria-live="polite"
-          className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-sm text-emerald-800 font-medium"
+          className="p-4 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-sm text-emerald-800 dark:text-emerald-300 font-medium"
         >
           {successToast}
         </div>
       )}
 
-      <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm space-y-3">
+      <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111927] shadow-xs space-y-3 transition-colors">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <h3 className="text-lg font-bold text-slate-900">Dispatch duty</h3>
-            <p className="mt-1 text-sm text-slate-600 leading-relaxed">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Dispatch duty</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               Controls your dispatch eligibility. When on duty you are available for
               matching against new customer jobs.
             </p>
@@ -290,8 +290,8 @@ export function AvailabilityEditor({
             }}
             className={
               availability.isAvailable
-                ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
-                : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 dark:bg-emerald-500 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 dark:bg-slate-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
             }
           >
             <span
@@ -303,16 +303,16 @@ export function AvailabilityEditor({
             />
           </button>
         </div>
-        <p className="text-xs font-semibold text-slate-500">
+        <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
           {availability.isAvailable ? 'Currently On-Duty' : 'Currently Off-Duty'}
         </p>
       </div>
 
-      <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm space-y-4">
+      <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111927] shadow-xs space-y-4 transition-colors">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h3 className="text-lg font-bold text-slate-900">Weekly schedule</h3>
-            <p className="mt-0.5 text-sm text-slate-600">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Weekly schedule</h3>
+            <p className="mt-0.5 text-sm text-slate-600 dark:text-slate-300">
               Set the hours you are open each day, between 6am and 10pm. Every
               open day needs a two-hour minimum or more.
             </p>
@@ -324,7 +324,7 @@ export function AvailabilityEditor({
               setSuccessToast(null);
               copyMondayHoursToWeekdays();
             }}
-            className="px-4 py-2 text-sm font-semibold rounded-lg bg-white text-[#001A41] border border-slate-300 hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2"
+            className="px-4 py-2 text-sm font-semibold rounded-lg bg-white dark:bg-[#111927] text-[#001A41] dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-[#1A2538] transition-colors focus:outline-none focus:ring-2 focus:ring-[#001A41]"
           >
             Copy to weekdays
           </button>
@@ -345,10 +345,10 @@ export function AvailabilityEditor({
               <div
                 key={day}
                 data-testid={`day-row-${day}`}
-                className="p-4 rounded-xl border border-slate-200 bg-white flex flex-col sm:flex-row sm:items-center gap-3"
+                className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1424] flex flex-col sm:flex-row sm:items-center gap-3 transition-colors"
               >
                 <div className="flex items-center justify-between gap-3 sm:w-48">
-                  <span className="text-sm font-semibold text-slate-900">
+                  <span className="text-sm font-semibold text-slate-900 dark:text-white">
                     {DAY_LABELS[day]}
                   </span>
                   <button
@@ -363,8 +363,8 @@ export function AvailabilityEditor({
                     }}
                     className={
                       schedule.isActive
-                        ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
-                        : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                        ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 dark:bg-emerald-500 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                        : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 dark:bg-slate-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
                     }
                   >
                     <span
@@ -380,7 +380,7 @@ export function AvailabilityEditor({
                   <div className="flex-1">
                     <label
                       htmlFor={`start-${day}`}
-                      className="block text-xs font-medium text-slate-700"
+                      className="block text-xs font-medium text-slate-700 dark:text-slate-300"
                     >
                       Start hour
                     </label>
@@ -397,7 +397,7 @@ export function AvailabilityEditor({
                           e.target.value === '' ? 0 : Number(e.target.value);
                         updateDaySchedule(day, { startHour: val });
                       }}
-                      className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:border-[#001A41] focus:ring-2 focus:ring-[#001A41] focus:outline-none sm:text-sm font-medium"
+                      className="mt-1 block w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#111927] px-3 py-2 text-slate-900 dark:text-white focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm font-medium"
                       aria-invalid={showError ? 'true' : 'false'}
                       aria-describedby={showError ? `${day}-schedule-error` : undefined}
                     />
@@ -405,7 +405,7 @@ export function AvailabilityEditor({
                   <div className="flex-1">
                     <label
                       htmlFor={`end-${day}`}
-                      className="block text-xs font-medium text-slate-700"
+                      className="block text-xs font-medium text-slate-700 dark:text-slate-300"
                     >
                       End hour
                     </label>
@@ -422,7 +422,7 @@ export function AvailabilityEditor({
                           e.target.value === '' ? 0 : Number(e.target.value);
                         updateDaySchedule(day, { endHour: val });
                       }}
-                      className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:border-[#001A41] focus:ring-2 focus:ring-[#001A41] focus:outline-none sm:text-sm font-medium"
+                      className="mt-1 block w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#111927] px-3 py-2 text-slate-900 dark:text-white focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm font-medium"
                       aria-invalid={showError ? 'true' : 'false'}
                       aria-describedby={showError ? `${day}-schedule-error` : undefined}
                     />
@@ -443,11 +443,11 @@ export function AvailabilityEditor({
         </div>
       </div>
 
-      <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm space-y-3">
+      <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111927] shadow-xs space-y-3 transition-colors">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <h3 className="text-lg font-bold text-slate-900">Emergency jobs</h3>
-            <p className="mt-1 text-sm text-slate-600 leading-relaxed">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Emergency jobs</h3>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               Urgent dispatch readiness for jobs that need arrival inside a 2-hour
               window. Turn this on only when you can move at short notice.
             </p>
@@ -463,8 +463,8 @@ export function AvailabilityEditor({
             }}
             className={
               availability.isEmergencyAvailable
-                ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
-                : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 dark:bg-emerald-500 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 dark:bg-slate-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
             }
           >
             <span
