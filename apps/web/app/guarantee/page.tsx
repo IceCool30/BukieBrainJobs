@@ -35,48 +35,48 @@ const BOOKING_CHECKS = [
 
 export default function GuaranteePage() {
   return (
-    <main className="min-h-screen bg-[#F8F9FF] text-[#001A41]">
-      <section className="bg-[#001A41] text-white">
+    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors duration-200">
+      <section className="bg-[var(--strip-bg)] text-white">
         <div className="mx-auto grid max-w-[1280px] gap-6 px-4 pb-9 pt-20 sm:gap-8 sm:px-6 sm:pb-12 sm:pt-24 lg:grid-cols-[minmax(0,1fr)_320px] lg:px-8 lg:pb-14">
           <div className="max-w-2xl space-y-4 sm:space-y-5">
             <div>
               <Link
                 href="/"
-                className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-semibold text-slate-200 transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2 focus:ring-offset-[#001A41]"
+                className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-xs font-semibold text-[var(--strip-text)] transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2 focus:ring-offset-[var(--strip-bg)]"
               >
-                <ArrowLeft className="h-4 w-4" />
+                <ArrowLeft className="h-4 w-4 text-[var(--amber)]" />
                 Back to home
               </Link>
             </div>
-            <div className="flex items-center gap-2 text-sm font-semibold text-[#ABEEC8]">
-              <ShieldCheck className="h-4 w-4" />
+            <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">
+              <ShieldCheck className="h-4 w-4 text-[var(--brand-green)]" />
               BukieGuarantee
             </div>
             <div className="space-y-4">
-              <h1 className="max-w-xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+              <h1 className="max-w-xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl text-white">
                 Review the details before you move ahead.
               </h1>
-              <p className="max-w-xl text-sm leading-relaxed text-slate-200 sm:text-base">
+              <p className="max-w-xl text-sm leading-relaxed text-[var(--strip-text)] sm:text-base">
                 Review the service, BrainWorker profile, and support options before you continue.
               </p>
             </div>
             <div>
               <Link
                 href="/services"
-                className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#ABEEC8] px-5 py-3 text-sm font-bold text-[#001A41] transition-colors hover:bg-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#001A41]"
+                className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2 focus:ring-offset-[var(--strip-bg)]"
               >
                 Find a service
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 text-white" />
               </Link>
             </div>
           </div>
 
-          <aside className="self-end rounded-xl border border-white/15 bg-white/5 p-5 shadow-[0_16px_32px_-24px_rgba(0,0,0,0.8)] sm:p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#ABEEC8]">Before you book</p>
+          <aside className="self-end rounded-lg border border-white/15 bg-white/5 backdrop-blur-xs p-5 shadow-xs sm:p-6">
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">Before you book</p>
             <ul className="mt-3.5 space-y-3">
               {BOOKING_CHECKS.map((item) => (
-                <li key={item} className="flex gap-3 text-sm leading-relaxed text-slate-100">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#ABEEC8]" />
+                <li key={item} className="flex gap-3 text-sm leading-relaxed text-white">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-green)]" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -87,43 +87,43 @@ export default function GuaranteePage() {
 
       <section className="mx-auto max-w-[1280px] px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
         <div className="max-w-2xl space-y-3">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">What to review</p>
-          <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl">A simple way to prepare for the next step.</h2>
-          <p className="text-sm leading-relaxed text-slate-600 sm:text-base">
+          <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">What to review</p>
+          <h2 className="font-display text-xl font-bold tracking-tight text-[var(--text-main)] sm:text-2xl">A simple way to prepare for the next step.</h2>
+          <p className="text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
             BukieGuarantee brings the service and profile details together, so you can decide what to do next with a clearer picture.
           </p>
         </div>
 
         <div className="mt-6 grid gap-3 md:grid-cols-3 md:gap-4">
           {BOOKING_STEPS.map(({ title, description, icon: Icon }, index) => (
-            <article key={title} className="rounded-xl border border-slate-200 bg-white p-5 shadow-[0_8px_20px_-18px_rgba(0,26,65,0.28)] sm:p-6">
+            <article key={title} className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
               <div className="flex items-start justify-between gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ABEEC8]/70 bg-[#EAF7EF] text-[#296A4B]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
                   <Icon className="h-5 w-5" />
                 </div>
-                <span className="font-display text-xl font-extrabold text-[#001A41]/20">0{index + 1}</span>
+                <span className="font-mono text-xl font-bold text-[var(--text-muted)]/40">0{index + 1}</span>
               </div>
-              <h3 className="mt-5 font-display text-base font-bold tracking-tight sm:text-lg">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">{description}</p>
+              <h3 className="mt-5 font-display text-base font-bold tracking-tight text-[var(--text-main)] sm:text-lg">{title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{description}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="border-y border-slate-200 bg-white">
+      <section className="border-y border-[var(--lead)] bg-[var(--card-bg)]">
         <div className="mx-auto grid max-w-[1280px] gap-6 px-4 py-9 sm:px-6 sm:py-10 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.7fr)] lg:items-center lg:px-8 lg:py-12">
           <div className="max-w-2xl space-y-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ABEEC8]/70 bg-[#EAF7EF] text-[#296A4B]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
               <Lock className="h-5 w-5" />
             </div>
-            <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl">Take a moment to review.</h2>
-            <p className="text-sm leading-relaxed text-slate-600 sm:text-base">
+            <h2 className="font-display text-xl font-bold tracking-tight text-[var(--text-main)] sm:text-2xl">Take a moment to review.</h2>
+            <p className="text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
               Check the scope, starting price, location, and timing before you move to the next step.
             </p>
           </div>
-          <div className="rounded-xl border border-slate-200 bg-[#F8F9FF] p-5">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">A clearer view</p>
-            <p className="mt-3 text-sm leading-relaxed text-slate-700">
+          <div className="rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] p-5">
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">A clearer view</p>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--text-main)]">
               Use the booking preparation pages to keep the job details you have reviewed close at hand.
             </p>
           </div>
@@ -131,28 +131,28 @@ export default function GuaranteePage() {
       </section>
 
       <section id="verification" className="mx-auto max-w-[1280px] px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-[0_8px_20px_-18px_rgba(0,26,65,0.28)] sm:p-7">
+        <div className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-7">
           <div className="max-w-2xl space-y-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ABEEC8]/70 bg-[#EAF7EF] text-[#296A4B]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
               <UserCheck className="h-5 w-5" />
             </div>
-            <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl">Look through the profile details.</h2>
-            <p className="text-sm leading-relaxed text-slate-600 sm:text-base">
+            <h2 className="font-display text-xl font-bold tracking-tight text-[var(--text-main)] sm:text-2xl">Look through the profile details.</h2>
+            <p className="text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
               Check the service information shown on a BrainWorker profile alongside the job details before you continue.
             </p>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-slate-200 bg-white">
+      <footer className="border-t border-[var(--lead)] bg-[var(--card-bg)]">
         <div className="mx-auto flex max-w-[1280px] flex-col items-start justify-between gap-4 px-4 py-6 sm:flex-row sm:items-center sm:px-6 lg:px-8">
-          <p className="text-sm leading-relaxed text-slate-600">Questions about the details you are reviewing? Contact support with what you already have.</p>
+          <p className="text-sm leading-relaxed text-[var(--text-muted)]">Questions about the details you are reviewing? Contact support with what you already have.</p>
           <a
             href="mailto:support@bukiebrainjobs.ng"
-            className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#296A4B] transition-colors hover:text-[#001A41] focus:outline-none focus:ring-2 focus:ring-[#ABEEC8] focus:ring-offset-2"
+            className="inline-flex min-h-11 items-center gap-2 font-mono text-xs font-bold text-[var(--brand-green)] transition-colors hover:underline focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2"
           >
             Contact support
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4 text-[var(--brand-green)]" />
           </a>
         </div>
       </footer>
