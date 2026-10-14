@@ -31,6 +31,7 @@ import {
   projectBookingSummary,
   projectBookingDetail,
 } from './domain';
+import { transitionDispatch } from './dispatch';
 import { getMockAuthenticatedUser } from '../../auth/storage';
 
 export interface BrainWorkerBookingsRepositoryDependencies {
@@ -183,7 +184,7 @@ export class BrainWorkerBookingsRepository implements IBrainWorkerBookingsReposi
     brainWorkerId: string,
     bookingId: string,
     next: 'EN_ROUTE' | 'ARRIVED',
-    _snapshot?: LocationSnapshot | undefined
+    snapshot?: LocationSnapshot | undefined
   ): Promise<BookingMutationResult> {
     this.assertAuthorizedTenant(brainWorkerId);
     await this.assertCompleteProfile(brainWorkerId);
@@ -195,49 +196,37 @@ export class BrainWorkerBookingsRepository implements IBrainWorkerBookingsReposi
       return { ok: false, reason: 'NOT_FOUND' };
     }
 
-    // Concurrency guard: dispatch can only be authored while jobStatus is CONFIRMED (REP-011)
-    if (record.jobStatus !== 'CONFIRMED') {
-      return {
-        ok: false,
-        reason: 'STALE_STATE',
-        authoritative: {
-          jobStatus: record.jobStatus,
-          dispatchStatus: record.dispatchStatus,
-          escrowStatus: record.escrowStatus,
-        },
-      };
-    }
-
-    // Forward-only dispatch transitions
-    if (record.dispatchStatus === 'ARRIVED') {
-      return {
-        ok: false,
-        reason: 'INVALID_TRANSITION',
-        authoritative: {
-          jobStatus: record.jobStatus,
-          dispatchStatus: record.dispatchStatus,
-          escrowStatus: record.escrowStatus,
-        },
-      };
-    }
-
-    const nowIso = new Date().toISOString();
-    record.dispatchStatus = next;
-    record.dispatchUpdatedAt = nowIso;
-
-    this.notifySubscribers(brainWorkerId, {
-      type: 'DISPATCH_UPDATED',
+    const transition = transitionDispatch({
       bookingId,
-      dispatchStatus: next,
-      timestamp: nowIso,
+      currentJobStatus: record.jobStatus,
+      currentDispatchStatus: record.dispatchStatus,
+      nextDispatchStatus: next,
+      snapshot,
     });
+
+    if (!transition.ok) {
+      return {
+        ok: false,
+        reason: transition.reason,
+        authoritative: {
+          jobStatus: record.jobStatus,
+          dispatchStatus: record.dispatchStatus,
+          escrowStatus: record.escrowStatus,
+        },
+      };
+    }
+
+    record.dispatchStatus = transition.dispatchStatus;
+    record.dispatchUpdatedAt = transition.dispatchUpdatedAt;
+
+    this.notifySubscribers(brainWorkerId, transition.event);
 
     return {
       ok: true,
       bookingId,
       jobStatus: record.jobStatus,
       dispatchStatus: record.dispatchStatus,
-      updatedAt: nowIso,
+      updatedAt: transition.dispatchUpdatedAt,
     };
   }
 
