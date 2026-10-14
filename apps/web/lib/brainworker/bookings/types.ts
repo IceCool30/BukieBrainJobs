@@ -253,3 +253,28 @@ export type BookingFeedEvent =
   | { type: 'SCOPE_ADJUSTMENT_REQUESTED'; bookingId: string; adjustmentId: string; timestamp: string }
   | { type: 'SCOPE_ADJUSTMENT_WITHDRAWN'; bookingId: string; adjustmentId: string; timestamp: string }
   | { type: 'BOOKING_CANCELLED_BY_PROVIDER'; bookingId: string; reason: ProviderCancellationReason; timestamp: string };
+
+// -- Error classes (ARCH section 2, section 6, section 12) -------------------
+export class ForbiddenTenantAccessError extends Error {
+  readonly code = 'FORBIDDEN_TENANT_ACCESS' as const;
+  constructor(message = 'FORBIDDEN_TENANT_ACCESS: Access denied.') {
+    super(message);
+    this.name = 'ForbiddenTenantAccessError';
+  }
+}
+
+export class IncompleteProfileError extends Error {
+  readonly code = 'INCOMPLETE_PROFILE' as const;
+  constructor(message = 'INCOMPLETE_PROFILE: Operational profile is incomplete.') {
+    super(message);
+    this.name = 'IncompleteProfileError';
+  }
+}
+
+export class OfflineMutationError extends Error {
+  readonly code = 'OFFLINE' as const;
+  constructor(message = 'OFFLINE: Mutations are not permitted while offline.') {
+    super(message);
+    this.name = 'OfflineMutationError';
+  }
+}
