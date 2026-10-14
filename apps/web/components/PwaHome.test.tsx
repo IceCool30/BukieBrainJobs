@@ -37,10 +37,10 @@ describe('PwaHome', () => {
     expect(serviceCard.className).toContain('focus-visible:ring-[#001A41]');
   });
 
-  it('keeps lower-priority explainer sections off the compact mobile homepage', () => {
+  it('renders explainer sections Before you book and Common questions on mobile homepage', () => {
     render(<PwaHome onOpenDrawer={vi.fn()} />);
 
-    expect(screen.queryByRole('heading', { name: /before you book/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('heading', { name: /common questions/i })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /before you book/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /common questions/i })).toBeInTheDocument();
   });
 });

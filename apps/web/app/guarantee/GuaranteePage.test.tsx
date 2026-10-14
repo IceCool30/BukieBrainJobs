@@ -36,7 +36,7 @@ describe('GuaranteePage', () => {
   it('renders support email contact link in footer', () => {
     render(<GuaranteePage />);
 
-    const supportLink = screen.getByRole('link', { name: /contact support/i });
+    const supportLink = screen.getAllByRole('link', { name: /contact support/i })[0]!;
     expect(supportLink).toBeInTheDocument();
     expect(supportLink).toHaveAttribute('href', 'mailto:support@bukiebrainjobs.ng');
   });

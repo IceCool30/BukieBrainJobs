@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, MapPin } from 'lucide-react';
+import Navbar from '../../../components/Navbar';
+import Footer from '../../../components/Footer';
 import BrainWorkerProfileBookingContext from '../../../components/BrainWorkerProfileBookingContext';
 import { PublicReviewFeed } from '../../../components/review';
 import {
@@ -39,8 +41,10 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
   const initialTab = rawTab === 'reviews' ? 'reviews' : 'service';
 
   return (
-    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors duration-200">
-      <section className="relative isolate overflow-hidden bg-[#001A41] dark:bg-[#0B0F17] text-white">
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] pt-[var(--header-height)] transition-colors duration-200">
+        <section className="relative isolate overflow-hidden bg-[#001A41] dark:bg-[#0B0F17] text-white">
         <div className="absolute inset-0 sm:left-[42%]">
           <Image
             src={profile.avatarUrl}
@@ -102,5 +106,7 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
         <BrainWorkerProfileBookingContext profile={profile} initialContext={context} />
       </section>
     </main>
+    <Footer />
+    </>
   );
 }

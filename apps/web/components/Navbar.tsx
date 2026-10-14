@@ -15,6 +15,7 @@ import {
   Moon,
 } from 'lucide-react';
 import { getMockAuthenticatedUser } from '../lib/auth/storage';
+import ThemeToggle from './ThemeToggle';
 
 interface NavbarProps {
   onPostJobClick?: () => void;
@@ -49,7 +50,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     }
 
     try {
-      const stored = localStorage.getItem('bbj_theme') || localStorage.getItem('bukiebrainjobs-theme');
+      const stored = localStorage.getItem('bukie_theme') || localStorage.getItem('bbj_theme') || localStorage.getItem('bukiebrainjobs-theme');
       if (stored === 'dark' || stored === 'light') {
         setTheme(stored);
       } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -236,7 +237,8 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
         </nav>
 
         {/* Action Buttons */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden min-w-0 items-center gap-2.5 md:flex">
+          <ThemeToggle idPrefix="nav-theme" />
           {/* Secondary action: Become a BrainWorker */}
           <button
             onClick={onBecomeWorkerClick}
@@ -282,36 +284,6 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
               Sign In
             </Link>
           )}
-
-          {/* Theme switcher */}
-          <div className="flex items-center rounded-full border border-white/20 bg-white/10 p-0.5 text-xs ml-1" role="group" aria-label="Theme mode switcher">
-            <button
-              type="button"
-              onClick={() => handleThemeChange('light')}
-              className={`px-2 py-1 rounded-full text-[10px] font-mono transition-colors flex items-center gap-1 cursor-pointer ${
-                theme === 'light'
-                  ? 'bg-white text-[#001A41] font-bold shadow-xs'
-                  : 'text-white/80 hover:text-white'
-              }`}
-              aria-label="Switch to light theme"
-            >
-              <Sun className="w-3 h-3" />
-              <span>LIGHT</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleThemeChange('dark')}
-              className={`px-2 py-1 rounded-full text-[10px] font-mono transition-colors flex items-center gap-1 cursor-pointer ${
-                theme === 'dark'
-                  ? 'bg-[var(--amber)] text-white font-bold shadow-xs'
-                  : 'text-white/80 hover:text-white'
-              }`}
-              aria-label="Switch to dark theme"
-            >
-              <Moon className="w-3 h-3" />
-              <span>DARK</span>
-            </button>
-          </div>
         </div>
 
         {/* Mobile Hamburger Toggle */}
@@ -375,10 +347,11 @@ function DrawerPanel({
             role="dialog"
             aria-modal="true"
             aria-label="Navigation Menu"
-            className={`lg:hidden fixed top-0 right-0 z-50 h-full w-[300px] max-w-[85vw] bg-[#001A41] border-l border-[#1E3A60] flex flex-col transition-transform duration-[240ms] ease-[var(--ease-ui-out)] ${visible ? 'translate-x-0' : 'translate-x-full'}`}
+            className={`lg:hidden fixed top-0 right-0 z-50 h-full w-[300px] max-w-[85vw] bg-[var(--card-bg)] text-[var(--text-main)] border-l border-[var(--lead)] shadow-2xl flex flex-col transition-transform duration-[240ms] ease-[var(--ease-ui-out)] ${visible ? 'translate-x-0' : 'translate-x-full'}`}
+            style={{ backgroundColor: 'var(--card-bg)' }}
           >
             {/* Drawer header */}
-            <div className="flex items-center justify-between px-5 h-20 border-b border-[#1E3A60]">
+            <div className="flex items-center justify-between px-5 h-20 border-b border-[var(--lead)]">
               <div className="flex items-center gap-2.5">
                 <Image
                   src="/images/logo-icon.png"
@@ -388,89 +361,57 @@ function DrawerPanel({
                   className="object-contain h-9 w-9 rounded-xl"
                   priority
                 />
-                <span className="font-display font-extrabold text-base tracking-tight text-white">
-                  Bukie<span className="text-[#ABEEC8]">BrainJobs</span>
+                <span className="font-display font-extrabold text-base tracking-tight text-[var(--text-main)]">
+                  Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
                 </span>
               </div>
               <button
                 onClick={onClose}
-                className="-mr-2 flex h-11 w-11 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-white hover:bg-white/10"
+                className="-mr-2 flex h-11 w-11 items-center justify-center rounded-lg text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] hover:bg-[var(--tag-bg)]"
                 aria-label="Close navigation menu"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Mobile Theme Toggle Strip */}
-            {onThemeChange && (
-              <div className="flex items-center justify-between px-5 py-3 border-b border-[#1E3A60] bg-white/[0.03]">
-                <span className="text-xs font-semibold text-slate-300">Theme</span>
-                <div className="flex items-center rounded-full border border-white/20 bg-white/10 p-0.5 text-xs" role="group" aria-label="Mobile theme toggle">
-                  <button
-                    type="button"
-                    onClick={() => onThemeChange('light')}
-                    className={`px-2.5 py-1 rounded-full text-[10px] font-mono transition-colors flex items-center gap-1 cursor-pointer ${
-                      theme === 'light'
-                        ? 'bg-white text-[#001A41] font-bold shadow-xs'
-                        : 'text-white/80 hover:text-white'
-                    }`}
-                    aria-label="Switch to light theme"
-                  >
-                    <Sun className="w-3 h-3" />
-                    <span>LIGHT</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => onThemeChange('dark')}
-                    className={`px-2.5 py-1 rounded-full text-[10px] font-mono transition-colors flex items-center gap-1 cursor-pointer ${
-                      theme === 'dark'
-                        ? 'bg-[var(--amber)] text-white font-bold shadow-xs'
-                        : 'text-white/80 hover:text-white'
-                    }`}
-                    aria-label="Switch to dark theme"
-                  >
-                    <Moon className="w-3 h-3" />
-                    <span>DARK</span>
-                  </button>
-                </div>
-              </div>
-            )}
-
             {/* Link zone */}
             <nav className="flex flex-col gap-1 px-4 py-5 overflow-y-auto">
               {isAuthenticated && (
                 <button
                   onClick={() => onNavigate('/dashboard')}
-                  className="motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-bold text-[#ABEEC8] bg-[#ABEEC8]/10 hover:bg-[#ABEEC8]/20 transition-colors mb-1"
+                  className="motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-bold text-[var(--text-main)] bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] transition-colors mb-1"
                 >
-                  <LayoutDashboard className="w-[18px] h-[18px] text-[#ABEEC8]" />
+                  <LayoutDashboard className="w-[18px] h-[18px] text-[var(--brand-green)]" />
                   Customer Dashboard
                 </button>
               )}
-              {DRAWER_LINKS.map(({ href, label, icon: Icon, tint }) => (
+              {DRAWER_LINKS.map(({ href, label, icon: Icon }) => (
                 <button
                   key={label}
                   onClick={() => onNavigate(href)}
-                  className="motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-[#ABEEC8]/10 hover:text-[#ABEEC8] active:bg-[#ABEEC8]/15 transition-colors"
+                  className="motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-medium text-[var(--text-muted)] hover:bg-[var(--tag-bg)] hover:text-[var(--text-main)] active:bg-[var(--card-hover)] transition-colors"
                 >
-                  <Icon className={`w-[18px] h-[18px] ${tint === '#ABEEC8' ? 'text-[#ABEEC8]' : 'text-[#ABEEC8]/80'}`} />
+                  <Icon className="w-[18px] h-[18px] text-[var(--brand-green)]" />
                   {label}
                 </button>
               ))}
             </nav>
 
             {/* Action zone */}
-            <div className="mt-auto px-5 pb-8 pt-4 space-y-2.5 border-t border-[#1E3A60]">
+            <div className="mt-auto px-5 pb-8 pt-4 space-y-2.5 border-t border-[var(--lead)]">
+              <div className="flex justify-start pb-1">
+                <ThemeToggle idPrefix="drawer-theme" />
+              </div>
               <button
                 onClick={() => { onClose(); onPostJob?.(); }}
-                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-[#ABEEC8] bg-[#296A4B] hover:bg-[#1f5239] active:bg-[#17402c] rounded-xl transition-colors flex items-center justify-center gap-2"
+                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-white bg-[var(--amber)] hover:bg-[var(--amber-hover)] active:bg-[var(--amber-hover)] rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <Briefcase className="w-4 h-4" />
                 Post a Job
               </button>
               <button
                 onClick={() => { onClose(); onBecomeWorker?.(); }}
-                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-white bg-white/10 hover:bg-white/15 active:bg-white/20 border border-white/15 rounded-xl transition-colors"
+                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-[var(--text-main)] bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] active:bg-[var(--card-hover)] border border-[var(--lead)] rounded-xl transition-colors"
               >
                 Become a BrainWorker
               </button>

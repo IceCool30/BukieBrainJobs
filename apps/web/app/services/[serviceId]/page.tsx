@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, CheckCircle2, MapPin } from 'lucide-react';
+import Navbar from '../../../components/Navbar';
+import Footer from '../../../components/Footer';
 import {
   getServiceCategory,
   NIGERIAN_LOCATIONS,
@@ -54,8 +56,10 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
   const locations = NIGERIAN_LOCATIONS.filter((location) => location.status === 'active');
 
   return (
-    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors duration-200">
-      <section className="relative isolate overflow-hidden bg-[var(--strip-bg)] text-white">
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] pt-[var(--header-height)] transition-colors duration-200">
+        <section className="relative isolate overflow-hidden bg-[var(--strip-bg)] text-white">
         <div className="absolute inset-y-0 right-0 w-full sm:w-[62%]">
           <Image
             src={service.photoUrl}
@@ -157,5 +161,7 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
         </aside>
       </section>
     </main>
+    <Footer />
+    </>
   );
 }

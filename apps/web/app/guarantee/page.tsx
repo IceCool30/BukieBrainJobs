@@ -8,6 +8,8 @@ import {
   ShieldCheck,
   UserCheck,
 } from 'lucide-react';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 
 const BOOKING_STEPS = [
   {
@@ -35,9 +37,11 @@ const BOOKING_CHECKS = [
 
 export default function GuaranteePage() {
   return (
-    <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors duration-200">
-      <section className="bg-[var(--strip-bg)] text-white">
-        <div className="mx-auto grid max-w-[1280px] gap-6 px-4 pb-9 pt-20 sm:gap-8 sm:px-6 sm:pb-12 sm:pt-24 lg:grid-cols-[minmax(0,1fr)_320px] lg:px-8 lg:pb-14">
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] pt-[var(--header-height)] transition-colors duration-200">
+        <section className="bg-[var(--strip-bg)] text-white">
+          <div className="mx-auto grid max-w-[1280px] gap-6 px-4 pb-9 pt-8 sm:gap-8 sm:px-6 sm:pb-12 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:px-8 lg:pb-14">
           <div className="max-w-2xl space-y-4 sm:space-y-5">
             <div>
               <Link
@@ -157,5 +161,7 @@ export default function GuaranteePage() {
         </div>
       </footer>
     </main>
+    <Footer />
+    </>
   );
 }

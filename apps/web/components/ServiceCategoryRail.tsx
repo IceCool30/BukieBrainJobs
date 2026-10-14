@@ -24,12 +24,12 @@ function CategoryButton({ category, onSelect }: { category: ServiceCategory; onS
       type="button"
       onClick={() => onSelect?.(category)}
       aria-label={category.title}
-      className="motion-press flex h-20 w-[68px] shrink-0 flex-col items-center justify-center gap-1 rounded-xl px-1 text-center transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:h-[104px] sm:w-full sm:gap-2"
+      className="motion-press flex h-20 w-[68px] shrink-0 flex-col items-center justify-center gap-1 rounded-xl px-1 text-center transition-colors hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#296A4B] sm:h-[104px] sm:w-full sm:gap-2"
     >
-      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F2F8F4] sm:h-12 sm:w-12">
+      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--tag-bg)] sm:h-12 sm:w-12">
         <ServiceTaskIcon categoryId={category.id} className="h-7 w-7 sm:h-9 sm:w-9" />
       </span>
-      <span className="w-full truncate text-[10px] font-semibold leading-tight text-[#001A41] sm:overflow-visible sm:text-clip sm:text-xs sm:whitespace-normal">
+      <span className="w-full truncate text-[10px] font-semibold leading-tight text-[var(--text-main)] sm:overflow-visible sm:text-clip sm:text-xs sm:whitespace-normal">
         {HOME_CATEGORY_LABELS[category.id] ?? category.title}
       </span>
     </button>

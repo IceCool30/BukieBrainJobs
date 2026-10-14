@@ -47,10 +47,10 @@ export default function HowItWorks() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-extrabold text-3xl tracking-tight text-[var(--text-muted)]/70">
+                  <span className="font-display font-extrabold text-3xl text-[var(--text-main)]">
                     {s.num}
                   </span>
-                  <div className="w-9 h-9 rounded border border-[var(--lead)] bg-[var(--tag-bg)] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] flex items-center justify-center">
                     {s.icon}
                   </div>
                 </div>

@@ -31,6 +31,7 @@ import {
   validateCity,
 } from '../../lib/services';
 import ServiceTaskIcon from '../../components/ServiceTaskIcon';
+import Footer from '../../components/Footer';
 
 const TASK_LABELS: Record<string, string> = {
   generator: 'Generator',
@@ -669,6 +670,7 @@ function ServicesDirectory() {
           </Link>
         </aside>
       </section>
+      <Footer />
     </main>
   );
 }

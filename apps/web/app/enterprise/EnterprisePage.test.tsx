@@ -14,7 +14,7 @@ describe('EnterprisePage', () => {
 
     expect(screen.getByRole('heading', { level: 1, name: /business services for recurring work/i })).toBeInTheDocument();
     expect(screen.getByText(/bukiebrainjobs for business/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /bukiebrainjobs/i })).toHaveAttribute('href', '/');
+    expect(screen.getAllByRole('link', { name: /bukiebrainjobs/i })[0]).toHaveAttribute('href', '/');
   });
 
   it('renders Explore services and Browse services CTA links pointing to /services', () => {
