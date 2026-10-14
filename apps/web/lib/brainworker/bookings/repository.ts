@@ -25,44 +25,17 @@ import type {
 
 export interface BrainWorkerBookingsRepositoryDependencies {
   resolveOperationalProfile?: (brainWorkerId: string) => Promise<boolean> | boolean;
+  isOffline?: () => boolean;
+  partitions?: Map<string, Map<string, RawBookingRecord>>;
 }
 
 export class BrainWorkerBookingsRepository implements IBrainWorkerBookingsRepository {
   private readonly dependencies: BrainWorkerBookingsRepositoryDependencies;
-  private readonly partitions = new Map<string, Map<string, RawBookingRecord>>();
-  private offline = false;
+  private readonly partitions: Map<string, Map<string, RawBookingRecord>>;
 
   constructor(dependencies: BrainWorkerBookingsRepositoryDependencies = {}) {
     this.dependencies = dependencies;
-  }
-
-  // Testing hooks for test harness; never imported or used by production code
-  /* @internal */
-  __testSeedBooking(brainWorkerId: string, booking: RawBookingRecord): void {
-    let partition = this.partitions.get(brainWorkerId);
-    if (!partition) {
-      partition = new Map<string, RawBookingRecord>();
-      this.partitions.set(brainWorkerId, partition);
-    }
-    partition.set(booking.bookingId, { ...booking });
-  }
-
-  /* @internal */
-  __testSetOffline(offline: boolean): void {
-    this.offline = offline;
-  }
-
-  /* @internal */
-  __testMutateDirectly(
-    brainWorkerId: string,
-    bookingId: string,
-    mutator: (booking: RawBookingRecord) => void
-  ): void {
-    const partition = this.partitions.get(brainWorkerId);
-    const booking = partition?.get(bookingId);
-    if (booking) {
-      mutator(booking);
-    }
+    this.partitions = dependencies.partitions ?? new Map<string, Map<string, RawBookingRecord>>();
   }
 
   // ---------------------------------------------------------------------------

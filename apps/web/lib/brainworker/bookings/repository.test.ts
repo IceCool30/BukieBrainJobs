@@ -44,7 +44,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   // ---------------------------------------------------------------------------
   // REP-001: Unauthenticated read refused
   // ---------------------------------------------------------------------------
-  it('REP-001: rejects booking reads when caller is unauthenticated or wrong role', async () => {
+  it('REP-001: unauthenticated read refused', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(null);
     const { repository } = createBookingsTestHarness();
 
@@ -66,7 +66,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   // ---------------------------------------------------------------------------
   // REP-002: Cross-provider read refused
   // ---------------------------------------------------------------------------
-  it("REP-002: rejects read of another provider's bookings (tenant isolation)", async () => {
+  it('REP-002: cross-provider read refused', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     const { repository, seedBooking } = createBookingsTestHarness();
     seedBooking(FIXTURE_APPROVED_BRAINWORKER_B, bookingOwnedByB());
@@ -83,7 +83,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   // ---------------------------------------------------------------------------
   // REP-003: Cross-provider mutation refused
   // ---------------------------------------------------------------------------
-  it('REP-003: rejects mutations when caller is not the assigned provider', async () => {
+  it('REP-003: cross-provider mutation refused', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     const { repository, seedBooking } = createBookingsTestHarness();
     seedBooking(FIXTURE_APPROVED_BRAINWORKER_B, bookingOwnedByB());
@@ -116,7 +116,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   // ---------------------------------------------------------------------------
   // REP-004: Unapproved provider mutation refused
   // ---------------------------------------------------------------------------
-  it('REP-004: rejects reads and mutations from unapproved or incomplete operational profiles', async () => {
+  it('REP-004: unapproved provider mutation refused', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockUnapprovedWorker);
     const { repository, seedBooking } = createBookingsTestHarness();
     seedBooking(FIXTURE_UNAPPROVED_BRAINWORKER, bookingOwnedByA({ taskerProfileId: FIXTURE_UNAPPROVED_BRAINWORKER }));
@@ -151,7 +151,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   // ---------------------------------------------------------------------------
   // REP-005: Missing booking ID returns not found
   // ---------------------------------------------------------------------------
-  it('REP-005: returns null or not-found result when booking does not exist', async () => {
+  it('REP-005: missing booking ID returns not found', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     const { repository } = createBookingsTestHarness();
 
@@ -175,7 +175,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   // ---------------------------------------------------------------------------
   // REP-006: Storage is tenant-scoped by BrainWorker ID
   // ---------------------------------------------------------------------------
-  it('REP-006: storage keys and records are partitioned by BrainWorker ID', async () => {
+  it('REP-006: storage is tenant-scoped by BrainWorker ID', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     const { repository, seedBooking } = createBookingsTestHarness();
     seedBooking(FIXTURE_APPROVED_BRAINWORKER_A, bookingOwnedByA());
@@ -203,7 +203,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   // ---------------------------------------------------------------------------
   // REP-007: Offline mutation fails closed with OFFLINE
   // ---------------------------------------------------------------------------
-  it('REP-007: offline mutations fail closed; cached reads remain available', async () => {
+  it('REP-007: offline mutation fails closed with OFFLINE', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     const { repository, seedBooking, setOffline } = createBookingsTestHarness();
     seedBooking(FIXTURE_APPROVED_BRAINWORKER_A, bookingOwnedByA());
@@ -242,7 +242,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   // ---------------------------------------------------------------------------
   // REP-008: No stored location snapshot survives for later submission
   // ---------------------------------------------------------------------------
-  it('REP-008: no stored location snapshot is queued or retained after an offline failure', async () => {
+  it('REP-008: no stored location snapshot survives for later submission', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     const { repository, seedBooking, setOffline } = createBookingsTestHarness();
     seedBooking(FIXTURE_APPROVED_BRAINWORKER_A, bookingOwnedByA());
@@ -270,7 +270,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   // ---------------------------------------------------------------------------
   // REP-009: Production export surface contains no testing helpers
   // ---------------------------------------------------------------------------
-  it('REP-009: production repository module does not export testing helpers or harness', async () => {
+  it('REP-009: production export surface contains no testing helpers', async () => {
     const repositoryModule = await import('./repository');
     const exportedKeys = Object.keys(repositoryModule);
 
@@ -281,12 +281,19 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
 
     expect(typeof repositoryModule.createBrainWorkerBookingsRepository).toBe('function');
     expect(typeof repositoryModule.getBrainWorkerBookingsRepository).toBe('function');
+
+    // Prototype must expose zero internal test hooks
+    const protoProps = Object.getOwnPropertyNames(
+      repositoryModule.BrainWorkerBookingsRepository.prototype
+    );
+    const testHooks = protoProps.filter((prop) => prop.startsWith('__test'));
+    expect(testHooks).toEqual([]);
   });
 
   // ---------------------------------------------------------------------------
   // REP-010: Production modules contain zero testing/ imports
   // ---------------------------------------------------------------------------
-  it('REP-010: production modules contain zero imports from testing/ or test fixtures', () => {
+  it('REP-010: production modules contain zero testing/ imports', () => {
     const bookingsDir = path.resolve(__dirname);
     const productionFiles = ['repository.ts', 'domain.ts', 'types.ts'];
 
@@ -302,7 +309,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   // ---------------------------------------------------------------------------
   // REP-011: Compare-and-set rejects a stale concurrent mutation
   // ---------------------------------------------------------------------------
-  it('REP-011: rejects stale concurrent mutation when observed state changed', async () => {
+  it('REP-011: compare-and-set rejects a stale concurrent mutation', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     const { repository, seedBooking, mutateBookingDirectly } = createBookingsTestHarness();
     seedBooking(FIXTURE_APPROVED_BRAINWORKER_A, bookingOwnedByA({ jobStatus: 'CONFIRMED' }));
@@ -326,9 +333,9 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   });
 
   // ---------------------------------------------------------------------------
-  // REP-012: Exact address unlocks only when 3 inputs hold
+  // REP-012: The exact address unlocks only when booking resolution, privacy policy, and escrow policy all pass
   // ---------------------------------------------------------------------------
-  it('REP-012: unlocks exact address only when booking is assigned, privacy consent recorded, and escrow held', async () => {
+  it('REP-012: the exact address unlocks only when booking resolution, privacy policy, and escrow policy all pass', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     const { repository, seedBooking } = createBookingsTestHarness();
     seedBooking(
@@ -349,9 +356,9 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   });
 
   // ---------------------------------------------------------------------------
-  // REP-013: Any single failing unlock input returns general area
+  // REP-013: Any single failing unlock input returns the general area
   // ---------------------------------------------------------------------------
-  it('REP-013: masks exact address to general area when any unlock input fails', async () => {
+  it('REP-013: any single failing unlock input returns the general area', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     const { repository, seedBooking } = createBookingsTestHarness();
 
@@ -372,7 +379,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
     expect(noConsent?.exactAddress).toBeUndefined();
     expect(noConsent?.generalLocation.neighbourhoodOrZone).toBe('Gwarinpa');
 
-    // Input 2 missing: escrow not held
+    // Input 2 missing: escrow not held (unfunded)
     seedBooking(
       FIXTURE_APPROVED_BRAINWORKER_A,
       bookingOwnedByA({
@@ -388,7 +395,7 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
     );
     expect(unfunded?.exactAddress).toBeUndefined();
 
-    // Input 3 invalid: pre-confirmed lifecycle state
+    // Input 3 invalid: pre-confirmed lifecycle state (escrow held alone NEVER unlocks address before CONFIRMED)
     seedBooking(
       FIXTURE_APPROVED_BRAINWORKER_A,
       bookingOwnedByA({
@@ -422,9 +429,9 @@ describe('BW-004 Phase 2: Repository and Tenant Isolation (REP-001 to REP-014)',
   });
 
   // ---------------------------------------------------------------------------
-  // REP-014: Address is scoped to detail, never in list projection
+  // REP-014: The address is scoped to one booking assigned to the provider, never to the list or the customer profile
   // ---------------------------------------------------------------------------
-  it('REP-014: address is scoped to single booking detail and never exposed in the list projection', async () => {
+  it('REP-014: the address is scoped to one booking assigned to the provider, never to the list or the customer profile', async () => {
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     const { repository, seedBooking } = createBookingsTestHarness();
     seedBooking(

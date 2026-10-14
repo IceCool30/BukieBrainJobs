@@ -48,8 +48,13 @@ export interface BookingsTestHarnessOptions {
 export function createBookingsTestHarness(
   options: BookingsTestHarnessOptions = {}
 ): BookingsTestHarness {
+  const partitions = new Map<string, Map<string, RawBookingRecord>>();
+  let offline = false;
+
   const defaultDeps: BrainWorkerBookingsRepositoryDependencies = {
     resolveOperationalProfile: fixtureOperationalProfileResolver,
+    isOffline: () => offline,
+    partitions,
   };
 
   const repository = createBrainWorkerBookingsRepository({
@@ -60,35 +65,25 @@ export function createBookingsTestHarness(
   return {
     repository,
     seedBooking: (brainWorkerId: string, booking: RawBookingRecord) => {
-      const seedable = repository as unknown as {
-        __testSeedBooking?: (brainWorkerId: string, booking: RawBookingRecord) => void;
-      };
-      if (typeof seedable.__testSeedBooking === 'function') {
-        seedable.__testSeedBooking(brainWorkerId, booking);
+      let partition = partitions.get(brainWorkerId);
+      if (!partition) {
+        partition = new Map<string, RawBookingRecord>();
+        partitions.set(brainWorkerId, partition);
       }
+      partition.set(booking.bookingId, { ...booking });
     },
-    setOffline: (offline: boolean) => {
-      const offlineable = repository as unknown as {
-        __testSetOffline?: (offline: boolean) => void;
-      };
-      if (typeof offlineable.__testSetOffline === 'function') {
-        offlineable.__testSetOffline(offline);
-      }
+    setOffline: (value: boolean) => {
+      offline = value;
     },
     mutateBookingDirectly: (
       brainWorkerId: string,
       bookingId: string,
       mutator: (booking: RawBookingRecord) => void
     ) => {
-      const directable = repository as unknown as {
-        __testMutateDirectly?: (
-          brainWorkerId: string,
-          bookingId: string,
-          mutator: (booking: RawBookingRecord) => void
-        ) => void;
-      };
-      if (typeof directable.__testMutateDirectly === 'function') {
-        directable.__testMutateDirectly(brainWorkerId, bookingId, mutator);
+      const partition = partitions.get(brainWorkerId);
+      const booking = partition?.get(bookingId);
+      if (booking) {
+        mutator(booking);
       }
     },
   };
