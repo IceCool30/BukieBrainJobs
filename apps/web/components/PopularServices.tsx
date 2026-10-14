@@ -45,7 +45,7 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className="service-card-image object-cover transition-transform duration-[180ms] ease-[var(--ease-ui-out)]"
                 />
-                <span className="absolute left-3 top-3 inline-flex items-center rounded border border-[var(--tag-border)] bg-[var(--card-bg)]/95 dark:bg-[var(--card-bg)]/90 px-2 py-0.5 font-mono text-[11px] font-medium text-[var(--text-main)] shadow-xs backdrop-blur-xs">
+                <span className="absolute left-3 top-3 inline-flex items-center rounded border border-[var(--lead)] bg-[var(--card-bg)] px-2 py-0.5 font-mono text-[11px] font-medium text-[var(--text-main)] shadow-xs">
                   From {cat.startingPrice}
                 </span>
                 <span className="service-card-arrow absolute right-3 top-3 flex h-7 w-7 translate-x-1 items-center justify-center rounded bg-[var(--amber)] text-white opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">

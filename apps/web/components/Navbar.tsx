@@ -35,7 +35,6 @@ const DRAWER_LINKS = [
 
 export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpenRef, hideOnPwa }: NavbarProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [chipShown, setChipShown] = useState(false);
@@ -48,34 +47,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     if (user) {
       setIsAuthenticated(true);
     }
-
-    try {
-      const stored = localStorage.getItem('bukie_theme') || localStorage.getItem('bbj_theme') || localStorage.getItem('bukiebrainjobs-theme');
-      if (stored === 'dark' || stored === 'light') {
-        setTheme(stored);
-      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        setTheme('dark');
-      }
-    } catch {
-      // Safe fallback
-    }
   }, []);
-
-  const handleThemeChange = (newTheme: 'light' | 'dark') => {
-    setTheme(newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
-    if (newTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    try {
-      localStorage.setItem('bbj_theme', newTheme);
-      localStorage.setItem('bukiebrainjobs-theme', newTheme);
-    } catch {
-      // Storage unavailable
-    }
-  };
 
   const openDrawer = useCallback(() => {
     setMobileMenuOpen(true);
@@ -146,11 +118,11 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     return (
       <>
         {solid && !drawerOnly && (
-          <div className="fixed top-3 right-4 z-50 h-11 w-11 rounded-xl bg-[#001A41]/90 border border-white/15 shadow-[0_6px_20px_-8px_rgba(0,26,65,0.45)] flex items-center justify-center pointer-events-auto">
+          <div className="fixed top-3 right-4 z-50 h-11 w-11 rounded-xl bg-[var(--card-bg)] border border-[var(--lead)] shadow-md flex items-center justify-center pointer-events-auto">
             <button
               ref={triggerRef}
               onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
-              className="motion-press p-2 rounded-lg text-white hover:bg-white/10"
+              className="motion-press p-2 rounded-lg text-[var(--text-main)] hover:bg-[var(--card-hover)]"
               aria-label="Open menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -171,8 +143,6 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
               onPostJob={doPostJob}
               onBecomeWorker={doBecomeWorker}
               isAuthenticated={isAuthenticated}
-              theme={theme}
-              onThemeChange={handleThemeChange}
             />
           </>
         )}
@@ -186,8 +156,8 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     <header
       className={`fixed top-0 inset-x-0 z-50 w-full text-white transition-all duration-300 pointer-events-auto ${
         solid
-          ? 'bg-[#001A41]/90 backdrop-blur-md border-b border-white/10 shadow-sm'
-          : 'bg-gradient-to-b from-[#001A41]/75 to-transparent border-b border-transparent'
+          ? 'bg-[#001A41]/95 dark:bg-[#07090D]/95 backdrop-blur-md border-b border-white/10 dark:border-[var(--lead)] shadow-sm'
+          : 'bg-gradient-to-b from-[#001A41]/85 dark:from-[#07090D]/95 via-[#001A41]/50 dark:via-[#07090D]/60 to-transparent border-b border-transparent'
       }`}
     >
       {/* Main Header Container */}
@@ -286,16 +256,21 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           )}
         </div>
 
-        {/* Mobile Hamburger Toggle */}
-        <button
-          ref={triggerRef}
-          onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
-          className="motion-press lg:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 pointer-events-auto"
+        {/* Mobile Hamburger Toggle & Top Theme Toggle */}
+        <div className="flex items-center gap-2 lg:hidden">
+          <div className="md:hidden">
+            <ThemeToggle idPrefix="mobile-top-theme" />
+          </div>
+          <button
+            ref={triggerRef}
+            onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
+            className="motion-press p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 pointer-events-auto"
             aria-label="Open navigation menu"
-          aria-expanded={mobileMenuOpen}
-        >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile slide-in drawer */}
@@ -313,8 +288,6 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             onPostJob={doPostJob}
             onBecomeWorker={doBecomeWorker}
             isAuthenticated={isAuthenticated}
-            theme={theme}
-            onThemeChange={handleThemeChange}
           />
         </>
       )}
@@ -330,8 +303,6 @@ function DrawerPanel({
   onPostJob,
   onBecomeWorker,
   isAuthenticated,
-  theme,
-  onThemeChange,
 }: {
   visible: boolean;
   onClose: () => void;
@@ -339,8 +310,6 @@ function DrawerPanel({
   onPostJob: () => void;
   onBecomeWorker: () => void;
   isAuthenticated?: boolean;
-  theme?: 'light' | 'dark';
-  onThemeChange?: (theme: 'light' | 'dark') => void;
 }) {
   return (
           <aside
@@ -399,9 +368,6 @@ function DrawerPanel({
 
             {/* Action zone */}
             <div className="mt-auto px-5 pb-8 pt-4 space-y-2.5 border-t border-[var(--lead)]">
-              <div className="flex justify-start pb-1">
-                <ThemeToggle idPrefix="drawer-theme" />
-              </div>
               <button
                 onClick={() => { onClose(); onPostJob?.(); }}
                 className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-white bg-[var(--amber)] hover:bg-[var(--amber-hover)] active:bg-[var(--amber-hover)] rounded-xl transition-colors flex items-center justify-center gap-2"

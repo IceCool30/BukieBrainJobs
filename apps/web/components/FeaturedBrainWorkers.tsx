@@ -28,13 +28,9 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="service-card-image object-cover"
         />
-        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--brand-green)] shadow-xs backdrop-blur-xs">
+        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded border border-[var(--lead)] bg-[var(--card-bg)] px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--brand-green)] shadow-xs">
           <BadgeCheck className="h-3 w-3 text-[var(--brand-green)]" aria-hidden="true" />
           Featured
-        </span>
-        <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded border border-[var(--lead)] bg-[var(--card-bg)]/95 dark:bg-[var(--card-bg)]/90 px-2 py-0.5 font-mono text-[10px] text-[var(--text-muted)] shadow-xs backdrop-blur-xs">
-          <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-green)] animate-pulse" aria-hidden="true" />
-          Available today
         </span>
         <span className="service-card-arrow absolute right-3 top-3 flex h-7 w-7 translate-x-1 items-center justify-center rounded bg-[var(--amber)] text-white opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">
           <ArrowRight className="h-3.5 w-3.5" />
@@ -42,7 +38,13 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
       </div>
       <div className="space-y-2 p-3.5 sm:p-4">
         <div>
-          <p className="text-xs font-semibold text-[var(--brand-green)]">{worker.category}</p>
+          <div className="flex items-center justify-between gap-1.5">
+            <p className="text-xs font-semibold text-[var(--brand-green)]">{worker.category}</p>
+            <span className="inline-flex items-center gap-1 font-mono text-[10px] text-[var(--text-muted)]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-green)] animate-pulse" aria-hidden="true" />
+              Available today
+            </span>
+          </div>
           <h3 className="mt-1 text-[15px] font-semibold leading-snug text-[var(--text-main)] transition-colors group-hover:text-[var(--amber)]">{worker.name}</h3>
           <p className="mt-1 line-clamp-2 text-xs leading-5 text-[var(--text-muted)]">{worker.title}</p>
         </div>
