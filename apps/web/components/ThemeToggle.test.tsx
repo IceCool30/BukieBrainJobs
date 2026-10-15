@@ -11,31 +11,59 @@ afterEach(() => {
 });
 
 describe('ThemeToggle', () => {
-  it('renders the segmented LIGHT / DARK switcher as a radiogroup', () => {
+  it('renders a unified single theme toggle button for both light and dark themes', () => {
     render(<ThemeToggle />);
-    expect(screen.getByRole('radiogroup', { name: /appearance/i })).toBeInTheDocument();
-    expect(screen.getByRole('radio', { name: /light/i })).toBeInTheDocument();
-    expect(screen.getByRole('radio', { name: /dark/i })).toBeInTheDocument();
+    const toggle = screen.getByRole('button', { name: /switch to dark theme/i });
+    expect(toggle).toBeInTheDocument();
+    expect(toggle).toHaveAttribute('data-theme-state', 'light');
   });
 
-  it('marks LIGHT active when the document theme is light', () => {
+  it('marks toggle with dark theme state and updates label when initial theme is dark', () => {
+    document.documentElement.setAttribute('data-theme', 'dark');
     render(<ThemeToggle />);
-    expect(screen.getByRole('radio', { name: /light/i })).toHaveAttribute('aria-checked', 'true');
-    expect(screen.getByRole('radio', { name: /dark/i })).toHaveAttribute('aria-checked', 'false');
+    const toggle = screen.getByRole('button', { name: /switch to light theme/i });
+    expect(toggle).toBeInTheDocument();
+    expect(toggle).toHaveAttribute('data-theme-state', 'dark');
   });
 
-  it('persists DARK to localStorage and flips the document theme on select', () => {
+  it('persists dark theme to localStorage and flips document theme on click', () => {
     render(<ThemeToggle />);
-    fireEvent.click(screen.getByRole('radio', { name: /dark/i }));
+    const toggle = screen.getByRole('button', { name: /switch to dark theme/i });
+    fireEvent.click(toggle);
 
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe('dark');
-    expect(screen.getByRole('radio', { name: /dark/i })).toHaveAttribute('aria-checked', 'true');
+    expect(toggle).toHaveAttribute('data-theme-state', 'dark');
+    expect(toggle).toHaveAttribute('aria-label', 'Switch to light theme');
   });
 
-  it('restores the stored theme state on mount', () => {
-    document.documentElement.setAttribute('data-theme', 'dark');
+  it('toggles back to light theme on second click', () => {
     render(<ThemeToggle />);
-    expect(screen.getByRole('radio', { name: /dark/i })).toHaveAttribute('aria-checked', 'true');
+    const toggle = screen.getByRole('button', { name: /switch to dark theme/i });
+    fireEvent.click(toggle);
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+
+    fireEvent.click(toggle);
+    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+    expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe('light');
+    expect(toggle).toHaveAttribute('data-theme-state', 'light');
+    expect(toggle).toHaveAttribute('aria-label', 'Switch to dark theme');
+  });
+
+  it('synchronizes across storage events from other tabs', () => {
+    render(<ThemeToggle />);
+    const toggle = screen.getByRole('button', { name: /switch to dark theme/i });
+    expect(toggle).toHaveAttribute('data-theme-state', 'light');
+
+    fireEvent(
+      window,
+      new StorageEvent('storage', {
+        key: THEME_STORAGE_KEY,
+        newValue: 'dark',
+      }),
+    );
+
+    expect(toggle).toHaveAttribute('data-theme-state', 'dark');
+    expect(toggle).toHaveAttribute('aria-label', 'Switch to light theme');
   });
 });
