@@ -9,10 +9,12 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { getBrainWorkerOnboardingRepository } from '../../../lib/brainworker/repository';
 import type { BrainWorkerOnboardingRecord } from '../../../lib/brainworker/types';
 import { VerificationStatusMonitor } from '../../../components/brainworker/onboarding/VerificationStatusMonitor';
+import { ThemeToggle } from '../../../components/ThemeToggle';
 import type { AuthUser } from '../../../lib/auth/types';
 
 export default function BrainWorkerVerificationStatusPage(): React.ReactElement {
@@ -88,7 +90,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
 
   if (!user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-[#0B1528] transition-colors">
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg)] transition-colors">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-400 border-t-transparent" />
       </div>
     );
@@ -96,13 +98,13 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
 
   if (user.role !== 'brainworker') {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-[#0B1528] p-6 flex items-center justify-center transition-colors">
-        <div className="max-w-md w-full bg-white dark:bg-[#111927] rounded-lg border border-amber-200 dark:border-amber-900/40 p-8 text-center space-y-4 shadow-xs transition-colors">
+      <div className="min-h-screen bg-[var(--bg)] p-6 flex items-center justify-center transition-colors">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-amber-200 dark:border-amber-900/40 p-8 text-center space-y-4 shadow-xs transition-colors">
           <div className="inline-flex items-center gap-1.5 rounded-md bg-amber-500/10 border border-amber-500/20 px-3 py-1 text-xs font-semibold text-amber-700 dark:text-amber-400">
             Customer Account Detected
           </div>
-          <h2 className="text-xl font-bold text-[#001A41] dark:text-white">Provider Status Restricted</h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+          <h2 className="text-xl font-bold text-[var(--text-main)]">Provider Status Restricted</h2>
+          <p className="text-sm text-[var(--text-muted)] leading-relaxed">
             BrainWorker verification status is only accessible by registered service providers.
           </p>
           <Link
@@ -118,7 +120,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-[#0B1528] transition-colors">
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg)] transition-colors">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-400 border-t-transparent" />
       </div>
     );
@@ -126,10 +128,10 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
 
   if (!record) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-[#0B1528] p-6 flex items-center justify-center transition-colors">
-        <div className="max-w-md w-full bg-white dark:bg-[#111927] rounded-lg border border-slate-200 dark:border-slate-800 p-8 text-center space-y-4 shadow-xs transition-colors">
-          <h2 className="text-xl font-bold text-[#001A41] dark:text-white">No Application Found</h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300">
+      <div className="min-h-screen bg-[var(--bg)] p-6 flex items-center justify-center transition-colors">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-[var(--card-border)] p-8 text-center space-y-4 shadow-xs transition-colors">
+          <h2 className="text-xl font-bold text-[var(--text-main)]">No Application Found</h2>
+          <p className="text-sm text-[var(--text-muted)]">
             You have not submitted a BrainWorker onboarding application yet.
           </p>
           <button
@@ -145,14 +147,33 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 dark:bg-[#0B1528] py-12 px-4 sm:px-6 lg:px-8 transition-colors">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <VerificationStatusMonitor
-          record={record}
-          onRemediate={handleRemediate}
-          onEnterWorkspace={handleEnterWorkspace}
-        />
-      </div>
-    </main>
+    <div className="min-h-screen bg-[var(--bg)] transition-colors">
+      <header className="bg-[var(--card-bg)] border-b border-[var(--card-border)] sticky top-0 z-20 transition-colors">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-main)] hover:text-primary-hover dark:hover:text-emerald-400 transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span>Home</span>
+            </Link>
+            <span className="text-[var(--card-border)]">|</span>
+            <span className="font-black text-xl tracking-tight text-[var(--text-main)]">BukieBrainJobs</span>
+          </div>
+          <ThemeToggle idPrefix="worker-verify-theme" />
+        </div>
+      </header>
+
+      <main className="py-12 px-4 sm:px-6 lg:px-8 transition-colors">
+        <div className="max-w-4xl mx-auto space-y-6">
+          <VerificationStatusMonitor
+            record={record}
+            onRemediate={handleRemediate}
+            onEnterWorkspace={handleEnterWorkspace}
+          />
+        </div>
+      </main>
+    </div>
   );
 }

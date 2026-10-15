@@ -11,8 +11,6 @@ import {
   X,
   UserCheck,
   LayoutDashboard,
-  Sun,
-  Moon,
 } from 'lucide-react';
 import { getMockAuthenticatedUser } from '../lib/auth/storage';
 import ThemeToggle from './ThemeToggle';

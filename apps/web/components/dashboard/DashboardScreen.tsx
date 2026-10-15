@@ -26,6 +26,7 @@ import {
   ChevronRight,
   Info,
 } from 'lucide-react';
+import ThemeToggle from '../ThemeToggle';
 import {
   DashboardViewModel,
   getRoleDisplayLabel,
@@ -226,6 +227,7 @@ export default function DashboardScreen() {
           </div>
 
           <div className="flex items-center gap-3">
+            <ThemeToggle idPrefix="dashboard-theme" />
             <div className="hidden sm:flex items-center gap-2 text-xs text-[var(--brand-green)] bg-[var(--brand-green-dim)] border border-[var(--brand-green)] px-3 py-1.5 rounded-lg font-medium">
               <ShieldCheck className="h-3.5 w-3.5 text-[var(--brand-green)]" />
               <span>BukieGuarantee Protected</span>

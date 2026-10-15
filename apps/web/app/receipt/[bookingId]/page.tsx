@@ -8,6 +8,7 @@ import { ArrowLeft, Printer, Download, AlertCircle, ShieldCheck, CheckCircle2, C
 import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { getCustomerPaymentRepository } from '../../../lib/payment/repository';
 import type { PaymentReceipt } from '../../../lib/payment/types';
+import ThemeToggle from '../../../components/ThemeToggle';
 
 export default function ReceiptPage() {
   const params = useParams();
@@ -135,23 +136,26 @@ export default function ReceiptPage() {
             <span>Back to Activity</span>
           </Link>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handlePrint}
-              className="motion-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] shadow-xs transition cursor-pointer"
-            >
-              <Printer className="h-3.5 w-3.5 text-[var(--text-muted)]" />
-              <span>Print</span>
-            </button>
-            <button
-              type="button"
-              onClick={handleDownloadJson}
-              className="motion-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] shadow-xs transition cursor-pointer"
-            >
-              <Download className="h-3.5 w-3.5 text-[var(--text-muted)]" />
-              <span>Export JSON</span>
-            </button>
+          <div className="flex items-center gap-3">
+            <ThemeToggle idPrefix="receipt-theme" />
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handlePrint}
+                className="motion-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] shadow-xs transition cursor-pointer"
+              >
+                <Printer className="h-3.5 w-3.5 text-[var(--text-muted)]" />
+                <span>Print</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleDownloadJson}
+                className="motion-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] shadow-xs transition cursor-pointer"
+              >
+                <Download className="h-3.5 w-3.5 text-[var(--text-muted)]" />
+                <span>Export JSON</span>
+              </button>
+            </div>
           </div>
         </div>
 

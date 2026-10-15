@@ -14,6 +14,7 @@ import {
   AlertTriangle,
   Loader2,
 } from 'lucide-react';
+import ThemeToggle from '../ThemeToggle';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../lib/auth/storage';
 import { AuthUser } from '../../lib/auth/types';
 import {
@@ -293,15 +294,18 @@ export default function ProfileScreen() {
                 </p>
               </div>
 
-              {isOffline && (
-                <div
-                  role="status"
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 text-[var(--amber)] text-xs font-semibold border border-[var(--amber)]/20"
-                >
-                  <WifiOff className="h-4 w-4 shrink-0" />
-                  <span>Offline Mode (Read Only)</span>
-                </div>
-              )}
+              <div className="flex items-center gap-3 self-start sm:self-auto">
+                <ThemeToggle idPrefix="profile-page-theme" />
+                {isOffline && (
+                  <div
+                    role="status"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 text-[var(--amber)] text-xs font-semibold border border-[var(--amber)]/20"
+                  >
+                    <WifiOff className="h-4 w-4 shrink-0" />
+                    <span>Offline Mode (Read Only)</span>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Server Error with Localized Retry */}

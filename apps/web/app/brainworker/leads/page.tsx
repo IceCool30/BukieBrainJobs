@@ -13,6 +13,7 @@ import type { AuthUser } from '../../../lib/auth/types';
 import { getBrainWorkerOperationsRepository } from '../../../lib/brainworker/catalog/repository';
 import type { BrainWorkerOperationalProfile } from '../../../lib/brainworker/catalog/types';
 import { LeadsInboxView } from '../../../components/brainworker/leads/LeadsInboxView';
+import { ThemeToggle } from '../../../components/ThemeToggle';
 
 export default function BrainWorkerLeadsPage(): React.ReactElement {
   const router = useRouter();
@@ -65,13 +66,13 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
   // Customer Account / Non-BrainWorker Fail-Closed Boundary
   if (user && user.role !== 'brainworker') {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-[#0B1528] flex items-center justify-center p-4 transition-colors">
-        <div className="max-w-md w-full bg-white dark:bg-[#111927] rounded-lg border border-red-200 dark:border-red-900/40 p-8 shadow-xs text-center space-y-4 transition-colors">
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 transition-colors">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-red-200 dark:border-red-900/40 p-8 shadow-xs text-center space-y-4 transition-colors">
           <div className="inline-flex items-center gap-1.5 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 px-3 py-1 text-xs font-semibold text-red-800 dark:text-red-300">
             {user.role === 'customer' ? 'Customer Account Detected' : 'Unauthorized Access'}
           </div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Access Restricted</h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+          <h2 className="text-xl font-bold text-[var(--text-main)]">Access Restricted</h2>
+          <p className="text-sm text-[var(--text-muted)] leading-relaxed">
             The BrainWorker workspace is strictly reserved for verified service providers.
           </p>
           <Link
@@ -91,76 +92,79 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0B1528] text-slate-900 dark:text-white transition-colors duration-200">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors duration-200">
       {/* Top Navigation */}
-      <header className="bg-white dark:bg-[#111927] border-b border-slate-200 dark:border-slate-800 sticky top-0 z-20 transition-colors">
+      <header className="bg-[var(--card-bg)] border-b border-[var(--card-border)] sticky top-0 z-20 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
               href="/brainworker/dashboard"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#001A41] dark:text-white hover:text-primary-hover dark:hover:text-emerald-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-main)] hover:text-primary-hover dark:hover:text-emerald-400 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               <span>Dashboard</span>
             </Link>
-            <span className="text-slate-300 dark:text-slate-700">|</span>
-            <span className="font-black text-xl tracking-tight text-[#001A41] dark:text-white">BukieBrainJobs</span>
+            <span className="text-[var(--card-border)]">|</span>
+            <span className="font-black text-xl tracking-tight text-[var(--text-main)]">BukieBrainJobs</span>
             <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Verified Provider</span>
             </span>
           </div>
 
-          {user && user.role === 'brainworker' && user.isBrainWorkerApproved && (
-            <div className="flex items-center gap-4">
-              <div className="text-right hidden sm:block">
-                <div className="text-sm font-bold text-slate-900 dark:text-white">{user.name}</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">{user.email || user.phone}</div>
-              </div>
-              <button
-                type="button"
-                onClick={handleSignOut}
-                className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition cursor-pointer"
-                title="Sign Out"
-              >
-                <LogOut className="h-4 w-4" />
-                <span className="hidden sm:inline">Sign Out</span>
-              </button>
-            </div>
-          )}
+          <div className="flex items-center gap-4">
+            <ThemeToggle idPrefix="worker-leads-theme" />
+            {user && user.role === 'brainworker' && user.isBrainWorkerApproved && (
+              <>
+                <div className="text-right hidden sm:block">
+                  <div className="text-sm font-bold text-[var(--text-main)]">{user.name}</div>
+                  <div className="text-xs text-[var(--text-muted)]">{user.email || user.phone}</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-muted)] hover:text-red-600 dark:hover:text-red-400 transition cursor-pointer"
+                  title="Sign Out"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden sm:inline">Sign Out</span>
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Job Requests & Leads</h1>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-main)]">Job Requests & Leads</h1>
+          <p className="mt-1 text-sm text-[var(--text-muted)]">
             Inspect and respond to customer job requests matching your trade and coverage zones.
           </p>
         </div>
 
         {/* Loading state while resolving auth and profile */}
         {(!user || !isProfileLoaded) && (
-          <div className="p-12 text-center bg-white dark:bg-[#111927] text-slate-900 dark:text-white rounded-lg border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-400 border-t-transparent" />
-            <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">Checking provider authorization...</p>
+          <div className="p-12 text-center bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg border border-[var(--card-border)] shadow-xs transition-colors">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-[var(--lead)] dark:border-emerald-400 border-t-transparent" />
+            <p className="mt-3 text-sm text-[var(--text-muted)]">Checking provider authorization...</p>
           </div>
         )}
 
         {/* Incomplete Operational Profile Banner */}
         {user && isProfileLoaded && operationalProfile && !operationalProfile.isComplete && (
-          <div className="p-6 rounded-lg bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+          <div className="p-6 rounded-lg bg-[var(--card-bg)] border border-[var(--card-border)] shadow-xs space-y-4 transition-colors">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="space-y-1">
                 <div className="inline-flex items-center gap-1.5 rounded-md bg-amber-50 dark:bg-[#20180B] border border-amber-200 dark:border-amber-800/60 px-2.5 py-0.5 text-xs font-bold text-amber-800 dark:text-amber-400">
                   <AlertTriangle className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
                   <span>Action Needed</span>
                 </div>
-                <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                <h2 className="text-lg font-bold text-[var(--text-main)]">
                   Complete Your Provider Setup to Receive Leads
                 </h2>
-                <p className="text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+                <p className="text-sm text-[var(--text-muted)] max-w-2xl leading-relaxed">
                   Before you can inspect customer job requests, configure your trade services, hourly rates, operating hours, and coverage zones.
                 </p>
               </div>
@@ -173,7 +177,7 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
                 </Link>
                 <Link
                   href="/brainworker/availability"
-                  className="inline-flex items-center justify-center rounded-lg bg-white dark:bg-[#0D1424] border border-slate-300 dark:border-slate-700 px-4 py-2.5 text-sm font-semibold text-slate-900 dark:text-white shadow-xs hover:bg-slate-50 dark:hover:bg-[#1A2538] transition-colors"
+                  className="inline-flex items-center justify-center rounded-lg bg-[var(--card-bg)] border border-[var(--card-border)] px-4 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-xs hover:bg-[var(--bg)] transition-colors"
                 >
                   Set Hours & Coverage
                 </Link>

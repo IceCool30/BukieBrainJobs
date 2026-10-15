@@ -77,3 +77,5 @@ export default function ThemeToggle({ idPrefix = 'theme', className = '' }: Them
     </div>
   );
 }
+
+export { ThemeToggle };

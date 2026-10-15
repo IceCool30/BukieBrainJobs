@@ -13,6 +13,7 @@ import {
   LogOut,
   X,
 } from 'lucide-react';
+import ThemeToggle from '../ThemeToggle';
 
 export function ProfileSidebar({
   customerName,
@@ -103,7 +104,12 @@ export function ProfileSidebar({
       </nav>
 
       {/* Authenticated Customer Footer */}
-      <div className="pt-6 mt-6 border-t border-[var(--lead)] flex items-center justify-between">
+      <div className="pt-4 mt-6 border-t border-[var(--lead)] space-y-4">
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] font-semibold text-[var(--text-muted)]">Appearance</span>
+          <ThemeToggle idPrefix="profile-sidebar-theme" />
+        </div>
+        <div className="pt-3 border-t border-[var(--lead)] flex items-center justify-between">
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-8 h-8 rounded-lg bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] font-bold text-xs flex items-center justify-center shrink-0">
             {customerName ? customerName.charAt(0).toUpperCase() : 'C'}
@@ -125,6 +131,7 @@ export function ProfileSidebar({
         >
           <LogOut className="h-4 w-4" />
         </button>
+        </div>
       </div>
     </aside>
   );

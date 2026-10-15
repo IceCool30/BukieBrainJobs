@@ -20,6 +20,7 @@ import {
   UserCheck,
   WifiOff,
 } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 import {
   getPrototypeSubmissionOutcome,
   validateBookingDraft,
@@ -70,21 +71,24 @@ function BookingHeader({ returnUrl }: { returnUrl: string }) {
           <ArrowLeft className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
           Back to services
         </Link>
-        <Link
-          href="/"
-          className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
-        >
-          <Image
-            src="/images/logo-icon.png"
-            alt="BukieBrainJobs"
-            width={32}
-            height={32}
-            className="h-8 w-8 rounded-lg object-contain"
-          />
-          <span>
-            Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
-          </span>
-        </Link>
+        <div className="flex items-center gap-3">
+          <ThemeToggle idPrefix="booking-theme" />
+          <Link
+            href="/"
+            className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
+          >
+            <Image
+              src="/images/logo-icon.png"
+              alt="BukieBrainJobs"
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-lg object-contain"
+            />
+            <span>
+              Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
+            </span>
+          </Link>
+        </div>
       </div>
     </header>
   );

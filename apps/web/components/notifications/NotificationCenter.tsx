@@ -22,6 +22,7 @@ import type {
 } from '../../lib/notifications/types';
 import { getNotificationRepository } from '../../lib/notifications/repository';
 import { getBrowserPushAdapter } from '../../lib/notifications/push-adapter';
+import ThemeToggle from '../ThemeToggle';
 import { NotificationCard } from './NotificationCard';
 import {
   NotificationSkeleton,
@@ -223,7 +224,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
       </div>
 
       {/* Header Row */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold font-display text-[var(--text-main)]">Notifications</h1>
@@ -234,14 +235,17 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => void handleMarkAllAsRead()}
-          disabled={unreadCounts.all === 0 || isMutating}
-          className="text-sm font-semibold text-[var(--amber)] hover:text-[var(--amber-hover)] disabled:text-[var(--text-muted)]/50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 rounded-lg px-2 py-1 min-h-[44px] cursor-pointer"
-        >
-          Mark all as read
-        </button>
+        <div className="flex items-center gap-3 self-end sm:self-auto">
+          <ThemeToggle idPrefix="notifications-theme" />
+          <button
+            type="button"
+            onClick={() => void handleMarkAllAsRead()}
+            disabled={unreadCounts.all === 0 || isMutating}
+            className="text-sm font-semibold text-[var(--amber)] hover:text-[var(--amber-hover)] disabled:text-[var(--text-muted)]/50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 rounded-lg px-2 py-1 min-h-[44px] cursor-pointer"
+          >
+            Mark all as read
+          </button>
+        </div>
       </div>
 
       {/* Offline Alert Banner */}

@@ -202,12 +202,12 @@ export function DocumentUploadCard({
   return (
     <div
       id={id}
-      className={`w-full rounded-lg border bg-white dark:bg-[#111927] p-5 transition-colors ${
+      className={`w-full rounded-lg border bg-[var(--card-bg)] p-5 transition-colors ${
         activeError
           ? 'border-red-300 dark:border-red-800'
           : isDragging
           ? 'border-[#001A41] dark:border-emerald-500 bg-blue-50/30 dark:bg-emerald-950/20'
-          : 'border-slate-200 dark:border-slate-800'
+          : 'border-[var(--card-border)]'
       } ${disabled ? 'opacity-70 cursor-not-allowed' : ''} ${className}`}
     >
       {/* Accessible screen-reader status region */}
@@ -229,12 +229,12 @@ export function DocumentUploadCard({
 
       {/* Header with Label and Description */}
       <div className="mb-4">
-        <label className="block text-sm font-semibold text-[#001A41] dark:text-[#F8FAFC]">
+        <label className="block text-sm font-semibold text-[var(--text-main)]">
           {label}
           {required && <span className="ml-1 text-red-500">*</span>}
         </label>
         {description && (
-          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p className="mt-1 text-xs text-[var(--text-muted)] leading-relaxed">
             {description}
           </p>
         )}
@@ -255,7 +255,7 @@ export function DocumentUploadCard({
       {value ? (
         <div className="space-y-4">
           {isImage ? (
-            <div className="relative overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0B1528]">
+            <div className="relative overflow-hidden rounded-lg border border-[var(--card-border)] bg-[var(--bg)]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previewSrc}
@@ -264,7 +264,7 @@ export function DocumentUploadCard({
               />
             </div>
           ) : isPdf ? (
-            <div className="flex items-center gap-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0B1528] p-4">
+            <div className="flex items-center gap-4 rounded-lg border border-[var(--card-border)] bg-[var(--bg)] p-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400">
                 <FileText className="h-6 w-6" />
               </div>
@@ -341,7 +341,7 @@ export function DocumentUploadCard({
           className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed px-6 py-8 text-center transition ${
             isDragging
               ? 'border-[#001A41] dark:border-emerald-500 bg-blue-50/50 dark:bg-emerald-950/20'
-              : 'border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 bg-slate-50/50 dark:bg-[#0E1522]'
+              : 'border-[var(--card-border)] hover:border-slate-400 dark:hover:border-slate-600 bg-[var(--bg)]'
           } ${disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 dark:bg-emerald-950/40 text-[#001A41] dark:text-emerald-400 mb-3">

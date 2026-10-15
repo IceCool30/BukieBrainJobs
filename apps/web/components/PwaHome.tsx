@@ -12,9 +12,8 @@ import {
   History,
   TrendingUp,
   ArrowRight,
-  Sun,
-  Moon,
 } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 import {
   SERVICE_CATEGORIES,
   ServiceCategory,
@@ -211,38 +210,6 @@ export default function PwaHome({
     }
   };
 
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('bbj_theme') || localStorage.getItem('bukiebrainjobs-theme') || localStorage.getItem('bukie_theme');
-      if (stored === 'light' || stored === 'dark') {
-        setTheme(stored);
-      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        setTheme('dark');
-      }
-    } catch {
-      // safe fallback
-    }
-  }, []);
-
-  const handleToggleTheme = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(nextTheme);
-    document.documentElement.setAttribute('data-theme', nextTheme);
-    if (nextTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    try {
-      localStorage.setItem('bbj_theme', nextTheme);
-      localStorage.setItem('bukiebrainjobs-theme', nextTheme);
-      localStorage.setItem('bukie_theme', nextTheme);
-    } catch {
-      // safe fallback
-    }
-  };
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] pb-12 transition-colors duration-200">
@@ -283,24 +250,7 @@ export default function PwaHome({
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handleToggleTheme}
-              className="flex h-10 items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 text-xs font-mono text-white shadow-xs backdrop-blur-xs transition-colors hover:bg-white/20 cursor-pointer"
-              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
-            >
-              {theme === 'light' ? (
-                <>
-                  <Sun className="h-3.5 w-3.5 text-amber-300" />
-                  <span>LIGHT</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="h-3.5 w-3.5 text-[var(--amber)]" />
-                  <span>DARK</span>
-                </>
-              )}
-            </button>
+            <ThemeToggle idPrefix="pwa-theme" />
             <button
               onClick={onOpenDrawer}
               className="flex h-11 w-11 items-center justify-center rounded-full bg-[#001A41] text-white shadow-sm transition-colors hover:bg-[#000F2D]"

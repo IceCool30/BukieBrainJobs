@@ -216,14 +216,14 @@ export function CredentialsStepForm({
       id={formId}
       onSubmit={handleSubmit}
       noValidate
-      className={`w-full max-w-3xl mx-auto space-y-10 bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-800 rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
+      className={`w-full max-w-3xl mx-auto space-y-10 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
     >
       {/* Header */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-[#001A41] dark:text-[#F8FAFC]">
+        <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-main)]">
           Step 3: Documents & Credentials
         </h2>
-        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+        <p className="mt-2 text-sm text-[var(--text-muted)] leading-relaxed">
           Upload your government identification and trade certifications. Photos must be clear and readable.
         </p>
       </div>
@@ -231,10 +231,10 @@ export function CredentialsStepForm({
       {/* 1. Mandatory Government ID Section */}
       <div className="space-y-4">
         <div>
-          <span className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+          <span className="block text-sm font-bold uppercase tracking-wider text-[var(--text-main)]">
             Government Identity Document (Mandatory) <span className="text-red-500">*</span>
           </span>
-          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-xs text-[var(--text-muted)]">
             Select the government document type you are submitting to prove your identity.
           </p>
         </div>
@@ -242,7 +242,7 @@ export function CredentialsStepForm({
         <div>
           <label
             htmlFor={`${formId}-gov-type`}
-            className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
+            className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
           >
             Government Document Type <span className="text-red-500">*</span>
           </label>
@@ -250,7 +250,7 @@ export function CredentialsStepForm({
             id={`${formId}-gov-type`}
             value={govIdType}
             onChange={(e) => setGovIdType(e.target.value as GovernmentIdType)}
-            className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0B1528] px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
+            className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
           >
             {GOVERNMENT_ID_OPTIONS.map((opt) => (
               <option key={opt.type} value={opt.type}>
@@ -287,7 +287,7 @@ export function CredentialsStepForm({
         <div>
           <label
             htmlFor={`${formId}-trade-type`}
-            className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
+            className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
           >
             Trade Credential Type <span className="text-red-500">*</span>
           </label>
@@ -295,7 +295,7 @@ export function CredentialsStepForm({
             id={`${formId}-trade-type`}
             value={tradeType}
             onChange={(e) => setTradeType(e.target.value as TradeCredentialType)}
-            className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0B1528] px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
+            className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
           >
             {TRADE_CREDENTIAL_OPTIONS.map((opt) => (
               <option key={opt.type} value={opt.type}>
@@ -319,12 +319,12 @@ export function CredentialsStepForm({
       </div>
 
       {/* 3. Optional Workshop & Equipment Proof Section */}
-      <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+      <div className="space-y-4 pt-4 border-t border-[var(--card-border)]">
         <div>
-          <span className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+          <span className="block text-sm font-bold uppercase tracking-wider text-[var(--text-main)]">
             Workshop & Equipment Proof (Optional)
           </span>
-          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-xs text-[var(--text-muted)]">
             Optional proof of physical workshop, specialized tools, or completed field projects.
           </p>
         </div>
@@ -332,7 +332,7 @@ export function CredentialsStepForm({
         <div>
           <label
             htmlFor={`${formId}-work-proof-type`}
-            className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
+            className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
           >
             Work Proof Type
           </label>
@@ -340,7 +340,7 @@ export function CredentialsStepForm({
             id={`${formId}-work-proof-type`}
             value={workProofType}
             onChange={(e) => setWorkProofType(e.target.value as WorkProofType)}
-            className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0B1528] px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
+            className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
           >
             {WORK_PROOF_OPTIONS.map((opt) => (
               <option key={opt.type} value={opt.type}>

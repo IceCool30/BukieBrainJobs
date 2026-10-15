@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ShieldCheck } from 'lucide-react';
+import ThemeToggle from '../ThemeToggle';
 
 export interface ChatHeaderProps {
   participantName: string;
@@ -89,6 +90,8 @@ export function ChatHeader({
             </Link>
           </div>
         </div>
+
+        <ThemeToggle idPrefix="chat-theme" />
       </div>
     </header>
   );

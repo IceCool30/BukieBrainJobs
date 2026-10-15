@@ -9,10 +9,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { getBrainWorkerOnboardingRepository } from '../../../lib/brainworker/repository';
 import { useBrainWorkerOnboardingStore } from '../../../lib/brainworker/store';
 import { FunnelProgressBar } from '../../../components/brainworker/onboarding/FunnelProgressBar';
+import { ThemeToggle } from '../../../components/ThemeToggle';
 import { IdentityStepForm } from '../../../components/brainworker/onboarding/IdentityStepForm';
 import { TradeStepForm } from '../../../components/brainworker/onboarding/TradeStepForm';
 import { CredentialsStepForm } from '../../../components/brainworker/onboarding/CredentialsStepForm';
@@ -157,15 +159,15 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
   // Customer boundary notice (rendered immediately without repository call)
   if (user?.role === 'customer') {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-[#0B1528] flex items-center justify-center p-4 transition-colors">
-        <div className="max-w-lg w-full bg-white dark:bg-[#111927] rounded-lg border border-amber-300 dark:border-amber-800/60 p-6 sm:p-8 shadow-xs space-y-4 text-center">
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 transition-colors">
+        <div className="max-w-lg w-full bg-[var(--card-bg)] rounded-lg border border-amber-300 dark:border-amber-800/60 p-6 sm:p-8 shadow-xs space-y-4 text-center">
           <div className="inline-flex items-center gap-1.5 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800/60 px-2.5 py-1 text-xs font-semibold text-amber-900 dark:text-amber-200">
             Boundary Conflict
           </div>
-          <h2 className="text-xl font-bold text-[#001A41] dark:text-[#F8FAFC]">
+          <h2 className="text-xl font-bold text-[var(--text-main)]">
             BrainWorker Registration Required
           </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+          <p className="text-sm text-[var(--text-muted)] leading-relaxed">
             You are currently signed in as a customer. Provider onboarding requires an active BrainWorker provider account. Customer accounts cannot access provider onboarding.
           </p>
           <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
@@ -177,7 +179,7 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
             </Link>
             <Link
               href="/"
-              className="inline-flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-800 px-5 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center justify-center rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--text-main)] hover:bg-[var(--card-hover)] transition-colors"
             >
               Return Home
             </Link>
@@ -189,7 +191,7 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
 
   if (!user || isInitializing) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-[#0B1528] transition-colors">
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg)] transition-colors">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-500 border-t-transparent" />
       </div>
     );
@@ -272,56 +274,75 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 dark:bg-[#0B1528] py-10 px-4 sm:px-6 lg:px-8 transition-colors">
-      <div className="max-w-3xl mx-auto space-y-8">
-        <div>
-          <FunnelProgressBar
-            currentStep={currentStep}
-            completedSteps={completedSteps}
-            onStepClick={(step) => setStep(step)}
-          />
+    <div className="min-h-screen bg-[var(--bg)] transition-colors">
+      <header className="bg-[var(--card-bg)] border-b border-[var(--card-border)] sticky top-0 z-20 transition-colors">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-main)] hover:text-primary-hover dark:hover:text-emerald-400 transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span>Home</span>
+            </Link>
+            <span className="text-[var(--card-border)]">|</span>
+            <span className="font-black text-xl tracking-tight text-[var(--text-main)]">BukieBrainJobs</span>
+          </div>
+          <ThemeToggle idPrefix="worker-onboarding-theme" />
         </div>
+      </header>
 
-        {currentStep === 'identity' && (
-          <IdentityStepForm
-            initialData={draftRecord?.identity ?? identityDraft}
-            onSave={handleSaveIdentity}
-            isSubmitting={isSubmitting}
-          />
-        )}
+      <main className="py-10 px-4 sm:px-6 lg:px-8 transition-colors">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <div>
+            <FunnelProgressBar
+              currentStep={currentStep}
+              completedSteps={completedSteps}
+              onStepClick={(step) => setStep(step)}
+            />
+          </div>
 
-        {currentStep === 'trade' && (
-          <TradeStepForm
-            initialData={draftRecord?.trade ?? tradeDraft}
-            onBack={prevStep}
-            onSave={handleSaveTrade}
-            isSubmitting={isSubmitting}
-          />
-        )}
+          {currentStep === 'identity' && (
+            <IdentityStepForm
+              initialData={draftRecord?.identity ?? identityDraft}
+              onSave={handleSaveIdentity}
+              isSubmitting={isSubmitting}
+            />
+          )}
 
-        {currentStep === 'credentials' && (
-          <CredentialsStepForm
-            initialData={draftRecord?.credentials ?? credentialsDraft}
-            onStageDocument={handleStageDocument}
-            onRemoveDocument={handleRemoveDocument}
-            onBack={prevStep}
-            onSave={handleSaveCredentials}
-            isSubmitting={isSubmitting}
-          />
-        )}
+          {currentStep === 'trade' && (
+            <TradeStepForm
+              initialData={draftRecord?.trade ?? tradeDraft}
+              onBack={prevStep}
+              onSave={handleSaveTrade}
+              isSubmitting={isSubmitting}
+            />
+          )}
 
-        {currentStep === 'review' && (
-          <ReviewStepForm
-            identityData={identityDataForReview}
-            tradeData={tradeDataForReview}
-            credentialsData={draftRecord?.credentials ?? credentialsDraft}
-            onEditStep={(step) => setStep(step)}
-            onBack={prevStep}
-            onSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
-          />
-        )}
-      </div>
-    </main>
+          {currentStep === 'credentials' && (
+            <CredentialsStepForm
+              initialData={draftRecord?.credentials ?? credentialsDraft}
+              onStageDocument={handleStageDocument}
+              onRemoveDocument={handleRemoveDocument}
+              onBack={prevStep}
+              onSave={handleSaveCredentials}
+              isSubmitting={isSubmitting}
+            />
+          )}
+
+          {currentStep === 'review' && (
+            <ReviewStepForm
+              identityData={identityDataForReview}
+              tradeData={tradeDataForReview}
+              credentialsData={draftRecord?.credentials ?? credentialsDraft}
+              onEditStep={(step) => setStep(step)}
+              onBack={prevStep}
+              onSubmit={handleSubmit}
+              isSubmitting={isSubmitting}
+            />
+          )}
+        </div>
+      </main>
+    </div>
   );
 }

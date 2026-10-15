@@ -282,17 +282,17 @@ export function ServiceCatalogEditor({
       )}
 
       {/* Surface 1.1: Diagnostic Call-Out Fee Card */}
-      <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111927] shadow-xs space-y-4 transition-colors">
+      <div className="p-6 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] shadow-xs space-y-4 transition-colors">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <div className="text-lg font-bold text-slate-900 dark:text-white">
+            <div className="text-lg font-bold text-[var(--text-main)]">
               Diagnostic Inspection / Call-Out Fee
             </div>
-            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            <p className="mt-1 text-sm text-[var(--text-muted)] leading-relaxed">
               A flat fee charged for your initial on-site visit, inspection, and fault diagnosis.
             </p>
           </div>
-          <span className="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300">
+          <span className="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 border border-[var(--card-border)] px-3 py-1 text-xs font-semibold text-[var(--text-muted)]">
             ₦5,000 (Recommended standard)
           </span>
         </div>
@@ -300,13 +300,13 @@ export function ServiceCatalogEditor({
         <div className="pt-2">
           <label
             htmlFor="diagnosticFeeInput"
-            className="block text-sm font-semibold text-slate-800 dark:text-slate-200"
+            className="block text-sm font-semibold text-[var(--text-main)]"
           >
             Diagnostic Call-Out Fee
           </label>
           <div className="relative mt-2 rounded-lg shadow-sm max-w-xs">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <span className="text-slate-500 dark:text-slate-400 font-medium sm:text-sm">₦</span>
+              <span className="text-[var(--text-muted)] font-medium sm:text-sm">₦</span>
             </div>
             <input
               type="number"
@@ -320,7 +320,7 @@ export function ServiceCatalogEditor({
                 const val = e.target.value === '' ? 0 : Number(e.target.value);
                 handleUpdateDiagnosticFee(val);
               }}
-              className="block w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0D1424] pl-8 pr-4 py-2.5 text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm font-medium"
+              className="block w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] pl-8 pr-4 py-2.5 text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm font-medium"
               aria-invalid={validationErrors.diagnosticFee ? 'true' : 'false'}
               aria-describedby={
                 validationErrors.diagnosticFee ? 'diagnostic-fee-error' : undefined
@@ -394,17 +394,17 @@ export function ServiceCatalogEditor({
               return (
                 <div
                   key={service.serviceId}
-                  className="p-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111927] flex flex-col justify-between shadow-xs transition-colors"
+                  className="p-5 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] flex flex-col justify-between shadow-xs transition-colors"
                 >
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
+                    <h4 className="text-sm font-semibold text-[var(--text-main)]">
                       {service.serviceName}
                     </h4>
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    <p className="mt-1 text-xs text-[var(--text-muted)] font-medium">
                       Baseline: ₦{service.defaultRateNgn.toLocaleString()} / hr
                     </p>
                   </div>
-                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                  <div className="mt-4 pt-3 border-t border-[var(--card-border)] flex items-center justify-between">
                     <button
                       type="button"
                       disabled={isAdded}
@@ -433,20 +433,20 @@ export function ServiceCatalogEditor({
       {/* Surface 1.3: Configured Service Cards & Rates */}
       <div className="space-y-4 pt-4">
         <div>
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+          <h3 className="text-lg font-bold text-[var(--text-main)]">
             Configured Services & Labor Rates
           </h3>
-          <p className="mt-0.5 text-sm text-slate-600 dark:text-slate-300">
+          <p className="mt-0.5 text-sm text-[var(--text-muted)]">
             Manage your hourly labor rates and service statuses.
           </p>
         </div>
 
         {catalog.services.length === 0 ? (
-          <div className="p-8 text-center rounded-lg border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-[#0D1424]">
-            <h4 className="text-base font-semibold text-slate-800 dark:text-slate-200">
+          <div className="p-8 text-center rounded-lg border border-dashed border-[var(--card-border)] bg-[var(--bg)]">
+            <h4 className="text-base font-semibold text-[var(--text-main)]">
               No services configured yet
             </h4>
-            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+            <p className="mt-1 text-sm text-[var(--text-muted)] max-w-md mx-auto">
               Select at least one trade service above to make your BrainWorker profile eligible for customer jobs.
             </p>
           </div>
@@ -456,14 +456,14 @@ export function ServiceCatalogEditor({
               <div
                 key={item.serviceId}
                 data-testid={`configured-service-card-${item.serviceId}`}
-                className="p-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111927] shadow-xs space-y-4 transition-colors"
+                className="p-5 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] shadow-xs space-y-4 transition-colors"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <div>
-                    <h4 className="text-base font-semibold text-slate-900 dark:text-white">
+                    <h4 className="text-base font-semibold text-[var(--text-main)]">
                       {item.serviceName}
                     </h4>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    <span className="text-xs text-[var(--text-muted)] font-medium">
                       {TRADE_CATEGORIES.find((c) => c.id === item.categoryId)?.name ??
                         item.categoryId}
                     </span>
@@ -473,7 +473,7 @@ export function ServiceCatalogEditor({
                       className={
                         item.status === 'ACTIVE'
                           ? 'inline-flex items-center rounded-md bg-emerald-100 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300'
-                          : 'inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2.5 py-0.5 text-xs font-semibold text-slate-700 dark:text-slate-300'
+                          : 'inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 border border-[var(--card-border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]'
                       }
                     >
                       {item.status}
@@ -501,17 +501,17 @@ export function ServiceCatalogEditor({
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div className="pt-2 border-t border-[var(--card-border)] flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                   <div className="flex-1 max-w-xs">
                     <label
                       htmlFor={`rate-input-${item.serviceId}`}
-                      className="block text-xs font-medium text-slate-700 dark:text-slate-300"
+                      className="block text-xs font-medium text-[var(--text-muted)]"
                     >
                       Hourly rate for {item.serviceName}
                     </label>
                     <div className="relative mt-1 rounded-md shadow-sm">
                       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <span className="text-slate-500 dark:text-slate-400 font-medium sm:text-sm">₦</span>
+                        <span className="text-[var(--text-muted)] font-medium sm:text-sm">₦</span>
                       </div>
                       <input
                         type="number"
@@ -525,7 +525,7 @@ export function ServiceCatalogEditor({
                             e.target.value === '' ? 0 : Number(e.target.value);
                           handleUpdateServiceRate(item.serviceId, val);
                         }}
-                        className="block w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0D1424] pl-8 pr-4 py-2 text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm font-medium"
+                        className="block w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] pl-8 pr-4 py-2 text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm font-medium"
                         aria-invalid={
                           validationErrors[`service_rate_${item.serviceId}`]
                             ? 'true'
@@ -562,7 +562,7 @@ export function ServiceCatalogEditor({
                         <button
                           type="button"
                           onClick={() => setConfirmRemoveServiceId(null)}
-                          className="px-2.5 py-1 text-xs font-medium rounded-md bg-white dark:bg-[#111927] text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                          className="px-2.5 py-1 text-xs font-medium rounded-md bg-[var(--card-bg)] text-[var(--text-muted)] border border-[var(--card-border)] hover:bg-[var(--bg)] transition-colors"
                         >
                           Cancel
                         </button>

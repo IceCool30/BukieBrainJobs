@@ -8,6 +8,7 @@ import {
   RotateCcw,
   Briefcase,
 } from 'lucide-react';
+import ThemeToggle from '../ThemeToggle';
 import {
   CustomerActivityViewModel,
   ActivityFilterView,
@@ -346,13 +347,18 @@ export default function JobsScreen() {
         {/* Main Content Area */}
         <main className="flex-1 flex flex-col min-w-0">
           {/* Page Heading */}
-          <div className="mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-trades uppercase text-[var(--text-main)]">
-              Jobs & Bookings
-            </h1>
-            <p className="text-[var(--text-muted)] text-sm mt-1">
-              Keep track of your service requests, bookings, and activity in one place.
-            </p>
+          <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-trades uppercase text-[var(--text-main)]">
+                Jobs & Bookings
+              </h1>
+              <p className="text-[var(--text-muted)] text-sm mt-1">
+                Keep track of your service requests, bookings, and activity in one place.
+              </p>
+            </div>
+            <div className="self-start sm:self-auto">
+              <ThemeToggle idPrefix="jobs-page-theme" />
+            </div>
           </div>
 
           {/* Offline Banner */}

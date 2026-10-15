@@ -19,6 +19,7 @@ import {
   RotateCcw,
   ShieldCheck,
 } from 'lucide-react';
+import ThemeToggle from '../ThemeToggle';
 import {
   normalizeNigerianPhone,
   validateEmailAddress,
@@ -447,6 +448,7 @@ export default function AuthScreen({
             >
               Bukie<span className="text-[var(--amber)]">BrainJobs</span>
             </Link>
+            <ThemeToggle idPrefix="auth-success-theme" />
           </div>
         </header>
 
@@ -536,21 +538,24 @@ export default function AuthScreen({
                 ? 'Back to job request'
                 : 'Back to previous page'}
           </Link>
-          <Link
-            href="/"
-            className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
-          >
-            <Image
-              src="/images/logo-icon.png"
-              alt="BukieBrainJobs"
-              width={32}
-              height={32}
-              className="h-8 w-8 rounded-lg object-contain"
-            />
-            <span>
-              Bukie<span className="text-[var(--amber)]">BrainJobs</span>
-            </span>
-          </Link>
+          <div className="flex items-center gap-3">
+            <ThemeToggle idPrefix="auth-theme" />
+            <Link
+              href="/"
+              className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
+            >
+              <Image
+                src="/images/logo-icon.png"
+                alt="BukieBrainJobs"
+                width={32}
+                height={32}
+                className="h-8 w-8 rounded-lg object-contain"
+              />
+              <span>
+                Bukie<span className="text-[var(--amber)]">BrainJobs</span>
+              </span>
+            </Link>
+          </div>
         </div>
       </header>
 

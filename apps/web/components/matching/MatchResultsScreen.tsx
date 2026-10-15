@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, useId } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Users } from 'lucide-react';
+import ThemeToggle from '../ThemeToggle';
 import type { RankedMatchResult, MatchCandidate, MatchSelectionAction } from '@bukiebrainjobs/types';
 import { getMockAuthenticatedUser } from '../../lib/auth/storage';
 import { getMatchingRepository } from '../../lib/matching';
@@ -376,19 +377,22 @@ function ScreenShell({
   return (
     <div className={containerClass}>
       {/* Top nav */}
-      <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-6 text-sm">
-        <Link
-          href="/jobs"
-          className="text-[var(--muted)] hover:text-[var(--text)] transition inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          Jobs
-        </Link>
-        <span className="text-[var(--lead)]" aria-hidden="true">/</span>
-        <span className="text-[var(--muted)] font-mono text-xs truncate max-w-[160px]">{referenceCode}</span>
-        <span className="text-[var(--lead)]" aria-hidden="true">/</span>
-        <span className="text-[var(--text)] font-medium">Matches</span>
-      </nav>
+      <div className="flex items-center justify-between mb-6">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm">
+          <Link
+            href="/jobs"
+            className="text-[var(--muted)] hover:text-[var(--text)] transition inline-flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded"
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            Jobs
+          </Link>
+          <span className="text-[var(--lead)]" aria-hidden="true">/</span>
+          <span className="text-[var(--muted)] font-mono text-xs truncate max-w-[160px]">{referenceCode}</span>
+          <span className="text-[var(--lead)]" aria-hidden="true">/</span>
+          <span className="text-[var(--text)] font-medium">Matches</span>
+        </nav>
+        <ThemeToggle idPrefix="matches-theme" />
+      </div>
 
       <main id="main-content">{children}</main>
     </div>

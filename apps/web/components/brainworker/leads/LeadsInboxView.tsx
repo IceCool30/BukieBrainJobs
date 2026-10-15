@@ -374,12 +374,12 @@ export function LeadsInboxView({
       {!isLoading && !errorMessage && leads.length === 0 && (
         <div
           data-testid="leads-empty-state"
-          className="p-12 text-center bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-800 rounded-lg shadow-xs transition-colors"
+          className="p-12 text-center bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg shadow-xs transition-colors"
         >
-          <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
+          <h2 className="text-lg font-semibold text-[var(--text-main)]">
             No job requests available right now
           </h2>
-          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+          <p className="mt-2 text-sm text-[var(--text-muted)] max-w-md mx-auto">
             New customer opportunities within your configured cities, zones, and trade services will appear here automatically.
           </p>
         </div>
@@ -414,7 +414,7 @@ export function LeadsInboxView({
                   className={`p-5 rounded-lg border transition cursor-pointer text-left ${
                     isSelected
                       ? 'border-emerald-600 dark:border-emerald-500 bg-emerald-50/40 dark:bg-emerald-500/10 ring-1 ring-emerald-600 dark:ring-emerald-500'
-                      : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111927] hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-xs'
+                      : 'border-[var(--card-border)] bg-[var(--card-bg)] hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-xs'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -427,19 +427,19 @@ export function LeadsInboxView({
                           {lead.urgency.toUpperCase()}
                         </span>
                       </div>
-                      <h3 className="text-base font-semibold text-slate-900 dark:text-white">{lead.title}</h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2">{lead.description}</p>
+                      <h3 className="text-base font-semibold text-[var(--text-main)]">{lead.title}</h3>
+                      <p className="text-sm text-[var(--text-muted)] line-clamp-2">{lead.description}</p>
                     </div>
 
                     {budgetDisplay && (
                       <div className="text-right shrink-0">
-                        <span className="text-xs text-slate-500 dark:text-slate-400">Budget</span>
-                        <p className="text-sm font-bold text-slate-900 dark:text-white">{budgetDisplay}</p>
+                        <span className="text-xs text-[var(--text-muted)]">Budget</span>
+                        <p className="text-sm font-bold text-[var(--text-main)]">{budgetDisplay}</p>
                       </div>
                     )}
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                  <div className="mt-4 pt-3 border-t border-[var(--card-border)] flex items-center justify-between text-xs text-[var(--text-muted)]">
                     <span>
                       {lead.neighbourhoodOrZone}, {lead.cityId}
                     </span>
@@ -456,16 +456,16 @@ export function LeadsInboxView({
               data-testid="lead-inspection-drawer"
               role="complementary"
               aria-label="Lead details"
-              className="lg:col-span-5 p-6 bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-800 rounded-lg shadow-xs sticky top-6 transition-colors"
+              className="lg:col-span-5 p-6 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg shadow-xs sticky top-6 transition-colors"
             >
-              <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              <div className="flex items-center justify-between pb-4 mb-4 border-b border-[var(--card-border)]">
+                <span className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
                   Opportunity Details
                 </span>
                 <button
                   type="button"
                   onClick={() => setSelectedLeadId(null)}
-                  className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 text-sm font-medium"
+                  className="text-[var(--text-muted)] hover:text-[var(--text-main)] text-sm font-medium"
                 >
                   Close
                 </button>
@@ -480,13 +480,13 @@ export function LeadsInboxView({
       {selectedLead && isMobile && (
         <div
           data-testid="lead-mobile-detail-view"
-          className="fixed inset-0 z-50 bg-white dark:bg-[#0B1528] overflow-y-auto p-4 flex flex-col transition-colors"
+          className="fixed inset-0 z-50 bg-[var(--bg)] overflow-y-auto p-4 flex flex-col transition-colors"
         >
-          <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200 dark:border-slate-800">
+          <div className="flex items-center justify-between pb-4 mb-4 border-b border-[var(--card-border)]">
             <button
               type="button"
               onClick={() => setSelectedLeadId(null)}
-              className="px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-[#111927] border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-[#1A2538] transition"
+              className="px-3 py-1.5 text-sm font-medium text-[var(--text-main)] bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg hover:bg-[var(--bg)] transition"
             >
               Back to job requests
             </button>
@@ -504,10 +504,10 @@ export function LeadsInboxView({
           aria-label="Decline Opportunity"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs"
         >
-          <div className="w-full max-w-lg bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-800 rounded-lg p-6 shadow-xl space-y-4 transition-colors">
+          <div className="w-full max-w-lg bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-6 shadow-xl space-y-4 transition-colors">
             <div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Decline Opportunity</h3>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+              <h3 className="text-lg font-bold text-[var(--text-main)]">Decline Opportunity</h3>
+              <p className="mt-1 text-sm text-[var(--text-muted)]">
                 Select a reason for declining. This helps the matching engine route relevant requests in the future.
               </p>
             </div>

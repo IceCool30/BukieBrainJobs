@@ -236,28 +236,28 @@ export function IdentityStepForm({
       id={formId}
       onSubmit={handleSubmit}
       noValidate
-      className={`w-full max-w-3xl mx-auto space-y-8 bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-800 rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
+      className={`w-full max-w-3xl mx-auto space-y-8 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
     >
       {/* Header */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-[#001A41] dark:text-[#F8FAFC]">
+        <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-main)]">
           Step 1: Legal Identity Verification
         </h2>
-        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+        <p className="mt-2 text-sm text-[var(--text-muted)] leading-relaxed">
           Enter your legal name as it appears on your government documents, along with your verified identifier.
         </p>
       </div>
 
       {/* Legal Names Section */}
       <div className="space-y-4">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+        <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--text-muted)]">
           Legal Names
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label
               htmlFor={`${formId}-first-name`}
-              className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
+              className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
             >
               Legal First Name <span className="text-red-500">*</span>
             </label>
@@ -269,10 +269,10 @@ export function IdentityStepForm({
               onFocus={() => markTouched('firstName')}
               onBlur={() => markTouched('firstName')}
               placeholder="e.g. Amina"
-              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 bg-white dark:bg-[#0B1528] placeholder:text-slate-400 dark:placeholder:text-slate-600 transition focus:outline-none focus:ring-2 ${
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 ${
                 firstNameError
                   ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-slate-300 dark:border-slate-700 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
               }`}
             />
             {firstNameError && (
@@ -285,7 +285,7 @@ export function IdentityStepForm({
           <div>
             <label
               htmlFor={`${formId}-middle-name`}
-              className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
+              className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
             >
               Middle Name (Optional)
             </label>
@@ -295,14 +295,14 @@ export function IdentityStepForm({
               value={middleName}
               onChange={(e) => setMiddleName(e.target.value)}
               placeholder="e.g. Bolanle"
-              className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0B1528] px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-600 transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
+              className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
             />
           </div>
 
           <div>
             <label
               htmlFor={`${formId}-last-name`}
-              className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
+              className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
             >
               Legal Last Name <span className="text-red-500">*</span>
             </label>
@@ -314,10 +314,10 @@ export function IdentityStepForm({
               onFocus={() => markTouched('lastName')}
               onBlur={() => markTouched('lastName')}
               placeholder="e.g. Okonkwo"
-              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 bg-white dark:bg-[#0B1528] placeholder:text-slate-400 dark:placeholder:text-slate-600 transition focus:outline-none focus:ring-2 ${
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 ${
                 lastNameError
                   ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-slate-300 dark:border-slate-700 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
               }`}
             />
             {lastNameError && (
@@ -345,10 +345,10 @@ export function IdentityStepForm({
             onChange={(e) => setDateOfBirth(e.target.value)}
             onFocus={() => markTouched('dateOfBirth')}
             onBlur={() => markTouched('dateOfBirth')}
-            className={`w-full sm:max-w-xs rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 bg-white dark:bg-[#0B1528] transition focus:outline-none focus:ring-2 ${
+            className={`w-full sm:max-w-xs rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] transition focus:outline-none focus:ring-2 ${
               dobError
                 ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                : 'border-slate-300 dark:border-slate-700 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
             }`}
           />
           {dobError && (
@@ -356,20 +356,20 @@ export function IdentityStepForm({
               {dobError}
             </p>
           )}
-          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-xs text-[var(--text-muted)]">
             Must be at least 18 years old to register as a verified provider.
           </p>
         </div>
       </div>
 
       {/* Identity Identifier Section */}
-      <div className="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-800">
+      <div className="space-y-4 pt-2 border-t border-[var(--card-border)]">
         <div>
-          <span className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
+          <span className="block text-xs font-semibold text-[var(--text-muted)] mb-2">
             Verification Identifier Type <span className="text-red-500">*</span>
           </span>
           <div className="flex items-center gap-6">
-            <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-800 dark:text-slate-200">
+            <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-[var(--text-main)]">
               <input
                 type="radio"
                 name="identifierType"
@@ -383,7 +383,7 @@ export function IdentityStepForm({
               />
               <span>NIN</span>
             </label>
-            <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-800 dark:text-slate-200">
+            <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-[var(--text-main)]">
               <input
                 type="radio"
                 name="identifierType"
@@ -404,18 +404,18 @@ export function IdentityStepForm({
           <div className="flex items-center justify-between mb-1">
             <label
               htmlFor={`${formId}-identifier`}
-              className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
+              className="block text-xs font-semibold text-[var(--text-muted)]"
             >
               {identifierLabel} <span className="text-red-500">*</span>
             </label>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400 font-mono">
+            <span className="text-xs font-medium text-[var(--text-muted)] font-mono">
               {identifierNumber.length}/11 digits
             </span>
           </div>
 
           {isMasked ? (
-            <div className="flex items-center justify-between rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-[#0B1528] px-3.5 py-2.5">
-              <span className="font-mono text-sm tracking-wider text-slate-800 dark:text-slate-200">
+            <div className="flex items-center justify-between rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5">
+              <span className="font-mono text-sm tracking-wider text-[var(--text-main)]">
                 {maskIdentityIdentifier(identifierNumber)}
               </span>
               <button
@@ -438,10 +438,10 @@ export function IdentityStepForm({
               onFocus={() => markTouched('identifierNumber')}
               onBlur={handleIdentifierBlur}
               placeholder="Enter 11 numeric digits"
-              className={`w-full rounded-lg border px-3.5 py-2.5 font-mono text-sm text-slate-900 dark:text-slate-100 bg-white dark:bg-[#0B1528] transition focus:outline-none focus:ring-2 ${
+              className={`w-full rounded-lg border px-3.5 py-2.5 font-mono text-sm text-[var(--text-main)] bg-[var(--bg)] transition focus:outline-none focus:ring-2 ${
                 identifierError
                   ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-slate-300 dark:border-slate-700 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
               }`}
             />
           )}
@@ -470,15 +470,15 @@ export function IdentityStepForm({
       </div>
 
       {/* Residential Address Section */}
-      <div className="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-800">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+      <div className="space-y-4 pt-2 border-t border-[var(--card-border)]">
+        <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--text-muted)]">
           Residential Address
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
             <label
               htmlFor={`${formId}-street`}
-              className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
+              className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
             >
               Street Address <span className="text-red-500">*</span>
             </label>
@@ -490,10 +490,10 @@ export function IdentityStepForm({
               onFocus={() => markTouched('street')}
               onBlur={() => markTouched('street')}
               placeholder="e.g. 14 Commercial Avenue"
-              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 bg-white dark:bg-[#0B1528] placeholder:text-slate-400 dark:placeholder:text-slate-600 transition focus:outline-none focus:ring-2 ${
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 ${
                 streetError
                   ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-slate-300 dark:border-slate-700 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
               }`}
             />
             {streetError && (
@@ -506,7 +506,7 @@ export function IdentityStepForm({
           <div>
             <label
               htmlFor={`${formId}-state`}
-              className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
+              className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
             >
               State <span className="text-red-500">*</span>
             </label>
@@ -516,10 +516,10 @@ export function IdentityStepForm({
               onChange={(e) => setState(e.target.value)}
               onFocus={() => markTouched('state')}
               onBlur={() => markTouched('state')}
-              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 bg-white dark:bg-[#0B1528] transition focus:outline-none focus:ring-2 ${
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] transition focus:outline-none focus:ring-2 ${
                 stateError
                   ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-slate-300 dark:border-slate-700 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
               }`}
             >
               <option value="">Select State</option>
@@ -539,7 +539,7 @@ export function IdentityStepForm({
           <div>
             <label
               htmlFor={`${formId}-city`}
-              className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
+              className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
             >
               City / LGA <span className="text-red-500">*</span>
             </label>
@@ -551,10 +551,10 @@ export function IdentityStepForm({
               onFocus={() => markTouched('city')}
               onBlur={() => markTouched('city')}
               placeholder="e.g. Yaba"
-              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 bg-white dark:bg-[#0B1528] placeholder:text-slate-400 dark:placeholder:text-slate-600 transition focus:outline-none focus:ring-2 ${
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 ${
                 cityError
                   ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-slate-300 dark:border-slate-700 focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
               }`}
             />
             {cityError && (

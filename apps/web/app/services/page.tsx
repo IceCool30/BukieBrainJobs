@@ -32,6 +32,7 @@ import {
 } from '../../lib/services';
 import ServiceTaskIcon from '../../components/ServiceTaskIcon';
 import Footer from '../../components/Footer';
+import ThemeToggle from '../../components/ThemeToggle';
 
 const TASK_LABELS: Record<string, string> = {
   generator: 'Generator',
@@ -322,7 +323,7 @@ function ServicesDirectory() {
       {/* Main Content Area */}
       <section className="mx-auto max-w-[1280px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         {/* Navigation Breadcrumb / Back link */}
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-4 sm:mb-6 flex items-center justify-between">
           <Link
             href="/"
             className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
@@ -330,6 +331,7 @@ function ServicesDirectory() {
             <ArrowLeft className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
             Back to home
           </Link>
+          <ThemeToggle idPrefix="services-theme" />
         </div>
         {/* Informational Notice: Invalid City */}
         {showInvalidCityNotice && (
