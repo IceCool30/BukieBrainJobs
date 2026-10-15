@@ -26,12 +26,10 @@ import {
 } from '../../lib/brainworker/bookings/domain';
 import {
   mockApprovedWorkerA,
-  mockApprovedWorkerB,
   mockCustomerUser,
   mockUnapprovedWorker,
   mockIncompleteWorker,
   bookingOwnedByA,
-  bookingOwnedByB,
 } from '../../lib/brainworker/bookings/testing';
 import { FIXTURE_OPERATIONAL_PROFILE_A } from '../../lib/brainworker/catalog/testing';
 import * as fs from 'fs';

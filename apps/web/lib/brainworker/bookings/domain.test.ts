@@ -329,7 +329,7 @@ describe('BOOK-006 to BOOK-008: address precision (D8)', () => {
   // BOOK-006: general location only BEFORE CONFIRMED (behavioral)
   // Lifecycle states before CONFIRMED must never expose exact address,
   // regardless of escrow or privacy inputs.
-  it('BOOK-006: general location only before CONFIRMED — pre-CONFIRMED states never expose exact address', () => {
+  it('BOOK-006: general location only before CONFIRMED - pre-CONFIRMED states never expose exact address', () => {
     const preConfirmedStatuses: JobStatus[] = [
       'OPEN',
       'PENDING_ACCEPTANCE',
@@ -526,7 +526,7 @@ describe('BOOK-013, BOOK-014: lifecycle never implies escrow funding', () => {
   // BOOK-013: CONFIRMED does not imply escrow funding (behavioral).
   // Hold lifecycle constant at CONFIRMED, vary only escrow.
   // The projection must never report funding for the unfunded case.
-  it('BOOK-013: CONFIRMED does not imply escrow funding — same lifecycle, different escrow yields different projection', () => {
+  it('BOOK-013: CONFIRMED does not imply escrow funding - same lifecycle, different escrow yields different projection', () => {
     const funded = projectBookingDetail(
       rawBookingFixture({
         jobStatus: 'CONFIRMED',
@@ -551,7 +551,7 @@ describe('BOOK-013, BOOK-014: lifecycle never implies escrow funding', () => {
 
   // BOOK-014: IN_PROGRESS does not imply escrow funding (behavioral).
   // Same shape: hold lifecycle constant at IN_PROGRESS, vary only escrow.
-  it('BOOK-014: IN_PROGRESS does not imply escrow funding — same lifecycle, different escrow yields different projection', () => {
+  it('BOOK-014: IN_PROGRESS does not imply escrow funding - same lifecycle, different escrow yields different projection', () => {
     const funded = projectBookingDetail(
       rawBookingFixture({
         jobStatus: 'IN_PROGRESS',

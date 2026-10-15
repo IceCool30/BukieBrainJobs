@@ -20,8 +20,8 @@ This document provides a single, unified checklist of what has been built, what 
 | **Customer Reviews & Reputation** | **Complete** | Completed & live in production. 608 passing tests across 32 suites. Verified on Vercel deployment 6586791746 (commit 962a870). |
 | **Customer Notifications & Messaging** | **Complete** | Messaging (WEB-017) and Notification Center (WEB-018) both complete and live in production. |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
-| **BrainWorker Platform** | **Complete** | BW-001 Onboarding & Identity, BW-002 Service Catalog & Availability, and BW-003 Leads Inbox complete and verified (45/45 Phase 7 contracts; 1,369/1,369 tests). |
-| **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Customer state machine is built. Worker accept/decline and check-in are missing. |
+| **BrainWorker Platform** | **Complete** | BW-001 Onboarding & Identity, BW-002 Service Catalog & Availability, BW-003 Leads Inbox, and BW-004 Booking Management complete and verified (138/138 BW-004 tests; 1,472/1,472 web regression tests). |
+| **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Customer state machine and provider booking management (BW-004 dispatch, check-in, scope adjustment requests, and provider cancellation) complete and verified (138 tests). Customer-side scope approval and dispute mediation remain outstanding. |
 | **Mobile Application (`apps/mobile`)** | **Not Built** | Expo starter only. Full native reconstruction required. |
 | **Admin & Operational Console** | **Not Built** | Worker vetting, dispute mediation, category management, analytics. |
 | **Corporate Portal (`/enterprise`)** | **Deferred** | Kept intentionally as Coming Soon until consumer launch. |
@@ -139,18 +139,28 @@ Phase 7: Launch Readiness
 - [x] Route integration & security guards (Phase 6 INT-001 to INT-010).
 - [x] Production verification & final audit (Phase 7 PROD-001 to PROD-045): 45/45 contracts verified on `feature/bw-003-leads-inbox` at `cdb7e54`; full suite 1,369/1,369 passed (1,320 web + 42 validation + 7 utils); type-check clean; lint zero errors; production build passed with `/brainworker/leads` static. Post-merge: PR #53 MERGED to `main` at `db968bc`; post-merge CI SUCCESS (runs 37107064066 and 37107064068); 45/45 Phase 7 contracts re-passed on `main`; type-check 6 successful on `main`.
 
-#### 2.4 Service Catalog & Availability Management (`BW-002`)
+#### 2.4 BrainWorker Booking Management (`BW-004`, Complete: Phases 1 to 8 Verified)
+- [x] Domain contracts & lifecycle rules (BOOK-001 to BOOK-017).
+- [x] Repository & tenant isolation (REP-001 to REP-014).
+- [x] Dispatch progression tracking (DIS-001 to DIS-008).
+- [x] On-site arrival and single-snapshot check-in (CHK-001 to CHK-015).
+- [x] Itemized scope adjustment requests (SCOPE-001 to SCOPE-018).
+- [x] Cancellation handling & reason taxonomy (CAN-001 to CAN-008).
+- [x] Operational UI views and accessible components (UI-001 to UI-024).
+- [x] Protected routes and security gates (INT-001 to INT-011).
+
+#### 2.5 Service Catalog & Availability Management (`BW-002`)
 - [x] Worker service catalog configuration: Add or remove individual services, set hourly rates and diagnostic call-out fees.
 - [x] Weekly working hours scheduler: Set working days, time slots (e.g., 8:00 AM to 5:00 PM), and emergency availability.
 - [x] Coverage area selector: Select specific neighbourhoods and maximum travel radius.
 
-#### 2.5 BrainWorker Earnings, Wallet & Payouts
+#### 2.6 BrainWorker Earnings, Wallet & Payouts
 - [ ] Wallet summary: Available balance, pending escrow clearance, and lifetime earnings.
 - [ ] Nigerian bank account setup form: Select bank (Access, GTBank, Zenith, etc.) and account number with account name verification preview.
 - [ ] Withdrawal / payout request flow with confirmation history.
 - [ ] Detailed transaction history with booking references and service fee deductions.
 
-#### 2.6 BrainWorker Profile & Portfolio Management
+#### 2.7 BrainWorker Profile & Portfolio Management
 - [ ] Profile editor: Headshot upload, bio, years in trade, spoken languages.
 - [ ] Portfolio gallery manager: Before-and-after work photos with short captions.
 - [ ] Client reviews tab: View customer feedback and submit worker counter-responses.
