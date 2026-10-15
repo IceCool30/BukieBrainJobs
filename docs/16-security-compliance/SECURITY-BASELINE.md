@@ -63,3 +63,7 @@ Engineering reviews should explicitly consider authentication failures, authoriz
 ## Security Gate
 
 A feature is not production-ready until relevant security requirements and abuse cases have been reviewed and the documentation reflects any material decisions.
+
+## Dependency Vulnerability Records
+
+Open dependency findings are tracked in `DEPENDABOT-TRIAGE.md` in this directory, separate from any feature workstream. A finding is closed only by a recorded remediation or exception decision with a stated rationale, never by being unrelated to the feature under review.

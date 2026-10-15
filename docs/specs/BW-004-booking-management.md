@@ -8,7 +8,9 @@
 **Primary User:** Approved BrainWorker
 
 > **Revision A change record.** The review gate returned REVIEWED, NOT YET
-> APPROVED with seven locks. Incorporated here: `CONFIRMED` is independent of
+> APPROVED with seven locks. That verdict is historical and superseded: the
+> package was approved as the implementation baseline on 2026-10-03. The locks
+> themselves remain binding. Incorporated here: `CONFIRMED` is independent of
 > escrow funding (D8, D9); check-in requires the authoritative financial
 > prerequisite, fails closed, and never changes escrow itself (D2); the WEB-017
 > `CONFIRMED` wording conflict is registered as a governed cross-spec correction
@@ -20,12 +22,15 @@
 > (D8). The three authorities are separated in section 3.
 
 > This document resolves the ten open product decisions from the approved scope
-> artifact. It authorizes no implementation and no feature branch. Every decision
-> below is derived from the existing authoritative contracts (`JOB_STATUS_TRANSITIONS`
-> and `canTransition` in `packages/api-types/src/jobs.ts`, WEB-013, WEB-015, WEB-017,
-> BW-003) and not from the shape of any current screen. Decisions that go beyond
-> what those contracts already fix are marked **[OWNER]** and need explicit product
-> owner confirmation at approval.
+> artifact. It is part of the approved implementation baseline, and
+> implementation is authorized only on `feature/bw-004-booking-management`.
+> Every decision below is derived from the existing authoritative contracts
+> (`JOB_STATUS_TRANSITIONS` and `canTransition` in `packages/api-types/src/jobs.ts`,
+> WEB-013, WEB-015, WEB-017, BW-003) and not from the shape of any current
+> screen. Decisions that go beyond what those contracts already fix are marked
+> **[OWNER]**. Those items stay explicitly unresolved: approval of this package
+> did not decide them, and each one constrains implementation until a named
+> owner decides it separately. No implementation may invent behavior for them.
 
 ## 1. Purpose
 
@@ -337,7 +342,9 @@ remaining items above are flagged, not assumed.
 - [ ] Offline is read-only with no queue.
 - [ ] Client never authors timestamps, totals, or location validity.
 - [ ] Dashboard remains a separate surface.
-- [ ] [OWNER] items are confirmed or changed before approval.
+- [ ] Every `[OWNER]` item remains represented as unresolved in the
+      implementation: no code, test, or copy decides it, and each is closed only
+      by a named owner decision outside this package.
 - [ ] Lock 1: `CONFIRMED` is independent of escrow funding and no code path derives
       funding from a lifecycle value.
 - [ ] Lock 2: check-in requires the authoritative escrow prerequisite, fails closed

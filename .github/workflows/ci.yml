@@ -11,6 +11,20 @@ env:
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
 jobs:
+  skill-gate:
+    name: Mandatory Skill Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Read-only check. It never mutates files or repairs documentation.
+      # It fails the PR when the repository skill-gate contract is violated.
+      - name: Verify skill gate intact
+        run: bash scripts/check-skill-gate.sh
+
   ci:
     name: Lint, Type-Check, Test
     runs-on: ubuntu-latest

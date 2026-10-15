@@ -6,10 +6,11 @@
 **Package:** 4 of 4
 **Depends on:** BW-004-PROD, BW-004-ARCH, BW-004-UX
 
-> **Revision A.** REVIEWED, NOT YET APPROVED. Adds escrow-independence contracts,
-> the three-input address unlock policy, refusal to hardcode the proximity value,
-> the absence of any scope approval path, and the event-only notification
-> assertion.
+> **Revision A.** REVIEWED, NOT YET APPROVED (historical verdict, superseded by
+> the 2026-10-03 approval; the contracts below remain binding). Adds
+> escrow-independence contracts, the three-input address unlock policy, refusal
+> to hardcode the proximity value, the absence of any scope approval path, and
+> the event-only notification assertion.
 
 ## 1. Execution Rule
 

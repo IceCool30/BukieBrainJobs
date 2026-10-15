@@ -8,9 +8,12 @@
 **Primary Route(s):** To be decided (no route is authorized by this artifact)
 **Primary User:** Approved BrainWorker
 
-> This artifact establishes scope identity and product decisions only. It authorizes
-> no implementation, no architecture contract, no UX specification, no test plan,
-> and no feature branch.
+> This artifact establishes scope identity and product decisions only. By
+> itself it authorizes no implementation, no architecture contract, no UX
+> specification, and no test plan. Those came from the separate four-document
+> package, which was approved as the implementation baseline on 2026-10-03 and
+> authorized the `feature/bw-004-booking-management` branch. This artifact did
+> not create either, and it does not resolve the `[OWNER]` items in section 6.
 
 ## 1. Canonical Identity
 

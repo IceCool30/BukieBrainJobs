@@ -1,16 +1,16 @@
-# BukieBrainJobs Trades Design System
+# BukieBrainJobs Trades Design System Skill
 
-This repository contains the design system specification and live reference implementation for the **BukieBrainJobs Architectural Dual-Theme Landing Experience**.
+This skill provides the design tokens, dual-theme engine (Architectural Gallery Light & Obsidian Titanium Gunmetal Dark), typography standards, and component reskinning guide for BukieBrainJobs.
 
-## Features
-- **Dual-Theme Engine**: Architectural Gallery Light (`#F7F9FC`) & Obsidian Titanium Dark (`#0B0E13`) with `localStorage` persistence.
-- **Brand Navy Anchor**: Uses deep Brand Navy (`#001A41`) for structure, headings, and panels.
-- **Verification Trust Signals**: High-contrast Brand Green (`#10B981` / `#2FE896`) for escrow status and telemetry.
-- **Action Catalyst**: Molten Amber (`#FF6B35`) for high-conversion primary action buttons.
-- **Command Board Architecture**: Interactive Requisition Index with tech stack tags, location badges, milestone compensation, and an instant spec inspector modal.
-- **Agent Skill Included**: Includes the complete `SKILL.md` instruction file in `.skills/bukiebrainjobs-trades-design-system/SKILL.md` to guide AI agents and developers implementing this design.
+## Purpose
+Use this skill when restyling existing BukieBrainJobs interfaces, components, forms, and tables to match the approved design system aesthetic.
 
-## File Structure
-- `index.html`: Fully self-contained reference implementation.
-- `images/`: Official BukieBrainJobs brand assets (wordmark banners and icons).
-- `.skills/bukiebrainjobs-trades-design-system/SKILL.md`: The agent instruction skill.
+## Key Rules
+1. **Reskin, Do Not Invent**: Update styles of existing components; do not inject unsolicited layout blocks (no unauthorized telemetry bars, requisition index tables, or hero manifesto banners).
+2. **Dual-Theme Engine**: Ensure both Light (`#F7F9FC`) and Dark (`#0B0E13`) render with full token compliance and readability.
+3. **Typography**: Pair `Cabinet Grotesk` (display headings), `Inter` (body copy), and `JetBrains Mono` (codes, currency, telemetry).
+4. **Action Catalyst**: Reserve Molten Amber (`#FF6B35`) for primary call-to-action triggers.
+5. **Trust Signals**: Reserve Brand Green (`#10B981` / `#2FE896`) for verified status, escrow, and active indicators.
+
+## Reference Implementations
+See the `references/` directory for static demonstration files (`index.html`, `aerodyne.html`).
