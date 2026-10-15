@@ -37,6 +37,7 @@ import {
   transitionScopeAdjustmentWithdraw,
   ScopeAdjustmentError,
 } from './scopeadjustment';
+import { transitionProviderCancellation } from './cancellation';
 import { canTransition } from '@bukiebrainjobs/api-types';
 import { getMockAuthenticatedUser } from '../../auth/storage';
 
@@ -367,7 +368,9 @@ export class BrainWorkerBookingsRepository implements IBrainWorkerBookingsReposi
   async cancelBooking(
     brainWorkerId: string,
     bookingId: string,
-    reason: ProviderCancellationReason
+    reason: ProviderCancellationReason,
+    note?: string | undefined,
+    expectedVersion?: number | string | undefined
   ): Promise<BookingMutationResult> {
     this.assertAuthorizedTenant(brainWorkerId);
     await this.assertCompleteProfile(brainWorkerId);
@@ -379,10 +382,20 @@ export class BrainWorkerBookingsRepository implements IBrainWorkerBookingsReposi
       return { ok: false, reason: 'NOT_FOUND' };
     }
 
-    if (record.jobStatus !== 'CONFIRMED') {
+    const transition = transitionProviderCancellation({
+      bookingId,
+      currentJobStatus: record.jobStatus,
+      currentDispatchStatus: record.dispatchStatus,
+      reason,
+      note,
+      expectedVersion,
+      actualVersion: record.version,
+    });
+
+    if (!transition.ok) {
       return {
         ok: false,
-        reason: 'INVALID_TRANSITION',
+        reason: transition.reason,
         authoritative: {
           jobStatus: record.jobStatus,
           dispatchStatus: record.dispatchStatus,
@@ -391,23 +404,25 @@ export class BrainWorkerBookingsRepository implements IBrainWorkerBookingsReposi
       };
     }
 
-    const nowIso = new Date().toISOString();
-    record.jobStatus = 'CANCELLED';
-    record.cancellationReason = reason;
+    record.jobStatus = transition.jobStatus;
+    record.cancellationReason = transition.cancellationReason;
+    if (transition.cancellationNote) {
+      record.cancellationNote = transition.cancellationNote;
+    }
+    record.cancelledBy = transition.cancelledBy;
+    record.cancelledAt = transition.cancelledAt;
+    if (record.version !== undefined) {
+      record.version += 1;
+    }
 
-    this.notifySubscribers(brainWorkerId, {
-      type: 'BOOKING_CANCELLED_BY_PROVIDER',
-      bookingId,
-      reason,
-      timestamp: nowIso,
-    });
+    this.notifySubscribers(brainWorkerId, transition.event);
 
     return {
       ok: true,
       bookingId,
       jobStatus: record.jobStatus,
       dispatchStatus: record.dispatchStatus,
-      updatedAt: nowIso,
+      updatedAt: transition.cancelledAt,
     };
   }
 

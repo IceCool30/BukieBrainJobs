@@ -123,6 +123,10 @@ export interface RawBookingRecord {
   escrowStatus: EscrowStatus;
   privacyConsentRecorded: boolean;
   cancellationReason?: ProviderCancellationReason | undefined;
+  cancellationNote?: string | undefined;
+  cancelledBy?: 'brainworker' | 'client' | 'admin' | undefined;
+  cancelledAt?: string | undefined;
+  version?: number | undefined;
   scopeAdjustments: ScopeAdjustment[];
   unreadMessageCount: number;
   conversationId?: string | undefined;
@@ -235,7 +239,9 @@ export interface IBrainWorkerBookingsRepository {
   cancelBooking(
     brainWorkerId: string,
     bookingId: string,
-    reason: ProviderCancellationReason
+    reason: ProviderCancellationReason,
+    note?: string | undefined,
+    expectedVersion?: number | string | undefined
   ): Promise<BookingMutationResult>;
 
   // Declared as a property signature. An optional method cannot return an

@@ -15,16 +15,27 @@
 // 7. Concurrent customer cancellation yields authoritative state (CAN-007).
 // 8. No refund, penalty, rating, or financial mutation is produced or claimed (CAN-008).
 
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import type { JobStatus } from '@bukiebrainjobs/api-types';
+import * as authStorage from '../../auth/storage';
 import {
   transitionProviderCancellation,
   VALID_PROVIDER_CANCELLATION_REASONS,
   type CancellationTransitionInput,
 } from './cancellation';
-import type { ProviderCancellationReason } from './types';
+import {
+  createBookingsTestHarness,
+  FIXTURE_APPROVED_BRAINWORKER_A,
+  FIXTURE_APPROVED_BRAINWORKER_B,
+  bookingOwnedByA,
+  mockApprovedWorkerA,
+} from './testing';
+import {
+  ForbiddenTenantAccessError,
+  type ProviderCancellationReason,
+} from './types';
 
 const sourceOf = (file: string): string =>
   readFileSync(fileURLToPath(new URL(file, import.meta.url)), 'utf8');
@@ -249,8 +260,8 @@ describe('BW-004 Phase 6: Provider Cancellation (CAN-001 to CAN-008)', () => {
   // ===========================================================================
   // CAN-007: concurrent customer cancellation yields authoritative state, no false success
   // ===========================================================================
-  it('CAN-007: concurrent customer cancellation yields authoritative state, no false success', () => {
-    // Expected version 1 but actual version 2 (customer cancelled concurrently)
+  it('CAN-007: concurrent customer cancellation yields authoritative state, no false success', async () => {
+    // 1. Domain level transition check
     const resultStale = transitionProviderCancellation({
       bookingId: 'booking-can-007',
       currentJobStatus: 'CANCELLED',
@@ -265,6 +276,58 @@ describe('BW-004 Phase 6: Provider Cancellation (CAN-001 to CAN-008)', () => {
       expect(['STALE_STATE', 'INVALID_TRANSITION']).toContain(resultStale.reason);
       expect(resultStale.authoritative.jobStatus).toBe('CANCELLED');
     }
+
+    // 2. Repository level verification: stale version yields STALE_STATE
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
+    const { repository, seedBooking } = createBookingsTestHarness();
+    seedBooking(FIXTURE_APPROVED_BRAINWORKER_A, {
+      ...bookingOwnedByA(),
+      jobStatus: 'CONFIRMED',
+      version: 2,
+    });
+
+    const repoStaleResult = await repository.cancelBooking(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      'booking-a-001',
+      'SCHEDULE_CONFLICT',
+      undefined,
+      1
+    );
+
+    expect(repoStaleResult.ok).toBe(false);
+    if (!repoStaleResult.ok) {
+      expect(repoStaleResult.reason).toBe('STALE_STATE');
+      expect(repoStaleResult.authoritative?.jobStatus).toBe('CONFIRMED');
+    }
+
+    // 3. Repository level verification: concurrent customer cancellation moved to CANCELLED
+    const { repository: repoCancelled, seedBooking: seedCancelled } = createBookingsTestHarness();
+    seedCancelled(FIXTURE_APPROVED_BRAINWORKER_A, {
+      ...bookingOwnedByA(),
+      jobStatus: 'CANCELLED',
+      version: 2,
+    });
+
+    const repoConcurrentResult = await repoCancelled.cancelBooking(
+      FIXTURE_APPROVED_BRAINWORKER_A,
+      'booking-a-001',
+      'SCHEDULE_CONFLICT'
+    );
+
+    expect(repoConcurrentResult.ok).toBe(false);
+    if (!repoConcurrentResult.ok) {
+      expect(repoConcurrentResult.reason).toBe('INVALID_TRANSITION');
+      expect(repoConcurrentResult.authoritative?.jobStatus).toBe('CANCELLED');
+    }
+
+    // 4. Repository level verification: cross-provider tenant isolation
+    await expect(
+      repoCancelled.cancelBooking(
+        FIXTURE_APPROVED_BRAINWORKER_B,
+        'booking-a-001',
+        'SCHEDULE_CONFLICT'
+      )
+    ).rejects.toThrow(ForbiddenTenantAccessError);
   });
 
   // ===========================================================================
