@@ -318,6 +318,9 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
               <Link href="/brainworker/leads" className="hover:underline">
                 View Job Requests & Leads →
               </Link>
+              <Link href="/brainworker/bookings" className="hover:underline">
+                View Confirmed Bookings →
+              </Link>
             </div>
           </div>
         )}

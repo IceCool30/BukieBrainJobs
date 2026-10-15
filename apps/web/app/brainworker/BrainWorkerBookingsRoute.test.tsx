@@ -66,7 +66,7 @@ vi.mock('next/image', () => ({
   ),
 }));
 
-describe('BW-004 Phase 8 RED: BrainWorker Bookings Route Integration & Security Contracts (INT-001 to INT-011)', () => {
+describe('BW-004 Phase 8: BrainWorker Bookings Route Integration & Security Contracts (INT-001 to INT-011)', () => {
   let mockOperationsRepo: IBrainWorkerOperationsRepository;
   let mockBookingsRepo: IBrainWorkerBookingsRepository;
 
