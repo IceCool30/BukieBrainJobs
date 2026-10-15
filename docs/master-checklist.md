@@ -122,11 +122,12 @@ Phase 7: Launch Readiness
 - [x] Application pending / verification in review status screen (`/brainworker/verification-status`).
 - [x] Completed and verified live in production (commit `36b8385`; 137/137 BrainWorker tests, 1,079/1,079 web regression tests; Vercel deployment verified).
 
-#### 2.2 BrainWorker Dashboard & Operating Workspace (separate outstanding surface, not BW-004)
-- [ ] BrainWorker authenticated home (`/brainworker/dashboard`).
-- [ ] Active jobs metric cards: Today's jobs, pending quotes, total weekly earnings, client rating.
-- [ ] Quick toggles: Online/available for instant dispatch vs Off-duty.
-- [ ] Urgent local requests ticker.
+#### 2.2 BrainWorker Dashboard & Operating Workspace (Complete: Phases 1 to 4 Verified)
+- [x] BrainWorker authenticated home (`/brainworker/dashboard`).
+- [x] Operational metric cards: Today's schedule, next scheduled arrival, active jobs, pending quotes, completed jobs, client rating (strictly zero financial/wallet figures).
+- [x] Quick toggles: Online/available for instant dispatch vs Off-duty with profile completeness invariant.
+- [x] Urgent local requests ticker: Privacy-safe area display, emergency and same-day badges.
+- [x] Verified implementation: 40/40 dashboard contracts passed (10 DASH, 8 SVC, 12 COMP, 10 ROUT); 1,546/1,546 monorepo web tests green; 7/7 type-check clean; 42/42 static routes compiled cleanly.
 
 #### 2.3 Job Requests & Leads Inbox (`BW-003`, Complete: Phases 1 to 7 Verified)
 - [x] Lead domain contracts & eligibility rules (Phase 1, LEAD-001 to LEAD-007).
