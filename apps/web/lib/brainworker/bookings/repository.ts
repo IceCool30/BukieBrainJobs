@@ -32,6 +32,11 @@ import {
   projectBookingDetail,
 } from './domain';
 import { transitionDispatch } from './dispatch';
+import {
+  transitionScopeAdjustmentRequest,
+  transitionScopeAdjustmentWithdraw,
+  ScopeAdjustmentError,
+} from './scopeadjustment';
 import { canTransition } from '@bukiebrainjobs/api-types';
 import { getMockAuthenticatedUser } from '../../auth/storage';
 
@@ -303,44 +308,25 @@ export class BrainWorkerBookingsRepository implements IBrainWorkerBookingsReposi
     const partition = this.partitions.get(brainWorkerId);
     const record = partition?.get(bookingId);
     if (!record || record.taskerProfileId !== brainWorkerId) {
-      throw new Error('NOT_FOUND');
+      throw new ScopeAdjustmentError('NOT_FOUND', 'Booking not found');
     }
 
-    if (record.jobStatus !== 'IN_PROGRESS') {
-      throw new Error('INVALID_TRANSITION: Scope adjustment can only be submitted in IN_PROGRESS');
-    }
-
-    if (record.scopeAdjustments.some((adj) => adj.status === 'PENDING')) {
-      throw new Error('SCOPE_ADJUSTMENT_ALREADY_PENDING');
-    }
-
-    const totalAdditionalKobo =
-      Math.max(0, Math.trunc(draft.additionalLaborKobo)) +
-      Math.max(0, Math.trunc(draft.additionalMaterialsKobo));
-
-    const nowIso = new Date().toISOString();
-    const adjustment: ScopeAdjustment = {
-      id: `scope-adj-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    const transition = transitionScopeAdjustmentRequest({
       bookingId,
-      reason: draft.reason,
-      additionalLaborKobo: Math.max(0, Math.trunc(draft.additionalLaborKobo)),
-      additionalMaterialsKobo: Math.max(0, Math.trunc(draft.additionalMaterialsKobo)),
-      totalAdditionalKobo,
-      note: draft.note?.trim(),
-      status: 'PENDING',
-      submittedAt: nowIso,
-    };
-
-    record.scopeAdjustments.push(adjustment);
-
-    this.notifySubscribers(brainWorkerId, {
-      type: 'SCOPE_ADJUSTMENT_REQUESTED',
-      bookingId,
-      adjustmentId: adjustment.id,
-      timestamp: nowIso,
+      currentJobStatus: record.jobStatus,
+      existingAdjustments: record.scopeAdjustments,
+      draft,
     });
 
-    return adjustment;
+    if (!transition.ok) {
+      throw new ScopeAdjustmentError(transition.reason);
+    }
+
+    record.scopeAdjustments.push(transition.adjustment);
+
+    this.notifySubscribers(brainWorkerId, transition.event);
+
+    return transition.adjustment;
   }
 
   async withdrawScopeAdjustment(
@@ -355,29 +341,27 @@ export class BrainWorkerBookingsRepository implements IBrainWorkerBookingsReposi
     const partition = this.partitions.get(brainWorkerId);
     const record = partition?.get(bookingId);
     if (!record || record.taskerProfileId !== brainWorkerId) {
-      throw new Error('NOT_FOUND');
+      throw new ScopeAdjustmentError('NOT_FOUND', 'Booking not found');
     }
 
-    const adjustment = record.scopeAdjustments.find((adj) => adj.id === adjustmentId);
-    if (!adjustment) {
-      throw new Error('NOT_FOUND');
-    }
-
-    if (adjustment.status !== 'PENDING') {
-      throw new Error('INVALID_TRANSITION: Cannot withdraw a non-pending scope adjustment');
-    }
-
-    adjustment.status = 'WITHDRAWN';
-    const nowIso = new Date().toISOString();
-
-    this.notifySubscribers(brainWorkerId, {
-      type: 'SCOPE_ADJUSTMENT_WITHDRAWN',
+    const transition = transitionScopeAdjustmentWithdraw({
       bookingId,
       adjustmentId,
-      timestamp: nowIso,
+      existingAdjustments: record.scopeAdjustments,
     });
 
-    return adjustment;
+    if (!transition.ok) {
+      throw new ScopeAdjustmentError(transition.reason);
+    }
+
+    const index = record.scopeAdjustments.findIndex((adj) => adj.id === adjustmentId);
+    if (index >= 0) {
+      record.scopeAdjustments[index] = transition.adjustment;
+    }
+
+    this.notifySubscribers(brainWorkerId, transition.event);
+
+    return transition.adjustment;
   }
 
   async cancelBooking(
