@@ -1,29 +1,28 @@
 // apps/web/app/brainworker/dashboard/page.tsx
-// Phase 7 GREEN: BrainWorker Operating Dashboard Route & Operational Banners
+// Phase 4 GREEN: BrainWorker Operating Dashboard Route & Live Aggregated Feed
 // Authoritative References:
-// - docs/specs/BW-001-architecture-contract.md (Section 5.1)
-// - docs/specs/BW-002-architecture-contract.md (Sections 4, 5)
-// - docs/specs/BW-002-ux-design-specification.md (Sections 2, 5)
-// - docs/specs/BW-002-test-first-implementation-plan.md (Suite 6: INT-006 to INT-008, INT-010)
+// - docs/specs/BW-004-booking-management.md
+// - docs/specs/BW-002-service-catalog-availability.md
+// - Item 2.2 in master checklist: BrainWorker Operating Dashboard
 
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   ShieldCheck,
-  Briefcase,
-  Clock,
-  TrendingUp,
   LogOut,
-  UserCheck,
   AlertTriangle,
 } from 'lucide-react';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib/auth/storage';
 import type { AuthUser } from '../../../lib/auth/types';
 import { getBrainWorkerOperationsRepository } from '../../../lib/brainworker/catalog/repository';
 import type { BrainWorkerOperationalProfile } from '../../../lib/brainworker/catalog/types';
+import { getBrainWorkerDashboardService } from '../../../lib/brainworker/dashboard/service';
+import type { BrainWorkerDashboardFeed } from '../../../lib/brainworker/dashboard/types';
+import { DashboardMetricsCards } from '../../../components/brainworker/dashboard/DashboardMetricsCards';
+import { UrgentLeadsTicker } from '../../../components/brainworker/dashboard/UrgentLeadsTicker';
 import ThemeToggle from '../../../components/ThemeToggle';
 
 export default function BrainWorkerDashboardPage(): React.ReactElement {
@@ -31,9 +30,28 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
   const [user, setUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
   const [operationalProfile, setOperationalProfile] =
     useState<BrainWorkerOperationalProfile | null>(null);
+  const [feed, setFeed] = useState<BrainWorkerDashboardFeed | null>(null);
+  const [isFeedLoading, setIsFeedLoading] = useState<boolean>(true);
+  const [feedError, setFeedError] = useState<string | null>(null);
   const [isTogglingDuty, setIsTogglingDuty] = useState(false);
-  const redirectedRef = React.useRef(false);
-  const toggledDutyRef = React.useRef<boolean | null>(null);
+  const redirectedRef = useRef(false);
+  const toggledDutyRef = useRef<boolean | null>(null);
+
+  const loadFeed = useCallback(async (workerId: string) => {
+    try {
+      setIsFeedLoading(true);
+      setFeedError(null);
+      const service = getBrainWorkerDashboardService();
+      const feedData = await service.getDashboardFeed(workerId);
+      setFeed(feedData);
+    } catch (err) {
+      setFeedError(
+        err instanceof Error ? err.message : 'Unable to load operational dashboard feed.'
+      );
+    } finally {
+      setIsFeedLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const currentUser = getMockAuthenticatedUser();
@@ -61,6 +79,9 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
       }
       return;
     }
+
+    // Query live feed for approved BrainWorker
+    void loadFeed(currentUser.id);
 
     // Operational profile query for approved BrainWorker
     let isSubscribed = true;
@@ -101,7 +122,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
     return () => {
       isSubscribed = false;
     };
-  }, [router]);
+  }, [router, loadFeed]);
 
   if (!user) {
     return (
@@ -171,6 +192,18 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
             }
           : null
       );
+      // Synchronize feed operational status if feed is present
+      setFeed((prevFeed) =>
+        prevFeed
+          ? {
+              ...prevFeed,
+              operationalStatus: {
+                ...prevFeed.operationalStatus,
+                isAvailable: nextAvailable,
+              },
+            }
+          : null
+      );
     } catch {
       toggledDutyRef.current = operationalProfile.availability.isAvailable;
     } finally {
@@ -215,7 +248,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-[#001A41] dark:text-white">BrainWorker Operating Dashboard</h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-            Manage your service dispatch requests, active customer jobs, and earnings.
+            Manage your service dispatch requests, active customer jobs, and verified schedule.
           </p>
         </div>
 
@@ -309,7 +342,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
               </div>
             </div>
 
-            {/* Quick Links to Services, Availability, and Leads */}
+            {/* Quick Links to Services, Availability, Leads, and Bookings */}
             <div className="pt-3 border-t border-[var(--card-border)] flex flex-wrap items-center gap-4 text-xs font-semibold text-[#001A41] dark:text-emerald-400">
               <Link href="/brainworker/services" className="hover:underline">
                 Configure Services & Rates →
@@ -327,55 +360,61 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
           </div>
         )}
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-[var(--card-bg)] rounded-lg border border-[var(--card-border)] p-5 shadow-xs space-y-2 transition-colors">
-            <div className="flex items-center justify-between text-[var(--text-muted)]">
-              <span className="text-xs font-bold uppercase tracking-wider">Active Jobs</span>
-              <Briefcase className="h-4 w-4 text-[var(--text-main)]" />
-            </div>
-            <div className="text-2xl font-bold text-[var(--text-main)]">0</div>
-            <p className="text-xs text-[var(--text-muted)]">Ready for incoming requests</p>
+        {/* Live Aggregated Metrics & Ticker Section (ROUT-004 to ROUT-010) */}
+        {isFeedLoading && !feed && (
+          <div
+            data-testid="dashboard-loading-skeleton"
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 animate-pulse"
+          >
+            {[...Array(6)].map((_, i) => (
+              <div
+                key={i}
+                className="h-32 rounded-xl border border-slate-200 bg-slate-100 p-5 dark:border-slate-800 dark:bg-slate-800/50"
+              />
+            ))}
           </div>
+        )}
 
-          <div className="bg-[var(--card-bg)] rounded-lg border border-[var(--card-border)] p-5 shadow-xs space-y-2 transition-colors">
-            <div className="flex items-center justify-between text-[var(--text-muted)]">
-              <span className="text-xs font-bold uppercase tracking-wider">Completed</span>
-              <UserCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+        {feedError && (
+          <div
+            data-testid="dashboard-error-alert"
+            role="alert"
+            className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-rose-800 dark:border-rose-900/50 dark:bg-rose-950/50 dark:text-rose-200"
+          >
+            <div>
+              <h3 className="text-sm font-semibold">Feed Notice</h3>
+              <p className="mt-1 text-sm">{feedError}</p>
             </div>
-            <div className="text-2xl font-bold text-[var(--text-main)]">0</div>
-            <p className="text-xs text-[var(--text-muted)]">Total verified completions</p>
+            <button
+              type="button"
+              onClick={() => user && void loadFeed(user.id)}
+              className="rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 dark:bg-rose-500 dark:hover:bg-rose-600 cursor-pointer"
+            >
+              Retry
+            </button>
           </div>
+        )}
 
-          <div className="bg-[var(--card-bg)] rounded-lg border border-[var(--card-border)] p-5 shadow-xs space-y-2 transition-colors">
-            <div className="flex items-center justify-between text-[var(--text-muted)]">
-              <span className="text-xs font-bold uppercase tracking-wider">Total Earnings</span>
-              <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-            </div>
-            <div className="text-2xl font-bold text-[var(--text-main)]">₦0.00</div>
-            <p className="text-xs text-[var(--text-muted)]">Escrow released balance</p>
-          </div>
+        {feed && (
+          <div className="space-y-6">
+            <DashboardMetricsCards
+              metrics={feed.metrics}
+              onSelectActiveJob={(bookingId) =>
+                router.push(`/brainworker/bookings/${bookingId}`)
+              }
+              onNavigateToLeads={() => router.push('/brainworker/leads')}
+              onNavigateToBookings={() => router.push('/brainworker/bookings')}
+            />
 
-          <div className="bg-[var(--card-bg)] rounded-lg border border-[var(--card-border)] p-5 shadow-xs space-y-2 transition-colors">
-            <div className="flex items-center justify-between text-[var(--text-muted)]">
-              <span className="text-xs font-bold uppercase tracking-wider">Standing</span>
-              <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-            </div>
-            <div className="text-sm font-bold text-emerald-700 dark:text-emerald-400">Verified & Approved</div>
-            <p className="text-xs text-[var(--text-muted)]">Full dispatch privileges active</p>
+            <UrgentLeadsTicker
+              urgentLeads={feed.urgentLeads}
+              onQuoteLead={(leadId) =>
+                router.push(`/brainworker/leads?quote=${leadId}`)
+              }
+              onViewAllLeads={() => router.push('/brainworker/leads')}
+            />
           </div>
-        </div>
-
-        {/* Dispatch Feed Placeholder */}
-        <div className="bg-[var(--card-bg)] rounded-lg border border-[var(--card-border)] p-8 shadow-xs text-center space-y-3 transition-colors">
-          <div className="mx-auto w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/40 flex items-center justify-center text-[#001A41] dark:text-blue-400">
-            <Clock className="h-6 w-6" />
-          </div>
-          <h2 className="text-lg font-bold text-[var(--text-main)]">No Incoming Service Requests</h2>
-          <p className="text-sm text-[var(--text-muted)] max-w-md mx-auto">
-            You will be alerted instantly when customers within your coverage areas request emergency or scheduled trade services.
-          </p>
-        </div>
+        )}
       </main>
     </div>
   );
