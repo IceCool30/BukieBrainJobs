@@ -168,6 +168,8 @@
   --toggle-border: #CBD5E1;
   --toggle-active-bg: #FFFFFF;
   --toggle-active-text: #001A41;
+  --modal-bg: #FFFFFF;
+  --modal-overlay: rgba(0, 26, 65, 0.55);
   --dispatch-bg: linear-gradient(135deg, #001A41 0%, #002A62 100%);
 }
 
@@ -199,6 +201,8 @@
   --toggle-border: #2D3748;
   --toggle-active-bg: #2B3342;
   --toggle-active-text: #F0F4F9;
+  --modal-bg: #13171E;
+  --modal-overlay: rgba(5, 7, 10, 0.82);
   --dispatch-bg: linear-gradient(135deg, #07090D 0%, #13171E 100%);
 }
 
@@ -230,6 +234,8 @@
     --toggle-border: #2D3748;
     --toggle-active-bg: #2B3342;
     --toggle-active-text: #F0F4F9;
+    --modal-bg: #13171E;
+    --modal-overlay: rgba(5, 7, 10, 0.82);
     --dispatch-bg: linear-gradient(135deg, #07090D 0%, #13171E 100%);
   }
 }
