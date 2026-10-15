@@ -172,6 +172,7 @@ export function projectBookingDetail(
     scopeAdjustments: booking.scopeAdjustments,
     allowedActions,
     conversationId: booking.conversationId,
+    jobId: booking.jobId,
   };
 }
 

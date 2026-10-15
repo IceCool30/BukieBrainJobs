@@ -103,6 +103,7 @@ export interface ProviderBookingDetail extends ProviderBookingSummary {
   scopeAdjustments: ScopeAdjustment[];
   allowedActions: ProviderBookingAction[];
   conversationId?: string | undefined;
+  jobId?: string | undefined;
 }
 
 // -- Raw stored booking -----------------------------------------------------

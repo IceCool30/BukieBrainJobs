@@ -18,7 +18,7 @@
 // 10. Zero wallet balances, payout figures, or earnings previews anywhere.
 
 import React from 'react';
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -51,6 +51,10 @@ describe('BW-004 Phase 7: UI Implementation (UI-001 to UI-024)', () => {
     vi.clearAllMocks();
     vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockApprovedWorkerA);
     harness = createBookingsTestHarness();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   // ===========================================================================
@@ -86,7 +90,7 @@ describe('BW-004 Phase 7: UI Implementation (UI-001 to UI-024)', () => {
   it('UI-002: populated list, grouped and sorted', async () => {
     // Seed bookings across Today, Upcoming, Then Later, and Cancelled
     const now = new Date('2026-10-15T10:00:00.000Z');
-    vi.useFakeTimers();
+    vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(now);
 
     const bToday1 = bookingOwnedByA({
