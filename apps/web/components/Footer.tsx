@@ -45,6 +45,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-xs text-[var(--strip-text)]">
               <li><Link href="/#how-it-works" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">How booking works</Link></li>
               <li><Link href="/guarantee" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">BukieGuarantee</Link></li>
+              <li><Link href="/brainworker/register" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">Become a BrainWorker</Link></li>
               <li><Link href="/#faq" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">FAQ</Link></li>
             </ul>
           </div>
