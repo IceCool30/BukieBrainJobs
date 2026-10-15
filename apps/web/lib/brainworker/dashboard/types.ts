@@ -26,3 +26,27 @@ export interface DashboardFeedAggregate {
   urgentLeads: UrgentLeadTickerItem[];
   lastEvaluatedAt: string;
 }
+
+export interface BrainWorkerDashboardFeed {
+  metrics: BrainWorkerDashboardMetrics;
+  urgentLeads: UrgentLeadTickerItem[];
+  operationalStatus: {
+    isComplete: boolean;
+    isAvailable: boolean;
+    isEmergencyAvailable: boolean;
+    primaryTradeName: string | null;
+  };
+  lastRefreshedAt: string;
+}
+
+export interface BrainWorkerDashboardServiceOptions {
+  now?: Date;
+  urgentLeadsLimit?: number;
+}
+
+export interface BrainWorkerDashboardService {
+  getDashboardFeed(
+    brainWorkerId: string,
+    options?: BrainWorkerDashboardServiceOptions
+  ): Promise<BrainWorkerDashboardFeed>;
+}
