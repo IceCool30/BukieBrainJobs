@@ -38,7 +38,7 @@ export default function ChatPage(props: ChatPageProps) {
   const user = getMockAuthenticatedUser();
   useEffect(() => {
     if (!user) {
-      router.replace('/login');
+      router.replace(`/login?returnUrl=/messages/${encodeURIComponent(activeJobId)}`);
     }
   }, [user, router]);
 

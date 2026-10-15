@@ -30,12 +30,12 @@ export default function Footer() {
           <div>
             <h3 className="font-display font-semibold text-white dark:text-[var(--text-main)] text-sm mb-4">Explore services</h3>
             <ul className="space-y-2.5 text-xs text-[var(--strip-text)]">
-              <li><Link href="/services" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">Generator services</Link></li>
-              <li><Link href="/services" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">Air-conditioning services</Link></li>
-              <li><Link href="/services" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">Plumbing services</Link></li>
-              <li><Link href="/services" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">Electrical and solar services</Link></li>
-              <li><Link href="/services" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">TV and satellite services</Link></li>
-              <li><Link href="/services" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">Moving and relocation</Link></li>
+              <li><Link href="/services/generator" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">Generator services</Link></li>
+              <li><Link href="/services/ac" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">Air-conditioning services</Link></li>
+              <li><Link href="/services/plumbing" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">Plumbing services</Link></li>
+              <li><Link href="/services/electrical" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">Electrical and solar services</Link></li>
+              <li><Link href="/services/tv-mounting" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">TV and satellite services</Link></li>
+              <li><Link href="/services/moving" className="hover:text-white dark:hover:text-[var(--text-main)] transition-colors">Moving and relocation</Link></li>
             </ul>
           </div>
 

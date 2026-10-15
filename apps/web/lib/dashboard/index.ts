@@ -60,7 +60,7 @@ export const MOCK_UPCOMING_WORK: DashboardUpcomingWorkItem[] = [
     location: 'Victoria Island, Lagos',
     status: 'confirmed',
     preparationTip: 'Please ensure the outdoor compressor unit and indoor wall units are accessible.',
-    actionUrl: '/services/ac-repair',
+    actionUrl: '/jobs?id=BKG-77210',
     actionLabel: 'View Booking',
   },
   {
@@ -74,7 +74,7 @@ export const MOCK_UPCOMING_WORK: DashboardUpcomingWorkItem[] = [
     location: 'Ikeja GRA, Lagos',
     status: 'scheduled',
     preparationTip: 'Locate your primary stopcock valve before the BrainWorker arrives.',
-    actionUrl: '/services/plumbing',
+    actionUrl: '/jobs?id=BKG-63102',
     actionLabel: 'View Booking',
   },
 ];
@@ -110,8 +110,8 @@ export const MOCK_MARKETPLACE_CONTINUATION: DashboardMarketplaceItem[] = [
     title: 'Inverter & Solar Systems',
     description: 'Battery installation, solar sizing, and backup maintenance.',
     startingPrice: 'From ₦25,000',
-    categorySlug: 'inverter-solar',
-    href: '/services/inverter-solar',
+    categorySlug: 'electrical',
+    href: '/services/electrical',
     iconName: 'Zap',
   },
   {
@@ -119,8 +119,8 @@ export const MOCK_MARKETPLACE_CONTINUATION: DashboardMarketplaceItem[] = [
     title: 'AC Repair & Servicing',
     description: 'Gas refilling, chemical washing, and fault diagnostics.',
     startingPrice: 'From ₦8,000',
-    categorySlug: 'ac-repair',
-    href: '/services/ac-repair',
+    categorySlug: 'ac',
+    href: '/services/ac',
     iconName: 'Wind',
   },
   {

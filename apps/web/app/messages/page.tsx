@@ -20,7 +20,7 @@ export default function MessagesHubPage() {
     const currentUser = getMockAuthenticatedUser();
     setUser(currentUser);
     if (!currentUser) {
-      router.replace('/login');
+      router.replace('/login?returnUrl=/messages');
     }
   }, [router]);
 

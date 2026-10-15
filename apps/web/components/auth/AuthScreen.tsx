@@ -93,7 +93,10 @@ export default function AuthScreen({
   const searchParams = useSearchParams();
 
   // Determine return URL with fallback and open redirect validation
-  const returnParam = searchParams.get('returnUrl');
+  const returnParam =
+    searchParams.get('returnUrl') ||
+    searchParams.get('redirect') ||
+    searchParams.get('return');
   const rawReturnUrl = initialReturnUrl ?? returnParam ?? '/dashboard';
   const validatedReturnUrl = useMemo(() => {
     // If no explicit return destination was provided, default authenticated users to their dashboard
