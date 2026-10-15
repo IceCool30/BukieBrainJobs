@@ -112,7 +112,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
   const drawerOnly = hideOnPwa && mobileMenuOpen;
   const noop = () => {};
   const doPostJob = onPostJobClick ?? (() => navigateTo('/post-job'));
-  const doBecomeWorker = onBecomeWorkerClick ?? (() => navigateTo('/brainworker/register'));
+  const doBecomeWorker = onBecomeWorkerClick;
 
   if (hideOnPwa) {
     if (!drawerOnly && !solid) return null;
@@ -319,7 +319,7 @@ function DrawerPanel({
   onClose: () => void;
   onNavigate: (href: string) => void;
   onPostJob: () => void;
-  onBecomeWorker: () => void;
+  onBecomeWorker?: (() => void) | undefined;
   isAuthenticated?: boolean;
 }) {
   return (
@@ -386,12 +386,22 @@ function DrawerPanel({
                 <Briefcase className="w-4 h-4" />
                 Post a Job
               </button>
-              <button
-                onClick={() => { onClose(); onBecomeWorker?.(); }}
-                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-[var(--text-main)] bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] active:bg-[var(--card-hover)] border border-[var(--lead)] rounded-xl transition-colors"
-              >
-                Become a BrainWorker
-              </button>
+              {onBecomeWorker ? (
+                <button
+                  onClick={() => { onClose(); onBecomeWorker(); }}
+                  className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-[var(--text-main)] bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] active:bg-[var(--card-hover)] border border-[var(--lead)] rounded-xl transition-colors block"
+                >
+                  Become a BrainWorker
+                </button>
+              ) : (
+                <Link
+                  href="/brainworker/register"
+                  onClick={onClose}
+                  className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-[var(--text-main)] bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] active:bg-[var(--card-hover)] border border-[var(--lead)] rounded-xl transition-colors block"
+                >
+                  Become a BrainWorker
+                </Link>
+              )}
             </div>
           </aside>
   );

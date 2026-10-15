@@ -12,14 +12,12 @@ import HowItWorks from '../components/HowItWorks';
 import FeaturedBrainWorkers from '../components/FeaturedBrainWorkers';
 import FAQSection from '../components/FAQSection';
 import PartnerBar from '../components/PartnerBar';
-import BecomeWorkerModal from '../components/modals/BecomeWorkerModal';
 import {
   ServiceCategory,
   SERVICE_CATEGORIES,
 } from '../lib/mock/homepage-data';
 
 export default function CustomerHomepage() {
-  const [becomeWorkerOpen, setBecomeWorkerOpen] = useState(false);
 
   const isPwa = useIsPwa();
   const router = useRouter();
@@ -59,7 +57,6 @@ export default function CustomerHomepage() {
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] flex flex-col font-sans selection:bg-[var(--amber)] selection:text-white transition-colors duration-200">
       {/* Navigation Header */}
       <Navbar
-        onBecomeWorkerClick={() => setBecomeWorkerOpen(true)}
         drawerOpenRef={drawerRef}
         hideOnPwa={isPwa}
       />
@@ -101,9 +98,6 @@ export default function CustomerHomepage() {
       <Footer />
 
       {/* Homepage has no bottom navigation bar (live experience standard). */}
-
-      {/* Modals & Drawers */}
-      <BecomeWorkerModal isOpen={becomeWorkerOpen} onClose={() => setBecomeWorkerOpen(false)} />
     </div>
   );
 }

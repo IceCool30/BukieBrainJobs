@@ -145,6 +145,7 @@
   --bg: #F7F9FC;
   --card-bg: #FFFFFF;
   --card-hover: #F2F5FB;
+  --card-border: var(--lead);
   --lead: #E2E8F0;
   --rule: #CBD5E1;
   --text-main: #001A41;
@@ -178,6 +179,7 @@
   --bg: #0B0E13;
   --card-bg: #13171E;
   --card-hover: #191E27;
+  --card-border: var(--lead);
   --lead: #202734;
   --rule: #2D3748;
   --text-main: #F0F4F9;
@@ -211,6 +213,7 @@
     --bg: #0B0E13;
     --card-bg: #13171E;
     --card-hover: #191E27;
+    --card-border: var(--lead);
     --lead: #202734;
     --rule: #2D3748;
     --text-main: #F0F4F9;

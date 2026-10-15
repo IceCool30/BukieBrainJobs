@@ -9,7 +9,6 @@ vi.mock('next/navigation', () => ({ useRouter: () => ({ push }) }));
 vi.mock('../hooks/useIsPwa', () => ({ useIsPwa: () => true }));
 vi.mock('../components/Navbar', () => ({ default: () => null }));
 vi.mock('../components/Footer', () => ({ default: () => null }));
-vi.mock('../components/modals/BecomeWorkerModal', () => ({ default: () => null }));
 
 beforeEach(() => {
   push.mockClear();

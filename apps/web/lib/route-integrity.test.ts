@@ -91,4 +91,21 @@ describe('Route Integrity & Navigation Verification', () => {
     }
     expect(count).toBeGreaterThanOrEqual(6);
   });
+
+  it('verifies that Navbar links "Become a BrainWorker" to dedicated /brainworker/register route', () => {
+    const navbarFilePath = path.resolve(__dirname, '../components/Navbar.tsx');
+    const navbarContent = fs.readFileSync(navbarFilePath, 'utf-8');
+
+    expect(navbarContent).toContain('href="/brainworker/register"');
+  });
+
+  it('verifies BecomeWorkerModal uses dual-theme semantic tokens without hardcoded white background', () => {
+    const modalFilePath = path.resolve(__dirname, '../components/modals/BecomeWorkerModal.tsx');
+    const modalContent = fs.readFileSync(modalFilePath, 'utf-8');
+
+    expect(modalContent).toContain('bg-[var(--card-bg)]');
+    expect(modalContent).toContain('bg-[var(--modal-overlay)]');
+    expect(modalContent).not.toContain('bg-white');
+    expect(modalContent).not.toContain('border-slate-200');
+  });
 });
