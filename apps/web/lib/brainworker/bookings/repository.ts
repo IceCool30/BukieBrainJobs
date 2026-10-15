@@ -32,6 +32,7 @@ import {
   projectBookingDetail,
 } from './domain';
 import { transitionDispatch } from './dispatch';
+import { canTransition } from '@bukiebrainjobs/api-types';
 import { getMockAuthenticatedUser } from '../../auth/storage';
 
 export interface BrainWorkerBookingsRepositoryDependencies {
@@ -245,8 +246,8 @@ export class BrainWorkerBookingsRepository implements IBrainWorkerBookingsReposi
       return { ok: false, reason: 'NOT_FOUND' };
     }
 
-    // Check-in requires CONFIRMED lifecycle (ARCH s7)
-    if (record.jobStatus !== 'CONFIRMED') {
+    // Check-in requires CONFIRMED lifecycle via state machine gate (ARCH s4, s7)
+    if (!canTransition(record.jobStatus, 'IN_PROGRESS')) {
       return {
         ok: false,
         reason: 'INVALID_TRANSITION',
