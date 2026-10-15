@@ -30,15 +30,15 @@ export function computeDashboardMetrics(params: {
     bookingId: string;
     scheduledStartAt: string;
     jobStatus: string;
-    dispatchStatus?: string;
-  }>;
+    dispatchStatus?: string | undefined;
+  }> | undefined;
   leads?: Array<{
     id: string;
-    invitationState?: string;
-    urgency?: string;
-  }>;
-  now?: Date;
-  clientRating?: number | null;
+    invitationState?: string | undefined;
+    urgency?: string | undefined;
+  }> | undefined;
+  now?: Date | undefined;
+  clientRating?: number | null | undefined;
 }): BrainWorkerDashboardMetrics {
   const bookings = params.bookings ?? [];
   const leads = params.leads ?? [];
@@ -111,13 +111,13 @@ export function projectUrgentLeadTicker(params: {
   leads?: Array<{
     id: string;
     title: string;
-    categoryName?: string;
+    categoryName?: string | undefined;
     locationArea: string;
     urgency: string;
-    invitationState?: string;
+    invitationState?: string | undefined;
     createdAt: string;
-  }>;
-  maxItems?: number;
+  }> | undefined;
+  maxItems?: number | undefined;
 }): UrgentLeadTickerItem[] {
   const leads = params.leads ?? [];
   const limit = typeof params.maxItems === 'number' && params.maxItems > 0

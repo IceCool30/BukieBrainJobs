@@ -1,8 +1,11 @@
 // apps/web/lib/brainworker/dashboard/service.test.ts
-// BrainWorker Operating Dashboard: Phase 2 RED Service Layer Contracts (SVC-001 to SVC-008)
+// BrainWorker Operating Dashboard: Phase 2 Service Layer Contracts (SVC-001 to SVC-008)
 
 import { describe, expect, it, vi } from 'vitest';
 import { createBrainWorkerDashboardService } from './service';
+import type { IBrainWorkerBookingsRepository } from '../bookings/types';
+import type { IBrainWorkerLeadsRepository } from '../leads/types';
+import type { IBrainWorkerOperationsRepository } from '../catalog/types';
 
 describe('BrainWorker Operating Dashboard Service Contracts (SVC-001 to SVC-008)', () => {
   const referenceDate = new Date('2026-10-15T10:00:00.000Z');
@@ -19,15 +22,15 @@ describe('BrainWorker Operating Dashboard Service Contracts (SVC-001 to SVC-008)
     };
 
     const service = createBrainWorkerDashboardService({
-      bookingsRepo: mockBookingsRepo as any,
-      leadsRepo: mockLeadsRepo as any,
-      operationsRepo: mockOperationsRepo as any,
+      bookingsRepo: mockBookingsRepo as unknown as IBrainWorkerBookingsRepository,
+      leadsRepo: mockLeadsRepo as unknown as IBrainWorkerLeadsRepository,
+      operationsRepo: mockOperationsRepo as unknown as IBrainWorkerOperationsRepository,
     });
 
     await service.getDashboardFeed('bw-tenant-999');
 
-    expect(mockBookingsRepo.getBookings).toHaveBeenCalledWith('bw-tenant-999', expect.anything());
-    expect(mockLeadsRepo.getLeads).toHaveBeenCalledWith('bw-tenant-999', expect.anything());
+    expect(mockBookingsRepo.getBookings).toHaveBeenCalledWith('bw-tenant-999');
+    expect(mockLeadsRepo.getLeads).toHaveBeenCalledWith('bw-tenant-999');
     expect(mockOperationsRepo.getOperationalProfile).toHaveBeenCalledWith('bw-tenant-999');
   });
 
@@ -55,9 +58,9 @@ describe('BrainWorker Operating Dashboard Service Contracts (SVC-001 to SVC-008)
     };
 
     const service = createBrainWorkerDashboardService({
-      bookingsRepo: mockBookingsRepo as any,
-      leadsRepo: mockLeadsRepo as any,
-      operationsRepo: mockOperationsRepo as any,
+      bookingsRepo: mockBookingsRepo as unknown as IBrainWorkerBookingsRepository,
+      leadsRepo: mockLeadsRepo as unknown as IBrainWorkerLeadsRepository,
+      operationsRepo: mockOperationsRepo as unknown as IBrainWorkerOperationsRepository,
     });
 
     await service.getDashboardFeed('bw-concurrent-1');
@@ -86,7 +89,7 @@ describe('BrainWorker Operating Dashboard Service Contracts (SVC-001 to SVC-008)
     };
 
     const service = createBrainWorkerDashboardService({
-      operationsRepo: mockOperationsRepo as any,
+      operationsRepo: mockOperationsRepo as unknown as IBrainWorkerOperationsRepository,
     });
 
     const feed = await service.getDashboardFeed('bw-profile-1');
@@ -125,7 +128,7 @@ describe('BrainWorker Operating Dashboard Service Contracts (SVC-001 to SVC-008)
     };
 
     const service = createBrainWorkerDashboardService({
-      bookingsRepo: mockBookingsRepo as any,
+      bookingsRepo: mockBookingsRepo as unknown as IBrainWorkerBookingsRepository,
     });
 
     const feed = await service.getDashboardFeed('bw-aggregate-1', {
@@ -174,7 +177,7 @@ describe('BrainWorker Operating Dashboard Service Contracts (SVC-001 to SVC-008)
     };
 
     const service = createBrainWorkerDashboardService({
-      leadsRepo: mockLeadsRepo as any,
+      leadsRepo: mockLeadsRepo as unknown as IBrainWorkerLeadsRepository,
     });
 
     const feed = await service.getDashboardFeed('bw-ticker-1', {
@@ -197,7 +200,7 @@ describe('BrainWorker Operating Dashboard Service Contracts (SVC-001 to SVC-008)
     };
 
     const service = createBrainWorkerDashboardService({
-      operationsRepo: mockOperationsRepo as any,
+      operationsRepo: mockOperationsRepo as unknown as IBrainWorkerOperationsRepository,
     });
 
     const feed = await service.getDashboardFeed('bw-incomplete');
@@ -220,9 +223,9 @@ describe('BrainWorker Operating Dashboard Service Contracts (SVC-001 to SVC-008)
     };
 
     const service = createBrainWorkerDashboardService({
-      bookingsRepo: mockBookingsRepo as any,
-      leadsRepo: mockLeadsRepo as any,
-      operationsRepo: mockOperationsRepo as any,
+      bookingsRepo: mockBookingsRepo as unknown as IBrainWorkerBookingsRepository,
+      leadsRepo: mockLeadsRepo as unknown as IBrainWorkerLeadsRepository,
+      operationsRepo: mockOperationsRepo as unknown as IBrainWorkerOperationsRepository,
     });
 
     const feed = await service.getDashboardFeed('bw-fail-resilient');
