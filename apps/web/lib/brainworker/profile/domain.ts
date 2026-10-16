@@ -350,7 +350,7 @@ const FINANCIAL_KEYS_REGEX =
 /**
  * Recursively removes financial attributes from profile domain objects.
  */
-export function sanitizeFinancialExclusion<T extends Record<string, unknown>>(
+export function sanitizeFinancialExclusion<T extends object>(
   data: T
 ): T {
   if (!data || typeof data !== 'object') {

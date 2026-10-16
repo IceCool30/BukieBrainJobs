@@ -6,13 +6,11 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
   BrainWorkerProfileRepository,
   createBrainWorkerProfileRepository,
-  getBrainWorkerProfileRepository,
   resetBrainWorkerProfileRepository,
 } from './repository';
 import type {
   BrainWorkerProfile,
-  CustomerReview,
-  PortfolioItem,
+  NigerianLanguage,
 } from './types';
 
 describe('BrainWorker Profile & Portfolio Repository Contracts (REP-001 to REP-010)', () => {
@@ -87,7 +85,7 @@ describe('BrainWorker Profile & Portfolio Repository Contracts (REP-001 to REP-0
       headline: '<script>alert("hack")</script>Senior Carpenter',
       bio: 'Cabinet making <b>and wood carving</b>.',
       yearsOfExperience: 8,
-      spokenLanguages: ['English', 'Pidgin' as any],
+      spokenLanguages: ['English', 'Pidgin' as unknown as NigerianLanguage],
       avatarUrl: 'https://example.com/avatar.jpg',
     });
 
