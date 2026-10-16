@@ -123,7 +123,7 @@ export function WalletSummaryCards({
         <div className="flex items-center gap-3">
           <button
             type="button"
-            data-testid="add-bank-account-button"
+            data-testid="summary-add-bank-account-button"
             onClick={onAddBankAccountClick}
             className="inline-flex items-center justify-center rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-2 text-xs font-medium text-slate-200 transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500"
           >
