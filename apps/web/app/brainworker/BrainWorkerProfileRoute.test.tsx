@@ -112,7 +112,14 @@ describe('BrainWorker Profile and Portfolio Route Contracts (ROUTE-001 to ROUTE-
       getProfile: vi.fn().mockResolvedValue(sampleProfile),
       saveProfile: vi.fn().mockResolvedValue(sampleProfile),
       getPortfolio: vi.fn().mockResolvedValue([samplePortfolioItem]),
-      addPortfolioItem: vi.fn().mockResolvedValue(samplePortfolioItem),
+      addPortfolioItem: vi.fn().mockImplementation((_workerId, item) =>
+        Promise.resolve({
+          ...item,
+          id: 'port-new',
+          createdAt: '2026-10-16T12:00:00.000Z',
+          updatedAt: '2026-10-16T12:00:00.000Z',
+        })
+      ),
       deletePortfolioItem: vi.fn().mockResolvedValue(true),
       getReviews: vi.fn().mockResolvedValue([sampleReview]),
       submitReviewCounterResponse: vi.fn().mockResolvedValue({
@@ -158,9 +165,8 @@ describe('BrainWorker Profile and Portfolio Route Contracts (ROUTE-001 to ROUTE-
 
     render(<BrainWorkerProfilePage />);
 
-    expect(
-      screen.getByText(/Customer Account Detected|Access Restricted|Workspace Unavailable/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText('Customer Account Detected')).toBeInTheDocument();
+    expect(screen.getByText('Access Restricted')).toBeInTheDocument();
     expect(mockProfileRepo.getProfile).not.toHaveBeenCalled();
     expect(mockProfileRepo.getPortfolio).not.toHaveBeenCalled();
     expect(mockProfileRepo.getReviews).not.toHaveBeenCalled();
@@ -254,7 +260,7 @@ describe('BrainWorker Profile and Portfolio Route Contracts (ROUTE-001 to ROUTE-
     fireEvent.change(categoryInput, { target: { value: 'Solar' } });
     fireEvent.change(afterImgInput, { target: { value: 'https://example.com/array.jpg' } });
 
-    const submitBtn = screen.getByRole('button', { name: /add work/i });
+    const submitBtn = screen.getByRole('button', { name: /^add work$/i });
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
