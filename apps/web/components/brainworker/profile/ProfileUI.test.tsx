@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { ProfileEditorForm } from './ProfileEditorForm';
 import { PortfolioGalleryManager } from './PortfolioGalleryManager';
 import { ReviewsCounterResponseTab } from './ReviewsCounterResponseTab';
@@ -120,11 +120,11 @@ describe('BrainWorker Profile & Portfolio UI Contracts (COMP-001 to COMP-012)', 
 
     const meter = screen.getByTestId('profile-completeness-meter');
     expect(meter).toBeInTheDocument();
-    expect(screen.getByText(/headline/i)).toBeInTheDocument();
-    expect(screen.getByText(/headshot/i)).toBeInTheDocument();
+    expect(within(meter).getByText(/headline/i)).toBeInTheDocument();
+    expect(within(meter).getByText(/headshot/i)).toBeInTheDocument();
   });
 
-  it('COMP-004: submitting profile form calls onSaveProfile with sanitized values', () => {
+  it('COMP-004: submitting profile form calls onSaveProfile with sanitized values', async () => {
     const handleSave = vi.fn();
     render(
       <ProfileEditorForm
@@ -134,7 +134,9 @@ describe('BrainWorker Profile & Portfolio UI Contracts (COMP-001 to COMP-012)', 
     );
 
     const saveBtn = screen.getByTestId('profile-save-btn');
-    fireEvent.click(saveBtn);
+    await act(async () => {
+      fireEvent.click(saveBtn);
+    });
 
     expect(handleSave).toHaveBeenCalled();
   });
@@ -196,7 +198,7 @@ describe('BrainWorker Profile & Portfolio UI Contracts (COMP-001 to COMP-012)', 
     expect(screen.getByTestId('portfolio-count-indicator')).toHaveTextContent(/20 \/ 20/);
   });
 
-  it('COMP-009: clicking delete triggers confirmation and invokes onDeletePortfolioItem', () => {
+  it('COMP-009: clicking delete triggers confirmation and invokes onDeletePortfolioItem', async () => {
     const handleDelete = vi.fn();
     render(
       <PortfolioGalleryManager
@@ -206,10 +208,14 @@ describe('BrainWorker Profile & Portfolio UI Contracts (COMP-001 to COMP-012)', 
     );
 
     const deleteBtn = screen.getByTestId('delete-portfolio-item-btn-port-1');
-    fireEvent.click(deleteBtn);
+    await act(async () => {
+      fireEvent.click(deleteBtn);
+    });
 
     const confirmBtn = screen.getByRole('button', { name: /confirm delete|delete work/i });
-    fireEvent.click(confirmBtn);
+    await act(async () => {
+      fireEvent.click(confirmBtn);
+    });
 
     expect(handleDelete).toHaveBeenCalledWith('port-1');
   });
@@ -226,7 +232,7 @@ describe('BrainWorker Profile & Portfolio UI Contracts (COMP-001 to COMP-012)', 
     expect(screen.getByTestId('artisan-response-card')).toBeInTheDocument();
   });
 
-  it('COMP-011: clicking respond opens form and submitting text invokes onSubmitCounterResponse', () => {
+  it('COMP-011: clicking respond opens form and submitting text invokes onSubmitCounterResponse', async () => {
     const handleRespond = vi.fn();
     render(
       <ReviewsCounterResponseTab
@@ -236,15 +242,21 @@ describe('BrainWorker Profile & Portfolio UI Contracts (COMP-001 to COMP-012)', 
     );
 
     const openBtn = screen.getByTestId('open-counter-response-btn-rev-unresponded');
-    fireEvent.click(openBtn);
+    await act(async () => {
+      fireEvent.click(openBtn);
+    });
 
     const textarea = screen.getByPlaceholderText(/write your response/i);
-    fireEvent.change(textarea, {
-      target: { value: 'Thank you for your business. We look forward to working with you.' },
+    await act(async () => {
+      fireEvent.change(textarea, {
+        target: { value: 'Thank you for your business. We look forward to working with you.' },
+      });
     });
 
     const submitBtn = screen.getByTestId('submit-counter-response-btn');
-    fireEvent.click(submitBtn);
+    await act(async () => {
+      fireEvent.click(submitBtn);
+    });
 
     expect(handleRespond).toHaveBeenCalledWith(
       'rev-unresponded',

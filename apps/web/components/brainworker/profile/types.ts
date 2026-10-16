@@ -9,8 +9,8 @@ import type {
 
 export interface ProfileEditorFormProps {
   profile: BrainWorkerProfile | null;
-  portfolioItems?: PortfolioItem[];
-  isSaving?: boolean;
+  portfolioItems?: PortfolioItem[] | undefined;
+  isSaving?: boolean | undefined;
   onSaveProfile: (
     updates: Partial<BrainWorkerProfile>
   ) => Promise<void> | void;
@@ -19,33 +19,31 @@ export interface ProfileEditorFormProps {
 export interface PortfolioGalleryManagerProps {
   portfolioItems: PortfolioItem[];
   onAddPortfolioItem?: (
-    item: Omit<PortfolioItem, 'id' | 'createdAt'>
-  ) => Promise<void> | void;
-  onDeletePortfolioItem?: (itemId: string) => Promise<void> | void;
+    (item: Omit<PortfolioItem, 'id' | 'createdAt'>) => Promise<void> | void
+  ) | undefined;
+  onDeletePortfolioItem?: ((itemId: string) => Promise<void> | void) | undefined;
 }
 
 export interface ReviewsCounterResponseTabProps {
   reviews: CustomerReview[];
   onSubmitCounterResponse?: (
-    reviewId: string,
-    responseText: string
-  ) => Promise<void> | void;
+    (reviewId: string, responseText: string) => Promise<void> | void
+  ) | undefined;
 }
 
 export interface ProfileManagementWorkspaceProps {
   profile: BrainWorkerProfile | null;
   portfolioItems: PortfolioItem[];
   reviews: CustomerReview[];
-  isSaving?: boolean;
+  isSaving?: boolean | undefined;
   onSaveProfile?: (
-    updates: Partial<BrainWorkerProfile>
-  ) => Promise<void> | void;
+    (updates: Partial<BrainWorkerProfile>) => Promise<void> | void
+  ) | undefined;
   onAddPortfolioItem?: (
-    item: Omit<PortfolioItem, 'id' | 'createdAt'>
-  ) => Promise<void> | void;
-  onDeletePortfolioItem?: (itemId: string) => Promise<void> | void;
+    (item: Omit<PortfolioItem, 'id' | 'createdAt'>) => Promise<void> | void
+  ) | undefined;
+  onDeletePortfolioItem?: ((itemId: string) => Promise<void> | void) | undefined;
   onSubmitCounterResponse?: (
-    reviewId: string,
-    responseText: string
-  ) => Promise<void> | void;
+    (reviewId: string, responseText: string) => Promise<void> | void
+  ) | undefined;
 }
