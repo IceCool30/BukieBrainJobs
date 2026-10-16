@@ -83,9 +83,9 @@ describe('BrainWorker Profile & Portfolio UI Contracts (COMP-001 to COMP-012)', 
       />
     );
 
-    expect(screen.getByLabelText(/headline/i)).toHaveValue(sampleProfile.headline);
-    expect(screen.getByLabelText(/bio/i)).toHaveValue(sampleProfile.bio);
-    expect(screen.getByLabelText(/experience/i)).toHaveValue(sampleProfile.yearsOfExperience);
+    expect(screen.getByTestId('profile-headline-input')).toHaveValue(sampleProfile.headline);
+    expect(screen.getByTestId('profile-bio-input')).toHaveValue(sampleProfile.bio);
+    expect(screen.getByTestId('profile-experience-input')).toHaveValue(sampleProfile.yearsOfExperience);
     expect(screen.getByTestId('profile-avatar-preview')).toBeInTheDocument();
   });
 
@@ -97,7 +97,7 @@ describe('BrainWorker Profile & Portfolio UI Contracts (COMP-001 to COMP-012)', 
       />
     );
 
-    const igboChip = screen.getByRole('button', { name: /igbo/i });
+    const igboChip = screen.getByTestId('language-chip-igbo');
     fireEvent.click(igboChip);
 
     expect(igboChip).toHaveAttribute('aria-pressed', 'true');
@@ -261,6 +261,9 @@ describe('BrainWorker Profile & Portfolio UI Contracts (COMP-001 to COMP-012)', 
       />
     );
 
+    expect(screen.getByTestId('tab-profile-details')).toBeInTheDocument();
+    expect(screen.getByTestId('tab-portfolio-gallery')).toBeInTheDocument();
+    expect(screen.getByTestId('tab-client-reviews')).toBeInTheDocument();
     expect(screen.queryByText(/₦|NGN|wallet|balance|escrow|bank account|payout/i)).not.toBeInTheDocument();
   });
 });
