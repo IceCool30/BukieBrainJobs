@@ -155,11 +155,12 @@ Phase 7: Launch Readiness
 - [x] Weekly working hours scheduler: Set working days, time slots (e.g., 8:00 AM to 5:00 PM), and emergency availability.
 - [x] Coverage area selector: Select specific neighbourhoods and maximum travel radius.
 
-#### 2.6 BrainWorker Earnings, Wallet & Payouts
-- [ ] Wallet summary: Available balance, pending escrow clearance, and lifetime earnings.
-- [ ] Nigerian bank account setup form: Select bank (Access, GTBank, Zenith, etc.) and account number with account name verification preview.
-- [ ] Withdrawal / payout request flow with confirmation history.
-- [ ] Detailed transaction history with booking references and service fee deductions.
+#### 2.6 BrainWorker Earnings, Wallet & Payouts (`BW-006`, Complete: Phases 1 to 5 Verified)
+- [x] Wallet summary: Available balance, pending escrow clearance, and lifetime earnings.
+- [x] Nigerian bank account setup form: Select bank (Access, GTBank, Zenith, etc.) and account number with account name verification preview.
+- [x] Withdrawal / payout request flow with confirmation history.
+- [x] Detailed transaction history with booking references and service fee deductions.
+- [x] Verified implementation: 42/42 wallet contracts passed (10 WALLET, 10 REP, 12 COMP, 10 ROUTE); monorepo web tests green; 7/7 type-check clean; 44 static routes compiled cleanly.
 
 #### 2.7 BrainWorker Profile & Portfolio Management (`BW-005`, Complete: Phases 1 to 5 Verified)
 - [x] Profile editor: Headshot upload, bio, years in trade, spoken languages.
