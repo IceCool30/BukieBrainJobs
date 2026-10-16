@@ -20,7 +20,7 @@ This document provides a single, unified checklist of what has been built, what 
 | **Customer Reviews & Reputation** | **Complete** | Completed & live in production. 608 passing tests across 32 suites. Verified on Vercel deployment 6586791746 (commit 962a870). |
 | **Customer Notifications & Messaging** | **Complete** | Messaging (WEB-017) and Notification Center (WEB-018) both complete and live in production. |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
-| **BrainWorker Platform** | **Complete** | BW-001 Onboarding & Identity, BW-002 Service Catalog & Availability, BW-003 Leads Inbox, and BW-004 Booking Management complete and verified (138/138 BW-004 tests; 1,472/1,472 web regression tests). |
+| **BrainWorker Platform** | **Complete** | BW-001 Onboarding & Identity, BW-002 Service Catalog & Availability, BW-003 Leads Inbox, BW-004 Booking Management, Item 2.2 Operating Dashboard, and BW-005 Profile & Portfolio Management complete and verified (42/42 BW-005 tests; 1,588/1,588 web regression tests). |
 | **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Customer state machine and provider booking management (BW-004 dispatch, check-in, scope adjustment requests, and provider cancellation) complete and verified (138 tests). Customer-side scope approval and dispute mediation remain outstanding. |
 | **Mobile Application (`apps/mobile`)** | **Not Built** | Expo starter only. Full native reconstruction required. |
 | **Admin & Operational Console** | **Not Built** | Worker vetting, dispute mediation, category management, analytics. |
@@ -161,10 +161,11 @@ Phase 7: Launch Readiness
 - [ ] Withdrawal / payout request flow with confirmation history.
 - [ ] Detailed transaction history with booking references and service fee deductions.
 
-#### 2.7 BrainWorker Profile & Portfolio Management
-- [ ] Profile editor: Headshot upload, bio, years in trade, spoken languages.
-- [ ] Portfolio gallery manager: Before-and-after work photos with short captions.
-- [ ] Client reviews tab: View customer feedback and submit worker counter-responses.
+#### 2.7 BrainWorker Profile & Portfolio Management (`BW-005`, Complete: Phases 1 to 5 Verified)
+- [x] Profile editor: Headshot upload, bio, years in trade, spoken languages.
+- [x] Portfolio gallery manager: Before-and-after work photos with short captions.
+- [x] Client reviews tab: View customer feedback and submit worker counter-responses.
+- [x] Verified implementation: 42/42 profile contracts passed (10 PROF, 10 REP, 12 COMP, 10 ROUTE); 1,588/1,588 monorepo web tests green; 7/7 type-check clean; 43/43 static routes compiled cleanly.
 
 ---
 
