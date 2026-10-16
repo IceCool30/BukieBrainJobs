@@ -62,12 +62,33 @@ export interface CustomerReview {
   bookingId: string;
   customerId: string;
   brainWorkerId: string;
+  customerName?: string | undefined;
   rating: number;
   criteriaScores?: Record<string, number> | undefined;
   reviewBody: string;
   status: CustomerReviewStatus;
   artisanResponse?: ReviewCounterResponse | null | undefined;
   createdAt: string;
+}
+
+export interface IBrainWorkerProfileRepository {
+  getProfile(workerId: string): Promise<BrainWorkerProfile | null>;
+  saveProfile(
+    workerId: string,
+    updates: Partial<BrainWorkerProfile>
+  ): Promise<BrainWorkerProfile>;
+  getPortfolio(workerId: string): Promise<PortfolioItem[]>;
+  addPortfolioItem(
+    workerId: string,
+    item: Omit<PortfolioItem, 'id' | 'createdAt'>
+  ): Promise<PortfolioItem>;
+  deletePortfolioItem(workerId: string, itemId: string): Promise<boolean>;
+  getReviews(workerId: string): Promise<CustomerReview[]>;
+  submitReviewCounterResponse(
+    workerId: string,
+    reviewId: string,
+    responseText: string
+  ): Promise<CustomerReview>;
 }
 
 export type ProfileCompletenessMilestoneKey =
