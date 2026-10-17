@@ -21,8 +21,8 @@ const COLOR_CLASSES = {
   sending: 'text-[var(--amber)]',
   sent: 'text-[var(--text-muted)]',
   delivered: 'text-[var(--text-muted)]',
-  read: 'text-emerald-600 dark:text-emerald-400',
-  failed: 'text-red-500',
+  read: 'text-[var(--brand-green)]',
+  failed: 'text-[var(--danger)]',
 } as const;
 
 const TITLES = {

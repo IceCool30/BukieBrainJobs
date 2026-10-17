@@ -457,8 +457,8 @@ export default function AuthScreen({
 
         <div className="mx-auto max-w-md px-4 py-12 sm:px-6 sm:py-16">
           <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-6 text-center shadow-xs sm:p-8">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-              <CheckCircle2 className="h-8 w-8 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)]">
+              <CheckCircle2 className="h-8 w-8 text-[var(--brand-green)]" aria-hidden="true" />
             </div>
 
             <h1
@@ -474,8 +474,8 @@ export default function AuthScreen({
             </p>
 
             {isBookingHandoff ? (
-              <div className="mt-4 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4 text-left">
-                <p className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+              <div className="mt-4 rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4 text-left">
+                <p className="text-xs font-bold uppercase tracking-wider text-[var(--brand-green)]">
                   Booking preserved
                 </p>
                 <p className="mt-1 text-sm text-[var(--text-main)]">
@@ -487,8 +487,8 @@ export default function AuthScreen({
                 </p>
               </div>
             ) : isJobHandoff ? (
-              <div className="mt-4 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4 text-left">
-                <p className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+              <div className="mt-4 rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4 text-left">
+                <p className="text-xs font-bold uppercase tracking-wider text-[var(--brand-green)]">
                   Job request preserved
                 </p>
                 <p className="mt-1 text-sm text-[var(--text-main)]">
@@ -567,10 +567,10 @@ export default function AuthScreen({
         {isJobHandoff && (
           <aside
             aria-label="Job posting context"
-            className="mb-6 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4 shadow-xs sm:p-5"
+            className="mb-6 rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4 shadow-xs sm:p-5"
           >
             <div className="flex items-start gap-3">
-              <ShieldCheck className="h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+              <ShieldCheck className="h-5 w-5 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
               <div>
                 <h2 className="text-sm font-bold font-display text-[var(--text-main)]">
                   Sign in or create an account to post your job request
@@ -582,20 +582,20 @@ export default function AuthScreen({
                 {preservedJob && (
                   <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-[var(--text-main)]">
                     {preservedJob.title && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-emerald-500/20 shadow-xs">
-                        <Briefcase className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-[var(--brand-green-border)] shadow-xs">
+                        <Briefcase className="h-3 w-3 text-[var(--brand-green)]" />
                         {preservedJob.title.length > 35 ? `${preservedJob.title.slice(0, 35)}...` : preservedJob.title}
                       </span>
                     )}
                     {preservedJob.city && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-emerald-500/20 shadow-xs">
-                        <MapPin className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-[var(--brand-green-border)] shadow-xs">
+                        <MapPin className="h-3 w-3 text-[var(--brand-green)]" />
                         {preservedJob.city}
                       </span>
                     )}
                     {preservedJob.urgency && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-emerald-500/20 shadow-xs capitalize">
-                        <Clock className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-[var(--brand-green-border)] shadow-xs capitalize">
+                        <Clock className="h-3 w-3 text-[var(--brand-green)]" />
                         {preservedJob.urgency.replace('_', ' ')}
                       </span>
                     )}
@@ -610,10 +610,10 @@ export default function AuthScreen({
         {isBookingHandoff && (
           <aside
             aria-label="Booking preparation context"
-            className="mb-6 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4 shadow-xs sm:p-5"
+            className="mb-6 rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4 shadow-xs sm:p-5"
           >
             <div className="flex items-start gap-3">
-              <ShieldCheck className="h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+              <ShieldCheck className="h-5 w-5 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
               <div>
                 <h2 className="text-sm font-bold font-display text-[var(--text-main)]">
                   Sign in or create an account to continue with your service request
@@ -625,20 +625,20 @@ export default function AuthScreen({
                 {preservedBooking && (
                   <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-[var(--text-main)]">
                     {preservedBooking.service && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-emerald-500/20 shadow-xs">
-                        <Briefcase className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-[var(--brand-green-border)] shadow-xs">
+                        <Briefcase className="h-3 w-3 text-[var(--brand-green)]" />
                         {preservedBooking.service}
                       </span>
                     )}
                     {preservedBooking.city && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-emerald-500/20 shadow-xs">
-                        <MapPin className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-[var(--brand-green-border)] shadow-xs">
+                        <MapPin className="h-3 w-3 text-[var(--brand-green)]" />
                         {preservedBooking.city}
                       </span>
                     )}
                     {preservedBooking.date && (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-emerald-500/20 shadow-xs">
-                        <Clock className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+                      <span className="inline-flex items-center gap-1 rounded-md bg-[var(--card-bg)] px-2.5 py-1 border border-[var(--brand-green-border)] shadow-xs">
+                        <Clock className="h-3 w-3 text-[var(--brand-green)]" />
                         {preservedBooking.date}
                       </span>
                     )}
@@ -739,9 +739,9 @@ export default function AuthScreen({
           {generalError && (
             <div
               role="alert"
-              className="mt-5 flex items-start gap-2.5 rounded-lg border border-red-500/20 bg-red-500/10 p-3.5 text-xs font-semibold text-red-600 dark:text-red-400"
+              className="mt-5 flex items-start gap-2.5 rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] p-3.5 text-xs font-semibold text-[var(--danger)]"
             >
-              <AlertCircle className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400" aria-hidden="true" />
+              <AlertCircle className="h-4 w-4 shrink-0 text-[var(--danger)]" aria-hidden="true" />
               <span>{generalError}</span>
             </div>
           )}
@@ -750,9 +750,9 @@ export default function AuthScreen({
           {successMessage && (
             <div
               role="alert"
-              className="mt-5 flex items-start gap-2.5 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-3.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300"
+              className="mt-5 flex items-start gap-2.5 rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-3.5 text-xs font-semibold text-[var(--brand-green)]"
             >
-              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
               <div>
                 <p>{successMessage}</p>
                 <button
@@ -899,7 +899,7 @@ export default function AuthScreen({
                     Supports 080..., 234..., or +234... formats.
                   </p>
                   {fieldErrors.phone && (
-                    <p id="phone-error" role="alert" className="mt-1.5 text-xs font-semibold text-red-600 dark:text-red-400">
+                    <p id="phone-error" role="alert" className="mt-1.5 text-xs font-semibold text-[var(--danger)]">
                       {fieldErrors.phone}
                     </p>
                   )}
@@ -953,7 +953,7 @@ export default function AuthScreen({
                   }`}
                 />
                 {fieldErrors.otp && (
-                  <p id="otp-error" role="alert" className="mt-1.5 text-xs font-semibold text-red-600 dark:text-red-400">
+                  <p id="otp-error" role="alert" className="mt-1.5 text-xs font-semibold text-[var(--danger)]">
                     {fieldErrors.otp}
                   </p>
                 )}
@@ -1055,7 +1055,7 @@ export default function AuthScreen({
                   />
                 </div>
                 {fieldErrors.email && (
-                  <p id="email-error" role="alert" className="mt-1.5 text-xs font-semibold text-red-600 dark:text-red-400">
+                  <p id="email-error" role="alert" className="mt-1.5 text-xs font-semibold text-[var(--danger)]">
                     {fieldErrors.email}
                   </p>
                 )}
@@ -1104,7 +1104,7 @@ export default function AuthScreen({
                   />
                 </div>
                 {fieldErrors.password && (
-                  <p id="password-error" role="alert" className="mt-1.5 text-xs font-semibold text-red-600 dark:text-red-400">
+                  <p id="password-error" role="alert" className="mt-1.5 text-xs font-semibold text-[var(--danger)]">
                     {fieldErrors.password}
                   </p>
                 )}
@@ -1162,7 +1162,7 @@ export default function AuthScreen({
                   />
                 </div>
                 {fieldErrors.email && (
-                  <p id="forgot-email-error" role="alert" className="mt-1.5 text-xs font-semibold text-red-600 dark:text-red-400">
+                  <p id="forgot-email-error" role="alert" className="mt-1.5 text-xs font-semibold text-[var(--danger)]">
                     {fieldErrors.email}
                   </p>
                 )}
@@ -1218,7 +1218,7 @@ export default function AuthScreen({
                   className="mt-1.5 block w-full min-h-[48px] rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-4 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[var(--amber)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]/20"
                 />
                 {fieldErrors.password && (
-                  <p role="alert" className="mt-1.5 text-xs font-semibold text-red-600 dark:text-red-400">
+                  <p role="alert" className="mt-1.5 text-xs font-semibold text-[var(--danger)]">
                     {fieldErrors.password}
                   </p>
                 )}
@@ -1244,7 +1244,7 @@ export default function AuthScreen({
                   className="mt-1.5 block w-full min-h-[48px] rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-4 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[var(--amber)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]/20"
                 />
                 {fieldErrors.confirmPassword && (
-                  <p role="alert" className="mt-1.5 text-xs font-semibold text-red-600 dark:text-red-400">
+                  <p role="alert" className="mt-1.5 text-xs font-semibold text-[var(--danger)]">
                     {fieldErrors.confirmPassword}
                   </p>
                 )}
@@ -1369,9 +1369,9 @@ function RoleSelectionSelector({
       {role === 'brainworker' && (
         <div
           role="note"
-          className="mt-2 flex items-start gap-2 rounded-lg border border-amber-500/20 bg-amber-500/10 p-2.5 text-xs text-amber-800 dark:text-amber-300"
+          className="mt-2 flex items-start gap-2 rounded-lg border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-2.5 text-xs text-[var(--amber)]"
         >
-          <HelpCircle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+          <HelpCircle className="h-4 w-4 shrink-0 text-[var(--amber)]" aria-hidden="true" />
           <span>
             Selecting BrainWorker creates your account. Professional verification and approval are completed in a separate onboarding workflow before you can accept jobs.
           </span>
@@ -1379,7 +1379,7 @@ function RoleSelectionSelector({
       )}
 
       {error && (
-        <p role="alert" className="mt-1 text-xs font-semibold text-red-600 dark:text-red-400">
+        <p role="alert" className="mt-1 text-xs font-semibold text-[var(--danger)]">
           {error}
         </p>
       )}

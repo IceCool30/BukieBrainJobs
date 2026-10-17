@@ -28,7 +28,7 @@ export function TypeBadge({ type }: TypeBadgeProps) {
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[10px] font-bold font-mono uppercase tracking-wider bg-emerald-500/10 text-[var(--brand-green)] border border-emerald-500/20">
+    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[10px] font-bold font-mono uppercase tracking-wider bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]">
       <Briefcase className="h-3 w-3 text-[var(--brand-green)]" />
       BOOKING
     </span>
@@ -44,21 +44,21 @@ export function StatusBadge({ status, label }: StatusBadgeProps) {
   switch (status) {
     case 'in_progress':
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
           <span className="h-1.5 w-1.5 rounded-full bg-[var(--amber)] animate-pulse" />
           {label}
         </span>
       );
     case 'scheduled':
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-emerald-500/10 text-[var(--brand-green)] border border-emerald-500/20">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]">
           <Calendar className="h-3 w-3 text-[var(--brand-green)]" />
           {label}
         </span>
       );
     case 'awaiting_progress':
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-sky-500/10 text-[var(--text-main)] border border-sky-500/20">
           <Clock className="h-3 w-3 text-sky-500" />
           {label}
         </span>
@@ -72,7 +72,7 @@ export function StatusBadge({ status, label }: StatusBadgeProps) {
       );
     case 'completed':
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-emerald-500/10 text-[var(--brand-green)] border border-emerald-500/30">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]">
           <CheckCircle2 className="h-3 w-3 text-[var(--brand-green)]" />
           {label}
         </span>

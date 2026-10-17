@@ -124,7 +124,7 @@ export function CancellationModal({
         className="w-full max-w-md bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg shadow-xl border border-[var(--lead)] p-6 space-y-4 overflow-hidden"
       >
         <div className="flex items-center justify-between border-b border-[var(--lead)] pb-3">
-          <div className="flex items-center gap-2 text-rose-500">
+          <div className="flex items-center gap-2 text-[var(--danger)]">
             <AlertTriangle className="w-5 h-5 shrink-0" aria-hidden="true" />
             <h3 id="cancel-modal-title" className="text-base font-bold text-[var(--text-main)] font-display">
               {jobStatus === 'CONFIRMED' ? 'Cancel Booking' : 'Cancel Service Request'}
@@ -194,7 +194,7 @@ export function CancellationModal({
             <button
               type="submit"
               disabled={isPending}
-              className="px-4 py-2 rounded-lg text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 transition flex items-center gap-1.5 disabled:opacity-50 cursor-pointer shadow-xs"
+              className="px-4 py-2 rounded-lg text-xs font-bold text-white bg-[var(--danger)] hover:opacity-90 transition flex items-center gap-1.5 disabled:opacity-50 cursor-pointer shadow-xs"
             >
               {isPending ? (
                 <>

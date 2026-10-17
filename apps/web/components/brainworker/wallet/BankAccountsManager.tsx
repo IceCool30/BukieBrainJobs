@@ -61,10 +61,10 @@ export function BankAccountsManager({
     <div data-testid="bank-accounts-manager" className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-base font-semibold text-slate-100">
+          <h2 className="text-base font-semibold text-[var(--text-main)]">
             Connected Bank Accounts
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[var(--text-muted)]">
             Verified Nigerian commercial banks and licensed fintechs for instant withdrawals
           </p>
         </div>
@@ -73,7 +73,7 @@ export function BankAccountsManager({
             type="button"
             data-testid="add-bank-account-button"
             onClick={() => setIsFormOpen(true)}
-            className="inline-flex items-center rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-200 border border-slate-700 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500"
+            className="inline-flex items-center rounded-lg bg-[var(--tag-bg)] px-3 py-1.5 text-xs font-medium text-[var(--text-main)] border border-[var(--lead)] hover:bg-[var(--card-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--rule)]"
           >
             + Add Bank Account
           </button>
@@ -84,16 +84,16 @@ export function BankAccountsManager({
       {isFormOpen && (
         <form
           onSubmit={handleSave}
-          className="rounded-xl border border-slate-700 bg-slate-800/60 p-4 space-y-4"
+          className="rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] p-4 space-y-4"
         >
-          <div className="flex items-center justify-between border-b border-slate-700/60 pb-3">
-            <h3 className="text-sm font-medium text-slate-200">
+          <div className="flex items-center justify-between border-b border-[var(--lead)] pb-3">
+            <h3 className="text-sm font-medium text-[var(--text-main)]">
               Link Nigerian Bank Account
             </h3>
             <button
               type="button"
               onClick={() => setIsFormOpen(false)}
-              className="text-xs text-slate-400 hover:text-slate-200"
+              className="text-xs text-[var(--text-muted)] hover:text-[var(--text-main)]"
             >
               Cancel
             </button>
@@ -104,7 +104,7 @@ export function BankAccountsManager({
             <div>
               <label
                 htmlFor="bank-select"
-                className="block text-xs font-medium text-slate-300 mb-1"
+                className="block text-xs font-medium text-[var(--text-muted)] mb-1"
               >
                 Select Bank
               </label>
@@ -113,7 +113,7 @@ export function BankAccountsManager({
                 data-testid="bank-select"
                 value={bankCode}
                 onChange={(e) => setBankCode(e.target.value)}
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-100 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-2 text-xs text-[var(--text-main)] focus:border-[var(--amber)] focus:outline-none focus:ring-1 focus:ring-[var(--amber-dim)]"
               >
                 {CANONICAL_NIGERIAN_BANKS.map((bank) => (
                   <option key={bank.code} value={bank.code}>
@@ -127,7 +127,7 @@ export function BankAccountsManager({
             <div>
               <label
                 htmlFor="account-number-input"
-                className="block text-xs font-medium text-slate-300 mb-1"
+                className="block text-xs font-medium text-[var(--text-muted)] mb-1"
               >
                 NUBAN Account Number
               </label>
@@ -139,12 +139,12 @@ export function BankAccountsManager({
                 placeholder="10-digit account number"
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-2 text-xs text-[var(--text-main)] placeholder-[var(--text-muted)] focus:border-[var(--amber)] focus:outline-none focus:ring-1 focus:ring-[var(--amber-dim)]"
               />
               {showNubanError && (
                 <p
                   data-testid="nuban-error"
-                  className="mt-1 text-xs text-rose-400"
+                  className="mt-1 text-xs text-[var(--danger)]"
                 >
                   NUBAN account number must be exactly 10 numeric digits.
                 </p>
@@ -155,7 +155,7 @@ export function BankAccountsManager({
             <div>
               <label
                 htmlFor="account-name-input"
-                className="block text-xs font-medium text-slate-300 mb-1"
+                className="block text-xs font-medium text-[var(--text-muted)] mb-1"
               >
                 Account Holder Name
               </label>
@@ -166,7 +166,7 @@ export function BankAccountsManager({
                 placeholder="Full name as registered"
                 value={accountName}
                 onChange={(e) => setAccountName(e.target.value)}
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-2 text-xs text-[var(--text-main)] placeholder-[var(--text-muted)] focus:border-[var(--amber)] focus:outline-none focus:ring-1 focus:ring-[var(--amber-dim)]"
               />
             </div>
           </div>
@@ -175,7 +175,7 @@ export function BankAccountsManager({
             <button
               type="button"
               onClick={() => setIsFormOpen(false)}
-              className="rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-300 hover:bg-slate-700"
+              className="rounded-lg border border-[var(--lead)] px-3 py-1.5 text-xs text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
             >
               Cancel
             </button>
@@ -183,7 +183,7 @@ export function BankAccountsManager({
               type="submit"
               data-testid="save-bank-account-button"
               disabled={!canSave}
-              className="rounded-lg bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-500"
+              className="rounded-lg bg-[var(--amber)] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)]"
             >
               {isSubmitting ? 'Verifying...' : 'Save Account'}
             </button>
@@ -201,25 +201,25 @@ export function BankAccountsManager({
             <div
               key={acc.id}
               data-testid={`bank-account-item-${acc.id}`}
-              className="relative rounded-xl border border-slate-800 bg-slate-900/40 p-4 transition-all hover:border-slate-700"
+              className="relative rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-4 transition-all hover:border-[var(--rule)]"
             >
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-semibold text-slate-100">
+                    <h4 className="text-sm font-semibold text-[var(--text-main)]">
                       {acc.bankName}
                     </h4>
                     <span
                       data-testid={`bank-verified-badge-${acc.id}`}
-                      className="inline-flex items-center rounded-full bg-emerald-950 px-2 py-0.5 text-[10px] font-medium text-emerald-400 border border-emerald-800/50"
+                      className="inline-flex items-center rounded-full bg-[var(--brand-green-dim)] px-2 py-0.5 text-[10px] font-medium text-[var(--brand-green)] border border-[var(--brand-green-border)]"
                     >
                       Verified
                     </span>
                   </div>
-                  <div className="mt-1 font-mono text-xs text-slate-300">
+                  <div className="mt-1 font-mono text-xs text-[var(--text-muted)]">
                     {maskedNumber}
                   </div>
-                  <div className="mt-0.5 text-xs font-medium text-slate-400">
+                  <div className="mt-0.5 text-xs font-medium text-[var(--text-muted)]">
                     {acc.accountName}
                   </div>
                 </div>
@@ -229,21 +229,21 @@ export function BankAccountsManager({
                     type="button"
                     data-testid={`delete-bank-account-${acc.id}`}
                     onClick={() => setDeletingAccountId(acc.id)}
-                    className="text-xs text-slate-500 hover:text-rose-400 transition-colors p-1"
+                    className="text-xs text-[var(--text-muted)] hover:text-[var(--danger)] transition-colors p-1"
                     title="Remove account"
                   >
                     Delete
                   </button>
                 ) : (
                   <div className="flex flex-col items-end gap-1.5">
-                    <span className="text-[11px] text-amber-400 font-medium">
+                    <span className="text-[11px] text-[var(--amber)] font-medium">
                       Remove account?
                     </span>
                     <div className="flex items-center gap-1.5">
                       <button
                         type="button"
                         onClick={() => setDeletingAccountId(null)}
-                        className="rounded px-2 py-0.5 text-[11px] text-slate-400 hover:bg-slate-800"
+                        className="rounded px-2 py-0.5 text-[11px] text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
                       >
                         Cancel
                       </button>
@@ -251,7 +251,7 @@ export function BankAccountsManager({
                         type="button"
                         data-testid="confirm-delete-account-button"
                         onClick={() => handleConfirmDelete(acc.id)}
-                        className="rounded bg-rose-600 px-2 py-0.5 text-[11px] font-medium text-white hover:bg-rose-500"
+                        className="rounded bg-[var(--danger)] px-2 py-0.5 text-[11px] font-medium text-white hover:opacity-90"
                       >
                         Confirm
                       </button>
@@ -264,8 +264,8 @@ export function BankAccountsManager({
         })}
 
         {accounts.length === 0 && !isFormOpen && (
-          <div className="col-span-full rounded-xl border border-dashed border-slate-800 p-8 text-center">
-            <p className="text-xs text-slate-400">
+          <div className="col-span-full rounded-xl border border-dashed border-[var(--lead)] p-8 text-center">
+            <p className="text-xs text-[var(--text-muted)]">
               No bank accounts connected yet. Link your Nigerian bank account to receive withdrawals.
             </p>
           </div>

@@ -292,7 +292,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
               {badgeCount > 0 && (
                 <span
                   data-testid={tab.badgeTestId}
-                  className="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25"
+                  className="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]"
                 >
                   {badgeCount}
                 </span>

@@ -34,14 +34,14 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
       case 'settled':
         return {
           label: 'Payment Settled & Released',
-          color: 'bg-emerald-50 text-[#296A4B] border-emerald-200',
+          color: 'bg-[var(--brand-green-dim)] text-[var(--brand-green)] border-[var(--brand-green-border)]',
           icon: CheckCircle2,
           date: receipt.settlementDate ? `Released on ${new Date(receipt.settlementDate).toLocaleDateString()}` : undefined,
         };
       case 'release_pending':
         return {
           label: 'Release Pending Verification',
-          color: 'bg-amber-50 text-amber-800 border-amber-200',
+          color: 'bg-[var(--amber-dim)] text-[var(--amber)] border-[var(--amber)]/30',
           icon: Clock,
           date: 'Payout transfer undergoing banking settlement',
         };
@@ -49,7 +49,7 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
       default:
         return {
           label: 'Funds Secured in Escrow',
-          color: 'bg-blue-50 text-blue-800 border-blue-200',
+          color: 'bg-[var(--tag-bg)] text-[var(--amber)] border-[var(--lead)]',
           icon: ShieldCheck,
           date: 'Held safely under BukieGuarantee until completion approval',
         };
@@ -61,19 +61,19 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 sm:p-6 overflow-y-auto backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg)] p-4 sm:p-6 overflow-y-auto backdrop-blur-xs"
       role="dialog"
       aria-modal="true"
       aria-label="Payment & Escrow Receipt"
     >
-      <div className="relative w-full max-w-xl rounded-2xl bg-white p-6 sm:p-8 shadow-2xl border border-slate-200 overflow-hidden my-8">
+      <div className="relative w-full max-w-xl rounded-2xl bg-[var(--card-bg)] p-6 sm:p-8 shadow-2xl border border-[var(--lead)] overflow-hidden my-8">
         {/* Actions bar (Hidden when printing) */}
-        <div className="print:hidden flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+        <div className="print:hidden flex items-center justify-between pb-4 mb-4 border-b border-[var(--lead)]">
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--rule)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-muted)] transition cursor-pointer"
             >
               <Printer className="h-3.5 w-3.5" />
               <span>Print Receipt</span>
@@ -81,7 +81,7 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
             <button
               type="button"
               onClick={handleDownloadJson}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--rule)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-muted)] transition cursor-pointer"
             >
               <Download className="h-3.5 w-3.5" />
               <span>Export JSON</span>
@@ -92,31 +92,31 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
             type="button"
             onClick={onClose}
             aria-label="Close receipt"
-            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer"
+            className="p-1.5 rounded-xl text-[var(--text-muted)] hover:text-slate-600 hover:bg-[var(--card-hover)] cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Printable Receipt Canvas */}
-        <div id="receipt-printable-canvas" className="space-y-5 text-slate-800">
+        <div id="receipt-printable-canvas" className="space-y-5 text-[var(--text-main)]">
           {/* Official Header */}
-          <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-200">
+          <div className="flex items-start justify-between gap-4 pb-4 border-b border-[var(--lead)]">
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-display font-black text-xl text-[#001A41] tracking-tight">
-                  BukieBrain<span className="text-[#296A4B]">Jobs</span>
+                <span className="font-display font-black text-xl text-[var(--text-main)] tracking-tight">
+                  BukieBrain<span className="text-[var(--brand-green)]">Jobs</span>
                 </span>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-[var(--tag-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
                   Escrow Receipt
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-1">BukieBrainJobs Technologies Limited • Lagos, Nigeria</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">BukieBrainJobs Technologies Limited • Lagos, Nigeria</p>
             </div>
 
             <div className="text-right">
-              <span className="font-mono text-xs font-bold text-slate-900 block">{receipt.receiptNumber}</span>
-              <span className="text-[11px] text-slate-500 block">
+              <span className="font-mono text-xs font-bold text-[var(--text-main)] block">{receipt.receiptNumber}</span>
+              <span className="text-[11px] text-[var(--text-muted)] block">
                 {new Date(receipt.paidAt).toLocaleDateString()}
               </span>
             </div>
@@ -124,7 +124,7 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
 
           {/* Sandbox Watermark Banner */}
           {receipt.isSimulatedTestDocument && (
-            <div className="rounded-lg bg-slate-100 p-2 text-center text-[10px] font-mono uppercase tracking-wider text-slate-500 border border-dashed border-slate-300">
+            <div className="rounded-lg bg-[var(--tag-bg)] p-2 text-center text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] border border-dashed border-[var(--rule)]">
               SIMULATED TEST RECEIPT (PHASE 1 MOCK BOUNDARY)
             </div>
           )}
@@ -141,38 +141,38 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
           </div>
 
           {/* Transaction Metadata Grid */}
-          <div className="grid grid-cols-2 gap-4 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <div className="grid grid-cols-2 gap-4 text-xs bg-[var(--bg)] p-4 rounded-xl border border-[var(--lead)]">
             <div>
-              <span className="text-slate-400 block text-[11px]">Billed To</span>
-              <span className="font-bold text-slate-900 block mt-0.5">{receipt.customerName}</span>
-              <span className="text-slate-500">{receipt.customerPhoneMasked}</span>
+              <span className="text-[var(--text-muted)] block text-[11px]">Billed To</span>
+              <span className="font-bold text-[var(--text-main)] block mt-0.5">{receipt.customerName}</span>
+              <span className="text-[var(--text-muted)]">{receipt.customerPhoneMasked}</span>
             </div>
 
             <div>
-              <span className="text-slate-400 block text-[11px]">Verified BrainWorker</span>
-              <span className="font-bold text-slate-900 block mt-0.5">{receipt.workerName}</span>
-              <span className="text-slate-500">{receipt.serviceTitle}</span>
+              <span className="text-[var(--text-muted)] block text-[11px]">Verified BrainWorker</span>
+              <span className="font-bold text-[var(--text-main)] block mt-0.5">{receipt.workerName}</span>
+              <span className="text-[var(--text-muted)]">{receipt.serviceTitle}</span>
             </div>
 
             <div>
-              <span className="text-slate-400 block text-[11px]">Payment Reference</span>
-              <span className="font-mono text-[11px] font-semibold text-slate-700 block mt-0.5">
+              <span className="text-[var(--text-muted)] block text-[11px]">Payment Reference</span>
+              <span className="font-mono text-[11px] font-semibold text-[var(--text-muted)] block mt-0.5">
                 {receipt.paymentReference}
               </span>
             </div>
 
             <div>
-              <span className="text-slate-400 block text-[11px]">Service Location</span>
-              <span className="text-slate-700 block mt-0.5 truncate">{receipt.address}</span>
+              <span className="text-[var(--text-muted)] block text-[11px]">Service Location</span>
+              <span className="text-[var(--text-muted)] block mt-0.5 truncate">{receipt.address}</span>
             </div>
           </div>
 
           {/* Itemized Breakdown Table */}
           <div className="space-y-2 text-xs">
-            <h4 className="font-bold uppercase tracking-wider text-slate-400 text-[10px]">
+            <h4 className="font-bold uppercase tracking-wider text-[var(--text-muted)] text-[10px]">
               Itemized Financial Summary
             </h4>
-            <div className="rounded-xl border border-slate-200 overflow-hidden divide-y divide-slate-100">
+            <div className="rounded-xl border border-[var(--lead)] overflow-hidden divide-y divide-[var(--lead)]">
               <div className="p-3 flex justify-between">
                 <span>Base Service Estimate</span>
                 <span className="font-mono font-semibold">₦{receipt.pricing.baseServiceAmountNaira.toLocaleString()}</span>
@@ -189,9 +189,9 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
                 <span>Statutory Value Added Tax (VAT 7.5%)</span>
                 <span className="font-mono font-semibold">₦{receipt.pricing.statutoryVatNaira.toLocaleString()}</span>
               </div>
-              <div className="p-3 bg-slate-50 flex justify-between text-sm font-bold text-[#001A41]">
+              <div className="p-3 bg-[var(--bg)] flex justify-between text-sm font-bold text-[var(--text-main)]">
                 <span>Total Amount Charged</span>
-                <span className="font-mono text-base text-[#296A4B]">
+                <span className="font-mono text-base text-[var(--brand-green)]">
                   ₦{receipt.pricing.totalPayableNaira.toLocaleString()}
                 </span>
               </div>
@@ -199,7 +199,7 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
           </div>
 
           {/* Footer Notes */}
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+          <div className="pt-2 border-t border-[var(--lead)] flex items-center justify-between text-[11px] text-[var(--text-muted)]">
             <span>Payment Instrument: {receipt.paymentMethodUsed}</span>
             <span>BukieGuarantee Protected</span>
           </div>

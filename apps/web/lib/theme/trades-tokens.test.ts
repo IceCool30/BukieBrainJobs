@@ -46,6 +46,22 @@ describe('BukieBrainJobs Trades Design System Tokens', () => {
     expect(dark.dispatchBg).toContain('linear-gradient');
   });
 
+  it('carries the status tokens native apps need, matching the web CSS variables', () => {
+    expect(tradesColorTokens.light).toMatchObject({
+      amberDim: 'rgba(255, 107, 53, 0.08)',
+      brandGreenDim: 'rgba(16, 185, 129, 0.1)',
+      brandGreenBorder: 'rgba(16, 185, 129, 0.35)',
+      danger: '#C4302B',
+      dangerDim: 'rgba(196, 48, 43, 0.08)',
+    });
+    expect(tradesColorTokens.dark).toMatchObject({
+      amberDim: 'rgba(255, 107, 53, 0.14)',
+      brandGreenDim: 'rgba(47, 232, 150, 0.12)',
+      brandGreenBorder: 'rgba(47, 232, 150, 0.35)',
+      danger: '#FF6B6B',
+      dangerDim: 'rgba(255, 107, 107, 0.1)',
+    });
+  });
   it('preserves existing brand colors while attaching trades tokens', () => {
     expect(brandColors.navy.DEFAULT).toBe('#001A41');
     expect(brandColors.emerald.DEFAULT).toBe('#296A4B');

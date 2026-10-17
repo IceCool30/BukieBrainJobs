@@ -21,7 +21,7 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
       aria-label={`View ${worker.name}'s profile`}
     >
       <div>
-        <div className="relative aspect-[5/4] overflow-hidden bg-slate-100/10">
+        <div className="relative aspect-[5/4] overflow-hidden bg-[var(--tag-bg)]">
           <Image
             src={worker.avatarUrl}
             alt={`Portrait of ${worker.name}`}

@@ -274,7 +274,7 @@ export default function DashboardScreen() {
 
               <div className="pt-3 border-t border-[var(--lead)] flex items-center justify-between text-xs">
                 <span className="text-[var(--text-muted)]">Account status</span>
-                <span className="inline-flex items-center gap-1 text-[var(--brand-green)] font-semibold bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">
+                <span className="inline-flex items-center gap-1 text-[var(--brand-green)] font-semibold bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2 py-0.5 rounded-md">
                   <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-green)]" />
                   Active
                 </span>
@@ -383,7 +383,7 @@ export default function DashboardScreen() {
             {viewModel.newJobNotice && (
               <div
                 role="alert"
-                className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4 flex items-start gap-3 text-[var(--brand-green)] shadow-xs animate-fade-in"
+                className="bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] rounded-lg p-4 flex items-start gap-3 text-[var(--brand-green)] shadow-xs animate-fade-in"
               >
                 <CheckCircle2 className="h-5 w-5 text-[var(--brand-green)] shrink-0 mt-0.5" />
                 <div className="flex-1">
@@ -415,7 +415,7 @@ export default function DashboardScreen() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-500/10 text-[var(--brand-green)] border border-emerald-500/30 flex items-center gap-1.5">
+                <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] flex items-center gap-1.5">
                   <span className="h-2 w-2 rounded-full bg-[var(--brand-green)]" />
                   Account Active
                 </span>
@@ -459,7 +459,7 @@ export default function DashboardScreen() {
                       <h3 id="jobs-tab-active-heading" className="text-base font-bold font-display text-[var(--text-main)]">
                         Active Requests
                       </h3>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-amber-500/10 text-[var(--amber)] border border-amber-500/30">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                         {viewModel.activeWork.length}
                       </span>
                     </div>
@@ -477,7 +477,7 @@ export default function DashboardScreen() {
                               <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]">
                                 {item.id}
                               </span>
-                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-amber-500/10 text-[var(--amber)] border border-amber-500/30">
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                                 {item.statusLabel}
                               </span>
                               {item.preferredWorkerName && (
@@ -570,7 +570,7 @@ export default function DashboardScreen() {
                       <h3 id="jobs-tab-upcoming-heading" className="text-base font-bold font-display text-[var(--text-main)]">
                         Scheduled Bookings
                       </h3>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/30">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                         {viewModel.upcomingWork.length}
                       </span>
                     </div>
@@ -588,7 +588,7 @@ export default function DashboardScreen() {
                               <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]">
                                 {item.id}
                               </span>
-                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/30">
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                                 Scheduled
                               </span>
                             </div>
@@ -729,7 +729,7 @@ export default function DashboardScreen() {
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <div className="h-10 w-10 rounded-lg bg-emerald-500/10 text-[var(--brand-green)] border border-emerald-500/20 flex items-center justify-center group-hover:scale-105 transition-transform">
+                      <div className="h-10 w-10 rounded-lg bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] flex items-center justify-center group-hover:scale-105 transition-transform">
                         <Briefcase className="h-5 w-5" />
                       </div>
                       <span className="text-[11px] font-bold uppercase tracking-wider bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] px-2.5 py-0.5 rounded-md">
@@ -817,7 +817,7 @@ export default function DashboardScreen() {
                     <h2 id="active-work-heading" className="text-base font-bold font-display text-[var(--text-main)]">
                       Active Work
                     </h2>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-amber-500/10 text-[var(--amber)] border border-amber-500/30">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                       {viewModel.activeWork.length}
                     </span>
                   </div>
@@ -837,13 +837,13 @@ export default function DashboardScreen() {
                 {viewModel.hasPartialFailure && (
                   <div
                     role="alert"
-                    className="bg-red-500/10 border border-red-500/30 rounded-lg p-5 text-red-400 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    className="bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-lg p-5 text-[var(--danger)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                   >
                     <div className="flex items-start gap-3">
-                      <AlertTriangle className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
+                      <AlertTriangle className="h-5 w-5 text-[var(--danger)] shrink-0 mt-0.5" />
                       <div>
-                        <h4 className="font-bold text-sm text-red-300">Could not load active requests</h4>
-                        <p className="text-xs text-red-400 mt-0.5 leading-relaxed">
+                        <h4 className="font-bold text-sm text-[var(--danger)]">Could not load active requests</h4>
+                        <p className="text-xs text-[var(--danger)] mt-0.5 leading-relaxed">
                           A temporary network issue prevented us from retrieving active requests. Other dashboard
                           sections remain operational.
                         </p>
@@ -851,7 +851,7 @@ export default function DashboardScreen() {
                     </div>
                     <button
                       onClick={handleRetryActive}
-                      className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer"
+                      className="px-4 py-2 bg-[var(--danger)] hover:opacity-90 text-white text-xs font-semibold rounded-lg transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer"
                     >
                       <RotateCcw className="h-3.5 w-3.5" />
                       Retry Active Requests
@@ -873,7 +873,7 @@ export default function DashboardScreen() {
                               <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]">
                                 {item.id}
                               </span>
-                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-amber-500/10 text-[var(--amber)] border border-amber-500/30">
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                                 {item.statusLabel}
                               </span>
                               {item.preferredWorkerName && (
@@ -930,7 +930,7 @@ export default function DashboardScreen() {
                     <h2 id="upcoming-work-heading" className="text-base font-bold font-display text-[var(--text-main)]">
                       Upcoming Work
                     </h2>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/30">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                       {viewModel.upcomingWork.length}
                     </span>
                   </div>
@@ -952,7 +952,7 @@ export default function DashboardScreen() {
                             <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]">
                               {item.id}
                             </span>
-                            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/30">
+                            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                               Scheduled
                             </span>
                           </div>
@@ -1228,7 +1228,7 @@ export default function DashboardScreen() {
               </div>
               <div className="p-3 bg-[var(--bg)] rounded-lg border border-[var(--lead)] flex items-center justify-between">
                 <span className="text-[var(--text-muted)]">Role</span>
-                <span className="font-semibold text-[var(--brand-green)] bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">
+                <span className="font-semibold text-[var(--brand-green)] bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2 py-0.5 rounded-md">
                   {getRoleDisplayLabel(viewModel.customer.role)}
                 </span>
               </div>
@@ -1247,7 +1247,7 @@ export default function DashboardScreen() {
             <div className="pt-2 space-y-2">
               <button
                 onClick={handleSignOut}
-                className="w-full py-2.5 px-4 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                className="w-full py-2.5 px-4 bg-[var(--danger)] text-white text-xs font-semibold rounded-lg hover:opacity-90 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
               >
                 <LogOut className="h-4 w-4" />
                 Sign Out

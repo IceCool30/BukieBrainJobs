@@ -363,11 +363,11 @@ export function LifecycleStateSurface({
                 stateCopy.badgeStyle === 'navy'
                   ? 'bg-[var(--amber)] text-white shadow-xs'
                   : stateCopy.badgeStyle === 'emerald'
-                  ? 'bg-emerald-500/10 text-[var(--brand-green)] border border-emerald-500/20'
+                  ? 'bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]'
                   : stateCopy.badgeStyle === 'amber'
-                  ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
+                  ? 'bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30'
                   : stateCopy.badgeStyle === 'rose'
-                  ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20'
+                  ? 'bg-[var(--danger-dim)] text-[var(--danger)] border border-[var(--danger-border)]'
                   : 'bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]'
               }`}
             >
@@ -432,12 +432,12 @@ export function LifecycleStateSurface({
             <div
               role="alert"
               aria-label="Offline Mode: Read-Only Financial State"
-              className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-xs text-amber-600 dark:text-amber-400 flex items-start gap-3"
+              className="rounded-lg border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-4 text-xs text-[var(--amber)] flex items-start gap-3"
             >
-              <WifiOff className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" aria-hidden="true" />
+              <WifiOff className="h-5 w-5 text-[var(--amber)] shrink-0 mt-0.5" aria-hidden="true" />
               <div className="space-y-0.5">
                 <p className="font-bold">Offline: Read-Only Financial State</p>
-                <p className="text-amber-700 dark:text-amber-300 leading-relaxed">
+                <p className="text-[var(--amber)] leading-relaxed">
                   You are currently offline. Financial mutations (funding escrow, releasing funds, requesting refunds, and filing disputes) are disabled until your connection is restored. Booking details and receipts remain accessible in read-only mode.
                 </p>
               </div>
@@ -471,7 +471,7 @@ export function LifecycleStateSurface({
                   Deposit agreed fee into secure BukieGuarantee escrow
                 </h4>
                 <p className="text-xs text-[var(--text-muted)]">
-                  Total Payable: ₦{paymentContext.pricing.totalPayableNaira.toLocaleString()} (including transparent protection fee and VAT).
+                  Total Payable: <span className="font-mono font-semibold">₦{paymentContext.pricing.totalPayableNaira.toLocaleString()}</span> (including transparent protection fee and VAT).
                 </p>
               </div>
 
@@ -504,11 +504,11 @@ export function LifecycleStateSurface({
 
           {/* Dispute Notice Banner */}
           {currentJobStatus === 'DISPUTED' && (
-            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-xs text-amber-600 dark:text-amber-400 flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" aria-hidden="true" />
+            <div className="rounded-lg border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-4 text-xs text-[var(--amber)] flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-[var(--amber)] shrink-0 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-bold">BukieGuarantee Dispute In Progress</p>
-                <p className="mt-0.5 text-amber-700 dark:text-amber-300">
+                <p className="mt-0.5 text-[var(--amber)]">
                   Payouts for this job are frozen under escrow. A mediation specialist is reviewing the case to resolve the claim.
                 </p>
               </div>
@@ -667,7 +667,7 @@ export function LifecycleStateSurface({
                   disabled={isOffline}
                   aria-disabled={isOffline}
                   title={isOffline ? 'Refund requests require an active internet connection' : undefined}
-                  className="px-3.5 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 border border-rose-500/30 bg-rose-500/10 text-rose-500 hover:bg-rose-500/20 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
+                  className="px-3.5 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 border border-[var(--danger-border)] bg-[var(--danger-dim)] text-[var(--danger)] hover:bg-rose-500/20 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
                 >
                   <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Request Refund</span>
@@ -721,7 +721,7 @@ export function LifecycleStateSurface({
                 type="button"
                 onClick={() => setIsCancelModalOpen(true)}
                 disabled={isPending}
-                className="px-4 py-2 rounded-lg text-xs font-semibold border border-rose-500/30 text-rose-500 hover:bg-rose-500/10 transition disabled:opacity-50 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 shadow-xs"
+                className="px-4 py-2 rounded-lg text-xs font-semibold border border-[var(--danger-border)] text-[var(--danger)] hover:bg-rose-500/10 transition disabled:opacity-50 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 shadow-xs"
               >
                 {currentJobStatus === 'CONFIRMED' ? 'Cancel Booking' : 'Cancel Request'}
               </button>
@@ -736,20 +736,20 @@ export function LifecycleStateSurface({
       {mutationError && (
         <section
           aria-label="Action Error Notice"
-          className="rounded-lg border border-rose-500/30 bg-rose-500/10 p-4 text-rose-500 flex items-start justify-between gap-3 shadow-xs"
+          className="rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] p-4 text-[var(--danger)] flex items-start justify-between gap-3 shadow-xs"
         >
           <div className="flex items-start gap-2.5">
-            <AlertTriangle className="h-5 w-5 text-rose-500 shrink-0 mt-0.5" aria-hidden="true" />
+            <AlertTriangle className="h-5 w-5 text-[var(--danger)] shrink-0 mt-0.5" aria-hidden="true" />
             <div className="text-xs">
               <p className="font-bold">Action could not complete</p>
-              <p className="text-rose-400 mt-0.5">{mutationError}</p>
+              <p className="text-[var(--danger)] mt-0.5">{mutationError}</p>
             </div>
           </div>
           {onClearMutationError && (
             <button
               type="button"
               onClick={onClearMutationError}
-              className="p-1 text-rose-500 hover:text-rose-400 text-xs font-semibold cursor-pointer"
+              className="p-1 text-[var(--danger)] hover:text-[var(--danger)] text-xs font-semibold cursor-pointer"
               aria-label="Dismiss error notice"
             >
               Dismiss

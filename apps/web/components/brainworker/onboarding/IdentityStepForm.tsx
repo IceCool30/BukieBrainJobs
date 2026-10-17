@@ -259,7 +259,7 @@ export function IdentityStepForm({
               htmlFor={`${formId}-first-name`}
               className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
             >
-              Legal First Name <span className="text-red-500">*</span>
+              Legal First Name <span className="text-[var(--danger)]">*</span>
             </label>
             <input
               id={`${formId}-first-name`}
@@ -271,12 +271,12 @@ export function IdentityStepForm({
               placeholder="e.g. Amina"
               className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 ${
                 firstNameError
-                  ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  ? 'border-[var(--danger-border)] focus:ring-red-400 bg-[var(--danger-dim)]'
+                  : 'border-[var(--card-border)] focus:border-[var(--amber)] focus:ring-[var(--amber-dim)]'
               }`}
             />
             {firstNameError && (
-              <p role="alert" className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">
+              <p role="alert" className="mt-1 text-xs text-[var(--danger)] font-medium">
                 {firstNameError}
               </p>
             )}
@@ -295,7 +295,7 @@ export function IdentityStepForm({
               value={middleName}
               onChange={(e) => setMiddleName(e.target.value)}
               placeholder="e.g. Bolanle"
-              className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
+              className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)]"
             />
           </div>
 
@@ -304,7 +304,7 @@ export function IdentityStepForm({
               htmlFor={`${formId}-last-name`}
               className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
             >
-              Legal Last Name <span className="text-red-500">*</span>
+              Legal Last Name <span className="text-[var(--danger)]">*</span>
             </label>
             <input
               id={`${formId}-last-name`}
@@ -316,12 +316,12 @@ export function IdentityStepForm({
               placeholder="e.g. Okonkwo"
               className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 ${
                 lastNameError
-                  ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  ? 'border-[var(--danger-border)] focus:ring-red-400 bg-[var(--danger-dim)]'
+                  : 'border-[var(--card-border)] focus:border-[var(--amber)] focus:ring-[var(--amber-dim)]'
               }`}
             />
             {lastNameError && (
-              <p role="alert" className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">
+              <p role="alert" className="mt-1 text-xs text-[var(--danger)] font-medium">
                 {lastNameError}
               </p>
             )}
@@ -334,9 +334,9 @@ export function IdentityStepForm({
         <div>
           <label
             htmlFor={`${formId}-dob`}
-            className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
+            className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
           >
-            Date of Birth <span className="text-red-500">*</span>
+            Date of Birth <span className="text-[var(--danger)]">*</span>
           </label>
           <input
             id={`${formId}-dob`}
@@ -347,12 +347,12 @@ export function IdentityStepForm({
             onBlur={() => markTouched('dateOfBirth')}
             className={`w-full sm:max-w-xs rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] transition focus:outline-none focus:ring-2 ${
               dobError
-                ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                ? 'border-[var(--danger-border)] focus:ring-red-400 bg-[var(--danger-dim)]'
+                : 'border-[var(--card-border)] focus:border-[var(--amber)] focus:ring-[var(--amber-dim)]'
             }`}
           />
           {dobError && (
-            <p role="alert" className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">
+            <p role="alert" className="mt-1 text-xs text-[var(--danger)] font-medium">
               {dobError}
             </p>
           )}
@@ -366,7 +366,7 @@ export function IdentityStepForm({
       <div className="space-y-4 pt-2 border-t border-[var(--card-border)]">
         <div>
           <span className="block text-xs font-semibold text-[var(--text-muted)] mb-2">
-            Verification Identifier Type <span className="text-red-500">*</span>
+            Verification Identifier Type <span className="text-[var(--danger)]">*</span>
           </span>
           <div className="flex items-center gap-6">
             <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-[var(--text-main)]">
@@ -379,7 +379,7 @@ export function IdentityStepForm({
                   setIdentifierType('NIN');
                   setIsMasked(false);
                 }}
-                className="h-4 w-4 text-[#001A41] dark:text-emerald-500 focus:ring-[#001A41] dark:focus:ring-emerald-500"
+                className="h-4 w-4 text-[var(--text-main)] focus:ring-[var(--amber)]"
               />
               <span>NIN</span>
             </label>
@@ -393,7 +393,7 @@ export function IdentityStepForm({
                   setIdentifierType('BVN');
                   setIsMasked(false);
                 }}
-                className="h-4 w-4 text-[#001A41] dark:text-emerald-500 focus:ring-[#001A41] dark:focus:ring-emerald-500"
+                className="h-4 w-4 text-[var(--text-main)] focus:ring-[var(--amber)]"
               />
               <span>BVN</span>
             </label>
@@ -406,7 +406,7 @@ export function IdentityStepForm({
               htmlFor={`${formId}-identifier`}
               className="block text-xs font-semibold text-[var(--text-muted)]"
             >
-              {identifierLabel} <span className="text-red-500">*</span>
+              {identifierLabel} <span className="text-[var(--danger)]">*</span>
             </label>
             <span className="text-xs font-medium text-[var(--text-muted)] font-mono">
               {identifierNumber.length}/11 digits
@@ -421,7 +421,7 @@ export function IdentityStepForm({
               <button
                 type="button"
                 onClick={() => setIsMasked(false)}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#001A41] dark:text-emerald-400 hover:underline"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--text-main)] hover:underline"
               >
                 <Edit2 className="h-3.5 w-3.5" />
                 <span>Show / Edit</span>
@@ -440,28 +440,28 @@ export function IdentityStepForm({
               placeholder="Enter 11 numeric digits"
               className={`w-full rounded-lg border px-3.5 py-2.5 font-mono text-sm text-[var(--text-main)] bg-[var(--bg)] transition focus:outline-none focus:ring-2 ${
                 identifierError
-                  ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  ? 'border-[var(--danger-border)] focus:ring-red-400 bg-[var(--danger-dim)]'
+                  : 'border-[var(--card-border)] focus:border-[var(--amber)] focus:ring-[var(--amber-dim)]'
               }`}
             />
           )}
 
           {identifierError && (
-            <p role="alert" className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">
+            <p role="alert" className="mt-1 text-xs text-[var(--danger)] font-medium">
               {identifierError}
             </p>
           )}
 
           {isIdentifierValid && (
-            <p className="mt-1.5 flex items-center gap-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+            <p className="mt-1.5 flex items-center gap-1 text-xs font-semibold text-[var(--brand-green)]">
               <CheckCircle2 className="h-3.5 w-3.5" />
               <span>✓ 11-digit format valid</span>
             </p>
           )}
 
           {/* Privacy Disclaimer Note */}
-          <div className="mt-3 flex items-start gap-2 rounded-lg bg-blue-50/70 dark:bg-blue-950/30 p-3 text-xs text-slate-600 dark:text-slate-300 border border-blue-100 dark:border-blue-900/40">
-            <Shield className="h-4 w-4 shrink-0 text-[#001A41] dark:text-emerald-400 mt-0.5" />
+          <div className="mt-3 flex items-start gap-2 rounded-lg bg-[var(--tag-bg)] p-3 text-xs text-[var(--text-muted)] border border-[var(--lead)]">
+            <Shield className="h-4 w-4 shrink-0 text-[var(--text-main)] mt-0.5" />
             <p>
               Your NIN/BVN is used strictly to cross-reference your legal identity. It is never displayed to customers or shared with third parties.
             </p>
@@ -480,7 +480,7 @@ export function IdentityStepForm({
               htmlFor={`${formId}-street`}
               className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
             >
-              Street Address <span className="text-red-500">*</span>
+              Street Address <span className="text-[var(--danger)]">*</span>
             </label>
             <input
               id={`${formId}-street`}
@@ -492,12 +492,12 @@ export function IdentityStepForm({
               placeholder="e.g. 14 Commercial Avenue"
               className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 ${
                 streetError
-                  ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  ? 'border-[var(--danger-border)] focus:ring-red-400 bg-[var(--danger-dim)]'
+                  : 'border-[var(--card-border)] focus:border-[var(--amber)] focus:ring-[var(--amber-dim)]'
               }`}
             />
             {streetError && (
-              <p role="alert" className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">
+              <p role="alert" className="mt-1 text-xs text-[var(--danger)] font-medium">
                 {streetError}
               </p>
             )}
@@ -508,7 +508,7 @@ export function IdentityStepForm({
               htmlFor={`${formId}-state`}
               className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
             >
-              State <span className="text-red-500">*</span>
+              State <span className="text-[var(--danger)]">*</span>
             </label>
             <select
               id={`${formId}-state`}
@@ -518,8 +518,8 @@ export function IdentityStepForm({
               onBlur={() => markTouched('state')}
               className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] transition focus:outline-none focus:ring-2 ${
                 stateError
-                  ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  ? 'border-[var(--danger-border)] focus:ring-red-400 bg-[var(--danger-dim)]'
+                  : 'border-[var(--card-border)] focus:border-[var(--amber)] focus:ring-[var(--amber-dim)]'
               }`}
             >
               <option value="">Select State</option>
@@ -530,7 +530,7 @@ export function IdentityStepForm({
               ))}
             </select>
             {stateError && (
-              <p role="alert" className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">
+              <p role="alert" className="mt-1 text-xs text-[var(--danger)] font-medium">
                 {stateError}
               </p>
             )}
@@ -541,7 +541,7 @@ export function IdentityStepForm({
               htmlFor={`${formId}-city`}
               className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
             >
-              City / LGA <span className="text-red-500">*</span>
+              City / LGA <span className="text-[var(--danger)]">*</span>
             </label>
             <input
               id={`${formId}-city`}
@@ -553,12 +553,12 @@ export function IdentityStepForm({
               placeholder="e.g. Yaba"
               className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 ${
                 cityError
-                  ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                  ? 'border-[var(--danger-border)] focus:ring-red-400 bg-[var(--danger-dim)]'
+                  : 'border-[var(--card-border)] focus:border-[var(--amber)] focus:ring-[var(--amber-dim)]'
               }`}
             />
             {cityError && (
-              <p role="alert" className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">
+              <p role="alert" className="mt-1 text-xs text-[var(--danger)] font-medium">
                 {cityError}
               </p>
             )}
@@ -567,11 +567,11 @@ export function IdentityStepForm({
       </div>
 
       {/* Action Footer */}
-      <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end">
+      <div className="pt-4 border-t border-[var(--lead)] flex items-center justify-end">
         <button
           type="submit"
           disabled={!isFormValid || isSubmitting}
-          className={`inline-flex items-center justify-center rounded-lg bg-[#001A41] dark:bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-[#002661] dark:hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 ${
+          className={`inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
             !isFormValid || isSubmitting
               ? 'opacity-50 cursor-not-allowed'
               : 'cursor-pointer'

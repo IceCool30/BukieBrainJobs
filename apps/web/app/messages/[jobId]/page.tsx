@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
+import type { AuthUser } from '../../../lib/auth/types';
 import {
   defaultMessagingRepository,
   getSynchronousConversationData,
@@ -35,12 +36,14 @@ export default function ChatPage(props: ChatPageProps) {
 
   const activeJobId = jobId || initialJobId || routeParams?.jobId || 'job-act-001';
 
-  const user = getMockAuthenticatedUser();
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
   useEffect(() => {
-    if (!user) {
-      router.replace(`/login?returnUrl=/messages/${encodeURIComponent(activeJobId)}`);
-    }
-  }, [user, router]);
+    const current = getMockAuthenticatedUser();
+    setUser(current);
+    setAuthChecked(true);
+    if (!current) router.replace(`/login?returnUrl=/messages/${encodeURIComponent(activeJobId)}`);
+  }, [router, activeJobId]);
 
   // Authorize caller against conversation record fail-closed
   const convData = useMemo(() => {
@@ -59,16 +62,15 @@ export default function ChatPage(props: ChatPageProps) {
     }
   }, [convData]);
 
-  if (!user) {
-    router.replace('/login');
-    return null;
+  if (!authChecked || !user) {
+    return <main className="h-screen bg-[var(--bg)]" aria-busy="true" />;
   }
 
   if (convData.isUnauthorized) {
     return (
       <main className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-6 text-[var(--text-main)] font-sans">
-        <div role="alert" className="max-w-md w-full bg-[var(--card-bg)] rounded-lg p-8 border border-red-500/30 shadow-xs text-center">
-          <h1 className="text-xl font-bold font-display text-red-500 mb-2">Access Denied</h1>
+        <div role="alert" className="max-w-md w-full bg-[var(--card-bg)] rounded-lg p-8 border border-[var(--danger-border)] shadow-xs text-center">
+          <h1 className="text-xl font-bold font-display text-[var(--danger)] mb-2">Access Denied</h1>
           <p className="text-sm text-[var(--text-muted)] mb-6 leading-relaxed">
             You do not have permission to view this conversation, or the booking is invalid.
           </p>

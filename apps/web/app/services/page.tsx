@@ -54,7 +54,7 @@ function ServiceCard({
 }) {
   return (
     <article className="bbj-card-interactive flex h-full flex-col overflow-hidden rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:border-[var(--rule)] transition-all">
-      <div className="relative aspect-[5/3] overflow-hidden bg-slate-100/10">
+      <div className="relative aspect-[5/3] overflow-hidden bg-[var(--tag-bg)]">
         <Image
           src={category.photoUrl}
           alt={`Service photo for ${category.title}`}

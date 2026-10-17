@@ -33,7 +33,7 @@ export default function NotFound() {
             <ThemeToggle idPrefix="not-found-theme" />
             <Link
               href="/services"
-              className="text-xs font-semibold text-[var(--text-main)] hover:text-[#296A4B] transition-colors"
+              className="text-xs font-semibold text-[var(--text-main)] hover:text-[var(--brand-green)] transition-colors"
             >
               Services Directory
             </Link>
@@ -61,7 +61,7 @@ export default function NotFound() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Link
               href="/"
-              className="motion-press inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#001A41] px-6 text-sm font-bold text-white transition-colors hover:bg-[#000F2D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+              className="motion-press inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
             >
               <Home className="h-4 w-4 text-[#ABEEC8]" />
               Return to Homepage
@@ -71,7 +71,7 @@ export default function NotFound() {
               href="/services"
               className="motion-press inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B]"
             >
-              <Search className="h-4 w-4 text-[#296A4B]" />
+              <Search className="h-4 w-4 text-[var(--brand-green)]" />
               Browse Services
             </Link>
           </div>
@@ -86,7 +86,7 @@ export default function NotFound() {
                 href="/post-job"
                 className="flex items-center gap-1.5 hover:text-[var(--text-main)] transition-colors"
               >
-                <Briefcase className="h-3.5 w-3.5 text-[#296A4B]" />
+                <Briefcase className="h-3.5 w-3.5 text-[var(--brand-green)]" />
                 Post a Job Request
               </Link>
               <span className="text-[var(--lead)]">•</span>
@@ -94,7 +94,7 @@ export default function NotFound() {
                 href="/dashboard"
                 className="flex items-center gap-1.5 hover:text-[var(--text-main)] transition-colors"
               >
-                <LayoutDashboard className="h-3.5 w-3.5 text-[#296A4B]" />
+                <LayoutDashboard className="h-3.5 w-3.5 text-[var(--brand-green)]" />
                 Customer Dashboard
               </Link>
             </div>

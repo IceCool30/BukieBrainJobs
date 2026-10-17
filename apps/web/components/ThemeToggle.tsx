@@ -14,46 +14,45 @@ interface ThemeToggleProps {
   className?: string;
 }
 
-function readInitialTheme(): TradesTheme {
-  if (typeof document !== 'undefined') {
-    const current = document.documentElement.getAttribute('data-theme');
-    if (isTradesTheme(current)) return current;
-  }
-  return 'light';
+function readDocumentTheme(): TradesTheme {
+  const current = document.documentElement.getAttribute('data-theme');
+  return isTradesTheme(current) ? current : 'light';
+}
+
+function crossFade() {
+  const root = document.documentElement;
+  root.classList.add('theme-switching');
+  window.setTimeout(() => root.classList.remove('theme-switching'), 300);
 }
 
 /**
- * Unified single theme toggle for both light and dark themes.
- * Smoothly toggles between Architectural Gallery Light and Obsidian Gunmetal Dark.
- * Persists to localStorage under `bukie_theme` and honors the blocking init script.
+ * Starts as 'light' on both server and first client pass so hydration always matches.
+ * Thumb position and icon come from CSS on html[data-theme], so the right state shows
+ * before the effect below syncs the accessible label.
  */
 export default function ThemeToggle({ idPrefix = 'theme', className = '' }: ThemeToggleProps) {
-  const [theme, setTheme] = useState<TradesTheme>(readInitialTheme);
+  const [theme, setTheme] = useState<TradesTheme>('light');
 
   useEffect(() => {
-    setTheme(readInitialTheme());
-  }, []);
-
-  const toggle = useCallback(() => {
-    setTheme((prev) => {
-      const next: TradesTheme = prev === 'light' ? 'dark' : 'light';
-      try {
-        applyTheme(next, window.localStorage);
-      } catch {
-        applyTheme(next);
-      }
-      return next;
-    });
-  }, []);
-
-  useEffect(() => {
+    setTheme(readDocumentTheme());
     const onStorage = (event: StorageEvent) => {
-      if (event.key === THEME_STORAGE_KEY && isTradesTheme(event.newValue)) {
-        setTheme(event.newValue);
-      }
+      if (event.key !== THEME_STORAGE_KEY || !isTradesTheme(event.newValue)) return;
+      applyTheme(event.newValue);
+      setTheme(event.newValue);
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
+  const toggle = useCallback(() => {
+    const next: TradesTheme = readDocumentTheme() === 'light' ? 'dark' : 'light';
+    crossFade();
+    try {
+      applyTheme(next, window.localStorage);
+    } catch {
+      applyTheme(next);
+    }
+    setTheme(next);
   }, []);
 
   const isDark = theme === 'dark';
@@ -68,31 +67,21 @@ export default function ThemeToggle({ idPrefix = 'theme', className = '' }: Them
       data-theme-state={theme}
       data-state={isDark ? 'checked' : 'unchecked'}
       onClick={toggle}
-      className={`theme-toggle group relative inline-flex h-7 w-14 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] ${className}`}
+      className={`theme-toggle relative inline-flex h-7 w-14 shrink-0 cursor-pointer items-center rounded-full p-0.5 ${className}`}
     >
-      {/* Background track icons: Sun on left, Moon on right */}
       <span
-        className="pointer-events-none absolute inset-0 flex items-center justify-between px-2 text-xs select-none"
+        className="pointer-events-none absolute inset-0 flex items-center justify-between px-2 select-none"
         aria-hidden="true"
       >
-        <Sun className="h-3.5 w-3.5 text-[#FF6B35]/70" />
-        <Moon className="h-3.5 w-3.5 text-[#2FE896]/70" />
+        <Sun className="h-3.5 w-3.5 text-[var(--amber)] opacity-70" />
+        <Moon className="h-3.5 w-3.5 text-[var(--brand-green)] opacity-70" />
       </span>
-
-      {/* Sliding thumb holding the active theme's illuminated icon */}
       <span
-        className={`theme-toggle-thumb pointer-events-none relative z-10 flex h-6 w-6 transform items-center justify-center rounded-full shadow-md transition-transform duration-200 ease-out ${
-          isDark
-            ? 'translate-x-7 bg-[#0B0E13] text-[#2FE896] border border-[#202734]'
-            : 'translate-x-0 bg-white text-[#FF6B35]'
-        }`}
+        className="theme-toggle-thumb pointer-events-none relative z-10 flex h-6 w-6 items-center justify-center rounded-full transition-transform duration-200 ease-out"
         aria-hidden="true"
       >
-        {isDark ? (
-          <Moon className="h-3.5 w-3.5" />
-        ) : (
-          <Sun className="h-3.5 w-3.5" />
-        )}
+        <Sun className="icon-sun h-3.5 w-3.5" />
+        <Moon className="icon-moon h-3.5 w-3.5" />
       </span>
     </button>
   );

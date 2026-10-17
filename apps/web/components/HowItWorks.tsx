@@ -7,25 +7,25 @@ export default function HowItWorks() {
       num: '01',
       title: 'Start with the service',
       desc: 'Choose the service and location that fit what you need done.',
-      icon: <Search className="w-5 h-5 text-slate-600" />,
+      icon: <Search className="w-5 h-5 text-[var(--text-muted)]" />,
     },
     {
       num: '02',
       title: 'Choose your next step',
       desc: 'Choose a BrainWorker, or prepare the details for a custom job.',
-      icon: <UserCheck className="w-5 h-5 text-slate-600" />,
+      icon: <UserCheck className="w-5 h-5 text-[var(--text-muted)]" />,
     },
     {
       num: '03',
       title: 'Get clear on the details',
       desc: 'Review the scope, price, and timing before you move ahead.',
-      icon: <ShieldCheck className="w-5 h-5 text-slate-600" />,
+      icon: <ShieldCheck className="w-5 h-5 text-[var(--text-muted)]" />,
     },
     {
       num: '04',
       title: 'Keep it together',
       desc: 'Use the booking page to keep the details you have agreed in one place.',
-      icon: <Lock className="w-5 h-5 text-slate-600" />,
+      icon: <Lock className="w-5 h-5 text-[var(--text-muted)]" />,
     },
   ];
 

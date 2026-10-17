@@ -76,29 +76,29 @@ export function ProfileEditorForm({
       {/* Completeness Meter */}
       <div
         data-testid="profile-completeness-meter"
-        className="rounded-xl border border-slate-700/60 bg-slate-900/60 p-4"
+        className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-4"
       >
         <div className="flex items-center justify-between gap-4 mb-2">
-          <span className="text-sm font-medium text-slate-300">
+          <span className="text-sm font-medium text-[var(--text-muted)]">
             Profile Completeness
           </span>
-          <span className="text-sm font-bold text-emerald-400">
+          <span className="text-sm font-bold text-[var(--brand-green)]">
             {completeness.percentage}%
           </span>
         </div>
-        <div className="h-2 w-full rounded-full bg-slate-800 overflow-hidden">
+        <div className="h-2 w-full rounded-full bg-[var(--tag-bg)] overflow-hidden">
           <div
-            className="h-full bg-emerald-500 transition-all duration-300"
+            className="h-full bg-[var(--brand-green)] transition-all duration-300"
             style={{ width: `${completeness.percentage}%` }}
           />
         </div>
         {completeness.missingMilestones.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-2">
-            <span className="text-xs text-slate-400">Missing steps:</span>
+            <span className="text-xs text-[var(--text-muted)]">Missing steps:</span>
             {completeness.missingMilestones.map((milestone) => (
               <span
                 key={milestone}
-                className="inline-flex items-center rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-300 border border-amber-500/20"
+                className="inline-flex items-center rounded-md bg-[var(--amber-dim)] px-2 py-0.5 text-xs font-medium text-[var(--amber)] border border-[var(--amber)]/30"
               >
                 {milestone}
               </span>
@@ -111,14 +111,14 @@ export function ProfileEditorForm({
       <div className="space-y-2">
         <label
           htmlFor="profile-avatar-input"
-          className="block text-sm font-medium text-slate-200"
+          className="block text-sm font-medium text-[var(--text-main)]"
         >
           Professional Headshot URL
         </label>
         <div className="flex items-center gap-4">
           <div
             data-testid="profile-avatar-preview"
-            className="h-16 w-16 overflow-hidden rounded-full border border-slate-700 bg-slate-800 flex items-center justify-center text-slate-400 text-xs font-medium"
+            className="h-16 w-16 overflow-hidden rounded-full border border-[var(--lead)] bg-[var(--tag-bg)] flex items-center justify-center text-[var(--text-muted)] text-xs font-medium"
           >
             {avatarUrl ? (
               <img
@@ -137,7 +137,7 @@ export function ProfileEditorForm({
             value={avatarUrl}
             onChange={(e) => setAvatarUrl(e.target.value)}
             placeholder="https://example.com/headshot.jpg"
-            className="flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:border-emerald-500 focus:outline-none"
+            className="flex-1 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-2 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:border-[var(--amber)] focus:outline-none"
           />
         </div>
       </div>
@@ -147,11 +147,11 @@ export function ProfileEditorForm({
         <div className="flex justify-between items-center">
           <label
             htmlFor="profile-headline-input"
-            className="block text-sm font-medium text-slate-200"
+            className="block text-sm font-medium text-[var(--text-main)]"
           >
             Professional Headline
           </label>
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-[var(--text-muted)]">
             {headline.length} / 100
           </span>
         </div>
@@ -163,7 +163,7 @@ export function ProfileEditorForm({
           value={headline}
           onChange={(e) => setHeadline(e.target.value)}
           placeholder="e.g. Certified Master Electrician & Solar Installer"
-          className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:border-emerald-500 focus:outline-none"
+          className="w-full rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-2 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:border-[var(--amber)] focus:outline-none"
         />
       </div>
 
@@ -172,11 +172,11 @@ export function ProfileEditorForm({
         <div className="flex justify-between items-center">
           <label
             htmlFor="profile-bio-input"
-            className="block text-sm font-medium text-slate-200"
+            className="block text-sm font-medium text-[var(--text-main)]"
           >
             Trade Experience & Bio
           </label>
-          <span className="text-xs text-slate-400">{bio.length} / 1000</span>
+          <span className="text-xs text-[var(--text-muted)]">{bio.length} / 1000</span>
         </div>
         <textarea
           id="profile-bio-input"
@@ -186,7 +186,7 @@ export function ProfileEditorForm({
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           placeholder="Describe your background, specialization, and coverage areas..."
-          className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:border-emerald-500 focus:outline-none"
+          className="w-full rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-2 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:border-[var(--amber)] focus:outline-none"
         />
       </div>
 
@@ -194,7 +194,7 @@ export function ProfileEditorForm({
       <div className="space-y-1">
         <label
           htmlFor="profile-experience-input"
-          className="block text-sm font-medium text-slate-200"
+          className="block text-sm font-medium text-[var(--text-main)]"
         >
           Years of Experience (0 to 50)
         </label>
@@ -206,13 +206,13 @@ export function ProfileEditorForm({
           max={50}
           value={yearsOfExperience}
           onChange={(e) => setYearsOfExperience(Number(e.target.value))}
-          className="w-32 rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none"
+          className="w-32 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-2 text-sm text-[var(--text-main)] focus:border-[var(--amber)] focus:outline-none"
         />
       </div>
 
       {/* Nigerian Languages */}
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-slate-200">
+        <label className="block text-sm font-medium text-[var(--text-main)]">
           Spoken Nigerian Languages
         </label>
         <div className="flex flex-wrap gap-2">
@@ -228,8 +228,8 @@ export function ProfileEditorForm({
                 onClick={() => toggleLanguage(lang)}
                 className={`rounded-full px-3 py-1 text-xs font-medium border transition-colors ${
                   isSelected
-                    ? 'bg-emerald-600/20 text-emerald-300 border-emerald-500'
-                    : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200'
+                    ? 'bg-[var(--brand-green-dim)] text-[var(--brand-green)] border-[var(--brand-green)]'
+                    : 'bg-[var(--tag-bg)] text-[var(--text-muted)] border-[var(--lead)] hover:text-[var(--text-main)]'
                 }`}
               >
                 {lang}
@@ -245,12 +245,12 @@ export function ProfileEditorForm({
           type="submit"
           data-testid="profile-save-btn"
           disabled={isSaving}
-          className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus:outline-none disabled:opacity-50"
+          className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] focus:outline-none disabled:opacity-50"
         >
           {isSaving ? 'Saving Profile...' : 'Save Profile Details'}
         </button>
         {saveSuccess && (
-          <span className="text-sm font-medium text-emerald-400">
+          <span className="text-sm font-medium text-[var(--brand-green)]">
             Profile changes saved successfully.
           </span>
         )}

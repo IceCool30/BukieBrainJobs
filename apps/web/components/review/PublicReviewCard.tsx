@@ -45,7 +45,7 @@ export function PublicReviewCard({ review, onReport }: PublicReviewCardProps) {
               {reviewerDisplayName}
             </span>
             {isVerifiedBooking && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/10 text-[var(--brand-green)] border border-emerald-500/20 text-[11px] font-semibold">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] text-[11px] font-semibold">
                 <ShieldCheck className="w-3 h-3" />
                 <span>Verified booking</span>
               </span>
@@ -90,7 +90,7 @@ export function PublicReviewCard({ review, onReport }: PublicReviewCardProps) {
         <button
           type="button"
           onClick={() => onReport?.(id)}
-          className="inline-flex items-center gap-1 text-xs text-[var(--text-muted)] hover:text-red-500 transition-colors underline-offset-2 hover:underline focus:outline-hidden min-h-[32px] cursor-pointer"
+          className="inline-flex items-center gap-1 text-xs text-[var(--text-muted)] hover:text-[var(--danger)] transition-colors underline-offset-2 hover:underline focus:outline-hidden min-h-[32px] cursor-pointer"
         >
           <Flag className="w-3 h-3" />
           <span>Report this review</span>

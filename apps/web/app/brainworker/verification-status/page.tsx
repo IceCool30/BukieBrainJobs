@@ -19,7 +19,7 @@ import type { AuthUser } from '../../../lib/auth/types';
 
 export default function BrainWorkerVerificationStatusPage(): React.ReactElement {
   const router = useRouter();
-  const [user, setUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [record, setRecord] = useState<BrainWorkerOnboardingRecord | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -91,7 +91,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
   if (!user) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--bg)] transition-colors">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-400 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--text-main)] border-t-transparent" />
       </div>
     );
   }
@@ -99,8 +99,8 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
   if (user.role !== 'brainworker') {
     return (
       <div className="min-h-screen bg-[var(--bg)] p-6 flex items-center justify-center transition-colors">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-amber-200 dark:border-amber-900/40 p-8 text-center space-y-4 shadow-xs transition-colors">
-          <div className="inline-flex items-center gap-1.5 rounded-md bg-amber-500/10 border border-amber-500/20 px-3 py-1 text-xs font-semibold text-amber-700 dark:text-amber-400">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-[var(--amber)]/30 p-8 text-center space-y-4 shadow-xs transition-colors">
+          <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-3 py-1 text-xs font-semibold text-[var(--amber)]">
             Customer Account Detected
           </div>
           <h2 className="text-xl font-bold text-[var(--text-main)]">Provider Status Restricted</h2>
@@ -109,7 +109,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-lg bg-[#001A41] dark:bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white dark:text-slate-950 shadow-sm hover:bg-[#002661] dark:hover:bg-emerald-500 transition"
+            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] transition"
           >
             Return to Customer Dashboard
           </Link>
@@ -121,7 +121,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--bg)] transition-colors">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-400 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--text-main)] border-t-transparent" />
       </div>
     );
   }
@@ -137,7 +137,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
           <button
             type="button"
             onClick={() => router.push('/brainworker/onboarding')}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#001A41] dark:bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white dark:text-slate-950 shadow-sm hover:bg-[#002661] dark:hover:bg-emerald-500 transition"
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] transition"
           >
             Start Onboarding
           </button>
@@ -153,7 +153,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-main)] hover:text-primary-hover dark:hover:text-emerald-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-main)] hover:text-[var(--amber-hover)] transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               <span>Home</span>

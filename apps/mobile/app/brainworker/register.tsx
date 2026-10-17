@@ -1,232 +1,117 @@
 import React, { useState } from 'react';
 import {
-  View,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  StyleSheet,
-  Alert,
+  View,
+  type TextInputProps,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { mono, useTrades } from '../../lib/theme';
+
+type Form = { name: string; email: string; phone: string };
+type Errors = Partial<Record<keyof Form, string>>;
+
+function validate(form: Form): Errors {
+  const errors: Errors = {};
+  if (!form.name.trim()) errors.name = 'Enter your full name.';
+  if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) errors.email = 'Enter a valid email address.';
+  if (!form.phone.trim()) errors.phone = 'Enter your phone number.';
+  return errors;
+}
 
 export default function MobileBrainWorkerRegisterScreen() {
   const router = useRouter();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const c = useTrades();
+  const [form, setForm] = useState<Form>({ name: '', email: '', phone: '' });
+  const [errors, setErrors] = useState<Errors>({});
+  const set = (key: keyof Form) => (value: string) => setForm((f) => ({ ...f, [key]: value }));
 
   const handleSubmit = () => {
-    if (!name.trim() || !email.trim() || !phone.trim()) {
-      setError('Please fill in all required fields.');
-      return;
-    }
-    setError(null);
-    Alert.alert(
-      'Registration Received',
-      `Welcome, ${name.trim()}! Your registration has been received.`,
-      [{ text: 'OK', onPress: () => router.replace('/') }],
-    );
+    const next = validate(form);
+    setErrors(next);
+    if (Object.keys(next).length) return;
+    Alert.alert('Registration Received', `Welcome, ${form.name.trim()}! Your registration has been received.`, [
+      { text: 'OK', onPress: () => router.replace('/') },
+    ]);
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
-        {/* Top Header */}
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => router.back()}
-            style={styles.backButton}
-            accessibilityRole="button"
-            accessibilityLabel="Go back"
-          >
-            <Text style={styles.backButtonText}>← Back</Text>
-          </TouchableOpacity>
-          <Text style={styles.brandTitle}>BukieBrainJobs</Text>
-        </View>
-
-        {/* Registration Card */}
-        <View style={styles.card}>
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>BrainWorker Registration</Text>
+    <SafeAreaView style={[s.fill, { backgroundColor: c.bg }]}>
+      <KeyboardAvoidingView style={s.fill} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <ScrollView contentContainerStyle={s.page} keyboardShouldPersistTaps="handled">
+          <Pressable accessibilityRole="button" accessibilityLabel="Go back" onPress={() => router.back()} hitSlop={8} style={s.back}>
+            <Ionicons name="arrow-back" size={18} color={c.amber} />
+            <Text style={[s.backLabel, { color: c.textMain }]}>Back</Text>
+          </Pressable>
+          <View style={[s.card, { backgroundColor: c.cardBg, borderColor: c.lead }]}>
+            <Text style={[s.eyebrow, { color: c.brandGreen }]}>BRAINWORKER REGISTRATION</Text>
+            <Text accessibilityRole="header" style={[s.heading, { color: c.textMain }]}>Become a BrainWorker</Text>
+            <Text style={[s.description, { color: c.textMuted }]}>
+              Join BukieBrainJobs as a verified service provider. Complete your details to start onboarding.
+            </Text>
+            <Field label="FULL NAME" error={errors.name} value={form.name} onChangeText={set('name')} placeholder="e.g. Chidi Anozie" autoCapitalize="words" autoComplete="name" textContentType="name" />
+            <Field label="EMAIL ADDRESS" error={errors.email} value={form.email} onChangeText={set('email')} placeholder="chidi@example.com" keyboardType="email-address" autoCapitalize="none" autoComplete="email" textContentType="emailAddress" />
+            <Field label="PHONE NUMBER" error={errors.phone} value={form.phone} onChangeText={set('phone')} placeholder="+234 800 000 0000" keyboardType="phone-pad" autoComplete="tel" textContentType="telephoneNumber" />
+            <Pressable
+              accessibilityRole="button"
+              onPress={handleSubmit}
+              style={({ pressed }) => [s.submit, { backgroundColor: pressed ? c.amberHover : c.amber }]}
+            >
+              <Text style={s.submitLabel}>CONTINUE TO ONBOARDING</Text>
+              <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
+            </Pressable>
           </View>
-
-          <Text style={styles.heading}>Become a BrainWorker</Text>
-          <Text style={styles.description}>
-            Join BukieBrainJobs as a verified service provider. Complete your details to start onboarding.
-          </Text>
-
-          {error && (
-            <View style={styles.errorBox}>
-              <Text style={styles.errorText}>{error}</Text>
-            </View>
-          )}
-
-          {/* Form Fields */}
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>FULL NAME</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="e.g. Chidi Anozie"
-              placeholderTextColor="#94A3B8"
-              value={name}
-              onChangeText={setName}
-              autoCapitalize="words"
-            />
-          </View>
-
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>EMAIL ADDRESS</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="chidi@example.com"
-              placeholderTextColor="#94A3B8"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
-
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>PHONE NUMBER</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="+234 800 000 0000"
-              placeholderTextColor="#94A3B8"
-              value={phone}
-              onChangeText={setPhone}
-              keyboardType="phone-pad"
-            />
-          </View>
-
-          {/* Submit CTA */}
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={handleSubmit}
-            accessibilityRole="button"
-            accessibilityLabel="Continue to Onboarding"
-          >
-            <Text style={styles.submitButtonText}>Continue to Onboarding →</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#0B0E13',
-  },
-  container: {
-    flexGrow: 1,
-    padding: 20,
-    justifyContent: 'center',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 24,
-  },
-  backButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    backgroundColor: '#13171E',
-    borderWidth: 1,
-    borderColor: '#202734',
-  },
-  backButtonText: {
-    color: '#F0F4F9',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  brandTitle: {
-    color: '#F0F4F9',
-    fontSize: 16,
-    fontWeight: '800',
-  },
-  card: {
-    backgroundColor: '#13171E',
-    borderRadius: 20,
-    padding: 24,
-    borderWidth: 1,
-    borderColor: '#202734',
-  },
-  badge: {
-    alignSelf: 'flex-start',
-    backgroundColor: 'rgba(16, 185, 129, 0.15)',
-    borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.3)',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    marginBottom: 12,
-  },
-  badgeText: {
-    color: '#10B981',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#F0F4F9',
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 14,
-    color: '#8897AB',
-    lineHeight: 20,
-    marginBottom: 20,
-  },
-  errorBox: {
-    backgroundColor: 'rgba(239, 68, 68, 0.15)',
-    borderColor: 'rgba(239, 68, 68, 0.3)',
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-  },
-  errorText: {
-    color: '#F87171',
-    fontSize: 13,
-  },
-  formGroup: {
-    marginBottom: 16,
-  },
-  label: {
-    color: '#8897AB',
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 0.5,
-    marginBottom: 6,
-  },
-  input: {
-    backgroundColor: '#0B0E13',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#2D3748',
-    color: '#F0F4F9',
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 15,
-  },
-  submitButton: {
-    backgroundColor: '#10B981',
-    borderRadius: 12,
-    paddingVertical: 14,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  submitButtonText: {
-    color: '#FFFFFF',
-    fontSize: 15,
-    fontWeight: '700',
-  },
+function Field({ label, error, ...input }: TextInputProps & { label: string; error?: string }) {
+  const c = useTrades();
+  const [focused, setFocused] = useState(false);
+  const borderColor = error ? c.danger : focused ? c.amber : c.rule;
+  return (
+    <View style={s.field}>
+      <Text style={[s.label, { color: c.textMuted }]}>{label}</Text>
+      <TextInput
+        {...input}
+        accessibilityLabel={label}
+        placeholderTextColor={c.textMuted}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={[s.input, { backgroundColor: c.bg, color: c.textMain, borderColor }]}
+      />
+      {error && (
+        <Text accessibilityLiveRegion="polite" style={[s.error, { color: c.danger }]}>
+          {error}
+        </Text>
+      )}
+    </View>
+  );
+}
+
+const s = StyleSheet.create({
+  fill: { flex: 1 },
+  page: { flexGrow: 1, padding: 20, gap: 16 },
+  back: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', minHeight: 44 },
+  backLabel: { fontSize: 15, fontWeight: '600' },
+  card: { borderRadius: 8, borderWidth: StyleSheet.hairlineWidth, padding: 20 },
+  eyebrow: { fontFamily: mono, fontSize: 11, fontWeight: '700', letterSpacing: 1.3 },
+  heading: { fontSize: 26, fontWeight: '800', letterSpacing: -0.6, marginTop: 8 },
+  description: { fontSize: 15, lineHeight: 22, marginTop: 6, marginBottom: 20 },
+  field: { marginBottom: 16 },
+  label: { fontFamily: mono, fontSize: 11, fontWeight: '600', letterSpacing: 1, marginBottom: 6 },
+  input: { minHeight: 48, borderRadius: 6, borderWidth: 1, paddingHorizontal: 14, fontSize: 16 },
+  error: { fontSize: 13, marginTop: 6 },
+  submit: { minHeight: 48, borderRadius: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 8 },
+  submitLabel: { color: '#FFFFFF', fontFamily: mono, fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
 });

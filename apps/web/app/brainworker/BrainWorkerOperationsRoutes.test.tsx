@@ -210,8 +210,9 @@ describe('BW-002 Suite 7 RED: BrainWorker Route Integration & Dashboard Contract
     expect(
       await screen.findByText(/complete your provider setup|setup required|complete setup/i)
     ).toBeInTheDocument();
-    const servicesLink = screen.getByRole('link', { name: /configure services|services & rates/i });
-    const availabilityLink = screen.getByRole('link', { name: /set hours|hours & coverage|availability/i });
+    const setupPrompt = within(screen.getByRole('region', { name: /provider setup required/i }));
+    const servicesLink = setupPrompt.getByRole('link', { name: /configure services|services & rates/i });
+    const availabilityLink = setupPrompt.getByRole('link', { name: /set hours|hours & coverage|availability/i });
     expect(servicesLink.getAttribute('href')).toBe('/brainworker/services');
     expect(availabilityLink.getAttribute('href')).toBe('/brainworker/availability');
   });

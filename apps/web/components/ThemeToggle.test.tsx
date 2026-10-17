@@ -1,5 +1,6 @@
 /** @vitest-environment jsdom */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { renderToString } from 'react-dom/server';
 import { afterEach, describe, expect, it } from 'vitest';
 import ThemeToggle from './ThemeToggle';
 import { THEME_STORAGE_KEY } from '../lib/theme';
@@ -65,5 +66,14 @@ describe('ThemeToggle', () => {
 
     expect(toggle).toHaveAttribute('data-theme-state', 'dark');
     expect(toggle).toHaveAttribute('aria-label', 'Switch to light theme');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+  });
+
+  it('renders identical first-pass markup for every stored theme so hydration never mismatches', () => {
+    document.documentElement.setAttribute('data-theme', 'light');
+    const light = renderToString(<ThemeToggle />);
+    document.documentElement.setAttribute('data-theme', 'dark');
+    const dark = renderToString(<ThemeToggle />);
+    expect(dark).toBe(light);
   });
 });

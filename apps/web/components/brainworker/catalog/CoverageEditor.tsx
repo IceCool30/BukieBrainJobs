@@ -235,12 +235,12 @@ export function CoverageEditor({
       aria-label="Coverage Area and Location"
       className={className ? `space-y-8 ${className}` : 'space-y-8'}
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800 transition-colors">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-[var(--lead)] transition-colors">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+          <h2 className="text-2xl font-bold text-[var(--text-main)] tracking-tight">
             Coverage Area and Operational Base
           </h2>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+          <p className="mt-1 text-sm text-[var(--text-muted)] max-w-2xl leading-relaxed">
             Choose your primary operating city, operational zones, and travel
             radius. Keep this accurate to receive nearby job dispatches.
           </p>
@@ -253,8 +253,8 @@ export function CoverageEditor({
             onClick={handleSave}
             className={
               isSaving
-                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed transition-colors'
-                : 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[#001A41] dark:bg-emerald-600 text-white dark:text-slate-950 hover:bg-[#002866] dark:hover:bg-emerald-500 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[#001A41]'
+                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed transition-colors'
+                : 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]'
             }
           >
             {isSaving ? 'Saving changes...' : 'Save changes'}
@@ -265,7 +265,7 @@ export function CoverageEditor({
       {displayAlertError && (
         <div
           role="alert"
-          className="p-4 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-sm text-red-800 dark:text-red-300 font-medium"
+          className="p-4 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-sm text-[var(--danger)] font-medium"
         >
           {displayAlertError}
         </div>
@@ -275,7 +275,7 @@ export function CoverageEditor({
         <div
           role="status"
           aria-live="polite"
-          className="p-4 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-sm text-emerald-800 dark:text-emerald-300 font-medium"
+          className="p-4 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-sm text-[var(--brand-green)] font-medium"
         >
           {successToast}
         </div>
@@ -308,7 +308,7 @@ export function CoverageEditor({
               const selected = e.target.value;
               setPrimaryCity(selected, selected);
             }}
-            className="block w-full max-w-md rounded-lg border border-[var(--card-border)] px-3.5 py-2.5 text-[var(--text-main)] font-medium focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm bg-[var(--bg)]"
+            className="block w-full max-w-md rounded-lg border border-[var(--card-border)] px-3.5 py-2.5 text-[var(--text-main)] font-medium focus:border-[var(--amber)] focus:ring-2 focus:ring-[var(--amber)] focus:outline-none sm:text-sm bg-[var(--bg)]"
           >
             {availableCities.map((city) => (
               <option key={city} value={city} className="bg-[var(--bg)] text-[var(--text-main)]">
@@ -341,7 +341,7 @@ export function CoverageEditor({
                 htmlFor={inputId}
                 className={
                   isChecked
-                    ? 'flex items-center gap-3 p-3 rounded-lg border-2 border-[#001A41] dark:border-emerald-500 bg-[#001A41]/5 dark:bg-emerald-500/10 cursor-pointer font-semibold text-[#001A41] dark:text-emerald-400 transition-colors'
+                    ? 'flex items-center gap-3 p-3 rounded-lg border-2 border-[var(--text-main)] bg-[var(--tag-bg)] cursor-pointer font-semibold text-[var(--text-main)] transition-colors'
                     : 'flex items-center gap-3 p-3 rounded-lg border border-[var(--card-border)] bg-[var(--bg)] hover:bg-[var(--card-bg)] cursor-pointer font-medium text-[var(--text-muted)] transition-colors'
                 }
               >
@@ -363,7 +363,7 @@ export function CoverageEditor({
                     }
                     setCoverageNeighbourhoods(next);
                   }}
-                  className="h-4 w-4 rounded border-[var(--card-border)] bg-[var(--bg)] text-[#001A41] dark:text-emerald-500 focus:ring-[#001A41] dark:focus:ring-emerald-500"
+                  className="h-4 w-4 rounded border-[var(--card-border)] bg-[var(--bg)] text-[var(--text-main)] focus:ring-[var(--amber)]"
                 />
                 <span className="text-sm select-none">{zone}</span>
               </label>
@@ -392,7 +392,7 @@ export function CoverageEditor({
                 key={radius}
                 className={
                   isSelected
-                    ? 'flex items-center justify-between p-3.5 rounded-lg border-2 border-[#001A41] dark:border-emerald-500 bg-[#001A41]/5 dark:bg-emerald-500/10 cursor-pointer font-semibold text-[#001A41] dark:text-emerald-400 transition-colors'
+                    ? 'flex items-center justify-between p-3.5 rounded-lg border-2 border-[var(--text-main)] bg-[var(--tag-bg)] cursor-pointer font-semibold text-[var(--text-main)] transition-colors'
                     : 'flex items-center justify-between p-3.5 rounded-lg border border-[var(--card-border)] bg-[var(--bg)] hover:bg-[var(--card-bg)] cursor-pointer font-medium text-[var(--text-muted)] transition-colors'
                 }
               >
@@ -409,7 +409,7 @@ export function CoverageEditor({
                     setSaveError(null);
                     setTravelRadius(radius);
                   }}
-                  className="h-4 w-4 border-[var(--card-border)] bg-[var(--bg)] text-[#001A41] dark:text-emerald-500 focus:ring-[#001A41] dark:focus:ring-emerald-500"
+                  className="h-4 w-4 border-[var(--card-border)] bg-[var(--bg)] text-[var(--text-main)] focus:ring-[var(--amber)]"
                 />
               </label>
             );

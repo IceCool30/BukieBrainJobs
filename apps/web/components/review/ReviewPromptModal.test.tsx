@@ -85,7 +85,7 @@ describe('ReviewPromptModal (TDD Suite 4: MDL-001 to MDL-017)', () => {
   });
 
   describe('MDL-003: Star selection interaction & label', () => {
-    it('updates state to 4, displays "4 of 5 • Very good", and fills stars in amber-500', () => {
+    it('updates state to 4, displays "4 of 5 • Very good", and fills stars in the amber token', () => {
       render(
         <ReviewPromptModal
           isOpen={true}
@@ -103,10 +103,10 @@ describe('ReviewPromptModal (TDD Suite 4: MDL-001 to MDL-017)', () => {
       expect(screen.getByText(/4 of 5 • Very good/i)).toBeInTheDocument();
 
       const stars = punctualityGroup.querySelectorAll('[role="radio"]');
-      expect(stars[0]?.innerHTML).toContain('text-amber-500');
-      expect(stars[1]?.innerHTML).toContain('text-amber-500');
-      expect(stars[2]?.innerHTML).toContain('text-amber-500');
-      expect(stars[3]?.innerHTML).toContain('text-amber-500');
+      expect(stars[0]?.innerHTML).toContain('text-[var(--amber)]');
+      expect(stars[1]?.innerHTML).toContain('text-[var(--amber)]');
+      expect(stars[2]?.innerHTML).toContain('text-[var(--amber)]');
+      expect(stars[3]?.innerHTML).toContain('text-[var(--amber)]');
     });
   });
 
@@ -170,7 +170,7 @@ describe('ReviewPromptModal (TDD Suite 4: MDL-001 to MDL-017)', () => {
 
       fireEvent.change(textarea, { target: { value: overflowText } });
 
-      expect(screen.getByText(/1,005 \/ 1,000 characters/i)).toHaveClass('text-rose-600');
+      expect(screen.getByText(/1,005 \/ 1,000 characters/i)).toHaveClass('text-[var(--danger)]');
       expect(
         screen.getByText(/Written feedback cannot exceed 1,000 characters/i)
       ).toBeInTheDocument();

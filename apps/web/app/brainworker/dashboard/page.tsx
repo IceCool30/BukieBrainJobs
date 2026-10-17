@@ -10,11 +10,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import {
-  ShieldCheck,
-  LogOut,
-  AlertTriangle,
-} from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib/auth/storage';
 import type { AuthUser } from '../../../lib/auth/types';
 import { getBrainWorkerOperationsRepository } from '../../../lib/brainworker/catalog/repository';
@@ -23,11 +19,11 @@ import { getBrainWorkerDashboardService } from '../../../lib/brainworker/dashboa
 import type { BrainWorkerDashboardFeed } from '../../../lib/brainworker/dashboard/types';
 import { DashboardMetricsCards } from '../../../components/brainworker/dashboard/DashboardMetricsCards';
 import { UrgentLeadsTicker } from '../../../components/brainworker/dashboard/UrgentLeadsTicker';
-import ThemeToggle from '../../../components/ThemeToggle';
+import { BrainWorkerHeader } from '../../../components/brainworker/BrainWorkerHeader';
 
 export default function BrainWorkerDashboardPage(): React.ReactElement {
   const router = useRouter();
-  const [user, setUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [operationalProfile, setOperationalProfile] =
     useState<BrainWorkerOperationalProfile | null>(null);
   const [feed, setFeed] = useState<BrainWorkerDashboardFeed | null>(null);
@@ -127,7 +123,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
   if (!user) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--bg)] transition-colors">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-400 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--text-main)] border-t-transparent" />
       </div>
     );
   }
@@ -135,8 +131,8 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
   if (user.role !== 'brainworker') {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 transition-colors">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-red-200 dark:border-red-900/40 p-8 shadow-xs text-center space-y-4 transition-colors">
-          <div className="inline-flex items-center gap-1.5 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 px-3 py-1 text-xs font-semibold text-red-800 dark:text-red-300">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-[var(--danger-border)] p-8 shadow-xs text-center space-y-4 transition-colors">
+          <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--danger-dim)] border border-[var(--danger-border)] px-3 py-1 text-xs font-semibold text-[var(--danger)]">
             {user.role === 'customer' ? 'Customer Account Detected' : 'Unauthorized Access'}
           </div>
           <h2 className="text-xl font-bold text-[var(--text-main)]">Access Restricted</h2>
@@ -145,7 +141,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-lg bg-[#001A41] dark:bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white dark:text-slate-950 shadow-sm hover:bg-[#002661] dark:hover:bg-emerald-500 transition"
+            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] transition"
           >
             {user.role === 'customer' ? 'Return to Customer Dashboard' : 'Return Home'}
           </Link>
@@ -157,7 +153,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
   if (!user.isBrainWorkerApproved) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--bg)] transition-colors">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-400 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--text-main)] border-t-transparent" />
       </div>
     );
   }
@@ -214,64 +210,37 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors">
       {/* Top Navigation */}
-      <header className="bg-[var(--card-bg)] text-[var(--text-main)] border-b border-[var(--lead)] sticky top-0 z-20 transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="font-black text-xl tracking-tight text-[var(--text-main)]">BukieBrainJobs</span>
-            <span className="inline-flex items-center gap-1 rounded-md bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--brand-green)]">
-              <ShieldCheck className="h-3.5 w-3.5 text-[var(--brand-green)]" />
-              <span>Verified Provider</span>
-            </span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <ThemeToggle idPrefix="worker-dashboard-theme" />
-            <div className="text-right hidden sm:block">
-              <div className="text-sm font-bold text-[var(--text-main)]">{user.name}</div>
-              <div className="text-xs text-[var(--text-muted)]">{user.email || user.phone}</div>
-            </div>
-            <button
-              type="button"
-              onClick={handleSignOut}
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-muted)] hover:text-red-600 dark:hover:text-red-400 transition cursor-pointer"
-              title="Sign Out"
-            >
-              <LogOut className="h-4 w-4" />
-              <span className="hidden sm:inline">Sign Out</span>
-            </button>
-          </div>
-        </div>
-      </header>
+      <BrainWorkerHeader active="dashboard" user={user} onSignOut={handleSignOut} />
 
       {/* Main Workspace */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#001A41] dark:text-white">BrainWorker Operating Dashboard</h1>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-main)]">BrainWorker Operating Dashboard</h1>
+          <p className="mt-1 text-sm text-[var(--text-muted)]">
             Manage your service dispatch requests, active customer jobs, and verified schedule.
           </p>
         </div>
 
         {/* Setup Incomplete Banner (BW-002) */}
         {operationalProfile && !operationalProfile.isComplete && (
-          <div className="p-6 rounded-lg bg-amber-50/70 dark:bg-[#20180B] border border-amber-200 dark:border-amber-900/40 shadow-xs space-y-4 transition-colors">
+          <div role="region" aria-label="Provider setup required" className="p-6 rounded-lg bg-[var(--amber-dim)] border border-[var(--amber)]/30 shadow-xs space-y-4 transition-colors">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-1.5 rounded-md bg-amber-100 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800/40 px-2.5 py-0.5 text-xs font-bold text-amber-900 dark:text-amber-300">
-                  <AlertTriangle className="h-3.5 w-3.5 text-amber-700 dark:text-amber-400" />
+                <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-2.5 py-0.5 text-xs font-bold text-[var(--amber)]">
+                  <AlertTriangle className="h-3.5 w-3.5 text-[var(--amber)]" />
                   <span>Action Needed</span>
                 </div>
-                <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                <h2 className="text-lg font-bold text-[var(--text-main)]">
                   Complete Your Provider Setup to Receive Leads
                 </h2>
-                <p className="text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+                <p className="text-sm text-[var(--text-muted)] max-w-2xl leading-relaxed">
                   Before you can be matched with customer jobs, configure your trade services, hourly rates, operating hours, and coverage zones.
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/brainworker/services"
-                  className="inline-flex items-center justify-center rounded-lg bg-[#001A41] dark:bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white dark:text-slate-950 shadow-sm hover:bg-[#002661] dark:hover:bg-emerald-500 transition-colors"
+                  className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] transition-colors"
                 >
                   Configure Services & Rates
                 </Link>
@@ -295,8 +264,8 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
                   <span
                     className={
                       operationalProfile.availability.isAvailable
-                        ? 'h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse'
-                        : 'h-2.5 w-2.5 rounded-full bg-slate-400'
+                        ? 'h-2.5 w-2.5 rounded-full bg-[var(--brand-green)] animate-pulse'
+                        : 'h-2.5 w-2.5 rounded-full bg-[var(--rule)]'
                     }
                   />
                   <h2 className="text-lg font-bold text-[var(--text-main)]">
@@ -327,15 +296,15 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
                   onClick={handleToggleDuty}
                   className={
                     operationalProfile.availability.isAvailable
-                      ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 dark:bg-emerald-500 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
-                      : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 dark:bg-slate-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                      ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[var(--amber)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2'
+                      : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[var(--rule)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2'
                   }
                 >
                   <span
                     className={
                       operationalProfile.availability.isAvailable
-                        ? 'translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                        : 'translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                        ? 'translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--card-bg)] shadow ring-0 transition duration-200 ease-in-out'
+                        : 'translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--card-bg)] shadow ring-0 transition duration-200 ease-in-out'
                     }
                   />
                 </button>
@@ -343,7 +312,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
             </div>
 
             {/* Quick Links to Services, Availability, Leads, and Bookings */}
-            <div className="pt-3 border-t border-[var(--card-border)] flex flex-wrap items-center gap-4 text-xs font-semibold text-[#001A41] dark:text-emerald-400">
+            <div className="pt-3 border-t border-[var(--card-border)] flex flex-wrap items-center gap-4 text-xs font-semibold text-[var(--text-main)]">
               <Link href="/brainworker/services" className="hover:underline">
                 Configure Services & Rates →
               </Link>
@@ -369,7 +338,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="h-32 rounded-xl border border-slate-200 bg-slate-100 p-5 dark:border-slate-800 dark:bg-slate-800/50"
+                className="h-32 rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] p-5"
               />
             ))}
           </div>
@@ -379,7 +348,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
           <div
             data-testid="dashboard-error-alert"
             role="alert"
-            className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-rose-800 dark:border-rose-900/50 dark:bg-rose-950/50 dark:text-rose-200"
+            className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-xl border border-[var(--danger-border)] bg-[var(--danger-dim)] p-4 text-[var(--danger)]"
           >
             <div>
               <h3 className="text-sm font-semibold">Feed Notice</h3>
@@ -388,7 +357,7 @@ export default function BrainWorkerDashboardPage(): React.ReactElement {
             <button
               type="button"
               onClick={() => user && void loadFeed(user.id)}
-              className="rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 dark:bg-rose-500 dark:hover:bg-rose-600 cursor-pointer"
+              className="rounded-lg bg-[var(--danger)] px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 cursor-pointer"
             >
               Retry
             </button>

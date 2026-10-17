@@ -265,7 +265,7 @@ export function TradeStepForm({
       <div className="space-y-4">
         <div>
           <span className="block text-sm font-bold uppercase tracking-wider text-[var(--text-muted)]">
-            Primary Trade Category <span className="text-red-500">*</span>
+            Primary Trade Category <span className="text-[var(--danger)]">*</span>
           </span>
           <p className="mt-1 text-xs text-[var(--text-muted)]">
             Select the one core trade you are certified or experienced in.
@@ -295,17 +295,17 @@ export function TradeStepForm({
                     setPrimaryCategory(cat.key);
                   }
                 }}
-                className={`flex items-start gap-3.5 p-4 rounded-lg border text-left cursor-pointer transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20 ${
+                className={`flex items-start gap-3.5 p-4 rounded-lg border text-left cursor-pointer transition focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)] ${
                   isSelected
-                    ? 'border-[#001A41] dark:border-emerald-500 bg-blue-50/40 dark:bg-emerald-950/20 ring-1 ring-[#001A41] dark:ring-emerald-500'
+                    ? 'border-[var(--text-main)] bg-[var(--tag-bg)] ring-1 ring-[var(--text-main)]'
                     : 'border-[var(--card-border)] bg-[var(--card-bg)] hover:bg-[var(--bg)]'
                 }`}
               >
                 <div
                   className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition ${
                     isSelected
-                      ? 'bg-[#001A41] dark:bg-emerald-600 text-white'
-                      : 'bg-slate-100 dark:bg-slate-800 text-[var(--text-muted)]'
+                      ? 'bg-[var(--text-main)] text-[var(--bg)]'
+                      : 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
                   }`}
                 >
                   <IconComponent className="h-5 w-5" />
@@ -321,11 +321,11 @@ export function TradeStepForm({
                 <div
                   className={`h-5 w-5 shrink-0 rounded-full border flex items-center justify-center transition mt-0.5 ${
                     isSelected
-                      ? 'border-[#001A41] dark:border-emerald-500 bg-[#001A41] dark:bg-emerald-500'
+                      ? 'border-[var(--text-main)] bg-[var(--text-main)]'
                       : 'border-[var(--card-border)] bg-[var(--card-bg)]'
                   }`}
                 >
-                  {isSelected && <div className="h-2 w-2 rounded-full bg-white" />}
+                  {isSelected && <div className="h-2 w-2 rounded-full bg-[var(--card-bg)]" />}
                 </div>
               </div>
             );
@@ -334,15 +334,15 @@ export function TradeStepForm({
       </div>
 
       {/* 2. Sub-Specialties (Tags) Section */}
-      <div className="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-800">
+      <div className="space-y-4 pt-2 border-t border-[var(--lead)]">
         <div>
           <label
             htmlFor={`${formId}-sub-specialties`}
-            className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+            className="block text-sm font-bold uppercase tracking-wider text-[var(--text-muted)]"
           >
             Sub-Specialties
           </label>
-          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-xs text-[var(--text-muted)]">
             Add up to 5 specific skills or equipment specialties (e.g. Diesel Generators, AVR, Soundproof Enclosures).
           </p>
         </div>
@@ -361,14 +361,14 @@ export function TradeStepForm({
             }}
             placeholder="e.g. Diesel Generators"
             disabled={subSpecialties.length >= 5}
-            className="flex-1 rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20 disabled:bg-slate-50 dark:disabled:bg-slate-900/50 disabled:cursor-not-allowed"
+            className="flex-1 rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)] disabled:bg-[var(--tag-bg)] disabled:cursor-not-allowed"
           />
           <button
             type="button"
             onClick={handleAddTag}
             disabled={!tagInput.trim() || subSpecialties.length >= 5}
             aria-label="Add Tag"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[#001A41] dark:bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white shadow-xs transition hover:bg-[#002661] dark:hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--amber)] px-4 py-2.5 text-xs font-semibold text-white shadow-xs transition hover:bg-[var(--amber-hover)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Plus className="h-4 w-4" />
             <span>Add</span>
@@ -381,14 +381,14 @@ export function TradeStepForm({
             {subSpecialties.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1.5 rounded-md bg-slate-100 dark:bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-800 dark:text-slate-200 border border-[var(--card-border)]"
+                className="inline-flex items-center gap-1.5 rounded-md bg-[var(--tag-bg)] px-3 py-1.5 text-xs font-medium text-[var(--text-main)] border border-[var(--card-border)]"
               >
                 <span>{tag}</span>
                 <button
                   type="button"
                   onClick={() => handleRemoveTag(tag)}
                   aria-label={`Remove ${tag}`}
-                  className="rounded-full p-0.5 text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none"
+                  className="rounded-full p-0.5 text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus:outline-none"
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -402,7 +402,7 @@ export function TradeStepForm({
       <div className="space-y-4 pt-2 border-t border-[var(--card-border)]">
         <div>
           <span className="block text-sm font-bold uppercase tracking-wider text-[var(--text-muted)]">
-            Experience Tier <span className="text-red-500">*</span>
+            Experience Tier <span className="text-[var(--danger)]">*</span>
           </span>
           <p className="mt-1 text-xs text-[var(--text-muted)]">
             Select the tier that best matches your hands-on field experience.
@@ -431,30 +431,30 @@ export function TradeStepForm({
                     setExperienceLevel(tier.key);
                   }
                 }}
-                className={`p-4 rounded-lg border text-left cursor-pointer transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20 ${
+                className={`p-4 rounded-lg border text-left cursor-pointer transition focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)] ${
                   isSelected
-                    ? 'border-[#001A41] dark:border-emerald-500 bg-blue-50/40 dark:bg-emerald-950/20 ring-1 ring-[#001A41] dark:ring-emerald-500'
+                    ? 'border-[var(--text-main)] bg-[var(--tag-bg)] ring-1 ring-[var(--text-main)]'
                     : 'border-[var(--card-border)] bg-[var(--card-bg)] hover:bg-[var(--bg)]'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-[#001A41] dark:text-emerald-300 bg-blue-100/60 dark:bg-emerald-950/40 rounded-md px-2 py-0.5">
+                  <span className="text-xs font-bold text-[var(--text-main)] bg-[var(--tag-bg)] rounded-md px-2 py-0.5">
                     {tier.range}
                   </span>
                   <div
                     className={`h-4 w-4 rounded-full border flex items-center justify-center ${
                       isSelected
-                        ? 'border-[#001A41] dark:border-emerald-500 bg-[#001A41] dark:bg-emerald-500'
+                        ? 'border-[var(--text-main)] bg-[var(--text-main)]'
                         : 'border-[var(--card-border)] bg-[var(--card-bg)]'
                     }`}
                   >
-                    {isSelected && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+                    {isSelected && <div className="h-1.5 w-1.5 rounded-full bg-[var(--card-bg)]" />}
                   </div>
                 </div>
                 <p className="text-sm font-bold text-[var(--text-main)] leading-snug">
                   {tier.title}
                 </p>
-                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                <p className="mt-1 text-xs text-[var(--text-muted)] leading-relaxed">
                   {tier.description}
                 </p>
               </div>
@@ -464,13 +464,13 @@ export function TradeStepForm({
       </div>
 
       {/* 4. Years in Trade Section */}
-      <div className="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-800">
+      <div className="space-y-4 pt-2 border-t border-[var(--lead)]">
         <div className="max-w-xs">
           <label
             htmlFor={`${formId}-years-in-trade`}
-            className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
+            className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
           >
-            Years in Trade <span className="text-red-500">*</span>
+            Years in Trade <span className="text-[var(--danger)]">*</span>
           </label>
           <input
             id={`${formId}-years-in-trade`}
@@ -484,12 +484,12 @@ export function TradeStepForm({
             placeholder="e.g. 5"
             className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-[var(--text-main)] bg-[var(--bg)] placeholder:text-[var(--text-muted)] transition focus:outline-none focus:ring-2 ${
               yearsError
-                ? 'border-red-300 dark:border-red-800 focus:ring-red-400 bg-red-50/20 dark:bg-red-950/20'
-                : 'border-[var(--card-border)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20'
+                ? 'border-[var(--danger-border)] focus:ring-red-400 bg-[var(--danger-dim)]'
+                : 'border-[var(--card-border)] focus:border-[var(--amber)] focus:ring-[var(--amber-dim)]'
             }`}
           />
           {yearsError && (
-            <p role="alert" className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">
+            <p role="alert" className="mt-1 text-xs text-[var(--danger)] font-medium">
               {yearsError}
             </p>
           )}
@@ -504,7 +504,7 @@ export function TradeStepForm({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <span className="block text-sm font-bold uppercase tracking-wider text-[var(--text-muted)]">
-              Active Coverage Cities <span className="text-red-500">*</span>
+              Active Coverage Cities <span className="text-[var(--danger)]">*</span>
             </span>
             <p className="mt-1 text-xs text-[var(--text-muted)]">
               Select all Nigerian metropolitan areas where you are available to take jobs.
@@ -516,7 +516,7 @@ export function TradeStepForm({
             <button
               type="button"
               onClick={handleSelectAllCities}
-              className="text-xs font-semibold text-[#001A41] dark:text-emerald-400 hover:underline px-2 py-1"
+              className="text-xs font-semibold text-[var(--text-main)] hover:underline px-2 py-1"
             >
               Select All
             </button>
@@ -540,7 +540,7 @@ export function TradeStepForm({
                 key={cityName}
                 className={`inline-flex items-center gap-2.5 px-4 py-2.5 rounded-lg border text-xs font-semibold cursor-pointer transition select-none ${
                   isChecked
-                    ? 'border-[#001A41] dark:border-emerald-600 bg-[#001A41] dark:bg-emerald-600 text-white shadow-xs'
+                    ? 'border-[var(--text-main)] bg-[var(--text-main)] text-[var(--bg)] shadow-xs'
                     : 'border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--bg)]'
                 }`}
               >
@@ -555,7 +555,7 @@ export function TradeStepForm({
                 <div
                   className={`h-4 w-4 rounded flex items-center justify-center transition ${
                     isChecked
-                      ? 'bg-white text-[#001A41]'
+                      ? 'bg-[var(--card-bg)] text-[var(--text-main)]'
                       : 'border border-[var(--card-border)] bg-[var(--card-bg)]'
                   }`}
                 >
@@ -568,7 +568,7 @@ export function TradeStepForm({
         </div>
 
         {citiesError && (
-          <p role="alert" className="mt-1 text-xs text-red-600 dark:text-red-400 font-medium">
+          <p role="alert" className="mt-1 text-xs text-[var(--danger)] font-medium">
             {citiesError}
           </p>
         )}
@@ -579,7 +579,7 @@ export function TradeStepForm({
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-xs transition hover:bg-[var(--bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+          className="inline-flex items-center gap-2 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-xs transition hover:bg-[var(--bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
         >
           <ArrowLeft className="h-4 w-4 text-[var(--text-muted)]" />
           <span>Back to Identity</span>
@@ -588,7 +588,7 @@ export function TradeStepForm({
         <button
           type="submit"
           disabled={!isFormValid || isSubmitting}
-          className={`inline-flex items-center justify-center rounded-lg bg-[#001A41] dark:bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-[#002661] dark:hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 ${
+          className={`inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
             !isFormValid || isSubmitting
               ? 'opacity-50 cursor-not-allowed'
               : 'cursor-pointer'

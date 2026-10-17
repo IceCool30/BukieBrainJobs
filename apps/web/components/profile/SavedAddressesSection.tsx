@@ -209,7 +209,7 @@ export function SavedAddressesSection({
       {statusMessage && (
         <div
           role="status"
-          className="p-3.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2.5"
         >
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           <span>{statusMessage}</span>
@@ -252,8 +252,8 @@ export function SavedAddressesSection({
                   </span>
 
                   {addr.isDefault && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[10px] font-bold">
-                      <Star className="h-3 w-3 fill-emerald-600 dark:fill-emerald-400 text-emerald-600 dark:text-emerald-400" />
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] text-[10px] font-bold">
+                      <Star className="h-3 w-3 fill-emerald-600 dark:fill-emerald-400 text-[var(--brand-green)]" />
                       Default Location
                     </span>
                   )}
@@ -301,7 +301,7 @@ export function SavedAddressesSection({
                     disabled={isOffline || isSubmitting}
                     onClick={() => setDeleteConfirmAddress(addr)}
                     aria-label={`Delete ${addr.label} address`}
-                    className="min-h-[44px] min-w-[44px] p-2 text-[var(--text-muted)] hover:text-red-500 hover:bg-red-500/10 rounded-md transition flex items-center justify-center cursor-pointer disabled:opacity-50"
+                    className="min-h-[44px] min-w-[44px] p-2 text-[var(--text-muted)] hover:text-[var(--danger)] hover:bg-red-500/10 rounded-md transition flex items-center justify-center cursor-pointer disabled:opacity-50"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -340,7 +340,7 @@ export function SavedAddressesSection({
             {modalError && (
               <div
                 role="alert"
-                className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2"
+                className="mb-4 p-3 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs flex items-center gap-2"
               >
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{modalError}</span>
@@ -450,7 +450,7 @@ export function SavedAddressesSection({
 
               <div>
                 <label htmlFor="landmark" className="block text-xs font-semibold text-[var(--text-main)] mb-1.5">
-                  Landmark and Arrival Instructions <span className="text-red-500">*</span>
+                  Landmark and Arrival Instructions <span className="text-[var(--danger)]">*</span>
                 </label>
                 <textarea
                   id="landmark"
@@ -516,7 +516,7 @@ export function SavedAddressesSection({
             aria-labelledby="delete-modal-title"
             className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg max-w-sm w-full p-6 shadow-xl border border-[var(--lead)] relative text-center"
           >
-            <div className="mx-auto w-12 h-12 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 flex items-center justify-center mb-3">
+            <div className="mx-auto w-12 h-12 rounded-lg bg-[var(--danger-dim)] text-[var(--danger)] border border-[var(--danger-border)] flex items-center justify-center mb-3">
               <Trash2 className="h-6 w-6" />
             </div>
             <h3 id="delete-modal-title" className="text-lg font-bold font-display text-[var(--text-main)] mb-2">
@@ -538,7 +538,7 @@ export function SavedAddressesSection({
                 type="button"
                 disabled={isSubmitting}
                 onClick={handleConfirmDelete}
-                className="min-h-[48px] flex-1 py-2 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="min-h-[48px] flex-1 py-2 bg-[var(--danger)] text-white text-xs font-semibold rounded-lg hover:opacity-90 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
               >
                 {isSubmitting ? (
                   <>

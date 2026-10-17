@@ -46,7 +46,7 @@ export function CompletionInspectionCard({
   return (
     <div
       data-booking-id={bookingId}
-      className="rounded-2xl border-2 border-emerald-500/40 bg-emerald-50/40 p-5 sm:p-6 shadow-xs space-y-4"
+      className="rounded-2xl border-2 border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-5 sm:p-6 shadow-xs space-y-4"
       role="region"
       aria-label="Work Completion Inspection"
     >
@@ -56,22 +56,22 @@ export function CompletionInspectionCard({
             <span className="p-1 rounded bg-[#296A4B] text-white">
               <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
             </span>
-            <span className="text-xs font-bold uppercase tracking-wider text-[#296A4B]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[var(--brand-green)]">
               Action Required • Inspection
             </span>
           </div>
-          <h3 className="text-base sm:text-lg font-display font-bold text-[#001A41]">
+          <h3 className="text-base sm:text-lg font-display font-bold text-[var(--text-main)]">
             {workerName} Marked This Job as Complete
           </h3>
-          <p className="text-xs text-slate-600">
+          <p className="text-xs text-[var(--text-muted)]">
             {serviceTitle} • Funds of ₦{amountNaira.toLocaleString()} remain locked in escrow until your approval.
           </p>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl p-4 border border-emerald-200/80 space-y-2 text-xs text-slate-700">
-        <p className="font-semibold text-slate-900">Before releasing payment, verify that:</p>
-        <ul className="space-y-1.5 list-disc pl-4 text-slate-600">
+      <div className="bg-[var(--card-bg)] rounded-xl p-4 border border-emerald-200/80 space-y-2 text-xs text-[var(--text-muted)]">
+        <p className="font-semibold text-[var(--text-main)]">Before releasing payment, verify that:</p>
+        <ul className="space-y-1.5 list-disc pl-4 text-[var(--text-muted)]">
           <li>All requested work items have been fully executed.</li>
           <li>Repaired systems, appliances, or installations have been tested in your presence.</li>
           <li>Your premises are clean and free of leftover debris.</li>
@@ -93,15 +93,15 @@ export function CompletionInspectionCard({
           type="button"
           onClick={onOpenDisputeModal}
           disabled={isOffline}
-          className="min-h-[48px] px-4 py-2.5 rounded-xl border border-amber-300 bg-white text-amber-900 hover:bg-amber-50 font-semibold text-xs transition inline-flex items-center gap-2 cursor-pointer disabled:opacity-50"
+          className="min-h-[48px] px-4 py-2.5 rounded-xl border border-[var(--amber)]/30 bg-[var(--card-bg)] text-[var(--amber)] hover:bg-amber-50 font-semibold text-xs transition inline-flex items-center gap-2 cursor-pointer disabled:opacity-50"
         >
-          <AlertCircle className="h-4 w-4 text-amber-600" aria-hidden="true" />
+          <AlertCircle className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
           <span>Report an Issue / Open Dispute</span>
         </button>
       </div>
 
       {isOffline && (
-        <p className="text-[11px] text-amber-800 font-medium">
+        <p className="text-[11px] text-[var(--amber)] font-medium">
           You are offline. Releasing escrow or filing disputes requires an active connection.
         </p>
       )}
@@ -109,19 +109,19 @@ export function CompletionInspectionCard({
       {/* Release Confirmation Dialog */}
       {isConfirmModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-xs"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg)] p-4 backdrop-blur-xs"
           role="dialog"
           aria-modal="true"
           aria-labelledby="release-modal-title"
         >
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl border border-slate-200 space-y-4">
+          <div className="w-full max-w-md rounded-2xl bg-[var(--card-bg)] p-6 shadow-2xl border border-[var(--lead)] space-y-4">
             <div className="flex items-start justify-between">
               <div>
-                <h4 id="release-modal-title" className="text-base font-display font-bold text-[#001A41]">
+                <h4 id="release-modal-title" className="text-base font-display font-bold text-[var(--text-main)]">
                   Authorize Escrow Release
                 </h4>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Confirm payout of ₦{amountNaira.toLocaleString()} to {workerName}.
+                <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                  Confirm payout of <span className="font-mono font-semibold">₦{amountNaira.toLocaleString()}</span> to {workerName}.
                 </p>
               </div>
               <button
@@ -129,15 +129,15 @@ export function CompletionInspectionCard({
                 onClick={() => setIsConfirmModalOpen(false)}
                 disabled={isSubmitting}
                 aria-label="Close modal"
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
+                className="p-1 rounded-lg text-[var(--text-muted)] hover:text-slate-600 cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             <div className="space-y-3 text-xs">
-              <div className="rounded-xl bg-slate-50 p-3.5 border border-slate-200 space-y-1 text-slate-600">
-                <p className="font-semibold text-slate-800">Final Settlement Notice</p>
+              <div className="rounded-xl bg-[var(--bg)] p-3.5 border border-[var(--lead)] space-y-1 text-[var(--text-muted)]">
+                <p className="font-semibold text-[var(--text-main)]">Final Settlement Notice</p>
                 <p>
                   Releasing escrow authorizes an irrevocable payout to the BrainWorker and closes the job as completed.
                 </p>
@@ -145,7 +145,7 @@ export function CompletionInspectionCard({
 
               {/* Rating */}
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Rate the BrainWorker</label>
+                <label className="block text-[var(--text-muted)] font-semibold mb-1">Rate the BrainWorker</label>
                 <div className="flex items-center gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -153,18 +153,18 @@ export function CompletionInspectionCard({
                       type="button"
                       onClick={() => setCustomerRating(star)}
                       aria-label={`Rate ${star} stars`}
-                      className="p-1 text-amber-400 hover:scale-110 transition cursor-pointer"
+                      className="p-1 text-[var(--amber)] hover:scale-110 transition cursor-pointer"
                     >
-                      <Star className={`h-5 w-5 ${star <= customerRating ? 'fill-amber-400' : 'text-slate-300'}`} />
+                      <Star className={`h-5 w-5 ${star <= customerRating ? 'fill-amber-400' : 'text-[var(--text-muted)]'}`} />
                     </button>
                   ))}
-                  <span className="text-xs font-semibold text-slate-700 ml-1">{customerRating} / 5</span>
+                  <span className="text-xs font-semibold text-[var(--text-muted)] ml-1">{customerRating} / 5</span>
                 </div>
               </div>
 
               {/* Feedback */}
               <div>
-                <label htmlFor="release-feedback" className="block text-slate-700 font-semibold mb-1">
+                <label htmlFor="release-feedback" className="block text-[var(--text-muted)] font-semibold mb-1">
                   Optional Feedback
                 </label>
                 <textarea
@@ -173,12 +173,12 @@ export function CompletionInspectionCard({
                   placeholder="Share details about the quality of service..."
                   value={customerFeedback}
                   onChange={(e) => setCustomerFeedback(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#001A41]"
+                  className="w-full px-3 py-2 rounded-xl border border-[var(--lead)] text-xs focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
                 />
               </div>
 
               {errorMessage && (
-                <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-xs">
+                <div className="p-3 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs">
                   {errorMessage}
                 </div>
               )}
@@ -189,7 +189,7 @@ export function CompletionInspectionCard({
                 type="button"
                 onClick={() => setIsConfirmModalOpen(false)}
                 disabled={isSubmitting}
-                className="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50 cursor-pointer"
+                className="px-4 py-2 rounded-xl border border-[var(--rule)] text-[var(--text-muted)] text-xs font-semibold hover:bg-[var(--card-hover)] cursor-pointer"
               >
                 Go Back
               </button>

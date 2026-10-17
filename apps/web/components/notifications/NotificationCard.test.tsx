@@ -38,7 +38,7 @@ describe('WEB-018 NotificationCard Anatomy & Interaction (CRD-001 through CRD-00
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // CRD-002: Unread card renders bold headline, tinted surface (#EFF4FF), and emerald dot
+  // CRD-002: Unread card renders bold headline, tag surface with an amber left rule, and emerald dot
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   describe('CRD-002: Unread card styling and indicators', () => {
     it('renders tinted surface, unread dot indicator, and bold title', () => {
@@ -48,7 +48,8 @@ describe('WEB-018 NotificationCard Anatomy & Interaction (CRD-001 through CRD-00
       expect(indicator).toBeInTheDocument();
 
       const card = screen.getByTestId(`notification-card-${FIXTURE_NOTIF_BOOKING_CONFIRMED.id}`);
-      expect(card.className).toMatch(/bg-\[#EFF4FF\]|bg-blue-50/);
+      expect(card.className).toMatch(/bg-\[var\(--tag-bg\)\]/);
+      expect(card.className).toMatch(/inset_3px_0_0_var\(--amber\)/);
     });
   });
 
@@ -62,7 +63,7 @@ describe('WEB-018 NotificationCard Anatomy & Interaction (CRD-001 through CRD-00
       expect(screen.queryByTestId('unread-indicator')).not.toBeInTheDocument();
 
       const card = screen.getByTestId(`notification-card-${FIXTURE_NOTIF_BOOKING_COMPLETED.id}`);
-      expect(card.className).toMatch(/bg-white/);
+      expect(card.className).toMatch(/bg-\[var\(--card-bg\)\]/);
     });
   });
 

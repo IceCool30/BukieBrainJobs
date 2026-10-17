@@ -49,18 +49,18 @@ export function DisputeModal({
   return (
     <div
       data-booking-id={bookingId}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg)] p-4 backdrop-blur-xs"
       role="dialog"
       aria-modal="true"
       aria-labelledby="dispute-modal-title"
     >
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl border border-slate-200 space-y-4">
+      <div className="w-full max-w-md rounded-2xl bg-[var(--card-bg)] p-6 shadow-2xl border border-[var(--lead)] space-y-4">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <h3 id="dispute-modal-title" className="text-base font-display font-bold text-[#001A41]">
+            <h3 id="dispute-modal-title" className="text-base font-display font-bold text-[var(--text-main)]">
               Open BukieGuarantee Dispute
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-[var(--text-muted)]">
               Escrow funds will be immediately frozen pending review.
             </p>
           </div>
@@ -69,14 +69,14 @@ export function DisputeModal({
             onClick={onClose}
             disabled={isSubmitting}
             aria-label="Close modal"
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
+            className="p-1 rounded-lg text-[var(--text-muted)] hover:text-slate-600 cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="rounded-xl bg-amber-50 p-3 border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
-          <AlertCircle className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
+        <div className="rounded-xl bg-[var(--amber-dim)] p-3 border border-[var(--amber)]/30 text-xs text-[var(--amber)] flex items-start gap-2">
+          <AlertCircle className="h-4 w-4 text-[var(--amber)] shrink-0 mt-0.5" />
           <span>
             Opening a dispute freezes payout to the BrainWorker and prevents automated release. A mediation specialist will review your claim within 24 hours.
           </span>
@@ -84,7 +84,7 @@ export function DisputeModal({
 
         <form onSubmit={handleSubmit} className="space-y-3 text-xs">
           <div>
-            <label htmlFor="dispute-reason-select" className="block font-semibold text-slate-700 mb-1">
+            <label htmlFor="dispute-reason-select" className="block font-semibold text-[var(--text-muted)] mb-1">
               Nature of Issue
             </label>
             <select
@@ -92,7 +92,7 @@ export function DisputeModal({
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               disabled={isSubmitting}
-              className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#001A41]"
+              className="w-full px-3 py-2.5 rounded-xl border border-[var(--lead)] text-xs bg-[var(--card-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
             >
               <option value="Work incomplete or abandoned">Work incomplete or abandoned by technician</option>
               <option value="Poor craftsmanship or damage caused">Poor craftsmanship or property damage</option>
@@ -102,7 +102,7 @@ export function DisputeModal({
           </div>
 
           <div>
-            <label htmlFor="dispute-description-input" className="block font-semibold text-slate-700 mb-1">
+            <label htmlFor="dispute-description-input" className="block font-semibold text-[var(--text-muted)] mb-1">
               Describe the Issue in Detail
             </label>
             <textarea
@@ -112,12 +112,12 @@ export function DisputeModal({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               disabled={isSubmitting}
-              className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#001A41]"
+              className="w-full px-3 py-2 rounded-xl border border-[var(--lead)] text-xs focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
             />
           </div>
 
           {errorMessage && (
-            <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-xs">
+            <div className="p-3 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs">
               {errorMessage}
             </div>
           )}
@@ -127,7 +127,7 @@ export function DisputeModal({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50 cursor-pointer"
+              className="px-4 py-2 rounded-xl border border-[var(--rule)] text-[var(--text-muted)] text-xs font-semibold hover:bg-[var(--card-hover)] cursor-pointer"
             >
               Cancel
             </button>

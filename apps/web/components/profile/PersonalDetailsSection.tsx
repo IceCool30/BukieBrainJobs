@@ -89,7 +89,7 @@ export function PersonalDetailsSection({
         </div>
 
         {profile.emailVerified && (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold border border-emerald-500/20">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] text-xs font-semibold border border-[var(--brand-green-border)]">
             <CheckCircle2 className="h-3.5 w-3.5" />
             <span>Verified Customer</span>
           </div>
@@ -99,7 +99,7 @@ export function PersonalDetailsSection({
       {validationError && (
         <div
           role="alert"
-          className="p-3.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs flex items-center gap-2.5"
         >
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{validationError}</span>
@@ -109,7 +109,7 @@ export function PersonalDetailsSection({
       {successMessage && (
         <div
           role="status"
-          className="p-3.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2.5"
         >
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           <span>{successMessage}</span>

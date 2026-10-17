@@ -30,22 +30,22 @@ export function CharacterCountTextarea({
   const isLimitReached = charCount === maxLength;
 
   const getCounterColorClass = () => {
-    if (isOverflow) return 'text-rose-600 font-bold';
-    if (isLimitReached) return 'text-slate-900 font-bold';
-    if (isApproaching) return 'text-amber-600 font-semibold';
-    return 'text-slate-400';
+    if (isOverflow) return 'text-[var(--danger)] font-bold';
+    if (isLimitReached) return 'text-[var(--text-main)] font-bold';
+    if (isApproaching) return 'text-[var(--amber)] font-semibold';
+    return 'text-[var(--text-muted)]';
   };
 
   return (
     <div className="space-y-1.5">
       <div className="flex items-baseline justify-between">
-        <label htmlFor={id} className="text-sm font-semibold text-[#001A41]">
+        <label htmlFor={id} className="text-sm font-semibold text-[var(--text-main)]">
           {label}
         </label>
       </div>
 
       {description && (
-        <p className="text-xs text-slate-500">{description}</p>
+        <p className="text-xs text-[var(--text-muted)]">{description}</p>
       )}
 
       <textarea
@@ -58,17 +58,17 @@ export function CharacterCountTextarea({
         aria-invalid={isOverflow ? 'true' : 'false'}
         aria-errormessage={isOverflow ? 'review-comment-error' : undefined}
         onChange={(e) => onChange(e.target.value)}
-        className={`w-full rounded-xl border p-3 text-sm min-h-[110px] transition-colors focus:outline-hidden focus:ring-2 disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed ${
+        className={`w-full rounded-xl border p-3 text-sm min-h-[110px] transition-colors focus:outline-hidden focus:ring-2 disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] disabled:cursor-not-allowed ${
           isOverflow
-            ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-200'
-            : 'border-slate-200 focus:border-[#001A41] focus:ring-[#ABEEC8]'
+            ? 'border-[var(--danger-border)] focus:border-rose-500 focus:ring-rose-200'
+            : 'border-[var(--lead)] focus:border-[var(--amber)] focus:ring-[#ABEEC8]'
         }`}
       />
 
       <div className="flex items-center justify-between">
         <div className="flex-1">
           {isOverflow && (
-            <p id="review-comment-error" className="text-xs text-rose-600 font-medium">
+            <p id="review-comment-error" className="text-xs text-[var(--danger)] font-medium">
               Written feedback cannot exceed 1,000 characters.
             </p>
           )}

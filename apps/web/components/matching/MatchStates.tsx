@@ -174,8 +174,8 @@ export function ConstraintLimitedState({
 export function MatchingFailedState({ onRetry }: { onRetry: () => void }) {
   return (
     <div role="alert" className="py-14 flex flex-col items-center text-center">
-      <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-5">
-        <AlertTriangle className="h-8 w-8 text-red-500" aria-hidden="true" />
+      <div className="w-16 h-16 rounded-full bg-[var(--danger-dim)] border border-[var(--danger-border)] flex items-center justify-center mb-5">
+        <AlertTriangle className="h-8 w-8 text-[var(--danger)]" aria-hidden="true" />
       </div>
       <h2 className="font-display font-bold text-xl text-[var(--text)] mb-2">
         Matching could not complete

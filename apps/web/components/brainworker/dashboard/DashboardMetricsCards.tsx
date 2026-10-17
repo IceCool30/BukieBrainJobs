@@ -2,20 +2,42 @@
 // BrainWorker Operating Dashboard: Metrics Cards Sub-Component
 // Item 2.2 in master checklist (COMP-003 to COMP-008)
 
-import React, { type JSX } from 'react';
+import React, { type JSX, type ReactNode } from 'react';
 import type { DashboardMetricsCardsProps } from './types';
 
-function formatNextStartTime(isoString: string | null): string {
-  if (!isoString) return 'No more jobs today';
-  try {
-    const d = new Date(isoString);
-    if (Number.isNaN(d.getTime())) return 'No more jobs today';
-    const hours = d.getUTCHours().toString().padStart(2, '0');
-    const minutes = d.getUTCMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
-  } catch {
-    return 'No more jobs today';
-  }
+const CARD_ACTION =
+  'rounded-lg border border-[var(--amber)]/40 px-3 py-1.5 text-xs font-semibold text-[var(--amber)] transition-colors hover:bg-[var(--amber-dim)] hover:border-[var(--amber)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--card-bg)]';
+
+function formatNextStartTime(isoString: string | null): string | null {
+  if (!isoString) return null;
+  const d = new Date(isoString);
+  if (Number.isNaN(d.getTime())) return null;
+  return `${d.getUTCHours().toString().padStart(2, '0')}:${d.getUTCMinutes().toString().padStart(2, '0')}`;
+}
+
+interface MetricCardProps {
+  testId: string;
+  label: string;
+  value: ReactNode;
+  caption: string;
+  // Readings (counts, times, scores) take the mono numeral treatment; empty states read as plain copy.
+  isReading?: boolean;
+  action?: ReactNode;
+}
+
+function MetricCard({ testId, label, value, caption, isReading = true, action }: MetricCardProps) {
+  return (
+    <div data-testid={testId} className="flex flex-col rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs transition-colors hover:border-[var(--rule)]">
+      <span className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-muted)]">{label}</span>
+      <div className="mt-3 flex min-h-9 items-center justify-between gap-3">
+        <span className={isReading ? 'font-mono text-3xl font-semibold tracking-tight text-[var(--text-main)]' : 'text-lg font-semibold text-[var(--text-main)]'}>
+          {value}
+        </span>
+        {action}
+      </div>
+      <p className="mt-1.5 text-sm text-[var(--text-muted)]">{caption}</p>
+    </div>
+  );
 }
 
 export function DashboardMetricsCards({
@@ -23,125 +45,51 @@ export function DashboardMetricsCards({
   onSelectActiveJob,
   onNavigateToLeads,
 }: DashboardMetricsCardsProps): JSX.Element {
+  const nextStart = formatNextStartTime(metrics.nextScheduledStartAt);
+  const hasRating = typeof metrics.clientRating === 'number';
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {/* Today's Bookings (COMP-003) */}
-      <div
-        data-testid="metric-today-bookings"
-        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-      >
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Today&apos;s Schedule
-        </span>
-        <div className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
-          {metrics.todayBookingsCount}
-        </div>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Bookings scheduled for today
-        </p>
-      </div>
-
-      {/* Next Scheduled Arrival (COMP-004) */}
-      <div
-        data-testid="metric-next-start"
-        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-      >
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Next Arrival
-        </span>
-        <div className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
-          {formatNextStartTime(metrics.nextScheduledStartAt)}
-        </div>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          {metrics.nextScheduledStartAt ? 'Earliest upcoming start' : 'Schedule clear'}
-        </p>
-      </div>
-
-      {/* Active Jobs & Deep-Link CTA (COMP-005) */}
-      <div
-        data-testid="metric-active-jobs"
-        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-      >
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Active Jobs
-        </span>
-        <div className="mt-2 flex items-baseline justify-between">
-          <span className="text-3xl font-bold text-slate-900 dark:text-white">
-            {metrics.activeJobsCount}
-          </span>
-          {metrics.activeJobId && (
-            <button
-              type="button"
-              onClick={() => onSelectActiveJob?.(metrics.activeJobId!)}
-              className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:bg-emerald-500 dark:hover:bg-emerald-600"
-            >
+      <MetricCard testId="metric-today-bookings" label="Today's Schedule" value={metrics.todayBookingsCount} caption="Bookings scheduled for today" />
+      <MetricCard
+        testId="metric-next-start"
+        label="Next Arrival"
+        value={nextStart ?? 'No more jobs today'}
+        isReading={nextStart !== null}
+        caption={nextStart ? 'Earliest upcoming start' : 'Schedule clear'}
+      />
+      <MetricCard
+        testId="metric-active-jobs"
+        label="Active Jobs"
+        value={metrics.activeJobsCount}
+        caption="Currently in progress or en route"
+        action={
+          metrics.activeJobId && (
+            <button type="button" onClick={() => onSelectActiveJob?.(metrics.activeJobId!)} className={CARD_ACTION}>
               View Active Job
             </button>
-          )}
-        </div>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Currently in progress or en route
-        </p>
-      </div>
-
-      {/* Pending Quotes (COMP-006) */}
-      <div
-        data-testid="metric-pending-quotes"
-        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-      >
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Pending Quotes
-        </span>
-        <div className="mt-2 flex items-baseline justify-between">
-          <span className="text-3xl font-bold text-slate-900 dark:text-white">
-            {metrics.pendingQuotesCount}
-          </span>
-          <button
-            type="button"
-            onClick={() => onNavigateToLeads?.()}
-            className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-600"
-          >
+          )
+        }
+      />
+      <MetricCard
+        testId="metric-pending-quotes"
+        label="Pending Quotes"
+        value={metrics.pendingQuotesCount}
+        caption="Customer invitations awaiting response"
+        action={
+          <button type="button" onClick={() => onNavigateToLeads?.()} className={CARD_ACTION}>
             Review Leads
           </button>
-        </div>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Customer invitations awaiting response
-        </p>
-      </div>
-
-      {/* Completed Jobs Counter (COMP-007) */}
-      <div
-        data-testid="metric-completed-jobs"
-        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-      >
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Completed Jobs
-        </span>
-        <div className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
-          {metrics.completedJobsCount}
-        </div>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          All-time fulfilled service bookings
-        </p>
-      </div>
-
-      {/* Customer Rating (COMP-008) */}
-      <div
-        data-testid="metric-client-rating"
-        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-      >
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Customer Rating
-        </span>
-        <div className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
-          {typeof metrics.clientRating === 'number'
-            ? `${metrics.clientRating} / 5.0`
-            : 'No reviews yet'}
-        </div>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Verified quality score
-        </p>
-      </div>
+        }
+      />
+      <MetricCard testId="metric-completed-jobs" label="Completed Jobs" value={metrics.completedJobsCount} caption="All-time fulfilled service bookings" />
+      <MetricCard
+        testId="metric-client-rating"
+        label="Customer Rating"
+        value={hasRating ? `${metrics.clientRating} / 5.0` : 'No reviews yet'}
+        isReading={hasRating}
+        caption="Verified quality score"
+      />
     </div>
   );
 }

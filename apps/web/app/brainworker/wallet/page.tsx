@@ -7,7 +7,7 @@
 import React, { useEffect, useState, useRef, type JSX } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, ShieldCheck, LogOut, Wallet } from 'lucide-react';
+import { Wallet } from 'lucide-react';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib/auth/storage';
 import type { AuthUser } from '../../../lib/auth/types';
 import { ThemeToggle } from '../../../components/ThemeToggle';
@@ -19,10 +19,11 @@ import type {
   PayoutRequest,
   WalletTransaction,
 } from '../../../lib/brainworker/wallet/types';
+import { BrainWorkerHeader } from '../../../components/brainworker/BrainWorkerHeader';
 
 export default function BrainWorkerWalletPage(): JSX.Element {
   const router = useRouter();
-  const [user, setUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [summary, setSummary] = useState<BrainWorkerWalletSummary | null>(null);
   const [bankAccounts, setBankAccounts] = useState<BankAccountDetails[]>([]);
   const [transactions, setTransactions] = useState<WalletTransaction[]>([]);
@@ -93,8 +94,8 @@ export default function BrainWorkerWalletPage(): JSX.Element {
   if (user && user.role !== 'brainworker') {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 transition-colors">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl border border-red-200 dark:border-red-900/40 p-8 shadow-sm text-center space-y-4 transition-colors">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 px-3 py-1 text-xs font-semibold text-red-800 dark:text-red-300">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl border border-[var(--danger-border)] p-8 shadow-sm text-center space-y-4 transition-colors">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[var(--danger-dim)] border border-[var(--danger-border)] px-3 py-1 text-xs font-semibold text-[var(--danger)]">
             {user.role === 'customer'
               ? 'Customer Account Detected'
               : 'Unauthorized Access'}
@@ -108,7 +109,7 @@ export default function BrainWorkerWalletPage(): JSX.Element {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-xl bg-[#001A41] dark:bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white dark:text-slate-950 shadow-sm hover:bg-[#002661] dark:hover:bg-emerald-500 transition-colors"
+            className="inline-flex items-center justify-center rounded-xl bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] transition-colors"
           >
             {user.role === 'customer'
               ? 'Return to Customer Dashboard'
@@ -167,64 +168,19 @@ export default function BrainWorkerWalletPage(): JSX.Element {
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors duration-200">
       {/* Top Header */}
-      <header className="bg-[var(--card-bg)] border-b border-[var(--lead)] sticky top-0 z-20 transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/brainworker/dashboard"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-main)] hover:opacity-80 transition-colors"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span>Dashboard</span>
-            </Link>
-            <span className="text-[var(--rule)]">|</span>
-            <span className="font-black text-xl tracking-tight text-[var(--text-main)] font-display">
-              BukieBrainJobs
-            </span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 text-xs font-semibold text-[var(--brand-green)]">
-              <ShieldCheck className="h-3.5 w-3.5 text-[var(--brand-green)]" />
-              <span>Verified Provider</span>
-            </span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <ThemeToggle idPrefix="wallet-workspace-theme" />
-            {user && user.role === 'brainworker' && user.isBrainWorkerApproved && (
-              <>
-                <div className="text-right hidden sm:block">
-                  <div className="text-sm font-bold text-[var(--text-main)]">
-                    {user.name}
-                  </div>
-                  <div className="text-xs text-[var(--text-muted)]">
-                    {user.email || user.phone}
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleSignOut}
-                  className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-muted)] hover:text-red-500 transition cursor-pointer"
-                  title="Sign Out"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span className="hidden sm:inline">Sign Out</span>
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
+      <BrainWorkerHeader active="wallet" user={user} onSignOut={handleSignOut} />
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {errorMessage && (
-          <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs text-rose-300">
+          <div className="rounded-xl border border-[var(--danger-border)] bg-[var(--danger-dim)] p-4 text-xs text-[var(--danger)]">
             Failed to load wallet data: {errorMessage}
           </div>
         )}
 
         {!user || !user.isBrainWorkerApproved || isLoading || !summary ? (
           <div className="flex justify-center py-16">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--brand-green)] border-t-transparent" />
           </div>
         ) : (
           <WalletManagementWorkspace

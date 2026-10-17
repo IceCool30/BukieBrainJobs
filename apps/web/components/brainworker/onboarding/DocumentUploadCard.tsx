@@ -204,9 +204,9 @@ export function DocumentUploadCard({
       id={id}
       className={`w-full rounded-lg border bg-[var(--card-bg)] p-5 transition-colors ${
         activeError
-          ? 'border-red-300 dark:border-red-800'
+          ? 'border-[var(--danger-border)]'
           : isDragging
-          ? 'border-[#001A41] dark:border-emerald-500 bg-blue-50/30 dark:bg-emerald-950/20'
+          ? 'border-[var(--text-main)] bg-[var(--tag-bg)]'
           : 'border-[var(--card-border)]'
       } ${disabled ? 'opacity-70 cursor-not-allowed' : ''} ${className}`}
     >
@@ -231,7 +231,7 @@ export function DocumentUploadCard({
       <div className="mb-4">
         <label className="block text-sm font-semibold text-[var(--text-main)]">
           {label}
-          {required && <span className="ml-1 text-red-500">*</span>}
+          {required && <span className="ml-1 text-[var(--danger)]">*</span>}
         </label>
         {description && (
           <p className="mt-1 text-xs text-[var(--text-muted)] leading-relaxed">
@@ -244,9 +244,9 @@ export function DocumentUploadCard({
       {activeError && (
         <div
           role="alert"
-          className="mb-4 flex items-center gap-2 rounded-lg bg-red-50 dark:bg-red-950/30 px-3 py-2 text-xs font-medium text-red-700 dark:text-red-300 border border-red-200 dark:border-red-850"
+          className="mb-4 flex items-center gap-2 rounded-lg bg-[var(--danger-dim)] px-3 py-2 text-xs font-medium text-[var(--danger)] border border-[var(--danger-border)]"
         >
-          <AlertCircle className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400" />
+          <AlertCircle className="h-4 w-4 shrink-0 text-[var(--danger)]" />
           <span>{activeError}</span>
         </div>
       )}
@@ -260,24 +260,24 @@ export function DocumentUploadCard({
               <img
                 src={previewSrc}
                 alt={`Preview of ${value.fileName}`}
-                className="max-h-48 w-full object-contain rounded-lg bg-slate-900/5 dark:bg-white/5 p-1"
+                className="max-h-48 w-full object-contain rounded-lg bg-[var(--bg)] p-1"
               />
             </div>
           ) : isPdf ? (
             <div className="flex items-center gap-4 rounded-lg border border-[var(--card-border)] bg-[var(--bg)] p-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[var(--danger-dim)] text-[var(--danger)]">
                 <FileText className="h-6 w-6" />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="rounded-md bg-red-50 dark:bg-red-950/40 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/60">
+                  <span className="rounded-md bg-[var(--danger-dim)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--danger)] border border-[var(--danger-border)]">
                     PDF Document
                   </span>
                 </div>
-                <p className="mt-1 truncate text-sm font-medium text-slate-900 dark:text-slate-100">
+                <p className="mt-1 truncate text-sm font-medium text-[var(--text-main)]">
                   {value.fileName}
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                <p className="text-xs text-[var(--text-muted)] font-mono">
                   {formatFileSize(value.fileSizeBytes)}
                 </p>
               </div>
@@ -288,10 +288,10 @@ export function DocumentUploadCard({
           {isImage && (
             <div className="flex items-center justify-between px-1">
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">
+                <p className="truncate text-sm font-medium text-[var(--text-main)]">
                   {value.fileName}
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                <p className="text-xs text-[var(--text-muted)] font-mono">
                   {formatFileSize(value.fileSizeBytes)}
                 </p>
               </div>
@@ -305,11 +305,11 @@ export function DocumentUploadCard({
               disabled={disabled}
               onClick={handleReplaceClick}
               aria-label={`Replace ${value.fileName}`}
-              className={`inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-xs transition hover:bg-slate-50 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] ${
+              className={`inline-flex items-center gap-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3.5 py-2 text-xs font-semibold text-[var(--text-muted)] shadow-xs transition hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] ${
                 disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
               }`}
             >
-              <RefreshCw className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+              <RefreshCw className="h-3.5 w-3.5 text-[var(--text-muted)]" />
               <span>Replace</span>
             </button>
             <button
@@ -317,11 +317,11 @@ export function DocumentUploadCard({
               disabled={disabled}
               onClick={handleRemove}
               aria-label={`Remove ${value.fileName}`}
-              className={`inline-flex items-center gap-2 rounded-lg border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-800 px-3.5 py-2 text-xs font-semibold text-red-600 dark:text-red-400 shadow-xs transition hover:bg-red-50 dark:hover:bg-red-950/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 ${
+              className={`inline-flex items-center gap-2 rounded-lg border border-[var(--danger-border)] bg-[var(--card-bg)] px-3.5 py-2 text-xs font-semibold text-[var(--danger)] shadow-xs transition hover:bg-[var(--danger-dim)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 ${
                 disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
               }`}
             >
-              <Trash2 className="h-3.5 w-3.5 text-red-500 dark:text-red-400" />
+              <Trash2 className="h-3.5 w-3.5 text-[var(--danger)]" />
               <span>Remove</span>
             </button>
           </div>
@@ -340,17 +340,17 @@ export function DocumentUploadCard({
           }}
           className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed px-6 py-8 text-center transition ${
             isDragging
-              ? 'border-[#001A41] dark:border-emerald-500 bg-blue-50/50 dark:bg-emerald-950/20'
-              : 'border-[var(--card-border)] hover:border-slate-400 dark:hover:border-slate-600 bg-[var(--bg)]'
+              ? 'border-[var(--text-main)] bg-[var(--tag-bg)]'
+              : 'border-[var(--card-border)] hover:border-[var(--rule)] bg-[var(--bg)]'
           } ${disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 dark:bg-emerald-950/40 text-[#001A41] dark:text-emerald-400 mb-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--tag-bg)] text-[var(--text-main)] mb-3">
             <UploadCloud className="h-6 w-6" />
           </div>
-          <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+          <p className="text-xs font-semibold text-[var(--text-muted)]">
             Click to upload or drag and drop
           </p>
-          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-xs text-[var(--text-muted)]">
             JPG, PNG, WEBP, or PDF up to 5 MB
           </p>
         </div>

@@ -39,11 +39,11 @@ export function WalletManagementWorkspace({
       className="space-y-8"
     >
       {/* Workspace Header */}
-      <div className="border-b border-slate-800 pb-5">
-        <h1 className="text-xl font-bold tracking-tight text-slate-100 sm:text-2xl">
+      <div className="border-b border-[var(--lead)] pb-5">
+        <h1 className="text-xl font-bold tracking-tight text-[var(--text-main)] sm:text-2xl">
           Earnings & Wallet
         </h1>
-        <p className="mt-1 text-xs text-slate-400 sm:text-sm">
+        <p className="mt-1 text-xs text-[var(--text-muted)] sm:text-sm">
           Track escrow payments, manage verified Nigerian payout accounts, and execute withdrawals with zero transfer fees.
         </p>
       </div>
@@ -65,7 +65,7 @@ export function WalletManagementWorkspace({
       <section
         id="connected-bank-accounts-section"
         aria-labelledby="bank-accounts-heading"
-        className="rounded-xl border border-slate-800 bg-slate-900/30 p-5 sm:p-6"
+        className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-5 sm:p-6"
       >
         <BankAccountsManager
           accounts={accounts}
@@ -78,7 +78,7 @@ export function WalletManagementWorkspace({
       {/* 3. Transaction Ledger Table */}
       <section
         aria-labelledby="wallet-ledger-heading"
-        className="rounded-xl border border-slate-800 bg-slate-900/30 p-5 sm:p-6"
+        className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-5 sm:p-6"
       >
         <WalletLedgerTable
           transactions={transactions}

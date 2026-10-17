@@ -149,7 +149,7 @@ export function ReviewStepForm({
       >
         <div className="flex items-center justify-between pb-4 border-b border-[var(--card-border)]">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100/70 dark:bg-blue-950/50 text-[#001A41] dark:text-blue-300">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--tag-bg)] text-[var(--text-main)]">
               <User className="h-5 w-5" />
             </div>
             <div>
@@ -166,7 +166,7 @@ export function ReviewStepForm({
             type="button"
             onClick={() => onEditStep('identity')}
             aria-label="Edit Identity Information"
-            className="inline-flex items-center gap-1.5 rounded-md border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[#001A41] dark:hover:text-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+            className="inline-flex items-center gap-1.5 rounded-md border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           >
             <Pencil className="h-3.5 w-3.5" />
             <span>Edit</span>
@@ -175,35 +175,35 @@ export function ReviewStepForm({
 
         <dl className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-sm">
           <div>
-            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">
               Legal Full Name
             </dt>
-            <dd className="mt-1 font-semibold text-slate-900 dark:text-slate-100">{fullName}</dd>
+            <dd className="mt-1 font-semibold text-[var(--text-main)]">{fullName}</dd>
           </div>
 
           <div>
-            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">
               Date of Birth
             </dt>
-            <dd className="mt-1 font-semibold text-slate-900 dark:text-slate-100">
+            <dd className="mt-1 font-semibold text-[var(--text-main)]">
               {identityData.dateOfBirth}
             </dd>
           </div>
 
           <div>
-            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">
               {identityData.identifierType} Number (Masked)
             </dt>
-            <dd className="mt-1 font-mono font-semibold text-slate-900 dark:text-slate-100 tracking-wider">
+            <dd className="mt-1 font-mono font-semibold text-[var(--text-main)] tracking-wider">
               {identityData.maskedIdentifier}
             </dd>
           </div>
 
           <div>
-            <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <dt className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">
               Residential Address
             </dt>
-            <dd className="mt-1 font-semibold text-slate-900 dark:text-slate-100">{fullAddress}</dd>
+            <dd className="mt-1 font-semibold text-[var(--text-main)]">{fullAddress}</dd>
           </div>
         </dl>
       </section>
@@ -215,7 +215,7 @@ export function ReviewStepForm({
       >
         <div className="flex items-center justify-between pb-4 border-b border-[var(--card-border)]">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-100/70 dark:bg-amber-950/50 text-[#001A41] dark:text-amber-300">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--amber-dim)] text-[var(--text-main)]">
               <Wrench className="h-5 w-5" />
             </div>
             <div>
@@ -232,7 +232,7 @@ export function ReviewStepForm({
             type="button"
             onClick={() => onEditStep('trade')}
             aria-label="Edit Trade Profile"
-            className="inline-flex items-center gap-1.5 rounded-md border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[#001A41] dark:hover:text-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+            className="inline-flex items-center gap-1.5 rounded-md border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           >
             <Pencil className="h-3.5 w-3.5" />
             <span>Edit</span>
@@ -297,7 +297,7 @@ export function ReviewStepForm({
       >
         <div className="flex items-center justify-between pb-4 border-b border-[var(--card-border)]">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100/70 dark:bg-emerald-950/50 text-[#001A41] dark:text-emerald-300">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--brand-green-dim)] text-[var(--text-main)]">
               <FileCheck className="h-5 w-5" />
             </div>
             <div>
@@ -314,7 +314,7 @@ export function ReviewStepForm({
             type="button"
             onClick={() => onEditStep('credentials')}
             aria-label="Edit Documents & Credentials"
-            className="inline-flex items-center gap-1.5 rounded-md border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[#001A41] dark:hover:text-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+            className="inline-flex items-center gap-1.5 rounded-md border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           >
             <Pencil className="h-3.5 w-3.5" />
             <span>Edit</span>
@@ -346,7 +346,7 @@ export function ReviewStepForm({
                   </div>
                 </div>
 
-                <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 dark:bg-emerald-950/40 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60">
+                <span className="inline-flex items-center gap-1 rounded-md bg-[var(--brand-green-dim)] px-2 py-1 text-xs font-medium text-[var(--brand-green)] border border-[var(--brand-green-border)]">
                   <CheckCircle2 className="h-3.5 w-3.5" />
                   <span>Staged</span>
                 </span>
@@ -358,7 +358,7 @@ export function ReviewStepForm({
 
       {/* 4. Legal Truthfulness Declaration & Acknowledgements (REV-005) */}
       <div className="rounded-lg border-2 border-[var(--card-border)] bg-[var(--bg)] p-5 sm:p-6 space-y-4">
-        <div className="flex items-center gap-2.5 text-[#001A41] dark:text-emerald-400">
+        <div className="flex items-center gap-2.5 text-[var(--text-main)]">
           <ShieldCheck className="h-5 w-5 shrink-0" />
           <h4 className="text-sm font-bold uppercase tracking-wider">
             Applicant Declaration & Agreement
@@ -372,7 +372,7 @@ export function ReviewStepForm({
               id={`${formId}-truth`}
               checked={truthfulnessAcknowledged}
               onChange={(e) => setTruthfulnessAcknowledged(e.target.checked)}
-              className="mt-0.5 h-4 w-4 rounded border-[var(--card-border)] text-[#001A41] dark:text-emerald-500 focus:ring-emerald-500"
+              className="mt-0.5 h-4 w-4 rounded border-[var(--card-border)] text-[var(--text-main)] focus:ring-[var(--amber)]"
             />
             <span className="leading-snug">
               I solemnly declare that all personal details, trade experience, and credentials provided in this application are genuine, accurate, and belong to me. I understand that submitting fraudulent credentials results in immediate disqualification and account termination.
@@ -385,7 +385,7 @@ export function ReviewStepForm({
               id={`${formId}-terms`}
               checked={termsAccepted}
               onChange={(e) => setTermsAccepted(e.target.checked)}
-              className="mt-0.5 h-4 w-4 rounded border-[var(--card-border)] text-[#001A41] dark:text-emerald-500 focus:ring-emerald-500"
+              className="mt-0.5 h-4 w-4 rounded border-[var(--card-border)] text-[var(--text-main)] focus:ring-[var(--amber)]"
             />
             <span className="leading-snug">
               I agree to the BukieBrainJobs Provider Terms of Service, background verification protocols, and code of professional conduct.
@@ -399,7 +399,7 @@ export function ReviewStepForm({
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-xs transition hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+          className="inline-flex items-center gap-2 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-xs transition hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
         >
           <ArrowLeft className="h-4 w-4 text-[var(--text-muted)]" />
           <span>Back to Credentials</span>
@@ -408,7 +408,7 @@ export function ReviewStepForm({
         <button
           type="submit"
           disabled={!canSubmit}
-          className={`inline-flex items-center gap-2 rounded-lg bg-[#001A41] dark:bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-[#002661] dark:hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 ${
+          className={`inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
             !canSubmit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
           }`}
         >
