@@ -2,6 +2,34 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-10-17: Maintenance Merge Authorization
+
+The owner explicitly instructed merging the maintenance branch to `main`. This supersedes the earlier publication-only boundary. The follow-up changes only remove obsolete authorization wording from task notes and distinguish the unchanged BW-006 product baseline from the maintenance commit. Merge through a GitHub pull request after checking the exact head and required checks; never push directly to `main`. No new product slice or dependency work is authorized. GitHub CI and the usual deployment integration may run automatically after merge; this note does not claim those results in advance.
+
+## 2026-10-17: Authorized Maintenance Publication Checks
+
+- **Authorization**: The owner requested committing today's repository work and removing any older uncommitted changes. Publication is limited to `chore/rea-gates-2026-10-17`; no merge to `main` or production deployment is authorized.
+- **Scope audit**: Exactly 11 pending files match today's gate enforcement, regression tests, and task-note refresh. The active checkout was cloned clean today, and the pending diff matches that work. No older uncommitted changes were found in this checkout, so no deletion was needed.
+- **Fresh verification**: Under Node 24.22.0, `node --test scripts/check-skill-gate.test.mjs` passed all 14 tests with zero failures and zero skipped tests. `node --check scripts/check-skill-gate.test.mjs`, `bash -n scripts/check-skill-gate.sh`, `bash scripts/check-skill-gate.sh`, and `git diff --check` passed.
+- **Exclusions**: No application, logo, dependency, lockfile, environment, or credential changes. Global skill installations, the REA CLI, and account MCP registration stay outside the project repository.
+- **Evidence boundary**: These are pre-commit checks for the maintenance change, not fresh application build, CI, or deployment results. Earlier feature results below remain historical.
+
+## 2026-10-17: REA Gate Enforcement and Active-Task Context Refresh
+
+- **Environment**: Manus Sandbox, Node 24.22.0, Bash. Local changes only; no branch creation, commit, push, merge, or deployment.
+- **Merged baseline**: `main` at `3f0cc64`, BW-006 Earnings, Wallet & Payouts, PR #60. Remote references refreshed; `HEAD...origin/main` reported zero ahead and zero behind before edits.
+- **Gate change**: REA added to the checker, mandatory inventory, and mirrored declarations in `AGENTS.md`, `CLAUDE.md`, and `.clinerules`. Counts now specify eight unique skills; the duplicate Trades Design System row was removed. Loading REA does not require artifact analysis, MCP diagnostics, or native-engine installation on ordinary source tasks.
+- **RED reproduction**: `node --test scripts/check-skill-gate.test.mjs` initially reported 9 passing and 5 failing tests. The checker accepted missing REA in each of the three required rule files and in an optional home rule, and still reported seven skills.
+- **GREEN verification**: Under Node 24.22.0, the same suite reported 14 passing tests, zero failures, and zero skipped tests. It covers complete declarations, omitted REA, omissions of the seven existing skills, missing required files, missing gate markers, and optional-home-rule enforcement.
+- **Syntax checks**: `node --check scripts/check-skill-gate.test.mjs` and `bash -n scripts/check-skill-gate.sh` passed.
+- **Repository gate**: `bash scripts/check-skill-gate.sh` passed for all three required rule files and reported all eight skills named. Optional home rule files were absent.
+- **Context reconciliation**: Phase 2 recorded complete through BW-006. Prior merged slices BW-004, Item 2.2 Dashboard, and BW-005 Profile & Portfolio are identified. BW-003 remains historical rather than active, and the obsolete BW-005 wallet entry now points to canonical BW-006. The next product slice awaits owner selection and an approved specification.
+- **Diff hygiene**: `git diff --check` passed after removing introduced Markdown trailing whitespace. The local diff contains only gate, regression-test, and task-documentation changes; `HEAD` remains `3f0cc64`.
+- **Status**: Maintenance complete locally, uncommitted and pending owner review. No next product slice selected.
+- **Evidence boundary**: Feature test/build counts retained in scope and the master checklist are earlier reports. No application test suite, build, browser audit, CI run, or production verification was executed during this maintenance task.
+
+---
+
 ## 2026-10-03: BW-003 Post-Merge Verification and Production Reconciliation (main)
 - **Environment**: Termux (local) + Google Cloud Shell VM (authoritative gates)
 - **Merge**: PR #53 MERGED at `2026-10-03T07:39:23Z`; merge SHA `db968bc70b08b7335c7b2b8972cd2d0994c059ac` (parents `077d9b3` + `b2c7f10`); branch now on `main` at `db968bc`, working tree clean, in sync with `origin/main`; Cloud Shell re-synced to `main` at `db968bc`
@@ -742,4 +770,3 @@ vercel --prod
   - Vercel Production Deployment: Live and verified with HTTP 200 on `/messages` and `/messages/job-act-001`
 - **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 corporate filler terms; state-honest plain language throughout
 - **Status**: PASS (WEB-017 Formally Closed and Marked Complete / Live)
-

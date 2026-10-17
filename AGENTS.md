@@ -85,8 +85,10 @@ This file defines the standards and operational map every contributor must follo
 
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
-- **Active Phase**: Phase 2 BrainWorker Web Platform (/check [VERIFY] Phase 7: Production Verification & Audit)
-- **Active Slice**: 21. BW-003 BrainWorker Job Requests & Leads Inbox (Phase 6 GREEN Accepted, entering Phase 7)
+- **Active Phase**: Phase 2 BrainWorker Web Platform closeout and documentation realignment. All Phase 2 items are recorded complete in `docs/master-checklist.md`; historical feature verification is not a fresh audit in this task.
+- **Active Slice**: No product slice selected. REA gate enforcement and active-task context refresh complete. The owner explicitly authorized merging today's maintenance to `main` through GitHub. No new product implementation is authorized.
+- **Current Product Baseline**: BW-006 BrainWorker Earnings, Wallet & Payouts (Item 2.6, PR #60), merged at `3f0cc64`. Prior merged work includes BW-005 Profile & Portfolio (PR #59), Item 2.2 Operating Dashboard (PR #58), and BW-004 Booking Management (PR #57).
+- **Next Product Slice**: Awaiting owner selection and an approved specification. Phase 3 is next in the roadmap, not an instruction to start implementation.
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`
@@ -99,7 +101,7 @@ This file defines the standards and operational map every contributor must follo
 
 These skills are required for all work in this repository without exception. Load each one at the start of every session and apply it whenever the task falls within its domain. Do not skip, defer, or partially apply these skills.
 
-**This is enforced as a hard gate, not a preference.** Before your first file edit, load all seven through the skills tool, triage each one as `APPLIED` or `OUT OF SCOPE`, and print the `SKILL GATE` block exactly as specified in `.clinerules` section 6 (mirrored in `CLAUDE.md`). The declaration must appear in your reply before any edit. A missing line fails the gate. `OUT OF SCOPE` requires a specific reason, not a vague one. Re-run the gate whenever the task materially changes.
+**This is enforced as a hard gate, not a preference.** Before your first file edit, load all eight through the skills tool, triage each one as `APPLIED` or `OUT OF SCOPE`, and print the `SKILL GATE` block exactly as specified in `.clinerules` section 6 (mirrored in `CLAUDE.md`). The declaration must appear in your reply before any edit. A missing line fails the gate. `OUT OF SCOPE` requires a specific reason, not a vague one. Re-run the gate whenever the task materially changes.
 
 Every agent is bound by this: primary agent, subagent, teammate, spawned worker. Whoever edits, declares. When spawning a subordinate, include the gate in its system prompt.
 
@@ -113,13 +115,14 @@ Every agent is bound by this: primary agent, subagent, teammate, spawned worker.
 | `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Any visual design decision, page structure, component quality review, typography, color, animation, or UX pattern. |
 | `agent-skills-test-driven-development` | `.agents/skills/agent-skills-test-driven-development/SKILL.md` | Any logic change, bug fix, behavior modification, or new feature implementation. |
 | `reverse-engineer-anything` | `.agents/skills/reverse-engineer-anything/SKILL.md` | Any task touching compiled/bundled artifacts, mobile APKs, minified production bundles, HAR network captures, or reverse-engineering external APIs. |
-| `bukiebrainjobs-trades-design-system` | `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md` | Dual-theme transformation engine (Architectural Light & Obsidian Dark) for restyling existing UI components, pages, cards, and typography to the trades design system. |
 
 All mandatory skills must be read before work begins on any substantive task. If a task spans multiple domains, apply all relevant skills together.
 
 Two skills are almost never out of scope: `mr-solomon-nine-command-engineering-loop` governs the task itself, and `mr-solomon-natural-voice` governs everything written. If you cannot state a concrete reason a skill is out of scope, treat it as in scope.
 
-Verify rather than claim: run `bash scripts/check-skill-gate.sh` from the repository root before review. It fails loudly if any rule file lost the gate or dropped one of the seven skills. Treat a failure as a blocker for the task, not a warning.
+REA must be loaded and declared on every task, but its analysis tools remain out of scope for ordinary source-repository work. Do not require native engines or MCP diagnostics merely to pass this gate.
+
+Verify rather than claim: run `bash scripts/check-skill-gate.sh` from the repository root before review. It fails loudly if any rule file lost the gate or dropped one of the eight skills. Treat a failure as a blocker for the task, not a warning. Regression coverage: `node --test scripts/check-skill-gate.test.mjs`.
 
 ### Universal Skills Directory & Installation Reference
 

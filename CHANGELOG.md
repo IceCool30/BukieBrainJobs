@@ -7,6 +7,7 @@ The format follows practical release notes written plainly in engineering langua
 ## [Unreleased]
 
 ### Added
+- Added 14 native Node regression tests for the eight-skill gate, including missing REA in required and optional rule files.
 - BW-003 BrainWorker Job Requests & Leads Inbox Phase 7 verified, merged, and live on `main`: PR #53 merged at `db968bc` (implementation `cdb7e54`, closure `b2c7f10`); post-merge CI SUCCESS (runs 37107064066 and 37107064068); 45/45 production contracts re-passed on `main`; type-check 6 successful on `main`; full pre-merge suite 1,369/1,369 tests passed with 0 failures.
 - Integrated the Mr. Solomon 9-Command Engineering Loop as the primary engineering framework across the monorepo.
 - Created `docs/scope.md` tracking active, completed, and upcoming work slices with explicit verification commands.
@@ -15,6 +16,8 @@ The format follows practical release notes written plainly in engineering langua
 - Added `scripts/nine-status.sh` and `"loop:status"` command in root `package.json`.
 
 ### Changed
+- Enforced REA in the mandatory gate and mirrored agent declarations, aligned all counts to eight unique skills, and removed the duplicate Trades Design System inventory row.
+- Refreshed active-task notes through merged BW-006 at `3f0cc64`, corrected BW-005/Profile versus BW-006/Wallet routing, and left the next product slice awaiting owner selection. Historical feature evidence remains separate from fresh maintenance checks.
 - Expanded `AGENTS.md` to conform to the canonical NINE context map schema, recording Termux environment limits and cloud Codespace execution requirements.
 - Standardized test suite describe block titles across `apps/web` to eliminate em dashes.
 

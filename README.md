@@ -28,7 +28,7 @@ Shared business rules, trust model, booking model, and design system stay one so
 
 ## Current repository status
 
-**Phase:** Phase 1 Customer Web Platform Completion (Active)
+**Phase:** Phase 2 BrainWorker Web Platform closeout. Phase 1 and all Phase 2 items are recorded complete in the master checklist. Phase 3 is next in the roadmap, awaiting owner selection of a feature slice.
 
 **Code status:** The core Customer Web Platform is live in production on main at `https://bukie-brain-jobs.vercel.app`. The public website, authentication, customer dashboard, job posting, matching results, and activity hub with booking lifecycle are verified and deployed.
 
@@ -38,7 +38,7 @@ Shared business rules, trust model, booking model, and design system stay one so
 - `services/socket-server`: Real-time messaging service
 - `docs/`: Governance, product roadmap, design system, master checklist, and build specifications
 
-The current execution target is Phase 1 (Customer Web Platform Completion), beginning with `WEB-014: Customer Profile & Account Settings`. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
+The current product baseline is BW-006 BrainWorker Earnings, Wallet & Payouts (Item 2.6, PR #60), merged at `3f0cc64`. BW-005 is Profile & Portfolio Management, not the wallet feature. Maintenance has aligned the REA skill gate and task notes. The owner explicitly authorized merging this maintenance to `main`; no next product feature has been selected. Feature test and build results in the checklist are historical reports, not fresh verification from this maintenance task. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
 
 ## Live-first experience standard
 
