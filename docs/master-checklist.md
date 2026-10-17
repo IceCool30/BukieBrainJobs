@@ -2,9 +2,11 @@
 
 **Document ID:** CHECKLIST-001  
 **Status:** Living Canonical Roadmap Tracker  
-**Last Updated:** 2026-09-25  
+**Last Updated:** 2026-10-17
 
 This document provides a single, unified checklist of what has been built, what is partially implemented, and what remains to be completed across the BukieBrainJobs monorepo. It establishes the sequential order of execution so engineering moves forward in focused phases rather than scattered work.
+
+**Current baseline:** `main` at `3f0cc64`, BW-006 Earnings, Wallet & Payouts merged in PR #60. Phase 2 is recorded complete; gate and context maintenance is complete and authorized for publication on a separate branch. Merge to `main` and the next product slice await owner approval. Verification counts below are retained historical feature reports, not checks rerun during this update.
 
 ---
 
@@ -20,7 +22,7 @@ This document provides a single, unified checklist of what has been built, what 
 | **Customer Reviews & Reputation** | **Complete** | Completed & live in production. 608 passing tests across 32 suites. Verified on Vercel deployment 6586791746 (commit 962a870). |
 | **Customer Notifications & Messaging** | **Complete** | Messaging (WEB-017) and Notification Center (WEB-018) both complete and live in production. |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
-| **BrainWorker Platform** | **Complete** | BW-001 Onboarding & Identity, BW-002 Service Catalog & Availability, BW-003 Leads Inbox, BW-004 Booking Management, Item 2.2 Operating Dashboard, and BW-005 Profile & Portfolio Management complete and verified (42/42 BW-005 tests; 1,588/1,588 web regression tests). |
+| **BrainWorker Platform** | **Complete** | BW-001 Onboarding & Identity, BW-002 Service Catalog & Availability, BW-003 Leads Inbox, BW-004 Booking Management, Item 2.2 Operating Dashboard, BW-005 Profile & Portfolio Management, and BW-006 Earnings, Wallet & Payouts are recorded complete. Latest merge: BW-006, PR #60 at `3f0cc64`; 42/42 wallet contracts reported in Item 2.6. |
 | **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Customer state machine and provider booking management (BW-004 dispatch, check-in, scope adjustment requests, and provider cancellation) complete and verified (138 tests). Customer-side scope approval and dispute mediation remain outstanding. |
 | **Mobile Application (`apps/mobile`)** | **Not Built** | Expo starter only. Full native reconstruction required. |
 | **Admin & Operational Console** | **Not Built** | Worker vetting, dispute mediation, category management, analytics. |

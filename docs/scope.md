@@ -8,6 +8,15 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
+- **Product phase**: Phase 2 BrainWorker Web Platform closeout. All Phase 2 items are recorded complete in the master checklist.
+- **Current maintenance**: REA gate enforcement and active-task context refresh complete. The owner authorized committing and publishing only today's repository maintenance on a separate branch. No application implementation, merge to `main`, or production deployment is authorized.
+- **Current baseline**: `main` at `3f0cc64`, BW-006 BrainWorker Earnings, Wallet & Payouts (Item 2.6, PR #60), following BW-005 Profile & Portfolio (PR #59), Item 2.2 Operating Dashboard (PR #58), and BW-004 Booking Management (PR #57).
+- **Next product slice**: Awaiting owner selection and an approved specification. Phase 3 is next in the roadmap but has not been selected for implementation.
+- **Maintenance plan**: `docs/superpowers/plans/2026-10-17-rea-gate-context.md`.
+- **Evidence boundary**: Historical feature test and build results below are retained reports. This maintenance task only verifies the gate script and documentation alignment.
+
+## Completed BW-003 Scope Record
+
 - [x] **21. BW-003 BrainWorker Job Requests & Leads Inbox**
   - **Status**: Phase 7 VERIFIED and MERGED; PR #53 merged to `main` at `db968bc` (implementation `cdb7e54`, closure `b2c7f10`); post-merge CI SUCCESS, 45/45 Phase 7 contracts re-passed on `main`
   - **Spec**: `docs/specs/BW-003-leads-inbox.md` (Approved)
@@ -50,6 +59,15 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Execution Gate**: No implementation code until `/scope`, `/audit`, and `/architect` are completed and the required BW-003 specification package is approved.
 
 ## Completed & Verified Slices
+
+- [x] **BW-005 BrainWorker Profile & Portfolio Management (Item 2.7)**
+  - **Status**: Merged to `main` at `f5fd39d`, PR #59.
+  - **Spec**: `docs/specs/BW-005-profile-portfolio.md` (Approved).
+  - **Recorded verification**: Item 2.7 reports 42/42 profile contracts, 1,588/1,588 web regression tests, type-check, and build results. Not rerun by this maintenance task.
+
+- [x] **BrainWorker Dashboard & Operating Workspace (Item 2.2)**
+  - **Status**: Merged to `main` at `fdddd84`, PR #58.
+  - **Recorded verification**: Item 2.2 reports 40/40 dashboard contracts and its regression, type-check, and build results. Not rerun by this maintenance task.
 
 - [x] **20. BW-002 BrainWorker Service Catalog & Availability Management**
   - **Spec**: `docs/specs/BW-002-service-catalog-availability.md`
@@ -262,9 +280,10 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
     - [x] Distinct states for in progress, available, no match, degraded, offline, and failure
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test app/job/MatchResultsScreen.test.tsx lib/matching/matching.test.ts`
 
-## Upcoming Planned Slices
+## Completed BW-004 Scope and Governance Record
 
-- [ ] **22. BW-004 BrainWorker Booking Management & Fulfillment**
+- [x] **22. BW-004 BrainWorker Booking Management & Fulfillment**
+  - **Current status**: Merged to `main` at `c64fb40`, PR #57. Master Checklist Item 2.4 records Phases 1 to 8 complete. Historical governance details below are retained; consult the current approved specification for implementation authority.
   - **Scope**: `docs/specs/BW-004-scope-and-product-decision.md` (v0.2 Approved 2026-10-03; canonical identity only. Implementation authority comes from the approved package below, not from this artifact)
   - **Specification Package** (APPROVED as the implementation baseline: product, architecture, and implementation gates closed by Product Owner decision 2026-10-03; implementation authorized only on `feature/bw-004-booking-management`):
     - Product Specification: `docs/specs/BW-004-booking-management.md`
@@ -282,15 +301,19 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
     - Gate 2, WEB-017 correction: RESOLVED BY GOVERNANCE, not locally patched. `CONFIRMED` is independent of funding and is a booking/job state, not shorthand for escrow funded. WEB-017 is identified for governed correction; BW-004 does not edit it and does not reconcile WEB-015 and WEB-017 locally. Authoritative financial model stays `JobStatus` + `BookingStatus` + `PaymentAuthorizationStatus` + `EscrowStatus`.
     - Gate 3, scope-adjustment settlement: RESOLVED AS OUT OF SCOPE. BW-004 cannot mutate pricing, customer authorization, payment authorization, escrow, ledger, refunds, or additional-payment state, and cannot manufacture a settlement outcome.
   - **Acceptance Criteria**:
-    - [ ] Active bookings management and customer contact shortcuts
-    - [ ] On-site check-in confirmation and arrival tracking
-    - [ ] Scope adjustment request interface for additional parts or labor
+    - [x] Active bookings management and customer contact shortcuts
+    - [x] On-site check-in confirmation and arrival tracking
+    - [x] Scope adjustment request interface for additional parts or labor
   - **Verification Command**: `pnpm test`
 
-- [ ] **23. BW-005 BrainWorker Earnings, Wallet & Payouts**
-  - **Spec**: `docs/specs/BW-005-wallet-payouts.md`
+## Completed BW-006 Wallet Scope Record
+
+- [x] **BW-006 BrainWorker Earnings, Wallet & Payouts (Item 2.6)**
+  - **Status**: Merged to `main` at `3f0cc64`, PR #60. This corrects the obsolete planned BW-005 wallet label; BW-005 is Profile & Portfolio Management.
+  - **Spec**: `docs/specs/BW-006-wallet-payouts.md` (Approved).
+  - **Recorded verification**: Item 2.6 reports 42/42 wallet contracts, monorepo web tests, type-check, and build results. Not rerun by this maintenance task.
   - **Acceptance Criteria**:
-    - [ ] Wallet summary: Available balance, pending escrow clearance, and lifetime earnings
-    - [ ] Nigerian bank account setup form with NUBAN name inquiry preview
-    - [ ] Payout withdrawal request flow with payout timeline history
+    - [x] Wallet summary: Available balance, pending escrow clearance, and lifetime earnings
+    - [x] Nigerian bank account setup form with NUBAN name inquiry preview
+    - [x] Payout withdrawal request flow with payout timeline history
   - **Verification Command**: `pnpm test`
