@@ -449,7 +449,7 @@ export default function AuthScreen({
               href="/"
               className="inline-flex min-h-11 items-center font-display text-base font-extrabold tracking-tight text-[var(--text-main)]"
             >
-              Bukie<span className="text-[var(--amber)]">BrainJobs</span>
+              <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
             </Link>
             <ThemeToggle idPrefix="auth-success-theme" />
           </div>
@@ -554,9 +554,6 @@ export default function AuthScreen({
                 height={32}
                 className="h-8 w-8 rounded-lg object-contain"
               />
-              <span>
-                Bukie<span className="text-[var(--amber)]">BrainJobs</span>
-              </span>
             </Link>
           </div>
         </div>

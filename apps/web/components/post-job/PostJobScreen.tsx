@@ -272,9 +272,6 @@ export default function PostJobScreen() {
                 height={32}
                 className="h-8 w-8 rounded-lg object-contain"
               />
-              <span>
-                Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
-              </span>
             </Link>
             <div className="flex items-center gap-3">
               <ThemeToggle idPrefix="post-job-success-theme" />
@@ -451,9 +448,6 @@ export default function PostJobScreen() {
                 height={32}
                 className="h-8 w-8 rounded-lg object-contain"
               />
-              <span>
-                Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
-              </span>
             </Link>
           </div>
         </div>

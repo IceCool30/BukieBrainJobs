@@ -217,9 +217,6 @@ export default function DashboardScreen() {
                 className="h-9 w-9 object-contain rounded-lg"
                 priority
               />
-              <span className="font-display font-bold text-lg tracking-tight text-[var(--text-main)] hidden sm:inline">
-                Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
-              </span>
             </Link>
             <span className="hidden md:inline text-xs font-mono font-semibold px-2.5 py-1 rounded-lg bg-[var(--tag-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
               Customer Portal

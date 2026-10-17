@@ -9,6 +9,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShieldCheck, ArrowRight, AlertTriangle, ArrowLeft } from 'lucide-react';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { ThemeToggle } from '../../../components/ThemeToggle';
@@ -113,10 +114,11 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
               <ArrowLeft className="h-4 w-4" />
               <span>Home</span>
             </Link>
-            <span className="text-[var(--card-border)]">|</span>
-            <span className="font-black text-xl tracking-tight text-[var(--text-main)]">BukieBrainJobs</span>
           </div>
-          <ThemeToggle idPrefix="worker-register-theme" />
+          <div className="flex items-center gap-3">
+            <ThemeToggle idPrefix="worker-register-theme" />
+            <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
+          </div>
         </div>
       </header>
 

@@ -51,9 +51,6 @@ export default function OfflinePage() {
               height={32}
               className="h-8 w-8 rounded-lg object-contain"
             />
-            <span>
-              Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
-            </span>
           </Link>
           <div className="flex items-center gap-3">
             <ThemeToggle idPrefix="offline-theme" />

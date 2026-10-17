@@ -29,9 +29,6 @@ export function BrainWorkerHeader({ active, user, onSignOut }: BrainWorkerHeader
         <div className="flex min-w-0 items-center gap-3">
           <Link href="/brainworker/dashboard" className="flex shrink-0 items-center gap-2.5">
             <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
-            <span aria-hidden="true" className="hidden font-display text-lg font-extrabold tracking-tight sm:inline">
-              Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
-            </span>
           </Link>
           <span className="inline-flex items-center gap-1 rounded-md border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--brand-green)]">
             <ShieldCheck className="h-3 w-3" aria-hidden="true" />
