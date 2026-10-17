@@ -7,10 +7,8 @@
 import React, { useEffect, useState, useRef, type JSX } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Wallet } from 'lucide-react';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib/auth/storage';
 import type { AuthUser } from '../../../lib/auth/types';
-import { ThemeToggle } from '../../../components/ThemeToggle';
 import { WalletManagementWorkspace } from '../../../components/brainworker/wallet/WalletManagementWorkspace';
 import { getBrainWorkerWalletRepository } from '../../../lib/brainworker/wallet/repository';
 import type {

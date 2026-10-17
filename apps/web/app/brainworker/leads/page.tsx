@@ -13,7 +13,6 @@ import type { AuthUser } from '../../../lib/auth/types';
 import { getBrainWorkerOperationsRepository } from '../../../lib/brainworker/catalog/repository';
 import type { BrainWorkerOperationalProfile } from '../../../lib/brainworker/catalog/types';
 import { LeadsInboxView } from '../../../components/brainworker/leads/LeadsInboxView';
-import { ThemeToggle } from '../../../components/ThemeToggle';
 import { BrainWorkerHeader } from '../../../components/brainworker/BrainWorkerHeader';
 
 export default function BrainWorkerLeadsPage(): React.ReactElement {

@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib/auth/storage';
 import type { AuthUser } from '../../../lib/auth/types';
-import { ThemeToggle } from '../../../components/ThemeToggle';
 import { ProfileManagementWorkspace } from '../../../components/brainworker/profile/ProfileManagementWorkspace';
 import { getBrainWorkerProfileRepository } from '../../../lib/brainworker/profile/repository';
 import type {

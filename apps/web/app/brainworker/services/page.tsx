@@ -10,7 +10,6 @@ import Link from 'next/link';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib/auth/storage';
 import type { AuthUser } from '../../../lib/auth/types';
 import { ServiceCatalogEditor } from '../../../components/brainworker/catalog/ServiceCatalogEditor';
-import { ThemeToggle } from '../../../components/ThemeToggle';
 import { BrainWorkerHeader } from '../../../components/brainworker/BrainWorkerHeader';
 
 export default function BrainWorkerServicesPage(): React.ReactElement {
