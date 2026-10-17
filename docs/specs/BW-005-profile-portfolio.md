@@ -77,7 +77,7 @@ The repository layer (`apps/web/lib/brainworker/profile/repository.ts`) provides
 
 ## 4. Trades Design System UI Components (COMP-001 to COMP-012)
 
-The UI component suite (`apps/web/components/brainworker/profile/`) adheres to the Trades Design System dual theme:
+The UI component suite (`apps/web/components/brainworker/profile/`) adheres to the dark-only Trades Design System:
 
 1. **ProfileEditorForm (`COMP-001` to `COMP-004`):**
    - Inputs for avatar URL, headline, bio, and experience stepper.

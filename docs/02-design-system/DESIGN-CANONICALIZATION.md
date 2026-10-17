@@ -9,6 +9,10 @@ Version: 1.0
 
 The supplied file also contains legacy product-language references from the design-source generation context. Those references are not BukieBrainJobs product requirements.
 
+## Theme override
+
+As of October 2026, dark (Obsidian Titanium Gunmetal) is the only approved theme. Colour tokens, surfaces, typography and button styling come from `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md`, which overrides `DESIGN.md` on those points. The light surfaces and navy-on-white treatments in `DESIGN.md` are retired. Light mode, theme toggles and saved theme preferences must not be reintroduced.
+
 ## Authority boundary
 
 Use `DESIGN.md` for:

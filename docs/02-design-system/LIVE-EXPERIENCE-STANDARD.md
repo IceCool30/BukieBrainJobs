@@ -36,7 +36,7 @@ Do not build a reduced journey for any surface by policy. Layout and chrome may 
 |---|---|---|
 | 1 | Approved current live experience and approved implemented product patterns | Visual hierarchy, imagery, interaction behaviour, motion, responsive density, content decisions, service flows, marketplace states, and platform adaptation. |
 | 2 | `skills/bukiebrainjobs-experience-standards/SKILL.md` | Mandatory workflow, global standards, screen-purpose rules, quality gates, and implementation guardrails. |
-| 3 | `DESIGN.md` and `DESIGN-CANONICALIZATION.md` | Approved tokens, typography, spacing, radius, grid, elevation, and visual accessibility constraints. |
+| 3 | `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md`, then `DESIGN.md` and `DESIGN-CANONICALIZATION.md` | The dark-only theme, colour tokens, surfaces, typography and buttons (trades skill); spacing, radius, grid, elevation, and visual accessibility constraints where the skill is silent. |
 | 4 | Approved product specifications | Product naming, marketplace behaviour, user journeys, and valid claims. |
 | 5 | Feature-specific requirements that are explicitly approved | New behaviour or a justified extension of the design system. |
 

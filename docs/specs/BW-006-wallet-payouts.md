@@ -79,7 +79,7 @@ The repository layer (`apps/web/lib/brainworker/wallet/repository.ts`) provides 
 
 ## 4. Trades Design System UI Components (COMP-001 to COMP-012)
 
-The UI component suite (`apps/web/components/brainworker/wallet/`) adheres to the Trades Design System dual theme (Architectural Light and Obsidian Dark):
+The UI component suite (`apps/web/components/brainworker/wallet/`) adheres to the dark-only Trades Design System (Obsidian Titanium Gunmetal):
 
 1. **WalletSummaryCards (`COMP-001` to `COMP-003`):**
    - Displays 3 metric cards: Available Balance, Pending Escrow, and Lifetime Earnings with Nigerian Naira formatting.
@@ -120,7 +120,7 @@ The protected route (`apps/web/app/brainworker/wallet/page.tsx`) implements 4 ac
    - Action delegates: add bank account (`ROUTE-006`), delete bank account (`ROUTE-007`), request payout (`ROUTE-008`).
    - Error handling: surfaces user-friendly error banners upon invalid inputs or repository rejections (`ROUTE-009`).
 5. **SSR Mount Safety and Accessibility:**
-   - Pre-renders `BukieBrainJobs` header with dashboard return link, Trades badge, theme toggle, and sign out without throwing during SSR (`ROUTE-010`).
+   - Pre-renders the shared BrainWorker header (logo tile, dashboard return link, Trades badge and sign out) without throwing during SSR (`ROUTE-010`).
 
 ---
 

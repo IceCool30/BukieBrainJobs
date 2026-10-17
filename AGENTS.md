@@ -110,7 +110,7 @@ Every agent is bound by this: primary agent, subagent, teammate, spawned worker.
 | `mr-solomon-nine-command-engineering-loop` | `.agents/skills/mr-solomon-nine-command-engineering-loop/SKILL.md` | Primary operating system for all tasks: planning, architecture spec, development loop, verification, documentation, or debugging phase. |
 | `mr-solomon-natural-voice` | `.agents/skills/mr-solomon-natural-voice/SKILL.md` | Required for all communications, documentation, and (first) for all customer-facing content. |
 | `bukiebrainjobs-content-style` | `.agents/skills/bukiebrainjobs-content-style/SKILL.md` | Customer-facing copy, marketplace terminology, and microcopy (must be applied together with `mr-solomon-natural-voice`). |
-| `bukiebrainjobs-trades-design-system` | `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md` | Mandatory design authority for all customer-facing UI, dual-theme styling (Light & Dark), colors, layout, and component architecture. (Repo: `https://github.com/IceCool30/bukiebrainjobs-trades-design-system`). |
+| `bukiebrainjobs-trades-design-system` | `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md` | Mandatory design authority for all customer-facing UI, the dark-only theme (Obsidian Titanium Gunmetal; light mode and theme toggles are retired), colors, layout, and component architecture. (Repo: `https://github.com/IceCool30/bukiebrainjobs-trades-design-system`). |
 | `bukiebrainjobs-experience-standards` | `.agents/skills/bukiebrainjobs-experience-standards/SKILL.md` | Any customer-facing UI, copy, motion, responsive layout, component, accessibility, or interaction work. |
 | `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Any visual design decision, page structure, component quality review, typography, color, animation, or UX pattern. |
 | `agent-skills-test-driven-development` | `.agents/skills/agent-skills-test-driven-development/SKILL.md` | Any logic change, bug fix, behavior modification, or new feature implementation. |
@@ -137,7 +137,7 @@ Every developer, AI agent, and remote execution environment (Google Cloud Shell 
 | `bukiebrainjobs-experience-standards` | BukieBrainJobs Skill Suite | Customer-facing UI, motion language, accessibility, responsive design | Active in `.agents/skills/bukiebrainjobs-experience-standards/` |
 | `ui-ux-pro-max` | BukieBrainJobs Skill Suite | Visual design intelligence, component hierarchy, typography, design tokens | Active in `.agents/skills/ui-ux-pro-max/` |
 | `agent-skills-test-driven-development` | [agent-skills-tdd](https://github.com/obra/superpowers) | Test-driven development for all logic changes, bug fixes, and new features | Active in `.agents/skills/agent-skills-test-driven-development/` |
-| `bukiebrainjobs-trades-design-system` | [IceCool30/bukiebrainjobs-trades-design-system](https://github.com/IceCool30/bukiebrainjobs-trades-design-system) | Dual-theme transformation engine (Architectural Light & Obsidian Dark) for restyling existing UI components and pages | Active in `.agents/skills/bukiebrainjobs-trades-design-system/` |
+| `bukiebrainjobs-trades-design-system` | [IceCool30/bukiebrainjobs-trades-design-system](https://github.com/IceCool30/bukiebrainjobs-trades-design-system) | Dark-only design system (Obsidian Titanium Gunmetal) for restyling existing UI components and pages | Active in `.agents/skills/bukiebrainjobs-trades-design-system/` |
 
 
 

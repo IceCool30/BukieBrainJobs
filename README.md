@@ -174,7 +174,7 @@ Implementation must follow the approved technical specification rather than recr
 
 ## Design baseline
 
-`DESIGN.md` is the visual source of truth. The approved system uses Deep Navy as the primary brand and action system, Emerald as strategic emphasis, Hanken Grotesk for display and headings, and Inter for body and interface text.
+Dark (Obsidian Titanium Gunmetal) is the only approved theme on the website, PWA and mobile apps. Theme, colour, surfaces, typography and buttons follow `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md`: Molten Amber for primary actions, Brand Green for trust and escrow, Cabinet Grotesk for display headings, Inter for body and interface text, and JetBrains Mono for codes and money. `DESIGN.md` still governs spacing, grid, layout and elevation where the skill is silent.
 
 Do not introduce arbitrary colors, typography, spacing, radii, motion or component behavior outside the approved system.
 

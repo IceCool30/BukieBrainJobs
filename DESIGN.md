@@ -118,6 +118,8 @@ spacing:
   unit-xl: 64px
 ---
 
+> **Theme authority (October 2026):** Dark (Obsidian Titanium Gunmetal) is the only approved theme on the website, PWA and mobile apps. Colour tokens, surfaces, typography and button styling come from `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md`. The light surfaces, light palette values and navy-on-white treatments in this file are retired. Spacing, grid, layout and elevation guidance below still applies where the skill is silent.
+
 ## Brand & Style
 
 The design system is anchored in a **Corporate Modern** aesthetic with a lean toward **Premium Minimalism**. It is designed for high-level recruitment and professional networking, evoking feelings of exclusivity, reliability, and precision.
