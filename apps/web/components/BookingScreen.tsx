@@ -423,7 +423,7 @@ export default function BookingScreen() {
                 aria-hidden="true"
               >
                 <Image
-                  src="/images/logo-badge-512.png"
+                  src="/images/logo-watermark.png"
                   alt=""
                   width={220}
                   height={220}
@@ -918,7 +918,7 @@ export default function BookingScreen() {
                   aria-hidden="true"
                 >
                   <Image
-                    src="/images/logo-badge-512.png"
+                    src="/images/logo-watermark.png"
                     alt=""
                     width={200}
                     height={200}

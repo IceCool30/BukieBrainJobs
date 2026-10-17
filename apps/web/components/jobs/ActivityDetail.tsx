@@ -91,7 +91,7 @@ export function ActivityDetail({
       <div className="relative bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 sm:p-8 border border-[var(--lead)] shadow-xs overflow-hidden">
         {/* Decorative Watermark: Subtle brand signature at 3.5% opacity */}
         <Image
-          src="/images/logo-badge-512.png"
+          src="/images/logo-watermark.png"
           alt=""
           aria-hidden="true"
           width={280}

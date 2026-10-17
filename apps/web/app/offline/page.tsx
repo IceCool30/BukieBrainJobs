@@ -69,7 +69,7 @@ export default function OfflinePage() {
             aria-hidden="true"
           >
             <Image
-              src="/images/logo-badge-512.png"
+              src="/images/logo-watermark.png"
               alt=""
               width={260}
               height={260}

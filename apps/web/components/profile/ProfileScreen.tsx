@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useTransition } from 'react';
-import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   User,
@@ -257,18 +256,6 @@ export default function ProfileScreen() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] pb-20 lg:pb-8 relative">
-      {/* Decorative Brand Watermark */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed bottom-12 right-12 opacity-[0.035] select-none z-0 hidden md:block"
-      >
-        <Image
-          src="/images/logo-badge-512.png"
-          alt=""
-          width={420}
-          height={420}
-        />
-      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col lg:flex-row gap-6">
