@@ -6,7 +6,7 @@
 
 This document provides a single, unified checklist of what has been built, what is partially implemented, and what remains to be completed across the BukieBrainJobs monorepo. It establishes the sequential order of execution so engineering moves forward in focused phases rather than scattered work.
 
-**Current baseline:** `main` at `3f0cc64`, BW-006 Earnings, Wallet & Payouts merged in PR #60. Phase 2 is recorded complete; gate and context maintenance is complete and authorized for publication on a separate branch. Merge to `main` and the next product slice await owner approval. Verification counts below are retained historical feature reports, not checks rerun during this update.
+**Current product baseline:** BW-006 Earnings, Wallet & Payouts merged in PR #60 at `3f0cc64`. Phase 2 is recorded complete; gate and context maintenance is complete and explicitly authorized for merge to `main`. The next product slice awaits owner selection and approval. Verification counts below are retained historical feature reports, not checks rerun during this update.
 
 ---
 

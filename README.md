@@ -38,7 +38,7 @@ Shared business rules, trust model, booking model, and design system stay one so
 - `services/socket-server`: Real-time messaging service
 - `docs/`: Governance, product roadmap, design system, master checklist, and build specifications
 
-The current merged baseline is `main` at `3f0cc64`, BW-006 BrainWorker Earnings, Wallet & Payouts (Item 2.6, PR #60). BW-005 is Profile & Portfolio Management, not the wallet feature. Maintenance has aligned the REA skill gate and task notes. The owner authorized publication on a separate branch, not a merge to `main`; no next product feature has been selected. Feature test and build results in the checklist are historical reports, not fresh verification from this maintenance task. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
+The current product baseline is BW-006 BrainWorker Earnings, Wallet & Payouts (Item 2.6, PR #60), merged at `3f0cc64`. BW-005 is Profile & Portfolio Management, not the wallet feature. Maintenance has aligned the REA skill gate and task notes. The owner explicitly authorized merging this maintenance to `main`; no next product feature has been selected. Feature test and build results in the checklist are historical reports, not fresh verification from this maintenance task. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
 
 ## Live-first experience standard
 

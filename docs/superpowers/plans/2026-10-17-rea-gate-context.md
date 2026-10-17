@@ -1,6 +1,6 @@
 # REA Gate and Active Context Implementation Plan
 
-> **For agentic workers:** Execute the approved maintenance task inline. Read the repository gates before edits. The owner's later 17 October instruction authorizes committing and publishing today's changes on a separate branch, but not merging to `main`.
+> **For agentic workers:** Execute the approved maintenance task inline. Read the repository gates before edits. The owner's later 17 October instructions authorize committing, publishing, and merging today's maintenance to `main` through GitHub.
 
 **Goal:** Enforce REA in all eight-skill gate declarations and refresh active-task notes through merged BW-006.
 
@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-No application changes, dependency updates, merge to `main`, production deployment, or invented verification results. Publish only today's gate, regression-test, and documentation work on `chore/rea-gates-2026-10-17`. Global skill files, CLI installations, and account connector configuration stay outside the project repository.
+No application changes, dependency updates, manual production deployment, or invented verification results. Publish only today's gate, regression-test, and documentation work on `chore/rea-gates-2026-10-17`, then merge it through GitHub under the owner's explicit approval. Never push directly to `main`. Global skill files, CLI installations, and account connector configuration stay outside the project repository.
 
 ## Gate enforcement
 

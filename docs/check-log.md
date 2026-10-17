@@ -2,6 +2,10 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-10-17: Maintenance Merge Authorization
+
+The owner explicitly instructed merging the maintenance branch to `main`. This supersedes the earlier publication-only boundary. The follow-up changes only remove obsolete authorization wording from task notes and distinguish the unchanged BW-006 product baseline from the maintenance commit. Merge through a GitHub pull request after checking the exact head and required checks; never push directly to `main`. No new product slice or dependency work is authorized. GitHub CI and the usual deployment integration may run automatically after merge; this note does not claim those results in advance.
+
 ## 2026-10-17: Authorized Maintenance Publication Checks
 
 - **Authorization**: The owner requested committing today's repository work and removing any older uncommitted changes. Publication is limited to `chore/rea-gates-2026-10-17`; no merge to `main` or production deployment is authorized.
