@@ -32,7 +32,6 @@ import {
 } from '../../lib/services';
 import ServiceTaskIcon from '../../components/ServiceTaskIcon';
 import Footer from '../../components/Footer';
-import ThemeToggle from '../../components/ThemeToggle';
 
 const TASK_LABELS: Record<string, string> = {
   generator: 'Generator',
@@ -331,7 +330,6 @@ function ServicesDirectory() {
             <ArrowLeft className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
             Back to home
           </Link>
-          <ThemeToggle idPrefix="services-theme" />
         </div>
         {/* Informational Notice: Invalid City */}
         {showInvalidCityNotice && (

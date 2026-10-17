@@ -18,7 +18,6 @@ import {
   WifiOff,
   X,
 } from 'lucide-react';
-import ThemeToggle from '../ThemeToggle';
 import {
   CustomerJobDraft,
   validateCustomerJobDraft,
@@ -274,7 +273,6 @@ export default function PostJobScreen() {
               />
             </Link>
             <div className="flex items-center gap-3">
-              <ThemeToggle idPrefix="post-job-success-theme" />
               <Link
                 href="/services"
                 className="motion-press inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-[var(--text-main)] hover:text-[var(--amber)] transition-colors"
@@ -436,7 +434,6 @@ export default function PostJobScreen() {
             Back to services
           </Link>
           <div className="flex items-center gap-3">
-            <ThemeToggle idPrefix="post-job-theme" />
             <Link
               href="/"
               className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"

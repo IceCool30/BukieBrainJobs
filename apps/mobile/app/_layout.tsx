@@ -1,13 +1,12 @@
 import React from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useTrades } from '../lib/theme';
+import { colors as c } from '../lib/theme';
 
 export default function RootLayout() {
-  const c = useTrades();
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: c.bg } }} />
     </>
   );

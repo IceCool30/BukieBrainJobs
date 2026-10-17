@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Home, Search, Briefcase, LayoutDashboard } from 'lucide-react';
-import ThemeToggle from '../components/ThemeToggle';
 
 export default function NotFound() {
   return (
@@ -30,7 +29,6 @@ export default function NotFound() {
           </Link>
 
           <div className="flex items-center gap-4">
-            <ThemeToggle idPrefix="not-found-theme" />
             <Link
               href="/services"
               className="text-xs font-semibold text-[var(--text-main)] hover:text-[var(--brand-green)] transition-colors"

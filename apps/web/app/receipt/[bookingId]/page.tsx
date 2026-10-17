@@ -8,7 +8,6 @@ import { ArrowLeft, Printer, Download, AlertCircle, ShieldCheck, CheckCircle2, C
 import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { getCustomerPaymentRepository } from '../../../lib/payment/repository';
 import type { PaymentReceipt } from '../../../lib/payment/types';
-import ThemeToggle from '../../../components/ThemeToggle';
 
 export default function ReceiptPage() {
   const params = useParams();
@@ -137,7 +136,6 @@ export default function ReceiptPage() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <ThemeToggle idPrefix="receipt-theme" />
             <div className="flex items-center gap-2">
               <button
                 type="button"

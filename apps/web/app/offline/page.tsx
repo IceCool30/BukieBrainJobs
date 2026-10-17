@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { WifiOff, RefreshCw, ArrowLeft, ShieldCheck, PhoneCall, LayoutDashboard } from 'lucide-react';
-import ThemeToggle from '../../components/ThemeToggle';
 
 export default function OfflinePage() {
   const [isChecking, setIsChecking] = useState(false);
@@ -53,7 +52,6 @@ export default function OfflinePage() {
             />
           </Link>
           <div className="flex items-center gap-3">
-            <ThemeToggle idPrefix="offline-theme" />
             <div className="inline-flex items-center gap-1.5 rounded-md border border-[var(--amber)]/30 bg-[var(--amber-dim)] px-2.5 py-1 text-xs font-semibold text-[var(--amber)]">
               <WifiOff className="h-3.5 w-3.5 text-[var(--amber)]" aria-hidden="true" />
               <span>Offline</span>

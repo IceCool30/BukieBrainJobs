@@ -20,7 +20,6 @@ import {
   UserCheck,
   WifiOff,
 } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
 import {
   getPrototypeSubmissionOutcome,
   validateBookingDraft,
@@ -72,7 +71,6 @@ function BookingHeader({ returnUrl }: { returnUrl: string }) {
           Back to services
         </Link>
         <div className="flex items-center gap-3">
-          <ThemeToggle idPrefix="booking-theme" />
           <Link
             href="/"
             className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"

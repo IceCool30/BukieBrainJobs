@@ -15,7 +15,6 @@ import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { getBrainWorkerOnboardingRepository } from '../../../lib/brainworker/repository';
 import { useBrainWorkerOnboardingStore } from '../../../lib/brainworker/store';
 import { FunnelProgressBar } from '../../../components/brainworker/onboarding/FunnelProgressBar';
-import { ThemeToggle } from '../../../components/ThemeToggle';
 import { IdentityStepForm } from '../../../components/brainworker/onboarding/IdentityStepForm';
 import { TradeStepForm } from '../../../components/brainworker/onboarding/TradeStepForm';
 import { CredentialsStepForm } from '../../../components/brainworker/onboarding/CredentialsStepForm';
@@ -287,10 +286,7 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
               <span>Home</span>
             </Link>
           </div>
-          <div className="flex items-center gap-3">
-            <ThemeToggle idPrefix="worker-onboarding-theme" />
-            <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
-          </div>
+          <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
         </div>
       </header>
 

@@ -19,7 +19,6 @@ import {
   RotateCcw,
   ShieldCheck,
 } from 'lucide-react';
-import ThemeToggle from '../ThemeToggle';
 import {
   normalizeNigerianPhone,
   validateEmailAddress,
@@ -451,7 +450,6 @@ export default function AuthScreen({
             >
               <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
             </Link>
-            <ThemeToggle idPrefix="auth-success-theme" />
           </div>
         </header>
 
@@ -542,7 +540,6 @@ export default function AuthScreen({
                 : 'Back to previous page'}
           </Link>
           <div className="flex items-center gap-3">
-            <ThemeToggle idPrefix="auth-theme" />
             <Link
               href="/"
               className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"

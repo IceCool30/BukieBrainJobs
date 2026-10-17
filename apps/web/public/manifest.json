@@ -4,8 +4,8 @@
   "description": "Explore local service categories and flexible work with BukieBrainJobs.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#001A41",
-  "theme_color": "#001A41",
+  "background_color": "#0B0E13",
+  "theme_color": "#07090D",
   "icons": [
     {
       "src": "/icons/icon-192x192.png",

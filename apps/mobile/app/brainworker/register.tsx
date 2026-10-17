@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { mono, useTrades } from '../../lib/theme';
+import { colors as c, mono } from '../../lib/theme';
 
 type Form = { name: string; email: string; phone: string };
 type Errors = Partial<Record<keyof Form, string>>;
@@ -29,7 +29,6 @@ function validate(form: Form): Errors {
 
 export default function MobileBrainWorkerRegisterScreen() {
   const router = useRouter();
-  const c = useTrades();
   const [form, setForm] = useState<Form>({ name: '', email: '', phone: '' });
   const [errors, setErrors] = useState<Errors>({});
   const set = (key: keyof Form) => (value: string) => setForm((f) => ({ ...f, [key]: value }));
@@ -76,7 +75,6 @@ export default function MobileBrainWorkerRegisterScreen() {
 }
 
 function Field({ label, error, ...input }: TextInputProps & { label: string; error?: string }) {
-  const c = useTrades();
   const [focused, setFocused] = useState(false);
   const borderColor = error ? c.danger : focused ? c.amber : c.rule;
   return (

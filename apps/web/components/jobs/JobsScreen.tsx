@@ -8,7 +8,6 @@ import {
   RotateCcw,
   Briefcase,
 } from 'lucide-react';
-import ThemeToggle from '../ThemeToggle';
 import {
   CustomerActivityViewModel,
   ActivityFilterView,
@@ -351,9 +350,6 @@ export default function JobsScreen() {
               <p className="text-[var(--text-muted)] text-sm mt-1">
                 Keep track of your service requests, bookings, and activity in one place.
               </p>
-            </div>
-            <div className="self-start sm:self-auto">
-              <ThemeToggle idPrefix="jobs-page-theme" />
             </div>
           </div>
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Linking, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { mono, useTrades } from '../lib/theme';
+import { colors as c, mono } from '../lib/theme';
 
 const WEB_URL = 'https://bukie-brain-jobs.vercel.app';
 
@@ -21,7 +21,6 @@ type Service = (typeof POPULAR_SERVICES)[number];
 const openWeb = (path: string) => Linking.openURL(`${WEB_URL}${path}`);
 
 export default function HomeScreen() {
-  const c = useTrades();
   return (
     <SafeAreaView style={[s.fill, { backgroundColor: c.bg }]}>
       <ScrollView contentContainerStyle={s.page}>
@@ -43,7 +42,6 @@ export default function HomeScreen() {
 }
 
 function Brand() {
-  const c = useTrades();
   return (
     <View style={s.brand}>
       <Image source={require('../assets/images/logo-icon.png')} style={s.logo} accessibilityIgnoresInvertColors />
@@ -55,7 +53,6 @@ function Brand() {
 }
 
 function Hero() {
-  const c = useTrades();
   return (
     <View style={[s.hero, { backgroundColor: c.stripBg, borderColor: c.lead }]}>
       <Text style={s.heroTitle}>
@@ -86,7 +83,6 @@ function Hero() {
 }
 
 function ServiceRow({ service, first }: { service: Service; first: boolean }) {
-  const c = useTrades();
   return (
     <Pressable
       accessibilityRole="link"

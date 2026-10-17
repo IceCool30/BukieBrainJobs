@@ -13,7 +13,6 @@ import {
   TrendingUp,
   ArrowRight,
 } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
 import {
   SERVICE_CATEGORIES,
   ServiceCategory,
@@ -250,7 +249,6 @@ export default function PwaHome({
           </div>
 
           <div className="flex items-center gap-2">
-            <ThemeToggle idPrefix="pwa-theme" />
             <button
               onClick={onOpenDrawer}
               className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--amber)] text-white shadow-sm transition-colors hover:bg-[var(--amber-hover)]"

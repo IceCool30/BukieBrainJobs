@@ -22,7 +22,6 @@ import type {
 } from '../../lib/notifications/types';
 import { getNotificationRepository } from '../../lib/notifications/repository';
 import { getBrowserPushAdapter } from '../../lib/notifications/push-adapter';
-import ThemeToggle from '../ThemeToggle';
 import { NotificationCard } from './NotificationCard';
 import {
   NotificationSkeleton,
@@ -236,7 +235,6 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
         </div>
 
         <div className="flex items-center gap-3 self-end sm:self-auto">
-          <ThemeToggle idPrefix="notifications-theme" />
           <button
             type="button"
             onClick={() => void handleMarkAllAsRead()}

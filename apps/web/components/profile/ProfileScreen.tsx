@@ -14,7 +14,6 @@ import {
   AlertTriangle,
   Loader2,
 } from 'lucide-react';
-import ThemeToggle from '../ThemeToggle';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../lib/auth/storage';
 import { AuthUser } from '../../lib/auth/types';
 import {
@@ -295,7 +294,6 @@ export default function ProfileScreen() {
               </div>
 
               <div className="flex items-center gap-3 self-start sm:self-auto">
-                <ThemeToggle idPrefix="profile-page-theme" />
                 {isOffline && (
                   <div
                     role="status"

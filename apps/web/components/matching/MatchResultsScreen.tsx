@@ -4,7 +4,6 @@ import React, { useState, useEffect, useCallback, useId } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Users } from 'lucide-react';
-import ThemeToggle from '../ThemeToggle';
 import type { RankedMatchResult, MatchCandidate, MatchSelectionAction } from '@bukiebrainjobs/types';
 import { getMockAuthenticatedUser } from '../../lib/auth/storage';
 import { getMatchingRepository } from '../../lib/matching';
@@ -391,7 +390,6 @@ function ScreenShell({
           <span className="text-[var(--lead)]" aria-hidden="true">/</span>
           <span className="text-[var(--text)] font-medium">Matches</span>
         </nav>
-        <ThemeToggle idPrefix="matches-theme" />
       </div>
 
       <main id="main-content">{children}</main>

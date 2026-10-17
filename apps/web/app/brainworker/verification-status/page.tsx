@@ -15,7 +15,6 @@ import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib
 import { getBrainWorkerOnboardingRepository } from '../../../lib/brainworker/repository';
 import type { BrainWorkerOnboardingRecord } from '../../../lib/brainworker/types';
 import { VerificationStatusMonitor } from '../../../components/brainworker/onboarding/VerificationStatusMonitor';
-import { ThemeToggle } from '../../../components/ThemeToggle';
 import type { AuthUser } from '../../../lib/auth/types';
 
 export default function BrainWorkerVerificationStatusPage(): React.ReactElement {
@@ -160,10 +159,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
               <span>Home</span>
             </Link>
           </div>
-          <div className="flex items-center gap-3">
-            <ThemeToggle idPrefix="worker-verify-theme" />
-            <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
-          </div>
+          <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
         </div>
       </header>
 

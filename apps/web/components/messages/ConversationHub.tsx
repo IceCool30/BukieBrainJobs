@@ -3,7 +3,6 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { MessageSquare, AlertCircle } from 'lucide-react';
-import ThemeToggle from '../ThemeToggle';
 import type { ConversationSummary } from '../../lib/messaging/types';
 import { ConversationCard } from './ConversationCard';
 import {
@@ -74,7 +73,6 @@ export function ConversationHub({
         <h1 className="text-2xl font-bold font-display text-[var(--text-main)] tracking-tight">
           Messages
         </h1>
-        <ThemeToggle idPrefix="messages-theme" />
       </div>
 
       {/* Filter and Search Controls (shown when there are conversations or search active) */}
