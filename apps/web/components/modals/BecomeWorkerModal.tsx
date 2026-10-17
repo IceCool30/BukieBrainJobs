@@ -135,7 +135,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
             </div>
             {status === 'error' && (
               <div
-                className="mt-4 flex gap-2 rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs leading-5 text-red-600 dark:text-red-400"
+                className="mt-4 flex gap-2 rounded-xl border border-[var(--danger-border)] bg-[var(--danger-dim)] p-3 text-xs leading-5 text-[var(--danger)]"
                 role="alert"
               >
                 <WifiOff className="h-4 w-4 shrink-0" />
@@ -160,7 +160,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
                   className="w-full rounded-xl border border-[var(--rule)] bg-[var(--bg)] p-3 text-xs text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)] aria-[invalid=true]:border-red-500 transition-colors"
                 />
                 {errors.fullName && (
-                  <p className="mt-1 text-xs font-medium text-red-500">{errors.fullName}</p>
+                  <p className="mt-1 text-xs font-medium text-[var(--danger)]">{errors.fullName}</p>
                 )}
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -186,7 +186,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
                     ))}
                   </select>
                   {errors.service && (
-                    <p className="mt-1 text-xs font-medium text-red-500">{errors.service}</p>
+                    <p className="mt-1 text-xs font-medium text-[var(--danger)]">{errors.service}</p>
                   )}
                 </div>
                 <div>
@@ -211,7 +211,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
                     ))}
                   </select>
                   {errors.city && (
-                    <p className="mt-1 text-xs font-medium text-red-500">{errors.city}</p>
+                    <p className="mt-1 text-xs font-medium text-[var(--danger)]">{errors.city}</p>
                   )}
                 </div>
               </div>
@@ -232,7 +232,7 @@ export default function BecomeWorkerModal({ isOpen, onClose }: BecomeWorkerModal
                   className="w-full rounded-xl border border-[var(--rule)] bg-[var(--bg)] p-3 text-xs text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)] aria-[invalid=true]:border-red-500 transition-colors"
                 />
                 {errors.phone && (
-                  <p className="mt-1 text-xs font-medium text-red-500">{errors.phone}</p>
+                  <p className="mt-1 text-xs font-medium text-[var(--danger)]">{errors.phone}</p>
                 )}
               </div>
               <div className="flex items-center gap-2 rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] p-3 text-[11px] text-[var(--text-muted)]">

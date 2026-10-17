@@ -159,7 +159,7 @@ export function ReviewPromptModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/60 backdrop-blur-xs p-0 sm:p-6 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-[var(--bg)] backdrop-blur-xs p-0 sm:p-6 overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-labelledby="review-modal-title"
@@ -167,15 +167,15 @@ export function ReviewPromptModal({
     >
       <div
         ref={modalRef}
-        className="relative w-full max-w-xl rounded-t-2xl sm:rounded-2xl bg-white p-6 sm:p-8 shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] overflow-y-auto"
+        className="relative w-full max-w-xl rounded-t-2xl sm:rounded-2xl bg-[var(--card-bg)] p-6 sm:p-8 shadow-2xl border border-[var(--lead)] overflow-hidden max-h-[90vh] overflow-y-auto"
       >
         {/* Header */}
-        <div className="flex items-start justify-between pb-4 border-b border-slate-100">
+        <div className="flex items-start justify-between pb-4 border-b border-[var(--lead)]">
           <div>
-            <h2 id="review-modal-title" className="text-xl font-bold text-[#001A41]">
+            <h2 id="review-modal-title" className="text-xl font-bold text-[var(--text-main)]">
               Rate your experience with {bookingSummary.brainWorkerName}
             </h2>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-[var(--text-muted)] mt-1">
               {bookingSummary.serviceTitle} • Completed by {bookingSummary.brainWorkerName}
             </p>
           </div>
@@ -185,7 +185,7 @@ export function ReviewPromptModal({
             onClick={handleDismiss}
             disabled={isSubmitting}
             aria-label="Close review dialog"
-            className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors disabled:opacity-50 min-w-[44px] min-h-[44px] flex items-center justify-center"
+            className="p-2 rounded-lg text-[var(--text-muted)] hover:text-slate-600 hover:bg-[var(--card-hover)] transition-colors disabled:opacity-50 min-w-[44px] min-h-[44px] flex items-center justify-center"
           >
             <X className="w-5 h-5" />
           </button>
@@ -194,20 +194,20 @@ export function ReviewPromptModal({
         {/* Success Confirmation View */}
         {isSuccess ? (
           <div className="py-8 text-center space-y-4">
-            <div className="w-16 h-16 mx-auto rounded-full bg-emerald-50 text-[#296A4B] flex items-center justify-center">
+            <div className="w-16 h-16 mx-auto rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] flex items-center justify-center">
               <CheckCircle2 className="w-10 h-10" />
             </div>
-            <h3 className="text-lg font-bold text-[#001A41]">
+            <h3 className="text-lg font-bold text-[var(--text-main)]">
               Thank you for your feedback
             </h3>
-            <p className="text-sm text-slate-600 max-w-md mx-auto">
+            <p className="text-sm text-[var(--text-muted)] max-w-md mx-auto">
               Your review has been published on {bookingSummary.brainWorkerName}&apos;s public profile.
             </p>
             <div className="pt-4">
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#001A41] text-white font-semibold text-sm hover:bg-[#00265e] transition-colors min-h-[44px]"
+                className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[var(--amber)] text-white font-semibold text-sm hover:bg-[var(--amber-hover)] transition-colors min-h-[44px]"
               >
                 Done
               </button>
@@ -219,9 +219,9 @@ export function ReviewPromptModal({
             {errorMessage && (
               <div
                 role="alert"
-                className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-start gap-2.5"
+                className="p-3 rounded-xl bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-sm flex items-start gap-2.5"
               >
-                <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-[var(--danger)] shrink-0 mt-0.5" />
                 <p>{errorMessage}</p>
               </div>
             )}
@@ -317,19 +317,19 @@ export function ReviewPromptModal({
             />
 
             {/* Footer Actions */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-[var(--lead)]">
               <button
                 type="button"
                 onClick={handleDismiss}
                 disabled={isSubmitting}
-                className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 text-sm font-semibold hover:bg-slate-50 transition-colors disabled:opacity-50 min-h-[44px]"
+                className="px-4 py-2.5 rounded-xl border border-[var(--lead)] text-[var(--text-muted)] text-sm font-semibold hover:bg-[var(--card-hover)] transition-colors disabled:opacity-50 min-h-[44px]"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting || isCommentOverflow}
-                className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#001A41] text-white text-sm font-semibold hover:bg-[#00265e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+                className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--amber)] text-white text-sm font-semibold hover:bg-[var(--amber-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
               >
                 {isSubmitting ? (
                   <>

@@ -62,7 +62,7 @@ export function VerificationStatusMonitor({
         className={`w-full max-w-2xl mx-auto space-y-6 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
       >
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-md bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/40 px-3 py-1 text-xs font-semibold text-blue-700 dark:text-blue-300">
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-[var(--tag-bg)] border border-[var(--lead)] px-3 py-1 text-xs font-semibold text-[var(--amber)]">
             <Clock className="h-3.5 w-3.5" />
             <span>Application Received</span>
           </span>
@@ -77,9 +77,9 @@ export function VerificationStatusMonitor({
           </p>
         </div>
 
-        <div className="rounded-lg border border-blue-100 dark:border-blue-900/30 bg-blue-50/60 dark:bg-[#0E1B31] p-5 space-y-2">
+        <div className="rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] p-5 space-y-2">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--text-main)]">
-            <Clock className="h-4 w-4 shrink-0 text-[#001A41] dark:text-blue-400" />
+            <Clock className="h-4 w-4 shrink-0 text-[var(--text-main)]" />
             <span>Expected turnaround: 24 to 48 business hours</span>
           </div>
           <p className="text-xs text-[var(--text-muted)] leading-relaxed pl-6">
@@ -99,10 +99,10 @@ export function VerificationStatusMonitor({
         className={`w-full max-w-2xl mx-auto space-y-6 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
       >
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/40 px-3 py-1 text-xs font-semibold text-amber-800 dark:text-amber-300">
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-3 py-1 text-xs font-semibold text-[var(--amber)]">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--amber)]" />
             </span>
             <span>Under Active Review</span>
           </span>
@@ -124,21 +124,21 @@ export function VerificationStatusMonitor({
 
           <ul className="space-y-3 text-sm">
             <li className="flex items-center gap-3">
-              <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <CheckCircle2 className="h-5 w-5 text-[var(--brand-green)] shrink-0" />
               <span className="text-[var(--text-main)] font-medium">
                 Application Submitted & Formats Checked
               </span>
-              <span className="ml-auto text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-md border border-emerald-200/50 dark:border-emerald-800/40">
+              <span className="ml-auto text-xs font-semibold text-[var(--brand-green)] bg-[var(--brand-green-dim)] px-2 py-0.5 rounded-md border border-[var(--brand-green-border)]">
                 Completed
               </span>
             </li>
 
             <li className="flex items-center gap-3">
-              <Loader2 className="h-5 w-5 text-amber-600 dark:text-amber-400 animate-spin shrink-0" />
+              <Loader2 className="h-5 w-5 text-[var(--amber)] animate-spin shrink-0" />
               <span className="text-[var(--text-main)] font-medium">
                 Government Identity Document Review
               </span>
-              <span className="ml-auto text-xs font-semibold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-md border border-amber-200/50 dark:border-amber-800/40">
+              <span className="ml-auto text-xs font-semibold text-[var(--amber)] bg-[var(--amber-dim)] px-2 py-0.5 rounded-md border border-[var(--amber)]/30">
                 In Progress
               </span>
             </li>
@@ -181,11 +181,11 @@ export function VerificationStatusMonitor({
 
     return (
       <div
-        className={`w-full max-w-2xl mx-auto space-y-6 bg-[var(--card-bg)] border border-amber-200 dark:border-amber-900/40 rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
+        className={`w-full max-w-2xl mx-auto space-y-6 bg-[var(--card-bg)] border border-[var(--amber)]/30 rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
       >
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-900/50 px-3 py-1 text-xs font-semibold text-amber-900 dark:text-amber-300">
-            <AlertTriangle className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-3 py-1 text-xs font-semibold text-[var(--amber)]">
+            <AlertTriangle className="h-3.5 w-3.5 text-[var(--amber)]" />
             <span>Action Needed</span>
           </span>
         </div>
@@ -199,9 +199,9 @@ export function VerificationStatusMonitor({
           </p>
         </div>
 
-        <div className="rounded-lg border border-amber-200 dark:border-amber-900/30 bg-amber-50/70 dark:bg-[#20180B] p-5 space-y-3">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-900 dark:text-amber-300">
-            <FileWarning className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400" />
+        <div className="rounded-lg border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-5 space-y-3">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--amber)]">
+            <FileWarning className="h-4 w-4 shrink-0 text-[var(--amber)]" />
             <span>Reviewer Guidance ({primaryIssue?.issueCode || 'ACTION_REQUIRED'})</span>
           </div>
           <p className="text-sm font-medium text-[var(--text-main)] leading-relaxed">
@@ -214,7 +214,7 @@ export function VerificationStatusMonitor({
           <button
             type="button"
             onClick={() => onRemediate && onRemediate(targetStep)}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#001A41] dark:bg-emerald-600 px-6 py-3 text-sm font-semibold text-white dark:text-slate-950 shadow-sm transition hover:bg-[#002661] dark:hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           >
             <span>{buttonLabel}</span>
             <ArrowRight className="h-4 w-4" />
@@ -236,11 +236,11 @@ export function VerificationStatusMonitor({
 
     return (
       <div
-        className={`w-full max-w-2xl mx-auto space-y-6 bg-[var(--card-bg)] border border-red-200 dark:border-red-900/40 rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
+        className={`w-full max-w-2xl mx-auto space-y-6 bg-[var(--card-bg)] border border-[var(--danger-border)] rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
       >
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 px-3 py-1 text-xs font-semibold text-red-800 dark:text-red-300">
-            <XCircle className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-[var(--danger-dim)] border border-[var(--danger-border)] px-3 py-1 text-xs font-semibold text-[var(--danger)]">
+            <XCircle className="h-3.5 w-3.5 text-[var(--danger)]" />
             <span>Application Not Approved</span>
           </span>
         </div>
@@ -263,7 +263,7 @@ export function VerificationStatusMonitor({
             If you believe this determination was made in error or wish to provide supplementary official documentation, please reach out to our operations team at{' '}
             <a
               href="mailto:support@bukiebrainjobs.com"
-              className="font-semibold text-[#001A41] dark:text-emerald-400 underline underline-offset-2 hover:text-blue-800 dark:hover:text-emerald-300"
+              className="font-semibold text-[var(--text-main)] underline underline-offset-2 hover:text-[var(--amber-hover)]"
             >
               support@bukiebrainjobs.com
             </a>
@@ -280,11 +280,11 @@ export function VerificationStatusMonitor({
   if (status === 'APPROVED') {
     return (
       <div
-        className={`w-full max-w-2xl mx-auto space-y-6 bg-[var(--card-bg)] border border-emerald-200 dark:border-emerald-900/40 rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
+        className={`w-full max-w-2xl mx-auto space-y-6 bg-[var(--card-bg)] border border-[var(--brand-green-border)] rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
       >
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-900/50 px-3 py-1 text-xs font-semibold text-emerald-800 dark:text-emerald-300">
-            <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-3 py-1 text-xs font-semibold text-[var(--brand-green)]">
+            <ShieldCheck className="h-4 w-4 text-[var(--brand-green)]" />
             <span>Verified Provider</span>
           </span>
         </div>
@@ -298,9 +298,9 @@ export function VerificationStatusMonitor({
           </p>
         </div>
 
-        <div className="rounded-lg border border-emerald-100 dark:border-emerald-900/30 bg-emerald-50/50 dark:bg-[#081F17] p-5 space-y-3">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-900 dark:text-emerald-300">
-            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+        <div className="rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-5 space-y-3">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-green)]">
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--brand-green)]" />
             <span>Operating Privileges Unlocked</span>
           </div>
           <p className="text-xs text-[var(--text-muted)] leading-relaxed">
@@ -312,7 +312,7 @@ export function VerificationStatusMonitor({
           <button
             type="button"
             onClick={onEnterWorkspace}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#001A41] dark:bg-emerald-600 px-6 py-3.5 text-sm font-semibold text-white dark:text-slate-950 shadow-sm transition hover:bg-[#002661] dark:hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           >
             <span>Enter BrainWorker Workspace</span>
             <ArrowRight className="h-4 w-4" />

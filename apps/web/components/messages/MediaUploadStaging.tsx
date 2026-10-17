@@ -168,7 +168,7 @@ export function MediaUploadStaging({
       {error && !stagedFile && (
         <div
           role="alert"
-          className="flex items-center gap-2 px-3 py-2 bg-red-500/10 border border-red-500/30 rounded-lg text-sm text-red-500 font-medium"
+          className="flex items-center gap-2 px-3 py-2 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-lg text-sm text-[var(--danger)] font-medium"
         >
           <AlertCircle className="w-4 h-4 flex-shrink-0" />
           <span>{error}</span>

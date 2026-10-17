@@ -48,18 +48,18 @@ export function FunnelProgressBar({
     >
       {/* Mobile Step Status Header */}
       <div className="flex items-center justify-between sm:hidden mb-3">
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+        <span className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
           Onboarding Progress
         </span>
-        <span className="text-xs font-bold text-[#001A41] dark:text-[#F8FAFC]">
+        <span className="text-xs font-bold text-[var(--text-main)]">
           {`Step ${currentStepNumber} of 4`}
         </span>
       </div>
 
       {/* Mobile progress bar track */}
-      <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-md overflow-hidden sm:hidden mb-3">
+      <div className="h-1.5 w-full bg-[var(--tag-bg)] rounded-md overflow-hidden sm:hidden mb-3">
         <div
-          className="h-full bg-[#001A41] dark:bg-emerald-600 transition-all duration-300 rounded-md"
+          className="h-full bg-[var(--amber)] transition-all duration-300 rounded-md"
           style={{ width: `${(currentStepNumber / 4) * 100}%` }}
         />
       </div>
@@ -96,10 +96,10 @@ export function FunnelProgressBar({
                 <div
                   className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors ${
                     isCurrent
-                      ? 'bg-[#001A41] dark:bg-emerald-600 text-white ring-4 ring-blue-100 dark:ring-emerald-950/60'
+                      ? 'bg-[var(--amber)] text-white ring-4 ring-[var(--amber-dim)]'
                       : isCompleted
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                      ? 'bg-[var(--amber)] text-white'
+                      : 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
                   }`}
                 >
                   {isCompleted ? (
@@ -113,10 +113,10 @@ export function FunnelProgressBar({
                   <p
                     className={`truncate text-xs font-medium ${
                       isCurrent
-                        ? 'text-[#001A41] dark:text-[#F8FAFC] font-bold'
+                        ? 'text-[var(--text-main)] font-bold'
                         : isCompleted
-                        ? 'text-slate-900 dark:text-slate-200 font-semibold'
-                        : 'text-slate-400 dark:text-slate-500'
+                        ? 'text-[var(--text-main)] font-semibold'
+                        : 'text-[var(--text-muted)]'
                     }`}
                   >
                     {step.label}
@@ -128,7 +128,7 @@ export function FunnelProgressBar({
                 <div
                   aria-hidden="true"
                   className={`hidden sm:block h-0.5 w-full mx-2 ${
-                    isCompleted ? 'bg-emerald-500' : 'bg-slate-200 dark:bg-slate-800'
+                    isCompleted ? 'bg-[var(--brand-green)]' : 'bg-[var(--tag-bg)]'
                   }`}
                 />
               )}

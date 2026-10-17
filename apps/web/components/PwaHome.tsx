@@ -13,7 +13,6 @@ import {
   TrendingUp,
   ArrowRight,
 } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
 import {
   SERVICE_CATEGORIES,
   ServiceCategory,
@@ -250,10 +249,9 @@ export default function PwaHome({
           </div>
 
           <div className="flex items-center gap-2">
-            <ThemeToggle idPrefix="pwa-theme" />
             <button
               onClick={onOpenDrawer}
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-[#001A41] text-white shadow-sm transition-colors hover:bg-[#000F2D]"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--amber)] text-white shadow-sm transition-colors hover:bg-[var(--amber-hover)]"
               aria-label="Open menu"
             >
               <Menu className="h-5 w-5" />
@@ -338,7 +336,7 @@ export default function PwaHome({
                     aria-controls="pwa-location-options"
                     className="flex h-11 w-full items-center justify-between gap-1.5 rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] px-3 text-xs font-semibold text-[var(--text-main)] transition-colors hover:bg-[var(--rule)]"
                   >
-                    <MapPin className="h-3.5 w-3.5 shrink-0 text-[#296A4B]" />
+                    <MapPin className="h-3.5 w-3.5 shrink-0 text-[var(--brand-green)]" />
                     <span className="truncate">{selectedLocation.name}</span>
                     <ChevronDown className="h-3 w-3 shrink-0 text-[var(--text-muted)]" />
                   </button>
@@ -367,7 +365,7 @@ export default function PwaHome({
                           }`}
                         >
                           <span className="flex items-center gap-2">
-                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-green)]" />
                             {location.name}
                           </span>
                           <span className="text-[10px] text-[var(--text-muted)]">{location.popularArea}</span>
@@ -432,7 +430,7 @@ export default function PwaHome({
 
                     <div className="space-y-1.5 border-t border-[var(--lead)] pt-1">
                       <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                        <TrendingUp className="h-3.5 w-3.5 text-[#296A4B]" />
+                        <TrendingUp className="h-3.5 w-3.5 text-[var(--brand-green)]" />
                         Services to explore
                       </div>
                       <div className="grid gap-1.5">
@@ -493,7 +491,7 @@ export default function PwaHome({
                             </span>
                           </span>
                           <span className="shrink-0 text-right">
-                            <span className="block text-xs font-extrabold text-[#296A4B]">From {category.startingPrice}</span>
+                            <span className="block text-xs font-extrabold text-[var(--brand-green)]">From {category.startingPrice}</span>
                           </span>
                         </button>
                       ))
@@ -503,7 +501,7 @@ export default function PwaHome({
               </div>
             )}
           </div>
-          <p className="ml-auto max-w-[290px] pt-1 text-right text-[13px] font-bold leading-snug text-slate-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
+          <p className="ml-auto max-w-[290px] pt-1 text-right text-[13px] font-bold leading-snug text-[var(--text-main)] drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
               Find a BrainWorker for the job, or offer your skills for work that respects your time.
             </p>
         </div>
@@ -519,7 +517,7 @@ export default function PwaHome({
 
         <div className="motion-reveal-item flex items-baseline justify-between pt-5">
           <h2 className="font-display font-bold text-[17px] text-[var(--text-main)]">Browse services</h2>
-          <Link href="/services" className="motion-press text-[13px] font-semibold text-[#296A4B]">
+          <Link href="/services" className="motion-press text-[13px] font-semibold text-[var(--brand-green)]">
             View all
           </Link>
         </div>
@@ -530,7 +528,7 @@ export default function PwaHome({
               key={cat.id}
               type="button"
               onClick={() => onSelectCategory?.(cat, selectedLocation.name)}
-              className="motion-press motion-reveal-item group text-left block rounded-2xl active:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
+              className="motion-press motion-reveal-item group text-left block rounded-2xl active:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
             >
               <div className="relative aspect-[5/4] overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] shadow-sm">
                 <Image

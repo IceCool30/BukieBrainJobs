@@ -3,7 +3,6 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { MessageSquare, AlertCircle } from 'lucide-react';
-import ThemeToggle from '../ThemeToggle';
 import type { ConversationSummary } from '../../lib/messaging/types';
 import { ConversationCard } from './ConversationCard';
 import {
@@ -74,7 +73,6 @@ export function ConversationHub({
         <h1 className="text-2xl font-bold font-display text-[var(--text-main)] tracking-tight">
           Messages
         </h1>
-        <ThemeToggle idPrefix="messages-theme" />
       </div>
 
       {/* Filter and Search Controls (shown when there are conversations or search active) */}
@@ -91,17 +89,17 @@ export function ConversationHub({
       {error && (
         <div
           role="alert"
-          className="flex items-center justify-between gap-3 p-3.5 rounded-lg border border-red-500/30 bg-red-500/10 text-red-600 dark:text-red-400 text-xs sm:text-sm"
+          className="flex items-center justify-between gap-3 p-3.5 rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] text-[var(--danger)] text-xs sm:text-sm"
         >
           <div className="flex items-center gap-2 min-w-0">
-            <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-500" />
+            <AlertCircle className="w-4 h-4 flex-shrink-0 text-[var(--danger)]" />
             <span className="truncate font-medium">{error}</span>
           </div>
           {onRetry && (
             <button
               type="button"
               onClick={onRetry}
-              className="px-3 py-1 rounded-md bg-red-600 hover:bg-red-700 text-white font-semibold text-xs transition-colors flex-shrink-0 cursor-pointer"
+              className="px-3 py-1 rounded-md bg-[var(--danger)] hover:opacity-90 text-white font-semibold text-xs transition-colors flex-shrink-0 cursor-pointer"
             >
               Try again
             </button>
@@ -202,7 +200,7 @@ export function ConversationHub({
                 event.preventDefault();
                 onSelectConversation(conversation.jobId);
               }}
-              className="block no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] dark:focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
+              className="block no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
             >
               <ConversationCard
                 conversation={conversation}

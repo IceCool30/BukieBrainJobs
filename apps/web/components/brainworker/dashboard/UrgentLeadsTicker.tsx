@@ -15,12 +15,12 @@ export function UrgentLeadsTicker({
     return (
       <div
         data-testid="urgent-leads-empty"
-        className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center dark:border-slate-800 dark:bg-slate-900/50"
+        className="rounded-xl border border-dashed border-[var(--rule)] bg-[var(--bg)] p-6 text-center"
       >
-        <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+        <p className="text-sm font-medium text-[var(--text-muted)]">
           No urgent leads in your area
         </p>
-        <p className="mt-1 text-xs text-slate-500 dark:text-slate-500">
+        <p className="mt-1 text-xs text-[var(--text-muted)]">
           New emergency and same-day requests will appear here as customers post them.
         </p>
       </div>
@@ -31,14 +31,14 @@ export function UrgentLeadsTicker({
   return (
     <div className="space-y-3" data-testid="urgent-leads-ticker">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)]">
           Urgent Opportunities
         </h3>
         {onViewAllLeads && (
           <button
             type="button"
             onClick={onViewAllLeads}
-            className="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            className="text-xs font-medium text-[var(--amber)] hover:text-[var(--amber-hover)]"
           >
             View All
           </button>
@@ -49,35 +49,35 @@ export function UrgentLeadsTicker({
           <div
             key={lead.id}
             data-testid={`urgent-lead-card-${lead.id}`}
-            className="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            className="flex flex-col justify-between rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 shadow-sm"
           >
             <div>
               <div className="flex items-center justify-between gap-2">
                 <span
                   className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold ${
                     lead.urgency === 'EMERGENCY'
-                      ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300'
-                      : 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+                      ? 'bg-[var(--danger-dim)] text-[var(--danger)]'
+                      : 'bg-[var(--amber-dim)] text-[var(--amber)]'
                   }`}
                 >
                   {lead.urgency}
                 </span>
-                <span className="text-xs text-slate-500 dark:text-slate-400">
+                <span className="text-xs text-[var(--text-muted)]">
                   {lead.tradeCategory}
                 </span>
               </div>
-              <h4 className="mt-2 text-sm font-semibold text-slate-900 dark:text-white">
+              <h4 className="mt-2 text-sm font-semibold text-[var(--text-main)]">
                 {lead.title}
               </h4>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              <p className="mt-1 text-xs text-[var(--text-muted)]">
                 {lead.locationArea}
               </p>
             </div>
-            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800">
+            <div className="mt-4 pt-3 border-t border-[var(--lead)]">
               <button
                 type="button"
                 onClick={() => onQuoteLead?.(lead.id)}
-                className="w-full rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
+                className="w-full rounded-lg bg-[var(--amber)] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[var(--amber-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--card-bg)]"
               >
                 Send Quote
               </button>

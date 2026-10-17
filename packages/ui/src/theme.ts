@@ -25,9 +25,9 @@ export const tailwindBrandTheme = {
   },
   letterSpacing: typography.letterSpacing,
   borderRadius: {
-    button: '9999px',
-    input: '1rem',
-    card: '2rem',
+    button: '8px',
+    input: '6px',
+    card: '8px',
     xl: '12px',
     '2xl': '16px',
     '3xl': '24px',

@@ -57,16 +57,16 @@ export function PayoutRequestModal({
   return (
     <div
       data-testid="payout-request-modal"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg)] backdrop-blur-sm p-4"
     >
-      <div className="relative w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl space-y-5">
+      <div className="relative w-full max-w-md rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-2xl space-y-5">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="flex items-center justify-between border-b border-[var(--lead)] pb-3">
           <div>
-            <h3 className="text-base font-semibold text-slate-100">
+            <h3 className="text-base font-semibold text-[var(--text-main)]">
               Request Payout
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[var(--text-muted)]">
               Transfer cleared earnings to your verified Nigerian bank account
             </p>
           </div>
@@ -74,18 +74,18 @@ export function PayoutRequestModal({
             type="button"
             data-testid="close-payout-modal-button"
             onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+            className="rounded-lg p-1.5 text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)]"
           >
             ✕
           </button>
         </div>
 
         {/* Available Balance Callout */}
-        <div className="rounded-xl border border-slate-800 bg-slate-950/50 p-4">
-          <div className="text-xs text-slate-400">Available Balance</div>
+        <div className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-4">
+          <div className="text-xs text-[var(--text-muted)]">Available Balance</div>
           <div
             data-testid="modal-available-balance"
-            className="mt-1 text-2xl font-bold text-emerald-400"
+            className="mt-1 font-mono text-2xl font-semibold text-[var(--brand-green)]"
           >
             ₦{availableBalanceNaira.toLocaleString('en-US')}
           </div>
@@ -96,7 +96,7 @@ export function PayoutRequestModal({
           <div>
             <label
               htmlFor="destination-bank-select"
-              className="block text-xs font-medium text-slate-300 mb-1"
+              className="block text-xs font-medium text-[var(--text-muted)] mb-1"
             >
               Destination Bank Account
             </label>
@@ -105,7 +105,7 @@ export function PayoutRequestModal({
               data-testid="destination-bank-select"
               value={selectedAccountId}
               onChange={(e) => setSelectedAccountId(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-100 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-2 text-xs text-[var(--text-main)] focus:border-[var(--amber)] focus:outline-none focus:ring-1 focus:ring-[var(--amber-dim)]"
             >
               {bankAccounts.map((acc) => (
                 <option key={acc.id} value={acc.id}>
@@ -119,12 +119,12 @@ export function PayoutRequestModal({
           <div>
             <label
               htmlFor="payout-amount-input"
-              className="block text-xs font-medium text-slate-300 mb-1"
+              className="block text-xs font-medium text-[var(--text-muted)] mb-1"
             >
               Withdrawal Amount (₦)
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-2 text-xs text-slate-400">
+              <span className="absolute left-3 top-2 text-xs text-[var(--text-muted)]">
                 ₦
               </span>
               <input
@@ -136,13 +136,13 @@ export function PayoutRequestModal({
                 placeholder="Enter amount (min ₦1,000)"
                 value={amountStr}
                 onChange={(e) => setAmountStr(e.target.value)}
-                className="w-full rounded-lg border border-slate-700 bg-slate-800 pl-7 pr-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] pl-7 pr-3 py-2 text-xs text-[var(--text-main)] placeholder-[var(--text-muted)] focus:border-[var(--amber)] focus:outline-none focus:ring-1 focus:ring-[var(--amber-dim)]"
               />
             </div>
             {errorMessage && (
               <p
                 data-testid="payout-amount-error"
-                className="mt-1.5 text-xs text-rose-400"
+                className="mt-1.5 text-xs text-[var(--danger)]"
               >
                 {errorMessage}
               </p>
@@ -150,21 +150,21 @@ export function PayoutRequestModal({
           </div>
 
           {/* Transfer Fee & Net Payout Preview */}
-          <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-3 space-y-2">
+          <div className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-3 space-y-2">
             <div
               data-testid="payout-fee-notice"
-              className="flex items-center justify-between text-xs text-slate-400"
+              className="flex items-center justify-between text-xs text-[var(--text-muted)]"
             >
               <span>Platform Transfer Fee</span>
-              <span className="font-semibold text-emerald-400">
+              <span className="font-semibold text-[var(--brand-green)]">
                 ₦0 (Free)
               </span>
             </div>
-            <div className="flex items-center justify-between text-xs border-t border-slate-800 pt-2 font-medium">
-              <span className="text-slate-300">Net Estimated Payout</span>
+            <div className="flex items-center justify-between text-xs border-t border-[var(--lead)] pt-2 font-medium">
+              <span className="text-[var(--text-muted)]">Net Estimated Payout</span>
               <span
                 data-testid="net-payout-preview"
-                className="text-sm font-bold text-slate-100"
+                className="font-mono text-sm font-semibold text-[var(--text-main)]"
               >
                 ₦{netPayout.toLocaleString('en-US')}
               </span>
@@ -175,7 +175,7 @@ export function PayoutRequestModal({
           <div>
             <label
               htmlFor="payout-notes-input"
-              className="block text-xs font-medium text-slate-300 mb-1"
+              className="block text-xs font-medium text-[var(--text-muted)] mb-1"
             >
               Withdrawal Reference Notes (Optional)
             </label>
@@ -185,16 +185,16 @@ export function PayoutRequestModal({
               placeholder="e.g. Weekly earnings payout"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-2 text-xs text-[var(--text-main)] placeholder-[var(--text-muted)] focus:border-[var(--amber)] focus:outline-none focus:ring-1 focus:ring-[var(--amber-dim)]"
             />
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-[var(--lead)]">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-slate-700 px-3.5 py-2 text-xs font-medium text-slate-300 hover:bg-slate-800"
+              className="rounded-lg border border-[var(--lead)] px-3.5 py-2 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
             >
               Cancel
             </button>
@@ -202,7 +202,7 @@ export function PayoutRequestModal({
               type="submit"
               data-testid="submit-payout-button"
               disabled={!canSubmit}
-              className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-slate-800 disabled:text-slate-500"
+              className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-semibold text-white hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)]"
             >
               {isSubmitting ? 'Processing...' : 'Submit Withdrawal'}
             </button>

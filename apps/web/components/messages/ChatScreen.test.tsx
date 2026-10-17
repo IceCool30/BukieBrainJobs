@@ -168,7 +168,7 @@ describe('ChatScreen Component Contract (CHT-001 through CHT-020)', () => {
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // CHT-003: Displays outgoing customer messages right-aligned in Deep Navy #001A41 bubbles.
+  // CHT-003: Displays outgoing customer messages right-aligned in inverted text-main (Brand Navy in light) bubbles.
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   describe('CHT-003: Outgoing message bubble styling', () => {
     it('should display outgoing customer messages right-aligned in Deep Navy bubbles', () => {
@@ -176,7 +176,7 @@ describe('ChatScreen Component Contract (CHT-001 through CHT-020)', () => {
       
       const outgoingMessage = MOCK_MESSAGES.find(m => m.senderId === CURRENT_USER_ID);
       expect(screen.getByText(outgoingMessage!.content)).toHaveStyle({ float: 'right' });
-      expect(screen.getByText(outgoingMessage!.content).closest('div')).toHaveClass(/#001A41/i);
+      expect(screen.getByText(outgoingMessage!.content).closest('div')).toHaveClass(/bg-\[var\(--text-main\)\]/);
     });
   });
 
@@ -276,7 +276,7 @@ describe('ChatScreen Component Contract (CHT-001 through CHT-020)', () => {
       const readMessage = MOCK_MESSAGES.find(m => m.isRead && m.senderId === CURRENT_USER_ID);
       const messageElement = screen.getByText(readMessage!.content).closest('div');
       const readStatus = within(messageElement!).getByRole('img', { name: /read/i });
-      expect(readStatus).toHaveClass(/emerald/i);
+      expect(readStatus).toHaveClass(/brand-green/);
     });
   });
 

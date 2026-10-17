@@ -20,7 +20,6 @@ import {
   UserCheck,
   WifiOff,
 } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
 import {
   getPrototypeSubmissionOutcome,
   validateBookingDraft,
@@ -72,7 +71,6 @@ function BookingHeader({ returnUrl }: { returnUrl: string }) {
           Back to services
         </Link>
         <div className="flex items-center gap-3">
-          <ThemeToggle idPrefix="booking-theme" />
           <Link
             href="/"
             className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
@@ -84,9 +82,6 @@ function BookingHeader({ returnUrl }: { returnUrl: string }) {
               height={32}
               className="h-8 w-8 rounded-lg object-contain"
             />
-            <span>
-              Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
-            </span>
           </Link>
         </div>
       </div>
@@ -97,7 +92,7 @@ function BookingHeader({ returnUrl }: { returnUrl: string }) {
 function FieldError({ id, message }: { id: string; message?: string | undefined }) {
   if (!message) return null;
   return (
-    <p id={id} className="mt-1.5 text-xs font-semibold text-red-600 dark:text-red-400" role="alert">
+    <p id={id} className="mt-1.5 text-xs font-semibold text-[var(--danger)]" role="alert">
       {message}
     </p>
   );
@@ -428,7 +423,7 @@ export default function BookingScreen() {
                 aria-hidden="true"
               >
                 <Image
-                  src="/images/logo-badge-512.png"
+                  src="/images/logo-watermark.png"
                   alt=""
                   width={220}
                   height={220}
@@ -570,19 +565,19 @@ export default function BookingScreen() {
         {status === 'error' && (
           <div
             role="alert"
-            className="mt-6 flex items-start gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm leading-5 text-red-500 shadow-xs"
+            className="mt-6 flex items-start gap-3 rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] p-4 text-sm leading-5 text-[var(--danger)] shadow-xs"
           >
-            <WifiOff className="mt-0.5 h-5 w-5 shrink-0 text-red-500" aria-hidden="true" />
+            <WifiOff className="mt-0.5 h-5 w-5 shrink-0 text-[var(--danger)]" aria-hidden="true" />
             <div className="flex-1">
               <p className="font-bold">We could not submit your booking request.</p>
-              <p className="mt-1 text-xs text-red-400">
+              <p className="mt-1 text-xs text-[var(--danger)]">
                 Check your connection or try again. All your entered information has been preserved.
               </p>
             </div>
             <button
               type="button"
               onClick={executeSubmission}
-              className="motion-press inline-flex min-h-10 items-center rounded-lg bg-red-600 px-3.5 text-xs font-bold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+              className="motion-press inline-flex min-h-10 items-center rounded-lg bg-[var(--danger)] px-3.5 text-xs font-bold text-white transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
             >
               Try again
             </button>
@@ -662,7 +657,7 @@ export default function BookingScreen() {
                       htmlFor="booking-city"
                       className="block font-mono text-[11px] font-bold tracking-wide text-[var(--text-muted)] uppercase"
                     >
-                      City <span className="text-red-500">*</span>
+                      City <span className="text-[var(--danger)]">*</span>
                     </label>
                     <select
                       id="booking-city"
@@ -688,7 +683,7 @@ export default function BookingScreen() {
                       htmlFor="booking-address"
                       className="block font-mono text-[11px] font-bold tracking-wide text-[var(--text-muted)] uppercase"
                     >
-                      Street address and house number <span className="text-red-500">*</span>
+                      Street address and house number <span className="text-[var(--danger)]">*</span>
                     </label>
                     <input
                       id="booking-address"
@@ -742,7 +737,7 @@ export default function BookingScreen() {
 
                 <div className="mt-5">
                   <p className="font-mono text-[11px] font-bold tracking-wide text-[var(--text-muted)] uppercase">
-                    Preferred service date <span className="text-red-500">*</span>
+                    Preferred service date <span className="text-[var(--danger)]">*</span>
                   </p>
                   <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
                     {DATE_OPTIONS.map((option) => {
@@ -792,7 +787,7 @@ export default function BookingScreen() {
                 {/* Arrival Window Selection */}
                 <div className="mt-6">
                   <p className="font-mono text-[11px] font-bold tracking-wide text-[var(--text-muted)] uppercase">
-                    Arrival window <span className="text-red-500">*</span>
+                    Arrival window <span className="text-[var(--danger)]">*</span>
                   </p>
                   <div className="mt-2 grid gap-2 sm:grid-cols-3">
                     {TIME_OPTIONS.map((time) => {
@@ -831,7 +826,7 @@ export default function BookingScreen() {
                     htmlFor="booking-job-details"
                     className="block font-mono text-[11px] font-bold tracking-wide text-[var(--text-muted)] uppercase"
                   >
-                    Job details <span className="text-red-500">*</span>
+                    Job details <span className="text-[var(--danger)]">*</span>
                   </label>
                   <textarea
                     id="booking-job-details"
@@ -923,7 +918,7 @@ export default function BookingScreen() {
                   aria-hidden="true"
                 >
                   <Image
-                    src="/images/logo-badge-512.png"
+                    src="/images/logo-watermark.png"
                     alt=""
                     width={200}
                     height={200}

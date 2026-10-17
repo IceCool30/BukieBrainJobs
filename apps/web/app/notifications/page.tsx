@@ -11,11 +11,12 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Sliders, ChevronRight } from 'lucide-react';
 import { getMockAuthenticatedUser } from '../../lib/auth/storage';
+import type { AuthUser } from '../../lib/auth/types';
 import { NotificationCenter } from '../../components/notifications/NotificationCenter';
 
 export default function NotificationsPage() {
   const router = useRouter();
-  const [user, setUser] = useState(() => getMockAuthenticatedUser());
+  const [user, setUser] = useState<AuthUser | null>(null);
 
   useEffect(() => {
     const currentUser = getMockAuthenticatedUser();
@@ -26,10 +27,7 @@ export default function NotificationsPage() {
   }, [router]);
 
   if (!user) {
-    if (typeof window !== 'undefined') {
-      router.replace('/login?redirect=/notifications');
-    }
-    return null;
+    return <main className="min-h-screen bg-[var(--bg)]" aria-busy="true" />;
   }
 
   return (

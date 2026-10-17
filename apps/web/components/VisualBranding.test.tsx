@@ -112,7 +112,7 @@ describe('Visual Branding, Official Trademark Logo, and Watermark Placements', (
 
     // Subtle trademark security watermark
     const watermark = Array.from(images).find((img) =>
-      img.getAttribute('src')?.includes('logo-badge-512.png'),
+      img.getAttribute('src')?.includes('logo-watermark.png'),
     );
     expect(watermark).toBeDefined();
   });
@@ -143,7 +143,7 @@ describe('Visual Branding, Official Trademark Logo, and Watermark Placements', (
 
     // Watermark in sticky live review summary card
     const watermark = Array.from(images).find((img) =>
-      img.getAttribute('src')?.includes('logo-badge-512.png'),
+      img.getAttribute('src')?.includes('logo-watermark.png'),
     );
     expect(watermark).toBeDefined();
   });

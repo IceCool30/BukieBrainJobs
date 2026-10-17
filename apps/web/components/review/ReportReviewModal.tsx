@@ -147,7 +147,7 @@ export function ReportReviewModal({
         {/* Success View */}
         {isSuccess ? (
           <div className="py-8 text-center space-y-4">
-            <div className="w-14 h-14 mx-auto rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center">
+            <div className="w-14 h-14 mx-auto rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] flex items-center justify-center">
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <h3 className="text-lg font-bold text-[var(--text-main)]">
@@ -160,7 +160,7 @@ export function ReportReviewModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-[#001A41] dark:bg-emerald-600 text-white font-semibold text-sm hover:bg-[#00265e] dark:hover:bg-emerald-500 transition-colors min-h-[44px]"
+                className="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-[var(--amber)] text-white font-semibold text-sm hover:bg-[var(--amber-hover)] transition-colors min-h-[44px]"
               >
                 Close
               </button>
@@ -172,9 +172,9 @@ export function ReportReviewModal({
             {isAlreadySubmitted && (
               <div
                 role="status"
-                className="p-3.5 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 text-amber-900 dark:text-amber-200 text-sm flex items-start gap-2.5"
+                className="p-3.5 rounded-lg bg-[var(--amber-dim)] border border-[var(--amber)]/30 text-[var(--amber)] text-sm flex items-start gap-2.5"
               >
-                <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-[var(--amber)] shrink-0 mt-0.5" />
                 <p>You have already submitted a report for this review. Our team is reviewing it.</p>
               </div>
             )}
@@ -182,9 +182,9 @@ export function ReportReviewModal({
             {errorMessage && (
               <div
                 role="alert"
-                className="p-3.5 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/60 text-rose-900 dark:text-rose-200 text-sm flex items-start gap-2.5"
+                className="p-3.5 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-sm flex items-start gap-2.5"
               >
-                <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-[var(--danger)] shrink-0 mt-0.5" />
                 <p>{errorMessage}</p>
               </div>
             )}
@@ -201,7 +201,7 @@ export function ReportReviewModal({
                     key={reason.value}
                     className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
                       selectedReason === reason.value
-                        ? 'border-[#001A41] dark:border-emerald-500 bg-[var(--card-hover)]'
+                        ? 'border-[var(--text-main)] bg-[var(--card-hover)]'
                         : 'border-[var(--card-border)] hover:bg-[var(--card-hover)]'
                     }`}
                   >
@@ -214,7 +214,7 @@ export function ReportReviewModal({
                         setSelectedReason(reason.value);
                         setValidationError(null);
                       }}
-                      className="mt-1 w-4 h-4 text-[#001A41] dark:text-emerald-500 border-[var(--card-border)] focus:ring-emerald-500/20"
+                      className="mt-1 w-4 h-4 text-[var(--text-main)] border-[var(--card-border)] focus:ring-[var(--amber-dim)]"
                     />
                     <span className="text-sm font-medium text-[var(--text-main)]">
                       {reason.label}
@@ -224,7 +224,7 @@ export function ReportReviewModal({
               </div>
 
               {validationError && (
-                <p className="text-xs text-rose-600 dark:text-rose-400 font-medium pt-1">
+                <p className="text-xs text-[var(--danger)] font-medium pt-1">
                   {validationError}
                 </p>
               )}
@@ -245,7 +245,7 @@ export function ReportReviewModal({
                 aria-label="Additional details"
                 placeholder="Add any helpful details..."
                 onChange={(e) => setDetails(e.target.value)}
-                className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] text-[var(--text-main)] placeholder:text-[var(--text-muted)] p-3 text-sm focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 focus:outline-hidden"
+                className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] text-[var(--text-main)] placeholder:text-[var(--text-muted)] p-3 text-sm focus:border-[var(--amber)] focus:ring-2 focus:ring-[var(--amber-dim)] focus:outline-hidden"
               />
             </div>
 
@@ -261,7 +261,7 @@ export function ReportReviewModal({
               <button
                 type="submit"
                 disabled={isSubmitting || isAlreadySubmitted}
-                className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-[#001A41] dark:bg-emerald-600 text-white text-sm font-semibold hover:bg-[#00265e] dark:hover:bg-emerald-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+                className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-[var(--amber)] text-white text-sm font-semibold hover:bg-[var(--amber-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
               >
                 {isSubmitting ? (
                   <>

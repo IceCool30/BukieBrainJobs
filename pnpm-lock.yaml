@@ -28,6 +28,11 @@ overrides:
   '@bukiebrainjobs/mobile>react': 18.3.1
   '@bukiebrainjobs/mobile>react-dom': 18.3.1
 
+patchedDependencies:
+  metro@0.81.5:
+    hash: lkneyzzdzct64j6npa4vwtwj6u
+    path: patches/metro@0.81.5.patch
+
 importers:
 
   .:
@@ -8506,7 +8511,7 @@ snapshots:
       chalk: 4.1.2
       execa: 5.1.1
       invariant: 2.2.4
-      metro: 0.81.5
+      metro: 0.81.5(patch_hash=lkneyzzdzct64j6npa4vwtwj6u)
       metro-config: 0.81.5
       metro-core: 0.81.5
       node-fetch: 2.7.0
@@ -11773,7 +11778,7 @@ snapshots:
       cosmiconfig: 5.2.1
       flow-enums-runtime: 0.0.6
       jest-validate: 29.7.0
-      metro: 0.81.5
+      metro: 0.81.5(patch_hash=lkneyzzdzct64j6npa4vwtwj6u)
       metro-cache: 0.81.5
       metro-core: 0.81.5
       metro-runtime: 0.81.5
@@ -11860,7 +11865,7 @@ snapshots:
       '@babel/parser': 7.29.8
       '@babel/types': 7.29.8
       flow-enums-runtime: 0.0.6
-      metro: 0.81.5
+      metro: 0.81.5(patch_hash=lkneyzzdzct64j6npa4vwtwj6u)
       metro-babel-transformer: 0.81.5
       metro-cache: 0.81.5
       metro-cache-key: 0.81.5
@@ -11873,7 +11878,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  metro@0.81.5:
+  metro@0.81.5(patch_hash=lkneyzzdzct64j6npa4vwtwj6u):
     dependencies:
       '@babel/code-frame': 7.29.7
       '@babel/core': 7.29.7

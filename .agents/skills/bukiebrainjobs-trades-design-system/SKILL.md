@@ -1,12 +1,12 @@
 ---
 name: bukiebrainjobs-trades-design-system
-description: Design system and dual-theme transformation engine (Architectural Gallery Light & Obsidian Titanium Gunmetal Dark) for BukieBrainJobs. Guides agents and engineers in restyling existing UI components, pages, cards, typography, and interactive states to the approved design system without injecting unsolicited layout components.
+description: Design system for BukieBrainJobs with one approved theme, Obsidian Titanium Gunmetal Dark, across the website, PWA and mobile apps. Guides agents and engineers in restyling existing UI components, pages, cards, typography, and interactive states to the approved design system without injecting unsolicited layout components or reintroducing light mode, theme toggles, or theme preferences.
 ---
 
 # BukieBrainJobs Trades Design System
 
 ## Overview
-This skill formalizes the **Architectural Dual-Theme Design System** for BukieBrainJobs. It provides the typography, semantic color tokens, surface architecture, card styling, and motion standards needed to transform and restyle existing BukieBrainJobs pages, components, and views into the approved aesthetic.
+This skill formalizes the **Dark-Only Trades Design System** for BukieBrainJobs. It provides the typography, semantic color tokens, surface architecture, card styling, and motion standards needed to transform and restyle existing BukieBrainJobs pages, components, and views into the approved aesthetic.
 
 ---
 
@@ -15,55 +15,75 @@ This skill formalizes the **Architectural Dual-Theme Design System** for BukieBr
 When an agent or developer applies this design system to a page or component:
 
 1. **Transform What Exists**:
-   Your job is to update the styling, tokens, typography, and theme compatibility of existing UI elements.
+   Your job is to update the styling, tokens, and typography of existing UI elements so they sit correctly on the dark theme.
 2. **Never Inject Unsolicited Components**:
    Do NOT add foreign layout sections that were not requested. Specifically:
    - Do NOT add a Top Telemetry Bar to worker dashboards, customer portals, or settings pages.
    - Do NOT add a Requisition Command Table to booking, lead, or account management screens.
    - Do NOT add landing-page hero banners, manifesto callouts, or fake stat counters to application flows.
+   - Do NOT add theme toggles, sun/moon switches, or Appearance settings anywhere.
 3. **Preserve Information Architecture & Logic**:
    Keep existing routes, form structures, state management, validations, and interactive logic intact. Change how things look and feel, not what they do.
 
 ---
 
-## 2. Dual-Theme Engine (Light & Dark)
+## 2. Single Theme: Obsidian Titanium Gunmetal Dark
 
-The design system operates on a dual-theme architecture with full CSS variable mapping. All surfaces, borders, and text colors must adapt cleanly between light and dark modes.
+Dark is the only approved theme for BukieBrainJobs on the website, the PWA, and the mobile apps. The former light theme (Architectural Gallery Light) was retired in October 2026 and must not be reintroduced, offered as an option, or used for individual pages or sections.
 
-### 2.1 Theme Modes
-* **Architectural Gallery Light (`[data-theme="light"]`)**:
-  Canvas is gallery architectural off-white (`#F7F9FC`), card surfaces are crisp pure white (`#FFFFFF`), dividers are clean hairline slate (`#E2E8F0`), and primary typography is authoritative Brand Navy (`#001A41`).
-* **Obsidian Titanium Gunmetal Dark (`[data-theme="dark"]`)**:
-  Canvas is deep obsidian gunmetal (`#0B0E13`), card surfaces are dark titanium panels (`#13171E`), dividers are subtle wireframe lines (`#202734`), and primary typography is platinum white (`#F0F4F9`).
+Canvas is deep obsidian gunmetal (`#0B0E13`), card surfaces are dark titanium panels (`#13171E`), dividers are subtle wireframe lines (`#202734`), and primary typography is platinum white (`#F0F4F9`).
+
+### 2.1 Theme Rules
+* **Web**: the root layout renders `<html lang="en" data-theme="dark">` as a fixed attribute. Never set or change it from JavaScript.
+* **Tokens**: `:root` holds the dark tokens directly. Do not add `[data-theme="light"]` blocks, light token values, or `prefers-color-scheme` branches.
+* **No theme switching**: do not add theme toggles, LIGHT/DARK segmented pills, sun/moon icons, Appearance settings rows, theme context providers, or `localStorage` theme keys. Older saved values (`bbj_theme`, `bukie_theme`) are ignored and must stay ignored.
+* **Browser chrome and PWA**: viewport `themeColor` and manifest `theme_color` are `#07090D` (the strip colour), manifest `background_color` is `#0B0E13`, and `colorScheme` is `dark`.
+* **Mobile (Expo)**: `userInterfaceStyle` is `dark`, the status bar uses `style="light"`, and colours come from `tradesColorTokens.dark` in `packages/ui` whatever the phone's system setting is.
+* **Tailwind `dark:` utilities**: the dark variant is bound to `[data-theme="dark"]`, so existing `dark:` classes always apply. New code should use the CSS variables below instead of light/`dark:` class pairs.
+* **No light surfaces**: never use `#FFFFFF`, `#F7F9FC`, or other light fills as page, card, input, or modal backgrounds. The white logo tile is part of the logo artwork and is the only exception.
 
 ### 2.2 Semantic CSS Variables & Token Architecture
 Always use these CSS variables or their Tailwind utility equivalents. Never hardcode arbitrary hex values.
 
-| Token / Variable | Light Mode | Dark Mode | Semantic Usage |
-| :--- | :--- | :--- | :--- |
-| `--bg` | `#F7F9FC` | `#0B0E13` | Main canvas / page background |
-| `--card-bg` | `#FFFFFF` | `#13171E` | Card containers, panels, and dropdown menus |
-| `--card-hover` | `#F2F5FB` | `#191E27` | Interactive card or table row hover background |
-| `--lead` | `#E2E8F0` | `#202734` | Hairline card borders and subtle section dividers |
-| `--rule` | `#CBD5E1` | `#2D3748` | Active boundary lines and input field borders |
-| `--text-main` | `#001A41` | `#F0F4F9` | Primary headings, table row titles, active labels |
-| `--text-muted` | `#53647A` | `#8897AB` | Secondary descriptions, timestamps, subtext |
-| `--amber` | `#FF6B35` | `#FF6B35` | Primary action catalyst (main CTA buttons) |
-| `--amber-hover` | `#F15A24` | `#FF7D4D` | Primary action button hover state |
-| `--amber-dim` | `rgba(255, 107, 53, 0.08)` | `rgba(255, 107, 53, 0.14)` | Amber badge backgrounds, focus glows |
-| `--brand-green` | `#10B981` | `#2FE896` | Trust badges, verified status, active escrow |
-| `--brand-green-dim` | `rgba(16, 185, 129, 0.1)` | `rgba(47, 232, 150, 0.12)` | Verified badge background tint |
-| `--brand-green-border` | `rgba(16, 185, 129, 0.35)` | `rgba(47, 232, 150, 0.35)` | Verified badge hairline border |
-| `--brand-navy` | `#001A41` | `#001A41` | Core brand anchor identity |
-| `--tag-bg` | `#F1F5F9` | `rgba(255, 255, 255, 0.04)` | Metadata pills and category tags |
-| `--tag-border` | `#E2E8F0` | `rgba(255, 255, 255, 0.08)` | Metadata pill borders |
-| `--tag-text` | `#001A41` | `#BAC9DC` | Metadata pill label text |
+| Token / Variable | Value | Semantic Usage |
+| :--- | :--- | :--- |
+| `--bg` | `#0B0E13` | Main canvas / page background |
+| `--strip-bg` | `#07090D` | Top strips, footers, browser chrome colour |
+| `--card-bg` | `#13171E` | Card containers, panels, and dropdown menus |
+| `--card-hover` | `#191E27` | Interactive card or table row hover background |
+| `--table-header-bg` | `#0F131A` | Table header rows |
+| `--lead` | `#202734` | Hairline card borders and subtle section dividers |
+| `--rule` | `#2D3748` | Active boundary lines and input field borders |
+| `--text-main` | `#F0F4F9` | Primary headings, table row titles, active labels |
+| `--text-muted` | `#8897AB` | Secondary descriptions, timestamps, subtext |
+| `--amber` | `#FF6B35` | Primary action catalyst (main CTA buttons) |
+| `--amber-hover` | `#FF7D4D` | Primary action button hover state |
+| `--amber-dim` | `rgba(255, 107, 53, 0.14)` | Amber badge backgrounds, focus glows |
+| `--brand-green` | `#2FE896` | Trust badges, verified status, active escrow |
+| `--brand-green-dim` | `rgba(47, 232, 150, 0.12)` | Verified badge background tint |
+| `--brand-green-border` | `rgba(47, 232, 150, 0.35)` | Verified badge hairline border |
+| `--danger` | `#FF6B6B` | Destructive actions, errors, failed states |
+| `--danger-dim` | `rgba(255, 107, 107, 0.1)` | Danger surface tint |
+| `--danger-border` | `rgba(255, 107, 107, 0.3)` | Danger hairline border |
+| `--brand-navy` | `#001A41` | Core brand anchor identity (logo artwork only, never text on dark) |
+| `--tag-bg` | `rgba(255, 255, 255, 0.04)` | Metadata pills and category tags |
+| `--tag-border` | `rgba(255, 255, 255, 0.08)` | Metadata pill borders |
+| `--tag-text` | `#BAC9DC` | Metadata pill label text |
 
-### 2.3 Theme Switcher Pattern
-When a theme toggle is present on a screen or in user preferences:
-* Use a segmented pill (`LIGHT` / `DARK`) or a compact sun/moon toggle.
-* Persist the active selection to `localStorage` under the key `bbj_theme`.
-* Set `data-theme="light"` or `data-theme="dark"` on the `html` root element.
+### 2.3 Readability Floor
+Dark screens pick up more glare outdoors, and BrainWorkers often check leads on site. Text must stay at or above these contrast ratios, measured on `--card-bg`:
+
+| Text token | Contrast on `#13171E` |
+| :--- | :--- |
+| `--text-main` | 16.3:1 |
+| `--brand-green` | 11.2:1 |
+| `--amber` | 6.3:1 |
+| `--text-muted` | 6.0:1 |
+
+Do not use greys dimmer than `--text-muted` for readable text, and do not fade readable text with opacity. WCAG AA requires at least 4.5:1 for body text.
+
+### 2.4 Brand Watermarks
+Decorative watermarks use `/images/logo-watermark.png` (the white B-and-swoosh silhouette without the app tile) at `0.03` to `0.04` opacity, placed inside a card. Never use the full white app tile as a watermark, and never fix a watermark to the viewport over page content.
 
 ---
 
@@ -111,9 +131,9 @@ Apply these visual patterns to restyle existing UI components:
   - Background: `var(--card-bg)`.
   - Text: `var(--text-main)`.
   - Border: `1px solid var(--lead)`.
-  - Hover: Background shifts to `var(--card-hover)` with border darkening to `var(--rule)`.
+  - Hover: Background shifts to `var(--card-hover)` with border brightening to `var(--rule)`.
 * **Danger / Destructive Button**:
-  - Muted red surface with clear red text and border; never use amber for destructive actions.
+  - `var(--danger-dim)` surface with `var(--danger)` text and `var(--danger-border)` border; never use amber for destructive actions.
 
 ### 4.3 Tables & Data Lists
 * Header Row: Background `var(--table-header-bg)`, text uppercase monospace in `var(--text-muted)`.
@@ -143,13 +163,7 @@ Apply these visual patterns to restyle existing UI components:
 
 ## 5. Motion & Micro-Interactions
 
-* **Transition Timing**: Standard transitions must be snappy: `0.18s` to `0.25s ease`.
-* **Theme Switching**: Apply smooth cross-fade to backgrounds, borders, and text colors during theme toggle:
-  ```css
-  * {
-    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
-  }
-  ```
+* **Transition Timing**: Standard transitions must be snappy: `0.18s` to `0.25s ease`. Transition only the properties that change on interaction (background, border, color, transform); there is no theme cross-fade.
 * **Accessibility**: Always respect user motion preferences:
   ```css
   @media (prefers-reduced-motion: reduce) {
@@ -168,10 +182,11 @@ Apply these visual patterns to restyle existing UI components:
 
 Before concluding any design transformation task, verify:
 - [ ] No unsolicited components were added (no unauthorized telemetry bars, requisition tables, or landing heroes).
-- [ ] Light mode matches Architectural Gallery Light (`#F7F9FC` canvas, `#FFFFFF` cards, `#001A41` text).
-- [ ] Dark mode matches Obsidian Titanium Gunmetal (`#0B0E13` canvas, `#13171E` cards, `#F0F4F9` text).
+- [ ] The screen matches Obsidian Titanium Gunmetal (`#0B0E13` canvas, `#13171E` cards, `#F0F4F9` text).
+- [ ] No light tokens, light surfaces, theme toggle, Appearance setting, `prefers-color-scheme` branch, or theme storage key was added.
 - [ ] Primary CTA buttons use Molten Amber (`#FF6B35`).
-- [ ] Trust, escrow, and verification badges use Brand Green (`#10B981` / `#2FE896`).
+- [ ] Trust, escrow, and verification badges use Brand Green (`#2FE896`).
+- [ ] Readable text meets the floor in section 2.3.
 - [ ] Monetary figures (`₦`), codes, and telemetry tags use `JetBrains Mono`.
 - [ ] Headings use `Cabinet Grotesk` with tight tracking.
 - [ ] All forms, buttons, links, and interactive logic remain fully functional.
@@ -180,8 +195,8 @@ Before concluding any design transformation task, verify:
 
 ## 7. Reference Blueprints (Illustrative Only)
 
-The `references/` directory contains complete static reference implementations:
-* `references/index.html`: Reference implementation demonstrating the CSS variable architecture and dark/light mode toggle mechanics.
+The `references/` directory contains complete static reference implementations, both dark-only:
+* `references/index.html`: Reference implementation of the dark CSS variable architecture.
 * `references/aerodyne.html`: Thematic demonstration of high-density technical cards and typography.
 
 These files serve as visual guides for tokens and styling. Do not copy their page-specific layout components into unrelated BukieBrainJobs screens.

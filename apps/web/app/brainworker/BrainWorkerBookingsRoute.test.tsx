@@ -9,7 +9,7 @@
 
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import * as authStorage from '../../lib/auth/storage';
 import * as bookingsRepoModule from '../../lib/brainworker/bookings/repository';
 import * as operationsRepoModule from '../../lib/brainworker/catalog/repository';
@@ -171,8 +171,9 @@ describe('BW-004 Phase 8: BrainWorker Bookings Route Integration & Security Cont
     expect(
       await screen.findByText(/complete your provider setup|setup required|complete setup/i)
     ).toBeInTheDocument();
-    const servicesLink = screen.getByRole('link', { name: /configure services|services & rates/i });
-    const availabilityLink = screen.getByRole('link', { name: /set hours|hours & coverage|availability/i });
+    const setupPrompt = within(screen.getByRole('region', { name: /provider setup required/i }));
+    const servicesLink = setupPrompt.getByRole('link', { name: /configure services|services & rates/i });
+    const availabilityLink = setupPrompt.getByRole('link', { name: /set hours|hours & coverage|availability/i });
     expect(servicesLink.getAttribute('href')).toBe('/brainworker/services');
     expect(availabilityLink.getAttribute('href')).toBe('/brainworker/availability');
     expect(mockBookingsRepo.getBookings).not.toHaveBeenCalled();

@@ -67,7 +67,7 @@ export function NotificationPreferencesSection({
       {statusMessage && (
         <div
           role="status"
-          className="p-3.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2.5"
         >
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           <span>{statusMessage}</span>
@@ -77,7 +77,7 @@ export function NotificationPreferencesSection({
       {errorMessage && (
         <div
           role="alert"
-          className="p-3.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs flex items-center gap-2.5"
         >
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{errorMessage}</span>
@@ -115,7 +115,7 @@ export function NotificationPreferencesSection({
                 }`}
               >
                 <div
-                  className={`w-5 h-5 rounded-full bg-white shadow-xs transform transition-transform ${
+                  className={`w-5 h-5 rounded-full bg-[var(--card-bg)] shadow-xs transform transition-transform ${
                     prefs.smsEnabled ? 'translate-x-5' : 'translate-x-0'
                   }`}
                 />
@@ -125,7 +125,7 @@ export function NotificationPreferencesSection({
 
           <div className="py-3 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] flex items-center justify-center">
                 <MessageSquare className="h-4 w-4" />
               </div>
               <div>
@@ -143,11 +143,11 @@ export function NotificationPreferencesSection({
             >
               <div
                 className={`w-11 h-6 rounded-full transition-colors relative flex items-center p-0.5 ${
-                  prefs.whatsappEnabled ? 'bg-emerald-600' : 'bg-[var(--lead)]'
+                  prefs.whatsappEnabled ? 'bg-[var(--amber)]' : 'bg-[var(--lead)]'
                 }`}
               >
                 <div
-                  className={`w-5 h-5 rounded-full bg-white shadow-xs transform transition-transform ${
+                  className={`w-5 h-5 rounded-full bg-[var(--card-bg)] shadow-xs transform transition-transform ${
                     prefs.whatsappEnabled ? 'translate-x-5' : 'translate-x-0'
                   }`}
                 />
@@ -179,7 +179,7 @@ export function NotificationPreferencesSection({
                 }`}
               >
                 <div
-                  className={`w-5 h-5 rounded-full bg-white shadow-xs transform transition-transform ${
+                  className={`w-5 h-5 rounded-full bg-[var(--card-bg)] shadow-xs transform transition-transform ${
                     prefs.emailEnabled ? 'translate-x-5' : 'translate-x-0'
                   }`}
                 />
@@ -211,7 +211,7 @@ export function NotificationPreferencesSection({
                 }`}
               >
                 <div
-                  className={`w-5 h-5 rounded-full bg-white shadow-xs transform transition-transform ${
+                  className={`w-5 h-5 rounded-full bg-[var(--card-bg)] shadow-xs transform transition-transform ${
                     prefs.inAppEnabled ? 'translate-x-5' : 'translate-x-0'
                   }`}
                 />
@@ -247,7 +247,7 @@ export function NotificationPreferencesSection({
                 }`}
               >
                 <div
-                  className={`w-5 h-5 rounded-full bg-white shadow-xs transform transition-transform ${
+                  className={`w-5 h-5 rounded-full bg-[var(--card-bg)] shadow-xs transform transition-transform ${
                     prefs.bookingUpdates ? 'translate-x-5' : 'translate-x-0'
                   }`}
                 />
@@ -274,7 +274,7 @@ export function NotificationPreferencesSection({
                 }`}
               >
                 <div
-                  className={`w-5 h-5 rounded-full bg-white shadow-xs transform transition-transform ${
+                  className={`w-5 h-5 rounded-full bg-[var(--card-bg)] shadow-xs transform transition-transform ${
                     prefs.messageAlerts ? 'translate-x-5' : 'translate-x-0'
                   }`}
                 />
@@ -301,7 +301,7 @@ export function NotificationPreferencesSection({
                 }`}
               >
                 <div
-                  className={`w-5 h-5 rounded-full bg-white shadow-xs transform transition-transform ${
+                  className={`w-5 h-5 rounded-full bg-[var(--card-bg)] shadow-xs transform transition-transform ${
                     prefs.marketingAlerts ? 'translate-x-5' : 'translate-x-0'
                   }`}
                 />

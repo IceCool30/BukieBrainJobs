@@ -32,7 +32,6 @@ import {
 } from '../../lib/services';
 import ServiceTaskIcon from '../../components/ServiceTaskIcon';
 import Footer from '../../components/Footer';
-import ThemeToggle from '../../components/ThemeToggle';
 
 const TASK_LABELS: Record<string, string> = {
   generator: 'Generator',
@@ -54,7 +53,7 @@ function ServiceCard({
 }) {
   return (
     <article className="bbj-card-interactive flex h-full flex-col overflow-hidden rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:border-[var(--rule)] transition-all">
-      <div className="relative aspect-[5/3] overflow-hidden bg-slate-100/10">
+      <div className="relative aspect-[5/3] overflow-hidden bg-[var(--tag-bg)]">
         <Image
           src={category.photoUrl}
           alt={`Service photo for ${category.title}`}
@@ -331,7 +330,6 @@ function ServicesDirectory() {
             <ArrowLeft className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
             Back to home
           </Link>
-          <ThemeToggle idPrefix="services-theme" />
         </div>
         {/* Informational Notice: Invalid City */}
         {showInvalidCityNotice && (

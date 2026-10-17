@@ -96,7 +96,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({
         <span
           data-testid="notification-bell-badge"
           aria-label={`${badgeText} unread notifications`}
-          className="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-bold leading-none text-white bg-emerald-600 rounded-full ring-2 ring-[var(--card-bg)]"
+          className="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-bold leading-none text-white bg-[var(--amber)] rounded-full ring-2 ring-[var(--card-bg)]"
         >
           {badgeText}
         </span>

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useTransition } from 'react';
-import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   User,
@@ -14,7 +13,6 @@ import {
   AlertTriangle,
   Loader2,
 } from 'lucide-react';
-import ThemeToggle from '../ThemeToggle';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../lib/auth/storage';
 import { AuthUser } from '../../lib/auth/types';
 import {
@@ -46,7 +44,7 @@ export default function ProfileScreen() {
   const [, startTransition] = useTransition();
 
   // Authentication State
-  const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
 
   // View & Tab State
@@ -258,18 +256,6 @@ export default function ProfileScreen() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] pb-20 lg:pb-8 relative">
-      {/* Decorative Brand Watermark */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed bottom-12 right-12 opacity-[0.035] select-none z-0 hidden md:block"
-      >
-        <Image
-          src="/images/logo-badge-512.png"
-          alt=""
-          width={420}
-          height={420}
-        />
-      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col lg:flex-row gap-6">
@@ -295,11 +281,10 @@ export default function ProfileScreen() {
               </div>
 
               <div className="flex items-center gap-3 self-start sm:self-auto">
-                <ThemeToggle idPrefix="profile-page-theme" />
                 {isOffline && (
                   <div
                     role="status"
-                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 text-[var(--amber)] text-xs font-semibold border border-[var(--amber)]/20"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--amber-dim)] text-[var(--amber)] text-xs font-semibold border border-[var(--amber)]/20"
                   >
                     <WifiOff className="h-4 w-4 shrink-0" />
                     <span>Offline Mode (Read Only)</span>
@@ -312,20 +297,20 @@ export default function ProfileScreen() {
             {serverError && (
               <div
                 role="alert"
-                className="bg-red-500/10 border border-red-500/20 rounded-lg p-5 text-red-600 dark:text-red-400 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs"
+                className="bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-lg p-5 text-[var(--danger)] text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs"
               >
                 <div className="flex items-center gap-3">
-                  <AlertTriangle className="h-5 w-5 text-red-600 shrink-0" />
+                  <AlertTriangle className="h-5 w-5 text-[var(--danger)] shrink-0" />
                   <div>
                     <p className="font-bold">Unable to load profile data</p>
-                    <p className="text-red-500">{serverError}</p>
+                    <p className="text-[var(--danger)]">{serverError}</p>
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => loadProfileData(currentUser.id)}
-                  className="min-h-[44px] px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+                  className="min-h-[44px] px-4 py-2 bg-[var(--danger)] text-white rounded-lg font-semibold hover:opacity-90 transition flex items-center justify-center gap-2 shrink-0 cursor-pointer"
                 >
                   <RotateCcw className="h-4 w-4" />
                   <span>Retry</span>

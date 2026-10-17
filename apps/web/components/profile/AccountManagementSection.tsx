@@ -101,7 +101,7 @@ export function AccountManagementSection({
         {exportSuccess && (
           <div
             role="status"
-            className="p-3.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2.5"
+            className="p-3.5 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2.5"
           >
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             <span>{exportSuccess}</span>
@@ -138,9 +138,9 @@ export function AccountManagementSection({
       </div>
 
       {/* Danger Zone: Account Deletion Card */}
-      <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-red-500/30 shadow-xs space-y-4">
-        <div className="pb-4 border-b border-red-500/20">
-          <h3 className="text-sm font-bold font-display text-red-500 flex items-center gap-2">
+      <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-[var(--danger-border)] shadow-xs space-y-4">
+        <div className="pb-4 border-b border-[var(--danger-border)]">
+          <h3 className="text-sm font-bold font-display text-[var(--danger)] flex items-center gap-2">
             <AlertTriangle className="h-4 w-4" />
             <span>Danger Zone: Account Deletion</span>
           </h3>
@@ -159,7 +159,7 @@ export function AccountManagementSection({
             type="button"
             disabled={isOffline}
             onClick={openDeleteModal}
-            className="min-h-[48px] px-4 py-2 border border-red-500/30 text-red-500 hover:bg-red-500/10 text-xs font-semibold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
+            className="min-h-[48px] px-4 py-2 border border-[var(--danger-border)] text-[var(--danger)] hover:bg-red-500/10 text-xs font-semibold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
           >
             <Trash2 className="h-4 w-4" />
             <span>Delete Account</span>
@@ -185,7 +185,7 @@ export function AccountManagementSection({
               <X className="h-5 w-5" />
             </button>
 
-            <div className="w-12 h-12 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-lg bg-[var(--danger-dim)] text-[var(--danger)] border border-[var(--danger-border)] flex items-center justify-center">
               <AlertTriangle className="h-6 w-6" />
             </div>
 
@@ -200,7 +200,7 @@ export function AccountManagementSection({
             {deleteError && (
               <div
                 role="alert"
-                className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2"
+                className="p-3 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs flex items-center gap-2"
               >
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{deleteError}</span>
@@ -224,7 +224,7 @@ export function AccountManagementSection({
 
               <div>
                 <label htmlFor="delete-confirm" className="block text-xs font-semibold text-[var(--text-main)] mb-1">
-                  Type <span className="text-red-600 font-bold">DELETE</span> to confirm
+                  Type <span className="text-[var(--danger)] font-bold">DELETE</span> to confirm
                 </label>
                 <input
                   ref={deleteInputRef}
@@ -249,7 +249,7 @@ export function AccountManagementSection({
                 <button
                   type="submit"
                   disabled={isDeleting || deleteConfirmationText.trim().toUpperCase() !== 'DELETE'}
-                  className="min-h-[48px] flex-1 py-2 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                  className="min-h-[48px] flex-1 py-2 bg-[var(--danger)] text-white text-xs font-semibold rounded-lg hover:opacity-90 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
                   {isDeleting ? (
                     <>

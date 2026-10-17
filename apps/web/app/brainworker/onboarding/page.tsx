@@ -9,12 +9,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft } from 'lucide-react';
 import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { getBrainWorkerOnboardingRepository } from '../../../lib/brainworker/repository';
 import { useBrainWorkerOnboardingStore } from '../../../lib/brainworker/store';
 import { FunnelProgressBar } from '../../../components/brainworker/onboarding/FunnelProgressBar';
-import { ThemeToggle } from '../../../components/ThemeToggle';
 import { IdentityStepForm } from '../../../components/brainworker/onboarding/IdentityStepForm';
 import { TradeStepForm } from '../../../components/brainworker/onboarding/TradeStepForm';
 import { CredentialsStepForm } from '../../../components/brainworker/onboarding/CredentialsStepForm';
@@ -30,7 +30,7 @@ import type { AuthUser } from '../../../lib/auth/types';
 
 export default function BrainWorkerOnboardingPage(): React.ReactElement {
   const router = useRouter();
-  const [user, setUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -160,8 +160,8 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
   if (user?.role === 'customer') {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 transition-colors">
-        <div className="max-w-lg w-full bg-[var(--card-bg)] rounded-lg border border-amber-300 dark:border-amber-800/60 p-6 sm:p-8 shadow-xs space-y-4 text-center">
-          <div className="inline-flex items-center gap-1.5 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800/60 px-2.5 py-1 text-xs font-semibold text-amber-900 dark:text-amber-200">
+        <div className="max-w-lg w-full bg-[var(--card-bg)] rounded-lg border border-[var(--amber)]/30 p-6 sm:p-8 shadow-xs space-y-4 text-center">
+          <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-2.5 py-1 text-xs font-semibold text-[var(--amber)]">
             Boundary Conflict
           </div>
           <h2 className="text-xl font-bold text-[var(--text-main)]">
@@ -173,7 +173,7 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
           <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/brainworker/register"
-              className="inline-flex items-center justify-center rounded-lg bg-[#001A41] dark:bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#002661] dark:hover:bg-emerald-500 transition-colors"
+              className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
             >
               Create Provider Account
             </Link>
@@ -192,7 +192,7 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
   if (!user || isInitializing) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--bg)] transition-colors">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#001A41] dark:border-emerald-500 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--text-main)] border-t-transparent" />
       </div>
     );
   }
@@ -280,15 +280,13 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-main)] hover:text-primary-hover dark:hover:text-emerald-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-main)] hover:text-[var(--amber-hover)] transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               <span>Home</span>
             </Link>
-            <span className="text-[var(--card-border)]">|</span>
-            <span className="font-black text-xl tracking-tight text-[var(--text-main)]">BukieBrainJobs</span>
           </div>
-          <ThemeToggle idPrefix="worker-onboarding-theme" />
+          <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
         </div>
       </header>
 

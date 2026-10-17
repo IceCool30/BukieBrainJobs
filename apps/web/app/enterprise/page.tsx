@@ -59,8 +59,8 @@ export default function EnterprisePage() {
             </div>
 
           <div className="flex min-h-[408px] items-end py-8 sm:min-h-[508px] sm:py-14">
-            <div className="max-w-xl rounded-lg border border-white/20 dark:border-slate-700/60 bg-black/60 dark:bg-black/75 backdrop-blur-xs p-5 shadow-lg sm:p-8">
-              <div className="inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#ABEEC8] dark:text-emerald-400">
+            <div className="max-w-xl rounded-lg border border-white/20 bg-black/60 backdrop-blur-xs p-5 shadow-lg sm:p-8">
+              <div className="inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--nav-accent)]">
                 <Building2 className="h-3.5 w-3.5" />
                 BukieBrainJobs for business
               </div>
@@ -78,7 +78,7 @@ export default function EnterprisePage() {
       <section className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-end lg:gap-16">
           <div className="max-w-xl">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#296A4B]">Built for recurring work</p>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">Built for recurring work</p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[var(--text-main)] sm:text-4xl">
               A simpler way to manage recurring work.
             </h2>
@@ -94,7 +94,7 @@ export default function EnterprisePage() {
               key={title}
               className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-[0_12px_30px_rgba(0,26,65,0.05)] sm:p-6"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ABEEC8]/60 bg-[#EAF7EF] text-[#296A4B]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ABEEC8]/60 bg-[#EAF7EF] text-[var(--brand-green)]">
                 <Icon className="h-5 w-5" />
               </div>
               <h3 className="mt-5 font-display text-lg font-bold text-[var(--text-main)]">{title}</h3>

@@ -9,14 +9,14 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShieldCheck, ArrowRight, AlertTriangle, ArrowLeft } from 'lucide-react';
 import { getMockAuthenticatedUser, setMockAuthenticatedUser } from '../../../lib/auth/storage';
-import { ThemeToggle } from '../../../components/ThemeToggle';
 import type { AuthUser } from '../../../lib/auth/types';
 
 export default function BrainWorkerRegisterPage(): React.ReactElement {
   const router = useRouter();
-  const [user, setUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -40,9 +40,9 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
   if (user?.role === 'customer') {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 transition-colors">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-amber-300 dark:border-amber-800/60 p-6 sm:p-8 shadow-xs text-center space-y-4">
-          <div className="inline-flex items-center gap-1.5 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800/60 px-2.5 py-1 text-xs font-semibold text-amber-900 dark:text-amber-200">
-            <AlertTriangle className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-[var(--amber)]/30 p-6 sm:p-8 shadow-xs text-center space-y-4">
+          <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-2.5 py-1 text-xs font-semibold text-[var(--amber)]">
+            <AlertTriangle className="h-3.5 w-3.5 text-[var(--amber)]" />
             <span>Boundary Conflict</span>
           </div>
           <h2 className="text-xl font-bold text-[var(--text-main)]">
@@ -58,7 +58,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
                 setMockAuthenticatedUser(null);
                 setUser(null);
               }}
-              className="inline-flex items-center justify-center rounded-lg bg-[#001A41] dark:bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#002661] dark:hover:bg-emerald-500 transition-colors"
+              className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
             >
               Sign Out
             </button>
@@ -108,23 +108,21 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-main)] hover:text-primary-hover dark:hover:text-emerald-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-main)] hover:text-[var(--amber-hover)] transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               <span>Home</span>
             </Link>
-            <span className="text-[var(--card-border)]">|</span>
-            <span className="font-black text-xl tracking-tight text-[var(--text-main)]">BukieBrainJobs</span>
           </div>
-          <ThemeToggle idPrefix="worker-register-theme" />
+          <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
         </div>
       </header>
 
       <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center transition-colors">
         <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-[var(--card-border)] p-6 sm:p-10 shadow-xs space-y-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-2.5 py-1 text-xs font-semibold text-emerald-800 dark:text-emerald-300 mb-3">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+            <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2.5 py-1 text-xs font-semibold text-[var(--brand-green)] mb-3">
+              <ShieldCheck className="h-3.5 w-3.5 text-[var(--brand-green)]" />
               <span>BrainWorker Registration</span>
             </div>
             <h1 className="text-2xl font-bold text-[var(--text-main)]">
@@ -136,7 +134,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
           </div>
 
           {error && (
-            <div className="rounded-lg border border-rose-200 dark:border-rose-900/60 bg-rose-50 dark:bg-rose-950/30 p-3.5 text-xs font-medium text-rose-700 dark:text-rose-300">
+            <div className="rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] p-3.5 text-xs font-medium text-[var(--danger)]">
               {error}
             </div>
           )}
@@ -155,7 +153,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Chidi Anozie"
-                  className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-4 py-2.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-1 focus:ring-[#001A41] dark:focus:ring-emerald-500 outline-none transition-colors"
+                  className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-4 py-2.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[var(--amber)] focus:ring-1 focus:ring-[var(--amber)] outline-none transition-colors"
                 />
               </div>
             </div>
@@ -173,7 +171,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="chidi@example.com"
-                  className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-4 py-2.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-1 focus:ring-[#001A41] dark:focus:ring-emerald-500 outline-none transition-colors"
+                  className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-4 py-2.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[var(--amber)] focus:ring-1 focus:ring-[var(--amber)] outline-none transition-colors"
                 />
               </div>
             </div>
@@ -191,7 +189,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+234 800 000 0000"
-                  className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-4 py-2.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-1 focus:ring-[#001A41] dark:focus:ring-emerald-500 outline-none transition-colors"
+                  className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-4 py-2.5 text-sm text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[var(--amber)] focus:ring-1 focus:ring-[var(--amber)] outline-none transition-colors"
                 />
               </div>
             </div>
@@ -199,7 +197,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#001A41] dark:bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-xs hover:bg-[#002661] dark:hover:bg-emerald-500 transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-semibold text-white shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
               >
                 <span>Continue to Onboarding</span>
                 <ArrowRight className="h-4 w-4" />

@@ -44,7 +44,7 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
     <>
       <Navbar />
       <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] pt-[var(--header-height)] transition-colors duration-200">
-        <section className="relative isolate overflow-hidden bg-[#001A41] dark:bg-[#0B0F17] text-white">
+        <section className="relative isolate overflow-hidden bg-[var(--strip-bg)] text-white">
         <div className="absolute inset-0 sm:left-[42%]">
           <Image
             src={profile.avatarUrl}
@@ -52,28 +52,28 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
             fill
             priority
             sizes="(min-width: 640px) 58vw, 100vw"
-            className="object-cover object-center opacity-75 dark:opacity-55"
+            className="object-cover object-center opacity-70 dark:opacity-50"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#001A41] via-[#001A41]/85 to-[#001A41]/20 dark:from-[#0B0F17] dark:via-[#0B0F17]/90 dark:to-[#0B0F17]/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--strip-bg)] via-[var(--strip-bg)]/85 to-[var(--strip-bg)]/20" />
         </div>
 
         <div className="relative mx-auto max-w-[1280px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
           <Link
             href={servicesUrl ?? '/#workers'}
-            className="motion-press inline-flex min-h-11 items-center gap-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-200 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--amber)]"
+            className="motion-press inline-flex min-h-11 items-center gap-2 rounded-lg text-xs sm:text-sm font-semibold text-white/80 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--amber)]"
           >
             <ArrowLeft className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
             {servicesUrl ? 'Back to services' : 'Back to featured BrainWorkers'}
           </Link>
 
           <div className="mt-12 max-w-2xl pb-8 sm:mt-16 sm:pb-14">
-            <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">BrainWorker profile</p>
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--nav-accent)]">BrainWorker profile</p>
             <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-white">{profile.name}</h1>
-            <p className="mt-4 text-lg font-semibold text-slate-100 sm:text-xl">{profile.title}</p>
-            <div className="mt-6 flex flex-wrap gap-2.5 text-xs font-semibold text-slate-200">
+            <p className="mt-4 text-lg font-semibold text-white/85 sm:text-xl">{profile.title}</p>
+            <div className="mt-6 flex flex-wrap gap-2.5 text-xs font-semibold text-white">
               <span className="rounded-md border border-white/20 bg-white/10 px-3 py-1.5 font-mono">{profile.category}</span>
               <span className="inline-flex items-center gap-1.5 rounded-md border border-white/20 bg-white/10 px-3 py-1.5">
-                <MapPin className="h-3.5 w-3.5 text-[var(--brand-green)]" aria-hidden="true" />
+                <MapPin className="h-3.5 w-3.5 text-[var(--nav-accent)]" aria-hidden="true" />
                 {profile.location}
               </span>
             </div>

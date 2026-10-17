@@ -8,7 +8,6 @@ import { ArrowLeft, Printer, Download, AlertCircle, ShieldCheck, CheckCircle2, C
 import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { getCustomerPaymentRepository } from '../../../lib/payment/repository';
 import type { PaymentReceipt } from '../../../lib/payment/types';
-import ThemeToggle from '../../../components/ThemeToggle';
 
 export default function ReceiptPage() {
   const params = useParams();
@@ -72,7 +71,7 @@ export default function ReceiptPage() {
     return (
       <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] p-6 sm:p-12 flex items-center justify-center transition-colors duration-200">
         <div className="bg-[var(--card-bg)] p-8 rounded-lg border border-[var(--lead)] text-center max-w-md w-full space-y-4 shadow-xs">
-          <div className="w-12 h-12 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 flex items-center justify-center mx-auto">
+          <div className="w-12 h-12 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] flex items-center justify-center mx-auto">
             <AlertCircle className="h-6 w-6" />
           </div>
           <h1 className="text-lg font-display font-bold text-[var(--text-main)]">Receipt Unavailable</h1>
@@ -98,14 +97,14 @@ export default function ReceiptPage() {
       case 'settled':
         return {
           label: 'Payment Settled & Released',
-          color: 'bg-emerald-500/10 text-[var(--brand-green)] border-emerald-500/20',
+          color: 'bg-[var(--brand-green-dim)] text-[var(--brand-green)] border-[var(--brand-green-border)]',
           icon: CheckCircle2,
           date: receipt.settlementDate ? `Released on ${new Date(receipt.settlementDate).toLocaleDateString()}` : undefined,
         };
       case 'release_pending':
         return {
           label: 'Release Pending Verification',
-          color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
+          color: 'bg-[var(--amber-dim)] text-[var(--amber)] border-[var(--amber)]/30',
           icon: Clock,
           date: 'Payout transfer undergoing banking settlement',
         };
@@ -113,7 +112,7 @@ export default function ReceiptPage() {
       default:
         return {
           label: 'Funds Secured in Escrow',
-          color: 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20',
+          color: 'bg-sky-500/10 text-[var(--text-main)] border-sky-500/20',
           icon: ShieldCheck,
           date: 'Held safely under BukieGuarantee until completion approval',
         };
@@ -137,7 +136,6 @@ export default function ReceiptPage() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <ThemeToggle idPrefix="receipt-theme" />
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -167,7 +165,7 @@ export default function ReceiptPage() {
             aria-hidden="true"
           >
             <Image
-              src="/images/logo-badge-512.png"
+              src="/images/logo-watermark.png"
               alt=""
               width={220}
               height={220}

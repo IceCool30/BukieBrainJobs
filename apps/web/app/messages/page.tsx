@@ -13,7 +13,7 @@ import type { ConversationSummary } from '../../lib/messaging/types';
 
 export default function MessagesHubPage() {
   const router = useRouter();
-  const [user, setUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
+  const [user, setUser] = useState<AuthUser | null>(null);
 
   // If unauthenticated, redirect to /login immediately
   useEffect(() => {

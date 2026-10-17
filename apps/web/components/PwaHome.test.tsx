@@ -34,7 +34,7 @@ describe('PwaHome', () => {
 
     const serviceCard = screen.getAllByRole('button', { name: /generator servicing & repair/i })[1]!;
     expect(serviceCard.className).toContain('focus-visible:ring-2');
-    expect(serviceCard.className).toContain('focus-visible:ring-[#001A41]');
+    expect(serviceCard.className).toContain('focus-visible:ring-[var(--amber)]');
   });
 
   it('renders explainer sections Before you book and Common questions on mobile homepage', () => {

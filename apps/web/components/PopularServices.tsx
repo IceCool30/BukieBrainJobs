@@ -37,7 +37,7 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
               onClick={() => onSelectCategory?.(cat)}
               className="bbj-card-interactive service-card-motion motion-press group overflow-hidden rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] hover:border-[var(--rule)] text-left transition-all duration-[180ms] ease-[var(--ease-ui-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
             >
-              <div className="relative aspect-[5/4] overflow-hidden bg-slate-100/10">
+              <div className="relative aspect-[5/4] overflow-hidden bg-[var(--tag-bg)]">
                 <Image
                   src={cat.photoUrl}
                   alt={cat.title}

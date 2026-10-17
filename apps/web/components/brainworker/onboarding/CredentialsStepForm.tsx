@@ -232,7 +232,7 @@ export function CredentialsStepForm({
       <div className="space-y-4">
         <div>
           <span className="block text-sm font-bold uppercase tracking-wider text-[var(--text-main)]">
-            Government Identity Document (Mandatory) <span className="text-red-500">*</span>
+            Government Identity Document (Mandatory) <span className="text-[var(--danger)]">*</span>
           </span>
           <p className="mt-1 text-xs text-[var(--text-muted)]">
             Select the government document type you are submitting to prove your identity.
@@ -244,13 +244,13 @@ export function CredentialsStepForm({
             htmlFor={`${formId}-gov-type`}
             className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
           >
-            Government Document Type <span className="text-red-500">*</span>
+            Government Document Type <span className="text-[var(--danger)]">*</span>
           </label>
           <select
             id={`${formId}-gov-type`}
             value={govIdType}
             onChange={(e) => setGovIdType(e.target.value as GovernmentIdType)}
-            className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
+            className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] transition focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)]"
           >
             {GOVERNMENT_ID_OPTIONS.map((opt) => (
               <option key={opt.type} value={opt.type}>
@@ -274,12 +274,12 @@ export function CredentialsStepForm({
       </div>
 
       {/* 2. Mandatory Trade Proof Section */}
-      <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+      <div className="space-y-4 pt-4 border-t border-[var(--lead)]">
         <div>
-          <span className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-            Trade Competency Proof (Mandatory) <span className="text-red-500">*</span>
+          <span className="block text-sm font-bold uppercase tracking-wider text-[var(--text-muted)]">
+            Trade Competency Proof (Mandatory) <span className="text-[var(--danger)]">*</span>
           </span>
-          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-xs text-[var(--text-muted)]">
             Upload trade test certifications, freedom letters, or recognized artisan diplomas.
           </p>
         </div>
@@ -289,13 +289,13 @@ export function CredentialsStepForm({
             htmlFor={`${formId}-trade-type`}
             className="block text-xs font-semibold text-[var(--text-muted)] mb-1"
           >
-            Trade Credential Type <span className="text-red-500">*</span>
+            Trade Credential Type <span className="text-[var(--danger)]">*</span>
           </label>
           <select
             id={`${formId}-trade-type`}
             value={tradeType}
             onChange={(e) => setTradeType(e.target.value as TradeCredentialType)}
-            className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
+            className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] transition focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)]"
           >
             {TRADE_CREDENTIAL_OPTIONS.map((opt) => (
               <option key={opt.type} value={opt.type}>
@@ -340,7 +340,7 @@ export function CredentialsStepForm({
             id={`${formId}-work-proof-type`}
             value={workProofType}
             onChange={(e) => setWorkProofType(e.target.value as WorkProofType)}
-            className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] transition focus:outline-none focus:ring-2 focus:ring-[#001A41]/20 dark:focus:ring-emerald-500/20"
+            className="w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-main)] transition focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)]"
           >
             {WORK_PROOF_OPTIONS.map((opt) => (
               <option key={opt.type} value={opt.type}>
@@ -364,28 +364,28 @@ export function CredentialsStepForm({
       </div>
 
       {/* Safety Note */}
-      <div className="flex items-start gap-2.5 rounded-lg bg-blue-50/70 dark:bg-blue-950/30 p-4 text-xs text-slate-600 dark:text-slate-300 border border-blue-100 dark:border-blue-900/40">
-        <ShieldCheck className="h-5 w-5 shrink-0 text-[#001A41] dark:text-emerald-400 mt-0.5" />
+      <div className="flex items-start gap-2.5 rounded-lg bg-[var(--tag-bg)] p-4 text-xs text-[var(--text-muted)] border border-[var(--lead)]">
+        <ShieldCheck className="h-5 w-5 shrink-0 text-[var(--text-main)] mt-0.5" />
         <p>
           Uploaded documents are staged temporarily and encrypted. They are reviewed strictly by authorized BukieBrainJobs operational verification agents.
         </p>
       </div>
 
       {/* Action Footer */}
-      <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+      <div className="pt-6 border-t border-[var(--lead)] flex items-center justify-between">
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 px-5 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 shadow-xs transition hover:bg-slate-50 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41]"
+          className="inline-flex items-center gap-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--text-muted)] shadow-xs transition hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
         >
-          <ArrowLeft className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+          <ArrowLeft className="h-4 w-4 text-[var(--text-muted)]" />
           <span>Back to Trade Profile</span>
         </button>
 
         <button
           type="submit"
           disabled={!isFormValid || isSubmitting}
-          className={`inline-flex items-center gap-2 rounded-lg bg-[#001A41] dark:bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-[#002661] dark:hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#001A41] focus-visible:ring-offset-2 ${
+          className={`inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
             !isFormValid || isSubmitting
               ? 'opacity-50 cursor-not-allowed'
               : 'cursor-pointer'

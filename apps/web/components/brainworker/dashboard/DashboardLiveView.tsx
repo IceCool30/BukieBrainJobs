@@ -22,16 +22,16 @@ export function DashboardLiveView({
         data-testid="dashboard-loading-skeleton"
         className="space-y-6 animate-pulse p-4 sm:p-6"
       >
-        <div className="h-12 w-1/3 rounded-xl bg-slate-200 dark:bg-slate-800" />
+        <div className="h-12 w-1/3 rounded-xl bg-[var(--tag-bg)]" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className="h-32 rounded-xl bg-slate-200 dark:bg-slate-800"
+              className="h-32 rounded-xl bg-[var(--tag-bg)]"
             />
           ))}
         </div>
-        <div className="h-48 rounded-xl bg-slate-200 dark:bg-slate-800" />
+        <div className="h-48 rounded-xl bg-[var(--tag-bg)]" />
       </div>
     );
   }
@@ -42,7 +42,7 @@ export function DashboardLiveView({
       <div className="p-4 sm:p-6">
         <div
           role="alert"
-          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-rose-800 dark:border-rose-900/50 dark:bg-rose-950/50 dark:text-rose-200"
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-xl border border-[var(--danger-border)] bg-[var(--danger-dim)] p-4 text-[var(--danger)]"
         >
           <div>
             <h3 className="text-sm font-semibold">Dashboard Notice</h3>
@@ -52,7 +52,7 @@ export function DashboardLiveView({
             <button
               type="button"
               onClick={onRefresh}
-              className="rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 dark:bg-rose-500 dark:hover:bg-rose-600"
+              className="rounded-lg bg-[var(--danger)] px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
             >
               Retry
             </button>
@@ -64,7 +64,7 @@ export function DashboardLiveView({
 
   if (!feed) {
     return (
-      <div className="p-4 sm:p-6 text-center text-slate-500 dark:text-slate-400">
+      <div className="p-4 sm:p-6 text-center text-[var(--text-muted)]">
         No operational data available.
       </div>
     );
@@ -75,19 +75,19 @@ export function DashboardLiveView({
   return (
     <div className="space-y-6 p-4 sm:p-6" data-testid="dashboard-live-view">
       {/* Operational Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-sm">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-slate-900 dark:text-white">
+            <h1 className="text-xl font-bold text-[var(--text-main)]">
               Operations Command Center
             </h1>
             {operationalStatus.isEmergencyAvailable && (
-              <span className="rounded-md bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+              <span className="rounded-md bg-[var(--amber-dim)] px-2 py-0.5 text-xs font-semibold text-[var(--amber)]">
                 Emergency On-Call
               </span>
             )}
           </div>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-sm text-[var(--text-muted)]">
             {operationalStatus.primaryTradeName || 'General Trade'}{' '}
             {operationalStatus.isComplete ? '• Verified Specialist' : '• Profile Incomplete'}
           </p>
@@ -100,8 +100,8 @@ export function DashboardLiveView({
               onClick={() => onToggleAvailability(!operationalStatus.isAvailable)}
               className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
                 operationalStatus.isAvailable
-                  ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:hover:bg-emerald-900'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+                  ? 'bg-[var(--brand-green-dim)] text-[var(--brand-green)] hover:bg-emerald-200'
+                  : 'bg-[var(--tag-bg)] text-[var(--text-muted)] hover:bg-[var(--card-hover)]'
               }`}
             >
               Duty: {operationalStatus.isAvailable ? 'On-Duty' : 'Off-Duty'}
@@ -112,7 +112,7 @@ export function DashboardLiveView({
             <button
               type="button"
               onClick={onRefresh}
-              className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+              className="rounded-lg border border-[var(--rule)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-medium text-[var(--text-muted)] shadow-sm hover:bg-[var(--card-hover)]"
             >
               Refresh
             </button>
@@ -125,17 +125,17 @@ export function DashboardLiveView({
         <button
           type="button"
           onClick={() => onNavigate?.('/brainworker/bookings')}
-          className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 text-left shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50/50 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:hover:bg-slate-800/50"
+          className="flex items-center justify-between rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-left shadow-sm transition-all hover:border-[var(--rule)] hover:bg-[var(--card-hover)]"
         >
           <div>
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+            <h3 className="text-sm font-semibold text-[var(--text-main)]">
               Dispatch Sheet & Bookings
             </h3>
-            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+            <p className="mt-0.5 text-xs text-[var(--text-muted)]">
               Manage arrival, check-in, on-site diagnostics, and job progression
             </p>
           </div>
-          <span className="text-xs font-medium text-blue-600 dark:text-blue-400">
+          <span className="text-xs font-medium text-[var(--amber)]">
             Open Sheet →
           </span>
         </button>
@@ -143,17 +143,17 @@ export function DashboardLiveView({
         <button
           type="button"
           onClick={() => onNavigate?.('/brainworker/leads')}
-          className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 text-left shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50/50 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:hover:bg-slate-800/50"
+          className="flex items-center justify-between rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-left shadow-sm transition-all hover:border-[var(--rule)] hover:bg-[var(--card-hover)]"
         >
           <div>
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+            <h3 className="text-sm font-semibold text-[var(--text-main)]">
               Leads & Quote Requests
             </h3>
-            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+            <p className="mt-0.5 text-xs text-[var(--text-muted)]">
               Review customer invitations, respond with quotes, or decline conflicts
             </p>
           </div>
-          <span className="text-xs font-medium text-blue-600 dark:text-blue-400">
+          <span className="text-xs font-medium text-[var(--amber)]">
             View Inbox →
           </span>
         </button>

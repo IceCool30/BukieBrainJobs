@@ -235,12 +235,12 @@ export function ServiceCatalogEditor({
       className={className ? `space-y-8 ${className}` : 'space-y-8'}
     >
       {/* Header and Save CTA */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-[var(--lead)]">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+          <h2 className="text-2xl font-bold text-[var(--text-main)] tracking-tight">
             Service Catalog & Pricing
           </h2>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+          <p className="mt-1 text-sm text-[var(--text-muted)] max-w-2xl leading-relaxed">
             Select the specific trade services you offer and set your standard hourly labor rates. Clear, transparent pricing helps match you with serious customer requests.
           </p>
         </div>
@@ -252,8 +252,8 @@ export function ServiceCatalogEditor({
             onClick={handleSave}
             className={
               isSaveDisabled
-                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed transition-colors'
-                : 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[#001A41] dark:bg-emerald-600 text-white dark:text-slate-950 hover:bg-[#002866] dark:hover:bg-emerald-500 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[#001A41]'
+                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed transition-colors'
+                : 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]'
             }
           >
             {isSaving ? 'Saving Changes...' : 'Save Changes'}
@@ -265,7 +265,7 @@ export function ServiceCatalogEditor({
       {saveError && (
         <div
           role="alert"
-          className="p-4 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-sm text-red-800 dark:text-red-300 font-medium"
+          className="p-4 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-sm text-[var(--danger)] font-medium"
         >
           {saveError}
         </div>
@@ -275,7 +275,7 @@ export function ServiceCatalogEditor({
         <div
           role="status"
           aria-live="polite"
-          className="p-4 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-sm text-emerald-800 dark:text-emerald-300 font-medium"
+          className="p-4 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-sm text-[var(--brand-green)] font-medium"
         >
           {successToast}
         </div>
@@ -292,7 +292,7 @@ export function ServiceCatalogEditor({
               A flat fee charged for your initial on-site visit, inspection, and fault diagnosis.
             </p>
           </div>
-          <span className="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 border border-[var(--card-border)] px-3 py-1 text-xs font-semibold text-[var(--text-muted)]">
+          <span className="inline-flex items-center rounded-md bg-[var(--tag-bg)] border border-[var(--card-border)] px-3 py-1 text-xs font-semibold text-[var(--text-muted)]">
             ₦5,000 (Recommended standard)
           </span>
         </div>
@@ -320,7 +320,7 @@ export function ServiceCatalogEditor({
                 const val = e.target.value === '' ? 0 : Number(e.target.value);
                 handleUpdateDiagnosticFee(val);
               }}
-              className="block w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] pl-8 pr-4 py-2.5 text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm font-medium"
+              className="block w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] pl-8 pr-4 py-2.5 text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[var(--amber)] focus:ring-2 focus:ring-[var(--amber)] focus:outline-none sm:text-sm font-medium"
               aria-invalid={validationErrors.diagnosticFee ? 'true' : 'false'}
               aria-describedby={
                 validationErrors.diagnosticFee ? 'diagnostic-fee-error' : undefined
@@ -331,7 +331,7 @@ export function ServiceCatalogEditor({
             <p
               id="diagnostic-fee-error"
               role="alert"
-              className="mt-2 text-xs text-red-600 font-medium"
+              className="mt-2 text-xs text-[var(--danger)] font-medium"
             >
               {validationErrors.diagnosticFee}
             </p>
@@ -342,10 +342,10 @@ export function ServiceCatalogEditor({
       {/* Surface 1.2: Category Filter Tabs */}
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+          <h3 className="text-lg font-bold text-[var(--text-main)]">
             Add Services from Canonical Trade Registry
           </h3>
-          <p className="mt-0.5 text-sm text-slate-600 dark:text-slate-300">
+          <p className="mt-0.5 text-sm text-[var(--text-muted)]">
             Choose your trade category to browse and add standard services to your profile.
           </p>
         </div>
@@ -353,7 +353,7 @@ export function ServiceCatalogEditor({
         <div
           role="tablist"
           aria-label="Canonical Trade Categories"
-          className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200 dark:border-slate-800"
+          className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-[var(--lead)]"
         >
           {TRADE_CATEGORIES.map((cat, index) => {
             const isSelected = activeCategoryId === cat.id;
@@ -369,8 +369,8 @@ export function ServiceCatalogEditor({
                 onKeyDown={(e) => handleTabKeyDown(e, index)}
                 className={
                   isSelected
-                    ? 'whitespace-nowrap px-4 py-2 text-sm font-semibold rounded-lg bg-[#001A41] dark:bg-emerald-600 text-white dark:text-slate-950 transition-colors'
-                    : 'whitespace-nowrap px-4 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors'
+                    ? 'whitespace-nowrap px-4 py-2 text-sm font-semibold rounded-lg bg-[var(--text-main)] text-[var(--bg)] transition-colors'
+                    : 'whitespace-nowrap px-4 py-2 text-sm font-medium rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition-colors'
                 }
               >
                 {cat.name}
@@ -416,8 +416,8 @@ export function ServiceCatalogEditor({
                       onClick={() => handleAddService(service.serviceId)}
                       className={
                         isAdded
-                          ? 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed'
-                          : 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#001A41] dark:bg-emerald-600 text-white dark:text-slate-950 hover:bg-[#002866] dark:hover:bg-emerald-500 transition-colors shadow-xs'
+                          ? 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed'
+                          : 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] transition-colors shadow-xs'
                       }
                     >
                       {isAdded ? 'Added' : `Add ${service.serviceName}`}
@@ -472,8 +472,8 @@ export function ServiceCatalogEditor({
                     <span
                       className={
                         item.status === 'ACTIVE'
-                          ? 'inline-flex items-center rounded-md bg-emerald-100 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300'
-                          : 'inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 border border-[var(--card-border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]'
+                          ? 'inline-flex items-center rounded-md bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--brand-green)]'
+                          : 'inline-flex items-center rounded-md bg-[var(--tag-bg)] border border-[var(--card-border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]'
                       }
                     >
                       {item.status}
@@ -486,15 +486,15 @@ export function ServiceCatalogEditor({
                       onClick={() => handleToggleServiceStatus(item.serviceId)}
                       className={
                         item.status === 'ACTIVE'
-                          ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 dark:bg-emerald-500 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
-                          : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 dark:bg-slate-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                          ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[var(--amber)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2'
+                          : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[var(--rule)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2'
                       }
                     >
                       <span
                         className={
                           item.status === 'ACTIVE'
-                            ? 'translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                            : 'translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                            ? 'translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--card-bg)] shadow ring-0 transition duration-200 ease-in-out'
+                            : 'translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--card-bg)] shadow ring-0 transition duration-200 ease-in-out'
                         }
                       />
                     </button>
@@ -525,7 +525,7 @@ export function ServiceCatalogEditor({
                             e.target.value === '' ? 0 : Number(e.target.value);
                           handleUpdateServiceRate(item.serviceId, val);
                         }}
-                        className="block w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] pl-8 pr-4 py-2 text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm font-medium"
+                        className="block w-full rounded-lg border border-[var(--card-border)] bg-[var(--bg)] pl-8 pr-4 py-2 text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:border-[var(--amber)] focus:ring-2 focus:ring-[var(--amber)] focus:outline-none sm:text-sm font-medium"
                         aria-invalid={
                           validationErrors[`service_rate_${item.serviceId}`]
                             ? 'true'
@@ -542,7 +542,7 @@ export function ServiceCatalogEditor({
                       <p
                         id={`rate-error-${item.serviceId}`}
                         role="alert"
-                        className="mt-1 text-xs text-red-600 font-medium"
+                        className="mt-1 text-xs text-[var(--danger)] font-medium"
                       >
                         {validationErrors[`service_rate_${item.serviceId}`]}
                       </p>
@@ -554,9 +554,9 @@ export function ServiceCatalogEditor({
                       <div
                         role="alert"
                         aria-live="polite"
-                        className="flex items-center gap-2 bg-red-50 dark:bg-red-950/40 p-2 rounded-lg border border-red-200 dark:border-red-900/40"
+                        className="flex items-center gap-2 bg-[var(--danger-dim)] p-2 rounded-lg border border-[var(--danger-border)]"
                       >
-                        <span className="text-xs font-semibold text-red-800 dark:text-red-300">
+                        <span className="text-xs font-semibold text-[var(--danger)]">
                           Remove this service?
                         </span>
                         <button
@@ -572,7 +572,7 @@ export function ServiceCatalogEditor({
                             handleRemoveService(item.serviceId);
                             setConfirmRemoveServiceId(null);
                           }}
-                          className="px-2.5 py-1 text-xs font-semibold rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors"
+                          className="px-2.5 py-1 text-xs font-semibold rounded-md bg-[var(--danger)] text-white hover:opacity-90 transition-colors"
                         >
                           Confirm Remove
                         </button>
@@ -582,7 +582,7 @@ export function ServiceCatalogEditor({
                         type="button"
                         aria-label={`Remove ${item.serviceName}`}
                         onClick={() => setConfirmRemoveServiceId(item.serviceId)}
-                        className="text-xs font-semibold text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors"
+                        className="text-xs font-semibold text-[var(--danger)] hover:text-[var(--danger)] p-2 rounded-lg hover:bg-[var(--danger-dim)] transition-colors"
                       >
                         Remove
                       </button>

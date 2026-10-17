@@ -54,7 +54,7 @@ export const OfflineBanner: React.FC = () => {
     <div
       role="alert"
       data-testid="offline-banner"
-      className="mb-6 p-4 rounded-lg bg-amber-500/10 border border-amber-500/25 text-[var(--amber)] flex items-center gap-3 text-sm font-medium"
+      className="mb-6 p-4 rounded-lg bg-[var(--amber-dim)] border border-[var(--amber)]/30 text-[var(--amber)] flex items-center gap-3 text-sm font-medium"
     >
       <WifiOff className="w-5 h-5 text-[var(--amber)] shrink-0" aria-hidden="true" />
       <div>
@@ -79,19 +79,19 @@ export const NotificationErrorCard: React.FC<NotificationErrorCardProps> = ({ on
     <div
       data-testid="notification-error"
       role="alert"
-      className="p-6 rounded-lg border border-red-500/20 bg-red-500/10 text-center flex flex-col items-center justify-center my-4"
+      className="p-6 rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] text-center flex flex-col items-center justify-center my-4"
     >
-      <div className="w-12 h-12 rounded-lg bg-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-center mb-3">
+      <div className="w-12 h-12 rounded-lg bg-[var(--danger-dim)] text-[var(--danger)] flex items-center justify-center mb-3">
         <AlertCircle className="w-6 h-6" aria-hidden="true" />
       </div>
-      <h3 className="text-base font-bold font-display text-red-600 dark:text-red-400">Unable to load notifications</h3>
+      <h3 className="text-base font-bold font-display text-[var(--danger)]">Unable to load notifications</h3>
       <p className="text-sm text-red-500/80 mt-1 max-w-md">
         There was a problem reaching the notification service. Please check your connection and try again.
       </p>
       <button
         type="button"
         onClick={onRetry}
-        className="mt-4 inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
+        className="mt-4 inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg bg-[var(--danger)] text-white hover:opacity-90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
       >
         <RefreshCw className="w-4 h-4" aria-hidden="true" />
         Retry
@@ -188,10 +188,10 @@ export const PushOptInBanner: React.FC<PushOptInBannerProps> = ({ onEnable }) =>
   return (
     <div
       data-testid="push-banner-opt-in"
-      className="mb-6 p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+      className="mb-6 p-4 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
     >
       <div className="flex items-start gap-3">
-        <div className="w-9 h-9 rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+        <div className="w-9 h-9 rounded-lg bg-[var(--brand-green-dim)] text-[var(--brand-green)] flex items-center justify-center shrink-0 mt-0.5">
           <Bell className="w-5 h-5" aria-hidden="true" />
         </div>
         <div>
@@ -224,9 +224,9 @@ export const PushStatusGranted: React.FC = () => {
   return (
     <div
       data-testid="push-status-granted"
-      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-semibold"
+      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs font-semibold"
     >
-      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+      <CheckCircle2 className="w-3.5 h-3.5 text-[var(--brand-green)]" aria-hidden="true" />
       <span>Browser alerts active</span>
     </div>
   );

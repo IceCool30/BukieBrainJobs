@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Search,
   ShieldCheck,
@@ -13,7 +14,6 @@ import {
   LayoutDashboard,
 } from 'lucide-react';
 import { getMockAuthenticatedUser } from '../lib/auth/storage';
-import ThemeToggle from './ThemeToggle';
 
 interface NavbarProps {
   onPostJobClick?: () => void;
@@ -22,16 +22,35 @@ interface NavbarProps {
   hideOnPwa?: boolean;
 }
 
-const DRAWER_LINKS = [
-  { href: '/services', label: 'Services', icon: Search, tint: '#296A4B' },
-  { href: '/guarantee', label: 'BukieGuarantee', icon: ShieldCheck, tint: '#296A4B' },
-  { href: '/#how-it-works', label: 'How It Works', icon: Briefcase, tint: '#296A4B' },
-  { href: '/guarantee#verification', label: 'Verification', icon: UserCheck, tint: '#296A4B' },
-  { href: '/enterprise', label: 'For Business', icon: Briefcase, tint: '#ABEEC8' },
-  { href: '/login', label: 'Sign In', icon: UserCheck, tint: '#ABEEC8' },
+const NAV_LINKS = [
+  { href: '/services', label: 'Services', icon: Search },
+  { href: '/guarantee', label: 'BukieGuarantee', icon: ShieldCheck },
+  { href: '/guarantee#verification', label: 'Verification', icon: UserCheck },
+  { href: '/enterprise', label: 'For Business', icon: null },
 ];
 
+const DRAWER_LINKS = [
+  { href: '/services', label: 'Services', icon: Search },
+  { href: '/guarantee', label: 'BukieGuarantee', icon: ShieldCheck },
+  { href: '/#how-it-works', label: 'How It Works', icon: Briefcase },
+  { href: '/guarantee#verification', label: 'Verification', icon: UserCheck },
+  { href: '/enterprise', label: 'For Business', icon: Briefcase },
+  { href: '/login', label: 'Sign In', icon: UserCheck },
+];
+
+// Hash links share a path with their page, so only plain paths can claim the current route.
+function isCurrent(pathname: string | null, href: string) {
+  if (!pathname || href.includes('#')) return false;
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+const HEADER_PILL = 'motion-press px-4 py-2 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5';
+const HEADER_GHOST = `${HEADER_PILL} text-white hover:text-[var(--nav-accent)] drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]`;
+const HEADER_OUTLINE = `${HEADER_PILL} text-[var(--nav-accent)] border border-[var(--nav-accent)]/60 bg-white/5 hover:bg-[var(--nav-accent)]/10 hover:border-[var(--nav-accent)]`;
+
 export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpenRef, hideOnPwa }: NavbarProps) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -97,19 +116,18 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
 
   const navigateTo = (href: string) => {
     closeDrawer();
-    if (href.startsWith('/#')) {
-      const id = href.slice(2);
-      const targetElement = document.getElementById(id);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth' });
-        return;
-      }
+    const target = href.startsWith('/#') ? document.getElementById(href.slice(2)) : null;
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+      return;
     }
-    window.location.href = href;
+    router.push(href);
   };
 
   const solid = scrolled || mobileMenuOpen || (hideOnPwa && chipShown);
   const drawerOnly = hideOnPwa && mobileMenuOpen;
+  // Only the home hero runs full-bleed under the header; other pages start below it, so a fade would wash out on light backgrounds.
+  const overHero = pathname === '/';
   const noop = () => {};
   const doPostJob = onPostJobClick ?? (() => navigateTo('/post-job'));
   const doBecomeWorker = onBecomeWorkerClick;
@@ -144,6 +162,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
               onPostJob={doPostJob}
               onBecomeWorker={doBecomeWorker}
               isAuthenticated={isAuthenticated}
+              pathname={pathname}
             />
           </>
         )}
@@ -156,15 +175,15 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
     {/* Desktop header, never rendered on the PWA home */}
     <header
       className={`fixed top-0 inset-x-0 z-50 w-full text-white transition-all duration-300 pointer-events-auto ${
-        solid
-          ? 'bg-[#001A41]/95 dark:bg-[#07090D]/95 backdrop-blur-md border-b border-white/10 dark:border-[var(--lead)] shadow-sm'
-          : 'bg-gradient-to-b from-[#001A41]/85 dark:from-[#07090D]/95 via-[#001A41]/50 dark:via-[#07090D]/60 to-transparent border-b border-transparent'
+        solid || !overHero
+          ? 'bg-[var(--strip-bg)] border-b border-white/10 dark:border-[var(--lead)] shadow-[0_8px_24px_-16px_rgba(0,0,0,0.6)]'
+          : 'bg-gradient-to-b from-[var(--strip-bg)]/85 via-[var(--strip-bg)]/50 to-transparent border-b border-transparent'
       }`}
     >
       {/* Main Header Container */}
       <div
         className={`max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between transition-all duration-300 ${
-          solid ? 'py-2' : 'py-4'
+          solid || !overHero ? 'py-2' : 'py-4'
         }`}
       >
         {/* Brand Identity */}
@@ -188,43 +207,40 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           />
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]">
-          <Link href="/services" className="hover:text-[#ABEEC8] transition-colors flex items-center gap-1.5">
-            <Search className="w-4 h-4 text-[#ABEEC8]" />
-            Services
-          </Link>
-          <Link href="/guarantee" className="hover:text-[#ABEEC8] transition-colors flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-[#ABEEC8]" />
-            BukieGuarantee
-          </Link>
-          <Link href="/guarantee#verification" className="hover:text-[#ABEEC8] transition-colors flex items-center gap-1.5">
-            <UserCheck className="w-4 h-4 text-[#ABEEC8]" />
-            Verification
-          </Link>
-          <Link href="/enterprise" className="hover:text-[#ABEEC8] transition-colors">
-            For Business
-          </Link>
+        <nav aria-label="Primary" className="hidden lg:flex items-center gap-7 text-sm font-semibold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]">
+          {NAV_LINKS.map(({ href, label, icon: Icon }) => {
+            const current = isCurrent(pathname, href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={current ? 'page' : undefined}
+                className={`relative flex items-center gap-1.5 py-1 transition-colors hover:text-[var(--nav-accent)] after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:rounded-full after:bg-[var(--amber)] after:transition-transform after:duration-200 ${current ? 'after:scale-x-100' : 'after:scale-x-0'}`}
+              >
+                {Icon && <Icon className="w-4 h-4 text-[var(--nav-accent)]" />}
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Action Buttons */}
         <div className="hidden min-w-0 items-center gap-2.5 md:flex">
-          <ThemeToggle idPrefix="nav-theme" />
           {/* Secondary action: Become a BrainWorker */}
           {onBecomeWorkerClick ? (
             <button
               onClick={onBecomeWorkerClick}
-              className="motion-press px-3.5 py-2 text-xs font-semibold text-white hover:text-[#ABEEC8] rounded-full transition-colors flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
+              className={HEADER_GHOST}
             >
-              <UserCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
+              <UserCheck className="w-3.5 h-3.5 text-[var(--nav-accent)]" />
               Become a BrainWorker
             </button>
           ) : (
             <Link
               href="/brainworker/register"
-              className="motion-press px-3.5 py-2 text-xs font-semibold text-white hover:text-[#ABEEC8] rounded-full transition-colors flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
+              className={HEADER_GHOST}
             >
-              <UserCheck className="w-3.5 h-3.5 text-[#ABEEC8]" />
+              <UserCheck className="w-3.5 h-3.5 text-[var(--nav-accent)]" />
               Become a BrainWorker
             </Link>
           )}
@@ -233,7 +249,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           {onPostJobClick ? (
             <button
               onClick={onPostJobClick}
-              className="motion-press px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/70 bg-[#001A41]/55 backdrop-blur-sm hover:bg-[#296A4B]/60 rounded-full transition-colors flex items-center gap-1.5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.45)]"
+              className={HEADER_OUTLINE}
             >
               <Briefcase className="w-3.5 h-3.5" />
               Post a Job
@@ -241,7 +257,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           ) : (
             <Link
               href="/post-job"
-              className="motion-press px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/70 bg-[#001A41]/55 backdrop-blur-sm hover:bg-[#296A4B]/60 rounded-full transition-colors flex items-center gap-1.5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.45)]"
+              className={HEADER_OUTLINE}
             >
               <Briefcase className="w-3.5 h-3.5" />
               Post a Job
@@ -252,7 +268,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           {isAuthenticated ? (
             <Link
               href="/dashboard"
-              className="motion-press px-4 py-2 text-xs font-semibold text-[#ABEEC8] border border-[#ABEEC8]/50 hover:bg-[#ABEEC8]/10 rounded-full transition-colors flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
+              className={HEADER_OUTLINE}
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
               Dashboard
@@ -260,22 +276,18 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           ) : (
             <Link
               href="/login"
-              className="motion-press px-4 py-2 text-xs font-semibold text-white hover:text-[#ABEEC8] rounded-full transition-colors flex items-center gap-1.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]"
+              className={HEADER_GHOST}
             >
               Sign In
             </Link>
           )}
         </div>
 
-        {/* Mobile Hamburger Toggle & Top Theme Toggle */}
         <div className="flex items-center gap-2 lg:hidden">
-          <div className="md:hidden">
-            <ThemeToggle idPrefix="mobile-top-theme" />
-          </div>
           <button
             ref={triggerRef}
             onClick={() => (mobileMenuOpen ? closeDrawer() : openDrawer())}
-            className="motion-press p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 pointer-events-auto"
+            className="motion-press p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 pointer-events-auto"
             aria-label="Open navigation menu"
             aria-expanded={mobileMenuOpen}
           >
@@ -299,6 +311,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
             onPostJob={doPostJob}
             onBecomeWorker={doBecomeWorker}
             isAuthenticated={isAuthenticated}
+            pathname={pathname}
           />
         </>
       )}
@@ -314,7 +327,9 @@ function DrawerPanel({
   onPostJob,
   onBecomeWorker,
   isAuthenticated,
+  pathname,
 }: {
+  pathname: string | null;
   visible: boolean;
   onClose: () => void;
   onNavigate: (href: string) => void;
@@ -365,16 +380,20 @@ function DrawerPanel({
                   Customer Dashboard
                 </button>
               )}
-              {DRAWER_LINKS.filter(({ href }) => !isAuthenticated || href !== '/login').map(({ href, label, icon: Icon }) => (
-                <button
-                  key={label}
-                  onClick={() => onNavigate(href)}
-                  className="motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] font-medium text-[var(--text-muted)] hover:bg-[var(--tag-bg)] hover:text-[var(--text-main)] active:bg-[var(--card-hover)] transition-colors"
-                >
-                  <Icon className="w-[18px] h-[18px] text-[var(--brand-green)]" />
-                  {label}
-                </button>
-              ))}
+              {DRAWER_LINKS.filter(({ href }) => !isAuthenticated || href !== '/login').map(({ href, label, icon: Icon }) => {
+                const current = isCurrent(pathname, href);
+                return (
+                  <button
+                    key={label}
+                    onClick={() => onNavigate(href)}
+                    aria-current={current ? 'page' : undefined}
+                    className={`motion-press flex items-center gap-3.5 w-full text-left px-4 py-3.5 rounded-xl text-[15px] transition-colors hover:bg-[var(--tag-bg)] hover:text-[var(--text-main)] active:bg-[var(--card-hover)] ${current ? 'font-semibold text-[var(--text-main)] bg-[var(--tag-bg)] shadow-[inset_2px_0_0_var(--amber)]' : 'font-medium text-[var(--text-muted)]'}`}
+                  >
+                    <Icon className="w-[18px] h-[18px] text-[var(--brand-green)]" />
+                    {label}
+                  </button>
+                );
+              })}
             </nav>
 
             {/* Action zone */}

@@ -384,9 +384,9 @@ export function BookingDetailView({
         className="w-full max-w-4xl mx-auto p-4 space-y-4 animate-pulse motion-reduce:animate-none"
         aria-busy="true"
       >
-        <div className="h-6 bg-stone-800 rounded w-1/4" />
-        <div className="h-32 bg-stone-900 rounded border border-stone-800" />
-        <div className="h-48 bg-stone-900 rounded border border-stone-800" />
+        <div className="h-6 bg-[var(--tag-bg)] rounded w-1/4" />
+        <div className="h-32 bg-[var(--card-bg)] rounded border border-[var(--lead)]" />
+        <div className="h-48 bg-[var(--card-bg)] rounded border border-[var(--lead)]" />
       </div>
     );
   }
@@ -395,20 +395,20 @@ export function BookingDetailView({
     return (
       <div
         data-testid="booking-detail-error"
-        className="w-full max-w-4xl mx-auto p-6 bg-red-950/30 border border-red-800/80 rounded-lg text-stone-200 space-y-4"
+        className="w-full max-w-4xl mx-auto p-6 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-lg text-[var(--text-main)] space-y-4"
         role="alert"
       >
         <div className="flex items-center gap-3">
-          <AlertTriangle className="w-6 h-6 text-red-400 shrink-0" aria-hidden="true" />
+          <AlertTriangle className="w-6 h-6 text-[var(--danger)] shrink-0" aria-hidden="true" />
           <div>
             <h2 className="text-base font-semibold text-red-200">Could not load booking</h2>
-            <p className="text-sm text-stone-400 mt-0.5">{errorMessage}</p>
+            <p className="text-sm text-[var(--text-muted)] mt-0.5">{errorMessage}</p>
           </div>
         </div>
         <button
           type="button"
           onClick={() => void fetchDetail()}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-stone-800 hover:bg-stone-700 text-stone-100 rounded text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 motion-reduce:transition-none"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-main)] rounded text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
         >
           <RefreshCw className="w-4 h-4" aria-hidden="true" />
           <span>Retry</span>
@@ -419,7 +419,7 @@ export function BookingDetailView({
 
   if (!booking) {
     return (
-      <div className="w-full max-w-4xl mx-auto p-8 text-center text-stone-400">
+      <div className="w-full max-w-4xl mx-auto p-8 text-center text-[var(--text-muted)]">
         Booking record not found.
       </div>
     );
@@ -441,28 +441,28 @@ export function BookingDetailView({
     Math.max(0, Math.round(Number(scopeMaterialsNgn || 0)));
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 space-y-6 text-stone-100 font-sans">
+    <div className="w-full max-w-4xl mx-auto p-4 space-y-6 text-[var(--text-main)] font-sans">
       {/* Navigation Header */}
-      <nav className="flex items-center justify-between border-b border-stone-800 pb-3">
+      <nav className="flex items-center justify-between border-b border-[var(--lead)] pb-3">
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-xs text-stone-400 hover:text-stone-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 motion-reduce:transition-none"
+          className="inline-flex items-center gap-1.5 text-xs text-[var(--text-muted)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
         >
           <ArrowLeft className="w-4 h-4" aria-hidden="true" />
           <span>Back to bookings sheet</span>
         </button>
-        <span className="text-xs font-mono text-stone-500">{booking.referenceCode}</span>
+        <span className="text-xs font-mono text-[var(--text-muted)]">{booking.referenceCode}</span>
       </nav>
 
       {/* Offline Banner */}
       {isOffline && (
         <div
           data-testid="bookings-offline-banner"
-          className="p-3 bg-stone-900 border border-stone-800 rounded text-stone-300 text-xs flex items-center gap-2"
+          className="p-3 bg-[var(--card-bg)] border border-[var(--lead)] rounded text-[var(--text-muted)] text-xs flex items-center gap-2"
           role="status"
         >
-          <WifiOff className="w-4 h-4 shrink-0 text-stone-400" aria-hidden="true" />
+          <WifiOff className="w-4 h-4 shrink-0 text-[var(--text-muted)]" aria-hidden="true" />
           <span>Device is currently offline. Mutation actions are disabled until connection is restored.</span>
         </div>
       )}
@@ -472,34 +472,34 @@ export function BookingDetailView({
       {/* =================================================================== */}
       <section
         data-testid="state-block"
-        className="p-4 bg-stone-900/80 border border-stone-800 rounded-lg space-y-3"
+        className="p-4 bg-[var(--bg)] border border-[var(--lead)] rounded-lg space-y-3"
       >
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-stone-400 font-medium">Status:</span>
+            <span className="text-xs text-[var(--text-muted)] font-medium">Status:</span>
 
             {/* Job Status Badge with text and icon */}
             <span
               data-testid="status-badge-job"
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold bg-stone-800 text-stone-200 border border-stone-700"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]"
             >
               {booking.jobStatus === 'CONFIRMED' && (
-                <CheckCircle className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
+                <CheckCircle className="w-3.5 h-3.5 text-[var(--brand-green)]" aria-hidden="true" />
               )}
               {booking.jobStatus === 'IN_PROGRESS' && (
-                <Clock className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+                <Clock className="w-3.5 h-3.5 text-[var(--amber)]" aria-hidden="true" />
               )}
               {booking.jobStatus === 'CANCELLED' && (
-                <XCircle className="w-3.5 h-3.5 text-red-400" aria-hidden="true" />
+                <XCircle className="w-3.5 h-3.5 text-[var(--danger)]" aria-hidden="true" />
               )}
               {booking.jobStatus === 'DISPUTED' && (
-                <AlertTriangle className="w-3.5 h-3.5 text-amber-400" aria-hidden="true" />
+                <AlertTriangle className="w-3.5 h-3.5 text-[var(--amber)]" aria-hidden="true" />
               )}
               {booking.jobStatus !== 'CONFIRMED' &&
                 booking.jobStatus !== 'IN_PROGRESS' &&
                 booking.jobStatus !== 'CANCELLED' &&
                 booking.jobStatus !== 'DISPUTED' && (
-                  <Calendar className="w-3.5 h-3.5 text-stone-400" aria-hidden="true" />
+                  <Calendar className="w-3.5 h-3.5 text-[var(--text-muted)]" aria-hidden="true" />
                 )}
               <span>{booking.jobStatus}</span>
             </span>
@@ -507,28 +507,28 @@ export function BookingDetailView({
             {/* Dispatch Status Badge with text and icon */}
             <span
               data-testid="status-badge-dispatch"
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold bg-stone-800 text-stone-200 border border-stone-700"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]"
             >
               {booking.dispatchStatus === 'EN_ROUTE' ? (
                 <>
-                  <Navigation className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+                  <Navigation className="w-3.5 h-3.5 text-[var(--amber)]" aria-hidden="true" />
                   <span>En Route</span>
                 </>
               ) : booking.dispatchStatus === 'ARRIVED' ? (
                 <>
-                  <CheckCircle className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
+                  <CheckCircle className="w-3.5 h-3.5 text-[var(--brand-green)]" aria-hidden="true" />
                   <span>Arrived</span>
                 </>
               ) : (
                 <>
-                  <Clock className="w-3.5 h-3.5 text-stone-400" aria-hidden="true" />
+                  <Clock className="w-3.5 h-3.5 text-[var(--text-muted)]" aria-hidden="true" />
                   <span>Not Started</span>
                 </>
               )}
             </span>
           </div>
 
-          <div className="text-xs text-stone-400 font-mono">
+          <div className="text-xs text-[var(--text-muted)] font-mono">
             REF: {booking.referenceCode}
           </div>
         </div>
@@ -539,26 +539,26 @@ export function BookingDetailView({
       {/* =================================================================== */}
       <section
         data-testid="position-block"
-        className="p-4 bg-stone-900/80 border border-stone-800 rounded-lg space-y-3"
+        className="p-4 bg-[var(--bg)] border border-[var(--lead)] rounded-lg space-y-3"
       >
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
           Authoritative Operational Timeline
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-          <div className="p-2.5 bg-stone-950/60 border border-stone-800/80 rounded space-y-1">
-            <span className="text-stone-500 font-medium">Scheduled Site Arrival</span>
-            <p className="text-stone-200 font-mono">{booking.scheduledStartAt}</p>
+          <div className="p-2.5 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-1">
+            <span className="text-[var(--text-muted)] font-medium">Scheduled Site Arrival</span>
+            <p className="text-[var(--text-main)] font-mono">{booking.scheduledStartAt}</p>
           </div>
-          <div className="p-2.5 bg-stone-950/60 border border-stone-800/80 rounded space-y-1">
-            <span className="text-stone-500 font-medium">Dispatch Progress</span>
-            <p className="text-stone-200 font-mono">{booking.dispatchStatus}</p>
+          <div className="p-2.5 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-1">
+            <span className="text-[var(--text-muted)] font-medium">Dispatch Progress</span>
+            <p className="text-[var(--text-main)] font-mono">{booking.dispatchStatus}</p>
             {booking.dispatchUpdatedAt && (
-              <p className="text-[11px] text-stone-400 font-mono">Updated: {booking.dispatchUpdatedAt}</p>
+              <p className="text-[11px] text-[var(--text-muted)] font-mono">Updated: {booking.dispatchUpdatedAt}</p>
             )}
           </div>
-          <div className="p-2.5 bg-stone-950/60 border border-stone-800/80 rounded space-y-1">
-            <span className="text-stone-500 font-medium">On-Site Check-in</span>
-            <p className="text-stone-200 font-mono">
+          <div className="p-2.5 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-1">
+            <span className="text-[var(--text-muted)] font-medium">On-Site Check-in</span>
+            <p className="text-[var(--text-main)] font-mono">
               {booking.actualStartAt ? booking.actualStartAt : 'Pending site check-in'}
             </p>
           </div>
@@ -566,41 +566,41 @@ export function BookingDetailView({
 
         {/* Scope Adjustments Projection */}
         {booking.scopeAdjustments && booking.scopeAdjustments.length > 0 && (
-          <div className="mt-4 pt-3 border-t border-stone-800 space-y-2">
-            <span className="text-xs font-semibold text-stone-400">Scope Adjustment Projections</span>
+          <div className="mt-4 pt-3 border-t border-[var(--lead)] space-y-2">
+            <span className="text-xs font-semibold text-[var(--text-muted)]">Scope Adjustment Projections</span>
             <div className="space-y-2">
               {booking.scopeAdjustments.map((adj) => (
                 <div
                   key={adj.id}
-                  className="p-2.5 bg-stone-950 border border-stone-800 rounded text-xs flex items-center justify-between gap-3"
+                  className="p-2.5 bg-[var(--bg)] border border-[var(--lead)] rounded text-xs flex items-center justify-between gap-3"
                 >
                   <div className="space-y-0.5 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-stone-200">{adj.reason}</span>
+                      <span className="font-medium text-[var(--text-main)]">{adj.reason}</span>
                       {adj.status === 'PENDING' ? (
-                        <span className="px-1.5 py-0.5 rounded text-[11px] font-medium bg-amber-950/60 text-amber-300 border border-amber-800/60">
+                        <span className="px-1.5 py-0.5 rounded text-[11px] font-medium bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                           Pending customer review
                         </span>
                       ) : adj.status === 'APPROVED' ? (
-                        <span className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-emerald-950/60 text-emerald-300 border border-emerald-800/60">
+                        <span className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]">
                           APPROVED
                         </span>
                       ) : adj.status === 'REJECTED' ? (
-                        <span className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-red-950/60 text-red-300 border border-red-800/60">
+                        <span className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-[var(--danger-dim)] text-[var(--danger)] border border-[var(--danger-border)]">
                           REJECTED
                         </span>
                       ) : (
-                        <span className="px-1.5 py-0.5 rounded text-[11px] font-medium bg-stone-800 text-stone-400 border border-stone-700">
+                        <span className="px-1.5 py-0.5 rounded text-[11px] font-medium bg-[var(--tag-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
                           {adj.status}
                         </span>
                       )}
                     </div>
-                    <p className="text-stone-400 font-mono">
+                    <p className="text-[var(--text-muted)] font-mono">
                       Additional Materials: NGN {(adj.additionalMaterialsKobo / 100).toLocaleString()} | Additional Labor: NGN {(adj.additionalLaborKobo / 100).toLocaleString()}
                     </p>
                   </div>
                   <div className="text-right shrink-0">
-                    <span className="font-mono text-stone-300 font-semibold">
+                    <span className="font-mono text-[var(--text-muted)] font-semibold">
                       Total: NGN {(adj.totalAdditionalKobo / 100).toLocaleString()}
                     </span>
                   </div>
@@ -616,17 +616,17 @@ export function BookingDetailView({
       {/* =================================================================== */}
       <section
         data-testid="context-block"
-        className="p-4 bg-stone-900/80 border border-stone-800 rounded-lg space-y-4"
+        className="p-4 bg-[var(--bg)] border border-[var(--lead)] rounded-lg space-y-4"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1 min-w-0">
-            <h1 className="text-base font-bold text-stone-100">{booking.title}</h1>
-            <p className="text-xs text-stone-400">{booking.description}</p>
+            <h1 className="text-base font-bold text-[var(--text-main)]">{booking.title}</h1>
+            <p className="text-xs text-[var(--text-muted)]">{booking.description}</p>
           </div>
           <Link
             href={`/messages/${booking.jobId}`}
             role="link"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-800 hover:bg-stone-700 text-emerald-400 rounded text-xs font-medium shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 motion-reduce:transition-none"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--brand-green)] rounded text-xs font-medium shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
           >
             <MessageSquare className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Message Customer</span>
@@ -634,30 +634,30 @@ export function BookingDetailView({
         </div>
 
         {/* Address and Location Context */}
-        <div className="p-3 bg-stone-950/60 border border-stone-800 rounded space-y-2 text-xs">
-          <div className="flex items-center gap-2 text-stone-400">
-            <MapPin className="w-4 h-4 text-stone-500 shrink-0" aria-hidden="true" />
+        <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-2 text-xs">
+          <div className="flex items-center gap-2 text-[var(--text-muted)]">
+            <MapPin className="w-4 h-4 text-[var(--text-muted)] shrink-0" aria-hidden="true" />
             <span className="font-medium">General Operating Area:</span>
-            <span className="text-stone-200">
+            <span className="text-[var(--text-main)]">
               {booking.generalLocation.neighbourhoodOrZone}, {booking.generalLocation.cityId}
             </span>
           </div>
 
           {booking.landmark && (
-            <p className="text-stone-400 pl-6">
-              <span className="text-stone-500">Landmark:</span> {booking.landmark}
+            <p className="text-[var(--text-muted)] pl-6">
+              <span className="text-[var(--text-muted)]">Landmark:</span> {booking.landmark}
             </p>
           )}
 
           {/* Conditional Address Unlock (UI-008) */}
-          <div className="pt-2 border-t border-stone-800/80 pl-6">
+          <div className="pt-2 border-t border-[var(--lead)] pl-6">
             {isEscrowHeld && booking.exactAddress ? (
               <div className="space-y-0.5">
-                <span className="text-emerald-400 font-medium">Exact Site Address:</span>
-                <p className="text-stone-100 font-medium">{booking.exactAddress}</p>
+                <span className="text-[var(--brand-green)] font-medium">Exact Site Address:</span>
+                <p className="text-[var(--text-main)] font-medium">{booking.exactAddress}</p>
               </div>
             ) : (
-              <div className="p-2.5 bg-amber-950/30 border border-amber-800/60 rounded text-amber-200 space-y-1">
+              <div className="p-2.5 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded text-amber-200 space-y-1">
                 <p className="font-medium">
                   This booking is confirmed but payment is still pending. The exact address unlocks once payment is held.
                 </p>
@@ -675,27 +675,27 @@ export function BookingDetailView({
       {/* =================================================================== */}
       <section
         data-testid="action-block"
-        className="p-4 bg-stone-900/80 border border-stone-800 rounded-lg space-y-4"
+        className="p-4 bg-[var(--bg)] border border-[var(--lead)] rounded-lg space-y-4"
       >
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
           Operational Actions
         </h2>
 
         {isTerminalOrDisputed ? (
-          <div className="p-3 bg-stone-950 border border-stone-800 rounded text-xs text-stone-400">
+          <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded text-xs text-[var(--text-muted)]">
             This booking is in a {booking.jobStatus.toLowerCase()} state. Operational action controls are closed.
           </div>
         ) : (
           <div className="space-y-4">
             {/* Sequential Dispatch Controls (UI-010, UI-015) */}
-            <div className="p-3 bg-stone-950/60 border border-stone-800 rounded space-y-3 text-xs">
-              <span className="font-medium text-stone-300">1. Dispatch Progression</span>
+            <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-3 text-xs">
+              <span className="font-medium text-[var(--text-muted)]">1. Dispatch Progression</span>
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   type="button"
                   disabled={isOffline || isEnRoute || isArrived || isSubmittingAction}
                   onClick={() => void handleDispatchUpdate('EN_ROUTE')}
-                  className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:bg-stone-800 disabled:text-stone-500 text-stone-950 font-medium rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 motion-reduce:transition-none"
+                  className="px-3.5 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] text-[var(--text-main)] font-medium rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
                 >
                   I&apos;m on my way
                 </button>
@@ -704,7 +704,7 @@ export function BookingDetailView({
                   type="button"
                   disabled={isOffline || !isEnRoute || isArrived || isSubmittingAction}
                   onClick={() => void handleDispatchUpdate('ARRIVED')}
-                  className="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 disabled:bg-stone-800 disabled:text-stone-500 text-stone-950 font-medium rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 motion-reduce:transition-none"
+                  className="px-3.5 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] text-[var(--text-main)] font-medium rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 motion-reduce:transition-none"
                 >
                   I&apos;ve arrived
                 </button>
@@ -712,25 +712,25 @@ export function BookingDetailView({
 
               {/* Disabled explanations */}
               {isOffline && (
-                <p className="text-amber-400 text-[11px]">Action unavailable while offline.</p>
+                <p className="text-[var(--amber)] text-[11px]">Action unavailable while offline.</p>
               )}
               {isArrived && (
-                <p className="text-stone-400 text-[11px]">Already marked arrived at site.</p>
+                <p className="text-[var(--text-muted)] text-[11px]">Already marked arrived at site.</p>
               )}
               {!isArrived && isEnRoute && (
-                <p className="text-blue-300 text-[11px]">En route to client site. Mark arrived when on site.</p>
+                <p className="text-[var(--amber)] text-[11px]">En route to client site. Mark arrived when on site.</p>
               )}
             </div>
 
             {/* Check-in Control (UI-011, UI-024) */}
-            <div className="p-3 bg-stone-950/60 border border-stone-800 rounded space-y-3 text-xs">
-              <span className="font-medium text-stone-300">2. On-Site Check-in</span>
-              <p className="text-stone-400 text-[11px]">
+            <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-3 text-xs">
+              <span className="font-medium text-[var(--text-muted)]">2. On-Site Check-in</span>
+              <p className="text-[var(--text-muted)] text-[11px]">
                 Check-in captures a single location snapshot to verify site presence before work begins. Continuous GPS tracking is not used.
               </p>
 
               {!isEscrowHeld && (
-                <div className="p-2.5 bg-amber-950/30 border border-amber-800/60 rounded text-amber-200 text-xs space-y-1">
+                <div className="p-2.5 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded text-amber-200 text-xs space-y-1">
                   <p className="font-medium">
                     Payment for this booking is still pending, so check-in is not open yet.
                   </p>
@@ -745,7 +745,7 @@ export function BookingDetailView({
                   type="button"
                   disabled={isOffline || !isArrived || !isEscrowHeld || isCheckedIn || isSubmittingAction}
                   onClick={() => void handleCheckIn()}
-                  className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:bg-stone-800 disabled:text-stone-500 text-stone-950 font-medium rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 motion-reduce:transition-none"
+                  className="px-3.5 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] text-[var(--text-main)] font-medium rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
                 >
                   {isCheckedIn ? 'Checked in' : 'Check in on site'}
                 </button>
@@ -754,18 +754,18 @@ export function BookingDetailView({
 
             {/* In-Progress Scope Adjustment Trigger */}
             {isCheckedIn && (
-              <div className="p-3 bg-stone-950/60 border border-stone-800 rounded space-y-2 text-xs">
-                <span className="font-medium text-stone-300">3. Scope Adjustment</span>
-                <p className="text-stone-400 text-[11px]">
+              <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-2 text-xs">
+                <span className="font-medium text-[var(--text-muted)]">3. Scope Adjustment</span>
+                <p className="text-[var(--text-muted)] text-[11px]">
                   If unseen on-site repairs require additional parts or labor, request a formal adjustment for customer review.
                 </p>
                 <button
                   type="button"
                   disabled={isOffline || booking.hasPendingScopeAdjustment || isSubmittingAction}
                   onClick={() => setIsScopeDrawerOpen(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-800 hover:bg-stone-700 disabled:opacity-50 text-stone-200 rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 motion-reduce:transition-none"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] disabled:opacity-50 text-[var(--text-main)] rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
                 >
-                  <PlusCircle className="w-3.5 h-3.5 text-stone-400" aria-hidden="true" />
+                  <PlusCircle className="w-3.5 h-3.5 text-[var(--text-muted)]" aria-hidden="true" />
                   <span>Request Scope Adjustment</span>
                 </button>
               </div>
@@ -773,13 +773,13 @@ export function BookingDetailView({
 
             {/* Provider Cancellation Trigger (UI-014) */}
             {booking.jobStatus === 'CONFIRMED' && (
-              <div className="pt-2 border-t border-stone-800">
+              <div className="pt-2 border-t border-[var(--lead)]">
                 <button
                   ref={cancelButtonRef}
                   type="button"
                   disabled={isOffline || isSubmittingAction}
                   onClick={() => setIsCancelDialogOpen(true)}
-                  className="px-3 py-1.5 text-xs text-red-400 hover:text-red-300 bg-red-950/30 hover:bg-red-950/50 border border-red-900/60 rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 motion-reduce:transition-none"
+                  className="px-3 py-1.5 text-xs text-[var(--danger)] hover:text-[var(--danger)] bg-[var(--danger-dim)] hover:bg-red-950/50 border border-[var(--danger-border)] rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 motion-reduce:transition-none"
                 >
                   Cancel booking
                 </button>
@@ -794,19 +794,19 @@ export function BookingDetailView({
       {/* =================================================================== */}
       <section
         data-testid="recovery-block"
-        className="p-4 bg-stone-900/80 border border-stone-800 rounded-lg space-y-3 text-xs"
+        className="p-4 bg-[var(--bg)] border border-[var(--lead)] rounded-lg space-y-3 text-xs"
       >
-        <h2 className="font-semibold uppercase tracking-wider text-stone-400">
+        <h2 className="font-semibold uppercase tracking-wider text-[var(--text-muted)]">
           Operational Guidance and Recovery
         </h2>
 
         {activeRefusal && REFUSAL_RECOVERY_MAP[activeRefusal] ? (
-          <div className="p-3 bg-red-950/40 border border-red-800/80 rounded space-y-1 text-red-200">
+          <div className="p-3 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded space-y-1 text-red-200">
             <p className="font-semibold">{REFUSAL_RECOVERY_MAP[activeRefusal].title}</p>
-            <p className="text-stone-300">{REFUSAL_RECOVERY_MAP[activeRefusal].step}</p>
+            <p className="text-[var(--text-muted)]">{REFUSAL_RECOVERY_MAP[activeRefusal].step}</p>
           </div>
         ) : (
-          <p className="text-stone-400">
+          <p className="text-[var(--text-muted)]">
             All transitions are forward-only and require authoritative network confirmation. If client issues or site access impediments occur, use the messaging link above to coordinate with the customer.
           </p>
         )}
@@ -817,7 +817,7 @@ export function BookingDetailView({
       {/* =================================================================== */}
       {isCancelDialogOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--bg)] backdrop-blur-sm"
           role="presentation"
         >
           <div
@@ -826,35 +826,35 @@ export function BookingDetailView({
             role="dialog"
             aria-modal="true"
             aria-labelledby="cancel-dialog-title"
-            className="w-full max-w-lg bg-stone-900 border border-stone-800 rounded-lg p-5 space-y-4 text-stone-100 shadow-xl"
+            className="w-full max-w-lg bg-[var(--card-bg)] border border-[var(--lead)] rounded-lg p-5 space-y-4 text-[var(--text-main)] shadow-xl"
           >
-            <div className="flex items-center justify-between border-b border-stone-800 pb-2">
-              <h3 id="cancel-dialog-title" className="text-sm font-bold text-stone-100">
+            <div className="flex items-center justify-between border-b border-[var(--lead)] pb-2">
+              <h3 id="cancel-dialog-title" className="text-sm font-bold text-[var(--text-main)]">
                 Cancel Confirmed Booking
               </h3>
               <button
                 type="button"
                 onClick={handleCloseCancelDialog}
                 aria-label="Close dialog"
-                className="text-stone-400 hover:text-stone-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-stone-400 motion-reduce:transition-none"
+                className="text-[var(--text-muted)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--rule)] motion-reduce:transition-none"
               >
                 <X className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
 
-            <p className="text-xs text-stone-400">
+            <p className="text-xs text-[var(--text-muted)]">
               Select the operational reason for declining this confirmed job. Reasons are recorded authoritatively.
             </p>
 
             <div className="space-y-3 text-xs">
-              <label htmlFor="cancel-reason-select" className="block font-medium text-stone-300">
+              <label htmlFor="cancel-reason-select" className="block font-medium text-[var(--text-muted)]">
                 Cancellation Reason:
               </label>
               <select
                 id="cancel-reason-select"
                 value={cancelReason}
                 onChange={(e) => setCancelReason(e.target.value as ProviderCancellationReason)}
-                className="w-full p-2 bg-stone-950 border border-stone-800 rounded text-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                className="w-full p-2 bg-[var(--bg)] border border-[var(--lead)] rounded text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
               >
                 {CANCELLATION_OPTIONS.map((opt) => (
                   <option key={opt.reason} value={opt.reason}>
@@ -865,7 +865,7 @@ export function BookingDetailView({
 
               {cancelReason === 'OTHER' && (
                 <div className="space-y-1.5 pt-1">
-                  <label htmlFor="cancel-note-input" className="block font-medium text-stone-300">
+                  <label htmlFor="cancel-note-input" className="block font-medium text-[var(--text-muted)]">
                     Explanatory Note (required, 1 to 500 characters):
                   </label>
                   <textarea
@@ -875,9 +875,9 @@ export function BookingDetailView({
                     value={cancelNote}
                     onChange={(e) => setCancelNote(e.target.value)}
                     placeholder="Provide specific reason for cancellation"
-                    className="w-full p-2 bg-stone-950 border border-stone-800 rounded text-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 text-xs"
+                    className="w-full p-2 bg-[var(--bg)] border border-[var(--lead)] rounded text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] text-xs"
                   />
-                  <div className="flex justify-between text-[11px] text-stone-500">
+                  <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
                     <span>Required for OTHER reasons</span>
                     <span>{cancelNote.length}/500</span>
                   </div>
@@ -885,17 +885,17 @@ export function BookingDetailView({
               )}
 
               {cancelValidationError && (
-                <p className="p-2 bg-red-950/40 border border-red-800/60 rounded text-xs text-red-300">
+                <p className="p-2 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded text-xs text-[var(--danger)]">
                   {cancelValidationError}
                 </p>
               )}
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-stone-800 text-xs">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[var(--lead)] text-xs">
               <button
                 type="button"
                 onClick={handleCloseCancelDialog}
-                className="px-3 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 motion-reduce:transition-none"
+                className="px-3 py-1.5 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-muted)] rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rule)] motion-reduce:transition-none"
               >
                 Keep Booking
               </button>
@@ -903,7 +903,7 @@ export function BookingDetailView({
                 type="button"
                 disabled={isSubmittingAction}
                 onClick={() => void handleConfirmCancellation()}
-                className="px-3.5 py-1.5 bg-red-600 hover:bg-red-500 text-stone-950 rounded font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 motion-reduce:transition-none"
+                className="px-3.5 py-1.5 bg-[var(--danger)] hover:opacity-90 text-[var(--text-main)] rounded font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 motion-reduce:transition-none"
               >
                 Confirm Cancellation
               </button>
@@ -917,39 +917,39 @@ export function BookingDetailView({
       {/* =================================================================== */}
       {isScopeDrawerOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-end bg-stone-950/80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-end bg-[var(--bg)] backdrop-blur-sm"
           role="presentation"
         >
-          <div className="w-full max-w-md h-full bg-stone-900 border-l border-stone-800 p-5 space-y-4 text-stone-100 overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-stone-800 pb-3">
-              <h3 className="text-sm font-bold text-stone-100 flex items-center gap-2">
-                <FileText className="w-4 h-4 text-emerald-400" aria-hidden="true" />
+          <div className="w-full max-w-md h-full bg-[var(--card-bg)] border-l border-[var(--lead)] p-5 space-y-4 text-[var(--text-main)] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-[var(--lead)] pb-3">
+              <h3 className="text-sm font-bold text-[var(--text-main)] flex items-center gap-2">
+                <FileText className="w-4 h-4 text-[var(--brand-green)]" aria-hidden="true" />
                 <span>Request Scope Adjustment</span>
               </h3>
               <button
                 type="button"
                 onClick={() => setIsScopeDrawerOpen(false)}
                 aria-label="Close drawer"
-                className="text-stone-400 hover:text-stone-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-stone-400 motion-reduce:transition-none"
+                className="text-[var(--text-muted)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--rule)] motion-reduce:transition-none"
               >
                 <X className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
 
-            <p className="text-xs text-stone-400">
+            <p className="text-xs text-[var(--text-muted)]">
               Submit additional labor or materials discovered on site. Requests are transmitted to the customer for explicit approval.
             </p>
 
             <form onSubmit={handleSubmitScopeAdjustment} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label htmlFor="scope-reason-select" className="block font-medium text-stone-300">
+                <label htmlFor="scope-reason-select" className="block font-medium text-[var(--text-muted)]">
                   Adjustment Reason:
                 </label>
                 <select
                   id="scope-reason-select"
                   value={scopeReason}
                   onChange={(e) => setScopeReason(e.target.value as ScopeAdjustmentReason)}
-                  className="w-full p-2 bg-stone-950 border border-stone-800 rounded text-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                  className="w-full p-2 bg-[var(--bg)] border border-[var(--lead)] rounded text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
                 >
                   <option value="ADDITIONAL_PARTS">Additional Parts</option>
                   <option value="ADDITIONAL_LABOR">Additional Labor</option>
@@ -958,7 +958,7 @@ export function BookingDetailView({
               </div>
 
               <div className="space-y-1">
-                <label htmlFor="scope-labor-input" className="block font-medium text-stone-300">
+                <label htmlFor="scope-labor-input" className="block font-medium text-[var(--text-muted)]">
                   Additional Labor (NGN):
                 </label>
                 <input
@@ -968,12 +968,12 @@ export function BookingDetailView({
                   step="100"
                   value={scopeLaborNgn}
                   onChange={(e) => setScopeLaborNgn(e.target.value)}
-                  className="w-full p-2 bg-stone-950 border border-stone-800 rounded text-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 font-mono"
+                  className="w-full p-2 bg-[var(--bg)] border border-[var(--lead)] rounded text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] font-mono"
                 />
               </div>
 
               <div className="space-y-1">
-                <label htmlFor="scope-materials-input" className="block font-medium text-stone-300">
+                <label htmlFor="scope-materials-input" className="block font-medium text-[var(--text-muted)]">
                   Additional Materials (NGN):
                 </label>
                 <input
@@ -983,19 +983,19 @@ export function BookingDetailView({
                   step="100"
                   value={scopeMaterialsNgn}
                   onChange={(e) => setScopeMaterialsNgn(e.target.value)}
-                  className="w-full p-2 bg-stone-950 border border-stone-800 rounded text-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 font-mono"
+                  className="w-full p-2 bg-[var(--bg)] border border-[var(--lead)] rounded text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] font-mono"
                 />
               </div>
 
-              <div className="p-3 bg-stone-950 border border-stone-800 rounded space-y-1">
-                <span className="text-stone-400 font-medium">Calculated Additional Total:</span>
-                <p className="text-sm font-bold font-mono text-emerald-400">
+              <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-1">
+                <span className="text-[var(--text-muted)] font-medium">Calculated Additional Total:</span>
+                <p className="text-sm font-bold font-mono text-[var(--brand-green)]">
                   NGN {totalAdditionalDerived.toLocaleString()}
                 </p>
               </div>
 
               <div className="space-y-1">
-                <label htmlFor="scope-note-input" className="block font-medium text-stone-300">
+                <label htmlFor="scope-note-input" className="block font-medium text-[var(--text-muted)]">
                   Site Justification Note (optional):
                 </label>
                 <textarea
@@ -1004,28 +1004,28 @@ export function BookingDetailView({
                   value={scopeNote}
                   onChange={(e) => setScopeNote(e.target.value)}
                   placeholder="Explain why extra parts or labor are needed"
-                  className="w-full p-2 bg-stone-950 border border-stone-800 rounded text-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 text-xs"
+                  className="w-full p-2 bg-[var(--bg)] border border-[var(--lead)] rounded text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] text-xs"
                 />
               </div>
 
               {scopeError && (
-                <p className="p-2 bg-red-950/40 border border-red-800/60 rounded text-xs text-red-300">
+                <p className="p-2 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded text-xs text-[var(--danger)]">
                   {scopeError}
                 </p>
               )}
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-stone-800">
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-[var(--lead)]">
                 <button
                   type="button"
                   onClick={() => setIsScopeDrawerOpen(false)}
-                  className="px-3 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 motion-reduce:transition-none"
+                  className="px-3 py-1.5 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-muted)] rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rule)] motion-reduce:transition-none"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmittingAction || totalAdditionalDerived <= 0}
-                  className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-stone-950 rounded font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 motion-reduce:transition-none"
+                  className="px-3.5 py-1.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:opacity-50 text-[var(--text-main)] rounded font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
                 >
                   Submit Request
                 </button>

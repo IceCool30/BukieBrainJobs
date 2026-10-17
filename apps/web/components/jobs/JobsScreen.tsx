@@ -8,7 +8,6 @@ import {
   RotateCcw,
   Briefcase,
 } from 'lucide-react';
-import ThemeToggle from '../ThemeToggle';
 import {
   CustomerActivityViewModel,
   ActivityFilterView,
@@ -48,8 +47,8 @@ export default function JobsScreen() {
   const searchParams = useSearchParams();
 
   // Auth & customer state
-  const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => getMockAuthenticatedUser());
-  const [authChecked, setAuthChecked] = useState(true);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
 
   // Filter & selection state
   const [activeFilter, setActiveFilter] = useState<ActivityFilterView>('all');
@@ -57,17 +56,7 @@ export default function JobsScreen() {
   const [mobileDetailOpen, setMobileDetailOpen] = useState(false);
 
   // Activities state backed by repository
-  const [activitiesList, setActivitiesList] = useState<CustomerActivityItem[]>(() => {
-    const user = getMockAuthenticatedUser();
-    if (!user || !user.id) {
-      return [];
-    }
-    const repo = getCustomerActivityRepository();
-    if (repo instanceof MockCustomerActivityRepository) {
-      return repo.getSynchronousActivities(user.id);
-    }
-    return [];
-  });
+  const [activitiesList, setActivitiesList] = useState<CustomerActivityItem[]>([]);
   const [isMutating, setIsMutating] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
 
@@ -98,16 +87,17 @@ export default function JobsScreen() {
   // Check authentication on mount
   useEffect(() => {
     const user = getMockAuthenticatedUser();
+    const repo = getCustomerActivityRepository();
+    if (user?.id && repo instanceof MockCustomerActivityRepository) {
+      setActivitiesList(repo.getSynchronousActivities(user.id));
+    }
     setCurrentUser(user);
     setAuthChecked(true);
   }, []);
 
   // Sync with repository on user change
   useEffect(() => {
-    if (!currentUser || !currentUser.id) {
-      setActivitiesList([]);
-      return;
-    }
+    if (!currentUser?.id) return;
     const repo = getCustomerActivityRepository();
     repo.getActivities(currentUser.id).then((items) => {
       setActivitiesList(items);
@@ -262,10 +252,15 @@ export default function JobsScreen() {
   const handleSignOut = useCallback(() => {
     setMockAuthenticatedUser(null);
     setCurrentUser(null);
+    setActivitiesList([]);
     router.push('/login');
   }, [router]);
 
   // 1. Unauthenticated state check
+  if (!authChecked) {
+    return <div className="min-h-screen bg-[var(--bg)]" aria-busy="true" />;
+  }
+
   if (authChecked && !currentUser && viewModel.stateMode !== 'auth_failure') {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-6 text-[var(--text-main)] font-sans">
@@ -302,8 +297,8 @@ export default function JobsScreen() {
   if (viewModel.stateMode === 'auth_failure') {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-6 text-[var(--text-main)] font-sans">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg p-8 border border-rose-500/30 shadow-xs text-center text-[var(--text-main)]">
-          <div className="mx-auto w-14 h-14 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-500 flex items-center justify-center mb-5">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg p-8 border border-[var(--danger-border)] shadow-xs text-center text-[var(--text-main)]">
+          <div className="mx-auto w-14 h-14 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] flex items-center justify-center mb-5">
             <AlertTriangle className="h-7 w-7" />
           </div>
           <h1 className="text-2xl font-bold font-display text-[var(--text-main)] mb-2">
@@ -355,9 +350,6 @@ export default function JobsScreen() {
               <p className="text-[var(--text-muted)] text-sm mt-1">
                 Keep track of your service requests, bookings, and activity in one place.
               </p>
-            </div>
-            <div className="self-start sm:self-auto">
-              <ThemeToggle idPrefix="jobs-page-theme" />
             </div>
           </div>
 

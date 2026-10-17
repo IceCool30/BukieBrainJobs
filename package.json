@@ -81,6 +81,9 @@
       "brace-expansion@>=4.0.0 <6": "^5.0.12",
       "@bukiebrainjobs/mobile>react": "18.3.1",
       "@bukiebrainjobs/mobile>react-dom": "18.3.1"
+    },
+    "patchedDependencies": {
+      "metro@0.81.5": "patches/metro@0.81.5.patch"
     }
   },
   "workspaces": [

@@ -599,7 +599,7 @@ describe('ConversationHub (TDD Suite 4: HUB-001 to HUB-012)', () => {
 
       expect(link).toHaveAttribute('aria-current', 'page');
       expect(link.className).toContain('focus-visible:ring-2');
-      expect(link.className).toContain('focus-visible:ring-[#001A41]');
+      expect(link.className).toContain('focus-visible:ring-[var(--amber)]');
       expect(card).not.toHaveAttribute('tabindex');
       expect(card).not.toHaveAttribute('aria-selected');
       expect(link.querySelectorAll('a, button, input, [tabindex]')).toHaveLength(0);

@@ -88,7 +88,7 @@ export function LifecycleStepIndicator({ jobStatus, isDeclined = false }: Lifecy
                     isTerminalNegative && idx === currentStepIndex
                       ? 'bg-[var(--tag-bg)] text-[var(--text-muted)] ring-4 ring-[var(--lead)]'
                       : isDeclined && idx === 1
-                      ? 'bg-amber-500/20 text-amber-600 dark:text-amber-400 ring-4 ring-amber-500/10'
+                      ? 'bg-[var(--amber-dim)] text-[var(--amber)] ring-4 ring-amber-500/10'
                       : isCompleted
                       ? 'bg-[var(--brand-green)] text-white'
                       : isCurrent
@@ -99,7 +99,7 @@ export function LifecycleStepIndicator({ jobStatus, isDeclined = false }: Lifecy
                   {isTerminalNegative && idx === currentStepIndex ? (
                     <X className="w-4 h-4 text-[var(--text-muted)]" aria-hidden="true" />
                   ) : isDeclined && idx === 1 ? (
-                    <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+                    <AlertCircle className="w-4 h-4 text-[var(--amber)]" aria-hidden="true" />
                   ) : isCompleted ? (
                     <Check className="w-4 h-4 text-white" aria-hidden="true" />
                   ) : (
@@ -149,7 +149,7 @@ export function LifecycleStepIndicator({ jobStatus, isDeclined = false }: Lifecy
                   isTerminalNegative && idx === currentStepIndex
                     ? 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
                     : isDeclined && idx === 1
-                    ? 'bg-amber-500/20 text-amber-600 dark:text-amber-400'
+                    ? 'bg-[var(--amber-dim)] text-[var(--amber)]'
                     : isCompleted
                     ? 'bg-[var(--brand-green)] text-white'
                     : isCurrent

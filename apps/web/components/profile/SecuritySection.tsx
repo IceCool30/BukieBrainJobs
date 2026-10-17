@@ -121,7 +121,7 @@ export function SecuritySection({
         {passwordError && (
           <div
             role="alert"
-            className="p-3.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2.5"
+            className="p-3.5 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs flex items-center gap-2.5"
           >
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{passwordError}</span>
@@ -131,7 +131,7 @@ export function SecuritySection({
         {passwordSuccess && (
           <div
             role="status"
-            className="p-3.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2.5"
+            className="p-3.5 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2.5"
           >
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             <span>{passwordSuccess}</span>
@@ -227,7 +227,7 @@ export function SecuritySection({
                 <p className="text-[11px] text-[var(--text-muted)]">Fast sign-in via SMS verification code</p>
               </div>
             </div>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] text-[10px] font-bold border border-[var(--brand-green-border)]">
               <ShieldCheck className="h-3 w-3" />
               Active
             </span>
@@ -243,7 +243,7 @@ export function SecuritySection({
                 <p className="text-[11px] text-[var(--text-muted)]">Traditional login credential</p>
               </div>
             </div>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] text-[10px] font-bold border border-[var(--brand-green-border)]">
               <ShieldCheck className="h-3 w-3" />
               Active
             </span>
@@ -281,7 +281,7 @@ export function SecuritySection({
               type="button"
               disabled={isSigningOutSessions || isOffline}
               onClick={handleSignOutOtherSessions}
-              className="min-h-[44px] text-xs font-semibold text-red-500 hover:text-red-600 transition cursor-pointer disabled:opacity-50 text-left sm:text-right"
+              className="min-h-[44px] text-xs font-semibold text-[var(--danger)] hover:text-[var(--danger)] transition cursor-pointer disabled:opacity-50 text-left sm:text-right"
             >
               {isSigningOutSessions ? 'Signing out...' : 'Sign out other devices'}
             </button>
@@ -291,7 +291,7 @@ export function SecuritySection({
         {sessionSuccess && (
           <div
             role="status"
-            className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2"
+            className="p-3 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2"
           >
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             <span>{sessionSuccess}</span>

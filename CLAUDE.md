@@ -55,7 +55,7 @@ SKILL GATE
 - mr-solomon-nine-command-engineering-loop: APPLIED
 - mr-solomon-natural-voice: APPLIED
 - bukiebrainjobs-content-style: OUT OF SCOPE (no customer-facing copy in this task)
-- bukiebrainjobs-trades-design-system: OUT OF SCOPE (no trades styling or dual-theme layout change)
+- bukiebrainjobs-trades-design-system: OUT OF SCOPE (no trades styling or theme change)
 - bukiebrainjobs-experience-standards: OUT OF SCOPE (no UI or interaction change)
 - ui-ux-pro-max: OUT OF SCOPE (no visual or layout decision)
 - agent-skills-test-driven-development: APPLIED

@@ -77,19 +77,19 @@ export function PortfolioGalleryManager({
   return (
     <div className="space-y-6">
       {/* Header with counter indicator and add work trigger */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--lead)] pb-4">
         <div>
-          <h2 className="text-lg font-semibold text-slate-100">
+          <h2 className="text-lg font-semibold text-[var(--text-main)]">
             Past Work Portfolio
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[var(--text-muted)]">
             Showcase verified craftsmanship with before and after project photos.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <span
             data-testid="portfolio-count-indicator"
-            className="text-xs font-semibold text-slate-400 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700"
+            className="text-xs font-semibold text-[var(--text-muted)] bg-[var(--tag-bg)] px-3 py-1.5 rounded-full border border-[var(--lead)]"
           >
             {portfolioItems.length} / {MAX_PORTFOLIO_ITEMS} items used
           </span>
@@ -98,7 +98,7 @@ export function PortfolioGalleryManager({
             data-testid="add-portfolio-btn"
             disabled={isCapped}
             onClick={() => setIsAddModalOpen(true)}
-            className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-emerald-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add Work Sample
           </button>
@@ -106,7 +106,7 @@ export function PortfolioGalleryManager({
       </div>
 
       {isCapped && (
-        <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-300">
+        <div className="rounded-lg border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-3 text-xs text-[var(--amber)]">
           Portfolio limit reached. You have uploaded the maximum allowed 20 items. Delete an older sample to add a new project.
         </div>
       )}
@@ -115,10 +115,10 @@ export function PortfolioGalleryManager({
       {portfolioItems.length === 0 ? (
         <div
           data-testid="portfolio-empty-state"
-          className="rounded-xl border border-dashed border-slate-700 p-8 text-center text-slate-400"
+          className="rounded-xl border border-dashed border-[var(--lead)] p-8 text-center text-[var(--text-muted)]"
         >
           <p className="text-sm font-medium">No work samples added yet.</p>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[var(--text-muted)] mt-1">
             Upload your first completed project to build client confidence.
           </p>
         </div>
@@ -138,10 +138,10 @@ export function PortfolioGalleryManager({
             return (
               <div
                 key={item.id}
-                className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900 shadow-sm flex flex-col"
+                className="overflow-hidden rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] shadow-sm flex flex-col"
               >
                 {/* Image Container */}
-                <div className="relative aspect-video w-full bg-slate-950 overflow-hidden">
+                <div className="relative aspect-video w-full bg-[var(--bg)] overflow-hidden">
                   <img
                     src={displayImageUrl}
                     alt={item.title}
@@ -157,7 +157,7 @@ export function PortfolioGalleryManager({
                       {currentView === 'before' ? 'Show After' : 'Show Before'}
                     </button>
                   )}
-                  <span className="absolute top-2 left-2 rounded bg-slate-900/80 px-2 py-0.5 text-xs font-semibold text-emerald-400 border border-slate-700">
+                  <span className="absolute top-2 left-2 rounded bg-[var(--bg)] px-2 py-0.5 text-xs font-semibold text-[var(--brand-green)] border border-[var(--lead)]">
                     {item.category}
                   </span>
                 </div>
@@ -165,22 +165,22 @@ export function PortfolioGalleryManager({
                 {/* Card Content */}
                 <div className="p-4 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-semibold text-slate-100 text-sm line-clamp-1">
+                    <h3 className="font-semibold text-[var(--text-main)] text-sm line-clamp-1">
                       {item.title}
                     </h3>
-                    <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                    <p className="text-xs text-[var(--text-muted)] mt-1 line-clamp-2">
                       {item.description}
                     </p>
                   </div>
-                  <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
-                    <span className="text-xs text-slate-500">
+                  <div className="mt-4 pt-3 border-t border-[var(--lead)] flex items-center justify-between">
+                    <span className="text-xs text-[var(--text-muted)]">
                       {new Date(item.completedDate).toLocaleDateString()}
                     </span>
                     <button
                       type="button"
                       data-testid={`delete-portfolio-item-btn-${item.id}`}
                       onClick={() => setItemToDelete(item.id)}
-                      className="text-xs font-medium text-rose-400 hover:text-rose-300"
+                      className="text-xs font-medium text-[var(--danger)] hover:text-[var(--danger)]"
                     >
                       Delete
                     </button>
@@ -198,20 +198,20 @@ export function PortfolioGalleryManager({
           data-testid="portfolio-form-modal"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
         >
-          <div className="w-full max-w-lg rounded-xl border border-slate-700 bg-slate-900 p-6 shadow-xl space-y-4">
-            <h3 className="text-base font-semibold text-slate-100">
+          <div className="w-full max-w-lg rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-xl space-y-4">
+            <h3 className="text-base font-semibold text-[var(--text-main)]">
               Add Work Sample
             </h3>
 
             {formError && (
-              <div className="rounded-lg bg-rose-500/10 border border-rose-500/20 p-2 text-xs text-rose-300">
+              <div className="rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] p-2 text-xs text-[var(--danger)]">
                 {formError}
               </div>
             )}
 
             <form onSubmit={handleAddSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
+                <label className="block text-xs font-medium text-[var(--text-muted)] mb-1">
                   Project Title
                 </label>
                 <input
@@ -220,12 +220,12 @@ export function PortfolioGalleryManager({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. 5kVA Solar Inverter Setup"
-                  className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  className="w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-2 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--amber)]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
+                <label className="block text-xs font-medium text-[var(--text-muted)] mb-1">
                   Trade Category
                 </label>
                 <input
@@ -234,12 +234,12 @@ export function PortfolioGalleryManager({
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   placeholder="e.g. Solar & Inverter"
-                  className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  className="w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-2 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--amber)]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
+                <label className="block text-xs font-medium text-[var(--text-muted)] mb-1">
                   Description
                 </label>
                 <textarea
@@ -247,13 +247,13 @@ export function PortfolioGalleryManager({
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Brief summary of work done and materials fitted..."
-                  className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  className="w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-2 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--amber)]"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
+                  <label className="block text-xs font-medium text-[var(--text-muted)] mb-1">
                     Before Image URL (Optional)
                   </label>
                   <input
@@ -261,11 +261,11 @@ export function PortfolioGalleryManager({
                     value={beforeImageUrl}
                     onChange={(e) => setBeforeImageUrl(e.target.value)}
                     placeholder="https://example.com/before.jpg"
-                    className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                    className="w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-2 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--amber)]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
+                  <label className="block text-xs font-medium text-[var(--text-muted)] mb-1">
                     After Image URL (Required)
                   </label>
                   <input
@@ -274,7 +274,7 @@ export function PortfolioGalleryManager({
                     value={afterImageUrl}
                     onChange={(e) => setAfterImageUrl(e.target.value)}
                     placeholder="https://example.com/after.jpg"
-                    className="w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                    className="w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-2 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--amber)]"
                   />
                 </div>
               </div>
@@ -283,13 +283,13 @@ export function PortfolioGalleryManager({
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="rounded-lg bg-slate-800 px-4 py-2 text-xs font-medium text-slate-300 hover:bg-slate-700"
+                  className="rounded-lg bg-[var(--tag-bg)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-500"
+                  className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-semibold text-white hover:bg-[var(--amber-hover)]"
                 >
                   Add Work
                 </button>
@@ -302,25 +302,25 @@ export function PortfolioGalleryManager({
       {/* Delete Confirmation Modal */}
       {itemToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-sm rounded-xl border border-slate-700 bg-slate-900 p-6 shadow-xl space-y-4">
-            <h3 className="text-base font-semibold text-slate-100">
+          <div className="w-full max-w-sm rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-xl space-y-4">
+            <h3 className="text-base font-semibold text-[var(--text-main)]">
               Confirm Delete
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[var(--text-muted)]">
               Are you sure you want to delete this portfolio sample? This action cannot be undone.
             </p>
             <div className="flex justify-end gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setItemToDelete(null)}
-                className="rounded-lg bg-slate-800 px-4 py-2 text-xs font-medium text-slate-300 hover:bg-slate-700"
+                className="rounded-lg bg-[var(--tag-bg)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleConfirmDelete}
-                className="rounded-lg bg-rose-600 px-4 py-2 text-xs font-semibold text-white hover:bg-rose-500"
+                className="rounded-lg bg-[var(--danger)] px-4 py-2 text-xs font-semibold text-white hover:opacity-90"
               >
                 Confirm Delete Work
               </button>

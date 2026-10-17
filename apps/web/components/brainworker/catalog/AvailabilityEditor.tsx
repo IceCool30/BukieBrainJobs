@@ -224,12 +224,12 @@ export function AvailabilityEditor({
       aria-label="Availability and Schedule"
       className={className ? `space-y-8 ${className}` : 'space-y-8'}
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-[var(--lead)]">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+          <h2 className="text-2xl font-bold text-[var(--text-main)] tracking-tight">
             Availability and Weekly Schedule
           </h2>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+          <p className="mt-1 text-sm text-[var(--text-muted)] max-w-2xl leading-relaxed">
             Set the days and hours you are open for jobs. Keep this honest so every
             request matches what you can deliver.
           </p>
@@ -242,8 +242,8 @@ export function AvailabilityEditor({
             onClick={handleSave}
             className={
               isSaveDisabled
-                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed transition-colors'
-                : 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[#001A41] dark:bg-emerald-600 text-white dark:text-slate-950 hover:bg-[#002866] dark:hover:bg-emerald-500 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[#001A41]'
+                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed transition-colors'
+                : 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]'
             }
           >
             {isSaving ? 'Saving Changes...' : 'Save changes'}
@@ -254,7 +254,7 @@ export function AvailabilityEditor({
       {saveError && (
         <div
           role="alert"
-          className="p-4 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 text-sm text-red-800 dark:text-red-300 font-medium"
+          className="p-4 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-sm text-[var(--danger)] font-medium"
         >
           {saveError}
         </div>
@@ -264,7 +264,7 @@ export function AvailabilityEditor({
         <div
           role="status"
           aria-live="polite"
-          className="p-4 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-sm text-emerald-800 dark:text-emerald-300 font-medium"
+          className="p-4 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-sm text-[var(--brand-green)] font-medium"
         >
           {successToast}
         </div>
@@ -290,15 +290,15 @@ export function AvailabilityEditor({
             }}
             className={
               availability.isAvailable
-                ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 dark:bg-emerald-500 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
-                : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 dark:bg-slate-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[var(--amber)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2'
+                : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[var(--rule)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2'
             }
           >
             <span
               className={
                 availability.isAvailable
-                  ? 'translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                  : 'translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                  ? 'translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--card-bg)] shadow ring-0 transition duration-200 ease-in-out'
+                  : 'translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--card-bg)] shadow ring-0 transition duration-200 ease-in-out'
               }
             />
           </button>
@@ -324,7 +324,7 @@ export function AvailabilityEditor({
               setSuccessToast(null);
               copyMondayHoursToWeekdays();
             }}
-            className="px-4 py-2 text-sm font-semibold rounded-lg bg-[var(--card-bg)] text-[var(--text-main)] border border-[var(--card-border)] hover:bg-[var(--bg)] transition-colors focus:outline-none focus:ring-2 focus:ring-[#001A41]"
+            className="px-4 py-2 text-sm font-semibold rounded-lg bg-[var(--card-bg)] text-[var(--text-main)] border border-[var(--card-border)] hover:bg-[var(--bg)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
           >
             Copy to weekdays
           </button>
@@ -363,15 +363,15 @@ export function AvailabilityEditor({
                     }}
                     className={
                       schedule.isActive
-                        ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 dark:bg-emerald-500 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
-                        : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 dark:bg-slate-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                        ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[var(--amber)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2'
+                        : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[var(--rule)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2'
                     }
                   >
                     <span
                       className={
                         schedule.isActive
-                          ? 'translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                          : 'translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                          ? 'translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--card-bg)] shadow ring-0 transition duration-200 ease-in-out'
+                          : 'translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--card-bg)] shadow ring-0 transition duration-200 ease-in-out'
                       }
                     />
                   </button>
@@ -380,7 +380,7 @@ export function AvailabilityEditor({
                   <div className="flex-1">
                     <label
                       htmlFor={`start-${day}`}
-                      className="block text-xs font-medium text-slate-700 dark:text-slate-300"
+                      className="block text-xs font-medium text-[var(--text-muted)]"
                     >
                       Start hour
                     </label>
@@ -397,7 +397,7 @@ export function AvailabilityEditor({
                           e.target.value === '' ? 0 : Number(e.target.value);
                         updateDaySchedule(day, { startHour: val });
                       }}
-                      className="mt-1 block w-full rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-2 text-[var(--text-main)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm font-medium"
+                      className="mt-1 block w-full rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-2 text-[var(--text-main)] focus:border-[var(--amber)] focus:ring-2 focus:ring-[var(--amber)] focus:outline-none sm:text-sm font-medium"
                       aria-invalid={showError ? 'true' : 'false'}
                       aria-describedby={showError ? `${day}-schedule-error` : undefined}
                     />
@@ -422,7 +422,7 @@ export function AvailabilityEditor({
                           e.target.value === '' ? 0 : Number(e.target.value);
                         updateDaySchedule(day, { endHour: val });
                       }}
-                      className="mt-1 block w-full rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-2 text-[var(--text-main)] focus:border-[#001A41] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#001A41] dark:focus:ring-emerald-500/20 focus:outline-none sm:text-sm font-medium"
+                      className="mt-1 block w-full rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-2 text-[var(--text-main)] focus:border-[var(--amber)] focus:ring-2 focus:ring-[var(--amber)] focus:outline-none sm:text-sm font-medium"
                       aria-invalid={showError ? 'true' : 'false'}
                       aria-describedby={showError ? `${day}-schedule-error` : undefined}
                     />
@@ -432,7 +432,7 @@ export function AvailabilityEditor({
                   <p
                     id={`${day}-schedule-error`}
                     role="alert"
-                    className="text-xs text-red-600 font-medium sm:basis-full"
+                    className="text-xs text-[var(--danger)] font-medium sm:basis-full"
                   >
                     {errorMessage}
                   </p>
@@ -463,15 +463,15 @@ export function AvailabilityEditor({
             }}
             className={
               availability.isEmergencyAvailable
-                ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-emerald-600 dark:bg-emerald-500 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
-                : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 dark:bg-slate-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#001A41] focus:ring-offset-2'
+                ? 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[var(--amber)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2'
+                : 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[var(--rule)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2'
             }
           >
             <span
               className={
                 availability.isEmergencyAvailable
-                  ? 'translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                  : 'translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                  ? 'translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--card-bg)] shadow ring-0 transition duration-200 ease-in-out'
+                  : 'translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--card-bg)] shadow ring-0 transition duration-200 ease-in-out'
               }
             />
           </button>

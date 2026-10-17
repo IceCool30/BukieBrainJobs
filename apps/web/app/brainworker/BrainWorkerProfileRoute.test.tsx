@@ -343,7 +343,9 @@ describe('BrainWorker Profile and Portfolio Route Contracts (ROUTE-001 to ROUTE-
     }).not.toThrow();
 
     expect(markup).toContain('BukieBrainJobs');
-    expect(markup).not.toMatch(/₦|NGN|wallet|escrow|bank account|payout/i);
+    // The shared workspace nav links to the Wallet section; the decoupling rule covers profile content only.
+    const content = markup.replace(/<nav aria-label="BrainWorker workspace"[\s\S]*?<\/nav>/, '');
+    expect(content).not.toMatch(/₦|NGN|wallet|escrow|bank account|payout/i);
 
     // Verify physical boundary: page.tsx does not import from testing/
     const pagePath = path.join(__dirname, 'profile', 'page.tsx');

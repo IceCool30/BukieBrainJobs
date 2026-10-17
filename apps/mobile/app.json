@@ -6,11 +6,11 @@
     "orientation": "portrait",
     "icon": "./assets/images/logo-icon.png",
     "scheme": "bukiebrainjobs",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#FFFFFF"
+      "backgroundColor": "#0B0E13"
     },
     "ios": {
       "supportsTablet": true,
@@ -32,7 +32,8 @@
       "expo-router"
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "tsconfigPaths": false
     }
   }
 }

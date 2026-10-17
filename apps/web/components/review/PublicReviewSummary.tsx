@@ -55,7 +55,7 @@ export function PublicReviewSummary({ summary }: PublicReviewSummaryProps) {
             {totalReviews} {totalReviews === 1 ? 'review' : 'reviews'}
           </div>
           <div className="pt-1">
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/10 text-[var(--brand-green)] border border-emerald-500/20 text-[11px] font-semibold">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] text-[11px] font-semibold">
               <ShieldCheck className="w-3 h-3" />
               <span>Verified bookings only</span>
             </span>

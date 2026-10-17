@@ -154,7 +154,7 @@ describe('WEB-011 JobsScreen Component (TDD)', () => {
 
     const watermarkImg = screen.getByAltText('');
     expect(watermarkImg).toBeInTheDocument();
-    expect(watermarkImg).toHaveAttribute('src', '/images/logo-badge-512.png');
+    expect(watermarkImg).toHaveAttribute('src', '/images/logo-watermark.png');
     expect(watermarkImg).toHaveAttribute('aria-hidden', 'true');
   });
 

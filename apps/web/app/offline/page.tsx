@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { WifiOff, RefreshCw, ArrowLeft, ShieldCheck, PhoneCall, LayoutDashboard } from 'lucide-react';
-import ThemeToggle from '../../components/ThemeToggle';
 
 export default function OfflinePage() {
   const [isChecking, setIsChecking] = useState(false);
@@ -51,13 +50,9 @@ export default function OfflinePage() {
               height={32}
               className="h-8 w-8 rounded-lg object-contain"
             />
-            <span>
-              Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
-            </span>
           </Link>
           <div className="flex items-center gap-3">
-            <ThemeToggle idPrefix="offline-theme" />
-            <div className="inline-flex items-center gap-1.5 rounded-md border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs font-semibold text-[var(--amber)]">
+            <div className="inline-flex items-center gap-1.5 rounded-md border border-[var(--amber)]/30 bg-[var(--amber-dim)] px-2.5 py-1 text-xs font-semibold text-[var(--amber)]">
               <WifiOff className="h-3.5 w-3.5 text-[var(--amber)]" aria-hidden="true" />
               <span>Offline</span>
             </div>
@@ -74,7 +69,7 @@ export default function OfflinePage() {
             aria-hidden="true"
           >
             <Image
-              src="/images/logo-badge-512.png"
+              src="/images/logo-watermark.png"
               alt=""
               width={260}
               height={260}
@@ -97,7 +92,7 @@ export default function OfflinePage() {
             {retryNotice && (
               <div
                 role="status"
-                className="mt-4 w-full rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs font-medium text-[var(--amber)] animate-in fade-in duration-200"
+                className="mt-4 w-full rounded-lg border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-3 text-xs font-medium text-[var(--amber)] animate-in fade-in duration-200"
               >
                 {retryNotice}
               </div>

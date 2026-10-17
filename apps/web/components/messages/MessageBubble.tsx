@@ -60,7 +60,7 @@ export function MessageBubble({
   const isSent = status === 'sent';
 
   const bubbleClasses = isCurrentUser
-    ? 'bg-[#001A41] text-white border border-[#001A41] rounded-lg rounded-br-xs shadow-xs'
+    ? 'bg-[var(--text-main)] text-[var(--bg)] border border-[var(--text-main)] rounded-lg rounded-br-xs shadow-xs'
     : 'bg-[var(--card-bg)] text-[var(--text-main)] border border-[var(--lead)] ring-white/0 rounded-lg rounded-bl-xs shadow-xs';
 
   const timestamp = formatMessageTimestamp(message.createdAt);
@@ -166,7 +166,7 @@ export function MessageBubble({
           {isFailed && !isCurrentUser && (
             <div
               role="alert"
-              className="mt-1 px-3 py-1.5 bg-red-500/10 border border-red-500/30 rounded-lg text-[11px] text-red-500 font-medium"
+              className="mt-1 px-3 py-1.5 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-lg text-[11px] text-[var(--danger)] font-medium"
             >
               Message failed to deliver
             </div>

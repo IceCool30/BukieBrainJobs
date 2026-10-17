@@ -132,10 +132,10 @@ export function JobsPartialFailureNotice({ onRetry }: JobsPartialFailureNoticePr
   return (
     <div
       role="alert"
-      className="mb-6 bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-amber-600 dark:text-amber-400"
+      className="mb-6 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[var(--amber)]"
     >
       <div className="flex items-center gap-3">
-        <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0" />
+        <AlertTriangle className="h-5 w-5 text-[var(--amber)] shrink-0" />
         <div className="text-xs sm:text-sm">
           <span className="font-bold">Could not refresh active work.</span> Showing saved offline context.
         </div>
@@ -143,7 +143,7 @@ export function JobsPartialFailureNotice({ onRetry }: JobsPartialFailureNoticePr
       <button
         type="button"
         onClick={onRetry}
-        className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-500/20 hover:bg-amber-500/30 px-3 py-1.5 rounded-lg transition shrink-0 cursor-pointer"
+        className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--amber)] bg-[var(--amber-dim)] hover:bg-amber-500/30 px-3 py-1.5 rounded-lg transition shrink-0 cursor-pointer"
       >
         <RotateCcw className="h-3.5 w-3.5" />
         <span>Retry active work</span>

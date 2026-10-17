@@ -176,7 +176,7 @@ export function PublicReviewFeed({
               <span>Loading reviews...</span>
             </div>
           ) : error ? (
-            <div className="p-6 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
+            <div className="p-6 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-sm">
               <p>{error}</p>
               <button
                 type="button"

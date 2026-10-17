@@ -18,7 +18,6 @@ import {
   WifiOff,
   X,
 } from 'lucide-react';
-import ThemeToggle from '../ThemeToggle';
 import {
   CustomerJobDraft,
   validateCustomerJobDraft,
@@ -51,7 +50,7 @@ type SubmitStatus = 'idle' | 'pending' | 'error' | 'success';
 function FieldError({ id, message }: { id: string; message?: string | undefined }) {
   if (!message) return null;
   return (
-    <p id={id} className="mt-1.5 text-xs font-semibold text-red-600 dark:text-red-400 flex items-center gap-1" role="alert">
+    <p id={id} className="mt-1.5 text-xs font-semibold text-[var(--danger)] flex items-center gap-1" role="alert">
       <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
       {message}
     </p>
@@ -272,12 +271,8 @@ export default function PostJobScreen() {
                 height={32}
                 className="h-8 w-8 rounded-lg object-contain"
               />
-              <span>
-                Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
-              </span>
             </Link>
             <div className="flex items-center gap-3">
-              <ThemeToggle idPrefix="post-job-success-theme" />
               <Link
                 href="/services"
                 className="motion-press inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-[var(--text-main)] hover:text-[var(--amber)] transition-colors"
@@ -290,7 +285,7 @@ export default function PostJobScreen() {
 
         <main className="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
           <div className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] p-6 shadow-xs sm:p-8 text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-emerald-500/10 text-[var(--brand-green)] border border-emerald-500/20">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]">
               <CheckCircle2 className="h-10 w-10" aria-hidden="true" />
             </div>
 
@@ -340,7 +335,7 @@ export default function PostJobScreen() {
                 aria-hidden="true"
               >
                 <Image
-                  src="/images/logo-badge-512.png"
+                  src="/images/logo-watermark.png"
                   alt=""
                   width={220}
                   height={220}
@@ -439,7 +434,6 @@ export default function PostJobScreen() {
             Back to services
           </Link>
           <div className="flex items-center gap-3">
-            <ThemeToggle idPrefix="post-job-theme" />
             <Link
               href="/"
               className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
@@ -451,9 +445,6 @@ export default function PostJobScreen() {
                 height={32}
                 className="h-8 w-8 rounded-lg object-contain"
               />
-              <span>
-                Bukie<span className="text-[var(--brand-green)]">BrainJobs</span>
-              </span>
             </Link>
           </div>
         </div>
@@ -464,7 +455,7 @@ export default function PostJobScreen() {
         {restoredBanner && (
           <aside
             aria-label="Restored job draft"
-            className="mb-6 flex items-start justify-between rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4 shadow-xs sm:p-5"
+            className="mb-6 flex items-start justify-between rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4 shadow-xs sm:p-5"
           >
             <div className="flex items-start gap-3">
               <CheckCircle2 className="h-5 w-5 shrink-0 text-[var(--brand-green)] mt-0.5" aria-hidden="true" />
@@ -491,13 +482,13 @@ export default function PostJobScreen() {
         {status === 'error' && (
           <aside
             aria-label="Submission error"
-            className="mb-6 flex flex-col gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between sm:p-5"
+            className="mb-6 flex flex-col gap-3 rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between sm:p-5"
             role="alert"
           >
             <div className="flex items-start gap-3">
-              <WifiOff className="h-5 w-5 shrink-0 text-red-500 mt-0.5" aria-hidden="true" />
+              <WifiOff className="h-5 w-5 shrink-0 text-[var(--danger)] mt-0.5" aria-hidden="true" />
               <div>
-                <h2 className="text-sm font-bold text-red-500">
+                <h2 className="text-sm font-bold text-[var(--danger)]">
                   Submission could not be completed right now
                 </h2>
                 <p className="mt-0.5 text-xs text-[var(--text-muted)]">
@@ -507,7 +498,7 @@ export default function PostJobScreen() {
             </div>
             <button
               onClick={finishSubmission}
-              className="motion-press inline-flex min-h-11 items-center justify-center rounded-lg bg-red-600 px-4 text-xs font-bold text-white transition-colors hover:bg-red-700 cursor-pointer"
+              className="motion-press inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--danger)] px-4 text-xs font-bold text-white transition-colors hover:opacity-90 cursor-pointer"
             >
               Try again
             </button>
@@ -522,7 +513,7 @@ export default function PostJobScreen() {
               Open Customer Request
             </span>
             {selectedWorker && (
-              <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-[var(--brand-green)]">
+              <span className="inline-flex items-center gap-1 rounded-md border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] px-2.5 py-1 text-xs font-semibold text-[var(--brand-green)]">
                 <UserCheck className="h-3.5 w-3.5" />
                 Preferred: {selectedWorker.name}
               </span>
@@ -597,7 +588,7 @@ export default function PostJobScreen() {
                 {/* Job Type Selector */}
                 <fieldset className="mb-5">
                   <legend className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)] mb-2">
-                    What type of work is this? <span className="text-red-500">*</span>
+                    What type of work is this? <span className="text-[var(--danger)]">*</span>
                   </legend>
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <label
@@ -683,7 +674,7 @@ export default function PostJobScreen() {
                       htmlFor="post-job-title-input"
                       className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)]"
                     >
-                      Job title <span className="text-red-500">*</span>
+                      Job title <span className="text-[var(--danger)]">*</span>
                     </label>
                     <span className="text-xs text-[var(--text-muted)]">
                       {formData.title?.length || 0}/100
@@ -714,7 +705,7 @@ export default function PostJobScreen() {
                       htmlFor="post-job-description-input"
                       className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)]"
                     >
-                      Job description <span className="text-red-500">*</span>
+                      Job description <span className="text-[var(--danger)]">*</span>
                     </label>
                     <span className="text-xs text-[var(--text-muted)]">
                       {formData.description?.length || 0}/1,000
@@ -766,7 +757,7 @@ export default function PostJobScreen() {
                     htmlFor="post-job-city-select"
                     className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)] mb-1"
                   >
-                    City / Operating Area <span className="text-red-500">*</span>
+                    City / Operating Area <span className="text-[var(--danger)]">*</span>
                   </label>
                   <select
                     id="post-job-city-select"
@@ -791,8 +782,8 @@ export default function PostJobScreen() {
 
                   {/* Notice if unactivated city from query parameter */}
                   {!context.isCityActive && context.rawCity && (
-                    <div className="mt-2 flex items-start gap-2 rounded-lg bg-amber-500/10 border border-amber-500/20 p-3 text-xs text-amber-600 dark:text-amber-400">
-                      <Info className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                    <div className="mt-2 flex items-start gap-2 rounded-lg bg-[var(--amber-dim)] border border-[var(--amber)]/30 p-3 text-xs text-[var(--amber)]">
+                      <Info className="h-4 w-4 text-[var(--amber)] shrink-0 mt-0.5" />
                       <div>
                         <span className="font-semibold">Service in {context.rawCity} coming soon:</span> We currently operate active BrainWorker hubs in Lagos, Abuja, Port Harcourt, Ibadan, Enugu, Kano, and Benin City. Please select an active city.
                       </div>
@@ -806,7 +797,7 @@ export default function PostJobScreen() {
                     htmlFor="post-job-streetAddress-input"
                     className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)] mb-1"
                   >
-                    Street address <span className="text-red-500">*</span>
+                    Street address <span className="text-[var(--danger)]">*</span>
                   </label>
                   <input
                     id="post-job-streetAddress-input"
@@ -877,7 +868,7 @@ export default function PostJobScreen() {
 
                 <fieldset className="mb-5">
                   <legend className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)] mb-2">
-                    When do you need this completed? <span className="text-red-500">*</span>
+                    When do you need this completed? <span className="text-[var(--danger)]">*</span>
                   </legend>
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                     {[
@@ -917,7 +908,7 @@ export default function PostJobScreen() {
                       htmlFor="post-job-preferredDate-input"
                       className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)] mb-1"
                     >
-                      Preferred service date <span className="text-red-500">*</span>
+                      Preferred service date <span className="text-[var(--danger)]">*</span>
                     </label>
                     <input
                       id="post-job-preferredDate-input"
@@ -1050,7 +1041,7 @@ export default function PostJobScreen() {
                 </div>
 
                 {selectedWorker ? (
-                  <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4">
+                  <div className="rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
                         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--lead)] text-sm font-bold text-[var(--text-main)]">
@@ -1059,7 +1050,7 @@ export default function PostJobScreen() {
                         <div>
                           <p className="text-sm font-bold text-[var(--text-main)] flex items-center gap-1.5">
                             {selectedWorker.name}
-                            <span className="inline-flex items-center rounded-md bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-bold text-[var(--brand-green)]">
+                            <span className="inline-flex items-center rounded-md bg-[var(--brand-green-dim)] px-1.5 py-0.5 text-[10px] font-bold text-[var(--brand-green)]">
                               Verified
                             </span>
                           </p>
@@ -1072,13 +1063,13 @@ export default function PostJobScreen() {
                           handleFieldChange('preferredWorkerId', '');
                           handleFieldChange('preferredWorkerName', '');
                         }}
-                        className="text-xs font-semibold text-red-500 hover:text-red-400 cursor-pointer"
+                        className="text-xs font-semibold text-[var(--danger)] hover:text-[var(--danger)] cursor-pointer"
                       >
                         Remove preference
                       </button>
                     </div>
 
-                    <div className="mt-3 text-xs text-[var(--text-muted)] flex items-start gap-1.5 border-t border-emerald-500/20 pt-2.5">
+                    <div className="mt-3 text-xs text-[var(--text-muted)] flex items-start gap-1.5 border-t border-[var(--brand-green-border)] pt-2.5">
                       <Info className="h-4 w-4 text-[var(--brand-green)] shrink-0 mt-0.5" />
                       <span>
                         <strong className="text-[var(--text-main)]">Preference only:</strong> This BrainWorker will be notified first, but this request remains an open post. No BrainWorker is assigned until proposal review.
@@ -1134,7 +1125,7 @@ export default function PostJobScreen() {
                 aria-hidden="true"
               >
                 <Image
-                  src="/images/logo-badge-512.png"
+                  src="/images/logo-watermark.png"
                   alt=""
                   width={240}
                   height={240}
@@ -1146,7 +1137,7 @@ export default function PostJobScreen() {
                 <h2 className="font-display text-base font-bold text-[var(--text-main)]">
                   Request Preview
                 </h2>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--brand-green)] bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--brand-green)] bg-[var(--brand-green-dim)] px-2 py-0.5 rounded-md border border-[var(--brand-green-border)]">
                   Live summary
                 </span>
               </div>
