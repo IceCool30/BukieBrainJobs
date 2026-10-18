@@ -85,10 +85,10 @@ This file defines the standards and operational map every contributor must follo
 
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
-- **Active Phase**: Phase 2 BrainWorker Web Platform closeout and documentation realignment. All Phase 2 items are recorded complete in `docs/master-checklist.md`; historical feature verification is not a fresh audit in this task.
-- **Active Slice**: No product slice selected. REA gate enforcement and active-task context refresh complete. The owner explicitly authorized merging today's maintenance to `main` through GitHub. No new product implementation is authorized.
-- **Current Product Baseline**: BW-006 BrainWorker Earnings, Wallet & Payouts (Item 2.6, PR #60), merged at `3f0cc64`. Prior merged work includes BW-005 Profile & Portfolio (PR #59), Item 2.2 Operating Dashboard (PR #58), and BW-004 Booking Management (PR #57).
-- **Next Product Slice**: Awaiting owner selection and an approved specification. Phase 3 is next in the roadmap, not an instruction to start implementation.
+- **Active Phase**: Phase 3 Full Two-Sided Marketplace Lifecycle.
+- **Active Slice**: Item 3.2 On-Site Work & In-Progress Verification (`BW-008`). Phases 1 to 5 complete and verified; PR creation pending.
+- **Current Product Baseline**: BW-007 Collaborative Scheduling & Dispatch (Item 3.1, PR #63), merged at `0764acf`.
+- **Next Product Slice**: Item 3.3 Post-Job Completion & Escrow Release (`BW-009`).
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`

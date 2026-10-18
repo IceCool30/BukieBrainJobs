@@ -8,12 +8,11 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- **Product phase**: Phase 2 BrainWorker Web Platform closeout. All Phase 2 items are recorded complete in the master checklist.
-- **Current maintenance**: REA gate enforcement and active-task context refresh complete. The owner explicitly authorized merging today's repository maintenance to `main` through GitHub. No new application implementation or manual production deployment is authorized.
-- **Current product baseline**: BW-006 BrainWorker Earnings, Wallet & Payouts (Item 2.6, PR #60), merged at `3f0cc64`, following BW-005 Profile & Portfolio (PR #59), Item 2.2 Operating Dashboard (PR #58), and BW-004 Booking Management (PR #57).
-- **Next product slice**: Awaiting owner selection and an approved specification. Phase 3 is next in the roadmap but has not been selected for implementation.
-- **Maintenance plan**: `docs/superpowers/plans/2026-10-17-rea-gate-context.md`.
-- **Evidence boundary**: Historical feature test and build results below are retained reports. This maintenance task only verifies the gate script and documentation alignment.
+- **Product phase**: Phase 3 Full Two-Sided Marketplace Lifecycle.
+- **Current product milestone**: BW-008 On-Site Work & In-Progress Verification (Item 3.2, PR creation pending), following BW-007 Collaborative Scheduling & Dispatch (Item 3.1, PR #63 merged at `0764acf`).
+- **Current product baseline**: BW-007 Collaborative Scheduling & Dispatch merged into `main` at `0764acf`.
+- **Current implementation status**: Item 3.2 (BW-008) Phases 1 to 5 verified. 42/42 contracts passed (`ONSITE-001..010`, `REP-001..010`, `COMP-001..012`, `ROUTE-001..010`); 114/114 test files passed (1,707 tests); 7/7 monorepo type-check clean; `/onsite/[bookingId]` compiled cleanly in Next.js production build.
+- **Specification**: `docs/specs/BW-008-onsite-verification.md`.
 
 ## Completed BW-003 Scope Record
 

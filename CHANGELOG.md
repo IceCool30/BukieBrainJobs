@@ -7,6 +7,7 @@ The format follows practical release notes written plainly in engineering langua
 ## [Unreleased]
 
 ### Added
+- BW-008 On-Site Work & In-Progress Verification (Item 3.2 in Master Checklist): Implemented collaborative technician arrival check-in, escrow gate validation, integer kobo scope adjustment workflows, work completion photo proof submission, and protected two-sided route at `/onsite/[bookingId]`. Passed all 42 contracts (`ONSITE-001..010`, `REP-001..010`, `COMP-001..012`, `ROUTE-001..010`) across domain, repository, UI, and route integration layers. Zero regressions across 114 test files and 1,707 passing tests.
 - Added 14 native Node regression tests for the eight-skill gate, including missing REA in required and optional rule files.
 - BW-003 BrainWorker Job Requests & Leads Inbox Phase 7 verified, merged, and live on `main`: PR #53 merged at `db968bc` (implementation `cdb7e54`, closure `b2c7f10`); post-merge CI SUCCESS (runs 37107064066 and 37107064068); 45/45 production contracts re-passed on `main`; type-check 6 successful on `main`; full pre-merge suite 1,369/1,369 tests passed with 0 failures.
 - Integrated the Mr. Solomon 9-Command Engineering Loop as the primary engineering framework across the monorepo.
