@@ -23,7 +23,7 @@ This document provides a single, unified checklist of what has been built, what 
 | **Customer Notifications & Messaging** | **Complete** | Messaging (WEB-017) and Notification Center (WEB-018) both complete and live in production. |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
 | **BrainWorker Platform** | **Complete** | BW-001 Onboarding & Identity, BW-002 Service Catalog & Availability, BW-003 Leads Inbox, BW-004 Booking Management, Item 2.2 Operating Dashboard, BW-005 Profile & Portfolio Management, and BW-006 Earnings, Wallet & Payouts are recorded complete. Latest merge: BW-006, PR #60 at `3f0cc64`; 42/42 wallet contracts reported in Item 2.6. |
-| **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Customer state machine and provider booking management (BW-004 dispatch, check-in, scope adjustment requests, and provider cancellation) complete and verified (138 tests). Customer-side scope approval and dispute mediation remain outstanding. |
+| **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Item 3.1 Collaborative Scheduling & Dispatch (BW-007) complete and verified (42 contracts: 10 SCHED, 10 REP, 12 COMP, 10 ROUTE). Customer state machine, provider booking management (BW-004), and unified scheduling route active. Items 3.2 to 3.4 remain outstanding. |
 | **Mobile Application (`apps/mobile`)** | **Not Built** | Expo starter only. Full native reconstruction required. |
 | **Admin & Operational Console** | **Not Built** | Worker vetting, dispute mediation, category management, analytics. |
 | **Corporate Portal (`/enterprise`)** | **Deferred** | Kept intentionally as Coming Soon until consumer launch. |
@@ -174,10 +174,11 @@ Phase 7: Launch Readiness
 
 ### Phase 3: Full Two-Sided Marketplace Lifecycle
 
-#### 3.1 Collaborative Scheduling & Dispatch
-- [ ] Mutually agreed booking arrival window display.
-- [ ] Reschedule request flow with accept/counter-propose actions for both parties.
-- [ ] Technician dispatch tracker: Status updates when worker departs and arrives at customer premises.
+#### 3.1 Collaborative Scheduling & Dispatch (`BW-007`, Complete: Phases 1 to 5 Verified)
+- [x] Mutually agreed booking arrival window display.
+- [x] Reschedule request flow with accept/counter-propose actions for both parties.
+- [x] Technician dispatch tracker: Status updates when worker departs and arrives at customer premises.
+- [x] Verified implementation: 42/42 scheduling contracts passed (10 SCHED, 10 REP, 12 COMP, 10 ROUTE); 1,665/1,665 monorepo web tests green; 7/7 type-check clean; 44 static and dynamic routes compiled cleanly.
 
 #### 3.2 On-Site Work & In-Progress Verification
 - [ ] Worker check-in confirmation at customer location.
