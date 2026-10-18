@@ -180,11 +180,12 @@ Phase 7: Launch Readiness
 - [x] Technician dispatch tracker: Status updates when worker departs and arrives at customer premises.
 - [x] Verified implementation: 42/42 scheduling contracts passed (10 SCHED, 10 REP, 12 COMP, 10 ROUTE); 1,665/1,665 monorepo web tests green; 7/7 type-check clean; 44 static and dynamic routes compiled cleanly.
 
-#### 3.2 On-Site Work & In-Progress Verification
-- [ ] Worker check-in confirmation at customer location.
-- [ ] Scope adjustment request: Worker submits additional parts or cost request if diagnostics reveal extra work.
-- [ ] Customer approval step for on-site scope adjustments.
-- [ ] Work completion submission: Worker uploads photo proof of completed task and requests customer confirmation.
+#### 3.2 On-Site Work & In-Progress Verification (`BW-008`, Complete: Phases 1 to 5 Verified)
+- [x] Worker check-in confirmation at customer location (GPS coordinates, landmark confirmation, and escrow gate).
+- [x] Scope adjustment request: Worker submits additional parts or cost request if diagnostics reveal extra work.
+- [x] Customer approval step for on-site scope adjustments with integer kobo total settlement recalculation.
+- [x] Work completion submission: Worker uploads photo proof of completed task and requests customer confirmation.
+- [x] Verified implementation: 42/42 on-site contracts passed (10 ONSITE, 10 REP, 12 COMP, 10 ROUTE); 1,707/1,707 monorepo web tests green; 7/7 type-check clean; 44 static and dynamic routes compiled cleanly.
 
 #### 3.3 Post-Job Completion & Escrow Release
 - [ ] Customer confirmation flow: "Confirm Satisfaction & Release Payout".
