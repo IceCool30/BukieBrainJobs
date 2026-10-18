@@ -216,3 +216,17 @@ export class InMemoryOnSiteRepository implements IOnSiteRepository {
     return validation;
   }
 }
+
+let singletonRepository: InMemoryOnSiteRepository | null = null;
+
+export function getOnSiteRepository(): InMemoryOnSiteRepository {
+  if (!singletonRepository) {
+    singletonRepository = new InMemoryOnSiteRepository();
+  }
+  return singletonRepository;
+}
+
+export function resetOnSiteRepository(): void {
+  singletonRepository = null;
+}
+
