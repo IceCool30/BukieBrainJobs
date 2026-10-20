@@ -1,6 +1,6 @@
 // apps/web/lib/completion/types.ts
 // BW-009: Post-Job Completion & Escrow Release
-// Domain Type Definitions
+// Domain Type Definitions and Repository Contracts
 
 import type { JobStatus } from '@bukiebrainjobs/api-types';
 
@@ -87,6 +87,8 @@ export interface ReviewVisibilityEvaluation {
 
 export interface PostJobCompletionState {
   bookingId: string;
+  customerId: string;
+  brainWorkerId: string;
   jobStatus: JobStatus;
   escrowStatus: CompletionEscrowStatus;
   baseQuoteKobo: number;
@@ -95,8 +97,76 @@ export interface PostJobCompletionState {
   settlementBreakdown: CompletionSettlementBreakdown;
   completionSubmittedAt: string;
   customerConfirmedAt?: string | undefined;
+  customerFeedbackNote?: string | undefined;
   autoReleaseDeadline: string;
   isDisputed: boolean;
+  disputeReason?: string | undefined;
+  disputeRaisedBy?: string | undefined;
   customerReview?: MutualReviewRecord | undefined;
   workerReview?: MutualReviewRecord | undefined;
+}
+
+// Domain Error Classes
+export class CompletionNotFoundError extends Error {
+  constructor(bookingId: string) {
+    super(`Completion record not found for booking: ${bookingId}`);
+    this.name = 'CompletionNotFoundError';
+  }
+}
+
+export class UnauthorizedCompletionError extends Error {
+  constructor(message = 'Unauthorized completion action') {
+    super(message);
+    this.name = 'UnauthorizedCompletionError';
+  }
+}
+
+export class CompletionLifecycleError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'CompletionLifecycleError';
+  }
+}
+
+export class DuplicateReviewError extends Error {
+  constructor(
+    message = 'Review already submitted by this party for this booking'
+  ) {
+    super(message);
+    this.name = 'DuplicateReviewError';
+  }
+}
+
+export class DisputeActiveError extends Error {
+  constructor(message = 'Action blocked due to active dispute') {
+    super(message);
+    this.name = 'DisputeActiveError';
+  }
+}
+
+// Repository Interface
+export interface ICompletionRepository {
+  getCompletionState(bookingId: string): Promise<PostJobCompletionState | null>;
+  confirmSatisfaction(
+    bookingId: string,
+    customerId: string,
+    feedbackNote?: string
+  ): Promise<PostJobCompletionState>;
+  triggerAutoRelease(
+    bookingId: string,
+    now?: string
+  ): Promise<PostJobCompletionState>;
+  raiseDispute(
+    bookingId: string,
+    raisedByUserId: string,
+    reason: string
+  ): Promise<PostJobCompletionState>;
+  submitReview(
+    bookingId: string,
+    reviewerId: string,
+    role: 'customer' | 'brainworker',
+    ratings: MutualRatingSubmissionInput
+  ): Promise<PostJobCompletionState>;
+  seed(records: PostJobCompletionState[]): void;
+  clear(): void;
 }
