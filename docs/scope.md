@@ -9,10 +9,10 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 ## Active Work Slice
 
 - **Product phase**: Phase 3 Full Two-Sided Marketplace Lifecycle.
-- **Current product milestone**: BW-008 On-Site Work & In-Progress Verification (Item 3.2, PR creation pending), following BW-007 Collaborative Scheduling & Dispatch (Item 3.1, PR #63 merged at `0764acf`).
-- **Current product baseline**: BW-007 Collaborative Scheduling & Dispatch merged into `main` at `0764acf`.
-- **Current implementation status**: Item 3.2 (BW-008) Phases 1 to 5 verified. 42/42 contracts passed (`ONSITE-001..010`, `REP-001..010`, `COMP-001..012`, `ROUTE-001..010`); 114/114 test files passed (1,707 tests); 7/7 monorepo type-check clean; `/onsite/[bookingId]` compiled cleanly in Next.js production build.
-- **Specification**: `docs/specs/BW-008-onsite-verification.md`.
+- **Current product milestone**: BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR creation pending), following BW-008 On-Site Work & In-Progress Verification (Item 3.2, PR #64 merged at `7501ce7`).
+- **Current product baseline**: BW-008 On-Site Work & In-Progress Verification merged into `main` at `7501ce7`.
+- **Current implementation status**: Item 3.3 (BW-009) Phases 1 to 5 verified. 42/42 contracts passed (`COMPL-001..010`, `REP-001..010`, `COMP-001..012`, `ROUTE-001..010`); 4/4 completion test suites passed; 7/7 monorepo type-check clean; `/completion/[bookingId]` compiles cleanly.
+- **Specification**: `docs/specs/BW-009-post-job-completion.md`.
 
 ## Completed BW-003 Scope Record
 
