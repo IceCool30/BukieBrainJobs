@@ -90,7 +90,7 @@ export function MutualBlindReviewForm({
               </div>
               {customerReview.ratings.comment && (
                 <p className="mt-3 text-sm text-zinc-200">
-                  "{customerReview.ratings.comment}"
+                  &ldquo;{customerReview.ratings.comment}&rdquo;
                 </p>
               )}
               <dl className="mt-3 grid grid-cols-2 gap-2 text-xs text-zinc-400">
@@ -114,7 +114,7 @@ export function MutualBlindReviewForm({
               </div>
               {workerReview.ratings.comment && (
                 <p className="mt-3 text-sm text-zinc-200">
-                  "{workerReview.ratings.comment}"
+                  &ldquo;{workerReview.ratings.comment}&rdquo;
                 </p>
               )}
               <dl className="mt-3 grid grid-cols-2 gap-2 text-xs text-zinc-400">
