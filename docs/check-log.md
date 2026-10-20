@@ -2,6 +2,26 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-10-20: BW-009 Post-Job Completion & Escrow Release (Item 3.3) Verification
+
+- **Branch**: `feature/bw-009-post-job-completion`
+- **Scope**: Item 3.3 in Master Checklist (Post-Job Completion & Escrow Release, BW-009).
+- **Execution & Invariant Summary**:
+  - Implemented 5 sequential TDD phases across domain, repository, UI components, protected route, and documentation.
+  - Integer kobo settlement distribution enforced: Platform fee is strictly 10% (1000 bps) and tasker payout receives the remainder (`taskerPayoutKobo + platformFeeKobo === totalSettlementKobo`).
+  - 72-hour auto-release evaluation accurately computes remaining time and blocks release during active disputes.
+  - Double-blind mutual rating exchange masks reviews until both parties submit or disclosure window elapses.
+  - Protected route at `/completion/[bookingId]` strictly guards authentication, tenant authorization, customer release actions, and dispute modals.
+- **Verification Gates**:
+  - Domain tests: 10/10 passed (`apps/web/lib/completion/domain.test.ts`).
+  - Repository tests: 10/10 passed (`apps/web/lib/completion/repository.test.ts`).
+  - UI component tests: 12/12 passed (`apps/web/components/completion/completion.test.tsx`).
+  - Protected route tests: 10/10 passed (`apps/web/app/completion/[bookingId]/CompletionRoute.test.tsx`).
+  - Total Completion suite: 42/42 tests passing across 4 suites with zero regressions.
+  - TypeScript compiler checks: `pnpm type-check` reported 7/7 packages clean (0 errors).
+  - Punctuation hygiene: Zero em dashes, en dashes, or double hyphens.
+  - Skill gate guard: `bash scripts/check-skill-gate.sh` passed.
+
 ## 2026-10-17: Maintenance Merge Authorization
 
 The owner explicitly instructed merging the maintenance branch to `main`. This supersedes the earlier publication-only boundary. The follow-up changes only remove obsolete authorization wording from task notes and distinguish the unchanged BW-006 product baseline from the maintenance commit. Merge through a GitHub pull request after checking the exact head and required checks; never push directly to `main`. No new product slice or dependency work is authorized. GitHub CI and the usual deployment integration may run automatically after merge; this note does not claim those results in advance.
