@@ -75,6 +75,7 @@ export interface DisputeRecord {
   status: DisputeStatus;
   evidence: DisputeEvidence[];
   timeline: DisputeTimelineEvent[];
+  totalAmountKobo?: number | undefined;
   settlement?: DisputeSettlementBreakdown | undefined;
   resolutionNotes?: string | undefined;
   createdAt: string;
@@ -91,6 +92,7 @@ export interface DisputeInitiationInput {
   callerRole: DisputeParticipantRole;
   category: DisputeCategory;
   description: string;
+  totalAmountKobo?: number | undefined;
   evidence?: DisputeEvidence[] | undefined;
 }
 
@@ -161,12 +163,33 @@ export class DisputeEvidenceValidationError extends Error {
 
 // Repository Interface
 export interface IDisputeRepository {
-  getDisputeByBookingId(bookingId: string): Promise<DisputeRecord | null>;
-  initiateDispute(input: DisputeInitiationInput): Promise<DisputeRecord>;
-  submitCounterEvidence(input: DisputeEvidenceInput): Promise<DisputeRecord>;
-  simulateMediationReview(bookingId: string, notes: string): Promise<DisputeRecord>;
-  proposeSettlement(bookingId: string, proposal: DisputeSettlementBreakdown): Promise<DisputeRecord>;
-  resolveDispute(bookingId: string, resolution: DisputeResolutionInput): Promise<DisputeRecord>;
+  getDispute(disputeId: string, callerId: string): Promise<DisputeRecord>;
+  getDisputeByBookingId(bookingId: string, callerId?: string): Promise<DisputeRecord | null>;
+  createDispute(input: DisputeInitiationInput, callerId: string): Promise<DisputeRecord>;
+  submitCounterEvidence(
+    disputeId: string,
+    evidence: DisputeEvidence,
+    callerId: string
+  ): Promise<DisputeRecord>;
+  simulateStatusUpdate(
+    disputeId: string,
+    nextStatus: DisputeStatus,
+    note: string,
+    actorId: string
+  ): Promise<DisputeRecord>;
+  recordMediationProposal(
+    disputeId: string,
+    proposal: DisputeSettlementBreakdown,
+    actorId: string
+  ): Promise<DisputeRecord>;
+  resolveDisputeWithSettlement(
+    disputeId: string,
+    resolutionType: DisputeResolutionType,
+    splitRatio: number | undefined,
+    note: string,
+    actorId: string
+  ): Promise<DisputeRecord>;
   seed(records: DisputeRecord[]): void;
   clear(): void;
 }
+
