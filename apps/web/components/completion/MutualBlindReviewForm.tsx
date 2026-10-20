@@ -15,10 +15,10 @@ export interface MutualBlindReviewFormProps {
   role: 'customer' | 'brainworker';
   reviewStatus: MutualReviewStatus;
   currentUserSubmitted: boolean;
-  customerReview?: MutualReviewRecord | null;
-  workerReview?: MutualReviewRecord | null;
+  customerReview?: MutualReviewRecord | null | undefined;
+  workerReview?: MutualReviewRecord | null | undefined;
   onSubmitReview: (ratings: MutualRatingSubmissionInput) => void | Promise<void>;
-  isSubmitting?: boolean;
+  isSubmitting?: boolean | undefined;
 }
 
 const CRITERIA = [
@@ -70,7 +70,7 @@ export function MutualBlindReviewForm({
       >
         <div className="border-b border-zinc-800 pb-3">
           <span className="inline-block rounded bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-emerald-400">
-            Mutual Feedback Unlocked
+            Verified Feedback
           </span>
           <h3 className="mt-1 text-lg font-bold text-zinc-100">
             Mutual Reviews Revealed

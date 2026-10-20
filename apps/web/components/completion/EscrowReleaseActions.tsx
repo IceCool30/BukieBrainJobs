@@ -12,8 +12,8 @@ export interface EscrowReleaseActionsProps {
   jobStatus: JobStatus;
   escrowStatus: CompletionEscrowStatus;
   onConfirmSatisfaction: () => void | Promise<void>;
-  onRaiseDispute?: () => void;
-  isSubmitting?: boolean;
+  onRaiseDispute?: (() => void) | undefined;
+  isSubmitting?: boolean | undefined;
 }
 
 export function EscrowReleaseActions({
@@ -36,7 +36,7 @@ export function EscrowReleaseActions({
           Customer Satisfaction and Escrow Release
         </h3>
         <p className="mt-1 text-sm text-zinc-400">
-          Inspect the completed work and release escrow payout to the artisan, or raise a dispute if unsatisfied.
+          Review delivered results and authorize payout to the artisan, or raise a dispute if unsatisfied.
         </p>
       </div>
 

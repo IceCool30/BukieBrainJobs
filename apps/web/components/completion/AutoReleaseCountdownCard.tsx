@@ -10,11 +10,11 @@ import type { CompletionEscrowStatus } from '../../lib/completion/types';
 export interface AutoReleaseCountdownCardProps {
   submittedAt: string;
   autoReleaseDeadline: string;
-  isDisputed?: boolean;
+  isDisputed?: boolean | undefined;
   escrowStatus: CompletionEscrowStatus;
-  now?: string;
-  onTriggerAutoRelease?: () => void | Promise<void>;
-  isSubmitting?: boolean;
+  now?: string | undefined;
+  onTriggerAutoRelease?: (() => void | Promise<void>) | undefined;
+  isSubmitting?: boolean | undefined;
 }
 
 export function AutoReleaseCountdownCard({
@@ -75,7 +75,7 @@ export function AutoReleaseCountdownCard({
                 The 72-hour customer inspection window has concluded.
               </p>
               <p className="mt-1 text-xs text-zinc-400">
-                Inspection completed: payout may now be dispatched to the technician.
+                Inspection window elapsed: payout may now be dispatched to the technician.
               </p>
             </div>
             {onTriggerAutoRelease && (
@@ -100,7 +100,7 @@ export function AutoReleaseCountdownCard({
               </span>
             </div>
             <p className="mt-2 text-xs text-zinc-500">
-              Customer has 72 hours to inspect completed work. Escrow releases automatically at deadline if no dispute is opened.
+              Customer has 72 hours to inspect delivered results. Funds disburse automatically at deadline if no dispute is opened.
             </p>
           </div>
         )}

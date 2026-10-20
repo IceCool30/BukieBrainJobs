@@ -12,9 +12,9 @@ export interface CompletionInspectionSummaryProps {
   approvedAdjustmentKobo: number;
   totalSettlementKobo: number;
   jobStatus: JobStatus;
-  photoProofUrls?: string[];
-  completionSummaryNote?: string;
-  className?: string;
+  photoProofUrls?: string[] | undefined;
+  completionSummaryNote?: string | undefined;
+  className?: string | undefined;
 }
 
 function formatNaira(kobo: number): string {
@@ -38,10 +38,10 @@ export function CompletionInspectionSummary({
       <div className="mb-6 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 pb-4">
         <div>
           <span className="inline-block rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
-            Work Completed
+            Inspection Overview
           </span>
           <h2 className="mt-1 text-xl font-bold text-zinc-100">
-            Job Completion and Settlement Inspection
+            Job Settlement Inspection
           </h2>
         </div>
         <span className="rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300">

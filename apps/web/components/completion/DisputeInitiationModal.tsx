@@ -10,7 +10,7 @@ export interface DisputeInitiationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmitDispute: (reason: string, details: string) => void | Promise<void>;
-  isSubmitting?: boolean;
+  isSubmitting?: boolean | undefined;
 }
 
 const DISPUTE_REASONS = [
