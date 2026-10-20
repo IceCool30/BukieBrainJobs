@@ -1,6 +1,6 @@
 // apps/web/components/completion/EscrowReleaseActions.tsx
 // BW-009: Post-Job Completion & Escrow Release
-// Phase 3 RED Component Stub
+// Phase 3 GREEN: Escrow Release Actions Component
 
 'use client';
 
@@ -16,8 +16,49 @@ export interface EscrowReleaseActionsProps {
   isSubmitting?: boolean;
 }
 
-export function EscrowReleaseActions(
-  _props: EscrowReleaseActionsProps
-): React.ReactElement {
-  return <div data-testid="escrow-release-actions" />;
+export function EscrowReleaseActions({
+  jobStatus,
+  escrowStatus,
+  onConfirmSatisfaction,
+  onRaiseDispute,
+  isSubmitting = false,
+}: EscrowReleaseActionsProps): React.ReactElement {
+  const isEligible =
+    jobStatus === 'PENDING_COMPLETION' && escrowStatus === 'ESCROW_HELD';
+
+  return (
+    <div
+      data-testid="escrow-release-actions"
+      className="flex flex-col gap-3 rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-xl sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div>
+        <h3 className="text-base font-semibold text-zinc-100">
+          Customer Satisfaction and Escrow Release
+        </h3>
+        <p className="mt-1 text-sm text-zinc-400">
+          Inspect the completed work and release escrow payout to the artisan, or raise a dispute if unsatisfied.
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <button
+          type="button"
+          onClick={onRaiseDispute}
+          disabled={isSubmitting}
+          className="flex min-h-[48px] items-center justify-center rounded-lg border border-red-500/30 bg-red-500/10 px-5 text-sm font-semibold text-red-400 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Raise Dispute
+        </button>
+
+        <button
+          type="button"
+          onClick={() => void onConfirmSatisfaction()}
+          disabled={!isEligible || isSubmitting}
+          className="flex min-h-[48px] items-center justify-center rounded-lg bg-emerald-600 px-6 text-sm font-semibold text-white shadow-lg transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
+        >
+          {isSubmitting ? 'Releasing Escrow...' : 'Inspect & Release Escrow'}
+        </button>
+      </div>
+    </div>
+  );
 }
