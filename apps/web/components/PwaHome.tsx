@@ -24,6 +24,7 @@ import FeaturedBrainWorkers from './FeaturedBrainWorkers';
 import HowItWorks from './HowItWorks';
 import FAQSection from './FAQSection';
 import ServiceCategoryRail from './ServiceCategoryRail';
+import BottomCTA from './BottomCTA';
 
 interface PwaHomeProps {
   onOpenDrawer: () => void;
@@ -378,7 +379,7 @@ export default function PwaHome({
 
                 <button
                   type="submit"
-                  className="motion-press flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[var(--amber)] px-5 text-xs font-bold text-[#001A41] shadow-sm transition-colors hover:bg-[var(--amber-hover)] active:opacity-90 font-mono uppercase tracking-wider"
+                  className="outlier-pill-button flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-full bg-[var(--amber)] px-5 text-xs font-bold text-[#001A41] shadow-md transition-all hover:bg-[var(--amber-hover)] active:opacity-90 font-mono uppercase tracking-wider"
                 >
                   <span>Search</span>
                   <ArrowRight className="h-4 w-4 text-[#001A41]" />
@@ -550,6 +551,7 @@ export default function PwaHome({
 
       <FeaturedBrainWorkers profileCity={selectedLocation.name} />
       <HowItWorks />
+      <BottomCTA />
       <FAQSection />
     </div>
   );
