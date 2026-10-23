@@ -134,7 +134,7 @@ export function WalletSummaryCards({
             data-testid="request-payout-button"
             disabled={!canRequestPayout}
             onClick={onRequestPayoutClick}
-            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)]"
+            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)]"
           >
             Request Payout
           </button>

@@ -271,7 +271,7 @@ export function LeadsInboxView({
             type="button"
             onClick={handleAccept}
             disabled={isOffline || isSubmittingMutation || !isPending}
-            className="flex-1 px-4 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white font-medium rounded-lg shadow-xs disabled:opacity-50 disabled:cursor-not-allowed transition"
+            className="flex-1 px-4 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] font-bold rounded-lg shadow-xs disabled:opacity-50 disabled:cursor-not-allowed transition"
           >
             {isSubmittingMutation ? 'Submitting...' : 'Accept'}
           </button>

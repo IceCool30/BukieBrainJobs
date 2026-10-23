@@ -151,7 +151,7 @@ export function ConversationHub({
           <div>
             <Link
               href="/services"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs sm:text-sm font-semibold transition-colors shadow-xs"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs sm:text-sm font-bold transition-colors shadow-xs"
             >
               Browse Services
             </Link>

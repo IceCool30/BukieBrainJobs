@@ -54,7 +54,7 @@ export function JobsFirstRunEmptyState() {
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
         <Link
           href="/services"
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--amber)] text-white text-sm font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--amber)] text-[#001A41] text-sm font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
         >
           <Search className="h-4 w-4" />
           <span>Find a Service</span>
@@ -115,7 +115,7 @@ export function JobsFilteredEmptyState({
         </button>
         <Link
           href="/services"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--amber)] text-white text-xs font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
         >
           <span>Find a Service</span>
         </Link>

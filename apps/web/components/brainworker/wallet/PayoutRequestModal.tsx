@@ -202,7 +202,7 @@ export function PayoutRequestModal({
               type="submit"
               data-testid="submit-payout-button"
               disabled={!canSubmit}
-              className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-semibold text-white hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)]"
+              className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)]"
             >
               {isSubmitting ? 'Processing...' : 'Submit Withdrawal'}
             </button>

@@ -277,7 +277,7 @@ export default function JobsScreen() {
           <div className="space-y-3">
             <Link
               href="/login?redirect=/jobs"
-              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-lg bg-[var(--amber)] text-white font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
+              className="w-full inline-flex items-center justify-center px-5 py-3 rounded-lg bg-[var(--amber)] text-[#001A41] font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
             >
               Sign In
             </Link>
@@ -311,7 +311,7 @@ export default function JobsScreen() {
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-[var(--amber)] text-white font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
+              className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-[var(--amber)] text-[#001A41] font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
             >
               <RotateCcw className="h-4 w-4" />
               <span>Retry</span>

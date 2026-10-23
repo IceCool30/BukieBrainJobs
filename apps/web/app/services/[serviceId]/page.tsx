@@ -147,10 +147,10 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
           </p>
           <Link
             href={`/book?${booking.toString()}`}
-            className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+            className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
           >
             Continue to booking
-            <ArrowRight className="h-4 w-4 text-white" aria-hidden="true" />
+            <ArrowRight className="h-4 w-4 text-[#001A41]" aria-hidden="true" />
           </Link>
           <Link
             href="/services"

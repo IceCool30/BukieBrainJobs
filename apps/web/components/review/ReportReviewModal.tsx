@@ -160,7 +160,7 @@ export function ReportReviewModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-[var(--amber)] text-white font-semibold text-sm hover:bg-[var(--amber-hover)] transition-colors min-h-[44px]"
+                className="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-[var(--amber)] text-[#001A41] font-bold text-sm hover:bg-[var(--amber-hover)] transition-colors min-h-[44px]"
               >
                 Close
               </button>
@@ -261,7 +261,7 @@ export function ReportReviewModal({
               <button
                 type="submit"
                 disabled={isSubmitting || isAlreadySubmitted}
-                className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-[var(--amber)] text-white text-sm font-semibold hover:bg-[var(--amber-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+                className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-[var(--amber)] text-[#001A41] text-sm font-bold hover:bg-[var(--amber-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
               >
                 {isSubmitting ? (
                   <>

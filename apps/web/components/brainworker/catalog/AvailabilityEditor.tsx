@@ -243,7 +243,7 @@ export function AvailabilityEditor({
             className={
               isSaveDisabled
                 ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed transition-colors'
-                : 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]'
+                : 'px-5 py-2.5 rounded-lg text-sm font-bold bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]'
             }
           >
             {isSaving ? 'Saving Changes...' : 'Save changes'}

@@ -6,7 +6,7 @@ import { Home, Search, Briefcase, LayoutDashboard } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] flex flex-col font-sans selection:bg-[var(--amber)] selection:text-white transition-colors duration-200">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] flex flex-col font-sans selection:bg-[var(--amber)] selection:text-[#001A41] transition-colors duration-200">
       {/* Branded Header */}
       <header className="w-full border-b border-[var(--lead)] bg-[var(--card-bg)]/90 backdrop-blur-md px-4 py-4 sm:px-8">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
@@ -59,9 +59,9 @@ export default function NotFound() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Link
               href="/"
-              className="motion-press inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+              className="motion-press inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
             >
-              <Home className="h-4 w-4 text-[#ABEEC8]" />
+              <Home className="h-4 w-4 text-[#001A41]" />
               Return to Homepage
             </Link>
 

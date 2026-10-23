@@ -58,7 +58,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
                 setMockAuthenticatedUser(null);
                 setUser(null);
               }}
-              className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
+              className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
             >
               Sign Out
             </button>
@@ -197,7 +197,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-semibold text-white shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
               >
                 <span>Continue to Onboarding</span>
                 <ArrowRight className="h-4 w-4" />

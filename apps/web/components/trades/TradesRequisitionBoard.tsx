@@ -211,7 +211,7 @@ export default function TradesRequisitionBoard() {
                         e.stopPropagation();
                         setSelectedReq(req);
                       }}
-                      className="motion-press inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-bold uppercase transition-all bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] shadow-xs"
+                      className="motion-press inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-bold uppercase transition-all bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] shadow-xs"
                     >
                       <span>INSPECT SPEC</span>
                       <ArrowRight className="w-3 h-3" />
@@ -364,7 +364,7 @@ export default function TradesRequisitionBoard() {
                       setBookedReq(null);
                     }, 1200);
                   }}
-                  className="motion-press px-5 py-2.5 rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-mono font-bold tracking-wide uppercase transition-colors shadow-sm flex-1 sm:flex-initial"
+                  className="motion-press px-5 py-2.5 rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-mono font-bold tracking-wide uppercase transition-colors shadow-sm flex-1 sm:flex-initial"
                 >
                   {bookedReq === selectedReq.code ? 'CREDENTIALS DISPATCHED' : 'BOOK OPPORTUNITY'}
                 </button>

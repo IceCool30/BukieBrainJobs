@@ -245,7 +245,7 @@ export function ProfileEditorForm({
           type="submit"
           data-testid="profile-save-btn"
           disabled={isSaving}
-          className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] focus:outline-none disabled:opacity-50"
+          className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] focus:outline-none disabled:opacity-50"
         >
           {isSaving ? 'Saving Profile...' : 'Save Profile Details'}
         </button>

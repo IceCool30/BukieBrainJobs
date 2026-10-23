@@ -77,7 +77,7 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
+            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
           >
             {user.role === 'customer' ? 'Return to Customer Dashboard' : 'Return Home'}
           </Link>
@@ -132,7 +132,7 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/brainworker/services"
-                  className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
+                  className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-4 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
                 >
                   Configure Services & Rates
                 </Link>

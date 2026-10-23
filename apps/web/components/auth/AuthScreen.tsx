@@ -512,7 +512,7 @@ export default function AuthScreen({
                       ? `${validatedReturnUrl}${validatedReturnUrl.includes('?') ? '&' : '?'}jobContinuation=1`
                       : validatedReturnUrl
                 }
-                className="motion-press inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 cursor-pointer"
+                className="motion-press inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 cursor-pointer"
               >
                 Continue immediately
               </Link>
@@ -902,7 +902,7 @@ export default function AuthScreen({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
+                  className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <span className="inline-flex items-center gap-2">
@@ -987,7 +987,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press mt-2 flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
+                className="motion-press mt-2 flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -1107,7 +1107,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
+                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -1165,7 +1165,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
+                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -1247,7 +1247,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
+                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">

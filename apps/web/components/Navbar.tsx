@@ -407,7 +407,7 @@ function DrawerPanel({
             <div className="mt-auto px-5 pb-8 pt-4 space-y-2.5 border-t border-[var(--lead)]">
               <button
                 onClick={() => { onClose(); onPostJob?.(); }}
-                className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-white bg-[var(--amber)] hover:bg-[var(--amber-hover)] active:bg-[var(--amber-hover)] rounded-xl transition-colors flex items-center justify-center gap-2"
+                className="motion-press w-full py-3.5 px-4 text-sm font-bold text-center text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] active:bg-[var(--amber-hover)] rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <Briefcase className="w-4 h-4" />
                 Post a Job

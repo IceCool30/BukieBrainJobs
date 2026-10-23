@@ -46,14 +46,14 @@ export function ActivityFilters({
             aria-pressed={isActive}
             className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
               isActive
-                ? 'bg-[var(--amber)] text-white shadow-xs font-bold'
+                ? 'bg-[var(--amber)] text-[#001A41] shadow-xs font-bold'
                 : 'bg-[var(--card-bg)] text-[var(--text-muted)] border border-[var(--lead)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)]'
             }`}
           >
             <span>{label}</span>
             <span
               className={`text-[11px] px-1.5 py-0.5 rounded-md ${
-                isActive ? 'bg-white/20 text-white font-bold' : 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
+                isActive ? 'bg-[#001A41]/15 text-[#001A41] font-bold' : 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
               }`}
             >
               {count}

@@ -453,10 +453,10 @@ export default function HeroSection({
               {/* Submit CTA Button */}
               <button
                 type="submit"
-                className="motion-press flex h-12 min-w-36 items-center justify-center gap-2 rounded-xl bg-[var(--amber)] px-6 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[var(--amber-hover)] active:opacity-90 lg:h-14 lg:min-w-40 lg:text-base font-mono uppercase tracking-wider"
+                className="motion-press flex h-12 min-w-36 items-center justify-center gap-2 rounded-xl bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] shadow-sm transition-colors hover:bg-[var(--amber-hover)] active:opacity-90 lg:h-14 lg:min-w-40 lg:text-base font-mono uppercase tracking-wider"
               >
                 <span>Search</span>
-                <ArrowRight className="w-4 h-4 text-white" />
+                <ArrowRight className="w-4 h-4 text-[#001A41]" />
               </button>
             </form>
 

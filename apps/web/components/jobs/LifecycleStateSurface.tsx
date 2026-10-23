@@ -361,7 +361,7 @@ export function LifecycleStateSurface({
             <span
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider ${
                 stateCopy.badgeStyle === 'navy'
-                  ? 'bg-[var(--amber)] text-white shadow-xs'
+                  ? 'bg-[var(--amber)] text-[#001A41] font-bold shadow-xs'
                   : stateCopy.badgeStyle === 'emerald'
                   ? 'bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]'
                   : stateCopy.badgeStyle === 'amber'
@@ -481,7 +481,7 @@ export function LifecycleStateSurface({
                 disabled={isOffline}
                 aria-disabled={isOffline}
                 title={isOffline ? 'Escrow funding requires an active internet connection' : undefined}
-                className="min-h-[48px] px-5 py-2.5 rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-bold inline-flex items-center justify-center gap-2 transition cursor-pointer shrink-0 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
+                className="min-h-[48px] px-5 py-2.5 rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold inline-flex items-center justify-center gap-2 transition cursor-pointer shrink-0 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ShieldCheck className="h-4 w-4" aria-hidden="true" />
                 <span>Fund Escrow (₦{paymentContext.pricing.totalPayableNaira.toLocaleString()})</span>
@@ -678,7 +678,7 @@ export function LifecycleStateSurface({
             {isDeclined && (
               <Link
                 href={`/job/${encodeURIComponent(activity.referenceCode || activity.id)}/matches`}
-                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
+                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
               >
                 <span>Review Alternatives</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -688,7 +688,7 @@ export function LifecycleStateSurface({
             {currentJobStatus === 'EXPIRED' && (
               <Link
                 href="/post-job"
-                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
+                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
               >
                 <span>Recreate Request</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -708,7 +708,7 @@ export function LifecycleStateSurface({
             {currentJobStatus === 'OPEN' && (
               <Link
                 href={`/job/${encodeURIComponent(activity.referenceCode || activity.id)}/matches`}
-                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
+                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
               >
                 <span>View BrainWorker matches</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

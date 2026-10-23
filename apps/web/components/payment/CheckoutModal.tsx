@@ -292,7 +292,7 @@ export function CheckoutModal({
               type="button"
               onClick={handleReconcileStatus}
               disabled={isOffline}
-              className="w-full py-2.5 rounded-xl bg-[var(--amber)] text-white text-xs font-semibold hover:bg-[var(--amber-hover)] transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="w-full py-2.5 rounded-xl bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />
               <span>Check Verification Status</span>
@@ -391,7 +391,7 @@ export function CheckoutModal({
                   <button
                     type="button"
                     onClick={handleFillSandboxCard}
-                    className="text-[11px] px-2 py-1 rounded bg-[var(--amber)] text-white font-semibold hover:bg-[var(--amber-hover)] cursor-pointer shrink-0"
+                    className="text-[11px] px-2 py-1 rounded bg-[var(--amber)] text-[#001A41] font-bold hover:bg-[var(--amber-hover)] cursor-pointer shrink-0"
                   >
                     Auto-Fill Test Card
                   </button>

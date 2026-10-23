@@ -68,9 +68,9 @@ export function JobsSidebar({
         <button
           type="button"
           aria-current="page"
-          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold text-white bg-[var(--amber)] shadow-xs transition cursor-pointer text-left"
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold text-[#001A41] bg-[var(--amber)] shadow-xs transition cursor-pointer text-left"
         >
-          <Briefcase className="h-4 w-4 text-white" />
+          <Briefcase className="h-4 w-4 text-[#001A41]" />
           <span>Jobs / Bookings</span>
         </button>
 
@@ -234,7 +234,7 @@ export function JobsNoticeDialog({
         <button
           type="button"
           onClick={onClose}
-          className="w-full py-2.5 px-4 rounded-lg bg-[var(--amber)] text-white text-xs font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
+          className="w-full py-2.5 px-4 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
         >
           Got it
         </button>

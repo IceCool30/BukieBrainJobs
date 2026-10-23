@@ -92,7 +92,7 @@ export function LifecycleStepIndicator({ jobStatus, isDeclined = false }: Lifecy
                       : isCompleted
                       ? 'bg-[var(--brand-green)] text-white'
                       : isCurrent
-                      ? 'bg-[var(--amber)] text-white ring-4 ring-[var(--amber)]/20 scale-105'
+                      ? 'bg-[var(--amber)] text-[#001A41] font-bold ring-4 ring-[var(--amber)]/20 scale-105'
                       : 'bg-[var(--card-bg)] border-2 border-[var(--lead)] text-[var(--text-muted)]'
                   }`}
                 >
@@ -153,7 +153,7 @@ export function LifecycleStepIndicator({ jobStatus, isDeclined = false }: Lifecy
                     : isCompleted
                     ? 'bg-[var(--brand-green)] text-white'
                     : isCurrent
-                    ? 'bg-[var(--amber)] text-white ring-2 ring-[var(--amber)]/20'
+                    ? 'bg-[var(--amber)] text-[#001A41] font-bold ring-2 ring-[var(--amber)]/20'
                     : 'bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text-muted)]'
                 }`}
               >

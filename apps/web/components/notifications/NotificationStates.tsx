@@ -124,7 +124,7 @@ export const FirstRunEmptyState: React.FC<FirstRunEmptyStateProps> = ({ onBrowse
       <button
         type="button"
         onClick={onBrowseServices}
-        className="mt-6 px-5 py-2.5 text-sm font-semibold rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
+        className="mt-6 px-5 py-2.5 text-sm font-bold rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
       >
         Browse Services
       </button>
@@ -207,7 +207,7 @@ export const PushOptInBanner: React.FC<PushOptInBannerProps> = ({ onEnable }) =>
         <button
           type="button"
           onClick={onEnable}
-          className="px-4 py-2 text-xs font-semibold rounded-lg bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
+          className="px-4 py-2 text-xs font-bold rounded-lg bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
         >
           Enable Notifications
         </button>

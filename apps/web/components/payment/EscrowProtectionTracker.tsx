@@ -187,7 +187,7 @@ export function EscrowProtectionTracker({
                 isStep2Done
                   ? 'bg-[#296A4B] text-white'
                   : isStep2Active
-                  ? 'bg-[var(--amber)] text-white animate-pulse'
+                  ? 'bg-[var(--amber)] text-[#001A41] animate-pulse'
                   : 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
               }`}>
                 2
@@ -205,7 +205,7 @@ export function EscrowProtectionTracker({
                 isStep3Done
                   ? 'bg-[#296A4B] text-white'
                   : isStep3Active
-                  ? 'bg-[var(--amber)] text-white'
+                  ? 'bg-[var(--amber)] text-[#001A41]'
                   : 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
               }`}>
                 3

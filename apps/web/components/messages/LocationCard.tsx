@@ -42,7 +42,7 @@ export function LocationCard({ latitude, longitude, address, landmark }: Locatio
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open in Google Maps"
-        className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shadow-xs"
+        className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg transition-colors whitespace-nowrap shadow-xs"
       >
         <MapPin className="w-3.5 h-3.5" />
         <span>Open in Google Maps</span>

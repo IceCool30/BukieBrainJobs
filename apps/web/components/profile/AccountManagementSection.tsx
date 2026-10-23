@@ -120,7 +120,7 @@ export function AccountManagementSection({
             type="button"
             disabled={isExporting || isOffline}
             onClick={handleExport}
-            className="min-h-[48px] px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-semibold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
+            className="min-h-[48px] px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
           >
             {isExporting ? (
               <>

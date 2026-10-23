@@ -33,7 +33,7 @@ function WorkerCard({ worker, profileCity }: { worker: PublicBrainWorker; profil
             <BadgeCheck className="h-3 w-3 text-[var(--brand-green)]" aria-hidden="true" />
             Featured
           </span>
-          <span className="service-card-arrow absolute right-3 top-3 flex h-7 w-7 translate-x-1 items-center justify-center rounded bg-[var(--amber)] text-white opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">
+          <span className="service-card-arrow absolute right-3 top-3 flex h-7 w-7 translate-x-1 items-center justify-center rounded bg-[var(--amber)] text-[#001A41] opacity-0 shadow-sm transition-[opacity,transform] duration-[180ms] ease-[var(--ease-ui-out)]" aria-hidden="true">
             <ArrowRight className="h-3.5 w-3.5" />
           </span>
         </div>

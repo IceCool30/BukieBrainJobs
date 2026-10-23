@@ -199,7 +199,7 @@ export function SavedAddressesSection({
           type="button"
           disabled={isOffline}
           onClick={openAddModal}
-          className="min-h-[48px] px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-semibold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
+          className="min-h-[48px] px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
         >
           <Plus className="h-4 w-4" />
           <span>Add New Address</span>
@@ -227,7 +227,7 @@ export function SavedAddressesSection({
             type="button"
             disabled={isOffline}
             onClick={openAddModal}
-            className="min-h-[48px] px-5 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-semibold rounded-lg transition inline-flex items-center gap-2 cursor-pointer disabled:opacity-50"
+            className="min-h-[48px] px-5 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg transition inline-flex items-center gap-2 cursor-pointer disabled:opacity-50"
           >
             <Plus className="h-4 w-4" />
             <span>Add First Address</span>
@@ -360,7 +360,7 @@ export function SavedAddressesSection({
                       onClick={() => setLabel(lbl)}
                       className={`min-h-[44px] flex-1 py-2 px-3 text-xs font-semibold rounded-lg border transition cursor-pointer ${
                         label === lbl
-                          ? 'bg-[var(--amber)] text-white border-[var(--amber)]'
+                          ? 'bg-[var(--amber)] text-[#001A41] font-bold border-[var(--amber)]'
                           : 'bg-[var(--tag-bg)] text-[var(--text-main)] border-[var(--lead)] hover:bg-[var(--card-hover)]'
                       }`}
                     >
@@ -490,7 +490,7 @@ export function SavedAddressesSection({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="min-h-[48px] px-6 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-semibold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                  className="min-h-[48px] px-6 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>

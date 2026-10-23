@@ -340,7 +340,7 @@ export default function BookingScreen() {
             <div className="mt-6">
               <Link
                 href="/services"
-                className="motion-press inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+                className="motion-press inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
               >
                 Browse services
               </Link>
@@ -371,7 +371,7 @@ export default function BookingScreen() {
             <div className="mt-6">
               <Link
                 href="/services"
-                className="motion-press inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+                className="motion-press inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
               >
                 Browse services
               </Link>
@@ -501,7 +501,7 @@ export default function BookingScreen() {
                     ? `/dashboard?jobCreated=${encodeURIComponent(submittedReference)}&jobTitle=${encodeURIComponent(service.title)}`
                     : '/dashboard'
                 }
-                className="motion-press inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+                className="motion-press inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
               >
                 View on Dashboard
               </Link>
@@ -751,7 +751,7 @@ export default function BookingScreen() {
                           aria-pressed={active}
                           className={`motion-press min-h-12 rounded-lg border px-3 text-center text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] ${
                             active
-                              ? 'border-[var(--amber)] bg-[var(--amber)] text-white shadow-xs'
+                              ? 'border-[var(--amber)] bg-[var(--amber)] text-[#001A41] shadow-xs'
                               : 'border-[var(--lead)] bg-[var(--tag-bg)] text-[var(--text-muted)] hover:border-[var(--rule)] hover:text-[var(--text-main)]'
                           }`}
                         >
@@ -980,7 +980,7 @@ export default function BookingScreen() {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] disabled:cursor-wait disabled:opacity-75 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+                  className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] disabled:cursor-wait disabled:opacity-75 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
                 >
                   {isPending ? 'Submitting request...' : 'Submit service request'}
                 </button>

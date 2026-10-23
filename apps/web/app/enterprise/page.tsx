@@ -115,10 +115,10 @@ export default function EnterprisePage() {
           <div className="flex flex-col gap-3 sm:flex-row md:shrink-0">
             <Link
               href="/services"
-              className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[var(--amber)] px-5 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+              className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
             >
               Browse services
-              <ArrowRight className="h-4 w-4 text-white" aria-hidden="true" />
+              <ArrowRight className="h-4 w-4 text-[#001A41]" aria-hidden="true" />
             </Link>
             <Link
               href="/"

@@ -115,7 +115,7 @@ export function NoMatchesState({
         </button>
         <Link
           href="/post-job"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-white bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
           Post a new job
@@ -160,7 +160,7 @@ export function ConstraintLimitedState({
         </Link>
         <Link
           href="/services"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-white bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
         >
           Find a service
         </Link>
@@ -195,7 +195,7 @@ export function MatchingFailedState({ onRetry }: { onRetry: () => void }) {
         </button>
         <Link
           href="/jobs"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-white bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Back to jobs
@@ -255,7 +255,7 @@ export function InvalidContextState() {
         </Link>
         <Link
           href="/post-job"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-white bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
           Post a new job
@@ -298,7 +298,7 @@ export function StaleResultsNotice({
         onClick={onRefresh}
         disabled={isRefreshing}
         aria-busy={isRefreshing}
-        className="shrink-0 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[var(--amber)] bg-[var(--card-bg)] border border-[var(--amber)] rounded-lg py-1.5 px-3 hover:bg-[var(--amber)] hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
+        className="shrink-0 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[var(--amber)] bg-[var(--card-bg)] border border-[var(--amber)] rounded-lg py-1.5 px-3 hover:bg-[var(--amber)] hover:text-[#001A41] font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
       >
         {isRefreshing ? (
           <>
@@ -356,7 +356,7 @@ export function StaleResultsState({
           onClick={onRefresh}
           disabled={isRefreshing}
           aria-busy={isRefreshing}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-white bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
         >
           {isRefreshing ? (
             <>
@@ -415,7 +415,7 @@ export function AuthRequiredState({ returnPath }: { returnPath: string }) {
       </p>
       <Link
         href={`/login?return=${encodeURIComponent(returnPath)}`}
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-6 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
+        className="inline-flex items-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-6 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
       >
         Sign in
       </Link>

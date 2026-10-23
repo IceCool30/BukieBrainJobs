@@ -251,7 +251,7 @@ export default function PwaHome({
           <div className="flex items-center gap-2">
             <button
               onClick={onOpenDrawer}
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--amber)] text-white shadow-sm transition-colors hover:bg-[var(--amber-hover)]"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--amber)] text-[#001A41] shadow-sm transition-colors hover:bg-[var(--amber-hover)]"
               aria-label="Open menu"
             >
               <Menu className="h-5 w-5" />

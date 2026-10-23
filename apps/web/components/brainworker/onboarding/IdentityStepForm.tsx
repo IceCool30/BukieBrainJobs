@@ -571,7 +571,7 @@ export function IdentityStepForm({
         <button
           type="submit"
           disabled={!isFormValid || isSubmitting}
-          className={`inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
+          className={`inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] shadow-xs transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
             !isFormValid || isSubmitting
               ? 'opacity-50 cursor-not-allowed'
               : 'cursor-pointer'
@@ -579,7 +579,7 @@ export function IdentityStepForm({
         >
           {isSubmitting ? (
             <span className="flex items-center gap-2">
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#001A41] border-t-transparent" />
               <span>Saving...</span>
             </span>
           ) : (

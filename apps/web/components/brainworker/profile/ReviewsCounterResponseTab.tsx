@@ -198,7 +198,7 @@ export function ReviewsCounterResponseTab({
                           <button
                             type="submit"
                             data-testid="submit-counter-response-btn"
-                            className="rounded-lg bg-[var(--amber)] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[var(--amber-hover)]"
+                            className="rounded-lg bg-[var(--amber)] px-3 py-1.5 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)]"
                           >
                             Submit Response
                           </button>

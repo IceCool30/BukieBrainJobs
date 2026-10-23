@@ -134,7 +134,7 @@ export function DisputeModal({
             <button
               type="submit"
               disabled={isSubmitting || isOffline}
-              className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              className="px-4 py-2 rounded-xl bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>

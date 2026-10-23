@@ -51,7 +51,7 @@ export default function LocationNoticeModal({ location, onClose }: LocationNotic
         <button
           type="button"
           onClick={onClose}
-          className="motion-press inline-flex min-h-11 items-center justify-center rounded-xl bg-[var(--amber)] px-5 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+          className="motion-press inline-flex min-h-11 items-center justify-center rounded-xl bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
         >
           Choose another location
         </button>

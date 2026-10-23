@@ -98,7 +98,7 @@ export function PortfolioGalleryManager({
             data-testid="add-portfolio-btn"
             disabled={isCapped}
             onClick={() => setIsAddModalOpen(true)}
-            className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add Work Sample
           </button>
@@ -289,7 +289,7 @@ export function PortfolioGalleryManager({
                 </button>
                 <button
                   type="submit"
-                  className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-semibold text-white hover:bg-[var(--amber-hover)]"
+                  className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)]"
                 >
                   Add Work
                 </button>

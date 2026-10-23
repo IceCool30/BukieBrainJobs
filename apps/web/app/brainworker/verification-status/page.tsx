@@ -109,7 +109,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] transition"
+            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition"
           >
             Return to Customer Dashboard
           </Link>
@@ -137,7 +137,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
           <button
             type="button"
             onClick={() => router.push('/brainworker/onboarding')}
-            className="inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--amber-hover)] transition"
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition"
           >
             Start Onboarding
           </button>

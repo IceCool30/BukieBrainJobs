@@ -77,7 +77,7 @@ export function UrgentLeadsTicker({
               <button
                 type="button"
                 onClick={() => onQuoteLead?.(lead.id)}
-                className="w-full rounded-lg bg-[var(--amber)] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[var(--amber-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--card-bg)]"
+                className="w-full rounded-lg bg-[var(--amber)] px-3 py-1.5 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--card-bg)]"
               >
                 Send Quote
               </button>

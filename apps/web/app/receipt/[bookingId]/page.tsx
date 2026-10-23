@@ -81,7 +81,7 @@ export default function ReceiptPage() {
           <div className="pt-2">
             <Link
               href="/jobs"
-              className="motion-press inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-[var(--amber)] text-white text-xs font-bold hover:bg-[var(--amber-hover)] transition shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+              className="motion-press inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               <span>Return to Jobs & Bookings</span>

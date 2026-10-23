@@ -54,7 +54,7 @@ export default function CustomerHomepage() {
 
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] flex flex-col font-sans selection:bg-[var(--amber)] selection:text-white transition-colors duration-200">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] flex flex-col font-sans selection:bg-[var(--amber)] selection:text-[#001A41] transition-colors duration-200">
       {/* Navigation Header */}
       <Navbar
         drawerOpenRef={drawerRef}

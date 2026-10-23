@@ -183,7 +183,7 @@ export function BankAccountsManager({
               type="submit"
               data-testid="save-bank-account-button"
               disabled={!canSave}
-              className="rounded-lg bg-[var(--amber)] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)]"
+              className="rounded-lg bg-[var(--amber)] px-4 py-1.5 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)]"
             >
               {isSubmitting ? 'Verifying...' : 'Save Account'}
             </button>

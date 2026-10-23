@@ -67,10 +67,10 @@ export default function GuaranteePage() {
             <div>
               <Link
                 href="/services"
-                className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2 focus:ring-offset-[var(--strip-bg)]"
+                className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 py-3 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2 focus:ring-offset-[var(--strip-bg)]"
               >
                 Find a service
-                <ArrowRight className="h-4 w-4 text-white" />
+                <ArrowRight className="h-4 w-4 text-[#001A41]" />
               </Link>
             </div>
           </div>

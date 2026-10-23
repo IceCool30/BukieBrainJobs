@@ -58,7 +58,7 @@ export function ActivityDetail({
             <button
               type="button"
               onClick={onResetSelected}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--amber)] text-white text-xs font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
             >
               View all activity
             </button>

@@ -214,7 +214,7 @@ export function VerificationStatusMonitor({
           <button
             type="button"
             onClick={() => onRemediate && onRemediate(targetStep)}
-            className="inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] shadow-sm transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           >
             <span>{buttonLabel}</span>
             <ArrowRight className="h-4 w-4" />
@@ -312,7 +312,7 @@ export function VerificationStatusMonitor({
           <button
             type="button"
             onClick={onEnterWorkspace}
-            className="inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3.5 text-sm font-bold text-[#001A41] shadow-sm transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           >
             <span>Enter BrainWorker Workspace</span>
             <ArrowRight className="h-4 w-4" />

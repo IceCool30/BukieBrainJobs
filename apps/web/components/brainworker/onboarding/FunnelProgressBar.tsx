@@ -96,9 +96,9 @@ export function FunnelProgressBar({
                 <div
                   className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors ${
                     isCurrent
-                      ? 'bg-[var(--amber)] text-white ring-4 ring-[var(--amber-dim)]'
+                      ? 'bg-[var(--amber)] text-[#001A41] ring-4 ring-[var(--amber-dim)]'
                       : isCompleted
-                      ? 'bg-[var(--amber)] text-white'
+                      ? 'bg-[var(--amber)] text-[#001A41]'
                       : 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
                   }`}
                 >

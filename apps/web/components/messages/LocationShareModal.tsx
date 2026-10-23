@@ -119,7 +119,7 @@ export function LocationShareModal({
             type="button"
             onClick={handleConfirm}
             aria-label="Confirm"
-            className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg transition-colors shadow-xs cursor-pointer"
+            className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg transition-colors shadow-xs cursor-pointer"
           >
             <Check className="w-4 h-4" />
             <span>Confirm Location</span>

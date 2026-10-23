@@ -74,6 +74,7 @@
   --color-trades-text-muted: var(--text-muted);
   --color-trades-amber: var(--amber);
   --color-trades-amber-hover: var(--amber-hover);
+  --color-trades-amber-text: var(--amber-text);
   --color-trades-brand-green: var(--brand-green);
   --color-trades-brand-navy: var(--brand-navy);
   --color-trades-strip-bg: var(--strip-bg);
@@ -205,6 +206,7 @@
   --amber: #FF6B35;
   --amber-hover: #FF7D4D;
   --amber-dim: rgba(255, 107, 53, 0.14);
+  --amber-text: #001A41;
   --brand-green: #2FE896;
   --brand-green-dim: rgba(47, 232, 150, 0.12);
   --brand-green-border: rgba(47, 232, 150, 0.35);
@@ -267,7 +269,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-::selection { background: var(--amber); color: #FFFFFF; }
+::selection { background: var(--amber); color: #001A41; }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--bg); }

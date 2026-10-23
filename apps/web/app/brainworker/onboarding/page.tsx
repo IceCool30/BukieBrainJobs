@@ -173,7 +173,7 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
           <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/brainworker/register"
-              className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
+              className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
             >
               Create Provider Account
             </Link>

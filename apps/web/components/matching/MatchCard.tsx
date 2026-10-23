@@ -231,7 +231,7 @@ export function MatchCard({
           className={`flex-1 text-center text-sm font-semibold rounded-lg py-2 px-3 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed ${
             isInterested
               ? 'bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text)] hover:bg-[var(--tag-bg)]'
-              : 'bg-[var(--amber)] text-white hover:bg-[var(--amber-hover)] shadow-sm'
+              : 'bg-[var(--amber)] text-[#001A41] font-bold hover:bg-[var(--amber-hover)] shadow-sm'
           }`}
         >
           {isPending ? (

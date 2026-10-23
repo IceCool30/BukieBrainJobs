@@ -190,9 +190,9 @@ export function ReviewPromptCard({
               onClick={handleOpenModal}
               disabled={isOffline}
               aria-label="Leave a review"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--amber)] text-white text-sm font-semibold hover:bg-[var(--amber-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--amber)] text-[#001A41] text-sm font-bold hover:bg-[var(--amber-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
             >
-              <Star className="w-4 h-4 fill-white" />
+              <Star className="w-4 h-4 fill-[#001A41]" />
               <span>Leave a review</span>
             </button>
 

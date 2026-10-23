@@ -193,7 +193,7 @@ export function SecuritySection({
           <button
             type="submit"
             disabled={isUpdatingPassword || isOffline}
-            className="min-h-[48px] px-6 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-semibold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+            className="min-h-[48px] px-6 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
           >
             {isUpdatingPassword ? (
               <>
@@ -312,7 +312,7 @@ export function SecuritySection({
                   <p className="text-xs font-bold text-[var(--text-main)] flex items-center gap-2">
                     <span>{session.device}</span>
                     {session.isCurrent && (
-                      <span className="px-2 py-0.5 rounded-full bg-[var(--amber)] text-white text-[9px] font-bold">
+                      <span className="px-2 py-0.5 rounded-full bg-[var(--amber)] text-[#001A41] text-[9px] font-bold">
                         This Device
                       </span>
                     )}

@@ -192,7 +192,7 @@ export function PersonalDetailsSection({
           <button
             type="submit"
             disabled={isSaving || isOffline}
-            className="min-h-[48px] px-6 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-white text-xs font-semibold rounded-lg focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-[var(--amber)] transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+            className="min-h-[48px] px-6 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-[var(--amber)] transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
           >
             {isSaving ? (
               <>

@@ -141,7 +141,7 @@ export default function DashboardScreen() {
           </p>
           <Link
             href="/login?returnUrl=%2Fdashboard"
-            className="inline-flex items-center justify-center w-full px-5 py-3 rounded-lg bg-[var(--amber)] text-white font-semibold text-sm hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
+            className="inline-flex items-center justify-center w-full px-5 py-3 rounded-lg bg-[var(--amber)] text-[#001A41] font-bold text-sm hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
           >
             Sign In Now
           </Link>
@@ -196,7 +196,7 @@ export default function DashboardScreen() {
             </div>
             <button
               onClick={() => setIsOfflineManual(false)}
-              className="px-3 py-1 bg-[var(--amber)] text-white text-xs rounded-lg font-semibold hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
+              className="px-3 py-1 bg-[var(--amber)] text-[#001A41] text-xs rounded-lg font-bold hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
             >
               Refresh Status
             </button>
@@ -256,7 +256,7 @@ export default function DashboardScreen() {
             {/* Customer Identity Card */}
             <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-5 border border-[var(--lead)] shadow-xs">
               <div className="flex items-center gap-3 mb-4">
-                <div className="h-12 w-12 rounded-lg bg-[var(--amber)] text-white flex items-center justify-center font-display font-bold text-lg border border-[var(--lead)]">
+                <div className="h-12 w-12 rounded-lg bg-[var(--amber)] text-[#001A41] flex items-center justify-center font-display font-bold text-lg border border-[var(--lead)]">
                   {viewModel.customer.name.charAt(0)}
                 </div>
                 <div className="overflow-hidden">
@@ -287,18 +287,18 @@ export default function DashboardScreen() {
                 onClick={() => setActiveTab('home')}
                 className={`w-full flex items-center justify-between px-3.5 py-3 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
                   activeTab === 'home'
-                    ? 'bg-[var(--amber)] text-white shadow-xs'
+                    ? 'bg-[var(--amber)] text-[#001A41] font-bold shadow-xs'
                     : 'text-[var(--text-main)] hover:bg-[var(--card-hover)]'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <Home className={`h-4 w-4 ${activeTab === 'home' ? 'text-white' : 'text-[var(--text-muted)]'}`} />
+                  <Home className={`h-4 w-4 ${activeTab === 'home' ? 'text-[#001A41]' : 'text-[var(--text-muted)]'}`} />
                   <span>Home</span>
                 </div>
                 {viewModel.activeWork.length > 0 && (
                   <span
                     className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                      activeTab === 'home' ? 'bg-amber-700/60 text-white' : 'bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]'
+                      activeTab === 'home' ? 'bg-[#001A41]/15 text-[#001A41]' : 'bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]'
                     }`}
                   >
                     {viewModel.activeWork.length}
@@ -310,12 +310,12 @@ export default function DashboardScreen() {
                 onClick={() => router.push('/jobs')}
                 className={`w-full flex items-center justify-between px-3.5 py-3 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
                   activeTab === 'jobs'
-                    ? 'bg-[var(--amber)] text-white shadow-xs'
+                    ? 'bg-[var(--amber)] text-[#001A41] font-bold shadow-xs'
                     : 'text-[var(--text-main)] hover:bg-[var(--card-hover)]'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <Briefcase className={`h-4 w-4 ${activeTab === 'jobs' ? 'text-white' : 'text-[var(--text-muted)]'}`} />
+                  <Briefcase className={`h-4 w-4 ${activeTab === 'jobs' ? 'text-[#001A41]' : 'text-[var(--text-muted)]'}`} />
                   <span>Jobs / Bookings</span>
                 </div>
                 {viewModel.upcomingWork.length > 0 && (
@@ -384,9 +384,9 @@ export default function DashboardScreen() {
               >
                 <CheckCircle2 className="h-5 w-5 text-[var(--brand-green)] shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <h4 className="font-bold text-sm text-[var(--text-main)]">
+                  <p className="font-bold text-sm text-[var(--text-main)]">
                     Request Received: Reference {viewModel.newJobNotice.reference}
-                  </h4>
+                  </p>
                   <p className="text-xs text-[var(--text-muted)] mt-0.5">
                     Your request for &quot;{viewModel.newJobNotice.title}&quot; has been recorded and placed into active
                     work. Qualified BrainWorkers are being notified.
@@ -434,7 +434,7 @@ export default function DashboardScreen() {
                   <div className="flex items-center gap-2">
                     <Link
                       href="/post-job"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[var(--amber)] text-white text-xs font-semibold hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
                     >
                       <PlusCircle className="h-3.5 w-3.5" />
                       Post a Job
@@ -518,7 +518,7 @@ export default function DashboardScreen() {
 
                           <Link
                             href={item.actionUrl}
-                            className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-[var(--amber)] text-white text-xs font-semibold hover:bg-[var(--amber-hover)] transition-colors shrink-0 shadow-xs"
+                            className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition-colors shrink-0 shadow-xs"
                           >
                             {item.actionLabel}
                           </Link>
@@ -543,7 +543,7 @@ export default function DashboardScreen() {
                         <div className="relative z-10 flex flex-wrap items-center justify-center gap-3">
                           <Link
                             href="/post-job"
-                            className="motion-press inline-flex items-center gap-1.5 rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-white hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
+                            className="motion-press inline-flex items-center gap-1.5 rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
                           >
                             <PlusCircle className="h-3.5 w-3.5" />
                             Post a Job
@@ -702,7 +702,7 @@ export default function DashboardScreen() {
                       <div className="h-10 w-10 rounded-lg bg-[var(--amber)]/10 text-[var(--amber)] border border-[var(--amber)]/20 flex items-center justify-center group-hover:scale-105 transition-transform">
                         <Search className="h-5 w-5" />
                       </div>
-                      <span className="text-[11px] font-bold uppercase tracking-wider bg-[var(--amber)] text-white px-2.5 py-0.5 rounded-md">
+                      <span className="text-[11px] font-bold uppercase tracking-wider bg-[var(--amber)] text-[#001A41] px-2.5 py-0.5 rounded-md">
                         Primary Action
                       </span>
                     </div>
@@ -773,7 +773,7 @@ export default function DashboardScreen() {
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                     <div className="p-4 rounded-lg bg-[var(--bg)] border border-[var(--lead)] space-y-1.5">
-                      <div className="h-6 w-6 rounded-md bg-[var(--amber)] text-white font-bold flex items-center justify-center text-xs">
+                      <div className="h-6 w-6 rounded-md bg-[var(--amber)] text-[#001A41] font-bold flex items-center justify-center text-xs">
                         1
                       </div>
                       <h5 className="font-bold text-[var(--text-main)] text-sm">Discover or Request</h5>
@@ -782,7 +782,7 @@ export default function DashboardScreen() {
                       </p>
                     </div>
                     <div className="p-4 rounded-lg bg-[var(--bg)] border border-[var(--lead)] space-y-1.5">
-                      <div className="h-6 w-6 rounded-md bg-[var(--amber)] text-white font-bold flex items-center justify-center text-xs">
+                      <div className="h-6 w-6 rounded-md bg-[var(--amber)] text-[#001A41] font-bold flex items-center justify-center text-xs">
                         2
                       </div>
                       <h5 className="font-bold text-[var(--text-main)] text-sm">Review BrainWorkers</h5>
@@ -791,7 +791,7 @@ export default function DashboardScreen() {
                       </p>
                     </div>
                     <div className="p-4 rounded-lg bg-[var(--bg)] border border-[var(--lead)] space-y-1.5">
-                      <div className="h-6 w-6 rounded-md bg-[var(--amber)] text-white font-bold flex items-center justify-center text-xs">
+                      <div className="h-6 w-6 rounded-md bg-[var(--amber)] text-[#001A41] font-bold flex items-center justify-center text-xs">
                         3
                       </div>
                       <h5 className="font-bold text-[var(--text-main)] text-sm">BukieGuarantee</h5>
@@ -901,7 +901,7 @@ export default function DashboardScreen() {
 
                           <Link
                             href={item.actionUrl}
-                            className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-[var(--amber)] text-white text-xs font-semibold hover:bg-[var(--amber-hover)] transition-colors shrink-0 shadow-xs"
+                            className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition-colors shrink-0 shadow-xs"
                           >
                             {item.actionLabel}
                           </Link>
@@ -1073,9 +1073,9 @@ export default function DashboardScreen() {
                     href={cat.href}
                     className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-3.5 border border-[var(--lead)] hover:border-[var(--amber)] transition-colors group block shadow-xs"
                   >
-                    <h4 className="font-bold text-sm text-[var(--text-main)] group-hover:text-[var(--amber)] transition-colors">
+                    <h3 className="font-bold text-sm text-[var(--text-main)] group-hover:text-[var(--amber)] transition-colors">
                       {cat.title}
-                    </h4>
+                    </h3>
                     <p className="text-[11px] text-[var(--text-muted)] mt-1 line-clamp-2 leading-relaxed">{cat.description}</p>
                     <div className="mt-2 text-xs font-semibold text-[var(--brand-green)] flex items-center justify-between">
                       <span>{cat.startingPrice}</span>
@@ -1183,7 +1183,7 @@ export default function DashboardScreen() {
             <div className="pt-2">
               <button
                 onClick={closeDialog}
-                className="w-full py-2.5 px-4 bg-[var(--amber)] text-white text-xs font-semibold rounded-lg hover:bg-[var(--amber-hover)] transition-colors cursor-pointer shadow-xs"
+                className="w-full py-2.5 px-4 bg-[var(--amber)] text-[#001A41] text-xs font-bold rounded-lg hover:bg-[var(--amber-hover)] transition-colors cursor-pointer shadow-xs"
               >
                 Understood
               </button>
