@@ -2,7 +2,8 @@ import React from 'react';
 import { Image, Linking, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { colors as c, mono } from '../lib/theme';
+import { toggleThemeMode, useThemeMode, useTrades as useThemeColors } from '../lib/theme';
+import { mono, useTrades } from '../lib/theme';
 
 const WEB_URL = 'https://bukie-brain-jobs.vercel.app';
 
@@ -21,6 +22,7 @@ type Service = (typeof POPULAR_SERVICES)[number];
 const openWeb = (path: string) => Linking.openURL(`${WEB_URL}${path}`);
 
 export default function HomeScreen() {
+  const c = useTrades();
   return (
     <SafeAreaView style={[s.fill, { backgroundColor: c.bg }]}>
       <ScrollView contentContainerStyle={s.page}>
@@ -42,22 +44,25 @@ export default function HomeScreen() {
 }
 
 function Brand() {
+  const c = useTrades();
   return (
     <View style={s.brand}>
       <Image source={require('../assets/images/logo-icon.png')} style={s.logo} accessibilityIgnoresInvertColors />
       <Text accessibilityRole="header" style={[s.wordmark, { color: c.textMain }]}>
         Bukie<Text style={{ color: c.brandGreen }}>BrainJobs</Text>
       </Text>
+      <ThemeButton />
     </View>
   );
 }
 
 function Hero() {
+  const c = useTrades();
   return (
     <View style={[s.hero, { backgroundColor: c.stripBg, borderColor: c.lead }]}>
       <Text style={s.heroTitle}>
         Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on{' '}
-        <Text style={{ color: c.brandGreen }}>BukieBrainJobs.</Text>
+        <Text style={{ color: c.stripAccent }}>BukieBrainJobs.</Text>
       </Text>
       <Text style={[s.heroBody, { color: c.stripText }]}>
         Find a BrainWorker for the job, or offer your skills for work that respects your time.
@@ -83,6 +88,7 @@ function Hero() {
 }
 
 function ServiceRow({ service, first }: { service: Service; first: boolean }) {
+  const c = useTrades();
   return (
     <Pressable
       accessibilityRole="link"
@@ -126,3 +132,14 @@ const s = StyleSheet.create({
   textLink: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', paddingVertical: 4 },
   textLinkLabel: { fontSize: 14, fontWeight: '600' },
 });
+
+function ThemeButton() {
+  const c = useThemeColors();
+  const mode = useThemeMode();
+  const label = mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={toggleThemeMode} hitSlop={10} style={{ marginLeft: 'auto', padding: 8 }}>
+      <Ionicons name={mode === 'dark' ? 'sunny-outline' : 'moon-outline'} size={20} color={c.textMuted} />
+    </Pressable>
+  );
+}

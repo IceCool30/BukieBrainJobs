@@ -14,6 +14,7 @@ import {
   LayoutDashboard,
 } from 'lucide-react';
 import { getMockAuthenticatedUser } from '../lib/auth/storage';
+import ThemeToggle from './ThemeToggle';
 
 interface NavbarProps {
   onPostJobClick?: () => void;
@@ -226,6 +227,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
 
         {/* Action Buttons */}
         <div className="hidden min-w-0 items-center gap-2.5 md:flex">
+          <ThemeToggle idPrefix="nav-theme" />
           {/* Secondary action: Become a BrainWorker */}
           {onBecomeWorkerClick ? (
             <button
@@ -283,6 +285,7 @@ export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpen
           )}
         </div>
 
+        {/* Mobile Hamburger Toggle & Top Theme Toggle */}
         <div className="flex items-center gap-2 lg:hidden">
           <button
             ref={triggerRef}
@@ -395,6 +398,10 @@ function DrawerPanel({
                 );
               })}
             </nav>
+            <div className="mx-4 mb-5 flex items-center justify-between border-t border-[var(--lead)] px-3 pt-4">
+              <span className="text-sm font-semibold text-[var(--text-main)]">Dark mode</span>
+              <ThemeToggle idPrefix="drawer-theme" />
+            </div>
 
             {/* Action zone */}
             <div className="mt-auto px-5 pb-8 pt-4 space-y-2.5 border-t border-[var(--lead)]">

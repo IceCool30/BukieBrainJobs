@@ -124,11 +124,7 @@ export function ConversationHub({
               <div className="flex-1 space-y-2">
                 <div className="flex justify-between">
                   <div className="h-4 bg-[var(--tag-bg)] rounded w-1/3" />
-                  <div className="h-3 bg-[var(--tag-bg)] rounded w-12" />
-                </div>
                 <div className="h-3 bg-[var(--tag-bg)] rounded w-1/2" />
-                <div className="h-3 bg-[var(--tag-bg)] rounded w-3/4" />
-              </div>
             </div>
           ))}
           <span className="sr-only">Loading conversations...</span>
