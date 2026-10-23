@@ -52,7 +52,7 @@ export default function GuaranteePage() {
                 Back to home
               </Link>
             </div>
-            <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">
+            <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--nav-accent)] dark:text-[var(--brand-green)]">
               <ShieldCheck className="h-4 w-4 text-[var(--brand-green)]" />
               BukieGuarantee
             </div>
@@ -76,7 +76,7 @@ export default function GuaranteePage() {
           </div>
 
           <aside className="self-end rounded-lg border border-white/15 bg-white/5 backdrop-blur-xs p-5 shadow-xs sm:p-6">
-            <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">Before you book</p>
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--nav-accent)] dark:text-[var(--brand-green)]">Before you book</p>
             <ul className="mt-3.5 space-y-3">
               {BOOKING_CHECKS.map((item) => (
                 <li key={item} className="flex gap-3 text-sm leading-relaxed text-white">
@@ -91,7 +91,7 @@ export default function GuaranteePage() {
 
       <section className="mx-auto max-w-[1280px] px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
         <div className="max-w-2xl space-y-3">
-          <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">What to review</p>
+          <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--nav-accent)] dark:text-[var(--brand-green)]">What to review</p>
           <h2 className="font-display text-xl font-bold tracking-tight text-[var(--text-main)] sm:text-2xl">A simple way to prepare for the next step.</h2>
           <p className="text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
             BukieGuarantee brings the service and profile details together, so you can decide what to do next with a clearer picture.

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { CalendarCheck, Clock, Inbox, LayoutDashboard, LogOut, ShieldCheck, UserRound, Wallet, Wrench } from 'lucide-react';
+import ThemeToggle from '../ThemeToggle';
 import type { AuthUser } from '../../lib/auth/types';
 
 const SECTIONS = [
@@ -35,6 +36,7 @@ export function BrainWorkerHeader({ active, user, onSignOut }: BrainWorkerHeader
           </span>
         </div>
         <div className="flex items-center gap-3 sm:gap-4">
+          <ThemeToggle idPrefix={`worker-${active}-theme`} />
           {user && (
             <>
               <div className="hidden text-right leading-tight md:block">

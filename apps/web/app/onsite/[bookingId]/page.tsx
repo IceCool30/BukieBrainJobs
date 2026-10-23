@@ -227,9 +227,9 @@ export default function OnSitePage({
 
   if (notFound) {
     return (
-      <div className="min-h-screen bg-[#0B0E13] p-4 text-zinc-100 sm:p-8">
+      <div className="min-h-screen bg-[var(--bg)] p-4 text-zinc-100 sm:p-8">
         <div className="mx-auto max-w-4xl space-y-6">
-          <div className="rounded-xl border border-rose-900/50 bg-[#13171E] p-6 text-rose-300 shadow-xl">
+          <div className="rounded-xl border border-rose-900/50 bg-[var(--card-bg)] p-6 text-rose-300 shadow-xl">
             <h2 className="text-lg font-semibold text-rose-200">Session Not Found</h2>
             <p className="mt-2 text-sm text-zinc-400">
               Booking on-site session not found. Please verify the booking reference or return to your dashboard.
@@ -242,9 +242,9 @@ export default function OnSitePage({
 
   if (!bookingId || isLoading || !onSiteState || !currentUser) {
     return (
-      <div className="min-h-screen bg-[#0B0E13] p-4 text-zinc-100 sm:p-8">
+      <div className="min-h-screen bg-[var(--bg)] p-4 text-zinc-100 sm:p-8">
         <div className="mx-auto max-w-4xl space-y-6">
-          <div className="animate-pulse rounded-xl border border-zinc-800 bg-[#13171E] p-6 text-zinc-400">
+          <div className="animate-pulse rounded-xl border border-zinc-800 bg-[var(--card-bg)] p-6 text-zinc-400">
             Loading on-site session...
           </div>
         </div>
@@ -256,7 +256,7 @@ export default function OnSitePage({
   const isCustomer = currentUser.role === 'customer';
 
   return (
-    <div className="min-h-screen bg-[#0B0E13] p-4 text-zinc-100 sm:p-8">
+    <div className="min-h-screen bg-[var(--bg)] p-4 text-zinc-100 sm:p-8">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800 pb-4">
@@ -309,7 +309,7 @@ export default function OnSitePage({
             )}
 
             {onSiteState.jobStatus === 'IN_PROGRESS' && !onSiteState.activeScopeAdjustment && (
-              <div className="rounded-xl border border-zinc-800 bg-[#13171E] p-6 text-zinc-300">
+              <div className="rounded-xl border border-zinc-800 bg-[var(--card-bg)] p-6 text-zinc-300">
                 <h3 className="text-base font-semibold text-zinc-100">
                   Technician Active On-Site
                 </h3>
@@ -346,7 +346,7 @@ export default function OnSitePage({
 
             {onSiteState.jobStatus === 'IN_PROGRESS' && (
               <div className="space-y-6">
-                <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-zinc-800 bg-[#13171E] p-4">
+                <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-zinc-800 bg-[var(--card-bg)] p-4">
                   <div>
                     <h3 className="text-sm font-semibold text-zinc-100">
                       Scope Management

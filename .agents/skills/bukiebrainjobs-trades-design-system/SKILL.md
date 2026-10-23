@@ -3,6 +3,9 @@ name: bukiebrainjobs-trades-design-system
 description: Design system for BukieBrainJobs with one approved theme, Obsidian Titanium Gunmetal Dark, across the website, PWA and mobile apps. Guides agents and engineers in restyling existing UI components, pages, cards, typography, and interactive states to the approved design system without injecting unsolicited layout components or reintroducing light mode, theme toggles, or theme preferences.
 ---
 
+> **THEME-001 (23 October 2026):** light mode is back with one toggle, dark by default. Where this file says dark only or no theme toggle, `docs/specs/THEME-001-light-dark-toggle.md` wins.
+
+
 # BukieBrainJobs Trades Design System
 
 ## Overview

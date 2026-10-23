@@ -65,7 +65,7 @@ function ServiceCard({
         <span className="absolute left-3.5 top-3.5 inline-flex items-center rounded border border-[var(--tag-border)] bg-[var(--card-bg)]/95 dark:bg-[var(--card-bg)]/90 px-2 py-0.5 font-mono text-[11px] font-medium text-[var(--text-main)] shadow-xs backdrop-blur-xs">
           From {category.startingPrice}
         </span>
-        <span className="absolute right-3.5 top-3.5 rounded border border-white/10 bg-[var(--brand-navy)]/90 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--brand-green)] backdrop-blur-xs">
+        <span className="absolute right-3.5 top-3.5 rounded border border-white/10 bg-[var(--brand-navy)]/90 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--nav-accent)] dark:text-[var(--brand-green)] backdrop-blur-xs">
           {category.group}
         </span>
       </div>
