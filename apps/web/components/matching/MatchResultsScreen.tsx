@@ -177,6 +177,8 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
   if (!authChecked) {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center" aria-busy="true" aria-label="Checking session">
+        <div className="h-8 w-8 rounded-full border-2 border-[var(--amber)] border-t-transparent animate-spin" />
+      </div>
     );
   }
 

@@ -12,11 +12,12 @@ afterEach(() => {
 });
 
 describe('ThemeToggle', () => {
-  it('renders a unified single theme toggle button for both light and dark themes', () => {
+  it('renders one theme toggle that defaults to dark when no theme is set', () => {
+    document.documentElement.removeAttribute('data-theme');
     render(<ThemeToggle />);
-    const toggle = screen.getByRole('button', { name: /switch to dark theme/i });
+    const toggle = screen.getByRole('button', { name: /switch to light theme/i });
     expect(toggle).toBeInTheDocument();
-    expect(toggle).toHaveAttribute('data-theme-state', 'light');
+    expect(toggle).toHaveAttribute('data-theme-state', 'dark');
   });
 
   it('marks toggle with dark theme state and updates label when initial theme is dark', () => {

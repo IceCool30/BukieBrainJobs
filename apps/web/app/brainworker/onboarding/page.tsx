@@ -15,7 +15,6 @@ import { getMockAuthenticatedUser } from '../../../lib/auth/storage';
 import { getBrainWorkerOnboardingRepository } from '../../../lib/brainworker/repository';
 import { useBrainWorkerOnboardingStore } from '../../../lib/brainworker/store';
 import { FunnelProgressBar } from '../../../components/brainworker/onboarding/FunnelProgressBar';
-import { ThemeToggle } from '../../../components/ThemeToggle';
 import { IdentityStepForm } from '../../../components/brainworker/onboarding/IdentityStepForm';
 import { TradeStepForm } from '../../../components/brainworker/onboarding/TradeStepForm';
 import { CredentialsStepForm } from '../../../components/brainworker/onboarding/CredentialsStepForm';
@@ -193,6 +192,8 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
   if (!user || isInitializing) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--bg)] transition-colors">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--text-main)] border-t-transparent" />
+      </div>
     );
   }
 
@@ -285,9 +286,7 @@ export default function BrainWorkerOnboardingPage(): React.ReactElement {
               <span>Home</span>
             </Link>
           </div>
-          <div className="flex items-center gap-3">
-            <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
-          </div>
+          <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
         </div>
       </header>
 

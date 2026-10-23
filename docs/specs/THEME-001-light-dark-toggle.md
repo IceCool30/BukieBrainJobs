@@ -50,4 +50,6 @@ No images, video or other paid generation is involved.
 
 Done: dark default token set with a refined light set, no device-based switching, fresh storage key `bbj_theme_mode` so everyone starts dark, toggle kept only in the navbar (desktop), the menu drawer (phone and PWA), the jobs and profile sidebars, the dashboard header and the BrainWorker header. Task screens follow the saved choice. On-site page colours moved to tokens. Mobile app has the same light colours, dark default and a toggle on the home screen header.
 
-Still open: a contrast pass on every page in light mode (some `text-white` on light surfaces may remain), remembering the mobile choice after the app closes (needs `@react-native-async-storage/async-storage`), and full doc rewrites.
+Checked on 23 October 2026: web type-check clean, mobile type-check clean, 1,759 of 1,759 web tests pass, production build passes. A contrast scan of all 29 public routes found 20 low-contrast items in light against 36 in the current dark mode. The remaining ones are text over photos or semi-transparent chips the scan cannot measure. Green labels on navy surfaces use `--nav-accent` in light and `--brand-green` in dark. The mobile app remembers the choice with AsyncStorage and the status bar follows the mode.
+
+Rules for future work: use theme tokens for every colour on a theme surface. Fixed white text is only for photos, the navy strip and filled buttons. On navy surfaces in light mode, use `--nav-accent` for green accents.
