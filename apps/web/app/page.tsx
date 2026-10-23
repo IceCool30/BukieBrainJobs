@@ -12,6 +12,7 @@ import HowItWorks from '../components/HowItWorks';
 import FeaturedBrainWorkers from '../components/FeaturedBrainWorkers';
 import FAQSection from '../components/FAQSection';
 import PartnerBar from '../components/PartnerBar';
+import BottomCTA from '../components/BottomCTA';
 import {
   ServiceCategory,
   SERVICE_CATEGORIES,
@@ -87,6 +88,9 @@ export default function CustomerHomepage() {
 
             {/* How BukieBrainJobs Works */}
             <HowItWorks />
+
+            {/* Outlier Bottom CTA Banner */}
+            <BottomCTA />
 
             {/* Frequently Asked Questions */}
             <FAQSection />

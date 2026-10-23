@@ -45,9 +45,9 @@ function isCurrent(pathname: string | null, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-const HEADER_PILL = 'motion-press px-4 py-2 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5';
-const HEADER_GHOST = `${HEADER_PILL} text-white hover:text-[var(--nav-accent)] drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]`;
-const HEADER_OUTLINE = `${HEADER_PILL} text-[var(--nav-accent)] border border-[var(--nav-accent)]/60 bg-white/5 hover:bg-[var(--nav-accent)]/10 hover:border-[var(--nav-accent)]`;
+const HEADER_PILL = 'outlier-pill-button px-4 py-2 text-xs font-semibold rounded-full transition-all flex items-center gap-1.5';
+const HEADER_GHOST = `${HEADER_PILL} text-white hover:text-[#F7803C] drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]`;
+const HEADER_OUTLINE = `${HEADER_PILL} text-[#F7803C] border border-[#F7803C]/50 bg-[#F7803C]/10 hover:bg-[#F7803C]/20 hover:border-[#F7803C] shadow-sm`;
 
 export default function Navbar({ onPostJobClick, onBecomeWorkerClick, drawerOpenRef, hideOnPwa }: NavbarProps) {
   const router = useRouter();
@@ -407,7 +407,7 @@ function DrawerPanel({
             <div className="mt-auto px-5 pb-8 pt-4 space-y-2.5 border-t border-[var(--lead)]">
               <button
                 onClick={() => { onClose(); onPostJob?.(); }}
-                className="motion-press w-full py-3.5 px-4 text-sm font-bold text-center text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] active:bg-[var(--amber-hover)] rounded-xl transition-colors flex items-center justify-center gap-2"
+                className="outlier-pill-button w-full py-3.5 px-4 text-sm font-bold text-center text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] active:bg-[var(--amber-hover)] rounded-full transition-all flex items-center justify-center gap-2 shadow-md"
               >
                 <Briefcase className="w-4 h-4" />
                 Post a Job
@@ -415,7 +415,7 @@ function DrawerPanel({
               {onBecomeWorker ? (
                 <button
                   onClick={() => { onClose(); onBecomeWorker(); }}
-                  className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-[var(--text-main)] bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] active:bg-[var(--card-hover)] border border-[var(--lead)] rounded-xl transition-colors block"
+                  className="outlier-pill-button w-full py-3.5 px-4 text-sm font-semibold text-center text-[var(--text-main)] bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] active:bg-[var(--card-hover)] border border-[var(--lead)] rounded-full transition-all block"
                 >
                   Become a BrainWorker
                 </button>
@@ -423,7 +423,7 @@ function DrawerPanel({
                 <Link
                   href="/brainworker/register"
                   onClick={onClose}
-                  className="motion-press w-full py-3.5 px-4 text-sm font-semibold text-center text-[var(--text-main)] bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] active:bg-[var(--card-hover)] border border-[var(--lead)] rounded-xl transition-colors block"
+                  className="outlier-pill-button w-full py-3.5 px-4 text-sm font-semibold text-center text-[var(--text-main)] bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] active:bg-[var(--card-hover)] border border-[var(--lead)] rounded-full transition-all block"
                 >
                   Become a BrainWorker
                 </Link>
