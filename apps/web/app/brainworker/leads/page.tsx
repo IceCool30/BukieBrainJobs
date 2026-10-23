@@ -132,7 +132,7 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/brainworker/services"
-                  className="inline-flex items-center justify-center rounded-lg bg-[#FF6B35] px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#F15A24] transition-colors"
+                  className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
                 >
                   Configure Services & Rates
                 </Link>
