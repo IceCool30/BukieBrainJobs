@@ -502,3 +502,9 @@ html.theme-switching *, html.theme-switching *::before, html.theme-switching *::
 [data-theme="dark"] .partner-logo {
   filter: invert(1) hue-rotate(180deg);
 }
+
+/* Light mode: orange text on a pale orange tint needs the deeper orange to stay readable.
+   Covers every chip, badge and banner that uses the amber tint. Dark mode is unchanged. */
+:root[data-theme='light'] [class*='bg-[var(--amber-dim)]'] {
+  --amber: #9a3412;
+}
