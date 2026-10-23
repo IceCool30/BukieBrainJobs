@@ -501,9 +501,9 @@ export default function PwaHome({
               </div>
             )}
           </div>
-          <p className="ml-auto max-w-[290px] pt-1 text-right text-[13px] font-bold leading-snug text-[var(--text-main)] drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
-              Find a BrainWorker for the job, or offer your skills for work that respects your time.
-            </p>
+          <p className="ml-auto max-w-[290px] pt-1 text-right text-[13px] font-bold leading-snug text-slate-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
+            Find a BrainWorker for the job, or offer your skills for work that respects your time.
+          </p>
         </div>
       </section>
 

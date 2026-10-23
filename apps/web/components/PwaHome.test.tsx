@@ -52,5 +52,14 @@ describe('PwaHome', () => {
     expect(searchButton.className).toContain('text-[#001A41]');
     expect(searchButton.className).toContain('hover:bg-[var(--amber-hover)]');
   });
+
+  it('renders subtitle text below search bar in high-contrast light text over hero backdrop', () => {
+    render(<PwaHome onOpenDrawer={vi.fn()} />);
+
+    const subtitle = screen.getByText(/Find a BrainWorker for the job, or offer your skills/i);
+    expect(subtitle.className).toContain('text-slate-100');
+    expect(subtitle.className).not.toContain('text-[var(--text-main)]');
+  });
 });
+
 
