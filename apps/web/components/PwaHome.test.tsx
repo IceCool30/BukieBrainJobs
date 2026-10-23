@@ -43,4 +43,14 @@ describe('PwaHome', () => {
     expect(screen.getByRole('heading', { name: /before you book/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /common questions/i })).toBeInTheDocument();
   });
+
+  it('renders search button with amber styling matching the trades design system', () => {
+    render(<PwaHome onOpenDrawer={vi.fn()} />);
+
+    const searchButton = screen.getByRole('button', { name: /^search$/i });
+    expect(searchButton.className).toContain('bg-[var(--amber)]');
+    expect(searchButton.className).toContain('text-[#001A41]');
+    expect(searchButton.className).toContain('hover:bg-[var(--amber-hover)]');
+  });
 });
+

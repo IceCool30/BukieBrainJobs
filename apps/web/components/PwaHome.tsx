@@ -378,10 +378,10 @@ export default function PwaHome({
 
                 <button
                   type="submit"
-                  className="motion-press flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#296A4B] px-5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-[#1F523A] active:bg-[#17402C]"
+                  className="motion-press flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[var(--amber)] px-5 text-xs font-bold text-[#001A41] shadow-sm transition-colors hover:bg-[var(--amber-hover)] active:opacity-90 font-mono uppercase tracking-wider"
                 >
                   <span>Search</span>
-                  <ArrowRight className="h-4 w-4 text-[#ABEEC8]" />
+                  <ArrowRight className="h-4 w-4 text-[#001A41]" />
                 </button>
               </div>
             </form>
