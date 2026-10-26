@@ -306,10 +306,8 @@ export default function HowItWorks() {
               <div className="rounded-[20px] md:rounded-[28px] border border-white/15 bg-[#161B24] p-6 shadow-2xl relative">
                 <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-red-500/80" />
-                    <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                    <span className="w-3 h-3 rounded-full bg-green-500/80" />
-                    <span className="ml-2 text-xs text-slate-300 font-medium">
+                    <ShieldCheck className="w-4 h-4 text-[#2FE896]" />
+                    <span className="text-xs text-slate-200 font-semibold">
                       {currentStep.previewTitle}
                     </span>
                   </div>
