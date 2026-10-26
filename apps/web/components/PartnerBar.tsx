@@ -75,49 +75,37 @@ const TICKER_METRICS = [
 export default function PartnerBar({ compact = false }: PartnerBarProps) {
   return (
     <section 
-      aria-label="Live Verified BrainWorkers Telemetry and Partners"
+      aria-label="Payment and identity partners"
       className="w-full overflow-hidden border-y border-[var(--lead)] bg-[var(--card-bg)] py-4 select-none relative transition-colors duration-200"
     >
       {/* Edge Gradient Masking (Left & Right Outlier fades) */}
       <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 md:w-36 bg-gradient-to-r from-[var(--card-bg)] to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 md:w-36 bg-gradient-to-l from-[var(--card-bg)] to-transparent z-10 pointer-events-none" />
 
-      {/* Header bar / Trust indicators */}
-      <div className="max-w-[1280px] mx-auto px-4 mb-3 flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--text-muted)]">
-        <div className="flex items-center gap-2">
-          <span className="telemetry-beacon inline-block" />
-          <span className="font-mono text-[11px] uppercase tracking-wider font-semibold text-[var(--text-main)]">
-            Live Verified Artisan Telemetry
-          </span>
-          <span className="hidden sm:inline text-[var(--text-muted)]">• Active Dispatch in Lagos, Abuja & PH</span>
-        </div>
-
-        {/* Payment & Security Partners */}
-        <div className="flex items-center gap-6">
-          <span className="text-[11px] font-medium hidden md:inline">Identity & Escrow Partners:</span>
-          <div className="flex items-center gap-4 sm:gap-6">
-            <Image
-              src="/images/partners/paystack-official.svg"
-              alt="Paystack"
-              width={100}
-              height={20}
-              className="h-3.5 sm:h-4 w-auto partner-logo opacity-70 hover:opacity-100 transition-opacity"
-            />
-            <Image
-              src="/images/partners/flutterwave-official.svg"
-              alt="Flutterwave"
-              width={110}
-              height={20}
-              className="h-3.5 sm:h-4 w-auto partner-logo opacity-70 hover:opacity-100 transition-opacity"
-            />
-            <Image
-              src="/images/partners/dojah-official.svg"
-              alt="Dojah"
-              width={55}
-              height={20}
-              className="h-3.5 sm:h-4 w-auto partner-logo opacity-70 hover:opacity-100 transition-opacity"
-            />
-          </div>
+      {/* Payment & Security Partners */}
+      <div className="max-w-[1280px] mx-auto px-4 mb-3 flex items-center justify-center gap-6">
+        <div className="flex items-center gap-6 sm:gap-8">
+          <Image
+            src="/images/partners/paystack-official.svg"
+            alt="Paystack"
+            width={100}
+            height={20}
+            className="h-3.5 sm:h-4 w-auto partner-logo opacity-70 hover:opacity-100 transition-opacity"
+          />
+          <Image
+            src="/images/partners/flutterwave-official.svg"
+            alt="Flutterwave"
+            width={110}
+            height={20}
+            className="h-3.5 sm:h-4 w-auto partner-logo opacity-70 hover:opacity-100 transition-opacity"
+          />
+          <Image
+            src="/images/partners/dojah-official.svg"
+            alt="Dojah"
+            width={55}
+            height={20}
+            className="h-3.5 sm:h-4 w-auto partner-logo opacity-70 hover:opacity-100 transition-opacity"
+          />
         </div>
       </div>
 
