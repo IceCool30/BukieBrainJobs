@@ -24,27 +24,27 @@ export default function HowItWorks() {
       id: 'step-1',
       num: '01',
       title: 'Start with the service',
-      shortTitle: 'Instant Match',
-      desc: 'Choose the service and location that fit what you need done. We match you with vetted artisans in minutes.',
+      shortTitle: 'Find a service',
+      desc: 'Choose the service and location that fit what you need done. Browse available BrainWorkers in your area or post a job.',
       icon: Search,
-      badge: 'Discovery & Matching',
+      badge: 'Pick your service',
       highlights: [
-        'Over 20+ specialized trade categories across Nigeria',
-        'Direct filtering by neighborhood (Ikeja, Lekki, Maitama, GRA)',
-        'Upfront transparent pricing guidelines with zero surprises',
+        'Browse over 20 trade categories across Nigeria',
+        'Filter by location in Lagos, Abuja, and Port Harcourt',
+        'See clear pricing guidance before you proceed',
       ],
-      previewTitle: 'Live Dispatch Matcher',
+      previewTitle: 'Find professionals',
       previewComponent: (
         <div className="space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#2FE896] animate-pulse" />
-              <span className="font-mono text-xs uppercase tracking-wider text-slate-300 font-bold">
-                Matching Criteria Active
+              <span className="w-2.5 h-2.5 rounded-full bg-[#2FE896]" />
+              <span className="text-xs text-slate-300 font-semibold">
+                Available in your area
               </span>
             </div>
-            <span className="text-[11px] font-mono text-[#F7803C] font-semibold">
-              3 Nearby BrainWorkers
+            <span className="text-[11px] text-[#F7803C] font-semibold">
+              3 BrainWorkers nearby
             </span>
           </div>
 
@@ -52,17 +52,17 @@ export default function HowItWorks() {
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-white flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-[#F7803C]" />
-                Generator Servicing • Ikeja
+                Generator Servicing, Ikeja
               </span>
-              <span className="text-[11px] font-mono text-[#2FE896] font-extrabold">
-                Avg ETA 18m
+              <span className="text-[11px] text-[#2FE896] font-semibold">
+                Typical arrival: 20 mins
               </span>
             </div>
             <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
               <div className="h-full bg-gradient-to-r from-[#F7803C] to-[#2FE896] w-[85%]" />
             </div>
             <p className="text-[11px] text-slate-400">
-              Filtered for certified technicians with minimum 4.9★ rating and identity verification.
+              Professionals in your area with confirmed identity and active customer reviews.
             </p>
           </div>
 
@@ -73,11 +73,11 @@ export default function HowItWorks() {
               </div>
               <div>
                 <p className="text-xs font-bold text-white">Babatunde A.</p>
-                <p className="text-[10px] text-slate-400">Master Tech • 218 jobs</p>
+                <p className="text-[10px] text-slate-400">Electrical Technician • 218 completed jobs</p>
               </div>
             </div>
             <span className="px-2.5 py-1 rounded-full bg-[#2FE896]/15 text-[#2FE896] text-[10px] font-bold">
-              Available Now
+              Available today
             </span>
           </div>
         </div>
@@ -87,33 +87,33 @@ export default function HowItWorks() {
       id: 'step-2',
       num: '02',
       title: 'Choose your next step',
-      shortTitle: 'Vetted Selection',
-      desc: 'Choose a BrainWorker directly or prepare details for a custom job with tailored bids.',
+      shortTitle: 'Choose a professional',
+      desc: 'Look through verified profiles, compare reviews from previous customers, and choose the right BrainWorker for your job.',
       icon: UserCheck,
-      badge: 'Artisan Verification',
+      badge: 'Profile verification',
       highlights: [
-        'NIN & BVN identity checks conducted via Dojah',
-        'Physical trade skill testing & workshop verification',
-        'Customer satisfaction ratings tied to on-platform payouts',
+        'National Identity Number (NIN) and Bank Verification Number (BVN) checks',
+        'Practical trade experience and workshop background confirmation',
+        'Real reviews from customers who booked and paid on the platform',
       ],
-      previewTitle: 'Artisan Vetting Dossier',
+      previewTitle: 'Profile verification',
       previewComponent: (
         <div className="space-y-3.5">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="font-mono text-xs uppercase tracking-wider text-slate-300 font-bold">
-              Verification Clearance
+            <span className="text-xs text-slate-300 font-semibold">
+              Verification checklist
             </span>
-            <span className="px-2 py-0.5 rounded-full bg-[#2FE896]/20 text-[#2FE896] text-[10px] font-bold uppercase tracking-wider">
-              Tier 2 Verified
+            <span className="px-2 py-0.5 rounded-full bg-[#2FE896]/20 text-[#2FE896] text-[10px] font-bold">
+              Verified profile
             </span>
           </div>
 
           <div className="space-y-2">
             {[
-              { label: 'Government National Identity (NIN)', status: 'Verified via NIMC' },
-              { label: 'Bank Verification Number (BVN)', status: 'Account Match 100%' },
-              { label: 'Trade Workshop & Tool Inspection', status: 'Passed Grade A' },
-              { label: 'Criminal Background Check', status: 'Clear / Police Endorsed' },
+              { label: 'National Identity (NIN)', status: 'Verified' },
+              { label: 'Bank Verification Number (BVN)', status: 'Name match confirmed' },
+              { label: 'Trade experience review', status: 'Confirmed' },
+              { label: 'Customer rating history', status: 'Active on platform' },
             ].map((item, idx) => (
               <div key={idx} className="flex items-center justify-between p-2 rounded-lg bg-white/5 border border-white/5 text-xs">
                 <span className="text-slate-300 font-medium">{item.label}</span>
@@ -131,48 +131,48 @@ export default function HowItWorks() {
       id: 'step-3',
       num: '03',
       title: 'Get clear on the details',
-      shortTitle: 'Escrow Guarantee',
-      desc: 'Review the scope, price, and timing before you move ahead. Funds stay protected in escrow.',
+      shortTitle: 'Agree and pay',
+      desc: 'Review the scope, price, and schedule before work starts. Your payment stays securely in escrow and is released only when you approve the finished job.',
       icon: ShieldCheck,
-      badge: 'Escrow Milestone Protection',
+      badge: 'Escrow protection',
       highlights: [
-        '100% upfront escrow protection—worker paid only when you approve',
-        'Built-in BukieGuarantee coverage up to ₦250,000 against damages',
-        'Dispute mediation backed by real job receipts and photos',
+        'Your payment is held in escrow and released only after your confirmation',
+        'Milestone releases for jobs that involve multiple stages or materials',
+        'Direct dispute support if completed work differs from what was agreed',
       ],
-      previewTitle: 'Milestone Escrow Simulator',
+      previewTitle: 'Payment escrow',
       previewComponent: (
         <div className="space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="font-mono text-xs uppercase tracking-wider text-slate-300 font-bold">
-              Escrow Protection Status
+            <span className="text-xs text-slate-300 font-semibold">
+              Payment status
             </span>
-            <span className="text-xs font-mono text-[#F7803C] font-extrabold">
-              Funds Secured
+            <span className="text-xs text-[#F7803C] font-semibold">
+              Held in escrow
             </span>
           </div>
 
           <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-400">Total Agreed Scope:</span>
+              <span className="text-slate-400">Agreed job amount:</span>
               <span className="font-mono font-bold text-white text-sm">₦35,000.00</span>
             </div>
-            <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
+            <div className="grid grid-cols-3 gap-2 text-center text-[10px]">
               <div className="p-2 rounded-lg bg-[#2FE896]/15 border border-[#2FE896]/30 text-[#2FE896]">
-                <p className="font-bold">1. Funded</p>
-                <p className="text-[9px] opacity-80">By Customer</p>
+                <p className="font-bold">1. Deposited</p>
+                <p className="text-[9px] opacity-80">By customer</p>
               </div>
               <div className="p-2 rounded-lg bg-[#F7803C]/15 border border-[#F7803C]/30 text-[#F7803C]">
-                <p className="font-bold">2. Locked</p>
-                <p className="text-[9px] opacity-80">In Escrow</p>
+                <p className="font-bold">2. In escrow</p>
+                <p className="text-[9px] opacity-80">Protected</p>
               </div>
               <div className="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400">
-                <p className="font-bold">3. Release</p>
-                <p className="text-[9px] opacity-80">After Sign-off</p>
+                <p className="font-bold">3. Released</p>
+                <p className="text-[9px] opacity-80">After sign-off</p>
               </div>
             </div>
             <p className="text-[11px] text-slate-300 text-center">
-              Worker cannot claim payment until you verify completed quality.
+              Payment is released to the BrainWorker only after you confirm the job is done.
             </p>
           </div>
         </div>
@@ -182,25 +182,25 @@ export default function HowItWorks() {
       id: 'step-4',
       num: '04',
       title: 'Keep it together',
-      shortTitle: 'Dispatch & Track',
-      desc: 'Use the booking page to track on-site arrival, communicate in real time, and sign off.',
+      shortTitle: 'Track and sign off',
+      desc: 'Use the booking page to see arrival updates, communicate directly with your BrainWorker, and confirm job completion.',
       icon: Lock,
-      badge: 'Live Execution & Handover',
+      badge: 'Job completion',
       highlights: [
-        'Real-time GPS proximity alerts as your artisan approaches',
-        'Direct WhatsApp and in-app secure communication channel',
-        'Digital receipt & guarantee certificate stored forever in account',
+        'Arrival window notifications when your BrainWorker is on the way',
+        'Direct messaging to keep instructions and updates in one place',
+        'Digital job record and receipt saved to your account',
       ],
-      previewTitle: 'Real-Time Dispatch Console',
+      previewTitle: 'Arrival status',
       previewComponent: (
         <div className="space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="font-mono text-xs uppercase tracking-wider text-slate-300 font-bold">
-              Dispatch Telemetry
+            <span className="text-xs text-slate-300 font-semibold">
+              Arrival update
             </span>
             <span className="flex items-center gap-1.5 text-xs text-[#2FE896] font-semibold">
               <Clock className="w-3.5 h-3.5" />
-              On-Route
+              On the way
             </span>
           </div>
 
@@ -210,13 +210,13 @@ export default function HowItWorks() {
                 <MapPin className="w-5 h-5" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-white">Technician Approaching Location</p>
-                <p className="text-[11px] text-slate-400 truncate">Admiralty Way, Lekki Phase 1</p>
+                <p className="text-xs font-bold text-white">BrainWorker is on the way</p>
+                <p className="text-[11px] text-slate-400 truncate">Lekki Phase 1, Lagos</p>
               </div>
             </div>
             <div className="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
-              <span className="text-slate-400">Estimated Arrival:</span>
-              <span className="font-mono font-bold text-[#F7803C]">12 Minutes</span>
+              <span className="text-slate-400">Estimated arrival:</span>
+              <span className="font-mono font-bold text-[#F7803C]">12 minutes</span>
             </div>
           </div>
         </div>
@@ -245,7 +245,7 @@ export default function HowItWorks() {
               Before you book
             </h2>
             <p className="text-sm sm:text-base text-slate-400">
-              The four-pillar execution engine that ensures quality, security, and transparent escrow every single time.
+              Four clear steps to find the right professional, agree on the job details, and protect your payment until the work is done.
             </p>
           </div>
 
@@ -279,9 +279,9 @@ export default function HowItWorks() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             {/* Left Column: Detailed Step Explanation & Highlights */}
             <div className="lg:col-span-6 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F7803C]/15 border border-[#F7803C]/30 text-[#F7803C] text-xs font-mono font-bold uppercase tracking-wider">
-                Step {currentStep.num} • {currentStep.badge}
-              </div>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F7803C]/15 border border-[#F7803C]/30 text-[#F7803C] text-xs font-bold">
+                Step {currentStep.num}: {currentStep.badge}
+              </span>
 
               <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                 {currentStep.title}
@@ -309,12 +309,12 @@ export default function HowItWorks() {
                     <span className="w-3 h-3 rounded-full bg-red-500/80" />
                     <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
                     <span className="w-3 h-3 rounded-full bg-green-500/80" />
-                    <span className="ml-2 font-mono text-xs text-slate-400 font-semibold">
+                    <span className="ml-2 text-xs text-slate-300 font-medium">
                       {currentStep.previewTitle}
                     </span>
                   </div>
-                  <span className="font-mono text-[10px] text-slate-500">
-                    ESCROW-VERIFIED
+                  <span className="text-[11px] text-slate-400">
+                    Protected by escrow
                   </span>
                 </div>
 
