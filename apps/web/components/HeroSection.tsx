@@ -337,13 +337,6 @@ export default function HeroSection({
         </div>
 
         <div className="relative z-10 max-w-3xl text-left space-y-6">
-          {/* Outlier Telemetry Pill Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 backdrop-blur-md px-3.5 py-1.5 shadow-sm">
-            <span className="telemetry-beacon inline-block" />
-            <span className="font-mono text-xs uppercase tracking-wider font-semibold text-slate-200">
-              Live Verified Artisan Network • Instant Dispatch
-            </span>
-          </div>
 
           {/* Outlier Punchy Typography */}
           <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.035em] text-white leading-[1.05]">

@@ -16,13 +16,6 @@ export default function BottomCTA() {
           aria-hidden="true"
         />
 
-        {/* Telemetry Badge */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 backdrop-blur-md px-3.5 py-1.5 relative z-10 shadow-xs">
-          <Sparkles className="w-3.5 h-3.5 text-[#F7803C]" />
-          <span className="font-mono text-xs uppercase tracking-wider font-semibold text-slate-200">
-            BukieGuarantee Protected
-          </span>
-        </div>
 
         {/* Outlier Headline */}
         <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-[-0.035em] leading-[1.1] max-w-2xl relative z-10">

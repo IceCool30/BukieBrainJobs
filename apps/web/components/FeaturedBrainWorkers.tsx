@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, BadgeCheck, MapPin, Star, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, BadgeCheck, MapPin, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getPublicBrainWorkers, PublicBrainWorker } from '../lib/mock/homepage-data';
 
 interface FeaturedBrainWorkersProps {
@@ -98,12 +98,7 @@ export default function FeaturedBrainWorkers({ profileCity }: FeaturedBrainWorke
         {/* Header with Navigation Controls */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#2FE896]" />
-              <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[var(--text-muted)]">
-                Vetted Nigerian Artisans
-              </span>
-            </div>
+
             <h2 className="font-display tracking-tight text-2xl sm:text-4xl font-extrabold text-[var(--text-main)]">
               Meet the featured BrainWorkers
             </h2>

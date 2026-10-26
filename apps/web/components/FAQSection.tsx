@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronDown, HelpCircle, Sparkles } from 'lucide-react';
+import { ChevronDown, HelpCircle } from 'lucide-react';
 import { MOCK_FAQS } from '../lib/mock/homepage-data';
 
 export default function FAQSection() {
@@ -15,12 +15,6 @@ export default function FAQSection() {
     <section id="faq" className="py-14 sm:py-20 bg-[var(--bg)] text-[var(--text-main)] border-b border-[var(--lead)] transition-colors duration-200">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-1">
-            <Sparkles className="w-3.5 h-3.5 text-[#F7803C]" />
-            <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[var(--text-muted)]">
-              Support & Transparency
-            </span>
-          </div>
           <h2 className="font-display tracking-tight font-extrabold text-2xl sm:text-4xl text-[var(--text-main)]">
             Common questions
           </h2>

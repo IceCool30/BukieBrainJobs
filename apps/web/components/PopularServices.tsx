@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { SERVICE_CATEGORIES, ServiceCategory } from '../lib/mock/homepage-data';
 import ServiceCategoryRail from './ServiceCategoryRail';
 
@@ -20,12 +20,7 @@ export default function PopularServices({ onSelectCategory }: PopularServicesPro
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-1">
-              <Sparkles className="w-3.5 h-3.5 text-[#F7803C]" />
-              <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[var(--text-muted)]">
-                Specialized Trade Domains
-              </span>
-            </div>
+
             <h2 className="font-display tracking-tight font-extrabold text-2xl sm:text-4xl text-[var(--text-main)]">
               Browse services
             </h2>

@@ -240,12 +240,7 @@ export default function HowItWorks() {
         <div className="relative z-10 space-y-8 md:space-y-12">
           {/* Section Header with Required Keyword "Before you book" for tests */}
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1">
-              <Sparkles className="w-3.5 h-3.5 text-[#F7803C]" />
-              <span className="font-mono text-xs uppercase tracking-wider font-semibold text-slate-300">
-                Interactive Service Workbench
-              </span>
-            </div>
+
             <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-[-0.03em] text-white">
               Before you book
             </h2>
