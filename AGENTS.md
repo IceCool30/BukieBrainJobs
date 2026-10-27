@@ -82,6 +82,7 @@ This file defines the standards and operational map every contributor must follo
 - **Visual**: Design tokens extracted directly from code and `globals.css` `@theme`; no arbitrary hex values. Deep Navy is primary, Emerald is strategic emphasis/success.
 - **Quality**: Anti-generic guardrails strictly enforced (zero slop: no generic icons, taglines, captions, explainers, subheadlines, fake cheerleading, or unsupported absolute claims).
 - **Data Integrity**: Production-first architecture with deterministic mock data. Never fabricate rates, coordinates, ratings, verification results, or booking confirmations.
+- **Senior Production Engineering Standards**: Strictly enforce human-grade engineering standards across all code: zero swallowed exceptions, mandatory ACID transactions with rollback, structured contextual logging (no raw `console.log` or `print`), idempotency keys on write calls, explicit network timeouts, and concurrency-safe queries.
 
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).

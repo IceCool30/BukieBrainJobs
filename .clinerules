@@ -38,6 +38,7 @@ Whenever you modify code, follow this exact sequence:
 - **TDD Rigor**: Write failing tests before implementation (RED -> GREEN -> REFACTOR).
 - **Mr. Solomon Voice**: Direct, human, clear, anti-generic. No corporate slop, no fake enthusiasm, no em dashes.
 - **Canonical Context Map**: Consult `AGENTS.md` and `docs/specs/` for architectural boundaries.
+- **Senior Production Standards**: Strictly enforce human-grade engineering standards (zero swallowed exceptions, mandatory ACID transactions, structured logging, idempotency on write calls, no raw print/console logging).
 
 ## 6. Mandatory Skill Gate (Every Task, No Exceptions)
 
