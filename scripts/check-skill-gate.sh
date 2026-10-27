@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Guards the Mandatory Skill Gate in AGENTS.md section "Mandatory Skills".
-# Fails loudly if the gate text is missing or any of the eight skills is dropped.
+# Fails loudly if the gate text is missing or any of the nine skills is dropped.
 #
 # Two file classes:
 #   REQUIRED - tracked in this repository. CI enforces these.
@@ -33,6 +33,7 @@ REQUIRED=(
   "ui-ux-pro-max"
   "agent-skills-test-driven-development"
   "reverse-engineer-anything"
+  "human-production-engineering"
 )
 
 check_file() {
@@ -88,5 +89,5 @@ if [ "$fail" -ne 0 ]; then
   exit 1
 fi
 
-echo "PASS: gate present in all required files, all eight skills named."
+echo "PASS: gate present in all required files, all nine skills named."
 echo "Every agent must print the SKILL GATE block before its first edit."

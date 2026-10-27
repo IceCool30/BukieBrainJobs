@@ -15,6 +15,7 @@ const skills = [
   'ui-ux-pro-max',
   'agent-skills-test-driven-development',
   'reverse-engineer-anything',
+  'human-production-engineering',
 ];
 const declaration = ['SKILL GATE', ...skills].join('\n');
 
@@ -28,10 +29,10 @@ function fixture(t) {
   return { home, root, run: () => spawnSync('bash', ['scripts/check-skill-gate.sh'], { cwd: root, encoding: 'utf8' }) };
 }
 
-test('accepts complete eight-skill declarations without optional home rules', t => {
+test('accepts complete nine-skill declarations without optional home rules', t => {
   const result = fixture(t).run();
   assert.equal(result.status, 0, result.stdout);
-  assert.match(result.stdout, /all eight skills named/);
+  assert.match(result.stdout, /all nine skills named/);
 });
 
 for (const file of files) {

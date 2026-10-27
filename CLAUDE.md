@@ -41,13 +41,13 @@ Whenever you modify code, follow this exact sequence:
 
 ## 6. Mandatory Skill Gate (Every Task, No Exceptions)
 
-These eight skills are required on every task. They are load-bearing rules, not suggestions:
+These nine skills are required on every task. They are load-bearing rules, not suggestions:
 
-`mr-solomon-nine-command-engineering-loop`, `mr-solomon-natural-voice`, `bukiebrainjobs-content-style`, `bukiebrainjobs-trades-design-system`, `bukiebrainjobs-experience-standards`, `ui-ux-pro-max`, `agent-skills-test-driven-development`, `reverse-engineer-anything`
+`mr-solomon-nine-command-engineering-loop`, `mr-solomon-natural-voice`, `bukiebrainjobs-content-style`, `bukiebrainjobs-trades-design-system`, `bukiebrainjobs-experience-standards`, `ui-ux-pro-max`, `agent-skills-test-driven-development`, `reverse-engineer-anything`, `human-production-engineering`
 
 **The gate:**
 
-1. **Load before you touch anything.** Do not create, edit, or delete any file until all eight skills have been loaded through the skills tool and triaged. Reading these rules is not loading a skill. `AGENTS.md` names the paths.
+1. **Load before you touch anything.** Do not create, edit, or delete any file until all nine skills have been loaded through the skills tool and triaged. Reading these rules is not loading a skill. `AGENTS.md` names the paths.
 2. **Declare before the first edit.** Print this block in your reply before any file change:
 
 ```
@@ -60,6 +60,7 @@ SKILL GATE
 - ui-ux-pro-max: OUT OF SCOPE (no visual or layout decision)
 - agent-skills-test-driven-development: APPLIED
 - reverse-engineer-anything: OUT OF SCOPE (no compiled artifacts, runtime captures, or external API analysis)
+- human-production-engineering: APPLIED
 GATE PASSED
 ```
 
@@ -70,4 +71,4 @@ GATE PASSED
 7. **If work already started without the gate, stop.** Load, declare, then continue from where you are.
 8. **Every agent, no exceptions.** Primary agent, subagent, teammate, spawned worker. Whoever edits, declares. When you spawn a subordinate, put this gate in its system prompt.
 9. **A task is not finished while the gate is unpassed.** An unpassed gate makes any result inadmissible for review.
-10. **Verify the gate, do not just claim it.** Run `bash scripts/check-skill-gate.sh` from the repository root. It fails loudly if any rule file lost the gate or dropped one of the eight skills. Run it before review, and treat a failure as a blocker for the task, not a warning.
+10. **Verify the gate, do not just claim it.** Run `bash scripts/check-skill-gate.sh` from the repository root. It fails loudly if any rule file lost the gate or dropped one of the nine skills. Run it before review, and treat a failure as a blocker for the task, not a warning.

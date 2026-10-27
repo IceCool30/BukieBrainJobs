@@ -102,7 +102,7 @@ This file defines the standards and operational map every contributor must follo
 
 These skills are required for all work in this repository without exception. Load each one at the start of every session and apply it whenever the task falls within its domain. Do not skip, defer, or partially apply these skills.
 
-**This is enforced as a hard gate, not a preference.** Before your first file edit, load all eight through the skills tool, triage each one as `APPLIED` or `OUT OF SCOPE`, and print the `SKILL GATE` block exactly as specified in `.clinerules` section 6 (mirrored in `CLAUDE.md`). The declaration must appear in your reply before any edit. A missing line fails the gate. `OUT OF SCOPE` requires a specific reason, not a vague one. Re-run the gate whenever the task materially changes.
+**This is enforced as a hard gate, not a preference.** Before your first file edit, load all nine through the skills tool, triage each one as `APPLIED` or `OUT OF SCOPE`, and print the `SKILL GATE` block exactly as specified in `.clinerules` section 6 (mirrored in `CLAUDE.md`). The declaration must appear in your reply before any edit. A missing line fails the gate. `OUT OF SCOPE` requires a specific reason, not a vague one. Re-run the gate whenever the task materially changes.
 
 Every agent is bound by this: primary agent, subagent, teammate, spawned worker. Whoever edits, declares. When spawning a subordinate, include the gate in its system prompt.
 
@@ -116,6 +116,7 @@ Every agent is bound by this: primary agent, subagent, teammate, spawned worker.
 | `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Any visual design decision, page structure, component quality review, typography, color, animation, or UX pattern. |
 | `agent-skills-test-driven-development` | `.agents/skills/agent-skills-test-driven-development/SKILL.md` | Any logic change, bug fix, behavior modification, or new feature implementation. |
 | `reverse-engineer-anything` | `.agents/skills/reverse-engineer-anything/SKILL.md` | Any task touching compiled/bundled artifacts, mobile APKs, minified production bundles, HAR network captures, or reverse-engineering external APIs. |
+| `human-production-engineering` | `.agents/skills/human-production-engineering/SKILL.md` | Enforce senior human production code quality: zero swallowed exceptions, mandatory ACID transactions, structured observability, concurrency safety, and bounded timeouts. |
 
 All mandatory skills must be read before work begins on any substantive task. If a task spans multiple domains, apply all relevant skills together.
 
@@ -123,7 +124,7 @@ Two skills are almost never out of scope: `mr-solomon-nine-command-engineering-l
 
 REA must be loaded and declared on every task, but its analysis tools remain out of scope for ordinary source-repository work. Do not require native engines or MCP diagnostics merely to pass this gate.
 
-Verify rather than claim: run `bash scripts/check-skill-gate.sh` from the repository root before review. It fails loudly if any rule file lost the gate or dropped one of the eight skills. Treat a failure as a blocker for the task, not a warning. Regression coverage: `node --test scripts/check-skill-gate.test.mjs`.
+Verify rather than claim: run `bash scripts/check-skill-gate.sh` from the repository root before review. It fails loudly if any rule file lost the gate or dropped one of the nine skills. Treat a failure as a blocker for the task, not a warning. Regression coverage: `node --test scripts/check-skill-gate.test.mjs`.
 
 ### Universal Skills Directory & Installation Reference
 
@@ -139,6 +140,7 @@ Every developer, AI agent, and remote execution environment (Google Cloud Shell 
 | `ui-ux-pro-max` | BukieBrainJobs Skill Suite | Visual design intelligence, component hierarchy, typography, design tokens | Active in `.agents/skills/ui-ux-pro-max/` |
 | `agent-skills-test-driven-development` | [agent-skills-tdd](https://github.com/obra/superpowers) | Test-driven development for all logic changes, bug fixes, and new features | Active in `.agents/skills/agent-skills-test-driven-development/` |
 | `bukiebrainjobs-trades-design-system` | [IceCool30/bukiebrainjobs-trades-design-system](https://github.com/IceCool30/bukiebrainjobs-trades-design-system) | Design system: Obsidian Titanium Gunmetal dark plus the THEME-001 light theme for restyling existing UI components and pages | Active in `.agents/skills/bukiebrainjobs-trades-design-system/` |
+| `human-production-engineering` | [IceCool30/human-production-engineering-skill](https://github.com/IceCool30/human-production-engineering-skill) | Senior human-grade production engineering: zero swallowed exceptions, ACID transactions, structured logging, concurrency, and bounded timeouts | Active in `.agents/skills/human-production-engineering/` |
 
 
 
