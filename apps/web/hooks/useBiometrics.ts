@@ -23,7 +23,10 @@ export function useBiometrics(): BiometricStatus {
             setBiometryType(isApple ? 'face' : 'fingerprint');
           }
         })
-        .catch(() => {
+        .catch((err: unknown) => {
+          if (process.env.NODE_ENV !== 'production') {
+            console.warn('[useBiometrics] Platform authenticator check failed:', err instanceof Error ? err.message : String(err));
+          }
           setIsAvailable(false);
           setBiometryType('none');
         });
@@ -35,7 +38,10 @@ export function useBiometrics(): BiometricStatus {
     try {
       // In production, triggers WebAuthn / FaceID credential assertion
       return true;
-    } catch {
+    } catch (err: unknown) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useBiometrics] Biometric authentication assertion failed:', err instanceof Error ? err.message : String(err));
+      }
       return false;
     }
   };

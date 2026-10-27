@@ -7,24 +7,27 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-let prisma: any;
+let prisma: PrismaClient;
 try {
   prisma =
     globalForPrisma.prisma ??
     new PrismaClient({
       log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
     })
-} catch {
-  console.warn('[AI Studio] Database not connected — using mock');
+} catch (err: unknown) {
+  if (process.env.NODE_ENV !== 'production') {
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn(`[db:client] Database initialization fallback: ${message}`);
+  }
   const noOp = {
     findMany: async () => [],
     findFirst: async () => null,
     findUnique: async () => null,
-    create: async (d: any) => d?.data ?? {},
-    update: async (d: any) => d?.data ?? {},
+    create: async (d: { data?: unknown }) => d?.data ?? {},
+    update: async (d: { data?: unknown }) => d?.data ?? {},
     delete: async () => ({})
   };
-  prisma = new Proxy({}, { get: () => noOp });
+  prisma = new Proxy({} as PrismaClient, { get: () => noOp });
 }
 
 if (process.env.NODE_ENV !== 'production') {

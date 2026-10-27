@@ -48,7 +48,10 @@ export class BrowserPushAdapter implements IPushNotificationAdapter {
         icon: '/favicon.ico',
       });
       return true;
-    } catch {
+    } catch (err: unknown) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('[PushNotificationAdapter] Notification dispatch failed:', err instanceof Error ? err.message : String(err));
+      }
       return false;
     }
   }

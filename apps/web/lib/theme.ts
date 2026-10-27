@@ -18,7 +18,10 @@ export function resolveTheme(storedValue: string | null | undefined): TradesThem
 export function readStoredTheme(storage: Pick<Storage, 'getItem'>): string | null {
   try {
     return storage.getItem(THEME_STORAGE_KEY);
-  } catch {
+  } catch (err: unknown) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('[theme] Failed to read stored theme:', err instanceof Error ? err.message : String(err));
+    }
     return null;
   }
 }
@@ -33,7 +36,10 @@ export function applyTheme(theme: TradesTheme, storage?: Pick<Storage, 'setItem'
   if (!storage) return;
   try {
     storage.setItem(THEME_STORAGE_KEY, theme);
-  } catch {
+  } catch (err: unknown) {
     // Storage can be unavailable (private mode). The theme still applies for this visit.
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('[theme] Failed to persist theme preference:', err instanceof Error ? err.message : String(err));
+    }
   }
 }

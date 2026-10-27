@@ -3,6 +3,7 @@
 
 import { Namespace, Server, Socket } from 'socket.io'
 import { type ServerToClientEvents, type ClientToServerEvents, type SocketData, type Message, type ContentType } from '@bukiebrainjobs/api-types'
+import { logger } from '../logger'
 
 // Active rooms map: jobId -> Set of socket IDs
 type ActiveRooms = Map<string, Set<string>>
@@ -45,7 +46,11 @@ export function setupChatNamespace(io: Server<any, any, any, SocketData>) {
   })
   
   chatNamespace.on('connection', (socket: Socket<any, any, any, SocketData>) => {
-    console.log(`Chat namespace: user ${socket.data.userId} connected`)
+    logger.info('Chat namespace user connected', {
+      userId: socket.data.userId,
+      socketId: socket.id,
+      namespace: '/chat'
+    })
     
     socket.on('join_chat', (jobId: string, callback?: (success: boolean, error?: string) => void) => {
       if (!jobId) {

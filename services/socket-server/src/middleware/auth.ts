@@ -40,11 +40,15 @@ export function authMiddleware(socket: Socket<any, any, any, SocketData>, next: 
 function parseToken(token: string): { sub?: string; role?: string; phone?: string } | null {
   try {
     const parts = token.split('.')
-    if (parts.length !== 3 || !parts[1]) return null
+    if (parts.length !== 3 || !parts[1]) {
+      console.warn('[auth:parseToken] Malformed token structure: expected 3 dot-delimited parts')
+      return null
+    }
     
     const payload = Buffer.from(parts[1], 'base64').toString('utf8')
     return JSON.parse(payload)
-  } catch {
+  } catch (err: unknown) {
+    console.error('[auth:parseToken] Token payload decode failure:', err instanceof Error ? err.message : String(err))
     return null
   }
 }

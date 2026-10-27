@@ -1,12 +1,12 @@
-// services/socket-server/src/handlers/chatHandlers.ts
-import { Server } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 import { type ServerToClientEvents, type ClientToServerEvents, type SocketData } from '@bukiebrainjobs/api-types'
+import { logger } from '../logger'
 
 export function setupChatHandlers(io: Server<any, any, any, SocketData>) {
   const chatNamespace = io.of('/chat')
   
-  chatNamespace.on('connection', (socket: any) => {
-    console.log(`Chat handler: ${socket.id} connected`)
+  chatNamespace.on('connection', (socket: Socket) => {
+    logger.info('Chat client connected', { socketId: socket.id, namespace: '/chat' })
     
     // Handle job-specific chat rooms
     socket.on('join_chat', (jobId: string) => {

@@ -1,12 +1,12 @@
-// services/socket-server/src/handlers/jobHandlers.ts
-import { Server } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 import { type ServerToClientEvents, type ClientToServerEvents, type SocketData, type JobStatus } from '@bukiebrainjobs/api-types'
+import { logger } from '../logger'
 
 export function setupJobHandlers(io: Server<any, any, any, SocketData>) {
   const jobsNamespace = io.of('/jobs')
   
-  jobsNamespace.on('connection', (socket: any) => {
-    console.log(`Job handler: ${socket.id} connected`)
+  jobsNamespace.on('connection', (socket: Socket) => {
+    logger.info('Jobs client connected', { socketId: socket.id, namespace: '/jobs' })
     
     socket.on('subscribe', (data: { jobId: string }) => {
       const { jobId } = data

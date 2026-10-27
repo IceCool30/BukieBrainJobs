@@ -8,21 +8,19 @@ import type {
 } from './types';
 
 function toUtcDateKey(date: Date): string {
-  try {
-    return date.toISOString().slice(0, 10);
-  } catch {
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
     return '';
   }
+  return date.toISOString().slice(0, 10);
 }
 
 function isSameCalendarDay(dateStr: string, referenceDate: Date): boolean {
-  try {
-    const d = new Date(dateStr);
-    if (Number.isNaN(d.getTime())) return false;
-    return toUtcDateKey(d) === toUtcDateKey(referenceDate);
-  } catch {
-    return false;
-  }
+  if (!dateStr || typeof dateStr !== 'string') return false;
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return false;
+  const targetKey = toUtcDateKey(d);
+  const refKey = toUtcDateKey(referenceDate);
+  return targetKey !== '' && targetKey === refKey;
 }
 
 export function computeDashboardMetrics(params: {

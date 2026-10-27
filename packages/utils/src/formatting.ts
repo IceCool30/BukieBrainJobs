@@ -542,8 +542,8 @@ export function formatError(error: unknown): string {
       .replace(/\.$/, '')
   }
   
-  if (error && typeof error === 'object' && 'message' in error) {
-    const message = (error as any).message as string
+  if (error && typeof error === 'object' && 'message' in error && typeof (error as Record<string, unknown>).message === 'string') {
+    const message = (error as Record<string, unknown>).message as string
     return message
       .charAt(0)
       .toUpperCase() + 

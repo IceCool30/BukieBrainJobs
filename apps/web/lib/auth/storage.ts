@@ -21,11 +21,18 @@ function getStorage() {
   };
 }
 
+function logStorageWarning(operation: string, error: unknown): void {
+  if (process.env.NODE_ENV !== 'production') {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[auth/storage] ${operation} failed: ${message}`);
+  }
+}
+
 export function savePreservedBookingDraft(draft: PreservedBookingDraft): void {
   try {
     getStorage().setItem(BOOKING_DRAFT_KEY, JSON.stringify(draft));
-  } catch {
-    // Storage access may fail in private mode; fail safely
+  } catch (err: unknown) {
+    logStorageWarning('savePreservedBookingDraft', err);
   }
 }
 
@@ -38,7 +45,8 @@ export function getPreservedBookingDraft(): PreservedBookingDraft | null {
       return parsed as PreservedBookingDraft;
     }
     return null;
-  } catch {
+  } catch (err: unknown) {
+    logStorageWarning('getPreservedBookingDraft', err);
     return null;
   }
 }
@@ -46,16 +54,16 @@ export function getPreservedBookingDraft(): PreservedBookingDraft | null {
 export function clearPreservedBookingDraft(): void {
   try {
     getStorage().removeItem(BOOKING_DRAFT_KEY);
-  } catch {
-    // Fail safely
+  } catch (err: unknown) {
+    logStorageWarning('clearPreservedBookingDraft', err);
   }
 }
 
 export function savePreservedJobDraft(draft: PreservedJobDraft): void {
   try {
     getStorage().setItem(JOB_DRAFT_KEY, JSON.stringify(draft));
-  } catch {
-    // Storage access may fail in private mode; fail safely
+  } catch (err: unknown) {
+    logStorageWarning('savePreservedJobDraft', err);
   }
 }
 
@@ -68,7 +76,8 @@ export function getPreservedJobDraft(): PreservedJobDraft | null {
       return parsed as PreservedJobDraft;
     }
     return null;
-  } catch {
+  } catch (err: unknown) {
+    logStorageWarning('getPreservedJobDraft', err);
     return null;
   }
 }
@@ -76,8 +85,8 @@ export function getPreservedJobDraft(): PreservedJobDraft | null {
 export function clearPreservedJobDraft(): void {
   try {
     getStorage().removeItem(JOB_DRAFT_KEY);
-  } catch {
-    // Fail safely
+  } catch (err: unknown) {
+    logStorageWarning('clearPreservedJobDraft', err);
   }
 }
 
@@ -93,8 +102,8 @@ export function getMockAuthenticatedUser(): AuthUser | null {
         if (!raw && window.localStorage) {
           raw = window.localStorage.getItem(AUTH_USER_KEY) || window.localStorage.getItem('bukie_auth_user');
         }
-      } catch {
-        // fail safely
+      } catch (nestedErr: unknown) {
+        logStorageWarning('getMockAuthenticatedUser:fallback', nestedErr);
       }
     }
     if (!raw) return null;
@@ -103,7 +112,8 @@ export function getMockAuthenticatedUser(): AuthUser | null {
       return parsed as AuthUser;
     }
     return null;
-  } catch {
+  } catch (err: unknown) {
+    logStorageWarning('getMockAuthenticatedUser', err);
     return null;
   }
 }
@@ -122,7 +132,7 @@ export function setMockAuthenticatedUser(user: AuthUser | null): void {
         window.localStorage.removeItem('bukie_auth_user');
       }
     }
-  } catch {
-    // Fail safely
+  } catch (err: unknown) {
+    logStorageWarning('setMockAuthenticatedUser', err);
   }
 }

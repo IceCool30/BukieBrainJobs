@@ -6,6 +6,7 @@ import { createAdapter } from '@socket.io/redis-adapter'
 import { Cluster } from 'ioredis'
 import http from 'http'
 import { type ServerToClientEvents, type ClientToServerEvents, type InterServerEvents, type SocketData } from '@bukiebrainjobs/api-types'
+import { logger } from './logger'
 
 // Load configuration from environment
 const PORT = parseInt(process.env.SOCKET_SERVER_PORT || '3001', 10)
@@ -14,7 +15,7 @@ const PORT = parseInt(process.env.SOCKET_SERVER_PORT || '3001', 10)
 const setupRedis = () => {
   const redisUrl = process.env.REDIS_URL
   if (!redisUrl) {
-    console.log('REDIS_URL not configured, using in-memory adapter')
+    logger.info('REDIS_URL not configured, using in-memory adapter')
     return null
   }
   
@@ -24,16 +25,16 @@ const setupRedis = () => {
     ])
     
     redis.on('error', (err) => {
-      console.error('Redis cluster error:', err)
+      logger.error('Redis cluster error', err)
     })
     
     redis.on('connect', () => {
-      console.log('Redis cluster connected for Socket.io pub/sub')
+      logger.info('Redis cluster connected for Socket.io pub/sub')
     })
     
     return redis
   } catch (error) {
-    console.error('Failed to connect to Redis:', error)
+    logger.error('Failed to connect to Redis', error)
     return null
   }
 }
@@ -59,7 +60,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEve
 const redis = setupRedis()
 if (redis) {
   io.adapter(createAdapter(redis, redis.duplicate()))
-  console.log('Using Redis adapter for Socket.io')
+  logger.info('Using Redis adapter for Socket.io')
 }
 
 // Import and setup namespaces
@@ -95,30 +96,29 @@ httpServer.on('request', (req, res) => {
 
 // Server ready handler
 io.on('connection', (socket) => {
-  console.log(`Socket connected: ${socket.id}`)
+  logger.info('Socket client connected', { socketId: socket.id })
   
   socket.on('disconnect', (reason) => {
-    console.log(`Socket disconnected: ${socket.id} - Reason: ${reason}`)
+    logger.info('Socket client disconnected', { socketId: socket.id, reason })
   })
   
   socket.on('error', (error) => {
-    console.error(`Socket error: ${socket.id}`, error)
+    logger.error('Socket error event', error, { socketId: socket.id })
   })
 })
 
 // Start server
 httpServer.listen(PORT, () => {
-  console.log(`Socket.io server running on port ${PORT}`)
-  console.log(`Adapter: ${redis ? 'Redis' : 'In-memory'}`)
+  logger.info('Socket.io server listening', { port: PORT, adapter: redis ? 'Redis' : 'In-memory' })
 })
 
 // Handle graceful shutdown
 const gracefulShutdown = () => {
-  console.log('Shutting down Socket.io server...')
+  logger.info('Shutting down Socket.io server...')
   io.close()
   redis?.disconnect()
   httpServer.close(() => {
-    console.log('Socket.io server shutdown complete')
+    logger.info('Socket.io server shutdown complete')
     process.exit(0)
   })
 }
