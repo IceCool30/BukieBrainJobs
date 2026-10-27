@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Git Pre-Commit Guard for BukieBrainJobs
+# Enforces:
+# 1. Mandatory Skill Gate integrity (check-skill-gate.sh)
+# 2. Senior Human Production Engineering standards (check-production-standards.py)
+
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+echo "== [PRE-COMMIT GUARD] Running Mandatory Skill Gate Check =="
+bash scripts/check-skill-gate.sh
+
+echo "== [PRE-COMMIT GUARD] Running Production Standards Check =="
+python3 scripts/check-production-standards.py --staged
+
+echo "== [PRE-COMMIT GUARD] All pre-commit guardrails PASSED =="
