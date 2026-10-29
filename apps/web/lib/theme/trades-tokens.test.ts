@@ -36,8 +36,8 @@ describe('BukieBrainJobs Trades Design System Tokens', () => {
     expect(dark.rule).toBe('#2D3748');
     expect(dark.textMain).toBe('#F0F4F9');
     expect(dark.textMuted).toBe('#8897AB');
-    expect(dark.amber).toBe('#FF6B35');
-    expect(dark.amberHover).toBe('#FF7D4D');
+    expect(dark.amber).toBe('#F7803C');
+    expect(dark.amberHover).toBe('#FF8D4D');
     expect(dark.brandGreen).toBe('#2FE896');
     expect(dark.stripBg).toBe('#07090D');
     expect(dark.stripText).toBe('#9FB2C8');
@@ -55,7 +55,7 @@ describe('BukieBrainJobs Trades Design System Tokens', () => {
       dangerDim: 'rgba(196, 48, 43, 0.08)',
     });
     expect(tradesColorTokens.dark).toMatchObject({
-      amberDim: 'rgba(255, 107, 53, 0.14)',
+      amberDim: 'rgba(247, 128, 60, 0.14)',
       brandGreenDim: 'rgba(47, 232, 150, 0.12)',
       brandGreenBorder: 'rgba(47, 232, 150, 0.35)',
       danger: '#FF6B6B',
