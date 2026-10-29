@@ -1,19 +1,23 @@
 # BukieBrainJobs Source Material Register
 
 **Document ID:** GOV-006
-**Version:** 1.0
-**Status:** Approved foundation
+**Version:** 1.1
+**Status:** Canonical source register
 
 This register distinguishes canonical repository documentation from historical source material supplied during project development.
+
+> Current web/PWA appearance follows `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`; theme behavior follows `docs/specs/THEME-001-light-dark-toggle.md`. The original `DESIGN.md` and DS-001 through DS-012 visual rules remain historical.
 
 ## Canonical Project Sources
 
 | Source | Role | Canonical authority |
 |---|---|---|
-| `DESIGN.md` | Visual source of truth | Yes, visual system |
+| `DESIGN.md` | Original visual source material | Historical for current web/PWA appearance; retain for provenance |
 | `BukieBrainJobs — Full-Stack Technical Specification.md` | Detailed engineering reference | Yes, technical reference |
 | `BukieBrainJobs_TaskRabbit_Playbook.md` | Marketplace research and strategy | Research / strategic reference |
-| Approved DS-001 through DS-012 | Design-system decisions | Yes, within design authority |
+| Approved DS-001 through DS-012 | Original v1.0 design-system decisions | Historical where visual rules conflict with DS-013 |
+| DS-013 / Outlier skill | Current web/PWA appearance | Yes, website and PWA visual authority |
+| THEME-001 | Theme behavior and toggle placements | Yes, dark default, light mode, saved preference, existing placements |
 | WEB-001 and related approved artifacts | Feature requirements | Yes, feature authority |
 
 ## Local Source Fingerprints

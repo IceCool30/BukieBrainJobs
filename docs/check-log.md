@@ -2,6 +2,24 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-10-29: Outlier Design Authority and Mandatory Skill Gate
+
+- **Branch**: `docs/outlier-design-system-authority`, based on `main` at `6dee9d4`. Changes remain local and uncommitted. No push, merge, rebase, or deployment was performed.
+- **Scope**: Added the canonical Outlier skill, documented DS-013 and the THEME-001 boundary, updated current and historical design references, and replaced the Trades skill in mandatory rule files. The legacy skill and its HTML examples remain clearly marked as historical.
+- **RED**: The gate regression suite initially reported 19 passing and 3 failing tests, proving that all three mandatory rule files still accepted a deprecated Trades skill declaration.
+- **GREEN**: `bash scripts/check-skill-gate.sh` passed for all required rule files and available optional home rules. `node --test scripts/check-skill-gate.test.mjs` passed all 22 tests with zero failures.
+- **Skill validation**: `quick_validate.py` reports the new Outlier skill is valid.
+- **Syntax and hygiene**: `bash -n scripts/check-skill-gate.sh`, `node --check scripts/check-skill-gate.test.mjs`, and `git diff --check` passed.
+- **Behavior boundary**: CSS and shared-token source edits in this documentation change are comment-only. No token values, application behavior, backend, database, or native screens were changed. The full application test, type-check, lint, and build suites were not rerun because runtime code and design values were unchanged.
+- **Diff**: 64 tracked files modified plus the new Outlier skill. No changes were staged or committed.
+
+### Follow-up: Requirement-spec visual-scope audit (29 October 2026)
+
+- **Scope**: Added visual-scope notices to 12 current or proposed requirement specifications. No existing product, content, acceptance, or non-visual requirements were removed or rewritten.
+- **Focused scan**: Recursively scanned `docs/04-public-website/` and `docs/specs/`, excluding test-first execution records. No unmarked current requirement-spec palette or dark-only conflicts remain.
+- **Verification**: `node --test scripts/check-skill-gate.test.mjs` passed 22/22; `bash scripts/check-skill-gate.sh` passed; `git diff --check` passed.
+- **State**: The branch contains 76 tracked modified files plus the new Outlier skill. Changes remain local, uncommitted, and unstaged.
+
 ## 2026-10-20: BW-009 Post-Job Completion & Escrow Release (Item 3.3) Verification
 
 - **Branch**: `feature/bw-009-post-job-completion`

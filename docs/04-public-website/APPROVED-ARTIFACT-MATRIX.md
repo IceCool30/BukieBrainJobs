@@ -2,6 +2,8 @@
 
 **Status:** Active verification register
 
+> **Visual direction notice, 29 October 2026:** This matrix and its product specifications remain authoritative for routes, behavior, scope, and acceptance criteria. Older palette, typography, surface, radius, and component examples in design briefs are historical for web/PWA and are superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics and existing toggle placements follow THEME-001. Native visual restyling remains separately scoped.
+
 | ID | Artifact | Purpose | Status | Foundation requirement |
 |---|---|---|---|---|
 | WEB-001 | Public Homepage Product & UX Specification | Product behavior and homepage requirements | Approved | Yes |

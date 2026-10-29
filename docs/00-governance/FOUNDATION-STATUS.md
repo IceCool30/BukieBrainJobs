@@ -27,7 +27,7 @@
 - Product foundation and roadmap references
 - Locked Design System v1.0 record
 - Approved Design System artifact register
-- Root `DESIGN.md` visual source
+- Root `DESIGN.md` original visual source (now historical for web/PWA)
 - BukieBrainJobs design canonicalization boundary
 - Homepage product specification
 - Approved homepage artifact register
@@ -44,11 +44,11 @@
 
 ## Design Foundation
 
-DS-001 through DS-012 are recorded as approved and locked for v1.0. The repository also defines the authority boundary for the supplied `DESIGN.md` so its visual tokens remain authoritative without allowing legacy recruitment terminology to become BukieBrainJobs product requirements.
+At foundation release, DS-001 through DS-012 were recorded as approved and locked for v1.0. That visual authority and the supplied `DESIGN.md` have since been superseded for web/PWA by DS-013 and the Outlier skill. THEME-001 governs theme mechanics. The legacy-source boundary still prevents old recruitment terminology from becoming current product requirements.
 
 ## Public Website Foundation
 
-WEB-001 is approved. WEB-001A is an approved project artifact for the homepage design workflow. WEB-001B and WEB-001B-MCP (Google Stitch design and MCP orchestration) are deprecated per the approved artifact matrix; UI design and implementation are performed directly by Google Antigravity using approved project specifications and DESIGN.md.
+WEB-001 is approved. WEB-001A is an approved project artifact for the homepage design workflow. WEB-001B and WEB-001B-MCP (Google Stitch design and MCP orchestration) are deprecated per the approved artifact matrix. This historical record's original implementation process referenced `DESIGN.md`; current web/PWA appearance follows Outlier and theme behavior follows THEME-001.
 
 ## Repository Rule
 
@@ -63,7 +63,7 @@ When a feature requires a detail that is not available in the repository, the de
 ## Final Source Authority
 
 1. Approved BukieBrainJobs product specifications
-2. `DESIGN.md` plus `docs/02-design-system/DESIGN-CANONICALIZATION.md` for visual authority
+2. `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` for current web/PWA appearance and `docs/specs/THEME-001-light-dark-toggle.md` for theme mechanics
 3. Approved technical specification
 4. Approved security, accessibility and QA requirements
 5. Operational prompts and agent instructions

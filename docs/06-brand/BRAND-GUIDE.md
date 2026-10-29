@@ -4,6 +4,8 @@
 
 This document governs all brand asset usage across the web app, mobile app, documentation, and marketing materials. All developers and agents MUST pull logos from the folders defined below. Do NOT recreate, trace, generate, or redesign logos. Use the canonical sizes already provided.
 
+> **Scope note, 29 October 2026:** This guide remains authoritative for approved logo files, asset handling, and brand identity. Its color examples do not define current web/PWA component tokens. Use `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` for web/PWA appearance and THEME-001 for theme mechanics. Native visual restyling remains separately scoped.
+
 ## The Two Logo Variants
 
 | Variant | Files | When to Use |
@@ -38,18 +40,18 @@ The masters live in `docs/06-brand/assets/`. They are the highest-resolution ori
 
 1. **Preferred lockup:** the landscape wordmark (`wordmark-banner-tight.png`) is preferred wherever the brand appears prominently on the website. It contains the full company name and should not be cropped.
 2. **Icons and favicons:** always generated from `logo-appicon-3d-2048.png` using `generate-assets.py`, never from the flat variants. Reusable logo images retain transparency outside the white rounded tile. Installed web, PWA, Apple, and Windows icons use an opaque white canvas so platforms do not add an unintended dark or coloured background.
-3. **Wordmark container radius:** the canonical wordmark container uses a subtle corner radius of ~13% of its height (60px on the 454px asset), matching the glassy button treatment. Do not restyle it to a sharper box or a fuller pill. This radius is fixed in `DESIGN.md` under Shapes.
+3. **Wordmark artwork shape:** the canonical asset has an intrinsic corner radius of about 13% of its height. Preserve the asset without recropping or reshaping it, but do not use its geometry as a rule for page components. Current component radii follow the Outlier skill.
 4. **Independent white container:** the canonical `wordmark-banner-tight.png` is the white container with the badge and text only. It has no surrounding background or baked canvas. When placed on navy surfaces (Navbar, Footer), let the component's own background show around it; do not wrap it in an extra white box. Older versions that include a large baked white or shadowed canvas must not be used.
 5. **Dark background alternative:** do not introduce a separate coloured field around the B. Use the approved rounded white tile and let the surrounding surface remain visible through its transparent outer edges.
 6. **Social sharing / OpenGraph:** use `og-banner-1200x630.png` (1200x630, the minimum OG size), built from the landscape wordmark on a white canvas.
 7. **No re-creation:** if a size not listed here is needed, add it via `generate-assets.py`, then update this table.
 8. **Cleanup rule:** only the canonical sizes listed above should exist in `public/` and `assets/images/`. Older unused sizes should be deleted, and duplicated uploads should never be committed.
 
-## Brand Colors
+## Brand Identity Colors, Not UI Tokens
 
 | Token | Hex | Use |
 |---|---|---|
-| Primary Navy | `#001A41` | Logo letter, headers, primary buttons, footer |
-| Emphasis Green | `#296A4B` | Swoosh, CTAs, verified badges |
-| Light Green | `#ABEEC8` | Accents, verified pills, hover states |
+| Primary Navy | `#001A41` | Logo identity and navy structural roles where current Outlier components specify them |
+| Emphasis Green | `#296A4B` | Logo swoosh and semantic success/status roles where current product patterns specify them; not a primary CTA token |
+| Light Green | `#ABEEC8` | Brand artwork and retained identity material; not a current web/PWA UI token unless Outlier maps it |
 | White | `#FFFFFF` | Logo tile background, wordmark banner background |

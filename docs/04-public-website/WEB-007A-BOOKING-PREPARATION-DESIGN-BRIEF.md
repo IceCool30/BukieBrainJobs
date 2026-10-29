@@ -1,5 +1,7 @@
 # WEB-007A: Public Booking Preparation & Intake Design Brief
 
+> **Current visual direction notice, 29 October 2026:** This brief remains authoritative for product behavior, content, flows, and acceptance criteria. Its earlier website/PWA visual styling is historical and is superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics and toggle placements follow `docs/specs/THEME-001-light-dark-toggle.md`. Native visual restyling is separately scoped.
+
 **Document ID:** WEB-007A  
 **Version:** 1.0  
 **Status:** Approved  
@@ -7,7 +9,7 @@
 **Route:** `/book`  
 **Primary User:** Customer  
 **Parent Specification:** WEB-007  
-**Design System:** DESIGN.md, v1.0
+**Original Design System:** DESIGN.md, v1.0 (historical visual reference)
 
 ## 1. Purpose
 
@@ -17,7 +19,7 @@ It defines hierarchy, layout, component treatment, responsive behavior, states, 
 
 ## 2. Design Authority
 
-- `DESIGN.md` is the visual source of truth.
+- Outlier skill governs current web/PWA appearance; THEME-001 governs theme mechanics and toggle placement.
 - WEB-007 is the feature behavior authority.
 - This brief is subordinate to both.
 - No new foundational colors, typography, spacing scale, radii, component primitives, or motion rules are introduced here.

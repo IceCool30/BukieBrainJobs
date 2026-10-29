@@ -1,12 +1,12 @@
 # Live Approved BukieBrainJobs Experience Baseline
 
-## Use This as the Primary Product Authority
+## Use This as a Product-Pattern Reference
 
-This reference records the experience approved and deployed from the BukieBrainJobs feature branch. It is a living product baseline, not a historical mockup or a collection of fixed layouts. Use it to judge whether a new website page, PWA view, native-app screen, component, asset, interaction, or content decision belongs in BukieBrainJobs.
+This reference records approved homepage and product patterns. Use it for task hierarchy, image treatment, interaction, responsive behavior, and content decisions. It is not the source for current site-wide visual tokens.
 
-When Solomon explicitly approves a reusable new pattern, update this file in the same change set. Do not preserve a historical pattern that the live product has deliberately replaced.
+For website and PWA appearance, use `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` and THEME-001. Native visual restyling remains deferred. When Solomon explicitly approves a reusable product pattern, update this file in the same change set.
 
-The approved homepage is the strongest live reference for the product’s visual quality, restraint, image treatment, task hierarchy, and mobile focus. Reuse its principles across the product. Do not mechanically copy its composition into unrelated product journeys.
+The approved homepage remains the reference for its photo treatment, task hierarchy, and mobile focus. Reuse its product principles without copying its composition or extracting a separate palette for unrelated journeys.
 
 ## Product Experience Character
 
@@ -17,26 +17,15 @@ The approved product feels **calm, capable, photo-led, clear, and premium withou
 | Clarity before decoration | The next meaningful action is obvious before secondary information. |
 | Task before framing | Retain operational content and the supporting information needed for a decision. Remove repetitive promotion and decorative explanation. |
 | Image-led quality | Real service and BrainWorker imagery carries visual richness when it improves recognition, trust, or task context. |
-| Colour restraint | Navy creates structure, mint and green create emphasis, and the quiet off-white canvas creates room for content. |
+| Colour restraint | Use current Outlier tokens for web/PWA. Color supports hierarchy and semantic status, not decoration. |
 | Honest marketplace confidence | UI explains the next action without invented ratings, guarantees, coverage, availability, or safety claims. |
-| One coherent system | Website, PWA, and native-app screens share a brand and quality bar while adapting hierarchy and interaction to their platform. |
+| One coherent product | Website, PWA, and native-app screens share product requirements and quality standards while adapting hierarchy and interaction to their platform. Visual restyling remains separately scoped. |
 
-## Live Brand Tokens and Surface Language
+## Current Web/PWA Visual Authority
 
-| Token or pattern | Current approved usage |
-|---|---|
-| Canvas | `#F8F9FF` is the default page background. |
-| Navy | `#001A41` anchors headings, primary controls, the hero, footer, focus treatment, and controlled shadow depth. |
-| Green | `#296A4B` supports service actions, selected links, and restrained secondary emphasis. |
-| Mint | `#ABEEC8` provides short highlights, focus treatment, and limited brand emphasis. |
-| Display typography | Hanken Grotesk is the established heading and display typeface. |
-| Body and interface typography | Inter is the established body and interface typeface. |
-| Card surface | Use white, a thin slate border, clear padding, and soft navy-tinted elevation. |
-| Radius | Use a compact, slightly softened radius. The product favours `rounded-xl` and `rounded-2xl`, not excessive pills. |
-| Page rhythm | Use clear section separation and purposeful whitespace instead of repeated colour blocks. |
-| Icons and marks | Use a consistent vector icon language and official brand marks with correct proportions and clear space. |
+The Outlier skill and `apps/web/app/globals.css` define current website and PWA colors, typography, surfaces, radii, buttons, and component appearance. THEME-001 defines the dark default, light theme, saved preference, and toggle placements. This reference must not duplicate tokens or override either source.
 
-Avoid visual trends that conflict with this language. Do not add broad frosted glass, heavy blur, fluorescent gradients, oversized blobs, ornamental illustration, decorative statistics, or arbitrary per-screen style systems.
+Retain visible focus, readable text over photography, useful imagery, and accessible contrast. Follow the current Outlier skill for approved surfaces and effects. Native screen restyling remains deferred.
 
 ## Product-Wide Interaction and Content Patterns
 
@@ -114,7 +103,7 @@ Mobile motion is perceptible only at meaningful discovery moments and remains sh
 |---|---|
 | Service discovery enters view | Reveal the service heading and cards with a restrained upward and opacity transition. Stagger items briefly. |
 | Service card press | Give a concise press response and small image response without changing layout bounds. |
-| Search focus | Apply a slight scale, mint focus ring, and controlled navy depth. |
+| Search focus | Preserve visible theme-aware focus and controlled depth. Use current Outlier tokens for the focus color. |
 | Search suggestions | Reveal below the field without shifting the hero layout. |
 | Menu drawer | Use a short open and close transition. Preserve Escape dismissal and body-scroll restoration. |
 | Scroll header | Keep it compact and blur-free. Do not animate a broad translucent bar over content. |

@@ -40,14 +40,16 @@ Shared business rules, trust model, booking model, and design system stay one so
 
 The current product baseline is BW-006 BrainWorker Earnings, Wallet & Payouts (Item 2.6, PR #60), merged at `3f0cc64`. BW-005 is Profile & Portfolio Management, not the wallet feature. Maintenance has aligned the REA skill gate and task notes. The owner explicitly authorized merging this maintenance to `main`; no next product feature has been selected. Feature test and build results in the checklist are historical reports, not fresh verification from this maintenance task. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
 
-## Live-first experience standard
+## Current web/PWA visual system
 
-The approved live homepage experience is the primary design authority for all future pages and screens. Before starting any customer-facing work, read `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md` and the bundled skill at `docs/02-design-system/skills/bukiebrainjobs-experience-standards/`.
+For web/PWA appearance, read `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Read `docs/specs/THEME-001-light-dark-toggle.md` for theme behavior and `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md` with its bundled experience skill for product UX, accessibility, and interaction standards. The native UI visual rollout is deferred.
 
-The live homepage establishes the product's visual identity:
+The approved homepage remains a product-pattern reference, not the source of every screen's styling:
 
-- Calm, photo-led, premium design with navy, green, mint, and off-white used with restraint
-- Hanken Grotesk for display text, Inter for body text
+- Outlier web/PWA visuals use theme-aware tokens, coral accents, and appropriate pill CTAs while preserving compact operational radii
+- THEME-001 keeps dark as the default, supports light mode, persists `bbj_theme_mode`, and defines the existing toggle placements
+- The desktop navbar remains navy; text over photographs keeps its fixed light treatment and sufficient contrast
+- Cabinet Grotesk is the display face, Hanken Grotesk is the fallback, and Inter remains the body and interface face
 - Image-led service cards, a two-tier search in the hero, and a compact three-brand trust strip
 - **BrainWorker** is the official customer-facing identity for service providers; the onboarding call to action is "Become a BrainWorker"
 - Supported trust brands on the homepage are Paystack, Flutterwave, and Dojah
@@ -60,13 +62,14 @@ The live homepage establishes the product's visual identity:
 When documents conflict, use this order unless a documented decision explicitly changes it:
 
 1. `docs/00-governance/SOURCE-OF-TRUTH.md`
-2. The approved live experience standard and skill
-3. Approved product requirements and decisions
-4. `DESIGN.md` for visual and interaction rules
-5. Approved design-system artifacts
+2. Approved product requirements and decisions for product behavior
+3. `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` for web/PWA appearance
+4. `docs/specs/THEME-001-light-dark-toggle.md` for theme mechanics and toggle placement
+5. `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md` for product UX, accessibility, and interaction standards
 6. Approved feature and screen specifications
 7. Technical architecture and implementation specifications
-8. Implementation that follows the approved specifications
+8. `DESIGN.md` and old design artifacts only as historical context where compatible
+9. Implementation that follows the approved specifications
 
 Never silently resolve a material conflict by inventing a requirement.
 
@@ -75,7 +78,7 @@ Never silently resolve a material conflict by inventing a requirement.
 | Area | Responsibility |
 |---|---|
 | Product and specifications | Product decisions, feature specifications, UX, architecture, acceptance criteria |
-| Design and engineering | UI interpretation from DESIGN.md, frontend, backend, APIs, infrastructure, testing and deployment |
+| Design and engineering | UI interpretation from the Outlier skill, THEME-001, and product specifications; frontend, backend, APIs, infrastructure, testing and deployment |
 | Source control | Versioned source, documentation, reviews and release history on GitHub |
 
 All contributors must read the repository guidance before modifying code.
@@ -174,7 +177,7 @@ Implementation must follow the approved technical specification rather than recr
 
 ## Design baseline
 
-Dark (Obsidian Titanium Gunmetal) is the only approved theme on the website, PWA and mobile apps. Theme, colour, surfaces, typography and buttons follow `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md`: Molten Amber for primary actions, Brand Green for trust and escrow, Cabinet Grotesk for display headings, Inter for body and interface text, and JetBrains Mono for codes and money. `DESIGN.md` still governs spacing, grid, layout and elevation where the skill is silent.
+Website and PWA appearance follows `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. THEME-001 preserves dark as the first-visit default, supports light mode, saves `bbj_theme_mode`, and defines existing toggle placements. Use Outlier theme-aware tokens, coral marketing actions, and compact geometry on operational screens. The desktop header remains navy in light mode and near-black in dark mode. Native screen restyling remains separately scoped; the previously approved shared coral-token effect does not authorize native layout changes.
 
 Do not introduce arbitrary colors, typography, spacing, radii, motion or component behavior outside the approved system.
 

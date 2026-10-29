@@ -1,5 +1,7 @@
 # WEB-004: Public Service Detail
 
+> **Current visual scope notice, 29 October 2026:** Existing product behavior, content, acceptance criteria, and non-visual requirements remain authoritative at this document's current approval status. Conflicting web/PWA palette, typography, surface, radius, and component examples are historical and superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics defer to `docs/specs/THEME-001-light-dark-toggle.md`. Native restyling is separately scoped.
+
 **Status:** Approved implementation contract
 **Scope:** Mock-data-driven public website route
 **Route:** `/services/[serviceId]`

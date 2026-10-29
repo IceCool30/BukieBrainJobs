@@ -13,7 +13,7 @@ The repository governance foundation is established. Application implementation 
 
 - Repository governance and contribution rules are present.
 - `AGENTS.md` is present.
-- `DESIGN.md` is present and remains the visual source of truth.
+- `DESIGN.md` was the original foundation visual source. Current web/PWA appearance follows DS-013 and the Outlier skill; theme mechanics follow THEME-001.
 - Product foundation and roadmap documentation are present.
 - Architecture baseline and technical-specification mapping are present.
 - Security, QA and deployment baselines are present.

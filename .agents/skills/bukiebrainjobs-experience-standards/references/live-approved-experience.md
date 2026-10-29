@@ -1,10 +1,10 @@
 # Live Approved BukieBrainJobs Experience Baseline
 
-## Use This as the Primary Visual Authority
+## Use This as a Homepage Product-Pattern Reference
 
-This baseline records the experience that is currently approved and deployed from the BukieBrainJobs feature branch. It is not a historical mockup or an aspirational design document. Use it to judge whether a new page, screen, or component belongs in the product.
+This baseline records approved homepage and product patterns. Use it for task hierarchy, image treatment, interaction, responsive behavior, and content decisions. It is not the source for current site-wide visual tokens.
 
-When the live implementation changes with explicit approval, update this file in the same change set. Do not preserve a historical pattern that the live product has deliberately replaced.
+For website and PWA appearance, use `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` and THEME-001. Native visual restyling remains deferred. When Solomon explicitly approves a reusable product pattern, update this file in the same change set.
 
 ## Experience Character
 
@@ -14,25 +14,15 @@ The approved product feels **calm, capable, photo-led, clear, and premium withou
 |---|---|
 | Clarity before decoration | Headings, search, calls to action, and service choices remain readable at a glance. |
 | Image-led quality | Professional and service photos carry most of the visual richness. |
-| Colour restraint | Navy creates structure, mint and green create emphasis, and the quiet off-white canvas gives content room. |
+| Colour restraint | Use current Outlier tokens for web/PWA. Color supports hierarchy and semantic status, not decoration. |
 | Real marketplace confidence | UI explains the next action without unsupported proof, ratings, guarantees, or inflated claims. |
-| One coherent system | Desktop feels editorial and spacious. Mobile feels focused and direct. Neither feels like an unrelated product. |
+| One coherent product | Desktop feels editorial and spacious. Mobile feels focused and direct. Visual styling remains platform-specific where separately approved. |
 
-## Live Brand Tokens and Surface Language
+## Current Web/PWA Visual Authority
 
-| Token or pattern | Current approved usage |
-|---|---|
-| Canvas | `#F8F9FF` is the default page background. |
-| Navy | `#001A41` anchors headings, primary controls, the hero, footer, and shadow depth. |
-| Green | `#296A4B` supports service actions and selected secondary emphasis. |
-| Mint | `#ABEEC8` provides short highlight, focus, and brand-name emphasis. |
-| Heading type | Use the implemented display font with strong weight and tight but readable tracking. |
-| Body type | Use the implemented body font with plain language and comfortable line height. |
-| Card surface | Use white, a thin slate border, soft navy-tinted elevation, and clear padding. |
-| Radius | Use a compact, slightly softened radius. The product favours `rounded-xl` and `rounded-2xl`, not excessive pill forms. |
-| Page rhythm | Use clear section separation and purposeful whitespace rather than colour blocks. |
+The Outlier skill and `apps/web/app/globals.css` define current website and PWA colors, typography, surfaces, radii, buttons, and component appearance. THEME-001 defines the dark default, light theme, saved preference, and toggle placements. This reference must not duplicate tokens or override either source.
 
-Avoid copying visual trends that conflict with this language. In particular, do not add broad frosted glass, heavy blur, fluorescent gradients, oversize blobs, ornamental illustration, or decorative statistics.
+Retain visible focus, readable text over photography, useful imagery, and accessible contrast. Follow the current Outlier skill for approved surfaces and effects. Native screen restyling remains deferred.
 
 ## Desktop Homepage Patterns
 
@@ -93,7 +83,7 @@ Mobile motion is intentionally more visible at discovery moments than the origin
 |---|---|
 | Service discovery enters view | Reveal the service heading and cards with a restrained upward and opacity transition. Stagger items briefly. |
 | Service card press | Give a concise press response and small image response. |
-| Search focus | Apply a slight scale, mint focus ring, and controlled navy depth. |
+| Search focus | Preserve visible theme-aware focus and controlled depth. Use current Outlier tokens for the focus color. |
 | Search suggestions | Reveal below the field without shifting the hero layout. |
 | Menu drawer | Use a short open and close transition. Preserve Escape dismissal and body-scroll restoration. |
 | Scroll header | Keep it compact and blur-free. Do not animate a broad translucent bar over content. |

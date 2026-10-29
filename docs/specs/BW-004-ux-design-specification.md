@@ -1,5 +1,7 @@
 # BW-004 UX Design Specification
 
+> **Current visual scope notice, 29 October 2026:** Existing product behavior, content, acceptance criteria, and non-visual requirements remain authoritative at this document's current approval status. Conflicting web/PWA palette, typography, surface, radius, and component examples are historical and superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics defer to `docs/specs/THEME-001-light-dark-toggle.md`. Native restyling is separately scoped.
+
 **Document ID:** BW-004-UX
 **Version:** 0.2 (Revision A)
 **Status:** APPROVED as the implementation baseline. Product, architecture, and implementation gates closed by Product Owner decision on 2026-10-03. Implementation is authorized only on `feature/bw-004-booking-management`.

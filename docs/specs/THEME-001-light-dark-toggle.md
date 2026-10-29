@@ -2,7 +2,9 @@
 
 Approved on 23 October 2026. This spec overrides the dark-only rules in older docs and in the design-system skill copy.
 
-## What I found
+> **Current visual scope note, 29 October 2026:** The theme mechanics in this specification remain current, including the dark default, light mode, saved preference, and approved toggle placements. Palette and component styling examples below are historical where they conflict with `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. That skill governs current web/PWA appearance. The historical approval and implementation notes are retained as records, not active tasks. Native screen restyling remains separately scoped.
+
+## Historical context (23 October 2026)
 
 The light theme was taken out on 17 October in commit `789aad4` ("dark mode is the only theme on web, PWA and mobile"). The docs were changed to match in `b1b0e31`. Only four commits have landed on main since then: BW-007 scheduling, BW-008 on-site, BW-009 completion and a small build fix.
 
@@ -14,7 +16,7 @@ The old light colour set is still in `packages/ui/src/tokens/colors.ts`: off-whi
 
 The old toggle sat in seven places at once: the main navbar, the phone top bar, the jobs sidebar, the profile sidebar, the BrainWorker header, the PWA home header and the dashboard header. That is the clutter to avoid this time.
 
-## Decisions I need you to confirm
+## Approved decisions (23 October 2026)
 
 **1. Light colours.** I'll bring back the old light set and fix the colours that are hard to read on white. As text on white, orange `#FF6B35` is 2.8:1 and the old green `#10B981` is 2.5:1, both below the 4.5:1 minimum. In light mode only, orange text and green text get darker shades. The orange button gets a slightly deeper fill (`#CC4A14`, 4.6:1 with white text), the same fix you approved on THE SECOND ME site. Dark mode stays exactly as it is now.
 
@@ -31,9 +33,11 @@ The old toggle sat in seven places at once: the main navbar, the phone top bar, 
 
 **4. Remembering the choice in the native app.** The app has no storage library. I'll add `@react-native-async-storage/async-storage`, the standard Expo package for this, so the app remembers the choice after it closes. Without it, the app follows the phone setting and the toggle resets each time the app opens.
 
-**5. Docs and agent rules.** DESIGN.md, AGENTS.md, README, CLAUDE.md, GEMINI.md, `.clinerules`, the design-system docs and the repo's copy of the design-system skill all say dark only. On this branch I'll change them to describe light and dark with one toggle. Otherwise the next agent that reads them will strip light mode out again. Your separate skill repo (`IceCool30/bukiebrainjobs-trades-design-system`) and your Manus skill stay as they are until you merge.
+**5. Docs and agent rules.** At approval time, repository rules still described dark-only mode. The approved theme update restored light mode and documented one toggle per existing placement. The repository now uses the Outlier skill for web/PWA appearance; the former Trades skill is retained only as historical material.
 
-## How I'll do it
+## Historical implementation plan (completed)
+
+The following steps record the original implementation plan. Their branch, release, and future-tense instructions are historical and are not active tasks.
 
 1. New branch `feature/light-dark-theme` from main.
 2. Reverse `789aad4` to get the engine and light tokens back.
@@ -46,7 +50,7 @@ The old toggle sat in seven places at once: the main navbar, the phone top bar, 
 
 No images, video or other paid generation is involved.
 
-## Status on this branch
+## Status of the original implementation (23 October 2026)
 
 Done: dark default token set with a refined light set, no device-based switching, fresh storage key `bbj_theme_mode` so everyone starts dark, toggle kept only in the navbar (desktop), the menu drawer (phone and PWA), the jobs and profile sidebars, the dashboard header and the BrainWorker header. Task screens follow the saved choice. On-site page colours moved to tokens. Mobile app has the same light colours, dark default and a toggle on the home screen header.
 

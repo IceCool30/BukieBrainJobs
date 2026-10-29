@@ -1,6 +1,6 @@
 # Validation Examples From the Approved Live Experience
 
-These examples show how to apply the quality gates to the live BukieBrainJobs homepage. They are examples of reasoning, not layouts to duplicate.
+These examples show how to apply the quality gates to the live BukieBrainJobs homepage. They are product reasoning patterns, not layouts or token definitions to copy. For web/PWA appearance use the Outlier skill, for theme behavior use THEME-001, and for product UX follow the experience standard. Native visual restyling remains separately scoped.
 
 ## Example 1: Desktop Service Discovery
 

@@ -2,8 +2,10 @@
 
 **Document ID:** GOV-002
 **Version:** 1.0
-**Status:** Active
+**Status:** Historical source verification record; visual authority superseded for web/PWA
 **Date:** 2026-08-09
+
+> **Current visual authority, 29 October 2026:** This report preserves the original 2026 source verification and decision history. Outlier now governs web/PWA appearance, and THEME-001 governs theme mechanics. Native visual restyling remains separately scoped.
 
 ## Purpose
 
@@ -15,7 +17,7 @@ The repository is the canonical handoff point for developers and AI agents. Hist
 
 | Source | Verification | Authority | Repository action |
 |---|---|---|---|
-| `DESIGN.md` | Verified from supplied project source | Visual authority | Must remain canonical at repository root |
+| `DESIGN.md` | Verified from supplied project source | Original visual authority at the time; historical now | Retain for provenance; Outlier governs current web/PWA appearance |
 | `BukieBrainJobs — Full-Stack Technical Specification.md` | Verified from supplied project source | Engineering authority | Full artifact must be consolidated before implementation gate opens |
 | `BukieBrainJobs_TaskRabbit_Playbook.md` | Verified from supplied project source | Strategic research/reference | Preserve as research, not normative product requirements |
 | WEB-001 | Verified from project records | Approved product/UX specification | Canonical public-website artifact required |
@@ -30,7 +32,9 @@ The repository is the canonical handoff point for developers and AI agents. Hist
 
 The supplied technical specification contains an older Tailwind token example that assigns green values to the `primary` color namespace. The approved `DESIGN.md` system establishes Deep Navy `#001A41` as the primary brand/action system and Emerald `#296A4B` as strategic emphasis.
 
-Resolution: `DESIGN.md` remains the visual authority. The legacy technical example must not be copied into implementation unchanged.
+Historical resolution at the time of this report: `DESIGN.md` was then treated as visual authority. The legacy technical example must not be copied into implementation unchanged.
+
+That historical authority is superseded for current website and PWA appearance by the Outlier skill. The preserved technical source does not override current Outlier tokens.
 
 ## Important product/design distinction
 

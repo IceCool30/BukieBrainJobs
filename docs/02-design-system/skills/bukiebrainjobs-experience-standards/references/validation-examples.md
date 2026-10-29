@@ -1,6 +1,6 @@
 # BukieBrainJobs Validation Examples
 
-Use these examples to make a design-quality judgment. They are reasoning patterns, not layouts to copy. Start with the relevant live component or flow and apply the purpose, platform, accessibility, and content rules from the primary skill.
+Use these examples to make a product-quality judgment. They are reasoning patterns, not layouts or token definitions to copy. For web/PWA appearance use the Outlier skill, for theme behavior use THEME-001, and for product UX apply the purpose, platform, accessibility, and content rules from the primary experience skill. Native visual restyling remains separately scoped.
 
 ## 1. Public Page Content Density
 

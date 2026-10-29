@@ -6,9 +6,9 @@ Use this checklist before presenting any customer-facing BukieBrainJobs work as 
 
 | Check | Pass condition |
 |---|---|
-| Live-first authority | The work extends the current approved product rather than an obsolete mockup, generic trend, or unapproved parallel pattern. |
+| Current authority | Web/PWA appearance follows the Outlier skill, theme mechanics follow THEME-001, and product behavior follows approved feature specifications. |
 | User and task | The primary user, task, decision risk, and primary action are explicit. |
-| Platform intent | Website, PWA, and native-app variants are adapted to their own context, not merely resized. |
+| Platform intent | Web and PWA are adapted to their context, not merely resized. Native visual restyling remains separately scoped. |
 | Comparable pattern | The nearest approved component or flow was reviewed before introducing a new interaction, visual treatment, or copy convention. |
 | Product truth | Visible claims match implemented and documented product behaviour. Unknown facts are flagged rather than invented. |
 | Change control | A reusable new pattern is recorded in the live baseline and validation examples after approval. |
@@ -29,9 +29,10 @@ Use this checklist before presenting any customer-facing BukieBrainJobs work as 
 
 | Check | Pass condition |
 |---|---|
-| Colour | Navy, green, mint, and off-white follow the approved restrained roles. No new arbitrary colour system appears. |
-| Typography | Hanken Grotesk remains the display face and Inter remains the body and interface face. Hierarchy and line length suit the viewport. |
-| Surface language | Cards, sheets, and modals use clear white surfaces, compact corners, subtle borders, and controlled depth. |
+| Tokens | Web/PWA colors and typography come from the Outlier skill and current CSS tokens. No competing palette is introduced. |
+| Theme | Dark is the default, light remains supported, and saved preference and existing toggle placements follow THEME-001. |
+| Surface language | Use theme-aware surfaces and the correct geometry for the context. Operational radii stay compact; marketing radii stay within their defined components. |
+| Contrast and focus | Text, controls, and focus indicators meet applicable WCAG 2.2 AA requirements in both themes. |
 | Contrast and effects | Text and controls maintain usable contrast. Blur, gradients, glass, glow, and shadow serve a specific purpose and do not compete with tasks. |
 | Imagery | Photos are purposeful, correctly sized, and intentionally cropped. Faces, practical work, and adjacent text remain visible. |
 | Media stability | Media reserves space, loads responsively, and does not cause disruptive layout shift. |

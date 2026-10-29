@@ -22,9 +22,9 @@ The source artifact must be preserved faithfully. This directory may split it in
 
 ## Authority
 
-The technical specification is the engineering reference. It does not override the approved visual source `DESIGN.md` where the two conflict on visual tokens.
+The technical specification is the engineering reference for architecture and implementation contracts. It does not define current web/PWA appearance. Use `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` for website and PWA visuals and `docs/specs/THEME-001-light-dark-toggle.md` for theme mechanics.
 
-Known conflict: the technical specification contains a legacy Tailwind example that assigns green to the `primary` namespace. The approved visual system establishes Deep Navy `#001A41` as primary and Emerald `#296A4B` as strategic emphasis. This conflict is recorded in `docs/00-governance/SOURCE-VERIFICATION-REPORT.md`.
+Historical conflict: the source specification contains a legacy Tailwind example that assigns green to the `primary` namespace. Do not copy that example as a current web/PWA token rule. Current tokens are defined by Outlier and `apps/web/app/globals.css`. The earlier conflict record is preserved in `docs/00-governance/SOURCE-VERIFICATION-REPORT.md`.
 
 ## Agent rule
 

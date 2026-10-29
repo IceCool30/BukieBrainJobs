@@ -79,7 +79,7 @@ This file defines the standards and operational map every contributor must follo
 ## Conventions & Standards
 - **Voice**: Mr. Solomon Natural Voice across all copy, commits, PRs, and documentation. Never use em dashes.
 - **Customer-Facing Content**: Whenever customer-facing content is written, it must activate, first, `mr-solomon-natural-voice` and `bukiebrainjobs-content-style`. These are the two mandatory skills that must be used together for any customer-facing copy.
-- **Visual**: Design tokens extracted directly from code and `globals.css` `@theme`; no arbitrary hex values. Deep Navy is primary, Emerald is strategic emphasis/success.
+- **Visual**: `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` is the sole current visual authority for web/PWA and links to the complete upstream engine for deeper token and component rationale. Apply this project's customized local rules and live CSS, not the upstream source design verbatim. Feature specifications govern product behavior, THEME-001 controls dark/light mechanics and toggle placement, and native screen restyling remains separately scoped.
 - **Quality**: Anti-generic guardrails strictly enforced (zero slop: no generic icons, taglines, captions, explainers, subheadlines, fake cheerleading, or unsupported absolute claims).
 - **Data Integrity**: Production-first architecture with deterministic mock data. Never fabricate rates, coordinates, ratings, verification results, or booking confirmations.
 - **Senior Production Engineering Standards**: Strictly enforce human-grade engineering standards across all code: zero swallowed exceptions, mandatory ACID transactions with rollback, structured contextual logging (no raw `console.log` or `print`), idempotency keys on write calls, explicit network timeouts, and concurrency-safe queries.
@@ -111,7 +111,7 @@ Every agent is bound by this: primary agent, subagent, teammate, spawned worker.
 | `mr-solomon-nine-command-engineering-loop` | `.agents/skills/mr-solomon-nine-command-engineering-loop/SKILL.md` | Primary operating system for all tasks: planning, architecture spec, development loop, verification, documentation, or debugging phase. |
 | `mr-solomon-natural-voice` | `.agents/skills/mr-solomon-natural-voice/SKILL.md` | Required for all communications, documentation, and (first) for all customer-facing content. |
 | `bukiebrainjobs-content-style` | `.agents/skills/bukiebrainjobs-content-style/SKILL.md` | Customer-facing copy, marketplace terminology, and microcopy (must be applied together with `mr-solomon-natural-voice`). |
-| `bukiebrainjobs-trades-design-system` | `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md` | Mandatory design authority for all customer-facing UI, light and dark themes with one toggle, dark by default (THEME-001, `docs/specs/THEME-001-light-dark-toggle.md`), colors, layout, and component architecture. (Repo: `https://github.com/IceCool30/bukiebrainjobs-trades-design-system`). |
+| `bukiebrainjobs-outlier-design-system` | `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` | Sole current visual authority for web/PWA tokens, typography, surfaces, geometry, Outlier components, and responsive patterns. Links to the complete upstream engine for broader rationale, while the local adaptation, live CSS, feature specifications, and THEME-001 control implementation here. Native screen restyling is deferred. |
 | `bukiebrainjobs-experience-standards` | `.agents/skills/bukiebrainjobs-experience-standards/SKILL.md` | Any customer-facing UI, copy, motion, responsive layout, component, accessibility, or interaction work. |
 | `ui-ux-pro-max` | `.agents/skills/ui-ux-pro-max/SKILL.md` | Any visual design decision, page structure, component quality review, typography, color, animation, or UX pattern. |
 | `agent-skills-test-driven-development` | `.agents/skills/agent-skills-test-driven-development/SKILL.md` | Any logic change, bug fix, behavior modification, or new feature implementation. |
@@ -139,7 +139,7 @@ Every developer, AI agent, and remote execution environment (Google Cloud Shell 
 | `bukiebrainjobs-experience-standards` | BukieBrainJobs Skill Suite | Customer-facing UI, motion language, accessibility, responsive design | Active in `.agents/skills/bukiebrainjobs-experience-standards/` |
 | `ui-ux-pro-max` | BukieBrainJobs Skill Suite | Visual design intelligence, component hierarchy, typography, design tokens | Active in `.agents/skills/ui-ux-pro-max/` |
 | `agent-skills-test-driven-development` | [agent-skills-tdd](https://github.com/obra/superpowers) | Test-driven development for all logic changes, bug fixes, and new features | Active in `.agents/skills/agent-skills-test-driven-development/` |
-| `bukiebrainjobs-trades-design-system` | [IceCool30/bukiebrainjobs-trades-design-system](https://github.com/IceCool30/bukiebrainjobs-trades-design-system) | Design system: Obsidian Titanium Gunmetal dark plus the THEME-001 light theme for restyling existing UI components and pages | Active in `.agents/skills/bukiebrainjobs-trades-design-system/` |
+| `bukiebrainjobs-outlier-design-system` | [Local canonical adaptation](.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md); [complete upstream engine](https://github.com/IceCool30/outlier-ai-visual-skill-engine) | Web/PWA Outlier visual system and direct links to its full source files. The local adaptation, live CSS, feature specifications, and THEME-001 govern this project's implementation. | Active in `.agents/skills/bukiebrainjobs-outlier-design-system/` |
 | `human-production-engineering` | [IceCool30/human-production-engineering-skill](https://github.com/IceCool30/human-production-engineering-skill) | Senior human-grade production engineering: zero swallowed exceptions, ACID transactions, structured logging, concurrency, and bounded timeouts | Active in `.agents/skills/human-production-engineering/` |
 
 
@@ -161,9 +161,9 @@ Every developer, AI agent, and remote execution environment (Google Cloud Shell 
 
 Do not invent requirements when an approved project document already defines them.
 
-The approved live BukieBrainJobs experience governs the practical baseline for all customer-facing product work, including public pages, marketplace flows, booking, profiles, onboarding, customer and BrainWorker areas, PWA views, native-app screens, visual hierarchy, imagery, interaction behaviour, motion, responsive density, and customer-facing copy. `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md` and its bundled skill define how to preserve and extend that baseline.
+The approved live BukieBrainJobs experience governs practical product patterns, task hierarchy, imagery, interaction behavior, motion, responsive density, and customer-facing copy. `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md` and its bundled experience skill define how to preserve those patterns. For web/PWA visual tokens and appearance, use `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`; native screen restyling remains deferred.
 
-`DESIGN.md` governs supporting visual tokens and visual language. Its legacy product-language passages are governed by `docs/02-design-system/DESIGN-CANONICALIZATION.md`.
+`docs/specs/THEME-001-light-dark-toggle.md` governs theme behavior, persisted preference, and toggle placements. `DESIGN.md` is retained as historical source material and may inform layout only where it does not conflict with the Outlier skill or current product requirements. Its legacy product-language passages are governed by `docs/02-design-system/DESIGN-CANONICALIZATION.md`.
 
 Approved BukieBrainJobs product specifications govern product behavior, terminology and user experience.
 
@@ -202,7 +202,7 @@ Historical research and project exports are context, not current product authori
 Product decision
   -> Product specification
   -> Applicable skills and product context
-  -> UX/UI requirements (DESIGN.md)
+  -> UX/UI requirements (Outlier skill for web/PWA, THEME-001 for theme behavior, feature specs for product UX)
   -> Focused proof of changed behaviour
   -> Design and implementation
   -> Tests and browser-runtime verification where relevant

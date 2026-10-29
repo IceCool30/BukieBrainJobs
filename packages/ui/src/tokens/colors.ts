@@ -1,7 +1,7 @@
 // packages/ui/src/tokens/colors.ts
 // Brand design tokens - JavaScript constants for non-CSS consumers
 // CSS design tokens live in apps/web/app/globals.css under @theme
-// Must match DESIGN.md: Deep Navy primary, Emerald secondary, Amber accent
+// Web/PWA appearance follows the Outlier skill and apps/web/app/globals.css. This shared module remains for non-CSS consumers; native screen restyling is separately scoped.
 
 // Tailwind slate hex values inlined to remove tailwindcss runtime import
 const slate = {
@@ -107,7 +107,7 @@ export const brandColors = {
   // Trades design system semantic colors
   trades: tradesColorTokens,
 
-  // Material Design 3 (M3) Semantic Tokens from DESIGN.md frontmatter
+  // Material Design 3 (M3) tokens retained for existing consumers, not current web/PWA visual authority
   surface: {
     DEFAULT: '#f8f9ff',
     dim: '#cbdbf5',

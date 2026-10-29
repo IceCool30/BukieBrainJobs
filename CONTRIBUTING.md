@@ -68,16 +68,16 @@ The approved workflow is:
 
 ```text
 Product specification
-    -> UX/UI requirements (DESIGN.md)
+    -> UX/UI requirements (Outlier skill for web/PWA, THEME-001 for theme behavior, feature specs for product UX)
     -> Design and implementation
     -> QA and verification
 ```
 
 ## Design rules
 
-`DESIGN.md` is authoritative for the visual system.
+For web/PWA appearance, `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` is the canonical visual authority. `docs/specs/THEME-001-light-dark-toggle.md` governs dark default, light mode, persistence, and toggle placement. Native screen restyling is deferred.
 
-Use shared semantic tokens and reusable components. Do not introduce local color, typography or spacing systems to solve a one-off screen.
+Use theme-aware shared tokens and reusable components. Do not introduce local color, typography or spacing systems to solve a one-off screen. `DESIGN.md` is retained as historical source material and may inform layout only where it does not conflict with current requirements.
 
 ## Engineering rules
 

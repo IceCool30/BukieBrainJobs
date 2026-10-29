@@ -10,7 +10,7 @@ const skills = [
   'mr-solomon-nine-command-engineering-loop',
   'mr-solomon-natural-voice',
   'bukiebrainjobs-content-style',
-  'bukiebrainjobs-trades-design-system',
+  'bukiebrainjobs-outlier-design-system',
   'bukiebrainjobs-experience-standards',
   'ui-ux-pro-max',
   'agent-skills-test-driven-development',
@@ -36,6 +36,26 @@ test('accepts complete nine-skill declarations without optional home rules', t =
 });
 
 for (const file of files) {
+  test(`requires Outlier in ${file} even when the legacy Trades skill is present`, t => {
+    const { root, run } = fixture(t);
+    writeFileSync(join(root, file), declaration.replace('bukiebrainjobs-outlier-design-system', 'bukiebrainjobs-trades-design-system'));
+    const result = run();
+    assert.equal(result.status, 1, result.stdout);
+    assert.match(result.stdout, new RegExp(`SKILLS MISSING in ${file.replaceAll('.', '\\.')}.*bukiebrainjobs-outlier-design-system`));
+  });
+}
+
+for (const file of files) {
+  test(`rejects the deprecated Trades skill in ${file}`, t => {
+    const { root, run } = fixture(t);
+    writeFileSync(join(root, file), `${declaration}\nbukiebrainjobs-trades-design-system`);
+    const result = run();
+    assert.equal(result.status, 1, result.stdout);
+    assert.match(result.stdout, new RegExp(`DEPRECATED SKILL FOUND in ${file.replaceAll('.', '\\.')}.*bukiebrainjobs-trades-design-system`));
+  });
+}
+
+for (const file of files) {
   test(`rejects ${file} when REA is omitted`, t => {
     const { root, run } = fixture(t);
     writeFileSync(join(root, file), declaration.replace('reverse-engineer-anything', ''));
@@ -45,7 +65,7 @@ for (const file of files) {
   });
 }
 
-for (const skill of skills.slice(0, -1)) {
+for (const skill of skills) {
   test(`still rejects omission of ${skill}`, t => {
     const { root, run } = fixture(t);
     writeFileSync(join(root, 'AGENTS.md'), declaration.replace(skill, ''));

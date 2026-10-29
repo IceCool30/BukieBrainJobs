@@ -1,7 +1,7 @@
 # Decision Log
 
 **Document ID:** GOV-004
-**Version:** 1.3
+**Version:** 1.4
 **Status:** Approved foundation
 
 This file is the index for material product, design and engineering decisions. Detailed decisions may later be split into individual ADR files under `docs/21-decision-log/`.
@@ -30,9 +30,9 @@ The GitHub repository will contain the durable project guidance required for hum
 
 ### GOV-002: Design authority
 
-**Status:** Approved
+**Status:** Superseded for web/PWA visual authority by DS-013; retained for provenance
 
-`DESIGN.md` is the visual source of truth. Approved design-system artifacts formalize and extend it without silently contradicting it.
+Original decision: `DESIGN.md` was the visual source of truth. Approved design-system artifacts formalized and extended it without silently contradicting it. DS-013 replaces this visual authority for web/PWA only.
 
 ### GOV-003: Product-to-engineering separation
 
@@ -54,9 +54,9 @@ Shared API contracts, database shapes, validation rules and reusable business lo
 
 ### DS-011: Semantic design tokens
 
-**Status:** Approved
+**Status:** Approved semantic architecture; original web/PWA palette superseded by DS-013
 
-The platform uses a semantic token architecture shared across web and mobile. Deep Navy is the primary brand/action system and Emerald is strategic emphasis/success. The legacy green-primary technical example must not override `DESIGN.md`.
+Original decision: the platform uses a semantic token architecture shared across web and mobile. Deep Navy was the primary brand/action system and Emerald was strategic emphasis/success. The legacy green-primary technical example must not override `DESIGN.md`. DS-013 supersedes the web/PWA visual token values while preserving compatible semantic and accessibility principles.
 
 ### WEB-001: Homepage baseline
 
@@ -344,3 +344,32 @@ Prisma 6.x (6.17.0) is the current stable major with performance improvements an
 **Status:** Approved
 
 Project runtime baseline standardized on Node.js 24 LTS to align local, CI, deployment, and Vercel environments. All `.nvmrc`, `package.json` engines, and GitHub Actions workflows updated to Node 24.
+
+---
+
+## Design authority update (2026-10-29)
+
+### DS-013: Outlier web/PWA visual system with THEME-001 preserved
+
+**Date:** 2026-10-29
+**Status:** Approved
+**Supersedes:** GOV-002 and DS-011 only where they define conflicting web/PWA visual tokens or styling. THEME-001 and approved product specifications remain in force.
+
+**Context:** The owner approved extending the Outlier landing-page direction across the website and PWA. The previous Trades design skill and the original DS v1.0 visual examples prescribe conflicting palette, typography, component, radius, and dark-only rules. The THEME-001 light/dark engine is separately approved and must remain intact.
+
+**Decision:**
+
+1. `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` is the sole current visual-system authority for website and PWA screens. `apps/web/app/globals.css` is the implementation source for token values.
+2. Use the theme-aware Outlier coral `#F7803C`, hover `#FF8D4D`, and dim surface `rgba(247, 128, 60, 0.12)`. Preserve theme-specific semantic values, including deeper light-theme text color and green success/verification status.
+3. Preserve THEME-001: dark is the first-visit default, light is an explicit choice, the web preference key is `bbj_theme_mode`, and existing toggle placements remain unchanged. Do not add a theme toggle to every route.
+4. Keep the desktop header's theme-aware navy/near-black strip and fixed light navigation text. Keep fixed light text over photography only in the existing photo-led pattern and retain its contrast overlay.
+5. Preserve compact operational geometry, including 4px compact controls and 8px standard cards. Use Outlier pill CTAs and marketing radii only in their established marketing patterns.
+6. The general experience standard continues to govern task hierarchy, accessibility, responsive behavior, motion, content density, and quality checks. Feature specifications continue to govern product behavior, content, states, and acceptance criteria.
+7. Retain `DESIGN.md`, the old DS v1.0 artifacts, the Trades skill, static HTML, screenshots, and earlier screen-spec examples as historical material. Do not use their conflicting visual prescriptions for current web/PWA work.
+8. The shared coral-token effect on native code was separately approved. This decision does not authorize native screen restyling; that remains deferred to a separate scope and review.
+
+**Consequences:** The mandatory skill gate requires the Outlier skill instead of the Trades skill. Historical sources remain available for provenance but must carry clear supersession notices. Future web/PWA changes use the current design skill and THEME-001 together.
+
+**Affected areas:** `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.clinerules`, the skill gate, design-system documentation, affected feature and screen specifications, `apps/web`, `packages/ui` shared accent token, and future web/PWA reviews.
+
+**Source references:** `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`, `apps/web/app/globals.css`, `docs/specs/THEME-001-light-dark-toggle.md`, `docs/00-governance/SOURCE-OF-TRUTH.md`, and `docs/00-governance/LEGACY-SOURCE-BOUNDARY.md`.

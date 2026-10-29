@@ -1,7 +1,7 @@
 # Source of Truth and Document Governance
 
 **Document ID:** GOV-001
-**Version:** 1.1
+**Version:** 1.3
 **Status:** Approved foundation
 
 ## Purpose
@@ -16,7 +16,7 @@ Approved product decisions, Product Bible, PRD and feature specifications define
 
 ### 2. Design authority
 
-`DESIGN.md` is the visual source of truth. Approved DS-001 through DS-012 artifacts formalize that system.
+For web/PWA appearance, `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` is the current visual authority. `docs/specs/THEME-001-light-dark-toggle.md` governs theme behavior, including the dark default, light mode, persisted preference, and toggle placements. Native screen restyling is deferred. `DESIGN.md` and the original DS-001 through DS-012 direction are retained as historical source material, not current visual authority.
 
 ### 3. Feature authority
 
@@ -28,7 +28,7 @@ The full-stack technical specification and approved engineering specifications d
 
 ### 5. Design implementation
 
-Visual layout is interpreted and implemented directly from the approved project specifications and DESIGN.md.
+Web/PWA appearance is implemented from the Outlier skill and current theme-aware tokens. Product flows and behavior come from approved feature specifications. Use `DESIGN.md` only as historical layout context where it does not conflict with current requirements.
 
 ### 6. Engineering implementation
 
@@ -51,11 +51,14 @@ Before implementing a feature, read:
 - `README.md`
 - `AGENTS.md` (Development Standards)
 - `CONTRIBUTING.md`
-- `DESIGN.md`
+- `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` for web/PWA visual work
+- `docs/specs/THEME-001-light-dark-toggle.md` for theme behavior or toggle placement
 - The relevant product specification
 - The relevant screen or UX specification
 - The relevant technical specification
-- Related decisions in `docs/21-decision-log/`
+- Related decisions in `docs/00-governance/DECISION-LOG.md` and `docs/21-decision-log/`
+
+Read `DESIGN.md` only when historical layout provenance is relevant. Do not treat its palette, typography, surfaces, or component prescriptions as current UI requirements.
 
 ## External project documents
 

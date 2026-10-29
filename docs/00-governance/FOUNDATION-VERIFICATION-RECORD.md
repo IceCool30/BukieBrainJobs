@@ -1,7 +1,7 @@
 # Foundation Verification Record
 
 > **Historical Archive Notice (Day 1 Setup)**  
-> This document records the initial verification evidence for the Day 1 documentation baseline. The foundation was completed and released in August 2026. Ongoing engineering verification is recorded in `docs/check-log.md`.
+> This document records the initial verification evidence for the Day 1 documentation baseline. The foundation was completed and released in August 2026. Ongoing engineering verification is recorded in `docs/check-log.md`. Its `DESIGN.md` visual-authority entry reflects that historical date and is superseded for web/PWA by Outlier; theme mechanics follow THEME-001.
 
 **Status:** Historical Archive (Foundation Completed)
 
@@ -33,7 +33,7 @@ This record is the evidence ledger for the documentation foundation. It must be 
 | Agent policy | PRESENT | Satisfies agent-policy baseline subject to final review |
 | Product foundation | PRESENT | Subject to final source verification |
 | Roadmap | PRESENT | Subject to final source verification |
-| `DESIGN.md` | PRESENT | Visual authority established |
+| `DESIGN.md` | PRESENT | Historical visual authority at the time of this record; superseded for current web/PWA appearance |
 | DS-001 through DS-012 | REGISTERED / verification in progress | Gate remains blocked |
 | WEB-001 through WEB-001B-MCP | REGISTERED / verification in progress | Gate remains blocked |
 | Technical specification sections | PARTIAL / verification in progress | Gate remains blocked |

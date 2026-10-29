@@ -1,5 +1,7 @@
 # BW-006 BrainWorker Earnings, Wallet and Payouts
 
+> **Current visual direction notice, 29 October 2026:** This specification remains authoritative for product behavior, content, flows, validation, and acceptance criteria. Its earlier website/PWA palette, typography, surfaces, radii, and component examples are historical and are superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics, dark default, light mode, saved preference, and existing toggle placements follow `docs/specs/THEME-001-light-dark-toggle.md`. Native visual restyling is separately scoped.
+
 **Document ID:** BW-006  
 **Version:** 1.0  
 **Status:** Approved  

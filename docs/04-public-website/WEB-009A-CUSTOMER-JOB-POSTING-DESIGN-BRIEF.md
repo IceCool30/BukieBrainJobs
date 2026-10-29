@@ -1,5 +1,7 @@
 # WEB-009A: Customer Job Posting Design Brief
 
+> **Current visual scope notice, 29 October 2026:** This notice does not change existing product behavior, content, acceptance criteria, non-visual requirements, or this brief's draft status. Conflicting web/PWA palette, typography, surface, radius, and component examples are historical and superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics defer to `docs/specs/THEME-001-light-dark-toggle.md`. Native restyling is separately scoped.
+
 **Version:** 1.0  
 **Status:** Draft, Ready for Agent Review  
 **Product area:** Public Website  

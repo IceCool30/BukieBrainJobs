@@ -41,4 +41,4 @@ Do not replace a source section with a summary and mark it mirrored. A section i
 
 ## Known Conflict
 
-Section 25 contains an older Tailwind example that maps green to `primary`. The approved `DESIGN.md` system uses Deep Navy `#001A41` as the primary system and Emerald `#296A4B` as strategic emphasis. This conflict is recorded and must be resolved in the implementation token layer without changing the approved visual authority.
+Section 25 contains a historical Tailwind example that maps green to `primary`. Preserve the source mirror as technical history, but do not copy that mapping into current web/PWA UI. Outlier defines current visual tokens; THEME-001 defines theme behavior. Native visual restyling remains separately scoped.

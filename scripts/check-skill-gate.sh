@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Guards the Mandatory Skill Gate in AGENTS.md section "Mandatory Skills".
-# Fails loudly if the gate text is missing or any of the nine skills is dropped.
+# Fails loudly if the gate text is missing, a required skill is dropped, or the
+# retired Trades design skill is listed as mandatory.
 #
 # Two file classes:
 #   REQUIRED - tracked in this repository. CI enforces these.
@@ -28,7 +29,7 @@ REQUIRED=(
   "mr-solomon-nine-command-engineering-loop"
   "mr-solomon-natural-voice"
   "bukiebrainjobs-content-style"
-  "bukiebrainjobs-trades-design-system"
+  "bukiebrainjobs-outlier-design-system"
   "bukiebrainjobs-experience-standards"
   "ui-ux-pro-max"
   "agent-skills-test-driven-development"
@@ -44,6 +45,11 @@ check_file() {
     echo "  GATE ABSENT:  $f (no SKILL GATE block)"
     fail=1
     return
+  fi
+
+  if [[ "$label" == "required" ]] && grep -q "bukiebrainjobs-trades-design-system" "$f"; then
+    echo "  DEPRECATED SKILL FOUND in $f: bukiebrainjobs-trades-design-system must not be mandatory"
+    fail=1
   fi
 
   local missing=()

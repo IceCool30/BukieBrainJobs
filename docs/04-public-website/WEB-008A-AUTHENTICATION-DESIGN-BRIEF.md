@@ -1,5 +1,7 @@
 # WEB-008A: Authentication & Account Access Design Brief
 
+> **Current visual direction notice, 29 October 2026:** This brief remains authoritative for authentication behavior, content, flows, and acceptance criteria. Its earlier website/PWA visual styling is historical and is superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics and toggle placements follow `docs/specs/THEME-001-light-dark-toggle.md`. Native visual restyling is separately scoped.
+
 **Document ID:** WEB-008A  
 **Version:** 1.0  
 **Status:** Approved  
@@ -8,7 +10,7 @@
 **Experience:** Responsive web, mobile-first  
 **Implementation Model:** Mock-data-first  
 **Parent Specification:** WEB-008 Product & UX Specification v1.0  
-**Design System:** BukieBrainJobs Design System v1.0
+**Original Design System:** BukieBrainJobs Design System v1.0 (historical visual reference)
 
 ## 1. Purpose
 
@@ -18,7 +20,7 @@ This brief defines the structure, hierarchy, responsive behavior, states, transi
 
 ## 2. Source of Truth
 
-- `DESIGN.md` is the authoritative visual source of truth.
+- Outlier skill governs current web/PWA appearance; THEME-001 governs theme mechanics and toggle placement.
 - WEB-008 is the authoritative source for authentication behavior and scope.
 - WEB-007 is the authoritative source for the booking preparation context and BookingDraft handoff.
 

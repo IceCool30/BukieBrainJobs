@@ -2,11 +2,13 @@
 
 **Document ID:** DS-000
 **Version:** 1.0
-**Status:** Locked
+**Status:** Historical v1.0 record; visual rules superseded for web/PWA
+
+> **Current authority, 29 October 2026:** Preserve this file as a record of the original v1.0 foundation. For current website and PWA appearance, use `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. For dark-default/light-mode behavior, preference persistence, and toggle placements, use `docs/specs/THEME-001-light-dark-toggle.md`. Native visual restyling remains separately scoped.
 
 ## Authority
 
-The root `DESIGN.md` remains the visual source of truth. This document records the approved design-system status and directs agents to the individual DS artifacts when those are consolidated into this repository.
+This section records the original v1.0 authority arrangement. `DESIGN.md` is now historical visual reference, not the current web/PWA source. The Outlier skill and THEME-001 are the current visual and theme authorities.
 
 ## Approved artifacts
 
@@ -25,7 +27,7 @@ The root `DESIGN.md` remains the visual source of truth. This document records t
 | DS-011 | Design Token System | Approved |
 | DS-012 | Final Design System Review | Approved |
 
-## Core visual rules
+## Historical Core Visual Rules
 
 - Corporate Modern direction
 - Premium Minimalism
@@ -58,7 +60,7 @@ Examples:
 | Apply Now | Book a Service |
 | Recruitment Dashboard | Booking Dashboard |
 
-## Token conflict resolution
+## Historical Token Conflict Resolution
 
 An older technical specification example maps green as a generic `primary` token. That mapping is not authoritative for BukieBrainJobs.
 
@@ -67,7 +69,7 @@ The approved mapping is:
 - Primary brand/action: Deep Navy `#001A41`
 - Strategic emphasis/success: Emerald `#296A4B`
 
-The engineering token package must follow this approved semantic mapping.
+The engineering token package followed this v1.0 mapping at the time. Current web/PWA token values and roles are defined by the Outlier skill and `apps/web/app/globals.css`.
 
 ## Design gate
 

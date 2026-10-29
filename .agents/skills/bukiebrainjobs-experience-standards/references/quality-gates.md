@@ -6,18 +6,20 @@ Use this checklist before presenting customer-facing work as complete. Treat a f
 
 | Check | Pass condition |
 |---|---|
-| Live-first authority | The work extends the currently approved live experience rather than an obsolete mockup or generic pattern. |
+| Current authority | Web/PWA appearance follows the Outlier skill, theme mechanics follow THEME-001, and product behavior follows approved feature specifications. |
 | Screen purpose | The primary user, task, and action are explicit. |
-| Platform intent | Desktop, PWA, and app versions have been designed for their own context, not merely resized. |
+| Platform intent | Web and PWA are designed for their context, not merely resized. Native visual restyling remains separately scoped. |
 | Product truth | Visible claims match implemented and documented product behaviour. |
 
 ## 2. Visual Consistency
 
 | Check | Pass condition |
 |---|---|
-| Colour | Navy, green, mint, and off-white are used with the approved restraint. |
-| Typography | The existing display and body roles are preserved. No unrelated typeface is introduced. |
-| Surface language | Cards use clear white surfaces, compact corners, subtle borders, and controlled depth. |
+| Tokens | Web/PWA colors and typography come from the Outlier skill and current CSS tokens. No competing palette is introduced. |
+| Theme | Dark is the default, light remains supported, and the saved preference and existing toggle placements follow THEME-001. |
+| Native scope | Do not apply web/PWA Outlier styling to native screens without a separate approval. |
+| Surface language | Use theme-aware surfaces and the correct geometry for the context. Operational radii stay compact; marketing radii stay within their defined components. |
+| Contrast and focus | Text, controls, and focus indicators meet applicable WCAG 2.2 AA requirements in both themes. |
 | Imagery | Photos are purposeful, properly cropped, and keep people’s faces and work visible. |
 | Page hierarchy | The primary action is evident before secondary detail. |
 | Clutter | Every element supports a real task. Decorative information has been removed or moved to an appropriate detail page. |

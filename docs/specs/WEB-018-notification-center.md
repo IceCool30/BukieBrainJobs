@@ -1,5 +1,7 @@
 # Spec: WEB-018 Notification Center & Push UX Scope and Product Contract (v1.0)
 
+> **Current visual scope notice, 29 October 2026:** This notice does not change existing product behavior, content, acceptance criteria, non-visual requirements, or this specification's proposed status. Conflicting web/PWA palette, typography, surface, radius, and component examples are historical and superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics defer to `docs/specs/THEME-001-light-dark-toggle.md`. Native restyling is separately scoped.
+
 | Field | Value |
 |---|---|
 | **Document ID** | WEB-018-SCOPE |

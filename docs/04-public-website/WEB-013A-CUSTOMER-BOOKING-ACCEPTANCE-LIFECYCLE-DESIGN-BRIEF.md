@@ -1,5 +1,7 @@
 # WEB-013A: Customer Booking Acceptance & Lifecycle Design Brief
 
+> **Current visual direction notice, 29 October 2026:** This specification remains authoritative for product behavior, content, flows, validation, and acceptance criteria. Its earlier website/PWA palette, typography, surfaces, radii, and component examples are historical and are superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics, dark default, light mode, saved preference, and existing toggle placements follow `docs/specs/THEME-001-light-dark-toggle.md`. Native visual restyling is separately scoped.
+
 **Document ID:** WEB-013A
 **Feature:** WEB-013 Customer Booking Acceptance & Booking Lifecycle
 **Version:** 1.0
@@ -9,7 +11,7 @@
 **Primary User:** Authenticated Customer
 **Experience:** Responsive Web, PWA
 **Implementation Model:** Mock-first, production-shaped
-**Design Authority:** `DESIGN.md` Design System v1.0 and the approved live experience
+**Design Authority:** Outlier skill for web/PWA appearance and THEME-001 for theme mechanics; the `DESIGN.md` v1.0 visual rules are historical and superseded. The approved live experience remains a product-pattern reference.
 **Product Authority:** Approved WEB-013 Product & UX Specification v1.0 (PR #45, merge `7ea1fb8`)
 **Continuity Authorities:** WEB-007, WEB-011, WEB-012, ARCH-002
 **Implementation:** Not authorized until this design brief is independently reviewed and approved

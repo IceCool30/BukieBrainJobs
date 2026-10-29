@@ -1,10 +1,12 @@
 # WEB-006: Public Services Discovery — Design Specification
 
+> **Current visual direction notice, 29 October 2026:** This specification remains authoritative for product behavior, content, flows, validation, and acceptance criteria. Its earlier website/PWA palette, typography, surfaces, radii, and component examples are historical and are superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics, dark default, light mode, saved preference, and existing toggle placements follow `docs/specs/THEME-001-light-dark-toggle.md`. Native visual restyling is separately scoped.
+
 **Document ID:** WEB-006-DS  
 **Status:** Approved Design Specification (Ready for Engineering)  
 **Scope:** Frontend-only, mock-data-driven public website route  
 **Route:** `/services`  
-**Governing Authority:** `docs/04-public-website/WEB-006-SERVICES-DISCOVERY.md`, `DESIGN.md`, `docs/02-design-system/DESIGN-CANONICALIZATION.md`, and `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md`  
+**Governing Authority:** `docs/04-public-website/WEB-006-SERVICES-DISCOVERY.md` for product behavior; `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` and `docs/specs/THEME-001-light-dark-toggle.md` for current web/PWA appearance and theme mechanics; `docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md` for general experience patterns. `DESIGN.md` is historical visual reference only.
 
 ---
 

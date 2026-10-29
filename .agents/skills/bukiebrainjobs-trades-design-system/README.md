@@ -1,5 +1,7 @@
 # BukieBrainJobs Trades Design System Skill
 
+> **Deprecated historical reference.** The rules below describe a retired Trades visual direction. Do not use this README or its examples for current UI work. Use `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` for web/PWA appearance and THEME-001 for theme mechanics. Native visual restyling remains separately scoped.
+
 This skill provides the design tokens, the single dark theme (Obsidian Titanium Gunmetal), typography standards, and component reskinning guide for BukieBrainJobs.
 
 ## Purpose

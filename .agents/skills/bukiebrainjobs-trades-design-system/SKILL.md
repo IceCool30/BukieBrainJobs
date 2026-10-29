@@ -1,7 +1,9 @@
 ---
 name: bukiebrainjobs-trades-design-system
-description: Design system for BukieBrainJobs with one approved theme, Obsidian Titanium Gunmetal Dark, across the website, PWA and mobile apps. Guides agents and engineers in restyling existing UI components, pages, cards, typography, and interactive states to the approved design system without injecting unsolicited layout components or reintroducing light mode, theme toggles, or theme preferences.
+description: Deprecated historical reference only. Do not use for current BukieBrainJobs visual work. Use the Outlier design skill for web/PWA appearance and THEME-001 for theme mechanics. Native visual restyling remains separately scoped.
 ---
+
+> **Deprecated, non-authoritative, retained for history.** The rules below describe the retired Trades visual direction. Do not apply or copy them for current website or PWA screens. Use `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` for appearance and THEME-001 for theme mechanics.
 
 > **THEME-001 (23 October 2026):** light mode is back with one toggle, dark by default. Where this file says dark only or no theme toggle, `docs/specs/THEME-001-light-dark-toggle.md` wins.
 

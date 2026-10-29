@@ -21,9 +21,13 @@ Some historical materials use TaskRabbit, Tasker, Candidate, Employer, recruitme
 
 Those materials must remain available for research and traceability, but agents must not copy their terminology, flows, launch assumptions or product claims into current implementation unless an approved current specification explicitly adopts them.
 
-## Design-source exception
+## Design-source boundary
 
-The supplied root `DESIGN.md` remains authoritative for visual tokens and visual language. Its legacy product-language passages are governed by `docs/02-design-system/DESIGN-CANONICALIZATION.md` and must not be interpreted as BukieBrainJobs product requirements.
+The supplied root `DESIGN.md`, the original DS-001 through DS-012 palette, the retired Trades skill, its static HTML examples, and older screen-spec color samples are retained for history and traceability. They are not current visual authority.
+
+For web/PWA appearance, use `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. For theme behavior, persisted preference, and toggle placements, use `docs/specs/THEME-001-light-dark-toggle.md`. The native UI visual rollout is deferred, so do not apply the web/PWA restyling to native screens without a separate approved scope.
+
+Legacy product-language passages in `DESIGN.md` are governed by `docs/02-design-system/DESIGN-CANONICALIZATION.md` and must not be interpreted as BukieBrainJobs product requirements. Feature and UX specifications remain authoritative for product behavior, content requirements, and acceptance criteria; only their superseded visual examples are non-authoritative.
 
 ## Research boundary
 

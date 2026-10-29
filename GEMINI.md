@@ -62,7 +62,7 @@
 * **Execution Rhythm**: Every task adheres to phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`), scaled to the task size.
 * **Dynamic Skill Orchestration**: Specialized skills are pulled in on-demand as each phase dictates:
   * `/develop` & `/test` ➔ Activates `agent-skills-test-driven-development`.
-  * Frontend & UI phases ➔ Activates `bukiebrainjobs-trades-design-system`, `bukiebrainjobs-experience-standards`, and `ui-ux-pro-max`.
+  * Frontend & UI phases ➔ Activates `bukiebrainjobs-outlier-design-system` for web/PWA appearance, `bukiebrainjobs-experience-standards` for product UX, and `ui-ux-pro-max` for general design review. Preserve THEME-001 mechanics. Native screen restyling is deferred.
   * Customer-facing content ➔ Activates, first, `mr-solomon-natural-voice` and `bukiebrainjobs-content-style`. These are the two mandatory skills that must be used together for any customer-facing copy.
   * Reverse engineering, APK audits, bundle inspections, external API synthesis, network traces & opaque debugging ➔ Activates `reverse-engineer-anything` (REA). Must be actively evaluated and used on every task touching compiled/bundled artifacts, mobile APKs, HAR network captures, or undocumented integrations.
   * All communication and documentation ➔ Follow the direct human standard of `mr-solomon-natural-voice`.
@@ -79,7 +79,6 @@ Every developer, AI agent, and CI worker operating on BukieBrainJobs must have a
 | `mr-solomon-natural-voice` | BukieBrainJobs Skill Suite | Human-standard tone across all communication, PRs, docs, and customer copy (no corporate fluff, no em dashes) | Active in `.agents/skills/mr-solomon-natural-voice/` |
 | `bukiebrainjobs-content-style` | BukieBrainJobs Skill Suite | Marketplace terminology, microcopy, UI labels, trust language (paired with `mr-solomon-natural-voice`) | Active in `.agents/skills/bukiebrainjobs-content-style/` |
 | `bukiebrainjobs-experience-standards` | BukieBrainJobs Skill Suite | Customer-facing UI, motion language, accessibility, responsive design | Active in `.agents/skills/bukiebrainjobs-experience-standards/` |
-| `ui-ux-pro-max` | BukieBrainJobs Skill Suite | Visual design intelligence, component hierarchy, typography, design tokens | Active in `.agents/skills/ui-ux-pro-max/` |
+| `ui-ux-pro-max` | BukieBrainJobs Skill Suite | General visual design intelligence and review; project-specific Outlier tokens remain authoritative | Active in `.agents/skills/ui-ux-pro-max/` |
 | `agent-skills-test-driven-development` | [agent-skills-tdd](https://github.com/obra/superpowers) | Test-driven development for all logic changes, bug fixes, and new features | Active in `.agents/skills/agent-skills-test-driven-development/` |
-| `bukiebrainjobs-trades-design-system` | [IceCool30/bukiebrainjobs-trades-design-system](https://github.com/IceCool30/bukiebrainjobs-trades-design-system) | Dark-only design system (Obsidian Titanium Gunmetal) for restyling existing UI components and pages | Active in `.agents/skills/bukiebrainjobs-trades-design-system/` |
-
+| `bukiebrainjobs-outlier-design-system` | In-repository canonical skill | Current visual system for web/PWA; native screen rollout is deferred | Active in `.agents/skills/bukiebrainjobs-outlier-design-system/` |

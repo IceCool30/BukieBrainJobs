@@ -1,25 +1,26 @@
 ---
 name: bukiebrainjobs-experience-standards
-description: Preserve and extend the approved live BukieBrainJobs product experience. Use whenever creating, modifying, reviewing, or refactoring any customer-facing BukieBrainJobs web page, PWA view, native-app screen, component, visual asset usage, interaction, animation, or UI copy. Enforces the live visual system, motion language, accessibility, content standards, and maintainable implementation rules across desktop and mobile.
+description: Preserve BukieBrainJobs product UX across customer-facing web pages, PWA views, native-app screens, components, interactions, motion, and copy. Enforces task clarity, accessibility, content standards, responsive behavior, and maintainable implementation. Current web/PWA visual tokens come from the Outlier design skill; native visual restyling remains separately scoped.
 ---
 
 # BukieBrainJobs Experience Standards
 
 ## Purpose
 
-Use this skill to make every future BukieBrainJobs customer-facing screen feel like part of the currently approved product, not a separate design exercise. Treat the **live, verified homepage experience** as the primary authority for visual hierarchy, imagery, surfaces, spacing, motion, and mobile restraint.
+Use this skill to keep every customer-facing BukieBrainJobs screen clear, truthful, accessible, responsive, and consistent with approved product behavior. The live homepage is a product-pattern reference, not the authority for current web/PWA visual tokens.
 
-Read `references/live-approved-experience.md` before proposing or implementing UI work. Read `references/BUKIEBRAINJOBS-CONTENT-GUIDE.md` before creating or revising customer-facing copy. Read `references/quality-gates.md` before delivery.
+For web/PWA appearance, read `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Read `docs/specs/THEME-001-light-dark-toggle.md` for theme mechanics and `references/live-approved-experience.md` for product patterns. Read `references/BUKIEBRAINJOBS-CONTENT-GUIDE.md` before creating or revising customer-facing copy. Read `references/quality-gates.md` before delivery. Do not apply the web/PWA visual rollout to native screens without a separate approved scope.
 
 ## Authority Order
 
 Resolve conflict in this order. Do not let older planning documents override the approved live result.
 
-1. The current approved, deployed BukieBrainJobs experience and the active feature-branch implementation.
-2. The user’s latest explicit direction.
-3. Documented, implemented product behavior, legal requirements, accessibility requirements, and security requirements.
-4. The bundled content guide for customer-facing language.
-5. Earlier design files and historical mockups, only when they agree with the current live result.
+1. The user’s latest explicit direction.
+2. Documented, implemented product behavior, legal requirements, accessibility requirements, and security requirements.
+3. The Outlier skill for web/PWA appearance and THEME-001 for theme mechanics.
+4. This skill for product UX, content density, accessibility, motion, and implementation quality.
+5. The bundled content guide for customer-facing language.
+6. Earlier design files and historical mockups as non-authoritative context.
 
 If sources conflict, identify the conflict and ask for a decision before changing the approved experience.
 
@@ -27,30 +28,19 @@ If sources conflict, identify the conflict and ask for a decision before changin
 
 1. Inspect the nearest equivalent live component on both desktop and mobile before writing code.
 2. Identify the screen’s primary action, user type, and whether it is a website, PWA, or native-app context.
-3. Reuse the live visual and motion language. Do not invent a competing style or pattern.
+3. For web/PWA, follow Outlier for appearance and THEME-001 for theme behavior. Reuse approved product interactions without inventing a competing pattern.
 4. Read the bundled content guide when changing visible language.
 5. Build the smallest maintainable change that solves the screen’s core job.
 6. Test the experience at desktop and mobile widths, with keyboard navigation and reduced motion enabled.
 7. Compare the result with the quality gates before delivery. Flag any unresolved product or content fact.
 
-## Visual System
+## Visual Authority
 
-Use the live experience as the pattern, not as a rigid collection of copied layouts.
+Use the Outlier skill and current web tokens for exact web/PWA colors, typography, surfaces, radii, buttons, and responsive component styling. Preserve THEME-001's dark default, light theme, saved preference, and approved toggle placements.
 
-| Element | Required direction |
-|---|---|
-| Page canvas | Use the quiet off-white base `#F8F9FF` for ordinary page surfaces. |
-| Primary brand colour | Use navy `#001A41` for headings, primary actions, focused states, and controlled hero depth. |
-| Supporting brand colour | Use green `#296A4B` for selected links and restrained secondary emphasis. |
-| Highlight colour | Use mint `#ABEEC8` for focus rings, short highlights, and limited accents. |
-| Colour restraint | Keep dense navy primarily in the header, hero, footer, and deliberate primary actions. Do not use full-brand-colour section backgrounds by default. |
-| Typography | Preserve the implemented display and body font roles. Use concise, high-contrast headings and readable body text. Do not introduce an unrelated typeface. |
-| Geometry | Use the live compact radius language, usually `rounded-xl` or `rounded-2xl` where the current components use it. Do not default to pills or over-rounded containers. |
-| Cards | Use honest white surfaces, thin neutral borders, restrained navy-tinted elevation, clear internal spacing, and real imagery when the service or person benefits from it. |
-| Imagery | Let photos carry visual interest. Keep artisan faces, key work, product context, and text unobscured. Use `object-cover` only with intentional focal positioning. |
-| Effects | Prefer clean layering, soft shadows, and contrast. Do not add broad glass effects, heavy gradients, decorative glow, or blur over operational content. |
+This general experience skill does not define a second visual palette. It continues to govern task hierarchy, truthful content, accessibility, responsive behavior, and interaction quality. Keep text over photography readable, preserve useful imagery, and do not obscure operational content with effects.
 
-Maintain a calm information hierarchy. Every screen should make the primary benefit, primary action, supporting information, and secondary actions easy to distinguish.
+Native apps continue to use native navigation and platform conventions. Preserve their existing appearance until a separate native visual scope is approved.
 
 ## Desktop and Mobile Must Share a System, Not a Layout
 
@@ -59,7 +49,7 @@ Use the same brand, typography, card language, imagery quality, and trust standa
 | Context | Required behaviour |
 |---|---|
 | Desktop website | Use generous but purposeful whitespace, richer supporting context, image-led service cards, and pointer-aware hover feedback. |
-| Mobile PWA or app | Prioritize service discovery, direct actions, compact hierarchy, and touch feedback. Remove supporting material that does not help the immediate task. |
+| Mobile PWA or app | Prioritize service discovery, direct actions, compact hierarchy, and touch feedback. Use Outlier for PWA appearance. Preserve existing native visual styling until a separate native scope is approved. |
 | Mobile homepage | Keep the hero compact and photo-led. Keep the fixed menu compact, solid navy, and blur-free. Do not add a bottom navigation bar to the homepage. |
 | Responsive behaviour | Recompose the hierarchy for the viewport. Do not merely shrink the desktop page. Protect tap targets, text wrapping, card readability, and horizontal overflow. |
 

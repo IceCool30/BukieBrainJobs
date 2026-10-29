@@ -1,6 +1,6 @@
 ---
 name: bukiebrainjobs-experience-standards
-description: Preserve and extend the approved live BukieBrainJobs product experience across every customer-facing website page, PWA view, native-app screen, marketplace flow, component, asset, interaction, animation, and copy change. Use for creation, modification, review, or refactoring work through launch. Enforces the live visual system, service-first decision architecture, content truth, accessibility, motion restraint, and maintainable implementation across all platforms.
+description: Preserve BukieBrainJobs product UX across customer-facing website pages, PWA views, native-app screens, flows, interactions, motion, and copy. Enforces task clarity, content truth, accessibility, responsive behavior, and maintainable implementation. Current web/PWA visual tokens come from the Outlier design skill; native visual restyling remains separately scoped.
 ---
 
 # BukieBrainJobs Experience Standards
@@ -9,7 +9,9 @@ description: Preserve and extend the approved live BukieBrainJobs product experi
 
 Use this skill to ensure every BukieBrainJobs experience feels like one product. It governs the full customer-facing journey, including public pages, search, service discovery, booking, job posting, BrainWorker profiles and onboarding, verification, escrow communication, customer and BrainWorker product areas, enterprise screens, support content, forms, drawers, modals, empty states, notifications, PWA views, and native-app screens.
 
-The approved live homepage is the strongest reference for the product’s visual restraint, image-led quality, information hierarchy, mobile focus, and motion language. It is not a layout to copy onto every screen. Each screen must serve its own task while belonging to the same system.
+The approved live homepage is a product-pattern reference for image treatment, information hierarchy, mobile focus, and motion. It is not a source for current web/PWA tokens or a layout to copy onto every screen.
+
+For web/PWA appearance, use `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. For theme mechanics and toggle placement, use THEME-001. This skill governs general product UX, accessibility, motion, and interaction quality. Do not apply the web/PWA restyling to native screens without a separate approved scope.
 
 > Every screen must make one real BukieBrainJobs task clearer, safer, and easier to complete. Retain operational content and the decision support required now. Remove promotional repetition, decorative framing, and duplicated explanation.
 
@@ -17,12 +19,13 @@ The approved live homepage is the strongest reference for the product’s visual
 
 Resolve conflicts in this order. Do not let a generic pattern, historical mockup, or old planning document override the approved product.
 
-1. The current approved, deployed BukieBrainJobs experience and active feature-branch implementation.
-2. Solomon Bukie’s latest explicit direction.
-3. Verified product requirements, implemented behaviour, legal requirements, security requirements, and accessibility requirements.
-4. The bundled BukieBrainJobs content guide for customer-facing language.
-5. Relevant general UX guidance, only where it does not conflict with BukieBrainJobs.
-6. Historical design files and mockups, only where they agree with the current live result.
+1. Solomon Bukie’s latest explicit direction.
+2. Verified product requirements, implemented behavior, legal requirements, security requirements, and accessibility requirements.
+3. The Outlier skill for web/PWA appearance and THEME-001 for theme mechanics.
+4. This skill for product UX, accessibility, motion, and maintainable implementation.
+5. The bundled BukieBrainJobs content guide for customer-facing language.
+6. Relevant general UX guidance, only where it does not conflict with BukieBrainJobs.
+7. Historical design files and mockups as non-authoritative context.
 
 If two approved sources conflict, identify the conflict and ask for a decision. Do not silently choose one or invent a new product rule.
 
@@ -32,7 +35,8 @@ Read the relevant references before starting work. Do not load references that d
 
 | Change type | Required reading |
 |---|---|
-| Any customer-facing visual, responsive, interaction, or motion work | `references/live-approved-experience.md` |
+| Any web/PWA visual work | `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` and `docs/specs/THEME-001-light-dark-toggle.md` |
+| Any customer-facing responsive, interaction, or motion work | `references/live-approved-experience.md` |
 | Any visible copy, label, error, notification, onboarding, trust, location, or marketplace terminology work | `references/BUKIEBRAINJOBS-CONTENT-GUIDE.md` |
 | Any page, section, flow, information architecture, or copy-density review | `references/content-density-and-decision-architecture.md` |
 | Any implementation review or delivery | `references/quality-gates.md` |
@@ -63,22 +67,13 @@ Use this sequence when reviewing copy or layout:
 
 Rewrite or remove a line that does not answer those questions. Move useful deeper detail to the relevant step, profile area, help page, or dedicated screen rather than expanding every overview into a wall of content.
 
-## Shared Visual System
+## Visual Authority and Platform Boundary
 
-| Element | Required direction |
-|---|---|
-| Canvas | Use the quiet off-white `#F8F9FF` as the ordinary page surface. |
-| Navy | Use `#001A41` for structural depth, headings, primary actions, focused states, hero treatment, and footer. Do not use broad navy sections by default. |
-| Green | Use `#296A4B` for selected links and restrained secondary emphasis. |
-| Mint | Use `#ABEEC8` for short highlights, focus treatment, and limited accents. |
-| Typography | Preserve Hanken Grotesk for display and headings, and Inter for body and interface text. Keep headings concise, body text readable, and line lengths appropriate to the viewport. |
-| Geometry | Use the compact, slightly softened live radius language. Prefer `rounded-xl` and `rounded-2xl` where established components use them. Do not default to pills or excessive rounding. |
-| Surfaces | Use white cards, clear internal spacing, thin neutral borders, and controlled navy-tinted elevation. Surfaces must remain distinct from their background. |
-| Imagery | Use purposeful real imagery where services, people, practical work, or marketplace context benefit from it. Keep faces, work context, and adjacent text visible through intentional focal positioning. |
-| Brand assets | Use official brand and partner marks without recolouring, distortion, or invented substitutes. Preserve their proportions and clear space. |
-| Effects | Prefer contrast, clean layering, and controlled shadow. Use blur only when it meaningfully dismisses a background and contrast has been verified. Do not use broad glass, heavy gradients, ornamental glow, or blur over operational content. |
+For website and PWA appearance, follow the Outlier design skill and current web tokens. Preserve THEME-001's dark default, light theme, saved preference, and approved toggle placements. Do not duplicate token values in this general experience skill.
 
-Build hierarchy through size, spacing, contrast, grouping, and surface distinction. Do not depend on saturated colour, decorative effects, or excessive motion to make content seem important.
+This skill continues to govern task hierarchy, truthful content, accessibility, responsive behavior, and interaction quality. Keep text over photography readable, preserve useful imagery, and do not obscure operational content with effects.
+
+Native apps continue to use native navigation and platform conventions. Preserve their existing appearance until a separate native visual scope is approved.
 
 ## Platform and Screen Rules
 
@@ -94,7 +89,7 @@ Share one identity across platforms, but adapt density, navigation, inputs, and 
 | Customer and BrainWorker areas | Surface the current task, status, and next action first. Use predictable navigation, clear empty states, and recovery-oriented errors. |
 | Enterprise and support | Prioritize the relevant audience, real capability, contact or action path, and appropriate depth. Do not convert operational guidance into generic promotion. |
 | Forms, sheets, modals, and notifications | Make the current action and recovery path unmistakable. Preserve entered state where appropriate, accessible dismissal, focus management, and semantic controls. |
-| Mobile PWA and native apps | Design for direct touch tasks, constrained viewports, safe areas, text scaling, device orientation, and platform conventions. Do not merely shrink a desktop layout. |
+| Mobile PWA and native apps | Design for direct touch tasks, constrained viewports, safe areas, text scaling, device orientation, and platform conventions. Use Outlier for PWA appearance. Preserve existing native visuals until a separate native scope is approved. |
 
 ### Homepage-Specific Rules
 

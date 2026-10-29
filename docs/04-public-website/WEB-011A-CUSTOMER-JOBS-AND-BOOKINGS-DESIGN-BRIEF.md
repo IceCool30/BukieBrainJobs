@@ -1,5 +1,7 @@
 # WEB-011A: Customer Jobs & Bookings Design Brief
 
+> **Current visual direction notice, 29 October 2026:** This specification remains authoritative for product behavior, content, flows, validation, and acceptance criteria. Its earlier website/PWA palette, typography, surfaces, radii, and component examples are historical and are superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics, dark default, light mode, saved preference, and existing toggle placements follow `docs/specs/THEME-001-light-dark-toggle.md`. Native visual restyling is separately scoped.
+
 **Document ID:** WEB-011A  
 **Feature:** WEB-011 Customer Jobs & Bookings  
 **Version:** 1.0  
@@ -9,7 +11,7 @@
 **Primary User:** Authenticated Customer  
 **Experience:** Responsive Web, PWA  
 **Implementation Model:** Mock-first  
-**Design Authority:** `DESIGN.md` Design System v1.0  
+**Design Authority:** Outlier skill for web/PWA appearance and THEME-001 for theme mechanics; the `DESIGN.md` v1.0 visual rules are historical and superseded.
 **Product Authority:** Approved WEB-011 Product & UX Specification v1.0  
 **Implementation:** Not authorized until this design brief is independently reviewed and approved
 

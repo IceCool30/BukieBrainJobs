@@ -2,7 +2,9 @@
 
 **Document ID:** GOV-006
 **Version:** 1.0
-**Status:** Active
+**Status:** Historical plan; current hierarchy is in SOURCE-OF-TRUTH.md and DS-013
+
+> Current web/PWA appearance follows the Outlier skill. THEME-001 governs theme mechanics. This plan preserves the original source-consolidation decisions only.
 
 ## Purpose
 
@@ -11,8 +13,8 @@ This document defines how project source material becomes canonical repository d
 ## Authority Order
 
 1. Product decisions and approved specifications maintained in the repository.
-2. `DESIGN.md` for visual source material and brand rules.
-3. Approved DS-001 through DS-012 records for the Design System.
+2. `DESIGN.md` as historical visual source material and brand provenance; current web/PWA appearance follows the Outlier skill.
+3. DS-001 through DS-012 as historical v1.0 records; DS-013 and THEME-001 govern current web/PWA visuals and theme behavior.
 4. Approved WEB specifications and subsequent module specifications.
 5. The Full-Stack Technical Specification for engineering requirements.
 6. Marketplace research and the TaskRabbit playbook for strategic context and comparative guidance.
@@ -41,8 +43,9 @@ This document defines how project source material becomes canonical repository d
 
 ### Design
 
-- `DESIGN.md`
-- DS-001 through DS-012
+- `DESIGN.md` as historical visual source material
+- DS-001 through DS-012 as historical v1.0 design records
+- DS-013 Outlier skill and THEME-001 for current web/PWA appearance and theme mechanics
 - Design tokens
 - Component specifications
 

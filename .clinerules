@@ -44,7 +44,7 @@ Whenever you modify code, follow this exact sequence:
 
 These nine skills are required on every task. They are load-bearing rules, not suggestions:
 
-`mr-solomon-nine-command-engineering-loop`, `mr-solomon-natural-voice`, `bukiebrainjobs-content-style`, `bukiebrainjobs-trades-design-system`, `bukiebrainjobs-experience-standards`, `ui-ux-pro-max`, `agent-skills-test-driven-development`, `reverse-engineer-anything`, `human-production-engineering`
+`mr-solomon-nine-command-engineering-loop`, `mr-solomon-natural-voice`, `bukiebrainjobs-content-style`, `bukiebrainjobs-outlier-design-system`, `bukiebrainjobs-experience-standards`, `ui-ux-pro-max`, `agent-skills-test-driven-development`, `reverse-engineer-anything`, `human-production-engineering`
 
 **The gate:**
 
@@ -56,9 +56,9 @@ SKILL GATE
 - mr-solomon-nine-command-engineering-loop: APPLIED
 - mr-solomon-natural-voice: APPLIED
 - bukiebrainjobs-content-style: OUT OF SCOPE (no customer-facing copy in this task)
-- bukiebrainjobs-trades-design-system: OUT OF SCOPE (no trades styling or theme change)
-- bukiebrainjobs-experience-standards: OUT OF SCOPE (no UI or interaction change)
-- ui-ux-pro-max: OUT OF SCOPE (no visual or layout decision)
+- bukiebrainjobs-outlier-design-system: APPLIED
+- bukiebrainjobs-experience-standards: APPLIED
+- ui-ux-pro-max: APPLIED
 - agent-skills-test-driven-development: APPLIED
 - reverse-engineer-anything: OUT OF SCOPE (no compiled artifacts, runtime captures, or external API analysis)
 - human-production-engineering: APPLIED

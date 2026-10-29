@@ -1,7 +1,7 @@
 # BukieBrainJobs Foundation Final Status
 
 > **Historical Archive Notice (Day 1 Setup)**  
-> This document records the final status of the Day 1 governance foundation from August 2026. Current active platform implementation is governed by `AGENTS.md` and `docs/master-checklist.md`.
+> This document records the final status of the Day 1 governance foundation from August 2026. Current active platform implementation is governed by `AGENTS.md` and `docs/master-checklist.md`. Its original `DESIGN.md` visual authority is superseded for web/PWA by the Outlier skill; theme behavior follows THEME-001.
 
 **Date:** 2026-08-09
 **Status:** Historical Archive (Foundation Completed)
@@ -36,12 +36,12 @@ Foundation completion means the repository governance and canonical-reference la
 
 No agent may begin arbitrary application development from a broad instruction. Work must enter through an approved feature specification and follow the Feature Factory sequence:
 
-Product specification → UX requirements (DESIGN.md) → Antigravity design & implementation → QA & verification.
+Historical sequence recorded in August 2026: product specification → UX requirements (DESIGN.md) → Antigravity design and implementation → QA and verification. Current web/PWA appearance follows the Outlier skill, with THEME-001 governing theme mechanics.
 
 
 ## Known source conflict
 
-The approved `DESIGN.md` visual system takes precedence over legacy green-primary examples in the older technical specification. Deep Navy `#001A41` is the approved primary brand/action color, with Emerald `#296A4B` used as strategic emphasis. This conflict must remain documented until the engineering token implementation is created.
+At foundation closeout, the `DESIGN.md` system took precedence over legacy green-primary examples in the older technical specification. That historical web/PWA palette is superseded by DS-013 and the Outlier skill. THEME-001 remains authoritative for the dark default, light mode, saved preference, and toggle placements.
 
 ## Handoff rule
 

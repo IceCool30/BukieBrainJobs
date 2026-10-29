@@ -47,8 +47,7 @@ scripts/free-ports.cjs
 
 # Agent execution state
 # The .agents directory holds local agent execution state and is ignored,
-# EXCEPT the mandatory skills mandated by AGENTS.md, which are tracked
-# so any agent cloning this repo receives them locally and remotely.
+# EXCEPT repository skills and retained reference material listed below.
 .agents/*
 !.agents/skills/
 .agents/skills/*
@@ -58,7 +57,9 @@ scripts/free-ports.cjs
 !.agents/skills/agent-skills-test-driven-development/
 !.agents/skills/mr-solomon-natural-voice/
 !.agents/skills/bukiebrainjobs-content-style/
+# Retained historical reference only. Not part of the mandatory skill gate.
 !.agents/skills/bukiebrainjobs-trades-design-system/
+!.agents/skills/bukiebrainjobs-outlier-design-system/
 !.agents/skills/reverse-engineer-anything/
 .agents/skills/bukiebrainjobs-trades-design-system/references/images/
 .env*

@@ -15,7 +15,7 @@
   --font-label: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  /* Colors */
+  /* Legacy M3 compatibility colors. Current web/PWA appearance follows the Outlier skill. */
   --color-surface: #f8f9ff;
   --color-surface-dim: #cbdbf5;
   --color-surface-bright: #f8f9ff;
@@ -64,7 +64,7 @@
   --color-on-background: #0b1c30;
   --color-surface-variant: #d3e4fe;
 
-  /* Trades Design System - Semantic Color Tokens */
+  /* Theme-aware semantic aliases retained for existing component utilities. */
   --color-trades-bg: var(--bg);
   --color-trades-card: var(--card-bg);
   --color-trades-card-hover: var(--card-hover);
@@ -117,8 +117,8 @@
   --text-label-sm: 12px;
   --text-label-sm--line-height: 16px;
 
-  /* Trades geometry: 4px controls, 8px cards. Class names stay rounded-xl /
-     rounded-2xl so the live component language is unchanged; only the scale tightens. */
+  /* Operational geometry: 4px compact controls and 8px standard cards. Existing
+     rounded-xl and rounded-2xl classes remain; only their scale tightens. */
   --radius-xs: 0.125rem;
   --radius-sm: 0.25rem;
   --radius: 0.375rem;
@@ -149,8 +149,8 @@
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* BukieBrainJobs Trades Design System - Dual-Theme CSS Variables */
-/* Light theme. Orange and green are deeper than in dark so text stays at 4.5:1 or better on white. */
+/* Theme-aware web/PWA tokens. Outlier marketing tokens are defined below. */
+/* Light-theme text and action values are deepened where needed for contrast. */
 :root[data-theme="light"] {
   --bg: #F7F9FC;
   --card-bg: #FFFFFF;

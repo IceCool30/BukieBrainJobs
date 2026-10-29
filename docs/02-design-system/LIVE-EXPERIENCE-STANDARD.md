@@ -4,19 +4,21 @@
 
 ## Purpose
 
-This document makes the approved, currently live BukieBrainJobs experience the practical baseline for the entire customer-facing product. It governs future public website pages, search, service discovery, booking, job posting, BrainWorker profiles and onboarding, customer and BrainWorker areas, enterprise and support pages, PWA views, native-app screens, shared components, visual assets, interactions, motion, and visible copy.
+This document makes the approved BukieBrainJobs product experience the practical baseline for customer-facing work. It governs task clarity, content, interaction, motion, accessibility, responsive behavior, and useful product patterns across public pages, marketplace flows, signed-in areas, PWA views, and native screens. It does not define current web/PWA visual tokens.
 
-The approved homepage is the clearest current reference for visual restraint, image treatment, information hierarchy, and mobile focus. It is a product-quality reference, not a layout that every future screen must clone.
+The approved homepage remains a reference for its photo treatment, information hierarchy, and mobile focus. It is not a source for site-wide tokens or a layout that every future screen must clone.
 
-> The live approved experience is the primary authority for how BukieBrainJobs should feel in use. Existing design documentation supports that experience only where it remains consistent with the approved live result.
+> For web/PWA appearance, use `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. For theme mechanics and toggle placements, use THEME-001. This standard continues to govern product UX, accessibility, motion, and interaction quality.
 
 ## Required Skill
 
-Before designing, writing, reviewing, or implementing any customer-facing work, contributors must read:
+Before designing, writing, reviewing, or implementing customer-facing work, contributors must read the relevant sources:
 
-`docs/02-design-system/skills/bukiebrainjobs-experience-standards/SKILL.md`
+- `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` for web/PWA appearance
+- `docs/specs/THEME-001-light-dark-toggle.md` for theme behavior and toggle placement
+- `docs/02-design-system/skills/bukiebrainjobs-experience-standards/SKILL.md` for general product UX and accessibility
 
-The bundled skill defines the mandatory workflow, product-wide visual and interaction rules, content-density standards, quality gates, and reference map. Customer-facing copy must also follow its bundled BukieBrainJobs content guide.
+The bundled experience skill defines the mandatory workflow, product-wide interaction rules, content-density standards, quality gates, and implementation guardrails. Customer-facing copy must also follow its bundled BukieBrainJobs content guide.
 
 ## Surface contexts
 
@@ -30,13 +32,15 @@ BukieBrainJobs ships one product on three surfaces. Experience quality must rema
 
 Do not build a reduced journey for any surface by policy. Layout and chrome may adapt. Core tasks must remain available.
 
+The Outlier visual approval covers website and PWA screens. It does not authorize restyling native screens. Preserve existing native appearance until a separate native design scope is approved.
+
 ## Authority Order
 
 | Priority | Authority | Use it for |
 |---|---|---|
-| 1 | Approved current live experience and approved implemented product patterns | Visual hierarchy, imagery, interaction behaviour, motion, responsive density, content decisions, service flows, marketplace states, and platform adaptation. |
+| 1 | Approved current live experience and implemented product patterns | Product task hierarchy, homepage-specific imagery, interactions, motion, responsive density, content decisions, marketplace states, and platform adaptation. It does not replace the Outlier visual authority. |
 | 2 | `skills/bukiebrainjobs-experience-standards/SKILL.md` | Mandatory workflow, global standards, screen-purpose rules, quality gates, and implementation guardrails. |
-| 3 | `.agents/skills/bukiebrainjobs-trades-design-system/SKILL.md`, then `DESIGN.md` and `DESIGN-CANONICALIZATION.md` | The dark-only theme, colour tokens, surfaces, typography and buttons (trades skill); spacing, radius, grid, elevation, and visual accessibility constraints where the skill is silent. |
+| 3 | `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md` and `docs/specs/THEME-001-light-dark-toggle.md` | Current website/PWA appearance, theme-aware tokens, dark default, light mode, saved preference, and toggle placements. |
 | 4 | Approved product specifications | Product naming, marketplace behaviour, user journeys, and valid claims. |
 | 5 | Feature-specific requirements that are explicitly approved | New behaviour or a justified extension of the design system. |
 
@@ -52,9 +56,9 @@ The approved homepage headline is a named exception that retains its exact deplo
 
 Every screen must make one real BukieBrainJobs task clearer, safer, and easier to complete. Retain operational content and the information needed for the immediate decision. Move useful deeper detail to the relevant point in the flow or a clear deeper destination. Remove promotional repetition, decorative framing, generic AI-style copy, duplicate trust statements, unsupported claims, and unnecessary status clutter.
 
-Future work must preserve a premium, photo-led marketplace experience; clear platform-appropriate task hierarchy; restrained navy, mint, and green use; concise human content; accessible motion; verified claims; responsive layouts; and maintainable implementation.
+Future work must preserve a photo-led marketplace, clear task hierarchy, concise human content, accessible motion, truthful claims, responsive layouts, and maintainable implementation. Web/PWA appearance follows the Outlier skill and THEME-001. Native appearance remains outside this approval.
 
-Future work must not introduce a disconnected design language, decorative motion, wide mobile blur bars, generic copy, unsupported trust claims, duplicated tokens, arbitrary colours, excessive abstractions, unscoped refactors, or a desktop layout merely compressed into mobile.
+Future work must not introduce a disconnected design language, decorative motion, wide mobile blur bars, generic copy, unsupported trust claims, duplicated tokens, arbitrary colors, excessive abstractions, unscoped refactors, or a desktop layout merely compressed into mobile.
 
 ## How to Extend the Product
 

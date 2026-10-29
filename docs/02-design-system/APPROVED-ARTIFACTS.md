@@ -1,14 +1,18 @@
 # BukieBrainJobs Approved Design System Artifacts
 
 **Version:** 1.0
-**Status:** Locked
-**Visual source of truth:** `DESIGN.md`
+**Status:** Historical v1.0 record; visual rules superseded for web/PWA
+**Historical visual source:** `DESIGN.md`
+
+> **Current authority, 29 October 2026:** The Outlier skill is the visual source for website and PWA components. THEME-001 controls theme behavior and toggle placement. Preserve this file as the record of the earlier v1.0 design foundation; apply only rules that do not conflict with current authorities. Native visual restyling remains separately scoped.
 
 ## Authority
 
-The Design Foundation is complete and locked for v1.0. The approved chain is:
+The following chain records the Design Foundation as completed and locked for v1.0:
 
 DESIGN.md → DS-001 through DS-012 → Design Tokens → Google Antigravity UI Design & Implementation
+
+The current web/PWA chain is Outlier visual guidance plus THEME-001 theme mechanics, followed by the relevant product specification and general experience standards.
 
 No agent may create a competing foundational design system.
 
@@ -28,8 +32,9 @@ No agent may create a competing foundational design system.
 | DS-010 | Accessibility Standards | Approved | WCAG 2.2 AA baseline |
 | DS-011 | Design Token System | Approved | Shared semantic tokens |
 | DS-012 | Final Design System Review | Approved | Foundation quality gate |
+| DS-013 | Outlier Web/PWA Visual System | Current / Approved | Current website and PWA visual authority; THEME-001 remains the theme-mechanics authority |
 
-## Locked design decisions
+## Historical Locked Design Decisions
 
 - Corporate Modern and Premium Minimalism direction.
 - Deep Navy `#001A41` is the primary brand and action system.

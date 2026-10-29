@@ -1,5 +1,7 @@
 # WEB-007: Public Booking Preparation & Intake Flow
 
+> **Current visual scope notice, 29 October 2026:** Existing product behavior, content, acceptance criteria, and non-visual requirements remain authoritative. Conflicting web/PWA palette, typography, surface, radius, and component examples are historical and superseded by `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`. Theme mechanics defer to `docs/specs/THEME-001-light-dark-toggle.md`. Native restyling is separately scoped.
+
 **Document ID:** WEB-007  
 **Version:** 1.0  
 **Status:** Approved  
