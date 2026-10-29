@@ -33,23 +33,23 @@ export function CompletionInspectionSummary({
   return (
     <div
       data-testid="completion-inspection-summary"
-      className={`rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl ${className}`}
+      className={`rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl ${className}`}
     >
       <div className="mb-6 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 pb-4">
         <div>
-          <span className="inline-block rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+          <span className="inline-block rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
             Inspection Overview
           </span>
-          <h2 className="mt-1 text-xl font-bold text-zinc-100">
+          <h1 className="mt-1 text-xl font-bold text-zinc-100">
             Job Settlement Inspection
-          </h2>
+          </h1>
         </div>
-        <span className="rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300">
+        <span className="rounded-full border border-zinc-700 bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300">
           Status: {jobStatus}
         </span>
       </div>
 
-      <div className="mb-6 rounded-lg border border-zinc-800 bg-zinc-950 p-4">
+      <div className="mb-6 rounded-xl border border-zinc-800 bg-zinc-950 p-4">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
           Financial Settlement Breakdown
         </h3>
@@ -76,7 +76,7 @@ export function CompletionInspectionSummary({
       </div>
 
       {completionSummaryNote && (
-        <div className="mb-6 rounded-lg border border-zinc-800 bg-zinc-950 p-4">
+        <div className="mb-6 rounded-xl border border-zinc-800 bg-zinc-950 p-4">
           <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
             Technician Completion Summary
           </h3>
@@ -87,7 +87,7 @@ export function CompletionInspectionSummary({
       )}
 
       {photoProofUrls.length > 0 && (
-        <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-4">
+        <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
           <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
             Proof of Work Gallery ({photoProofUrls.length})
           </h3>

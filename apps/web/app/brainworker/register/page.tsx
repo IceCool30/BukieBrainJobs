@@ -40,8 +40,8 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
   if (user?.role === 'customer') {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 transition-colors">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-[var(--amber)]/30 p-6 sm:p-8 shadow-xs text-center space-y-4">
-          <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-2.5 py-1 text-xs font-semibold text-[var(--amber)]">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl border border-[var(--amber)]/30 p-6 sm:p-8 shadow-xs text-center space-y-4">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-3 py-1 text-xs font-semibold text-[var(--amber)]">
             <AlertTriangle className="h-3.5 w-3.5 text-[var(--amber)]" />
             <span>Boundary Conflict</span>
           </div>
@@ -58,7 +58,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
                 setMockAuthenticatedUser(null);
                 setUser(null);
               }}
-              className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
+              className="outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             >
               Sign Out
             </button>
@@ -119,9 +119,9 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
       </header>
 
       <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center transition-colors">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-[var(--card-border)] p-6 sm:p-10 shadow-xs space-y-6">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl border border-[var(--card-border)] p-6 sm:p-10 shadow-xs space-y-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2.5 py-1 text-xs font-semibold text-[var(--brand-green)] mb-3">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-3 py-1 text-xs font-semibold text-[var(--brand-green)] mb-3">
               <ShieldCheck className="h-3.5 w-3.5 text-[var(--brand-green)]" />
               <span>BrainWorker Registration</span>
             </div>
@@ -134,7 +134,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
           </div>
 
           {error && (
-            <div className="rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] p-3.5 text-xs font-medium text-[var(--danger)]">
+            <div className="rounded-xl border border-[var(--danger-border)] bg-[var(--danger-dim)] p-3.5 text-xs font-medium text-[var(--danger)]">
               {error}
             </div>
           )}
@@ -197,7 +197,7 @@ export default function BrainWorkerRegisterPage(): React.ReactElement {
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
+                className="w-full outlier-pill-button inline-flex items-center justify-center gap-2 rounded-full bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>Continue to Onboarding</span>
                 <ArrowRight className="h-4 w-4" />

@@ -32,22 +32,22 @@ export function CustomerScopeReviewCard({
   };
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl">
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl">
       <div className="mb-4 flex items-center justify-between border-b border-zinc-800 pb-3">
         <div>
-          <span className="inline-block rounded bg-amber-500/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-amber-400">
+          <span className="inline-block rounded-full bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-amber-400">
             Action Required
           </span>
           <h3 className="mt-1 text-lg font-semibold text-zinc-100">
             On-Site Scope Adjustment Request
           </h3>
         </div>
-        <span className="rounded-md border border-amber-800 bg-amber-950 px-2.5 py-1 text-xs font-medium text-amber-400">
+        <span className="rounded-full border border-amber-800 bg-amber-950 px-3 py-1 text-xs font-medium text-amber-400">
           Pending Approval
         </span>
       </div>
 
-      <div className="mb-4 rounded-lg border border-zinc-800 bg-zinc-950 p-4">
+      <div className="mb-4 rounded-xl border border-zinc-800 bg-zinc-950 p-4">
         <div className="text-xs font-medium uppercase tracking-wider text-zinc-400">
           Technician Notes
         </div>
@@ -68,7 +68,7 @@ export function CustomerScopeReviewCard({
         </div>
       </div>
 
-      <div className="mb-4 space-y-2 rounded-lg border border-zinc-800 bg-zinc-950 p-4">
+      <div className="mb-4 space-y-2 rounded-xl border border-zinc-800 bg-zinc-950 p-4">
         <div className="flex justify-between text-sm text-zinc-400">
           <span>Base Quote</span>
           <span data-testid="base-quote-amount" className="font-mono text-zinc-200">
@@ -113,7 +113,7 @@ export function CustomerScopeReviewCard({
           aria-label="Decline adjustment"
           disabled={isSubmitting}
           onClick={handleDeclineClick}
-          className="flex-1 min-h-[44px] rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-sm font-semibold text-zinc-300 transition hover:bg-zinc-800 hover:text-zinc-100 disabled:opacity-50"
+          className="flex-1 min-h-[44px] rounded-full border border-zinc-800 bg-zinc-900 px-5 py-2.5 text-sm font-semibold text-zinc-300 transition hover:bg-zinc-800 hover:text-zinc-100 disabled:opacity-50"
         >
           Decline Adjustment
         </button>
@@ -122,7 +122,7 @@ export function CustomerScopeReviewCard({
           aria-label="Approve adjustment"
           disabled={isSubmitting}
           onClick={() => void onApprove()}
-          className="flex-1 min-h-[44px] rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-zinc-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
+          className="flex-1 min-h-[44px] outlier-pill-button rounded-full bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-[#001A41] transition hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
         >
           {isSubmitting ? 'Approving...' : 'Approve Adjustment'}
         </button>

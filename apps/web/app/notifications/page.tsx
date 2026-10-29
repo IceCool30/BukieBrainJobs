@@ -39,9 +39,9 @@ export default function NotificationsPage() {
 
       {/* Footer Channel Preferences Entry Point (Section 11) */}
       <div className="max-w-4xl mx-auto px-4 pb-12">
-        <div className="p-6 rounded-lg bg-[var(--card-bg)] text-[var(--text-main)] border border-[var(--lead)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+        <div className="p-6 rounded-2xl bg-[var(--card-bg)] text-[var(--text-main)] border border-[var(--lead)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center shrink-0">
               <Sliders className="w-5 h-5 text-[var(--amber)]" aria-hidden="true" />
             </div>
             <div>
@@ -56,7 +56,7 @@ export default function NotificationsPage() {
           <button
             type="button"
             onClick={() => router.push('/profile?tab=notifications')}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-lg bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-main)] border border-[var(--lead)] hover:border-[var(--amber)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] shrink-0 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-semibold rounded-md bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-main)] border border-[var(--lead)] hover:border-[var(--amber)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] shrink-0 cursor-pointer"
           >
             Manage Notification Channels in Profile
             <ChevronRight className="w-4 h-4 text-[var(--text-muted)]" aria-hidden="true" />

@@ -98,6 +98,9 @@ describe('BW-001 Suite 7: Credentials & Review Forms Contracts', () => {
       );
 
       expect(
+        screen.getByRole('heading', { level: 1, name: /Step 3: Documents & Credentials/i })
+      ).toBeInTheDocument();
+      expect(
         screen.getByText(/Government Identity Document \(Mandatory\)/i)
       ).toBeInTheDocument();
       expect(
@@ -202,6 +205,9 @@ describe('BW-001 Suite 7: Credentials & Review Forms Contracts', () => {
     it('REV-001: renders Identity Summary Card with legal name, DOB, and masked NIN/BVN', () => {
       render(<ReviewStepForm {...defaultReviewProps} />);
 
+      expect(
+        screen.getByRole('heading', { level: 1, name: /Step 4: Review & Submit Application/i })
+      ).toBeInTheDocument();
       expect(screen.getByText(/Identity Information/i)).toBeInTheDocument();
       expect(screen.getByText(/Amina Bolanle Okonkwo/i)).toBeInTheDocument();
       expect(screen.getByText(/1992-04-12/i)).toBeInTheDocument();

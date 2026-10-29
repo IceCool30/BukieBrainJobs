@@ -44,13 +44,13 @@ describe('PwaHome', () => {
     expect(screen.getByRole('heading', { name: /common questions/i })).toBeInTheDocument();
   });
 
-  it('renders search button with amber styling matching the trades design system', () => {
+  it('uses Outlier coral for the navy-text search action', () => {
     render(<PwaHome onOpenDrawer={vi.fn()} />);
 
     const searchButton = screen.getByRole('button', { name: /^search$/i });
-    expect(searchButton.className).toContain('bg-[var(--amber)]');
+    expect(searchButton.className).toContain('bg-[var(--outlier-coral)]');
     expect(searchButton.className).toContain('text-[#001A41]');
-    expect(searchButton.className).toContain('hover:bg-[var(--amber-hover)]');
+    expect(searchButton.className).toContain('hover:bg-[var(--outlier-coral-hover)]');
   });
 
   it('renders subtitle text below search bar in high-contrast light text over hero backdrop', () => {
@@ -61,5 +61,3 @@ describe('PwaHome', () => {
     expect(subtitle.className).not.toContain('text-[var(--text-main)]');
   });
 });
-
-

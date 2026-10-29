@@ -65,7 +65,7 @@ export function WalletManagementWorkspace({
       <section
         id="connected-bank-accounts-section"
         aria-labelledby="bank-accounts-heading"
-        className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-5 sm:p-6"
+        className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 shadow-sm"
       >
         <BankAccountsManager
           accounts={accounts}
@@ -78,7 +78,7 @@ export function WalletManagementWorkspace({
       {/* 3. Transaction Ledger Table */}
       <section
         aria-labelledby="wallet-ledger-heading"
-        className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-5 sm:p-6"
+        className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 shadow-sm"
       >
         <WalletLedgerTable
           transactions={transactions}

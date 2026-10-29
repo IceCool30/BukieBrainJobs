@@ -117,7 +117,7 @@ export default function CompletionPage({
         data-testid="completion-page"
         className="flex min-h-[60vh] flex-col items-center justify-center p-6 text-center"
       >
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-8 shadow-2xl">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-8 shadow-2xl">
           <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
           <p className="text-sm text-zinc-400">
             Loading completion details...
@@ -134,7 +134,7 @@ export default function CompletionPage({
         data-testid="completion-page"
         className="flex min-h-[60vh] flex-col items-center justify-center p-6 text-center"
       >
-        <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-900 p-8 shadow-2xl">
+        <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-8 shadow-2xl">
           <h2 className="text-xl font-bold text-zinc-100">
             Authentication Required
           </h2>
@@ -147,7 +147,7 @@ export default function CompletionPage({
                 ? `/login?redirect=/completion/${bookingId}`
                 : '/login'
             }
-            className="mt-6 inline-flex min-h-[48px] items-center justify-center rounded-lg bg-emerald-600 px-6 text-sm font-semibold text-white shadow-lg transition hover:bg-emerald-500"
+            className="mt-6 inline-flex min-h-[48px] items-center justify-center outlier-pill-button rounded-full bg-[var(--amber)] px-6 text-sm font-semibold text-[#001A41] shadow-lg transition hover:scale-[1.02] active:scale-[0.98]"
           >
             Proceed to Login
           </a>
@@ -163,7 +163,7 @@ export default function CompletionPage({
         data-testid="completion-page"
         className="flex min-h-[60vh] flex-col items-center justify-center p-6 text-center"
       >
-        <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-900 p-8 shadow-2xl">
+        <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-8 shadow-2xl">
           <h2 className="text-xl font-bold text-zinc-100">
             Record Unavailable
           </h2>
@@ -186,7 +186,7 @@ export default function CompletionPage({
         data-testid="completion-page"
         className="flex min-h-[60vh] flex-col items-center justify-center p-6 text-center"
       >
-        <div className="w-full max-w-md rounded-xl border border-red-900/50 bg-zinc-900 p-8 shadow-2xl">
+        <div className="w-full max-w-md rounded-2xl border border-red-900/50 bg-zinc-900 p-8 shadow-2xl">
           <h2 className="text-xl font-bold text-red-400">
             Restricted Access
           </h2>

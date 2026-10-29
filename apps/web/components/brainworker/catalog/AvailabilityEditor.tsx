@@ -226,9 +226,9 @@ export function AvailabilityEditor({
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-[var(--lead)]">
         <div>
-          <h2 className="text-2xl font-bold text-[var(--text-main)] tracking-tight">
+          <h1 className="text-2xl font-bold text-[var(--text-main)] tracking-tight">
             Availability and Weekly Schedule
-          </h2>
+          </h1>
           <p className="mt-1 text-sm text-[var(--text-muted)] max-w-2xl leading-relaxed">
             Set the days and hours you are open for jobs. Keep this honest so every
             request matches what you can deliver.
@@ -242,8 +242,8 @@ export function AvailabilityEditor({
             onClick={handleSave}
             className={
               isSaveDisabled
-                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed transition-colors'
-                : 'px-5 py-2.5 rounded-lg text-sm font-bold bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]'
+                ? 'px-5 py-2.5 rounded-full text-sm font-semibold bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed transition-colors'
+                : 'outlier-pill-button px-5 py-2.5 rounded-full text-sm font-bold bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]'
             }
           >
             {isSaving ? 'Saving Changes...' : 'Save changes'}
@@ -254,7 +254,7 @@ export function AvailabilityEditor({
       {saveError && (
         <div
           role="alert"
-          className="p-4 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-sm text-[var(--danger)] font-medium"
+          className="p-4 rounded-xl bg-[var(--danger-dim)] border border-[var(--danger-border)] text-sm text-[var(--danger)] font-medium"
         >
           {saveError}
         </div>
@@ -264,13 +264,13 @@ export function AvailabilityEditor({
         <div
           role="status"
           aria-live="polite"
-          className="p-4 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-sm text-[var(--brand-green)] font-medium"
+          className="p-4 rounded-xl bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-sm text-[var(--brand-green)] font-medium"
         >
           {successToast}
         </div>
       )}
 
-      <div className="p-6 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] shadow-xs space-y-3 transition-colors">
+      <div className="p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] shadow-sm space-y-3 transition-colors">
         <div className="flex items-center justify-between gap-4">
           <div>
             <h3 className="text-lg font-bold text-[var(--text-main)]">Dispatch duty</h3>
@@ -308,7 +308,7 @@ export function AvailabilityEditor({
         </p>
       </div>
 
-      <div className="p-6 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] shadow-xs space-y-4 transition-colors">
+      <div className="p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] shadow-sm space-y-4 transition-colors">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <h3 className="text-lg font-bold text-[var(--text-main)]">Weekly schedule</h3>
@@ -324,7 +324,7 @@ export function AvailabilityEditor({
               setSuccessToast(null);
               copyMondayHoursToWeekdays();
             }}
-            className="px-4 py-2 text-sm font-semibold rounded-lg bg-[var(--card-bg)] text-[var(--text-main)] border border-[var(--card-border)] hover:bg-[var(--bg)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
+            className="px-4 py-2 text-sm font-semibold rounded-md bg-[var(--card-bg)] text-[var(--text-main)] border border-[var(--card-border)] hover:bg-[var(--card-hover)] transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
           >
             Copy to weekdays
           </button>
@@ -345,7 +345,7 @@ export function AvailabilityEditor({
               <div
                 key={day}
                 data-testid={`day-row-${day}`}
-                className="p-4 rounded-lg border border-[var(--card-border)] bg-[var(--bg)] flex flex-col sm:flex-row sm:items-center gap-3 transition-colors"
+                className="p-4 rounded-xl border border-[var(--card-border)] bg-[var(--bg)] flex flex-col sm:flex-row sm:items-center gap-3 transition-colors"
               >
                 <div className="flex items-center justify-between gap-3 sm:w-48">
                   <span className="text-sm font-semibold text-[var(--text-main)]">
@@ -443,7 +443,7 @@ export function AvailabilityEditor({
         </div>
       </div>
 
-      <div className="p-6 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] shadow-xs space-y-3 transition-colors">
+      <div className="p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] shadow-sm space-y-3 transition-colors">
         <div className="flex items-center justify-between gap-4">
           <div>
             <h3 className="text-lg font-bold text-[var(--text-main)]">Emergency jobs</h3>

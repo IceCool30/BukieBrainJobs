@@ -30,7 +30,7 @@ export function RescheduleResponseCard({
 
   if (isRequester) {
     return (
-      <div className="rounded-xl border border-amber-900/40 bg-amber-950/20 p-5 text-amber-200">
+      <div className="rounded-2xl border border-amber-900/40 bg-amber-950/20 p-5 text-amber-200">
         <div className="flex items-start gap-3">
           <span className="text-xl">⏳</span>
           <div>
@@ -59,7 +59,7 @@ export function RescheduleResponseCard({
   const selectedWindow = request.proposedWindows[selectedIndex] ?? request.proposedWindows[0];
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-6 text-zinc-100 shadow-sm">
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 text-zinc-100 shadow-sm">
       <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3">
         <div>
           <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
@@ -116,7 +116,7 @@ export function RescheduleResponseCard({
           type="button"
           disabled={isSubmitting}
           onClick={() => onDecline?.()}
-          className="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm font-medium text-rose-400 transition hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-rose-500 disabled:opacity-50"
+          className="rounded-md border border-zinc-700 bg-zinc-900 px-5 py-2 text-sm font-medium text-rose-400 transition hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-rose-500 disabled:opacity-50"
         >
           Decline
         </button>
@@ -125,7 +125,7 @@ export function RescheduleResponseCard({
           type="button"
           disabled={isSubmitting}
           onClick={() => onCounter?.(request.proposedWindows, request.reason, request.reasonNote)}
-          className="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm font-medium text-zinc-200 transition hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-50"
+          className="rounded-md border border-zinc-700 bg-zinc-900 px-5 py-2 text-sm font-medium text-zinc-200 transition hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-50"
         >
           Counter
         </button>
@@ -138,7 +138,7 @@ export function RescheduleResponseCard({
               onAccept?.(selectedWindow);
             }
           }}
-          className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center justify-center outlier-pill-button rounded-full bg-[var(--amber)] px-5 py-2 text-sm font-semibold text-[#001A41] shadow-sm transition hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--amber)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           Accept
         </button>

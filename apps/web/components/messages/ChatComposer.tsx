@@ -105,7 +105,7 @@ export function ChatComposer({
       <div
         role="status"
         aria-live="polite"
-        className="bg-[var(--card-bg)] border border-[var(--lead)] rounded-lg px-4 py-3 text-center"
+        className="bg-[var(--card-bg)] border border-[var(--lead)] rounded-2xl px-4 py-3 text-center"
       >
         {bookingStatus === 'COMPLETED' && (
           <p className="text-sm text-[var(--text-muted)] font-medium">This job was completed. Messaging is closed.</p>
@@ -122,7 +122,7 @@ export function ChatComposer({
       {error && (
         <div
           role="alert"
-          className="flex items-center gap-2 px-3 py-2 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-lg text-sm text-[var(--danger)] font-medium"
+          className="flex items-center gap-2 px-3 py-2 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-xl text-sm text-[var(--danger)] font-medium"
         >
           <AlertCircle className="w-4 h-4 flex-shrink-0" />
           <span>{error}</span>
@@ -134,7 +134,7 @@ export function ChatComposer({
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded-lg text-[11px] font-medium text-[var(--amber)]"
+          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded-xl text-[11px] font-medium text-[var(--amber)]"
         >
           <span className="w-2 h-2 bg-[var(--amber)] rounded-full animate-pulse" />
           <span>Connecting... Polling for updates every 4s</span>
@@ -145,7 +145,7 @@ export function ChatComposer({
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded-lg text-[11px] font-medium text-[var(--amber)]"
+          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded-xl text-[11px] font-medium text-[var(--amber)]"
         >
           <span className="w-2 h-2 bg-[var(--amber)] rounded-full animate-pulse" />
           <span>Reconnecting...</span>
@@ -156,7 +156,7 @@ export function ChatComposer({
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--card-bg)] border border-[var(--lead)] rounded-lg text-[11px] font-medium text-[var(--text-muted)]"
+          className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--card-bg)] border border-[var(--lead)] rounded-xl text-[11px] font-medium text-[var(--text-muted)]"
         >
           <span className="w-2 h-2 bg-[var(--text-muted)] rounded-full" />
           <span>Offline. Messages will be queued.</span>
@@ -188,7 +188,7 @@ export function ChatComposer({
           type="submit"
           disabled={!hasContent || isDisabled}
           aria-label="Send message"
-          className="absolute bottom-1.5 right-1.5 p-1.5 text-[var(--amber)] hover:text-[var(--amber-hover)] disabled:text-[var(--text-muted)]/40 disabled:cursor-not-allowed hover:bg-[var(--card-hover)] rounded-md transition-colors cursor-pointer"
+          className="absolute bottom-1.5 right-1.5 p-1.5 text-[var(--amber)] hover:text-[var(--amber-hover)] disabled:text-[var(--text-muted)]/40 disabled:cursor-not-allowed hover:bg-[var(--card-hover)] rounded-full transition-colors cursor-pointer"
         >
           <Send className="w-5 h-5" />
         </button>

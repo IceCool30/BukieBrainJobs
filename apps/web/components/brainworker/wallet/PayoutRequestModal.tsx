@@ -194,7 +194,7 @@ export function PayoutRequestModal({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-[var(--lead)] px-3.5 py-2 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
+              className="rounded-lg border border-[var(--lead)] px-4 py-2 text-xs font-semibold text-[var(--text-muted)] hover:bg-[var(--card-hover)] transition-all"
             >
               Cancel
             </button>
@@ -202,7 +202,7 @@ export function PayoutRequestModal({
               type="submit"
               data-testid="submit-payout-button"
               disabled={!canSubmit}
-              className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)]"
+              className="outlier-pill-button rounded-full bg-[var(--amber)] px-5 py-2 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] shadow-sm transition-all"
             >
               {isSubmitting ? 'Processing...' : 'Submit Withdrawal'}
             </button>

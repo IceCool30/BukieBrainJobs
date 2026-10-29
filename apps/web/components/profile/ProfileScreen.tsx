@@ -241,7 +241,7 @@ export default function ProfileScreen() {
   if (!authChecked || !currentUser) {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4">
-        <div className="bg-[var(--card-bg)] rounded-lg p-8 border border-[var(--lead)] shadow-xs max-w-sm w-full text-center space-y-4">
+        <div className="bg-[var(--card-bg)] rounded-2xl p-8 border border-[var(--lead)] shadow-xs max-w-sm w-full text-center space-y-4">
           <Loader2 className="h-8 w-8 animate-spin text-[var(--amber)] mx-auto" />
           <h2 className="text-base font-bold font-display text-[var(--text-main)]">
             Redirecting to sign in...
@@ -270,7 +270,7 @@ export default function ProfileScreen() {
           {/* Main Content Workspace */}
           <main className="flex-1 min-w-0 space-y-6">
             {/* Header / Title Banner */}
-            <div className="bg-[var(--card-bg)] rounded-lg p-6 border border-[var(--lead)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="bg-[var(--card-bg)] rounded-2xl p-6 border border-[var(--lead)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h1 className="text-2xl font-bold font-display text-[var(--text-main)]">
                   Profile & Settings
@@ -297,7 +297,7 @@ export default function ProfileScreen() {
             {serverError && (
               <div
                 role="alert"
-                className="bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-lg p-5 text-[var(--danger)] text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs"
+                className="bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-2xl p-5 text-[var(--danger)] text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs"
               >
                 <div className="flex items-center gap-3">
                   <AlertTriangle className="h-5 w-5 text-[var(--danger)] shrink-0" />
@@ -310,7 +310,7 @@ export default function ProfileScreen() {
                 <button
                   type="button"
                   onClick={() => loadProfileData(currentUser.id)}
-                  className="min-h-[44px] px-4 py-2 bg-[var(--danger)] text-white rounded-lg font-semibold hover:opacity-90 transition flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+                  className="min-h-[44px] px-5 py-2.5 bg-[var(--danger)] text-white rounded-md font-semibold hover:opacity-90 transition flex items-center justify-center gap-2 shrink-0 cursor-pointer"
                 >
                   <RotateCcw className="h-4 w-4" />
                   <span>Retry</span>
@@ -322,7 +322,7 @@ export default function ProfileScreen() {
             <div
               role="tablist"
               aria-label="Profile Sections"
-              className="bg-[var(--tag-bg)] rounded-lg p-1.5 border border-[var(--lead)] shadow-xs flex gap-1 overflow-x-auto"
+              className="bg-[var(--tag-bg)] rounded-full p-1.5 border border-[var(--lead)] shadow-xs flex gap-1 overflow-x-auto"
             >
               <button
                 type="button"
@@ -331,7 +331,7 @@ export default function ProfileScreen() {
                 aria-selected={activeTab === 'personal'}
                 aria-controls="panel-personal"
                 onClick={() => handleTabChange('personal')}
-                className={`min-h-[44px] px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
+                className={`min-h-[44px] px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
                   activeTab === 'personal'
                     ? 'bg-[var(--card-bg)] text-[var(--amber)] border border-[var(--lead)] shadow-xs font-bold'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)]'
@@ -348,7 +348,7 @@ export default function ProfileScreen() {
                 aria-selected={activeTab === 'addresses'}
                 aria-controls="panel-addresses"
                 onClick={() => handleTabChange('addresses')}
-                className={`min-h-[44px] px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
+                className={`min-h-[44px] px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
                   activeTab === 'addresses'
                     ? 'bg-[var(--card-bg)] text-[var(--amber)] border border-[var(--lead)] shadow-xs font-bold'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)]'
@@ -376,7 +376,7 @@ export default function ProfileScreen() {
                 aria-selected={activeTab === 'security'}
                 aria-controls="panel-security"
                 onClick={() => handleTabChange('security')}
-                className={`min-h-[44px] px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
+                className={`min-h-[44px] px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
                   activeTab === 'security'
                     ? 'bg-[var(--card-bg)] text-[var(--amber)] border border-[var(--lead)] shadow-xs font-bold'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)]'
@@ -393,7 +393,7 @@ export default function ProfileScreen() {
                 aria-selected={activeTab === 'notifications'}
                 aria-controls="panel-notifications"
                 onClick={() => handleTabChange('notifications')}
-                className={`min-h-[44px] px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
+                className={`min-h-[44px] px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
                   activeTab === 'notifications'
                     ? 'bg-[var(--card-bg)] text-[var(--amber)] border border-[var(--lead)] shadow-xs font-bold'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)]'
@@ -410,7 +410,7 @@ export default function ProfileScreen() {
                 aria-selected={activeTab === 'account'}
                 aria-controls="panel-account"
                 onClick={() => handleTabChange('account')}
-                className={`min-h-[44px] px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
+                className={`min-h-[44px] px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
                   activeTab === 'account'
                     ? 'bg-[var(--card-bg)] text-[var(--amber)] border border-[var(--lead)] shadow-xs font-bold'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)]'
@@ -423,7 +423,7 @@ export default function ProfileScreen() {
 
             {/* Active Tab Panel */}
             {isLoading ? (
-              <div className="bg-[var(--card-bg)] rounded-lg p-12 border border-[var(--lead)] text-center space-y-4">
+              <div className="bg-[var(--card-bg)] rounded-2xl p-12 border border-[var(--lead)] text-center space-y-4">
                 <Loader2 className="h-8 w-8 animate-spin text-[var(--amber)] mx-auto" />
                 <p className="text-xs text-[var(--text-muted)]">Loading your profile information...</p>
               </div>

@@ -22,7 +22,7 @@ export function WalletSummaryCards({
         {/* Available Balance */}
         <div
           data-testid="card-available-balance"
-          className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-5 shadow-sm transition-all hover:border-[var(--rule)]"
+          className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-sm transition-all hover:border-[var(--rule)]"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
@@ -41,7 +41,7 @@ export function WalletSummaryCards({
         {/* Pending Escrow */}
         <div
           data-testid="card-pending-escrow"
-          className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-5 shadow-sm transition-all hover:border-[var(--rule)]"
+          className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-sm transition-all hover:border-[var(--rule)]"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
@@ -60,7 +60,7 @@ export function WalletSummaryCards({
         {/* Lifetime Earnings */}
         <div
           data-testid="card-lifetime-earnings"
-          className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-5 shadow-sm transition-all hover:border-[var(--rule)]"
+          className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-sm transition-all hover:border-[var(--rule)]"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
@@ -79,7 +79,7 @@ export function WalletSummaryCards({
         {/* Total Withdrawn */}
         <div
           data-testid="card-total-withdrawn"
-          className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-5 shadow-sm transition-all hover:border-[var(--rule)]"
+          className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-sm transition-all hover:border-[var(--rule)]"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
@@ -97,7 +97,7 @@ export function WalletSummaryCards({
       </div>
 
       {/* Action Bar & Guidance */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 shadow-sm">
         <div>
           {/* Guidance Element */}
           <div
@@ -125,7 +125,7 @@ export function WalletSummaryCards({
             type="button"
             data-testid="summary-add-bank-account-button"
             onClick={onAddBankAccountClick}
-            className="inline-flex items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-3.5 py-2 text-xs font-medium text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--rule)]"
+            className="inline-flex items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-4 py-2 text-xs font-semibold text-[var(--text-main)] transition-all hover:bg-[var(--card-hover)] shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--rule)]"
           >
             Add Bank Account
           </button>
@@ -134,7 +134,7 @@ export function WalletSummaryCards({
             data-testid="request-payout-button"
             disabled={!canRequestPayout}
             onClick={onRequestPayoutClick}
-            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)]"
+            className="outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] transition-all hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)]"
           >
             Request Payout
           </button>

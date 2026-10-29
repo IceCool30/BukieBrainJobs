@@ -45,7 +45,7 @@ export function ActivityDetail({
           role="region"
           aria-label="Activity Detail"
         >
-          <div className="bg-[var(--card-bg)] rounded-lg p-8 border border-[var(--lead)] text-center shadow-xs max-w-xl mx-auto text-[var(--text-main)]">
+          <div className="bg-[var(--card-bg)] rounded-2xl p-8 border border-[var(--lead)] text-center shadow-xs max-w-xl mx-auto text-[var(--text-main)]">
             <div className="mx-auto w-12 h-12 rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--amber)] flex items-center justify-center mb-3">
               <FileText className="h-6 w-6" />
             </div>
@@ -58,7 +58,7 @@ export function ActivityDetail({
             <button
               type="button"
               onClick={onResetSelected}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
+              className="outlier-pill-button inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition cursor-pointer shadow-xs"
             >
               View all activity
             </button>
@@ -68,7 +68,7 @@ export function ActivityDetail({
     }
 
     return (
-      <div className="hidden lg:flex flex-col items-center justify-center p-12 bg-[var(--card-bg)] rounded-lg border border-[var(--lead)] text-center text-[var(--text-muted)] min-h-[400px]">
+      <div className="hidden lg:flex flex-col items-center justify-center p-12 bg-[var(--card-bg)] rounded-2xl border border-[var(--lead)] text-center text-[var(--text-muted)] min-h-[400px]">
         <FileText className="h-10 w-10 text-[var(--lead)] mb-3" />
         <p className="text-sm font-semibold text-[var(--text-main)]">No activity selected</p>
         <p className="text-xs text-[var(--text-muted)] mt-1 max-w-xs">
@@ -88,7 +88,7 @@ export function ActivityDetail({
       role="region"
       aria-label="Activity Detail"
     >
-      <div className="relative bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 sm:p-8 border border-[var(--lead)] shadow-xs overflow-hidden">
+      <div className="relative bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 sm:p-8 border border-[var(--lead)] shadow-xs overflow-hidden">
         {/* Decorative Watermark: Subtle brand signature at 3.5% opacity */}
         <Image
           src="/images/logo-watermark.png"

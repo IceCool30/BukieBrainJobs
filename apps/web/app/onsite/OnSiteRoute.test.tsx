@@ -103,6 +103,12 @@ describe('BW-008 On-Site Work & In-Progress Verification Route Contracts (ROUTE-
     render(<OnSitePage params={defaultParams} />);
 
     expect(await screen.findByText(/In Progress/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        level: 1,
+        name: /On-Site Work & Verification/i,
+      })
+    ).toBeInTheDocument();
     expect(screen.getByText(/Arrived at/i)).toBeInTheDocument();
     expect(
       screen.queryByText(/On-Site Scope Adjustment Request/i)

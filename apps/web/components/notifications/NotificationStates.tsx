@@ -32,9 +32,9 @@ export const NotificationSkeleton: React.FC = () => {
         <div
           key={idx}
           data-testid="skeleton-card"
-          className="p-4 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] min-h-[44px] sm:min-h-[48px] flex items-start gap-4 animate-pulse motion-reduce:animate-none"
+          className="p-4 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] min-h-[44px] sm:min-h-[48px] flex items-start gap-4 animate-pulse motion-reduce:animate-none"
         >
-          <div className="w-10 h-10 rounded-lg bg-[var(--tag-bg)] shrink-0" />
+          <div className="w-10 h-10 rounded-xl bg-[var(--tag-bg)] shrink-0" />
           <div className="flex-1 space-y-2 py-1">
             <div className="h-4 bg-[var(--tag-bg)] rounded w-1/3" />
             <div className="h-3 bg-[var(--tag-bg)]/60 rounded w-3/4" />
@@ -54,7 +54,7 @@ export const OfflineBanner: React.FC = () => {
     <div
       role="alert"
       data-testid="offline-banner"
-      className="mb-6 p-4 rounded-lg bg-[var(--amber-dim)] border border-[var(--amber)]/30 text-[var(--amber)] flex items-center gap-3 text-sm font-medium"
+      className="mb-6 p-4 rounded-2xl bg-[var(--amber-dim)] border border-[var(--amber)]/30 text-[var(--amber)] flex items-center gap-3 text-sm font-medium"
     >
       <WifiOff className="w-5 h-5 text-[var(--amber)] shrink-0" aria-hidden="true" />
       <div>
@@ -79,9 +79,9 @@ export const NotificationErrorCard: React.FC<NotificationErrorCardProps> = ({ on
     <div
       data-testid="notification-error"
       role="alert"
-      className="p-6 rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] text-center flex flex-col items-center justify-center my-4"
+      className="p-6 rounded-2xl border border-[var(--danger-border)] bg-[var(--danger-dim)] text-center flex flex-col items-center justify-center my-4"
     >
-      <div className="w-12 h-12 rounded-lg bg-[var(--danger-dim)] text-[var(--danger)] flex items-center justify-center mb-3">
+      <div className="w-12 h-12 rounded-xl bg-[var(--danger-dim)] text-[var(--danger)] flex items-center justify-center mb-3">
         <AlertCircle className="w-6 h-6" aria-hidden="true" />
       </div>
       <h3 className="text-base font-bold font-display text-[var(--danger)]">Unable to load notifications</h3>
@@ -91,7 +91,7 @@ export const NotificationErrorCard: React.FC<NotificationErrorCardProps> = ({ on
       <button
         type="button"
         onClick={onRetry}
-        className="mt-4 inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg bg-[var(--danger)] text-white hover:opacity-90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
+        className="mt-4 inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold rounded-full bg-[var(--danger)] text-white hover:opacity-90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
       >
         <RefreshCw className="w-4 h-4" aria-hidden="true" />
         Retry
@@ -112,9 +112,9 @@ export const FirstRunEmptyState: React.FC<FirstRunEmptyStateProps> = ({ onBrowse
   return (
     <div
       data-testid="empty-state-first-run"
-      className="p-10 rounded-lg border border-dashed border-[var(--lead)] bg-[var(--card-bg)] text-center flex flex-col items-center justify-center my-6"
+      className="p-10 rounded-2xl border border-dashed border-[var(--lead)] bg-[var(--card-bg)] text-center flex flex-col items-center justify-center my-6"
     >
-      <div className="w-14 h-14 rounded-lg bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center mb-4">
+      <div className="w-14 h-14 rounded-xl bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center mb-4">
         <Bell className="w-7 h-7" aria-hidden="true" />
       </div>
       <h2 className="text-lg font-bold font-display text-[var(--text-main)]">No notifications yet</h2>
@@ -124,7 +124,7 @@ export const FirstRunEmptyState: React.FC<FirstRunEmptyStateProps> = ({ onBrowse
       <button
         type="button"
         onClick={onBrowseServices}
-        className="mt-6 px-5 py-2.5 text-sm font-bold rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
+        className="mt-6 px-5 py-2.5 text-sm font-bold outlier-pill-button rounded-full bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
       >
         Browse Services
       </button>
@@ -154,9 +154,9 @@ export const FilteredEmptyState: React.FC<FilteredEmptyStateProps> = ({ category
   return (
     <div
       data-testid="empty-state-filtered"
-      className="p-8 rounded-lg border border-dashed border-[var(--lead)] bg-[var(--card-bg)] text-center flex flex-col items-center justify-center my-6"
+      className="p-8 rounded-2xl border border-dashed border-[var(--lead)] bg-[var(--card-bg)] text-center flex flex-col items-center justify-center my-6"
     >
-      <div className="w-12 h-12 rounded-lg bg-[var(--tag-bg)] text-[var(--text-muted)] flex items-center justify-center mb-3">
+      <div className="w-12 h-12 rounded-xl bg-[var(--tag-bg)] text-[var(--text-muted)] flex items-center justify-center mb-3">
         <Bell className="w-6 h-6" aria-hidden="true" />
       </div>
       <h3 className="text-base font-bold font-display text-[var(--text-main)]">
@@ -168,7 +168,7 @@ export const FilteredEmptyState: React.FC<FilteredEmptyStateProps> = ({ category
       <button
         type="button"
         onClick={onResetTab}
-        className="mt-4 px-4 py-2 text-sm font-semibold rounded-lg border border-[var(--lead)] text-[var(--text-main)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
+        className="mt-4 px-5 py-2 text-sm font-semibold rounded-full border border-[var(--lead)] text-[var(--text-main)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
       >
         View All Notifications
       </button>
@@ -188,10 +188,10 @@ export const PushOptInBanner: React.FC<PushOptInBannerProps> = ({ onEnable }) =>
   return (
     <div
       data-testid="push-banner-opt-in"
-      className="mb-6 p-4 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+      className="mb-6 p-4 rounded-2xl bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
     >
       <div className="flex items-start gap-3">
-        <div className="w-9 h-9 rounded-lg bg-[var(--brand-green-dim)] text-[var(--brand-green)] flex items-center justify-center shrink-0 mt-0.5">
+        <div className="w-9 h-9 rounded-xl bg-[var(--brand-green-dim)] text-[var(--brand-green)] flex items-center justify-center shrink-0 mt-0.5">
           <Bell className="w-5 h-5" aria-hidden="true" />
         </div>
         <div>
@@ -207,7 +207,7 @@ export const PushOptInBanner: React.FC<PushOptInBannerProps> = ({ onEnable }) =>
         <button
           type="button"
           onClick={onEnable}
-          className="px-4 py-2 text-xs font-bold rounded-lg bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
+          className="px-5 py-2 text-xs font-bold outlier-pill-button rounded-full bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 min-h-[44px] cursor-pointer"
         >
           Enable Notifications
         </button>
@@ -224,7 +224,7 @@ export const PushStatusGranted: React.FC = () => {
   return (
     <div
       data-testid="push-status-granted"
-      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs font-semibold"
+      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs font-semibold"
     >
       <CheckCircle2 className="w-3.5 h-3.5 text-[var(--brand-green)]" aria-hidden="true" />
       <span>Browser alerts active</span>
@@ -240,7 +240,7 @@ export const PushStatusDenied: React.FC = () => {
   return (
     <div
       data-testid="push-status-denied"
-      className="mb-6 p-3.5 rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] text-xs text-[var(--text-muted)] flex items-start gap-2.5"
+      className="mb-6 p-3.5 rounded-2xl bg-[var(--tag-bg)] border border-[var(--lead)] text-xs text-[var(--text-muted)] flex items-start gap-2.5"
     >
       <Lock className="w-4 h-4 text-[var(--text-muted)] shrink-0 mt-0.5" aria-hidden="true" />
       <div>

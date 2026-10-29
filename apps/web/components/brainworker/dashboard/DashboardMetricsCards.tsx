@@ -27,7 +27,7 @@ interface MetricCardProps {
 
 function MetricCard({ testId, label, value, caption, isReading = true, action }: MetricCardProps) {
   return (
-    <div data-testid={testId} className="flex flex-col rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs transition-colors hover:border-[var(--rule)]">
+    <div data-testid={testId} className="flex flex-col rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs transition-colors hover:border-[var(--rule)]">
       <span className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-muted)]">{label}</span>
       <div className="mt-3 flex min-h-9 items-center justify-between gap-3">
         <span className={isReading ? 'font-mono text-3xl font-semibold tracking-tight text-[var(--text-main)]' : 'text-lg font-semibold text-[var(--text-main)]'}>

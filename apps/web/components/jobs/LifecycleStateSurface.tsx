@@ -481,7 +481,7 @@ export function LifecycleStateSurface({
                 disabled={isOffline}
                 aria-disabled={isOffline}
                 title={isOffline ? 'Escrow funding requires an active internet connection' : undefined}
-                className="min-h-[48px] px-5 py-2.5 rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold inline-flex items-center justify-center gap-2 transition cursor-pointer shrink-0 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
+                className="outlier-pill-button min-h-[48px] px-5 py-2.5 rounded-full bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold inline-flex items-center justify-center gap-2 transition cursor-pointer shrink-0 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ShieldCheck className="h-4 w-4" aria-hidden="true" />
                 <span>Fund Escrow (₦{paymentContext.pricing.totalPayableNaira.toLocaleString()})</span>
@@ -667,7 +667,7 @@ export function LifecycleStateSurface({
                   disabled={isOffline}
                   aria-disabled={isOffline}
                   title={isOffline ? 'Refund requests require an active internet connection' : undefined}
-                  className="px-3.5 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 border border-[var(--danger-border)] bg-[var(--danger-dim)] text-[var(--danger)] hover:bg-rose-500/20 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
+                  className="outlier-pill-button px-4 py-2 rounded-full text-xs font-bold inline-flex items-center gap-1.5 border border-[var(--danger-border)] bg-[var(--danger-dim)] text-[var(--danger)] hover:bg-rose-500/20 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
                 >
                   <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Request Refund</span>
@@ -678,7 +678,7 @@ export function LifecycleStateSurface({
             {isDeclined && (
               <Link
                 href={`/job/${encodeURIComponent(activity.referenceCode || activity.id)}/matches`}
-                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
+                className="outlier-pill-button px-4 py-2 rounded-full text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
               >
                 <span>Review Alternatives</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -688,7 +688,7 @@ export function LifecycleStateSurface({
             {currentJobStatus === 'EXPIRED' && (
               <Link
                 href="/post-job"
-                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
+                className="outlier-pill-button px-4 py-2 rounded-full text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
               >
                 <span>Recreate Request</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -698,7 +698,7 @@ export function LifecycleStateSurface({
             {currentJobStatus === 'CANCELLED' && (
               <Link
                 href="/post-job"
-                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text-main)] hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
+                className="outlier-pill-button px-4 py-2 rounded-full text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text-main)] hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
               >
                 <span>Post a New Job</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -708,7 +708,7 @@ export function LifecycleStateSurface({
             {currentJobStatus === 'OPEN' && (
               <Link
                 href={`/job/${encodeURIComponent(activity.referenceCode || activity.id)}/matches`}
-                className="px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
+                className="outlier-pill-button px-4 py-2 rounded-full text-xs font-bold inline-flex items-center gap-1.5 transition bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
               >
                 <span>View BrainWorker matches</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -721,7 +721,7 @@ export function LifecycleStateSurface({
                 type="button"
                 onClick={() => setIsCancelModalOpen(true)}
                 disabled={isPending}
-                className="px-4 py-2 rounded-lg text-xs font-semibold border border-[var(--danger-border)] text-[var(--danger)] hover:bg-rose-500/10 transition disabled:opacity-50 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 shadow-xs"
+                className="outlier-pill-button px-4 py-2 rounded-full text-xs font-semibold border border-[var(--danger-border)] text-[var(--danger)] hover:bg-rose-500/10 transition disabled:opacity-50 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 shadow-xs"
               >
                 {currentJobStatus === 'CONFIRMED' ? 'Cancel Booking' : 'Cancel Request'}
               </button>

@@ -54,7 +54,7 @@ export function NotificationPreferencesSection({
   };
 
   return (
-    <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-[var(--lead)] shadow-xs space-y-6">
+    <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 sm:p-7 border border-[var(--lead)] shadow-xs space-y-6">
       <div className="pb-6 border-b border-[var(--lead)]">
         <h2 className="text-xl font-bold font-display text-[var(--text-main)]">
           Notification Preferences

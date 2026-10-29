@@ -31,6 +31,9 @@ describe('BW-001 Suite 6: Trade & Coverage Form Contracts (TRD-001 through TRD-0
       render(<TradeStepForm {...defaultProps} />);
 
       expect(
+        screen.getByRole('heading', { level: 1, name: /Step 2: Trade & Coverage Profile/i })
+      ).toBeInTheDocument();
+      expect(
         screen.getByRole('radio', { name: /Generator Repair & Maintenance/i })
       ).toBeInTheDocument();
       expect(

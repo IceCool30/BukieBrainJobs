@@ -74,7 +74,7 @@ export function ScopeAdjustmentModal({
             type="button"
             aria-label="Close modal"
             onClick={onClose}
-            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+            className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
           >
             <span className="text-xl leading-none">&times;</span>
           </button>
@@ -145,7 +145,7 @@ export function ScopeAdjustmentModal({
             </div>
           </div>
 
-          <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-3">
+          <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
             <div className="flex items-center justify-between text-xs text-zinc-400">
               <span>Derived Additional Amount</span>
               <span
@@ -184,7 +184,7 @@ export function ScopeAdjustmentModal({
               type="button"
               aria-label="Cancel"
               onClick={onClose}
-              className="min-h-[44px] rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100"
+              className="min-h-[44px] rounded-full border border-zinc-800 bg-zinc-900 px-5 py-2 text-sm font-medium text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100"
             >
               Cancel
             </button>
@@ -192,7 +192,7 @@ export function ScopeAdjustmentModal({
               type="submit"
               aria-label="Submit scope adjustment"
               disabled={!isFormValid}
-              className="min-h-[44px] rounded-lg bg-amber-500 px-5 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
+              className="min-h-[44px] outlier-pill-button rounded-full bg-[var(--amber)] px-5 py-2 text-sm font-semibold text-[#001A41] transition hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
             >
               {isSubmitting ? 'Submitting...' : 'Submit Scope Adjustment'}
             </button>

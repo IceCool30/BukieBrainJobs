@@ -174,6 +174,12 @@ describe('BW-003 Phase 6 RED: BrainWorker Leads Route Integration & Security Con
 
     expect(await screen.findByRole('heading', { name: /job requests|incoming leads|leads inbox/i })).toBeInTheDocument();
     expect(await screen.findByRole('feed', { name: /incoming job requests|leads feed/i })).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('heading', { level: 1 }).map((heading) => heading.textContent?.trim())
+    ).toEqual(['Job Requests & Leads']);
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Job Requests & Leads' })
+    ).toBeInTheDocument();
   });
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

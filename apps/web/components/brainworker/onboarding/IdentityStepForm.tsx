@@ -236,13 +236,13 @@ export function IdentityStepForm({
       id={formId}
       onSubmit={handleSubmit}
       noValidate
-      className={`w-full max-w-3xl mx-auto space-y-8 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
+      className={`w-full max-w-3xl mx-auto space-y-8 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-6 sm:p-10 shadow-xs transition-colors ${className}`}
     >
       {/* Header */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-main)]">
+        <h1 className="text-xl sm:text-2xl font-bold text-[var(--text-main)]">
           Step 1: Legal Identity Verification
-        </h2>
+        </h1>
         <p className="mt-2 text-sm text-[var(--text-muted)] leading-relaxed">
           Enter your legal name as it appears on your government documents, along with your verified identifier.
         </p>
@@ -460,7 +460,7 @@ export function IdentityStepForm({
           )}
 
           {/* Privacy Disclaimer Note */}
-          <div className="mt-3 flex items-start gap-2 rounded-lg bg-[var(--tag-bg)] p-3 text-xs text-[var(--text-muted)] border border-[var(--lead)]">
+          <div className="mt-3 flex items-start gap-2 rounded-xl bg-[var(--tag-bg)] p-3 text-xs text-[var(--text-muted)] border border-[var(--lead)]">
             <Shield className="h-4 w-4 shrink-0 text-[var(--text-main)] mt-0.5" />
             <p>
               Your NIN/BVN is used strictly to cross-reference your legal identity. It is never displayed to customers or shared with third parties.
@@ -571,7 +571,7 @@ export function IdentityStepForm({
         <button
           type="submit"
           disabled={!isFormValid || isSubmitting}
-          className={`inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] shadow-xs transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
+          className={`outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] shadow-xs transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
             !isFormValid || isSubmitting
               ? 'opacity-50 cursor-not-allowed'
               : 'cursor-pointer'

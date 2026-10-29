@@ -104,7 +104,7 @@ export default function BrainWorkerProfilePage(): JSX.Element {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-xl bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition-colors"
+            className="outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition-all"
           >
             {user.role === 'customer'
               ? 'Return to Customer Dashboard'

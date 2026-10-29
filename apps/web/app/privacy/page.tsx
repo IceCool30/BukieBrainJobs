@@ -19,7 +19,7 @@ export default function PrivacyPage() {
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-4">
             <Link
               href="/"
-              className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-[var(--strip-text)] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
+              className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-[var(--strip-text)] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-full px-3 py-1.5"
             >
               <ArrowLeft className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
               Back to home
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
         {/* Content Body */}
         <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="space-y-10 text-sm leading-relaxed text-[var(--text-muted)]">
-            <div className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-6 sm:p-8 space-y-4 shadow-xs">
+            <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 sm:p-8 space-y-4 shadow-xs">
               <div className="flex items-center gap-2.5 text-[var(--text-main)] font-display font-bold text-lg">
                 <Lock className="h-5 w-5 text-[var(--brand-green)] shrink-0" />
                 <h2>1. Information We Collect</h2>
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
               </ul>
             </div>
 
-            <div className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-6 sm:p-8 space-y-4 shadow-xs">
+            <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 sm:p-8 space-y-4 shadow-xs">
               <div className="flex items-center gap-2.5 text-[var(--text-main)] font-display font-bold text-lg">
                 <Eye className="h-5 w-5 text-[var(--brand-green)] shrink-0" />
                 <h2>2. How We Use and Share Information</h2>
@@ -72,7 +72,7 @@ export default function PrivacyPage() {
               </ul>
             </div>
 
-            <div className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-6 sm:p-8 space-y-4 shadow-xs">
+            <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 sm:p-8 space-y-4 shadow-xs">
               <div className="flex items-center gap-2.5 text-[var(--text-main)] font-display font-bold text-lg">
                 <FileText className="h-5 w-5 text-[var(--brand-green)] shrink-0" />
                 <h2>3. Data Retention and Customer Rights</h2>

@@ -73,7 +73,7 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--rule)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-muted)] transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg border border-[var(--rule)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-muted)] transition cursor-pointer"
             >
               <Printer className="h-3.5 w-3.5" />
               <span>Print Receipt</span>
@@ -81,7 +81,7 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
             <button
               type="button"
               onClick={handleDownloadJson}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--rule)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-muted)] transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg border border-[var(--rule)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-muted)] transition cursor-pointer"
             >
               <Download className="h-3.5 w-3.5" />
               <span>Export JSON</span>
@@ -89,10 +89,10 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
           </div>
 
           <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close receipt"
-            className="p-1.5 rounded-xl text-[var(--text-muted)] hover:text-slate-600 hover:bg-[var(--card-hover)] cursor-pointer"
+              type="button"
+              onClick={onClose}
+              aria-label="Close receipt"
+              className="p-1.5 rounded-md text-[var(--text-muted)] hover:text-slate-600 hover:bg-[var(--card-hover)] cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
@@ -107,7 +107,7 @@ export function ReceiptModal({ isOpen, onClose, receipt }: ReceiptModalProps) {
                 <span className="font-display font-black text-xl text-[var(--text-main)] tracking-tight">
                   BukieBrain<span className="text-[var(--brand-green)]">Jobs</span>
                 </span>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-[var(--tag-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[var(--tag-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
                   Escrow Receipt
                 </span>
               </div>

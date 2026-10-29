@@ -52,7 +52,7 @@ export function DashboardLiveView({
             <button
               type="button"
               onClick={onRefresh}
-              className="rounded-lg bg-[var(--danger)] px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
+              className="rounded-md bg-[var(--danger)] px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
             >
               Retry
             </button>
@@ -75,14 +75,14 @@ export function DashboardLiveView({
   return (
     <div className="space-y-6 p-4 sm:p-6" data-testid="dashboard-live-view">
       {/* Operational Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-[var(--text-main)]">
               Operations Command Center
             </h1>
             {operationalStatus.isEmergencyAvailable && (
-              <span className="rounded-md bg-[var(--amber-dim)] px-2 py-0.5 text-xs font-semibold text-[var(--amber)]">
+              <span className="rounded-full bg-[var(--amber-dim)] px-2.5 py-0.5 text-xs font-semibold text-[var(--amber)]">
                 Emergency On-Call
               </span>
             )}
@@ -98,7 +98,7 @@ export function DashboardLiveView({
             <button
               type="button"
               onClick={() => onToggleAvailability(!operationalStatus.isAvailable)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+              className={`rounded-md px-3.5 py-1.5 text-xs font-medium transition-colors ${
                 operationalStatus.isAvailable
                   ? 'bg-[var(--brand-green-dim)] text-[var(--brand-green)] hover:bg-emerald-200'
                   : 'bg-[var(--tag-bg)] text-[var(--text-muted)] hover:bg-[var(--card-hover)]'
@@ -112,7 +112,7 @@ export function DashboardLiveView({
             <button
               type="button"
               onClick={onRefresh}
-              className="rounded-lg border border-[var(--rule)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-medium text-[var(--text-muted)] shadow-sm hover:bg-[var(--card-hover)]"
+              className="rounded-md border border-[var(--rule)] bg-[var(--card-bg)] px-3.5 py-1.5 text-xs font-medium text-[var(--text-muted)] shadow-xs hover:bg-[var(--card-hover)]"
             >
               Refresh
             </button>
@@ -125,7 +125,7 @@ export function DashboardLiveView({
         <button
           type="button"
           onClick={() => onNavigate?.('/brainworker/bookings')}
-          className="flex items-center justify-between rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-left shadow-sm transition-all hover:border-[var(--rule)] hover:bg-[var(--card-hover)]"
+          className="flex items-center justify-between rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-left shadow-xs transition-all hover:border-[var(--rule)] hover:bg-[var(--card-hover)]"
         >
           <div>
             <h3 className="text-sm font-semibold text-[var(--text-main)]">
@@ -143,7 +143,7 @@ export function DashboardLiveView({
         <button
           type="button"
           onClick={() => onNavigate?.('/brainworker/leads')}
-          className="flex items-center justify-between rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-left shadow-sm transition-all hover:border-[var(--rule)] hover:bg-[var(--card-hover)]"
+          className="flex items-center justify-between rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-left shadow-xs transition-all hover:border-[var(--rule)] hover:bg-[var(--card-hover)]"
         >
           <div>
             <h3 className="text-sm font-semibold text-[var(--text-main)]">

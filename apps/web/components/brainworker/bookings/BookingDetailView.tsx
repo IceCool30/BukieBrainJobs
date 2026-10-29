@@ -384,9 +384,9 @@ export function BookingDetailView({
         className="w-full max-w-4xl mx-auto p-4 space-y-4 animate-pulse motion-reduce:animate-none"
         aria-busy="true"
       >
-        <div className="h-6 bg-[var(--tag-bg)] rounded w-1/4" />
-        <div className="h-32 bg-[var(--card-bg)] rounded border border-[var(--lead)]" />
-        <div className="h-48 bg-[var(--card-bg)] rounded border border-[var(--lead)]" />
+        <div className="h-6 bg-[var(--tag-bg)] rounded-xl w-1/4" />
+        <div className="h-32 bg-[var(--card-bg)] rounded-2xl border border-[var(--lead)]" />
+        <div className="h-48 bg-[var(--card-bg)] rounded-2xl border border-[var(--lead)]" />
       </div>
     );
   }
@@ -395,7 +395,7 @@ export function BookingDetailView({
     return (
       <div
         data-testid="booking-detail-error"
-        className="w-full max-w-4xl mx-auto p-6 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-lg text-[var(--text-main)] space-y-4"
+        className="w-full max-w-4xl mx-auto p-6 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-2xl text-[var(--text-main)] space-y-4 shadow-sm"
         role="alert"
       >
         <div className="flex items-center gap-3">
@@ -408,7 +408,7 @@ export function BookingDetailView({
         <button
           type="button"
           onClick={() => void fetchDetail()}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-main)] rounded text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--card-bg)] hover:bg-[var(--card-hover)] border border-[var(--lead)] text-[var(--text-main)] rounded-md text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none shadow-sm"
         >
           <RefreshCw className="w-4 h-4" aria-hidden="true" />
           <span>Retry</span>
@@ -459,7 +459,7 @@ export function BookingDetailView({
       {isOffline && (
         <div
           data-testid="bookings-offline-banner"
-          className="p-3 bg-[var(--card-bg)] border border-[var(--lead)] rounded text-[var(--text-muted)] text-xs flex items-center gap-2"
+          className="p-3 bg-[var(--card-bg)] border border-[var(--lead)] rounded-xl text-[var(--text-muted)] text-xs flex items-center gap-2 shadow-sm"
           role="status"
         >
           <WifiOff className="w-4 h-4 shrink-0 text-[var(--text-muted)]" aria-hidden="true" />
@@ -472,7 +472,7 @@ export function BookingDetailView({
       {/* =================================================================== */}
       <section
         data-testid="state-block"
-        className="p-4 bg-[var(--bg)] border border-[var(--lead)] rounded-lg space-y-3"
+        className="p-5 bg-[var(--card-bg)] border border-[var(--lead)] rounded-2xl space-y-3 shadow-sm"
       >
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2">
@@ -481,7 +481,7 @@ export function BookingDetailView({
             {/* Job Status Badge with text and icon */}
             <span
               data-testid="status-badge-job"
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] shadow-sm"
             >
               {booking.jobStatus === 'CONFIRMED' && (
                 <CheckCircle className="w-3.5 h-3.5 text-[var(--brand-green)]" aria-hidden="true" />
@@ -507,7 +507,7 @@ export function BookingDetailView({
             {/* Dispatch Status Badge with text and icon */}
             <span
               data-testid="status-badge-dispatch"
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] shadow-sm"
             >
               {booking.dispatchStatus === 'EN_ROUTE' ? (
                 <>
@@ -539,24 +539,24 @@ export function BookingDetailView({
       {/* =================================================================== */}
       <section
         data-testid="position-block"
-        className="p-4 bg-[var(--bg)] border border-[var(--lead)] rounded-lg space-y-3"
+        className="p-5 bg-[var(--card-bg)] border border-[var(--lead)] rounded-2xl space-y-3 shadow-sm"
       >
         <h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
           Authoritative Operational Timeline
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-          <div className="p-2.5 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-1">
+          <div className="p-3 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl space-y-1">
             <span className="text-[var(--text-muted)] font-medium">Scheduled Site Arrival</span>
             <p className="text-[var(--text-main)] font-mono">{booking.scheduledStartAt}</p>
           </div>
-          <div className="p-2.5 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-1">
+          <div className="p-3 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl space-y-1">
             <span className="text-[var(--text-muted)] font-medium">Dispatch Progress</span>
             <p className="text-[var(--text-main)] font-mono">{booking.dispatchStatus}</p>
             {booking.dispatchUpdatedAt && (
               <p className="text-[11px] text-[var(--text-muted)] font-mono">Updated: {booking.dispatchUpdatedAt}</p>
             )}
           </div>
-          <div className="p-2.5 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-1">
+          <div className="p-3 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl space-y-1">
             <span className="text-[var(--text-muted)] font-medium">On-Site Check-in</span>
             <p className="text-[var(--text-main)] font-mono">
               {booking.actualStartAt ? booking.actualStartAt : 'Pending site check-in'}
@@ -572,25 +572,25 @@ export function BookingDetailView({
               {booking.scopeAdjustments.map((adj) => (
                 <div
                   key={adj.id}
-                  className="p-2.5 bg-[var(--bg)] border border-[var(--lead)] rounded text-xs flex items-center justify-between gap-3"
+                  className="p-3 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl text-xs flex items-center justify-between gap-3 shadow-sm"
                 >
                   <div className="space-y-0.5 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-[var(--text-main)]">{adj.reason}</span>
                       {adj.status === 'PENDING' ? (
-                        <span className="px-1.5 py-0.5 rounded text-[11px] font-medium bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
+                        <span className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                           Pending customer review
                         </span>
                       ) : adj.status === 'APPROVED' ? (
-                        <span className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]">
+                        <span className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]">
                           APPROVED
                         </span>
                       ) : adj.status === 'REJECTED' ? (
-                        <span className="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-[var(--danger-dim)] text-[var(--danger)] border border-[var(--danger-border)]">
+                        <span className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[var(--danger-dim)] text-[var(--danger)] border border-[var(--danger-border)]">
                           REJECTED
                         </span>
                       ) : (
-                        <span className="px-1.5 py-0.5 rounded text-[11px] font-medium bg-[var(--tag-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
+                        <span className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-[var(--tag-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
                           {adj.status}
                         </span>
                       )}
@@ -616,7 +616,7 @@ export function BookingDetailView({
       {/* =================================================================== */}
       <section
         data-testid="context-block"
-        className="p-4 bg-[var(--bg)] border border-[var(--lead)] rounded-lg space-y-4"
+        className="p-5 bg-[var(--card-bg)] border border-[var(--lead)] rounded-2xl space-y-4 shadow-sm"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1 min-w-0">
@@ -626,7 +626,7 @@ export function BookingDetailView({
           <Link
             href={`/messages/${booking.jobId}`}
             role="link"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--brand-green)] rounded text-xs font-medium shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[var(--card-bg)] hover:bg-[var(--card-hover)] border border-[var(--lead)] text-[var(--brand-green)] rounded-lg text-xs font-semibold shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none shadow-sm"
           >
             <MessageSquare className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Message Customer</span>
@@ -634,7 +634,7 @@ export function BookingDetailView({
         </div>
 
         {/* Address and Location Context */}
-        <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-2 text-xs">
+        <div className="p-3.5 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl space-y-2 text-xs">
           <div className="flex items-center gap-2 text-[var(--text-muted)]">
             <MapPin className="w-4 h-4 text-[var(--text-muted)] shrink-0" aria-hidden="true" />
             <span className="font-medium">General Operating Area:</span>
@@ -657,7 +657,7 @@ export function BookingDetailView({
                 <p className="text-[var(--text-main)] font-medium">{booking.exactAddress}</p>
               </div>
             ) : (
-              <div className="p-2.5 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded text-amber-200 space-y-1">
+              <div className="p-3 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded-xl text-amber-200 space-y-1 shadow-sm">
                 <p className="font-medium">
                   This booking is confirmed but payment is still pending. The exact address unlocks once payment is held.
                 </p>
@@ -675,27 +675,27 @@ export function BookingDetailView({
       {/* =================================================================== */}
       <section
         data-testid="action-block"
-        className="p-4 bg-[var(--bg)] border border-[var(--lead)] rounded-lg space-y-4"
+        className="p-5 bg-[var(--card-bg)] border border-[var(--lead)] rounded-2xl space-y-4 shadow-sm"
       >
         <h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
           Operational Actions
         </h2>
 
         {isTerminalOrDisputed ? (
-          <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded text-xs text-[var(--text-muted)]">
+          <div className="p-3 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl text-xs text-[var(--text-muted)]">
             This booking is in a {booking.jobStatus.toLowerCase()} state. Operational action controls are closed.
           </div>
         ) : (
           <div className="space-y-4">
             {/* Sequential Dispatch Controls (UI-010, UI-015) */}
-            <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-3 text-xs">
+            <div className="p-3.5 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl space-y-3 text-xs">
               <span className="font-medium text-[var(--text-muted)]">1. Dispatch Progression</span>
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   type="button"
                   disabled={isOffline || isEnRoute || isArrived || isSubmittingAction}
                   onClick={() => void handleDispatchUpdate('EN_ROUTE')}
-                  className="px-3.5 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] text-[var(--text-main)] font-medium rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
+                  className="outlier-pill-button px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] text-[#001A41] font-bold rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm transition-all motion-reduce:transition-none"
                 >
                   I&apos;m on my way
                 </button>
@@ -704,7 +704,7 @@ export function BookingDetailView({
                   type="button"
                   disabled={isOffline || !isEnRoute || isArrived || isSubmittingAction}
                   onClick={() => void handleDispatchUpdate('ARRIVED')}
-                  className="px-3.5 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] text-[var(--text-main)] font-medium rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 motion-reduce:transition-none"
+                  className="outlier-pill-button px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] text-[#001A41] font-bold rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 shadow-sm transition-all motion-reduce:transition-none"
                 >
                   I&apos;ve arrived
                 </button>
@@ -723,14 +723,14 @@ export function BookingDetailView({
             </div>
 
             {/* Check-in Control (UI-011, UI-024) */}
-            <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-3 text-xs">
+            <div className="p-3.5 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl space-y-3 text-xs">
               <span className="font-medium text-[var(--text-muted)]">2. On-Site Check-in</span>
               <p className="text-[var(--text-muted)] text-[11px]">
                 Check-in captures a single location snapshot to verify site presence before work begins. Continuous GPS tracking is not used.
               </p>
 
               {!isEscrowHeld && (
-                <div className="p-2.5 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded text-amber-200 text-xs space-y-1">
+                <div className="p-3 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded-xl text-amber-200 text-xs space-y-1 shadow-sm">
                   <p className="font-medium">
                     Payment for this booking is still pending, so check-in is not open yet.
                   </p>
@@ -745,7 +745,7 @@ export function BookingDetailView({
                   type="button"
                   disabled={isOffline || !isArrived || !isEscrowHeld || isCheckedIn || isSubmittingAction}
                   onClick={() => void handleCheckIn()}
-                  className="px-3.5 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] text-[var(--text-main)] font-medium rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
+                  className="outlier-pill-button px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] text-[#001A41] font-bold rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm transition-all motion-reduce:transition-none"
                 >
                   {isCheckedIn ? 'Checked in' : 'Check in on site'}
                 </button>
@@ -754,7 +754,7 @@ export function BookingDetailView({
 
             {/* In-Progress Scope Adjustment Trigger */}
             {isCheckedIn && (
-              <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-2 text-xs">
+              <div className="p-3.5 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl space-y-2 text-xs">
                 <span className="font-medium text-[var(--text-muted)]">3. Scope Adjustment</span>
                 <p className="text-[var(--text-muted)] text-[11px]">
                   If unseen on-site repairs require additional parts or labor, request a formal adjustment for customer review.
@@ -763,7 +763,7 @@ export function BookingDetailView({
                   type="button"
                   disabled={isOffline || booking.hasPendingScopeAdjustment || isSubmittingAction}
                   onClick={() => setIsScopeDrawerOpen(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] disabled:opacity-50 text-[var(--text-main)] rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[var(--card-bg)] hover:bg-[var(--card-hover)] border border-[var(--lead)] disabled:opacity-50 text-[var(--text-main)] rounded-md font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none shadow-sm"
                 >
                   <PlusCircle className="w-3.5 h-3.5 text-[var(--text-muted)]" aria-hidden="true" />
                   <span>Request Scope Adjustment</span>
@@ -779,7 +779,7 @@ export function BookingDetailView({
                   type="button"
                   disabled={isOffline || isSubmittingAction}
                   onClick={() => setIsCancelDialogOpen(true)}
-                  className="px-3 py-1.5 text-xs text-[var(--danger)] hover:text-[var(--danger)] bg-[var(--danger-dim)] hover:bg-red-950/50 border border-[var(--danger-border)] rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 motion-reduce:transition-none"
+                  className="px-3.5 py-1.5 text-xs text-[var(--danger)] hover:text-[var(--danger)] bg-[var(--danger-dim)] hover:bg-red-950/50 border border-[var(--danger-border)] rounded-md font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 motion-reduce:transition-none"
                 >
                   Cancel booking
                 </button>
@@ -794,14 +794,14 @@ export function BookingDetailView({
       {/* =================================================================== */}
       <section
         data-testid="recovery-block"
-        className="p-4 bg-[var(--bg)] border border-[var(--lead)] rounded-lg space-y-3 text-xs"
+        className="p-5 bg-[var(--card-bg)] border border-[var(--lead)] rounded-2xl space-y-3 text-xs shadow-sm"
       >
         <h2 className="font-semibold uppercase tracking-wider text-[var(--text-muted)]">
           Operational Guidance and Recovery
         </h2>
 
         {activeRefusal && REFUSAL_RECOVERY_MAP[activeRefusal] ? (
-          <div className="p-3 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded space-y-1 text-red-200">
+          <div className="p-3.5 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-xl space-y-1 text-red-200">
             <p className="font-semibold">{REFUSAL_RECOVERY_MAP[activeRefusal].title}</p>
             <p className="text-[var(--text-muted)]">{REFUSAL_RECOVERY_MAP[activeRefusal].step}</p>
           </div>
@@ -826,9 +826,9 @@ export function BookingDetailView({
             role="dialog"
             aria-modal="true"
             aria-labelledby="cancel-dialog-title"
-            className="w-full max-w-lg bg-[var(--card-bg)] border border-[var(--lead)] rounded-lg p-5 space-y-4 text-[var(--text-main)] shadow-xl"
+            className="w-full max-w-lg bg-[var(--card-bg)] border border-[var(--lead)] rounded-2xl p-6 space-y-4 text-[var(--text-main)] shadow-xl"
           >
-            <div className="flex items-center justify-between border-b border-[var(--lead)] pb-2">
+            <div className="flex items-center justify-between border-b border-[var(--lead)] pb-3">
               <h3 id="cancel-dialog-title" className="text-sm font-bold text-[var(--text-main)]">
                 Cancel Confirmed Booking
               </h3>
@@ -885,7 +885,7 @@ export function BookingDetailView({
               )}
 
               {cancelValidationError && (
-                <p className="p-2 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded text-xs text-[var(--danger)]">
+                <p className="p-3 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-xl text-xs text-[var(--danger)]">
                   {cancelValidationError}
                 </p>
               )}
@@ -895,7 +895,7 @@ export function BookingDetailView({
               <button
                 type="button"
                 onClick={handleCloseCancelDialog}
-                className="px-3 py-1.5 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-muted)] rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rule)] motion-reduce:transition-none"
+                className="px-4 py-2 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-muted)] rounded-md font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rule)] motion-reduce:transition-none"
               >
                 Keep Booking
               </button>
@@ -903,7 +903,7 @@ export function BookingDetailView({
                 type="button"
                 disabled={isSubmittingAction}
                 onClick={() => void handleConfirmCancellation()}
-                className="px-3.5 py-1.5 bg-[var(--danger)] hover:opacity-90 text-[var(--text-main)] rounded font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 motion-reduce:transition-none"
+                className="px-4 py-2 bg-[var(--danger)] hover:opacity-90 text-[var(--text-main)] rounded-md font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 motion-reduce:transition-none shadow-sm"
               >
                 Confirm Cancellation
               </button>
@@ -987,7 +987,7 @@ export function BookingDetailView({
                 />
               </div>
 
-              <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded space-y-1">
+              <div className="p-3.5 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl space-y-1 shadow-sm">
                 <span className="text-[var(--text-muted)] font-medium">Calculated Additional Total:</span>
                 <p className="text-sm font-bold font-mono text-[var(--brand-green)]">
                   NGN {totalAdditionalDerived.toLocaleString()}
@@ -1009,7 +1009,7 @@ export function BookingDetailView({
               </div>
 
               {scopeError && (
-                <p className="p-2 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded text-xs text-[var(--danger)]">
+                <p className="p-3 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-xl text-xs text-[var(--danger)]">
                   {scopeError}
                 </p>
               )}
@@ -1018,14 +1018,14 @@ export function BookingDetailView({
                 <button
                   type="button"
                   onClick={() => setIsScopeDrawerOpen(false)}
-                  className="px-3 py-1.5 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-muted)] rounded font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rule)] motion-reduce:transition-none"
+                  className="px-4 py-2 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-muted)] rounded-md font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--rule)] motion-reduce:transition-none"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmittingAction || totalAdditionalDerived <= 0}
-                  className="px-3.5 py-1.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:opacity-50 text-[var(--text-main)] rounded font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
+                  className="outlier-pill-button px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] disabled:opacity-50 text-[#001A41] font-bold rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm transition-all motion-reduce:transition-none"
                 >
                   Submit Request
                 </button>

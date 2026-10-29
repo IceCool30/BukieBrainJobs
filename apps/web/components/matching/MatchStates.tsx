@@ -22,28 +22,28 @@ import type { MatchingState } from '@bukiebrainjobs/types';
 function MatchCardSkeleton() {
   return (
     <div
-      className="bg-[var(--card-bg)] border border-[var(--lead)] rounded-lg p-5 animate-pulse shadow-sm"
+      className="bg-[var(--card-bg)] border border-[var(--lead)] rounded-2xl p-5 animate-pulse shadow-xs"
       aria-hidden="true"
     >
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-14 h-14 rounded-lg bg-[var(--lead)] shrink-0" />
+        <div className="w-14 h-14 rounded-xl bg-[var(--lead)] shrink-0" />
         <div className="flex-1 space-y-2">
-          <div className="h-4 bg-[var(--lead)] rounded w-2/3" />
-          <div className="h-3 bg-[var(--tag-bg)] rounded w-1/2" />
+          <div className="h-4 bg-[var(--lead)] rounded-full w-2/3" />
+          <div className="h-3 bg-[var(--tag-bg)] rounded-full w-1/2" />
         </div>
       </div>
       <div className="space-y-2 mb-4">
-        <div className="h-3 bg-[var(--tag-bg)] rounded w-full" />
-        <div className="h-3 bg-[var(--tag-bg)] rounded w-4/5" />
-        <div className="h-3 bg-[var(--tag-bg)] rounded w-3/5" />
+        <div className="h-3 bg-[var(--tag-bg)] rounded-full w-full" />
+        <div className="h-3 bg-[var(--tag-bg)] rounded-full w-4/5" />
+        <div className="h-3 bg-[var(--tag-bg)] rounded-full w-3/5" />
       </div>
       <div className="flex gap-1.5 mb-4">
-        <div className="h-5 bg-[var(--lead)] rounded-lg w-24" />
-        <div className="h-5 bg-[var(--lead)] rounded-lg w-20" />
+        <div className="h-5 bg-[var(--lead)] rounded-full w-24" />
+        <div className="h-5 bg-[var(--lead)] rounded-full w-20" />
       </div>
       <div className="flex gap-2 pt-3 border-t border-[var(--lead)]">
-        <div className="flex-1 h-9 bg-[var(--tag-bg)] rounded-lg" />
-        <div className="flex-1 h-9 bg-[var(--lead)] rounded-lg" />
+        <div className="flex-1 h-9 bg-[var(--tag-bg)] rounded-full" />
+        <div className="flex-1 h-9 bg-[var(--lead)] rounded-full" />
       </div>
     </div>
   );
@@ -108,14 +108,14 @@ export function NoMatchesState({
         <button
           type="button"
           onClick={onRetry}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-[var(--text)] border border-[var(--lead)] rounded-lg py-2.5 px-4 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[var(--text)] border border-[var(--lead)] rounded-full py-2.5 px-4 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
         >
           <RotateCcw className="h-4 w-4" aria-hidden="true" />
           Try again
         </button>
         <Link
           href="/post-job"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
+          className="outlier-pill-button flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-full py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
           Post a new job
@@ -123,7 +123,7 @@ export function NoMatchesState({
       </div>
       <Link
         href="/services"
-        className="mt-4 text-sm font-medium text-[var(--brand-green)] hover:underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-green)] rounded"
+        className="mt-4 text-xs font-semibold text-[var(--brand-green)] hover:underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-green)] rounded-full"
       >
         Find a service instead
       </Link>
@@ -153,14 +153,14 @@ export function ConstraintLimitedState({
       <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
         <Link
           href="/jobs"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-[var(--text)] border border-[var(--lead)] rounded-lg py-2.5 px-4 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[var(--text)] border border-[var(--lead)] rounded-full py-2.5 px-4 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
         >
           <FileText className="h-4 w-4" aria-hidden="true" />
           Review request
         </Link>
         <Link
           href="/services"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
+          className="outlier-pill-button flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-full py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
         >
           Find a service
         </Link>
@@ -188,14 +188,14 @@ export function MatchingFailedState({ onRetry }: { onRetry: () => void }) {
         <button
           type="button"
           onClick={onRetry}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-[var(--text)] border border-[var(--lead)] rounded-lg py-2.5 px-4 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[var(--text)] border border-[var(--lead)] rounded-full py-2.5 px-4 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
         >
           <RotateCcw className="h-4 w-4" aria-hidden="true" />
           Try again
         </button>
         <Link
           href="/jobs"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
+          className="outlier-pill-button flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-full py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Back to jobs
@@ -222,7 +222,7 @@ export function MatchingOfflineState({ onRetry }: { onRetry: () => void }) {
       <button
         type="button"
         onClick={onRetry}
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text)] border border-[var(--lead)] rounded-lg py-2.5 px-5 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+        className="outlier-pill-button inline-flex items-center gap-1.5 text-xs font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-full py-2.5 px-5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
       >
         <RotateCcw className="h-4 w-4" aria-hidden="true" />
         Try again
@@ -248,14 +248,14 @@ export function InvalidContextState() {
       <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
         <Link
           href="/jobs"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-[var(--text)] border border-[var(--lead)] rounded-lg py-2.5 px-4 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[var(--text)] border border-[var(--lead)] rounded-full py-2.5 px-4 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Back to jobs
         </Link>
         <Link
           href="/post-job"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
+          className="outlier-pill-button flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-full py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
           Post a new job
@@ -279,7 +279,7 @@ export function StaleResultsNotice({
       role="status"
       aria-live="polite"
       aria-busy={isRefreshing}
-      className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[var(--amber-dim)] border border-[var(--amber)] rounded-lg px-4 py-3 mb-6 text-sm text-[var(--text)]"
+      className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[var(--amber-dim)] border border-[var(--amber)] rounded-2xl px-4 py-3 mb-6 text-sm text-[var(--text)]"
     >
       <div className="flex items-start gap-2">
         {isRefreshing ? (
@@ -298,7 +298,7 @@ export function StaleResultsNotice({
         onClick={onRefresh}
         disabled={isRefreshing}
         aria-busy={isRefreshing}
-        className="shrink-0 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[var(--amber)] bg-[var(--card-bg)] border border-[var(--amber)] rounded-lg py-1.5 px-3 hover:bg-[var(--amber)] hover:text-[#001A41] font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
+        className="shrink-0 inline-flex items-center justify-center gap-1.5 text-xs font-bold text-[var(--amber)] bg-[var(--card-bg)] border border-[var(--amber)] rounded-full py-1.5 px-4 hover:bg-[var(--amber)] hover:text-[#001A41] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed shadow-xs"
       >
         {isRefreshing ? (
           <>
@@ -356,7 +356,7 @@ export function StaleResultsState({
           onClick={onRefresh}
           disabled={isRefreshing}
           aria-busy={isRefreshing}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
+          className="outlier-pill-button flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-full py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed shadow-xs"
         >
           {isRefreshing ? (
             <>
@@ -372,7 +372,7 @@ export function StaleResultsState({
         </button>
         <Link
           href="/jobs"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-[var(--text)] border border-[var(--lead)] rounded-lg py-2.5 px-4 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[var(--text)] border border-[var(--lead)] rounded-full py-2.5 px-4 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Back to jobs
@@ -389,7 +389,7 @@ export function PartialResultsNotice() {
     <div
       role="status"
       aria-live="polite"
-      className="flex items-start gap-2 bg-[var(--amber-dim)] border border-[var(--amber)] rounded-lg px-4 py-3 mb-4 text-sm text-[var(--text)]"
+      className="flex items-start gap-2 bg-[var(--amber-dim)] border border-[var(--amber)] rounded-2xl px-4 py-3 mb-4 text-sm text-[var(--text)]"
     >
       <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5 text-[var(--amber)]" aria-hidden="true" />
       <p>
@@ -415,7 +415,7 @@ export function AuthRequiredState({ returnPath }: { returnPath: string }) {
       </p>
       <Link
         href={`/login?return=${encodeURIComponent(returnPath)}`}
-        className="inline-flex items-center gap-1.5 text-sm font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-lg py-2.5 px-6 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm"
+        className="outlier-pill-button inline-flex items-center gap-1.5 text-xs font-bold text-[#001A41] bg-[var(--amber)] hover:bg-[var(--amber-hover)] rounded-full py-2.5 px-6 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-xs"
       >
         Sign in
       </Link>

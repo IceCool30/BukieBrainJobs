@@ -25,12 +25,12 @@ export function ProfileManagementWorkspace({
   return (
     <div className="space-y-6">
       {/* Top Workspace Navigation Tabs */}
-      <div className="flex border-b border-[var(--lead)] bg-[var(--bg)] p-1 rounded-xl">
+      <div className="flex border border-[var(--lead)] bg-[var(--card-bg)] p-1.5 rounded-full shadow-sm">
         <button
           type="button"
           data-testid="tab-profile-details"
           onClick={() => setActiveTab('profile')}
-          className={`flex-1 rounded-lg py-2.5 text-xs font-semibold transition-all ${
+          className={`flex-1 rounded-full py-2 text-xs font-semibold transition-all ${
             activeTab === 'profile'
               ? 'bg-[var(--text-main)] text-[var(--bg)] shadow-sm'
               : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
@@ -42,7 +42,7 @@ export function ProfileManagementWorkspace({
           type="button"
           data-testid="tab-portfolio-gallery"
           onClick={() => setActiveTab('portfolio')}
-          className={`flex-1 rounded-lg py-2.5 text-xs font-semibold transition-all ${
+          className={`flex-1 rounded-full py-2 text-xs font-semibold transition-all ${
             activeTab === 'portfolio'
               ? 'bg-[var(--text-main)] text-[var(--bg)] shadow-sm'
               : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
@@ -54,7 +54,7 @@ export function ProfileManagementWorkspace({
           type="button"
           data-testid="tab-client-reviews"
           onClick={() => setActiveTab('reviews')}
-          className={`flex-1 rounded-lg py-2.5 text-xs font-semibold transition-all ${
+          className={`flex-1 rounded-full py-2 text-xs font-semibold transition-all ${
             activeTab === 'reviews'
               ? 'bg-[var(--text-main)] text-[var(--bg)] shadow-sm'
               : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
@@ -65,7 +65,7 @@ export function ProfileManagementWorkspace({
       </div>
 
       {/* Tab Panels */}
-      <div className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-6">
+      <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-sm">
         {activeTab === 'profile' && (
           <ProfileEditorForm
             profile={profile}

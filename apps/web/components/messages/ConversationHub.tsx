@@ -89,7 +89,7 @@ export function ConversationHub({
       {error && (
         <div
           role="alert"
-          className="flex items-center justify-between gap-3 p-3.5 rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] text-[var(--danger)] text-xs sm:text-sm"
+          className="flex items-center justify-between gap-3 p-3.5 rounded-xl border border-[var(--danger-border)] bg-[var(--danger-dim)] text-[var(--danger)] text-xs sm:text-sm"
         >
           <div className="flex items-center gap-2 min-w-0">
             <AlertCircle className="w-4 h-4 flex-shrink-0 text-[var(--danger)]" />
@@ -99,7 +99,7 @@ export function ConversationHub({
             <button
               type="button"
               onClick={onRetry}
-              className="px-3 py-1 rounded-md bg-[var(--danger)] hover:opacity-90 text-white font-semibold text-xs transition-colors flex-shrink-0 cursor-pointer"
+              className="px-4 py-1.5 rounded-full bg-[var(--danger)] hover:opacity-90 text-white font-semibold text-xs transition-colors flex-shrink-0 cursor-pointer"
             >
               Try again
             </button>
@@ -118,9 +118,9 @@ export function ConversationHub({
           {[1, 2, 3].map((idx) => (
             <div
               key={idx}
-              className="flex items-start gap-3.5 p-4 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] animate-pulse"
+              className="flex items-start gap-3.5 p-4 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] animate-pulse"
             >
-              <div className="w-12 h-12 rounded-lg bg-[var(--tag-bg)] flex-shrink-0" />
+              <div className="w-12 h-12 rounded-xl bg-[var(--tag-bg)] flex-shrink-0" />
               <div className="flex-1 space-y-2">
                 <div className="flex justify-between">
                   <div className="h-4 bg-[var(--tag-bg)] rounded w-1/3" />
@@ -135,8 +135,8 @@ export function ConversationHub({
         </div>
       ) : conversations.length === 0 ? (
         /* First-Run Empty State */
-        <div className="py-12 px-6 text-center space-y-4 bg-[var(--card-bg)] rounded-lg border border-[var(--lead)] shadow-xs my-auto">
-          <div className="w-12 h-12 rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] flex items-center justify-center mx-auto text-[var(--amber)]">
+        <div className="py-12 px-6 text-center space-y-4 bg-[var(--card-bg)] rounded-2xl border border-[var(--lead)] shadow-xs my-auto">
+          <div className="w-12 h-12 rounded-xl bg-[var(--tag-bg)] border border-[var(--lead)] flex items-center justify-center mx-auto text-[var(--amber)]">
             <MessageSquare className="w-6 h-6" />
           </div>
           <div className="space-y-1">
@@ -151,7 +151,7 @@ export function ConversationHub({
           <div>
             <Link
               href="/services"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs sm:text-sm font-bold transition-colors shadow-xs"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 outlier-pill-button rounded-full bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs sm:text-sm font-bold transition-all shadow-xs"
             >
               Browse Services
             </Link>
@@ -159,7 +159,7 @@ export function ConversationHub({
         </div>
       ) : searchQuery.trim() !== '' && filteredConversations.length === 0 ? (
         /* Zero Search Results State */
-        <div className="py-12 px-4 text-center text-sm text-[var(--text-muted)] bg-[var(--card-bg)] rounded-lg border border-dashed border-[var(--rule)]">
+        <div className="py-12 px-4 text-center text-sm text-[var(--text-muted)] bg-[var(--card-bg)] rounded-2xl border border-dashed border-[var(--rule)]">
           <p className="font-semibold text-[var(--text-main)]">
             No conversations match your search.
           </p>
@@ -169,7 +169,7 @@ export function ConversationHub({
         </div>
       ) : filteredConversations.length === 0 ? (
         /* Zero Filter Results State */
-        <div className="py-12 px-4 text-center text-sm text-[var(--text-muted)] bg-[var(--card-bg)] rounded-lg border border-dashed border-[var(--rule)]">
+        <div className="py-12 px-4 text-center text-sm text-[var(--text-muted)] bg-[var(--card-bg)] rounded-2xl border border-dashed border-[var(--rule)]">
           <p className="font-semibold text-[var(--text-main)]">
             {activeTab === 'archived'
               ? 'No archived conversations.'

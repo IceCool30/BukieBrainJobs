@@ -190,9 +190,15 @@ describe('BW-004 Phase 8: BrainWorker Bookings Route Integration & Security Cont
 
     expect(await screen.findByRole('heading', { name: /bookings|my bookings|confirmed bookings/i })).toBeInTheDocument();
     expect(await screen.findByText('Generator Maintenance and Carburetor Tuning')).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('heading', { level: 1 }).map((heading) => heading.textContent?.trim())
+    ).toEqual(['My Bookings']);
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Operational Dispatch Sheet' })
+    ).toBeInTheDocument();
   });
 
-  // ===========================================================================
+  // ==========================================================================
   // INT-006: Session-Bound Repository Isolation
   // ===========================================================================
   it('INT-006: authenticated session ID is strictly bound to repository queries, preventing cross-tenant access', async () => {

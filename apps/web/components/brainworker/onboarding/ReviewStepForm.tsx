@@ -130,13 +130,13 @@ export function ReviewStepForm({
       id={formId}
       onSubmit={handleSubmit}
       noValidate
-      className={`w-full max-w-3xl mx-auto space-y-8 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
+      className={`w-full max-w-3xl mx-auto space-y-8 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-6 sm:p-10 shadow-xs transition-colors ${className}`}
     >
       {/* Header */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-main)]">
+        <h1 className="text-xl sm:text-2xl font-bold text-[var(--text-main)]">
           Step 4: Review & Submit Application
-        </h2>
+        </h1>
         <p className="mt-2 text-sm text-[var(--text-muted)] leading-relaxed">
           Please confirm your details before submitting for operational review. Once submitted, your application is locked while our verification team confirms your records.
         </p>
@@ -145,11 +145,11 @@ export function ReviewStepForm({
       {/* 1. Identity Summary Card (REV-001) */}
       <section
         aria-labelledby={`${formId}-identity-heading`}
-        className="rounded-lg border border-[var(--card-border)] bg-[var(--bg)] p-5 sm:p-6 transition"
+        className="rounded-xl border border-[var(--card-border)] bg-[var(--bg)] p-5 sm:p-6 transition"
       >
         <div className="flex items-center justify-between pb-4 border-b border-[var(--card-border)]">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--tag-bg)] text-[var(--text-main)]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--tag-bg)] text-[var(--text-main)]">
               <User className="h-5 w-5" />
             </div>
             <div>
@@ -166,7 +166,7 @@ export function ReviewStepForm({
             type="button"
             onClick={() => onEditStep('identity')}
             aria-label="Edit Identity Information"
-            className="inline-flex items-center gap-1.5 rounded-md border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-3.5 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           >
             <Pencil className="h-3.5 w-3.5" />
             <span>Edit</span>
@@ -211,11 +211,11 @@ export function ReviewStepForm({
       {/* 2. Trade & Coverage Profile Card (REV-002) */}
       <section
         aria-labelledby={`${formId}-trade-heading`}
-        className="rounded-lg border border-[var(--card-border)] bg-[var(--bg)] p-5 sm:p-6 transition"
+        className="rounded-xl border border-[var(--card-border)] bg-[var(--bg)] p-5 sm:p-6 transition"
       >
         <div className="flex items-center justify-between pb-4 border-b border-[var(--card-border)]">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--amber-dim)] text-[var(--text-main)]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--amber-dim)] text-[var(--text-main)]">
               <Wrench className="h-5 w-5" />
             </div>
             <div>
@@ -232,7 +232,7 @@ export function ReviewStepForm({
             type="button"
             onClick={() => onEditStep('trade')}
             aria-label="Edit Trade Profile"
-            className="inline-flex items-center gap-1.5 rounded-md border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-3.5 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           >
             <Pencil className="h-3.5 w-3.5" />
             <span>Edit</span>
@@ -268,7 +268,7 @@ export function ReviewStepForm({
                 tradeData.subSpecialties.map((spec) => (
                   <span
                     key={spec}
-                    className="inline-flex items-center rounded-md bg-[var(--card-bg)] border border-[var(--card-border)] px-2.5 py-1 text-xs font-medium text-[var(--text-main)] shadow-2xs"
+                    className="inline-flex items-center rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] px-3 py-1 text-xs font-medium text-[var(--text-main)] shadow-2xs"
                   >
                     {spec}
                   </span>
@@ -293,11 +293,11 @@ export function ReviewStepForm({
       {/* 3. Documents & Credentials Summary Card (REV-003) */}
       <section
         aria-labelledby={`${formId}-credentials-heading`}
-        className="rounded-lg border border-[var(--card-border)] bg-[var(--bg)] p-5 sm:p-6 transition"
+        className="rounded-xl border border-[var(--card-border)] bg-[var(--bg)] p-5 sm:p-6 transition"
       >
         <div className="flex items-center justify-between pb-4 border-b border-[var(--card-border)]">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--brand-green-dim)] text-[var(--text-main)]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--brand-green-dim)] text-[var(--text-main)]">
               <FileCheck className="h-5 w-5" />
             </div>
             <div>
@@ -314,7 +314,7 @@ export function ReviewStepForm({
             type="button"
             onClick={() => onEditStep('credentials')}
             aria-label="Edit Documents & Credentials"
-            className="inline-flex items-center gap-1.5 rounded-md border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-3.5 py-1.5 text-xs font-semibold text-[var(--text-main)] shadow-2xs transition hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           >
             <Pencil className="h-3.5 w-3.5" />
             <span>Edit</span>
@@ -327,10 +327,10 @@ export function ReviewStepForm({
             return (
               <div
                 key={doc.id}
-                className="flex items-center justify-between rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] p-3.5 shadow-2xs"
+                className="flex items-center justify-between rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] p-3.5 shadow-2xs"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--bg)] text-[var(--text-muted)]">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--bg)] text-[var(--text-muted)]">
                     <FileText className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
@@ -346,7 +346,7 @@ export function ReviewStepForm({
                   </div>
                 </div>
 
-                <span className="inline-flex items-center gap-1 rounded-md bg-[var(--brand-green-dim)] px-2 py-1 text-xs font-medium text-[var(--brand-green)] border border-[var(--brand-green-border)]">
+                <span className="inline-flex items-center gap-1 rounded-full bg-[var(--brand-green-dim)] px-2.5 py-1 text-xs font-medium text-[var(--brand-green)] border border-[var(--brand-green-border)]">
                   <CheckCircle2 className="h-3.5 w-3.5" />
                   <span>Staged</span>
                 </span>
@@ -357,7 +357,7 @@ export function ReviewStepForm({
       </section>
 
       {/* 4. Legal Truthfulness Declaration & Acknowledgements (REV-005) */}
-      <div className="rounded-lg border-2 border-[var(--card-border)] bg-[var(--bg)] p-5 sm:p-6 space-y-4">
+      <div className="rounded-xl border-2 border-[var(--card-border)] bg-[var(--bg)] p-5 sm:p-6 space-y-4">
         <div className="flex items-center gap-2.5 text-[var(--text-main)]">
           <ShieldCheck className="h-5 w-5 shrink-0" />
           <h4 className="text-sm font-bold uppercase tracking-wider">
@@ -408,7 +408,7 @@ export function ReviewStepForm({
         <button
           type="submit"
           disabled={!canSubmit}
-          className={`inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] shadow-xs transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
+          className={`outlier-pill-button inline-flex items-center gap-2 rounded-full bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] shadow-xs transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
             !canSubmit ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
           }`}
         >

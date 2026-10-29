@@ -35,7 +35,7 @@ export function DispatchTrackingViewCard({
   const currentIndex = getStepIndex(view.dispatchStatus);
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-6 text-zinc-100 shadow-sm">
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 text-zinc-100 shadow-sm">
       <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3">
         <div>
           <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
@@ -49,7 +49,7 @@ export function DispatchTrackingViewCard({
           <button
             type="button"
             onClick={onRefresh}
-            className="rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-1 text-xs font-medium text-zinc-300 hover:bg-zinc-800"
+            className="rounded-md border border-zinc-700 bg-zinc-900 px-4 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-800"
           >
             Refresh Status
           </button>

@@ -92,7 +92,7 @@ export function RescheduleProposalModal({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="rounded-md p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
             aria-label="Close dialog"
           >
             ✕
@@ -221,14 +221,14 @@ export function RescheduleProposalModal({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-zinc-800"
+              className="rounded-md border border-zinc-700 bg-zinc-900 px-5 py-2 text-sm font-medium text-zinc-300 hover:bg-zinc-800"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting || isOtherWithoutNote}
-              className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex items-center justify-center outlier-pill-button rounded-full bg-[var(--amber)] px-5 py-2 text-sm font-semibold text-[#001A41] shadow-sm transition hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--amber)] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSubmitting ? 'Submitting...' : 'Submit proposal'}
             </button>

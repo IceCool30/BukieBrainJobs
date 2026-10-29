@@ -65,7 +65,7 @@ function BookingHeader({ returnUrl }: { returnUrl: string }) {
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href={returnUrl}
-          className="motion-press inline-flex min-h-12 items-center gap-2 text-xs font-semibold text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--amber)] rounded-lg"
+          className="motion-press inline-flex min-h-10 items-center gap-2 rounded-md border border-[var(--lead)] bg-[var(--card-bg)] px-4 text-xs font-semibold text-[var(--text-muted)] transition-colors hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--amber)]"
         >
           <ArrowLeft className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
           Back to services
@@ -327,8 +327,8 @@ export default function BookingScreen() {
       <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors duration-200">
         <BookingHeader returnUrl="/services" />
         <div className="mx-auto max-w-xl px-4 py-12 sm:px-6 sm:py-16">
-          <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-6 text-center shadow-xs sm:p-8">
-            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] text-[var(--text-muted)]">
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 text-center shadow-xs sm:p-8">
+            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] text-[var(--text-muted)]">
               <HelpCircle className="h-6 w-6" aria-hidden="true" />
             </span>
             <h1 className="mt-4 font-display text-2xl font-bold tracking-tight text-[var(--text-main)]">
@@ -340,7 +340,7 @@ export default function BookingScreen() {
             <div className="mt-6">
               <Link
                 href="/services"
-                className="motion-press inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+                className="outlier-pill-button rounded-full inline-flex min-h-12 items-center justify-center bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
               >
                 Browse services
               </Link>
@@ -357,8 +357,8 @@ export default function BookingScreen() {
       <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors duration-200">
         <BookingHeader returnUrl="/services" />
         <div className="mx-auto max-w-xl px-4 py-12 sm:px-6 sm:py-16">
-          <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-6 text-center shadow-xs sm:p-8">
-            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] text-[var(--text-muted)]">
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 text-center shadow-xs sm:p-8">
+            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] text-[var(--text-muted)]">
               <Info className="h-6 w-6" aria-hidden="true" />
             </span>
             <h1 className="mt-4 font-display text-2xl font-bold tracking-tight text-[var(--text-main)]">
@@ -371,7 +371,7 @@ export default function BookingScreen() {
             <div className="mt-6">
               <Link
                 href="/services"
-                className="motion-press inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+                className="outlier-pill-button rounded-full inline-flex min-h-12 items-center justify-center bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
               >
                 Browse services
               </Link>
@@ -390,9 +390,9 @@ export default function BookingScreen() {
       <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] transition-colors duration-200">
         <BookingHeader returnUrl={returnUrl} />
         <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-14">
-          <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-xs sm:p-8">
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-xs sm:p-8">
             <div className="text-center">
-              <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
+              <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
                 <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
               </span>
               <h1
@@ -408,7 +408,7 @@ export default function BookingScreen() {
 
               {/* Reference Badge */}
               {submittedReference && (
-                <div className="mt-4 inline-flex items-center gap-2 rounded-md border border-[var(--tag-border)] bg-[var(--tag-bg)] px-4 py-1.5 font-mono text-xs font-bold text-[var(--text-main)]">
+                <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[var(--tag-border)] bg-[var(--tag-bg)] px-4 py-1.5 font-mono text-xs font-bold text-[var(--text-main)]">
                   <span>Reference:</span>
                   <span className="text-[var(--brand-green)]">{submittedReference}</span>
                 </div>
@@ -416,7 +416,7 @@ export default function BookingScreen() {
             </div>
 
             {/* Request Summary */}
-            <div className="relative overflow-hidden mt-8 rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] p-5">
+            <div className="relative overflow-hidden mt-8 rounded-2xl border border-[var(--lead)] bg-[var(--tag-bg)] p-5">
               {/* Trademark Security Watermark */}
               <div
                 className="pointer-events-none absolute -right-6 -bottom-8 opacity-[0.04] select-none"
@@ -501,21 +501,21 @@ export default function BookingScreen() {
                     ? `/dashboard?jobCreated=${encodeURIComponent(submittedReference)}&jobTitle=${encodeURIComponent(service.title)}`
                     : '/dashboard'
                 }
-                className="motion-press inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+                className="outlier-pill-button rounded-full inline-flex min-h-12 items-center justify-center bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
               >
                 View on Dashboard
               </Link>
               {submittedReference && (
                 <Link
                   href={`/jobs?id=${encodeURIComponent(submittedReference)}`}
-                  className="motion-press inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+                  className="rounded-lg inline-flex min-h-12 items-center justify-center border border-[var(--lead)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
                 >
                   View Request Details
                 </Link>
               )}
               <Link
                 href={returnUrl}
-                className="motion-press inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-muted)] transition-colors hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+                className="rounded-lg inline-flex min-h-12 items-center justify-center border border-[var(--lead)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-muted)] transition-colors hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
               >
                 Return to services
               </Link>
@@ -549,7 +549,7 @@ export default function BookingScreen() {
         {restoredBanner && (
           <div
             role="status"
-            className="mt-6 flex items-start gap-3 rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4 text-sm leading-5 text-[var(--text-main)] shadow-xs"
+            className="mt-6 flex items-start gap-3 rounded-2xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4 text-sm leading-5 text-[var(--text-main)] shadow-xs"
           >
             <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
             <div>
@@ -565,7 +565,7 @@ export default function BookingScreen() {
         {status === 'error' && (
           <div
             role="alert"
-            className="mt-6 flex items-start gap-3 rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] p-4 text-sm leading-5 text-[var(--danger)] shadow-xs"
+            className="mt-6 flex items-start gap-3 rounded-2xl border border-[var(--danger-border)] bg-[var(--danger-dim)] p-4 text-sm leading-5 text-[var(--danger)] shadow-xs"
           >
             <WifiOff className="mt-0.5 h-5 w-5 shrink-0 text-[var(--danger)]" aria-hidden="true" />
             <div className="flex-1">
@@ -577,7 +577,7 @@ export default function BookingScreen() {
             <button
               type="button"
               onClick={executeSubmission}
-              className="motion-press inline-flex min-h-10 items-center rounded-lg bg-[var(--danger)] px-3.5 text-xs font-bold text-white transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+              className="motion-press inline-flex min-h-10 items-center rounded-md bg-[var(--danger)] px-4 text-xs font-bold text-white transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
             >
               Try again
             </button>
@@ -588,7 +588,7 @@ export default function BookingScreen() {
         {(context.cityStatus === 'invalid' || context.cityStatus === 'inactive') && (
           <div
             role="status"
-            className="mt-6 flex items-start gap-3 rounded-lg border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-4 text-sm leading-5 text-[var(--text-main)] shadow-xs"
+            className="mt-6 flex items-start gap-3 rounded-2xl border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-4 text-sm leading-5 text-[var(--text-main)] shadow-xs"
           >
             <Info className="mt-0.5 h-5 w-5 shrink-0 text-[var(--amber)]" aria-hidden="true" />
             <p className="text-xs sm:text-sm text-[var(--text-main)]">
@@ -603,10 +603,10 @@ export default function BookingScreen() {
             {/* Left Form Column */}
             <div className="space-y-6">
               {/* Service Context Card */}
-              <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
+              <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
-                    <span className="inline-block rounded-md border border-[var(--tag-border)] bg-[var(--tag-bg)] px-2.5 py-1 font-mono text-xs font-bold text-[var(--text-main)]">
+                    <span className="inline-block rounded-full border border-[var(--tag-border)] bg-[var(--tag-bg)] px-3 py-1 font-mono text-xs font-bold text-[var(--text-main)]">
                       {service.group}
                     </span>
                     <h2 className="mt-2 font-display text-xl font-bold tracking-tight text-[var(--text-main)] sm:text-2xl">
@@ -616,7 +616,7 @@ export default function BookingScreen() {
                       {service.description}
                     </p>
                   </div>
-                  <div className="rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] p-3 text-right">
+                  <div className="rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] p-3 text-right">
                     <p className="font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">Starting from</p>
                     <p className="font-mono text-lg font-bold text-[var(--brand-green)] sm:text-xl">
                       {context.price}
@@ -625,7 +625,7 @@ export default function BookingScreen() {
                 </div>
 
                 {context.worker && (
-                  <div className="mt-4 flex items-center gap-2 rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-3 text-xs text-[var(--text-main)]">
+                  <div className="mt-4 flex items-center gap-2 rounded-xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-3 text-xs text-[var(--text-main)]">
                     <UserCheck className="h-4 w-4 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
                     <div>
                       <span className="font-bold">Preferred BrainWorker: </span>
@@ -644,7 +644,7 @@ export default function BookingScreen() {
               </section>
 
               {/* Location Section */}
-              <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
+              <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
                 <div className="flex items-center gap-2 text-[var(--text-main)]">
                   <MapPin className="h-5 w-5 text-[var(--brand-green)]" aria-hidden="true" />
                   <h2 className="font-display text-lg font-bold">Where is the job?</h2>
@@ -729,7 +729,7 @@ export default function BookingScreen() {
               </section>
 
               {/* Schedule Section */}
-              <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
+              <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
                 <div className="flex items-center gap-2 text-[var(--text-main)]">
                   <Calendar className="h-5 w-5 text-[var(--brand-green)]" aria-hidden="true" />
                   <h2 className="font-display text-lg font-bold">When do you need it?</h2>
@@ -749,7 +749,7 @@ export default function BookingScreen() {
                           id={`booking-date-${option.toLowerCase().replace(/\s+/g, '-')}`}
                           onClick={() => updateField('dateOption', option)}
                           aria-pressed={active}
-                          className={`motion-press min-h-12 rounded-lg border px-3 text-center text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] ${
+                          className={`motion-press min-h-12 rounded-md border px-3 text-center text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] ${
                             active
                               ? 'border-[var(--amber)] bg-[var(--amber)] text-[#001A41] shadow-xs'
                               : 'border-[var(--lead)] bg-[var(--tag-bg)] text-[var(--text-muted)] hover:border-[var(--rule)] hover:text-[var(--text-main)]'
@@ -798,7 +798,7 @@ export default function BookingScreen() {
                           type="button"
                           onClick={() => updateField('arrivalWindow', time)}
                           aria-pressed={active}
-                          className={`motion-press flex min-h-12 items-center justify-start gap-2.5 rounded-lg border p-3 text-left text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] ${
+                          className={`motion-press flex min-h-12 items-center justify-start gap-2.5 rounded-xl border p-3 text-left text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] ${
                             active
                               ? 'border-[var(--brand-green)] bg-[var(--brand-green-dim)] text-[var(--text-main)] ring-1 ring-[var(--brand-green)]'
                               : 'border-[var(--lead)] bg-[var(--tag-bg)] text-[var(--text-muted)] hover:border-[var(--rule)] hover:text-[var(--text-main)]'
@@ -815,7 +815,7 @@ export default function BookingScreen() {
               </section>
 
               {/* Job Details Section */}
-              <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
+              <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
                 <div className="flex items-center gap-2 text-[var(--text-main)]">
                   <FileText className="h-5 w-5 text-[var(--brand-green)]" aria-hidden="true" />
                   <h2 className="font-display text-lg font-bold">Job details</h2>
@@ -853,7 +853,7 @@ export default function BookingScreen() {
               </section>
 
               {/* Payment Preference Section */}
-              <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
+              <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
                 <div className="flex items-center gap-2 text-[var(--text-main)]">
                   <CreditCard className="h-5 w-5 text-[var(--brand-green)]" aria-hidden="true" />
                   <h2 className="font-display text-lg font-bold">Payment preference</h2>
@@ -874,7 +874,7 @@ export default function BookingScreen() {
                     return (
                       <label
                         key={method.id}
-                        className={`motion-press flex cursor-pointer items-start gap-3 rounded-lg border p-3.5 transition-colors ${
+                        className={`motion-press flex cursor-pointer items-start gap-3 rounded-xl border p-3.5 transition-colors ${
                           active
                             ? 'border-[var(--brand-green)] bg-[var(--brand-green-dim)] ring-1 ring-[var(--brand-green)]'
                             : 'border-[var(--lead)] bg-[var(--tag-bg)] hover:border-[var(--rule)]'
@@ -899,7 +899,7 @@ export default function BookingScreen() {
                 </div>
 
                 {/* BukieGuarantee Escrow Assurance */}
-                <div className="mt-4 flex items-start gap-2.5 rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-3 text-xs text-[var(--brand-green)]">
+                <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-3 text-xs text-[var(--brand-green)]">
                   <ShieldCheck className="h-4 w-4 shrink-0 text-[var(--brand-green)] mt-0.5" aria-hidden="true" />
                   <div>
                     <span className="font-bold">BukieGuarantee Escrow Protection:</span>
@@ -911,7 +911,7 @@ export default function BookingScreen() {
 
             {/* Right Summary & Submit Column */}
             <div className="space-y-6">
-              <aside className="bbj-card-interactive relative overflow-hidden h-fit rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6 lg:sticky lg:top-6">
+              <aside className="bbj-card-interactive relative overflow-hidden h-fit rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6 lg:sticky lg:top-6">
                 {/* Security Watermark */}
                 <div
                   className="pointer-events-none absolute -right-6 -bottom-8 opacity-[0.03] select-none"
@@ -931,7 +931,7 @@ export default function BookingScreen() {
                     Review your request
                   </h2>
 
-                <div className="mt-4 space-y-3 rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] p-4 text-xs sm:text-sm">
+                <div className="mt-4 space-y-3 rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] p-4 text-xs sm:text-sm">
                   <div className="flex justify-between text-[var(--text-muted)]">
                     <span>Service</span>
                     <span className="font-bold text-[var(--text-main)]">{service.title}</span>
@@ -969,7 +969,7 @@ export default function BookingScreen() {
                   </div>
                 </div>
 
-                <div className="mt-4 rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-3 text-xs leading-relaxed text-[var(--text-main)]">
+                <div className="mt-4 rounded-xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-3 text-xs leading-relaxed text-[var(--text-main)]">
                   <p className="font-bold">No commitment or payment required</p>
                   <p className="mt-0.5 text-xs text-[var(--text-muted)]">
                     Submitting this intake form sends your job details for BrainWorker preparation. You confirm final pricing before any work starts.
@@ -980,7 +980,7 @@ export default function BookingScreen() {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] disabled:cursor-wait disabled:opacity-75 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+                  className="outlier-pill-button rounded-full mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] disabled:cursor-wait disabled:opacity-75 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
                 >
                   {isPending ? 'Submitting request...' : 'Submit service request'}
                 </button>
@@ -988,7 +988,7 @@ export default function BookingScreen() {
                 <button
                   type="button"
                   onClick={handleSaveAndSignIn}
-                  className="motion-press mt-3 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-5 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] hover:border-[var(--rule)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+                  className="rounded-lg mt-3 inline-flex min-h-12 w-full items-center justify-center gap-2 border border-[var(--lead)] bg-[var(--card-bg)] px-5 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] hover:border-[var(--rule)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
                 >
                   Save & sign in with account
                 </button>
@@ -996,7 +996,7 @@ export default function BookingScreen() {
                   <div className="mt-4 text-center">
                     <Link
                       href={returnUrl}
-                      className="inline-flex min-h-10 items-center text-xs font-semibold text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+                      className="inline-flex min-h-10 items-center rounded-md border border-[var(--lead)] bg-[var(--card-bg)] px-5 text-xs font-semibold text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
                     >
                       Return to services
                     </Link>

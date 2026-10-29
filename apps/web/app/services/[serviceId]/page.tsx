@@ -75,24 +75,24 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
         <div className="relative mx-auto max-w-[1280px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
           <Link
             href={backToServicesHref}
-            className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-[var(--strip-text)] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--amber)] rounded-lg"
+            className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-[var(--strip-text)] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--amber)] rounded-full px-3 py-1.5"
           >
             <ArrowLeft className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
             Back to services
           </Link>
 
           <div className="mt-10 max-w-2xl pb-8 sm:mt-14 sm:pb-12">
-            <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">{service.group}</p>
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--nav-accent)] dark:text-[var(--brand-green)]">{service.group}</p>
             <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-white">
               {service.title}
             </h1>
             <p className="mt-5 max-w-xl text-base leading-7 text-[var(--strip-text)] sm:text-lg">
               {service.description}
             </p>
-            <div className="mt-7 inline-flex rounded-lg border border-white/15 bg-white/5 backdrop-blur-xs px-4 py-3">
+            <div className="mt-7 inline-flex rounded-2xl border border-white/15 bg-white/5 backdrop-blur-xs px-5 py-3.5">
               <div>
                 <span className="block font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--strip-text)]">Starting price</span>
-                <strong className="mt-1 block font-mono text-2xl font-bold text-[var(--brand-green)]">{service.startingPrice}</strong>
+                <strong className="mt-1 block font-mono text-2xl font-bold text-white">{service.startingPrice}</strong>
               </div>
             </div>
           </div>
@@ -101,14 +101,14 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
 
       <section className="mx-auto grid max-w-[1280px] gap-8 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-10 lg:px-8">
         <div className="space-y-8">
-          <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-7">
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-7">
             <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">What this service can cover</p>
             <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-[var(--text-main)]">
               Common jobs to discuss before you book.
             </h2>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2">
               {service.popularServices.map((job) => (
-                <li key={job} className="flex gap-3 rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] p-4 text-sm font-semibold leading-6 text-[var(--text-main)]">
+                <li key={job} className="flex gap-3 rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] p-4 text-sm font-semibold leading-6 text-[var(--text-main)]">
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
                   {job}
                 </li>
@@ -116,9 +116,9 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
             </ul>
           </section>
 
-          <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-7">
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-7">
             <div className="flex items-start gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
                 <MapPin className="h-5 w-5" aria-hidden="true" />
               </span>
               <div>
@@ -131,7 +131,7 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
             </div>
             <div className="mt-6 flex flex-wrap gap-2" aria-label="Available locations">
               {locations.map((location) => (
-                <span key={location.id} className="rounded-md border border-[var(--tag-border)] bg-[var(--tag-bg)] px-3 py-1.5 font-mono text-xs font-semibold text-[var(--text-main)]">
+                <span key={location.id} className="rounded-full border border-[var(--tag-border)] bg-[var(--tag-bg)] px-3 py-1.5 font-mono text-xs font-semibold text-[var(--text-main)]">
                   {location.name}
                 </span>
               ))}
@@ -139,7 +139,7 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
           </section>
         </div>
 
-        <aside className="h-fit rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6 lg:sticky lg:top-6">
+        <aside className="h-fit rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6 lg:sticky lg:top-6">
           <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">Next step</p>
           <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-[var(--text-main)]">Prepare the details for your booking.</h2>
           <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
@@ -147,14 +147,14 @@ export default async function ServiceDetailPage({ params, searchParams }: PagePr
           </p>
           <Link
             href={`/book?${booking.toString()}`}
-            className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+            className="outlier-pill-button motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 hover:scale-[1.02] active:scale-[0.98]"
           >
             Continue to booking
             <ArrowRight className="h-4 w-4 text-[#001A41]" aria-hidden="true" />
           </Link>
           <Link
             href="/services"
-            className="motion-press mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-4 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] hover:border-[var(--rule)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+            className="motion-press mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-5 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] hover:border-[var(--rule)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
           >
             Browse all services
           </Link>

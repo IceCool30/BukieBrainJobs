@@ -30,7 +30,7 @@ export function BrainWorkerHeader({ active, user, onSignOut }: BrainWorkerHeader
           <Link href="/brainworker/dashboard" className="flex shrink-0 items-center gap-2.5">
             <Image src="/images/logo-icon.png" alt="BukieBrainJobs" width={32} height={32} className="h-8 w-8 rounded-lg object-contain" />
           </Link>
-          <span className="inline-flex items-center gap-1 rounded-md border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--brand-green)]">
+          <span className="inline-flex items-center gap-1 rounded-full border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--brand-green)]">
             <ShieldCheck className="h-3 w-3" aria-hidden="true" />
             Verified Provider
           </span>
@@ -47,7 +47,7 @@ export function BrainWorkerHeader({ active, user, onSignOut }: BrainWorkerHeader
                 type="button"
                 onClick={onSignOut}
                 aria-label="Sign out"
-                className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2 text-xs font-medium text-[var(--text-muted)] transition-colors hover:bg-[var(--tag-bg)] hover:text-[var(--danger)]"
+                className="inline-flex h-9 items-center gap-1.5 rounded-md px-3 text-xs font-medium text-[var(--text-muted)] transition-colors hover:bg-[var(--tag-bg)] hover:text-[var(--danger)]"
               >
                 <LogOut className="h-4 w-4" aria-hidden="true" />
                 <span className="hidden sm:inline">Sign Out</span>

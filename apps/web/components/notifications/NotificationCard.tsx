@@ -48,7 +48,7 @@ function CategoryIcon({ category }: { category: NotificationCategory }) {
       return (
         <div
           data-testid="category-icon-bookings"
-          className="w-10 h-10 rounded-lg bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30 flex items-center justify-center shrink-0"
+          className="w-10 h-10 rounded-xl bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30 flex items-center justify-center shrink-0"
         >
           <Calendar className="w-5 h-5" aria-hidden="true" />
         </div>
@@ -57,7 +57,7 @@ function CategoryIcon({ category }: { category: NotificationCategory }) {
       return (
         <div
           data-testid="category-icon-messages_payments"
-          className="w-10 h-10 rounded-lg bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] flex items-center justify-center shrink-0"
+          className="w-10 h-10 rounded-xl bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] flex items-center justify-center shrink-0"
         >
           <MessageSquare className="w-5 h-5" aria-hidden="true" />
         </div>
@@ -66,7 +66,7 @@ function CategoryIcon({ category }: { category: NotificationCategory }) {
       return (
         <div
           data-testid="category-icon-account"
-          className="w-10 h-10 rounded-lg bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] flex items-center justify-center shrink-0"
+          className="w-10 h-10 rounded-xl bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] flex items-center justify-center shrink-0"
         >
           <Shield className="w-5 h-5" aria-hidden="true" />
         </div>
@@ -75,7 +75,7 @@ function CategoryIcon({ category }: { category: NotificationCategory }) {
       return (
         <div
           data-testid="category-icon-default"
-          className="w-10 h-10 rounded-lg bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center shrink-0"
+          className="w-10 h-10 rounded-xl bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center shrink-0"
         >
           <Bell className="w-5 h-5" aria-hidden="true" />
         </div>
@@ -110,7 +110,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
       data-testid={`notification-card-${notification.id}`}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className={`group relative flex items-start gap-4 p-4 rounded-lg border transition-all cursor-pointer min-h-[44px] sm:min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
+      className={`group relative flex items-start gap-4 p-4 rounded-2xl border transition-all cursor-pointer min-h-[44px] sm:min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
         notification.isRead
           ? 'bg-[var(--card-bg)] border-[var(--lead)] hover:border-[var(--rule)] hover:shadow-xs'
           : 'bg-[var(--tag-bg)] border-[var(--lead)] shadow-[inset_3px_0_0_var(--amber)] hover:border-[var(--amber)]/40'
@@ -158,7 +158,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           <div className="mt-2 flex items-center gap-2">
             <span
               data-testid="reference-code-badge"
-              className="inline-flex items-center text-xs font-mono font-medium text-[var(--text-muted)] dark:text-[var(--text-main)] bg-[var(--tag-bg)] px-2 py-0.5 rounded-md border border-[var(--lead)]"
+              className="inline-flex items-center text-xs font-mono font-medium text-[var(--text-muted)] dark:text-[var(--text-main)] bg-[var(--tag-bg)] px-2.5 py-0.5 rounded-full border border-[var(--lead)]"
             >
               {notification.referenceCode}
             </span>

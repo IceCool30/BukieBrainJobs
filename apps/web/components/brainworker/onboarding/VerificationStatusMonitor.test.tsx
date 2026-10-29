@@ -95,7 +95,7 @@ describe('BW-001 Suite 8: VerificationStatusMonitor Contracts (VFD-001 to VFD-00
 
     expect(screen.getByText(/Application Received/i)).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: /Your Verification Application is in Queue/i })
+      screen.getByRole('heading', { level: 1, name: /Your Verification Application is in Queue/i })
     ).toBeInTheDocument();
     expect(
       screen.getByText(/We have received your identity and trade credentials/i)
@@ -123,7 +123,7 @@ describe('BW-001 Suite 8: VerificationStatusMonitor Contracts (VFD-001 to VFD-00
 
     expect(screen.getByText(/Under Active Review/i)).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: /Verification Review in Progress/i })
+      screen.getByRole('heading', { level: 1, name: /Verification Review in Progress/i })
     ).toBeInTheDocument();
     expect(
       screen.getByText(/Application Submitted & Formats Checked/i)
@@ -168,7 +168,7 @@ describe('BW-001 Suite 8: VerificationStatusMonitor Contracts (VFD-001 to VFD-00
       screen.getByText(/^Action Needed$/i)
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: /Action Needed: Document Re-Upload Required/i })
+      screen.getByRole('heading', { level: 1, name: /Action Needed: Document Re-Upload Required/i })
     ).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -201,7 +201,7 @@ describe('BW-001 Suite 8: VerificationStatusMonitor Contracts (VFD-001 to VFD-00
 
     expect(screen.getByText(/Application Not Approved/i)).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: /Verification Could Not Be Completed/i })
+      screen.getByRole('heading', { level: 1, name: /Verification Could Not Be Completed/i })
     ).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -235,6 +235,7 @@ describe('BW-001 Suite 8: VerificationStatusMonitor Contracts (VFD-001 to VFD-00
     expect(screen.getByText(/Verified Provider/i)).toBeInTheDocument();
     expect(
       screen.getByRole('heading', {
+        level: 1,
         name: /Congratulations! Your BrainWorker Account is Verified/i,
       })
     ).toBeInTheDocument();

@@ -48,7 +48,7 @@ export function DisputeInitiationModal({
       aria-modal="true"
       aria-labelledby="dispute-modal-title"
     >
-      <div className="w-full max-w-lg rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-2xl">
+      <div className="w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-2xl">
         <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
           <h2 id="dispute-modal-title" className="text-lg font-bold text-zinc-100">
             Raise Dispute
@@ -57,7 +57,7 @@ export function DisputeInitiationModal({
             type="button"
             onClick={onClose}
             disabled={isSubmitting}
-            className="flex h-10 w-10 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
             aria-label="Close dialog"
           >
             ✕
@@ -108,7 +108,7 @@ export function DisputeInitiationModal({
             />
           </div>
 
-          <div className="rounded-lg border border-amber-900/40 bg-amber-950/20 p-3 text-xs text-amber-300">
+          <div className="rounded-xl border border-amber-900/40 bg-amber-950/20 p-3 text-xs text-amber-300">
             Submitting a dispute freezes the escrow funds immediately and pauses the 72-hour auto-release clock.
           </div>
 
@@ -117,14 +117,14 @@ export function DisputeInitiationModal({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="flex min-h-[48px] items-center justify-center rounded-lg border border-zinc-700 px-5 text-sm font-medium text-zinc-300 hover:bg-zinc-800 disabled:opacity-50"
+              className="flex min-h-[48px] items-center justify-center rounded-full border border-zinc-700 px-5 text-sm font-medium text-zinc-300 hover:bg-zinc-800 disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!isValid || isSubmitting}
-              className="flex min-h-[48px] items-center justify-center rounded-lg bg-red-600 px-5 text-sm font-semibold text-white shadow-lg transition hover:bg-red-500 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
+              className="flex min-h-[48px] items-center justify-center rounded-full bg-red-600 px-5 text-sm font-semibold text-white shadow-lg transition hover:bg-red-500 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
             >
               {isSubmitting ? 'Submitting...' : 'Submit Dispute'}
             </button>

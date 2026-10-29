@@ -19,7 +19,7 @@ export function ActivityCard({ activity, isSelected, onSelect }: ActivityCardPro
       role="button"
       aria-pressed={isSelected}
       aria-label={`Select ${activity.title}, ${activity.statusLabel}`}
-      className={`w-full text-left p-4 sm:p-5 rounded-lg border transition group cursor-pointer ${
+      className={`w-full text-left p-4 sm:p-5 rounded-2xl border transition group cursor-pointer ${
         isSelected
           ? 'bg-[var(--amber)]/10 border-[var(--amber)] ring-1 ring-[var(--amber)] shadow-xs'
           : 'bg-[var(--card-bg)] border-[var(--lead)] hover:border-[var(--lead)]/80 hover:shadow-xs'

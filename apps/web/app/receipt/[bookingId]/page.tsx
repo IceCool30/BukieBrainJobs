@@ -59,7 +59,7 @@ export default function ReceiptPage() {
   if (loading) {
     return (
       <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] p-6 sm:p-12 flex items-center justify-center transition-colors duration-200">
-        <div className="bg-[var(--card-bg)] p-8 rounded-lg border border-[var(--lead)] text-center max-w-sm w-full space-y-3 shadow-xs">
+        <div className="bg-[var(--card-bg)] p-8 rounded-2xl border border-[var(--lead)] text-center max-w-sm w-full space-y-3 shadow-xs">
           <div className="w-8 h-8 rounded-full border-2 border-[var(--amber)] border-t-transparent animate-spin mx-auto" />
           <p className="text-xs font-semibold text-[var(--text-muted)]">Retrieving verified transaction receipt...</p>
         </div>
@@ -70,8 +70,8 @@ export default function ReceiptPage() {
   if (error || !receipt) {
     return (
       <main className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] p-6 sm:p-12 flex items-center justify-center transition-colors duration-200">
-        <div className="bg-[var(--card-bg)] p-8 rounded-lg border border-[var(--lead)] text-center max-w-md w-full space-y-4 shadow-xs">
-          <div className="w-12 h-12 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] flex items-center justify-center mx-auto">
+        <div className="bg-[var(--card-bg)] p-8 rounded-2xl border border-[var(--lead)] text-center max-w-md w-full space-y-4 shadow-xs">
+          <div className="w-12 h-12 rounded-xl bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] flex items-center justify-center mx-auto">
             <AlertCircle className="h-6 w-6" />
           </div>
           <h1 className="text-lg font-display font-bold text-[var(--text-main)]">Receipt Unavailable</h1>
@@ -81,7 +81,7 @@ export default function ReceiptPage() {
           <div className="pt-2">
             <Link
               href="/jobs"
-              className="motion-press inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+              className="outlier-pill-button motion-press inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               <span>Return to Jobs & Bookings</span>
@@ -129,7 +129,7 @@ export default function ReceiptPage() {
         <div className="print:hidden flex items-center justify-between">
           <Link
             href="/jobs"
-            className="motion-press inline-flex items-center gap-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] transition rounded-lg"
+            className="motion-press inline-flex items-center gap-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] transition rounded-md border border-[var(--lead)] bg-[var(--card-bg)] px-4 py-2 hover:bg-[var(--card-hover)]"
           >
             <ArrowLeft className="h-4 w-4 text-[var(--amber)]" />
             <span>Back to Activity</span>
@@ -140,7 +140,7 @@ export default function ReceiptPage() {
               <button
                 type="button"
                 onClick={handlePrint}
-                className="motion-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] shadow-xs transition cursor-pointer"
+                className="motion-press inline-flex items-center gap-1.5 px-4 py-2 rounded-md border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] shadow-xs transition cursor-pointer"
               >
                 <Printer className="h-3.5 w-3.5 text-[var(--text-muted)]" />
                 <span>Print</span>
@@ -148,7 +148,7 @@ export default function ReceiptPage() {
               <button
                 type="button"
                 onClick={handleDownloadJson}
-                className="motion-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] shadow-xs transition cursor-pointer"
+                className="motion-press inline-flex items-center gap-1.5 px-4 py-2 rounded-md border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] shadow-xs transition cursor-pointer"
               >
                 <Download className="h-3.5 w-3.5 text-[var(--text-muted)]" />
                 <span>Export JSON</span>
@@ -158,7 +158,7 @@ export default function ReceiptPage() {
         </div>
 
         {/* Receipt Canvas */}
-        <div className="relative overflow-hidden bg-[var(--card-bg)] rounded-lg p-6 sm:p-10 border border-[var(--lead)] shadow-xs space-y-6">
+        <div className="relative overflow-hidden bg-[var(--card-bg)] rounded-2xl p-6 sm:p-10 border border-[var(--lead)] shadow-xs space-y-6">
           {/* Subtle Security Watermark */}
           <div
             className="pointer-events-none absolute -right-6 -bottom-8 opacity-[0.03] select-none"
@@ -180,7 +180,7 @@ export default function ReceiptPage() {
                 <span className="font-display font-extrabold text-2xl text-[var(--text-main)] tracking-tight">
                   BukieBrain<span className="text-[var(--brand-green)]">Jobs</span>
                 </span>
-                <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded-md bg-[var(--tag-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
+                <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[var(--tag-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
                   Escrow Receipt
                 </span>
               </div>
@@ -197,13 +197,13 @@ export default function ReceiptPage() {
 
           {/* Sandbox Simulated Watermark */}
           {receipt.isSimulatedTestDocument && (
-            <div className="relative z-10 rounded-lg bg-[var(--tag-bg)] p-2.5 text-center text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] border border-dashed border-[var(--lead)]">
+            <div className="relative z-10 rounded-xl bg-[var(--tag-bg)] p-2.5 text-center text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] border border-dashed border-[var(--lead)]">
               SIMULATED TEST RECEIPT (PHASE 1 MOCK BOUNDARY)
             </div>
           )}
 
           {/* Settlement Badge */}
-          <div className={`relative z-10 rounded-lg p-3.5 border flex items-center justify-between gap-3 text-xs ${badge.color}`}>
+          <div className={`relative z-10 rounded-xl p-3.5 border flex items-center justify-between gap-3 text-xs ${badge.color}`}>
             <div className="flex items-center gap-2 font-bold">
               <Icon className="h-4 w-4 shrink-0" />
               <span>{badge.label}</span>
@@ -212,7 +212,7 @@ export default function ReceiptPage() {
           </div>
 
           {/* Metadata */}
-          <div className="relative z-10 grid grid-cols-2 gap-4 text-xs bg-[var(--tag-bg)] p-5 rounded-lg border border-[var(--lead)]">
+          <div className="relative z-10 grid grid-cols-2 gap-4 text-xs bg-[var(--tag-bg)] p-5 rounded-xl border border-[var(--lead)]">
             <div>
               <span className="text-[var(--text-muted)] block text-[11px] font-mono uppercase tracking-wider">Billed To</span>
               <span className="font-bold text-[var(--text-main)] block mt-0.5">{receipt.customerName}</span>
@@ -243,7 +243,7 @@ export default function ReceiptPage() {
             <h2 className="font-mono font-bold uppercase tracking-wider text-[var(--text-muted)] text-[10px]">
               Itemized Financial Summary
             </h2>
-            <div className="rounded-lg border border-[var(--lead)] overflow-hidden divide-y divide-[var(--lead)]">
+            <div className="rounded-xl border border-[var(--lead)] overflow-hidden divide-y divide-[var(--lead)]">
               <div className="p-3.5 flex justify-between bg-[var(--card-bg)] text-[var(--text-muted)]">
                 <span>Base Service Estimate</span>
                 <span className="font-mono font-semibold text-[var(--text-main)]">₦{receipt.pricing.baseServiceAmountNaira.toLocaleString()}</span>

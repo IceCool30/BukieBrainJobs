@@ -302,13 +302,13 @@ export default function PostJobScreen() {
             </p>
 
             {/* Reference Badge */}
-            <div className="mt-5 inline-flex items-center gap-2 rounded-md border border-[var(--lead)] bg-[var(--tag-bg)] px-4 py-1.5 text-xs font-mono font-bold text-[var(--text-main)]">
+            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--lead)] bg-[var(--tag-bg)] px-4 py-1.5 text-xs font-mono font-bold text-[var(--text-main)]">
               <span>Reference:</span>
               <span className="text-[var(--brand-green)]">{submittedReference || 'REQ-72941'}</span>
             </div>
 
             {/* Honest Next-Steps Box */}
-            <div className="mt-6 rounded-lg border border-[var(--lead)] bg-[var(--bg)] p-4 text-left text-xs leading-relaxed text-[var(--text-muted)]">
+            <div className="mt-6 rounded-2xl border border-[var(--lead)] bg-[var(--bg)] p-5 text-left text-xs leading-relaxed text-[var(--text-muted)]">
               <p className="font-semibold text-[var(--text-main)] flex items-center gap-1.5 mb-1.5">
                 <Info className="h-4 w-4 text-[var(--brand-green)]" />
                 What happens next
@@ -328,7 +328,7 @@ export default function PostJobScreen() {
             </div>
 
             {/* Request Summary Card */}
-            <div className="relative overflow-hidden mt-6 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-left shadow-xs">
+            <div className="relative overflow-hidden mt-6 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 text-left shadow-xs">
               {/* Trademark Security Watermark */}
               <div
                 className="pointer-events-none absolute -right-6 -bottom-8 opacity-[0.04] select-none"
@@ -397,19 +397,19 @@ export default function PostJobScreen() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link
                 href={`/dashboard?jobCreated=${encodeURIComponent(submittedReference || 'REQ-72941')}&jobTitle=${encodeURIComponent(formData.title || 'Job Request')}`}
-                className="motion-press inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs cursor-pointer"
+                className="outlier-pill-button motion-press inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
                 View on Dashboard
               </Link>
               <Link
                 href="/services"
-                className="motion-press inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] shadow-xs cursor-pointer"
+                className="motion-press inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] shadow-xs cursor-pointer"
               >
                 Browse Services Directory
               </Link>
               <Link
                 href="/"
-                className="motion-press inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] shadow-xs cursor-pointer"
+                className="motion-press inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] shadow-xs cursor-pointer"
               >
                 Return to Homepage
               </Link>
@@ -428,7 +428,7 @@ export default function PostJobScreen() {
         <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link
             href="/services"
-            className="motion-press inline-flex min-h-12 items-center gap-2 text-sm font-bold text-[var(--text-main)] transition-colors hover:text-[var(--amber)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
+            className="motion-press inline-flex min-h-12 items-center gap-2 text-sm font-bold text-[var(--text-main)] transition-colors hover:text-[var(--amber)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-full px-3 py-1.5"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back to services
@@ -436,7 +436,7 @@ export default function PostJobScreen() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
+              className="inline-flex min-h-11 items-center gap-2 font-display text-base font-extrabold tracking-tight text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-full"
             >
               <Image
                 src="/images/logo-icon.png"
@@ -455,7 +455,7 @@ export default function PostJobScreen() {
         {restoredBanner && (
           <aside
             aria-label="Restored job draft"
-            className="mb-6 flex items-start justify-between rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4 shadow-xs sm:p-5"
+            className="mb-6 flex items-start justify-between rounded-2xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4 shadow-xs sm:p-5"
           >
             <div className="flex items-start gap-3">
               <CheckCircle2 className="h-5 w-5 shrink-0 text-[var(--brand-green)] mt-0.5" aria-hidden="true" />
@@ -470,7 +470,7 @@ export default function PostJobScreen() {
             </div>
             <button
               onClick={() => setRestoredBanner(false)}
-              className="motion-press rounded-lg p-1 text-[var(--text-muted)] hover:bg-emerald-500/20 hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] cursor-pointer"
+              className="motion-press rounded-full p-1 text-[var(--text-muted)] hover:bg-emerald-500/20 hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)] cursor-pointer"
               aria-label="Dismiss restored alert"
             >
               <X className="h-4 w-4" />
@@ -482,7 +482,7 @@ export default function PostJobScreen() {
         {status === 'error' && (
           <aside
             aria-label="Submission error"
-            className="mb-6 flex flex-col gap-3 rounded-lg border border-[var(--danger-border)] bg-[var(--danger-dim)] p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between sm:p-5"
+            className="mb-6 flex flex-col gap-3 rounded-2xl border border-[var(--danger-border)] bg-[var(--danger-dim)] p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between sm:p-5"
             role="alert"
           >
             <div className="flex items-start gap-3">
@@ -498,7 +498,7 @@ export default function PostJobScreen() {
             </div>
             <button
               onClick={finishSubmission}
-              className="motion-press inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--danger)] px-4 text-xs font-bold text-white transition-colors hover:opacity-90 cursor-pointer"
+              className="motion-press inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--danger)] px-5 text-xs font-bold text-white transition-colors hover:opacity-90 cursor-pointer"
             >
               Try again
             </button>
@@ -508,12 +508,12 @@ export default function PostJobScreen() {
         {/* Page Hero Header */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-2">
-            <span className="inline-flex items-center gap-1 rounded-md border border-[var(--lead)] bg-[var(--tag-bg)] px-2.5 py-1 text-xs font-mono font-bold uppercase tracking-wider text-[var(--text-main)]">
+            <span className="inline-flex items-center gap-1 rounded-full border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-1 text-xs font-mono font-bold uppercase tracking-wider text-[var(--text-main)]">
               <Sparkles className="h-3.5 w-3.5 text-[var(--brand-green)]" />
               Open Customer Request
             </span>
             {selectedWorker && (
-              <span className="inline-flex items-center gap-1 rounded-md border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] px-2.5 py-1 text-xs font-semibold text-[var(--brand-green)]">
+              <span className="inline-flex items-center gap-1 rounded-full border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] px-3 py-1 text-xs font-semibold text-[var(--brand-green)]">
                 <UserCheck className="h-3.5 w-3.5" />
                 Preferred: {selectedWorker.name}
               </span>
@@ -532,7 +532,7 @@ export default function PostJobScreen() {
           <button
             type="button"
             onClick={() => scrollToField('section-requirement')}
-            className="flex items-center gap-1.5 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-1.5 font-semibold text-[var(--text-main)] shadow-xs hover:border-[var(--amber)] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-3.5 py-1.5 font-semibold text-[var(--text-main)] shadow-xs hover:border-[var(--amber)] transition-colors cursor-pointer"
           >
             <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--amber)] text-[10px] font-bold text-[#001A41]">1</span>
             <span>Requirement</span>
@@ -541,7 +541,7 @@ export default function PostJobScreen() {
           <button
             type="button"
             onClick={() => scrollToField('section-location')}
-            className="flex items-center gap-1.5 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-1.5 font-semibold text-[var(--text-main)] shadow-xs hover:border-[var(--amber)] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-3.5 py-1.5 font-semibold text-[var(--text-main)] shadow-xs hover:border-[var(--amber)] transition-colors cursor-pointer"
           >
             <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--amber)] text-[10px] font-bold text-[#001A41]">2</span>
             <span>Location</span>
@@ -550,7 +550,7 @@ export default function PostJobScreen() {
           <button
             type="button"
             onClick={() => scrollToField('section-schedule')}
-            className="flex items-center gap-1.5 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-1.5 font-semibold text-[var(--text-main)] shadow-xs hover:border-[var(--amber)] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-3.5 py-1.5 font-semibold text-[var(--text-main)] shadow-xs hover:border-[var(--amber)] transition-colors cursor-pointer"
           >
             <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--amber)] text-[10px] font-bold text-[#001A41]">3</span>
             <span>Schedule</span>
@@ -559,7 +559,7 @@ export default function PostJobScreen() {
           <button
             type="button"
             onClick={() => scrollToField('section-budget')}
-            className="flex items-center gap-1.5 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-1.5 font-semibold text-[var(--text-main)] shadow-xs hover:border-[var(--amber)] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-3.5 py-1.5 font-semibold text-[var(--text-main)] shadow-xs hover:border-[var(--amber)] transition-colors cursor-pointer"
           >
             <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--amber)] text-[10px] font-bold text-[#001A41]">4</span>
             <span>Budget & Review</span>
@@ -574,10 +574,10 @@ export default function PostJobScreen() {
               <section
                 id="section-requirement"
                 aria-labelledby="heading-requirement"
-                className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 shadow-xs"
+                className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 shadow-xs"
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--amber)] text-xs font-bold text-[#001A41]">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-[var(--amber)] text-xs font-bold text-[#001A41]">
                     1
                   </div>
                   <h2 id="heading-requirement" className="font-display text-base font-bold text-[var(--text-main)] sm:text-lg">
@@ -592,7 +592,7 @@ export default function PostJobScreen() {
                   </legend>
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <label
-                      className={`cursor-pointer rounded-lg border p-3.5 transition-all flex flex-col justify-between ${
+                      className={`cursor-pointer rounded-xl border p-3.5 transition-all flex flex-col justify-between ${
                         formData.jobType === 'specific_service'
                           ? 'border-[var(--amber)] bg-[var(--amber)]/10 ring-1 ring-[var(--amber)]'
                           : 'border-[var(--lead)] bg-[var(--bg)] hover:border-[var(--text-muted)]'
@@ -615,7 +615,7 @@ export default function PostJobScreen() {
                     </label>
 
                     <label
-                      className={`cursor-pointer rounded-lg border p-3.5 transition-all flex flex-col justify-between ${
+                      className={`cursor-pointer rounded-xl border p-3.5 transition-all flex flex-col justify-between ${
                         formData.jobType === 'broader_project'
                           ? 'border-[var(--amber)] bg-[var(--amber)]/10 ring-1 ring-[var(--amber)]'
                           : 'border-[var(--lead)] bg-[var(--bg)] hover:border-[var(--text-muted)]'
@@ -740,10 +740,10 @@ export default function PostJobScreen() {
               <section
                 id="section-location"
                 aria-labelledby="heading-location"
-                className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 shadow-xs"
+                className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 shadow-xs"
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--amber)] text-xs font-bold text-[#001A41]">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-[var(--amber)] text-xs font-bold text-[#001A41]">
                     2
                   </div>
                   <h2 id="heading-location" className="font-display text-base font-bold text-[var(--text-main)] sm:text-lg">
@@ -782,7 +782,7 @@ export default function PostJobScreen() {
 
                   {/* Notice if unactivated city from query parameter */}
                   {!context.isCityActive && context.rawCity && (
-                    <div className="mt-2 flex items-start gap-2 rounded-lg bg-[var(--amber-dim)] border border-[var(--amber)]/30 p-3 text-xs text-[var(--amber)]">
+                    <div className="mt-2 flex items-start gap-2 rounded-2xl bg-[var(--amber-dim)] border border-[var(--amber)]/30 p-3.5 text-xs text-[var(--amber)]">
                       <Info className="h-4 w-4 text-[var(--amber)] shrink-0 mt-0.5" />
                       <div>
                         <span className="font-semibold">Service in {context.rawCity} coming soon:</span> We currently operate active BrainWorker hubs in Lagos, Abuja, Port Harcourt, Ibadan, Enugu, Kano, and Benin City. Please select an active city.
@@ -855,10 +855,10 @@ export default function PostJobScreen() {
               <section
                 id="section-schedule"
                 aria-labelledby="heading-schedule"
-                className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 shadow-xs"
+                className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 shadow-xs"
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--amber)] text-xs font-bold text-[#001A41]">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-[var(--amber)] text-xs font-bold text-[#001A41]">
                     3
                   </div>
                   <h2 id="heading-schedule" className="font-display text-base font-bold text-[var(--text-main)] sm:text-lg">
@@ -879,7 +879,7 @@ export default function PostJobScreen() {
                     ].map((option) => (
                       <label
                         key={option.id}
-                        className={`cursor-pointer rounded-lg border p-3 text-center transition-all flex flex-col justify-center items-center ${
+                        className={`cursor-pointer rounded-xl border p-3 text-center transition-all flex flex-col justify-center items-center ${
                           formData.urgency === option.id
                             ? 'border-[var(--amber)] bg-[var(--amber)]/10 ring-1 ring-[var(--amber)]'
                             : 'border-[var(--lead)] bg-[var(--bg)] hover:border-[var(--text-muted)]'
@@ -903,7 +903,7 @@ export default function PostJobScreen() {
 
                 {/* Specific Date input if selected */}
                 {formData.urgency === 'specific_date' && (
-                  <div className="mb-5 rounded-lg border border-[var(--lead)] bg-[var(--bg)] p-3.5">
+                  <div className="mb-5 rounded-2xl border border-[var(--lead)] bg-[var(--bg)] p-3.5">
                     <label
                       htmlFor="post-job-preferredDate-input"
                       className="block text-xs font-bold uppercase tracking-wider text-[var(--text-main)] mb-1"
@@ -955,10 +955,10 @@ export default function PostJobScreen() {
               <section
                 id="section-budget"
                 aria-labelledby="heading-budget"
-                className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 shadow-xs"
+                className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 shadow-xs"
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--amber)] text-xs font-bold text-[#001A41]">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-[var(--amber)] text-xs font-bold text-[#001A41]">
                     4
                   </div>
                   <h2 id="heading-budget" className="font-display text-base font-bold text-[var(--text-main)] sm:text-lg">
@@ -1100,7 +1100,7 @@ export default function PostJobScreen() {
                   type="submit"
                   disabled={status === 'pending'}
                   aria-busy={status === 'pending'}
-                  className="motion-press inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] cursor-pointer shadow-xs"
+                  className="outlier-pill-button rounded-full inline-flex min-h-12 w-full items-center justify-center bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] cursor-pointer shadow-xs"
                 >
                   {status === 'pending' ? (
                     <>
@@ -1118,7 +1118,7 @@ export default function PostJobScreen() {
 
           {/* Right Column: Sticky Live Review Summary Card (PJ-06 on desktop) */}
           <div className="lg:col-span-5">
-            <div className="relative overflow-hidden sticky top-6 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
+            <div className="relative overflow-hidden sticky top-6 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
               {/* Trademark Security Watermark */}
               <div
                 className="pointer-events-none absolute -right-8 -bottom-10 opacity-[0.03] select-none"
@@ -1137,7 +1137,7 @@ export default function PostJobScreen() {
                 <h2 className="font-display text-base font-bold text-[var(--text-main)]">
                   Request Preview
                 </h2>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--brand-green)] bg-[var(--brand-green-dim)] px-2 py-0.5 rounded-md border border-[var(--brand-green-border)]">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--brand-green)] bg-[var(--brand-green-dim)] px-2.5 py-0.5 rounded-full border border-[var(--brand-green-border)]">
                   Live summary
                 </span>
               </div>
@@ -1269,7 +1269,7 @@ export default function PostJobScreen() {
                     </span>
                   </div>
                 ) : (
-                  <div className="mb-3 rounded-lg bg-[var(--bg)] border border-[var(--lead)] p-2.5 text-xs text-[var(--text-muted)]">
+                  <div className="mb-3 rounded-2xl bg-[var(--bg)] border border-[var(--lead)] p-3 text-xs text-[var(--text-muted)]">
                     <p className="font-semibold text-[var(--text-main)]">Guest checkout</p>
                     <p className="text-[11px] text-[var(--text-muted)] mt-0.5">
                       Your draft is saved automatically before signing in.
@@ -1281,7 +1281,7 @@ export default function PostJobScreen() {
                   type="submit"
                   disabled={status === 'pending'}
                   aria-busy={status === 'pending'}
-                  className="motion-press inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] cursor-pointer shadow-xs"
+                  className="outlier-pill-button rounded-full inline-flex min-h-12 w-full items-center justify-center bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] cursor-pointer shadow-xs"
                 >
                   {status === 'pending' ? (
                     <>

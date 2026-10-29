@@ -60,7 +60,7 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
         <div className="relative mx-auto max-w-[1280px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
           <Link
             href={servicesUrl ?? '/#workers'}
-            className="motion-press inline-flex min-h-11 items-center gap-2 rounded-lg text-xs sm:text-sm font-semibold text-white/80 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--amber)]"
+            className="motion-press inline-flex min-h-10 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-xs sm:text-sm font-semibold text-white/90 transition-colors hover:bg-white/20 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--amber)]"
           >
             <ArrowLeft className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
             {servicesUrl ? 'Back to services' : 'Back to featured BrainWorkers'}
@@ -71,8 +71,8 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
             <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-white">{profile.name}</h1>
             <p className="mt-4 text-lg font-semibold text-white/85 sm:text-xl">{profile.title}</p>
             <div className="mt-6 flex flex-wrap gap-2.5 text-xs font-semibold text-white">
-              <span className="rounded-md border border-white/20 bg-white/10 px-3 py-1.5 font-mono">{profile.category}</span>
-              <span className="inline-flex items-center gap-1.5 rounded-md border border-white/20 bg-white/10 px-3 py-1.5">
+              <span className="rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 font-mono">{profile.category}</span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5">
                 <MapPin className="h-3.5 w-3.5 text-[var(--nav-accent)]" aria-hidden="true" />
                 {profile.location}
               </span>
@@ -91,13 +91,13 @@ export default async function PublicBrainWorkerProfilePage({ params, searchParam
             serviceCategories={[profile.category]}
           />
 
-          <section className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-7 shadow-xs">
+          <section className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-7 shadow-xs">
             <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">Location context</p>
             <h2 className="mt-2 font-display text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-main)]">Choose an active city for your job</h2>
             <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">The city you confirm will be carried into booking preparation.</p>
             <div className="mt-5 flex flex-wrap gap-2" aria-label="Active cities">
               {activeLocations.map((location) => (
-                <span key={location.id} className="rounded-md border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-1.5 font-mono text-xs font-semibold text-[var(--text-main)]">{location.name}</span>
+                <span key={location.id} className="rounded-full border border-[var(--lead)] bg-[var(--tag-bg)] px-3.5 py-1 font-mono text-xs font-semibold text-[var(--text-main)]">{location.name}</span>
               ))}
             </div>
           </section>

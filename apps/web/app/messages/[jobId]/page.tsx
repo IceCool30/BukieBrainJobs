@@ -69,7 +69,7 @@ export default function ChatPage(props: ChatPageProps) {
   if (convData.isUnauthorized) {
     return (
       <main className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-6 text-[var(--text-main)] font-sans">
-        <div role="alert" className="max-w-md w-full bg-[var(--card-bg)] rounded-lg p-8 border border-[var(--danger-border)] shadow-xs text-center">
+        <div role="alert" className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl p-8 border border-[var(--danger-border)] shadow-xs text-center">
           <h1 className="text-xl font-bold font-display text-[var(--danger)] mb-2">Access Denied</h1>
           <p className="text-sm text-[var(--text-muted)] mb-6 leading-relaxed">
             You do not have permission to view this conversation, or the booking is invalid.

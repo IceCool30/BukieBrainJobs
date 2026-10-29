@@ -30,7 +30,7 @@ export function JobContextPanel({ result }: JobContextPanelProps) {
   return (
     <section
       aria-labelledby="job-context-heading"
-      className="bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text)] rounded-lg p-5 sm:p-6 mb-6 lg:mb-0 shadow-sm"
+      className="bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text)] rounded-2xl p-5 sm:p-6 mb-6 lg:mb-0 shadow-xs"
     >
       {/* Reference + title */}
       <div className="flex items-start justify-between gap-3 mb-3">

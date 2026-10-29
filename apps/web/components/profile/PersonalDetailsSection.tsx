@@ -72,10 +72,10 @@ export function PersonalDetailsSection({
   const initials = `${firstName ? firstName.charAt(0) : ''}${lastName ? lastName.charAt(0) : ''}`.toUpperCase() || 'C';
 
   return (
-    <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-[var(--lead)] shadow-xs space-y-6">
+    <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 sm:p-7 border border-[var(--lead)] shadow-xs space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--lead)]">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-lg bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] font-bold text-xl flex items-center justify-center shadow-xs">
+          <div className="w-16 h-16 rounded-xl bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] font-bold text-xl flex items-center justify-center shadow-xs">
             {initials}
           </div>
           <div>
@@ -89,7 +89,7 @@ export function PersonalDetailsSection({
         </div>
 
         {profile.emailVerified && (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] text-xs font-semibold border border-[var(--brand-green-border)]">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] text-xs font-semibold border border-[var(--brand-green-border)]">
             <CheckCircle2 className="h-3.5 w-3.5" />
             <span>Verified Customer</span>
           </div>
@@ -99,7 +99,7 @@ export function PersonalDetailsSection({
       {validationError && (
         <div
           role="alert"
-          className="p-3.5 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-xl bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs flex items-center gap-2.5"
         >
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{validationError}</span>
@@ -109,7 +109,7 @@ export function PersonalDetailsSection({
       {successMessage && (
         <div
           role="status"
-          className="p-3.5 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-xl bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2.5"
         >
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           <span>{successMessage}</span>
@@ -192,7 +192,7 @@ export function PersonalDetailsSection({
           <button
             type="submit"
             disabled={isSaving || isOffline}
-            className="min-h-[48px] px-6 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-[var(--amber)] transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+            className="outlier-pill-button min-h-[48px] px-8 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-full focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-[var(--amber)] transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
           >
             {isSaving ? (
               <>

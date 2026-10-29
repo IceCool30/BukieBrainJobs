@@ -37,22 +37,22 @@ export function AutoReleaseCountdownCard({
   return (
     <div
       data-testid="auto-release-countdown-card"
-      className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl"
+      className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl"
     >
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 pb-3">
         <h3 className="text-base font-semibold text-zinc-100">
           72-Hour Inspection and Auto-Release Window
         </h3>
         {isFrozen ? (
-          <span className="rounded-md border border-red-800 bg-red-950/80 px-2.5 py-1 text-xs font-semibold text-red-400">
+          <span className="rounded-full border border-red-800 bg-red-950/80 px-3 py-1 text-xs font-semibold text-red-400">
             Dispute Active: Escrow Frozen
           </span>
         ) : isEligible ? (
-          <span className="rounded-md border border-emerald-800 bg-emerald-950/80 px-2.5 py-1 text-xs font-semibold text-emerald-400">
+          <span className="rounded-full border border-emerald-800 bg-emerald-950/80 px-3 py-1 text-xs font-semibold text-emerald-400">
             Auto-Release Eligible
           </span>
         ) : (
-          <span className="rounded-md border border-zinc-700 bg-zinc-800 px-2.5 py-1 text-xs font-medium text-zinc-300">
+          <span className="rounded-full border border-zinc-700 bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300">
             Inspection Active
           </span>
         )}
@@ -60,7 +60,7 @@ export function AutoReleaseCountdownCard({
 
       <div className="mt-4">
         {isFrozen ? (
-          <div className="rounded-lg border border-red-900/50 bg-red-950/30 p-4 text-sm text-red-300">
+          <div className="rounded-xl border border-red-900/50 bg-red-950/30 p-4 text-sm text-red-300">
             <p className="font-medium">
               Escrow hold engaged during dispute review.
             </p>
@@ -69,7 +69,7 @@ export function AutoReleaseCountdownCard({
             </p>
           </div>
         ) : isEligible ? (
-          <div className="flex flex-col gap-3 rounded-lg border border-emerald-900/50 bg-emerald-950/30 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 rounded-xl border border-emerald-900/50 bg-emerald-950/30 p-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm font-medium text-emerald-300">
                 The 72-hour customer inspection window has concluded.
@@ -83,14 +83,14 @@ export function AutoReleaseCountdownCard({
                 type="button"
                 onClick={() => void onTriggerAutoRelease()}
                 disabled={isSubmitting}
-                className="flex min-h-[48px] items-center justify-center rounded-lg bg-emerald-600 px-5 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:opacity-50"
+                className="flex min-h-[48px] items-center justify-center outlier-pill-button rounded-full bg-[var(--amber)] px-5 text-sm font-semibold text-[#001A41] transition hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
               >
                 {isSubmitting ? 'Processing...' : 'Trigger Auto-Release'}
               </button>
             )}
           </div>
         ) : (
-          <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-4">
+          <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
             <div className="flex items-baseline justify-between">
               <span className="text-xs uppercase tracking-wider text-zinc-400">
                 Time Remaining

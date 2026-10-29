@@ -46,7 +46,7 @@ export default function GuaranteePage() {
             <div>
               <Link
                 href="/"
-                className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-xs font-semibold text-[var(--strip-text)] transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2 focus:ring-offset-[var(--strip-bg)]"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold text-[var(--strip-text)] transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2 focus:ring-offset-[var(--strip-bg)]"
               >
                 <ArrowLeft className="h-4 w-4 text-[var(--amber)]" />
                 Back to home
@@ -67,7 +67,7 @@ export default function GuaranteePage() {
             <div>
               <Link
                 href="/services"
-                className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 py-3 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2 focus:ring-offset-[var(--strip-bg)]"
+                className="outlier-pill-button motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2 focus:ring-offset-[var(--strip-bg)] hover:scale-[1.02] active:scale-[0.98]"
               >
                 Find a service
                 <ArrowRight className="h-4 w-4 text-[#001A41]" />
@@ -75,7 +75,7 @@ export default function GuaranteePage() {
             </div>
           </div>
 
-          <aside className="self-end rounded-lg border border-white/15 bg-white/5 backdrop-blur-xs p-5 shadow-xs sm:p-6">
+          <aside className="self-end rounded-2xl border border-white/15 bg-white/5 backdrop-blur-xs p-5 shadow-xs sm:p-6">
             <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--nav-accent)] dark:text-[var(--brand-green)]">Before you book</p>
             <ul className="mt-3.5 space-y-3">
               {BOOKING_CHECKS.map((item) => (
@@ -100,9 +100,9 @@ export default function GuaranteePage() {
 
         <div className="mt-6 grid gap-3 md:grid-cols-3 md:gap-4">
           {BOOKING_STEPS.map(({ title, description, icon: Icon }, index) => (
-            <article key={title} className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
+            <article key={title} className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-6">
               <div className="flex items-start justify-between gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
                   <Icon className="h-5 w-5" />
                 </div>
                 <span className="font-mono text-xl font-bold text-[var(--text-muted)]/40">0{index + 1}</span>
@@ -117,7 +117,7 @@ export default function GuaranteePage() {
       <section className="border-y border-[var(--lead)] bg-[var(--card-bg)]">
         <div className="mx-auto grid max-w-[1280px] gap-6 px-4 py-9 sm:px-6 sm:py-10 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.7fr)] lg:items-center lg:px-8 lg:py-12">
           <div className="max-w-2xl space-y-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
               <Lock className="h-5 w-5" />
             </div>
             <h2 className="font-display text-xl font-bold tracking-tight text-[var(--text-main)] sm:text-2xl">Take a moment to review.</h2>
@@ -125,7 +125,7 @@ export default function GuaranteePage() {
               Check the scope, starting price, location, and timing before you move to the next step.
             </p>
           </div>
-          <div className="rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] p-5">
+          <div className="rounded-2xl border border-[var(--lead)] bg-[var(--tag-bg)] p-5">
             <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">A clearer view</p>
             <p className="mt-3 text-sm leading-relaxed text-[var(--text-main)]">
               Use the booking preparation pages to keep the job details you have reviewed close at hand.
@@ -135,9 +135,9 @@ export default function GuaranteePage() {
       </section>
 
       <section id="verification" className="mx-auto max-w-[1280px] px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
-        <div className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-7">
+        <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:p-7">
           <div className="max-w-2xl space-y-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]">
               <UserCheck className="h-5 w-5" />
             </div>
             <h2 className="font-display text-xl font-bold tracking-tight text-[var(--text-main)] sm:text-2xl">Look through the profile details.</h2>

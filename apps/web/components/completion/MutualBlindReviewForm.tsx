@@ -66,10 +66,10 @@ export function MutualBlindReviewForm({
     return (
       <div
         data-testid="mutual-blind-review-form"
-        className="space-y-4 rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl"
+        className="space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl"
       >
         <div className="border-b border-zinc-800 pb-3">
-          <span className="inline-block rounded bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+          <span className="inline-block rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
             Verified Feedback
           </span>
           <h3 className="mt-1 text-lg font-bold text-zinc-100">
@@ -79,7 +79,7 @@ export function MutualBlindReviewForm({
 
         <div className="grid gap-4 sm:grid-cols-2">
           {customerReview && (
-            <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-4">
+            <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
               <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
                 <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
                   Customer Review
@@ -103,7 +103,7 @@ export function MutualBlindReviewForm({
           )}
 
           {workerReview && (
-            <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-4">
+            <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
               <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
                 <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
                   BrainWorker Review
@@ -135,7 +135,7 @@ export function MutualBlindReviewForm({
     return (
       <div
         data-testid="mutual-blind-review-form"
-        className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl"
+        className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl"
       >
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/10 text-amber-400">
@@ -158,7 +158,7 @@ export function MutualBlindReviewForm({
   return (
     <div
       data-testid="mutual-blind-review-form"
-      className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl"
+      className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl"
     >
       <div className="border-b border-zinc-800 pb-3">
         <h3 className="text-lg font-bold text-zinc-100">
@@ -226,7 +226,7 @@ export function MutualBlindReviewForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex min-h-[48px] w-full items-center justify-center rounded-lg bg-emerald-600 px-6 text-sm font-semibold text-white shadow-lg transition hover:bg-emerald-500 disabled:opacity-50 sm:w-auto"
+          className="flex min-h-[48px] w-full items-center justify-center outlier-pill-button rounded-full bg-[var(--amber)] px-6 text-sm font-semibold text-[#001A41] shadow-lg transition hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 sm:w-auto"
         >
           {isSubmitting ? 'Submitting...' : 'Submit Review'}
         </button>

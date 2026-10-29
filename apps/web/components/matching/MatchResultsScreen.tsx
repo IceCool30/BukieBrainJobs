@@ -240,7 +240,7 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
           <div className="mt-8 pt-6 border-t border-[var(--lead)]">
             <Link
               href="/jobs"
-              className="inline-flex items-center gap-1.5 text-sm text-[var(--muted)] hover:text-[var(--text)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--muted)] hover:text-[var(--text)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-4 py-2 hover:bg-[var(--card-hover)]"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               Back to jobs
@@ -277,7 +277,7 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
                 role="status"
                 aria-live="polite"
                 aria-atomic="true"
-                className="px-4 py-3 bg-[var(--brand-green-dim)] border border-[var(--brand-green)] rounded-lg text-sm text-[var(--brand-green)]"
+                className="px-4 py-3 bg-[var(--brand-green-dim)] border border-[var(--brand-green)] rounded-xl text-sm text-[var(--brand-green)]"
               >
                 {selectionMessage}
               </div>
@@ -312,14 +312,14 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
               <section aria-labelledby={headingId}>
                 <header className="flex items-center gap-2 mb-4">
                   <Users className="h-5 w-5 text-[var(--brand-green)]" aria-hidden="true" />
-                  <h2
+                  <h1
                     id={headingId}
                     className="font-display font-bold text-[var(--text)] text-base"
                   >
                     {sortedCandidates.length === 1
                       ? '1 BrainWorker found'
                       : `${sortedCandidates.length} BrainWorkers found`}
-                  </h2>
+                  </h1>
                 </header>
                 <p className="text-xs text-[var(--muted)] mb-5">
                   We found BrainWorkers who may be a good fit for your request. Expressing interest does not
@@ -346,7 +346,7 @@ export default function MatchResultsScreen({ referenceCode }: MatchResultsScreen
         <div className="mt-8 pt-6 border-t border-[var(--lead)]">
           <Link
             href="/jobs"
-            className="inline-flex items-center gap-1.5 text-sm text-[var(--muted)] hover:text-[var(--text)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--muted)] hover:text-[var(--text)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-4 py-2 hover:bg-[var(--card-hover)]"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back to jobs

@@ -244,7 +244,7 @@ export default function SchedulingPage({ params }: SchedulingPageProps): React.J
             <button
               type="button"
               onClick={() => router.push(currentUser.role === 'customer' ? '/jobs' : '/brainworker/dashboard')}
-              className="rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-700"
+              className="outlier-pill-button rounded-full bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-[#001A41] shadow-sm transition hover:scale-[1.02] active:scale-[0.98]"
             >
               Return to Dashboard
             </button>
@@ -316,7 +316,7 @@ export default function SchedulingPage({ params }: SchedulingPageProps): React.J
         {/* BrainWorker / Artisan View */}
         {!isCustomer && (
           <div className="space-y-6">
-            <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-6 shadow-sm">
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-sm">
               <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
                 Artisan Dispatch Controls
               </span>

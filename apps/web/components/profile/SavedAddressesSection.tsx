@@ -183,7 +183,7 @@ export function SavedAddressesSection({
   };
 
   return (
-    <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-[var(--lead)] shadow-xs space-y-6">
+    <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 sm:p-7 border border-[var(--lead)] shadow-xs space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--lead)]">
         <div>
           <h2 className="text-xl font-bold font-display text-[var(--text-main)]">
@@ -199,7 +199,7 @@ export function SavedAddressesSection({
           type="button"
           disabled={isOffline}
           onClick={openAddModal}
-          className="min-h-[48px] px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0"
+          className="outlier-pill-button min-h-[48px] px-6 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-full transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shrink-0 shadow-xs"
         >
           <Plus className="h-4 w-4" />
           <span>Add New Address</span>
@@ -209,7 +209,7 @@ export function SavedAddressesSection({
       {statusMessage && (
         <div
           role="status"
-          className="p-3.5 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2.5"
+          className="p-3.5 rounded-xl bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2.5"
         >
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           <span>{statusMessage}</span>
@@ -217,7 +217,7 @@ export function SavedAddressesSection({
       )}
 
       {addresses.length === 0 ? (
-        <div className="text-center py-12 px-4 border border-dashed border-[var(--lead)] rounded-lg bg-[var(--tag-bg)]/30">
+        <div className="text-center py-12 px-4 border border-dashed border-[var(--lead)] rounded-2xl bg-[var(--tag-bg)]/30">
           <MapPin className="h-10 w-10 text-[var(--text-muted)] mx-auto mb-3" />
           <h3 className="text-sm font-bold text-[var(--text-main)] mb-1">No saved addresses yet</h3>
           <p className="text-xs text-[var(--text-muted)] max-w-sm mx-auto mb-4">
@@ -227,7 +227,7 @@ export function SavedAddressesSection({
             type="button"
             disabled={isOffline}
             onClick={openAddModal}
-            className="min-h-[48px] px-5 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg transition inline-flex items-center gap-2 cursor-pointer disabled:opacity-50"
+            className="outlier-pill-button min-h-[48px] px-6 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-full transition inline-flex items-center gap-2 cursor-pointer disabled:opacity-50 shadow-xs"
           >
             <Plus className="h-4 w-4" />
             <span>Add First Address</span>
@@ -238,7 +238,7 @@ export function SavedAddressesSection({
           {addresses.map((addr) => (
             <div
               key={addr.id}
-              className={`p-5 rounded-lg border transition relative flex flex-col justify-between ${
+              className={`p-6 rounded-2xl border transition relative flex flex-col justify-between ${
                 addr.isDefault
                   ? 'border-[var(--amber)] bg-[var(--tag-bg)]/40 shadow-xs ring-1 ring-[var(--amber)]/30'
                   : 'border-[var(--lead)] bg-[var(--card-bg)] hover:border-[var(--text-muted)]'
@@ -246,13 +246,13 @@ export function SavedAddressesSection({
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] text-[11px] font-bold">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] text-[11px] font-bold">
                     <MapPin className="h-3.5 w-3.5 text-[var(--amber)]" />
                     {addr.label === 'Other' && addr.customLabel ? addr.customLabel : addr.label}
                   </span>
 
                   {addr.isDefault && (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] text-[10px] font-bold">
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] text-[10px] font-bold">
                       <Star className="h-3 w-3 fill-emerald-600 dark:fill-emerald-400 text-[var(--brand-green)]" />
                       Default Location
                     </span>
@@ -265,7 +265,7 @@ export function SavedAddressesSection({
                     {addr.neighborhood ? `${addr.neighborhood}, ` : ''}
                     {addr.city}, {addr.state}
                   </p>
-                  <p className="text-[11px] text-[var(--text-muted)] bg-[var(--tag-bg)] border border-[var(--lead)] rounded-md p-2 mt-2">
+                  <p className="text-[11px] text-[var(--text-muted)] bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl p-2.5 mt-2">
                     <strong className="text-[var(--text-main)]">Landmark:</strong> {addr.landmark}
                   </p>
                 </div>
@@ -319,13 +319,13 @@ export function SavedAddressesSection({
             role="dialog"
             aria-modal="true"
             aria-labelledby="address-modal-title"
-            className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg max-w-lg w-full p-6 shadow-xl border border-[var(--lead)] relative max-h-[90vh] overflow-y-auto"
+            className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-xl border border-[var(--lead)] relative max-h-[90vh] overflow-y-auto"
           >
             <button
               type="button"
               onClick={closeModal}
               aria-label="Close address form"
-              className="absolute top-4 right-4 p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer"
+              className="absolute top-4 right-4 p-2 rounded-md text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer"
             >
               <X className="h-5 w-5" />
             </button>
@@ -340,7 +340,7 @@ export function SavedAddressesSection({
             {modalError && (
               <div
                 role="alert"
-                className="mb-4 p-3 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs flex items-center gap-2"
+                className="mb-4 p-3.5 rounded-xl bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs flex items-center gap-2"
               >
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{modalError}</span>
@@ -358,7 +358,7 @@ export function SavedAddressesSection({
                       key={lbl}
                       type="button"
                       onClick={() => setLabel(lbl)}
-                      className={`min-h-[44px] flex-1 py-2 px-3 text-xs font-semibold rounded-lg border transition cursor-pointer ${
+                      className={`min-h-[44px] flex-1 py-2 px-3 text-xs font-semibold rounded-md border transition cursor-pointer ${
                         label === lbl
                           ? 'bg-[var(--amber)] text-[#001A41] font-bold border-[var(--amber)]'
                           : 'bg-[var(--tag-bg)] text-[var(--text-main)] border-[var(--lead)] hover:bg-[var(--card-hover)]'
@@ -483,14 +483,14 @@ export function SavedAddressesSection({
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="min-h-[48px] px-4 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] rounded-lg transition cursor-pointer"
+                  className="min-h-[48px] px-5 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] rounded-md transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="min-h-[48px] px-6 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                  className="outlier-pill-button min-h-[48px] px-7 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-full transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-xs"
                 >
                   {isSubmitting ? (
                     <>
@@ -514,9 +514,9 @@ export function SavedAddressesSection({
             role="dialog"
             aria-modal="true"
             aria-labelledby="delete-modal-title"
-            className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg max-w-sm w-full p-6 shadow-xl border border-[var(--lead)] relative text-center"
+            className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl max-w-sm w-full p-6 shadow-xl border border-[var(--lead)] relative text-center"
           >
-            <div className="mx-auto w-12 h-12 rounded-lg bg-[var(--danger-dim)] text-[var(--danger)] border border-[var(--danger-border)] flex items-center justify-center mb-3">
+            <div className="mx-auto w-12 h-12 rounded-xl bg-[var(--danger-dim)] text-[var(--danger)] border border-[var(--danger-border)] flex items-center justify-center mb-3">
               <Trash2 className="h-6 w-6" />
             </div>
             <h3 id="delete-modal-title" className="text-lg font-bold font-display text-[var(--text-main)] mb-2">
@@ -529,7 +529,7 @@ export function SavedAddressesSection({
               <button
                 type="button"
                 onClick={() => setDeleteConfirmAddress(null)}
-                className="min-h-[48px] flex-1 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] border border-[var(--lead)] rounded-lg transition cursor-pointer"
+                className="min-h-[48px] flex-1 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] border border-[var(--lead)] rounded-md transition cursor-pointer"
               >
                 Cancel
               </button>
@@ -538,7 +538,7 @@ export function SavedAddressesSection({
                 type="button"
                 disabled={isSubmitting}
                 onClick={handleConfirmDelete}
-                className="min-h-[48px] flex-1 py-2 bg-[var(--danger)] text-white text-xs font-semibold rounded-lg hover:opacity-90 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="min-h-[48px] flex-1 py-2 bg-[var(--danger)] text-white text-xs font-semibold rounded-md hover:opacity-90 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-xs"
               >
                 {isSubmitting ? (
                   <>

@@ -143,7 +143,7 @@ export default function BrainWorkerBookingDetailPage(
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-xl bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition-colors"
+            className="outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition-all"
           >
             {user.role === 'customer' ? 'Return to Customer Dashboard' : 'Return Home'}
           </Link>
@@ -193,13 +193,13 @@ export default function BrainWorkerBookingDetailPage(
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/brainworker/services"
-                  className="inline-flex items-center justify-center rounded-xl bg-[var(--amber)] px-4 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition-colors"
+                  className="outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-4 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition-all"
                 >
                   Configure Services & Rates
                 </Link>
                 <Link
                   href="/brainworker/availability"
-                  className="inline-flex items-center justify-center rounded-xl bg-[var(--tag-bg)] border border-[var(--lead)] px-4 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-sm hover:bg-[var(--card-hover)] transition-colors"
+                  className="inline-flex items-center justify-center rounded-lg bg-[var(--card-bg)] border border-[var(--lead)] px-4 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-sm hover:bg-[var(--card-hover)] transition-all"
                 >
                   Set Hours & Coverage
                 </Link>
@@ -222,7 +222,7 @@ export default function BrainWorkerBookingDetailPage(
             </p>
             <Link
               href="/brainworker/bookings"
-              className="inline-flex items-center justify-center rounded-xl bg-[var(--amber)] px-4 py-2 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition-colors"
+              className="outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-4 py-2 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition-all"
             >
               Return to Bookings
             </Link>

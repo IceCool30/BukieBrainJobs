@@ -88,7 +88,7 @@ export function ConversationCard({
   return (
     <article
       role="article"
-      className={`group relative flex items-start gap-3.5 p-4 rounded-lg border transition-all ${
+      className={`group relative flex items-start gap-3.5 p-4 rounded-2xl border transition-all ${
         isActive
           ? 'bg-[var(--card-hover)] border-[var(--amber)] shadow-xs'
           : 'bg-[var(--card-bg)] border-[var(--lead)] hover:border-[var(--amber)] hover:bg-[var(--card-hover)] shadow-xs'
@@ -100,11 +100,11 @@ export function ConversationCard({
           <img
             src={participant.avatarUrl}
             alt={participant.name}
-            className="w-12 h-12 rounded-lg object-cover border border-[var(--lead)]"
+            className="w-12 h-12 rounded-xl object-cover border border-[var(--lead)]"
           />
         ) : (
           <div
-            className="w-12 h-12 rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--text-main)] font-bold text-sm flex items-center justify-center select-none"
+            className="w-12 h-12 rounded-xl bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--text-main)] font-bold text-sm flex items-center justify-center select-none"
             aria-hidden="true"
           >
             {getInitials(participant.name)}
@@ -113,7 +113,7 @@ export function ConversationCard({
 
         {participant.isVerified && (
           <span
-            className="absolute -bottom-1 -right-1 w-4 h-4 rounded-md bg-[var(--brand-green)] text-white flex items-center justify-center ring-2 ring-[var(--card-bg)]"
+            className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[var(--brand-green)] text-white flex items-center justify-center ring-2 ring-[var(--card-bg)]"
             aria-label="Verified BrainWorker"
             title="Verified BrainWorker"
           >
@@ -168,7 +168,7 @@ export function ConversationCard({
 
           {unreadCount > 0 && (
             <span
-              className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-md bg-[var(--brand-green)] text-white text-[11px] font-mono font-bold min-w-[20px] leading-tight flex-shrink-0 shadow-xs"
+              className="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-[var(--brand-green)] text-white text-[11px] font-mono font-bold min-w-[20px] leading-tight flex-shrink-0 shadow-xs"
               aria-label={`${unreadCount} unread messages`}
             >
               {unreadCount}

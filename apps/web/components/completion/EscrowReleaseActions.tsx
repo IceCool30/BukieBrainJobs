@@ -29,7 +29,7 @@ export function EscrowReleaseActions({
   return (
     <div
       data-testid="escrow-release-actions"
-      className="flex flex-col gap-3 rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-xl sm:flex-row sm:items-center sm:justify-between"
+      className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-xl sm:flex-row sm:items-center sm:justify-between"
     >
       <div>
         <h3 className="text-base font-semibold text-zinc-100">
@@ -45,7 +45,7 @@ export function EscrowReleaseActions({
           type="button"
           onClick={onRaiseDispute}
           disabled={isSubmitting}
-          className="flex min-h-[48px] items-center justify-center rounded-lg border border-red-500/30 bg-red-500/10 px-5 text-sm font-semibold text-red-400 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex min-h-[48px] items-center justify-center rounded-full border border-red-500/30 bg-red-500/10 px-5 text-sm font-semibold text-red-400 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Raise Dispute
         </button>
@@ -54,7 +54,7 @@ export function EscrowReleaseActions({
           type="button"
           onClick={() => void onConfirmSatisfaction()}
           disabled={!isEligible || isSubmitting}
-          className="flex min-h-[48px] items-center justify-center rounded-lg bg-emerald-600 px-6 text-sm font-semibold text-white shadow-lg transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
+          className="flex min-h-[48px] items-center justify-center outlier-pill-button rounded-full bg-[var(--amber)] px-6 text-sm font-semibold text-[#001A41] shadow-lg transition hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
         >
           {isSubmitting ? 'Releasing Escrow...' : 'Inspect & Release Escrow'}
         </button>

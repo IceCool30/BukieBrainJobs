@@ -76,7 +76,7 @@ export function ProfileEditorForm({
       {/* Completeness Meter */}
       <div
         data-testid="profile-completeness-meter"
-        className="rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-4"
+        className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-sm"
       >
         <div className="flex items-center justify-between gap-4 mb-2">
           <span className="text-sm font-medium text-[var(--text-muted)]">
@@ -98,7 +98,7 @@ export function ProfileEditorForm({
             {completeness.missingMilestones.map((milestone) => (
               <span
                 key={milestone}
-                className="inline-flex items-center rounded-md bg-[var(--amber-dim)] px-2 py-0.5 text-xs font-medium text-[var(--amber)] border border-[var(--amber)]/30"
+                className="inline-flex items-center rounded-full bg-[var(--amber-dim)] px-2.5 py-0.5 text-xs font-semibold text-[var(--amber)] border border-[var(--amber)]/30"
               >
                 {milestone}
               </span>
@@ -245,7 +245,7 @@ export function ProfileEditorForm({
           type="submit"
           data-testid="profile-save-btn"
           disabled={isSaving}
-          className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] focus:outline-none disabled:opacity-50"
+          className="outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-6 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition-all focus:outline-none disabled:opacity-50"
         >
           {isSaving ? 'Saving Profile...' : 'Save Profile Details'}
         </button>

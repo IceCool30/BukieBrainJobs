@@ -70,8 +70,8 @@ export default function BrainWorkerAvailabilityPage(): React.ReactElement {
   if (user.role !== 'brainworker') {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 transition-colors">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-[var(--danger-border)] p-8 shadow-xs text-center space-y-4 transition-colors">
-          <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--danger-dim)] border border-[var(--danger-border)] px-3 py-1 text-xs font-semibold text-[var(--danger)]">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl border border-[var(--danger-border)] p-8 shadow-sm text-center space-y-4 transition-colors">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[var(--danger-dim)] border border-[var(--danger-border)] px-3 py-1 text-xs font-semibold text-[var(--danger)]">
             {user.role === 'customer' ? 'Customer Account Detected' : 'Unauthorized Access'}
           </div>
           <h2 className="text-xl font-bold text-[var(--text-main)]">Workspace Unavailable</h2>
@@ -80,7 +80,7 @@ export default function BrainWorkerAvailabilityPage(): React.ReactElement {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition"
+            className="outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition-all"
           >
             {user.role === 'customer' ? 'Return to Customer Dashboard' : 'Return Home'}
           </Link>

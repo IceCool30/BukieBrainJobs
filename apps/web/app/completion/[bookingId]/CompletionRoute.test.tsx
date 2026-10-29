@@ -166,6 +166,9 @@ describe('BW-009 Post-Job Completion & Escrow Release Route Contracts (ROUTE-001
       expect(
         screen.getByTestId('completion-inspection-summary')
       ).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', { level: 1, name: /Job Settlement Inspection/i })
+      ).toBeInTheDocument();
       expect(screen.getByTestId('escrow-release-actions')).toBeInTheDocument();
       expect(
         screen.getByTestId('auto-release-countdown-card')

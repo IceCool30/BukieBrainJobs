@@ -15,7 +15,7 @@ export function UrgentLeadsTicker({
     return (
       <div
         data-testid="urgent-leads-empty"
-        className="rounded-xl border border-dashed border-[var(--rule)] bg-[var(--bg)] p-6 text-center"
+        className="rounded-2xl border border-dashed border-[var(--rule)] bg-[var(--bg)] p-6 text-center"
       >
         <p className="text-sm font-medium text-[var(--text-muted)]">
           No urgent leads in your area
@@ -49,12 +49,12 @@ export function UrgentLeadsTicker({
           <div
             key={lead.id}
             data-testid={`urgent-lead-card-${lead.id}`}
-            className="flex flex-col justify-between rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 shadow-sm"
+            className="flex flex-col justify-between rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 shadow-xs"
           >
             <div>
               <div className="flex items-center justify-between gap-2">
                 <span
-                  className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold ${
+                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
                     lead.urgency === 'EMERGENCY'
                       ? 'bg-[var(--danger-dim)] text-[var(--danger)]'
                       : 'bg-[var(--amber-dim)] text-[var(--amber)]'
@@ -77,7 +77,7 @@ export function UrgentLeadsTicker({
               <button
                 type="button"
                 onClick={() => onQuoteLead?.(lead.id)}
-                className="w-full rounded-lg bg-[var(--amber)] px-3 py-1.5 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--card-bg)]"
+                className="w-full outlier-pill-button rounded-full bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--card-bg)]"
               >
                 Send Quote
               </button>

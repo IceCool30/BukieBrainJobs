@@ -98,7 +98,7 @@ export function PortfolioGalleryManager({
             data-testid="add-portfolio-btn"
             disabled={isCapped}
             onClick={() => setIsAddModalOpen(true)}
-            className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+            className="outlier-pill-button rounded-full bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition-all focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Add Work Sample
           </button>
@@ -106,7 +106,7 @@ export function PortfolioGalleryManager({
       </div>
 
       {isCapped && (
-        <div className="rounded-lg border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-3 text-xs text-[var(--amber)]">
+        <div className="rounded-xl border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-3 text-xs text-[var(--amber)]">
           Portfolio limit reached. You have uploaded the maximum allowed 20 items. Delete an older sample to add a new project.
         </div>
       )}
@@ -115,7 +115,7 @@ export function PortfolioGalleryManager({
       {portfolioItems.length === 0 ? (
         <div
           data-testid="portfolio-empty-state"
-          className="rounded-xl border border-dashed border-[var(--lead)] p-8 text-center text-[var(--text-muted)]"
+          className="rounded-2xl border border-dashed border-[var(--lead)] p-8 text-center text-[var(--text-muted)]"
         >
           <p className="text-sm font-medium">No work samples added yet.</p>
           <p className="text-xs text-[var(--text-muted)] mt-1">
@@ -138,7 +138,7 @@ export function PortfolioGalleryManager({
             return (
               <div
                 key={item.id}
-                className="overflow-hidden rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] shadow-sm flex flex-col"
+                className="overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] shadow-sm flex flex-col transition-all hover:border-[var(--lead-light)]"
               >
                 {/* Image Container */}
                 <div className="relative aspect-video w-full bg-[var(--bg)] overflow-hidden">
@@ -152,12 +152,12 @@ export function PortfolioGalleryManager({
                       type="button"
                       data-testid={`before-after-toggle-${item.id}`}
                       onClick={() => toggleBeforeAfter(item.id)}
-                      className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-1 text-xs font-medium text-white backdrop-blur hover:bg-black/90"
+                      className="absolute bottom-2 right-2 rounded-lg bg-black/75 px-3 py-1 text-xs font-medium text-white backdrop-blur hover:bg-black/90 shadow-sm transition-all"
                     >
                       {currentView === 'before' ? 'Show After' : 'Show Before'}
                     </button>
                   )}
-                  <span className="absolute top-2 left-2 rounded bg-[var(--bg)] px-2 py-0.5 text-xs font-semibold text-[var(--brand-green)] border border-[var(--lead)]">
+                  <span className="absolute top-2 left-2 rounded-full bg-[var(--card-bg)] px-2.5 py-0.5 text-xs font-semibold text-[var(--brand-green)] border border-[var(--lead)] shadow-sm">
                     {item.category}
                   </span>
                 </div>
@@ -198,13 +198,13 @@ export function PortfolioGalleryManager({
           data-testid="portfolio-form-modal"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
         >
-          <div className="w-full max-w-lg rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-xl space-y-4">
+          <div className="w-full max-w-lg rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-xl space-y-4">
             <h3 className="text-base font-semibold text-[var(--text-main)]">
               Add Work Sample
             </h3>
 
             {formError && (
-              <div className="rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] p-2 text-xs text-[var(--danger)]">
+              <div className="rounded-xl bg-[var(--danger-dim)] border border-[var(--danger-border)] p-2.5 text-xs text-[var(--danger)]">
                 {formError}
               </div>
             )}
@@ -283,13 +283,13 @@ export function PortfolioGalleryManager({
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="rounded-lg bg-[var(--tag-bg)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
+                  className="rounded-lg border border-[var(--lead)] px-4 py-2 text-xs font-semibold text-[var(--text-muted)] hover:bg-[var(--card-hover)] transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)]"
+                  className="outlier-pill-button rounded-full bg-[var(--amber)] px-5 py-2 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] shadow-sm transition-all"
                 >
                   Add Work
                 </button>
@@ -302,7 +302,7 @@ export function PortfolioGalleryManager({
       {/* Delete Confirmation Modal */}
       {itemToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-sm rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-xl space-y-4">
+          <div className="w-full max-w-sm rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-xl space-y-4">
             <h3 className="text-base font-semibold text-[var(--text-main)]">
               Confirm Delete
             </h3>
@@ -313,14 +313,14 @@ export function PortfolioGalleryManager({
               <button
                 type="button"
                 onClick={() => setItemToDelete(null)}
-                className="rounded-lg bg-[var(--tag-bg)] px-4 py-2 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
+                className="rounded-lg border border-[var(--lead)] px-4 py-2 text-xs font-semibold text-[var(--text-muted)] hover:bg-[var(--card-hover)] transition-all"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleConfirmDelete}
-                className="rounded-lg bg-[var(--danger)] px-4 py-2 text-xs font-semibold text-white hover:opacity-90"
+                className="rounded-full bg-[var(--danger)] px-4 py-2 text-xs font-semibold text-white hover:opacity-90 shadow-sm transition-all"
               >
                 Confirm Delete Work
               </button>

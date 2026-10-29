@@ -41,14 +41,14 @@ export function WalletLedgerTable({
         </div>
 
         {/* Filter Pills */}
-        <div className="flex items-center gap-1.5 rounded-lg border border-[var(--lead)] bg-[var(--bg)] p-1">
+        <div className="flex items-center gap-1.5 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-1 shadow-sm">
           <button
             type="button"
             data-testid="filter-all-button"
             onClick={() => setFilter('all')}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
+            className={`rounded-lg px-3 py-1 text-xs font-semibold transition-all ${
               filter === 'all'
-                ? 'bg-[var(--text-main)] text-[var(--bg)]'
+                ? 'bg-[var(--text-main)] text-[var(--bg)] shadow-sm'
                 : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
             }`}
           >
@@ -58,9 +58,9 @@ export function WalletLedgerTable({
             type="button"
             data-testid="filter-credits-button"
             onClick={() => setFilter('credits')}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
+            className={`rounded-lg px-3 py-1 text-xs font-semibold transition-all ${
               filter === 'credits'
-                ? 'bg-[var(--text-main)] text-[var(--bg)]'
+                ? 'bg-[var(--text-main)] text-[var(--bg)] shadow-sm'
                 : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
             }`}
           >
@@ -70,9 +70,9 @@ export function WalletLedgerTable({
             type="button"
             data-testid="filter-withdrawals-button"
             onClick={() => setFilter('withdrawals')}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
+            className={`rounded-lg px-3 py-1 text-xs font-semibold transition-all ${
               filter === 'withdrawals'
-                ? 'bg-[var(--text-main)] text-[var(--bg)]'
+                ? 'bg-[var(--text-main)] text-[var(--bg)] shadow-sm'
                 : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
             }`}
           >
@@ -82,7 +82,7 @@ export function WalletLedgerTable({
       </div>
 
       {/* Transactions Table */}
-      <div className="overflow-hidden rounded-xl border border-[var(--lead)] bg-[var(--bg)]">
+      <div className="overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>

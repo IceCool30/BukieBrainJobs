@@ -45,7 +45,7 @@ export function ConversationFilterBar({
       <div
         role="tablist"
         aria-label="Conversation filters"
-        className="flex items-center gap-1.5 p-1 bg-[var(--tag-bg)] rounded-lg border border-[var(--lead)]"
+        className="flex items-center gap-1.5 p-1 bg-[var(--tag-bg)] rounded-md border border-[var(--lead)]"
       >
         {TABS.map((tab) => {
           const isSelected = activeTab === tab.id;

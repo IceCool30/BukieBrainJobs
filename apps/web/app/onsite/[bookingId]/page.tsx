@@ -229,7 +229,7 @@ export default function OnSitePage({
     return (
       <div className="min-h-screen bg-[var(--bg)] p-4 text-zinc-100 sm:p-8">
         <div className="mx-auto max-w-4xl space-y-6">
-          <div className="rounded-xl border border-rose-900/50 bg-[var(--card-bg)] p-6 text-rose-300 shadow-xl">
+          <div className="rounded-2xl border border-rose-900/50 bg-[var(--card-bg)] p-6 text-rose-300 shadow-xl">
             <h2 className="text-lg font-semibold text-rose-200">Session Not Found</h2>
             <p className="mt-2 text-sm text-zinc-400">
               Booking on-site session not found. Please verify the booking reference or return to your dashboard.
@@ -244,7 +244,7 @@ export default function OnSitePage({
     return (
       <div className="min-h-screen bg-[var(--bg)] p-4 text-zinc-100 sm:p-8">
         <div className="mx-auto max-w-4xl space-y-6">
-          <div className="animate-pulse rounded-xl border border-zinc-800 bg-[var(--card-bg)] p-6 text-zinc-400">
+          <div className="animate-pulse rounded-2xl border border-zinc-800 bg-[var(--card-bg)] p-6 text-zinc-400">
             Loading on-site session...
           </div>
         </div>
@@ -269,10 +269,10 @@ export default function OnSitePage({
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <span className="rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300">
+            <span className="rounded-full border border-zinc-700 bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300">
               Booking Ref: {bookingId}
             </span>
-            <span className="rounded-md border border-amber-800/60 bg-amber-950/40 px-3 py-1 text-xs font-semibold capitalize text-amber-300">
+            <span className="rounded-full border border-amber-800/60 bg-amber-950/40 px-3 py-1 text-xs font-semibold capitalize text-amber-300">
               {currentUser.role}
             </span>
           </div>
@@ -309,7 +309,7 @@ export default function OnSitePage({
             )}
 
             {onSiteState.jobStatus === 'IN_PROGRESS' && !onSiteState.activeScopeAdjustment && (
-              <div className="rounded-xl border border-zinc-800 bg-[var(--card-bg)] p-6 text-zinc-300">
+              <div className="rounded-2xl border border-zinc-800 bg-[var(--card-bg)] p-6 text-zinc-300">
                 <h3 className="text-base font-semibold text-zinc-100">
                   Technician Active On-Site
                 </h3>
@@ -320,7 +320,7 @@ export default function OnSitePage({
             )}
 
             {onSiteState.jobStatus === 'PENDING_COMPLETION' && (
-              <div className="rounded-xl border border-emerald-800/60 bg-emerald-950/30 p-6 text-emerald-200">
+              <div className="rounded-2xl border border-emerald-800/60 bg-emerald-950/30 p-6 text-emerald-200">
                 <h3 className="text-base font-semibold text-emerald-100">
                   Work Completed: Awaiting Verification
                 </h3>
@@ -346,7 +346,7 @@ export default function OnSitePage({
 
             {onSiteState.jobStatus === 'IN_PROGRESS' && (
               <div className="space-y-6">
-                <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-zinc-800 bg-[var(--card-bg)] p-4">
+                <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-zinc-800 bg-[var(--card-bg)] p-5">
                   <div>
                     <h3 className="text-sm font-semibold text-zinc-100">
                       Scope Management
@@ -359,14 +359,14 @@ export default function OnSitePage({
                     type="button"
                     onClick={() => setIsAdjustmentModalOpen(true)}
                     disabled={isSubmitting || !!onSiteState.activeScopeAdjustment}
-                    className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex min-h-[44px] items-center justify-center outlier-pill-button rounded-full bg-[var(--amber)] px-5 py-2 text-sm font-semibold text-[#001A41] transition hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     Request Scope Adjustment
                   </button>
                 </div>
 
                 {onSiteState.activeScopeAdjustment?.status === 'PENDING' && (
-                  <div className="rounded-xl border border-amber-900/60 bg-amber-950/30 p-4 text-xs text-amber-300">
+                  <div className="rounded-2xl border border-amber-900/60 bg-amber-950/30 p-4 text-xs text-amber-300">
                     Scope adjustment request pending customer review. You will be notified once the customer approves or declines.
                   </div>
                 )}
@@ -381,7 +381,7 @@ export default function OnSitePage({
             )}
 
             {onSiteState.jobStatus === 'PENDING_COMPLETION' && (
-              <div className="rounded-xl border border-emerald-800/60 bg-emerald-950/30 p-6 text-emerald-200">
+              <div className="rounded-2xl border border-emerald-800/60 bg-emerald-950/30 p-6 text-emerald-200">
                 <h3 className="text-base font-semibold text-emerald-100">
                   Completion Submitted
                 </h3>

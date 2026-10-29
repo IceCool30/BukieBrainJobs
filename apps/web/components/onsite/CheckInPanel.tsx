@@ -47,13 +47,13 @@ export function CheckInPanel({
   };
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl">
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-lg font-semibold text-zinc-100">
           Technician Arrival Check-In
         </h3>
         <span
-          className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium ${
+          className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${
             isEscrowFunded
               ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
               : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
@@ -101,7 +101,7 @@ export function CheckInPanel({
         aria-label="Check in at customer location"
         disabled={!canCheckIn}
         onClick={handleCheckIn}
-        className="flex w-full min-h-[44px] items-center justify-center rounded-lg bg-amber-500 px-4 py-3 text-sm font-semibold text-zinc-950 transition hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-zinc-900 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
+        className="flex w-full min-h-[44px] items-center justify-center outlier-pill-button rounded-full bg-[var(--amber)] px-5 py-3 text-sm font-semibold text-[#001A41] transition hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--amber)] focus:ring-offset-2 focus:ring-offset-zinc-900 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
       >
         {isSubmitting ? 'Checking In...' : 'Check In at Customer Location'}
       </button>

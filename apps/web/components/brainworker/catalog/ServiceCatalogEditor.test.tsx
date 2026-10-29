@@ -82,6 +82,18 @@ describe('BW-002 Suite 4: Service Catalog Component Contracts (CMP-001 through C
     };
   });
 
+  it('renders the service catalog title as the page-level heading', () => {
+    render(
+      <ServiceCatalogEditor
+        brainWorkerId={FIXTURE_APPROVED_BRAINWORKER_A}
+        repository={mockRepository}
+      />
+    );
+    expect(
+      screen.getByRole('heading', { level: 1, name: /Service Catalog & Pricing/i })
+    ).toBeInTheDocument();
+  });
+
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // CMP-001: Diagnostic Inspection / Call-Out Fee Input & Boundary Policy
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

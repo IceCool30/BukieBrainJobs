@@ -254,9 +254,9 @@ export default function DashboardScreen() {
             className="hidden lg:block lg:col-span-3 sticky top-24 space-y-6"
           >
             {/* Customer Identity Card */}
-            <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-5 border border-[var(--lead)] shadow-xs">
+            <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-5 border border-[var(--lead)] shadow-xs">
               <div className="flex items-center gap-3 mb-4">
-                <div className="h-12 w-12 rounded-lg bg-[var(--amber)] text-[#001A41] flex items-center justify-center font-display font-bold text-lg border border-[var(--lead)]">
+                <div className="h-12 w-12 rounded-xl bg-[var(--amber)] text-[#001A41] flex items-center justify-center font-display font-bold text-lg border border-[var(--lead)]">
                   {viewModel.customer.name.charAt(0)}
                 </div>
                 <div className="overflow-hidden">
@@ -271,7 +271,7 @@ export default function DashboardScreen() {
 
               <div className="pt-3 border-t border-[var(--lead)] flex items-center justify-between text-xs">
                 <span className="text-[var(--text-muted)]">Account status</span>
-                <span className="inline-flex items-center gap-1 text-[var(--brand-green)] font-semibold bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2 py-0.5 rounded-md">
+                <span className="inline-flex items-center gap-1 text-[var(--brand-green)] font-semibold bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2.5 py-0.5 rounded-full">
                   <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-green)]" />
                   Active
                 </span>
@@ -281,11 +281,11 @@ export default function DashboardScreen() {
             {/* Navigation Menu */}
             <nav
               aria-label="Desktop Sidebar"
-              className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-3 border border-[var(--lead)] shadow-xs space-y-1"
+              className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-3 border border-[var(--lead)] shadow-xs space-y-1"
             >
               <button
                 onClick={() => setActiveTab('home')}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
+                className={`w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm font-semibold transition-colors cursor-pointer ${
                   activeTab === 'home'
                     ? 'bg-[var(--amber)] text-[#001A41] font-bold shadow-xs'
                     : 'text-[var(--text-main)] hover:bg-[var(--card-hover)]'
@@ -308,7 +308,7 @@ export default function DashboardScreen() {
 
               <button
                 onClick={() => router.push('/jobs')}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
+                className={`w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm font-semibold transition-colors cursor-pointer ${
                   activeTab === 'jobs'
                     ? 'bg-[var(--amber)] text-[#001A41] font-bold shadow-xs'
                     : 'text-[var(--text-main)] hover:bg-[var(--card-hover)]'
@@ -327,7 +327,7 @@ export default function DashboardScreen() {
 
               <button
                 onClick={() => router.push('/messages')}
-                className="w-full flex items-center justify-between px-3.5 py-3 rounded-lg text-sm font-semibold text-[var(--text-main)] hover:bg-[var(--card-hover)] transition-colors group cursor-pointer"
+                className="w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm font-semibold text-[var(--text-main)] hover:bg-[var(--card-hover)] transition-colors group cursor-pointer"
               >
                 <div className="flex items-center gap-3">
                   <MessageSquare className="h-4 w-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)]" />
@@ -337,7 +337,7 @@ export default function DashboardScreen() {
 
               <button
                 onClick={() => router.push('/notifications')}
-                className="w-full flex items-center justify-between px-3.5 py-3 rounded-lg text-sm font-semibold text-[var(--text-main)] hover:bg-[var(--card-hover)] transition-colors group cursor-pointer"
+                className="w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm font-semibold text-[var(--text-main)] hover:bg-[var(--card-hover)] transition-colors group cursor-pointer"
               >
                 <div className="flex items-center gap-3">
                   <Bell className="h-4 w-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)]" />
@@ -347,7 +347,7 @@ export default function DashboardScreen() {
 
               <button
                 onClick={() => router.push('/profile')}
-                className="w-full flex items-center justify-between px-3.5 py-3 rounded-lg text-sm font-semibold transition-colors text-[var(--text-main)] hover:bg-[var(--card-hover)] cursor-pointer"
+                className="w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm font-semibold transition-colors text-[var(--text-main)] hover:bg-[var(--card-hover)] cursor-pointer"
               >
                 <div className="flex items-center gap-3">
                   <User className="h-4 w-4 text-[var(--text-muted)]" />
@@ -357,7 +357,7 @@ export default function DashboardScreen() {
             </nav>
 
             {/* Quick Guarantee Assurance Box */}
-            <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-4 border border-[var(--lead)] text-xs space-y-2 shadow-xs">
+            <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-5 border border-[var(--lead)] text-xs space-y-2 shadow-xs">
               <div className="flex items-center gap-2 text-[var(--text-main)] font-bold">
                 <ShieldCheck className="h-4 w-4 text-[var(--brand-green)]" />
                 <span>BukieGuarantee Terms</span>
@@ -380,7 +380,7 @@ export default function DashboardScreen() {
             {viewModel.newJobNotice && (
               <div
                 role="alert"
-                className="bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] rounded-lg p-4 flex items-start gap-3 text-[var(--brand-green)] shadow-xs animate-fade-in"
+                className="bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] rounded-2xl p-5 flex items-start gap-3 text-[var(--brand-green)] shadow-xs animate-fade-in"
               >
                 <CheckCircle2 className="h-5 w-5 text-[var(--brand-green)] shrink-0 mt-0.5" />
                 <div className="flex-1">
@@ -396,9 +396,9 @@ export default function DashboardScreen() {
             )}
 
             {/* Greeting & Operational Context Bar */}
-            <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-[var(--lead)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 sm:p-7 border border-[var(--lead)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold font-display tracking-trades text-[var(--text-main)]">
+                <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-trades text-[var(--text-main)]">
                   Good day, {viewModel.customer.name}
                 </h1>
                 <p className="text-sm text-[var(--text-muted)] mt-1 flex items-center gap-2">
@@ -434,14 +434,14 @@ export default function DashboardScreen() {
                   <div className="flex items-center gap-2">
                     <Link
                       href="/post-job"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
+                      className="outlier-pill-button inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
                     >
                       <PlusCircle className="h-3.5 w-3.5" />
                       Post a Job
                     </Link>
                     <Link
                       href="/services"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] text-xs font-semibold hover:bg-[var(--card-hover)] transition-colors shadow-xs"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] text-xs font-semibold hover:bg-[var(--card-hover)] transition-colors shadow-xs"
                     >
                       <Search className="h-3.5 w-3.5 text-[var(--brand-green)]" />
                       Find Service
@@ -456,7 +456,7 @@ export default function DashboardScreen() {
                       <h3 id="jobs-tab-active-heading" className="text-base font-bold font-display text-[var(--text-main)]">
                         Active Requests
                       </h3>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
+                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                         {viewModel.activeWork.length}
                       </span>
                     </div>
@@ -467,14 +467,14 @@ export default function DashboardScreen() {
                       viewModel.activeWork.map((item) => (
                         <div
                           key={item.id}
-                          className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-5 border border-[var(--lead)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-[var(--lead-light)] transition-colors"
+                          className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 border border-[var(--lead)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-[var(--lead-light)] transition-colors"
                         >
                           <div className="space-y-2 flex-1">
                             <div className="flex flex-wrap items-center gap-2">
                               <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]">
                                 {item.id}
                               </span>
-                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                                 {item.statusLabel}
                               </span>
                               {item.preferredWorkerName && (
@@ -518,14 +518,14 @@ export default function DashboardScreen() {
 
                           <Link
                             href={item.actionUrl}
-                            className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition-colors shrink-0 shadow-xs"
+                            className="outlier-pill-button inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition-colors shrink-0 shadow-xs"
                           >
                             {item.actionLabel}
                           </Link>
                         </div>
                       ))
                     ) : (
-                      <div className="relative overflow-hidden bg-[var(--card-bg)] rounded-lg p-8 border border-[var(--lead)] text-center text-xs text-[var(--text-muted)] shadow-xs">
+                      <div className="relative overflow-hidden bg-[var(--card-bg)] rounded-2xl p-8 border border-[var(--lead)] text-center text-xs text-[var(--text-muted)] shadow-xs">
                         <div
                           className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.04] select-none"
                           aria-hidden="true"
@@ -543,14 +543,14 @@ export default function DashboardScreen() {
                         <div className="relative z-10 flex flex-wrap items-center justify-center gap-3">
                           <Link
                             href="/post-job"
-                            className="motion-press inline-flex items-center gap-1.5 rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
+                            className="outlier-pill-button motion-press inline-flex items-center gap-1.5 rounded-full bg-[var(--amber)] px-5 py-2 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] transition-colors shadow-xs"
                           >
                             <PlusCircle className="h-3.5 w-3.5" />
                             Post a Job
                           </Link>
                           <Link
                             href="/services"
-                            className="motion-press inline-flex items-center gap-1.5 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-4 py-2 text-xs font-bold text-[var(--text-main)] hover:bg-[var(--card-hover)] transition-colors shadow-xs"
+                            className="motion-press inline-flex items-center gap-1.5 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] px-5 py-2 text-xs font-bold text-[var(--text-main)] hover:bg-[var(--card-hover)] transition-colors shadow-xs"
                           >
                             Browse Services
                           </Link>
@@ -567,7 +567,7 @@ export default function DashboardScreen() {
                       <h3 id="jobs-tab-upcoming-heading" className="text-base font-bold font-display text-[var(--text-main)]">
                         Scheduled Bookings
                       </h3>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
+                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                         {viewModel.upcomingWork.length}
                       </span>
                     </div>
@@ -578,14 +578,14 @@ export default function DashboardScreen() {
                       viewModel.upcomingWork.map((item) => (
                         <div
                           key={item.id}
-                          className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-5 border border-[var(--lead)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                          className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 border border-[var(--lead)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                         >
                           <div className="space-y-2 flex-1">
                             <div className="flex items-center gap-2">
                               <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]">
                                 {item.id}
                               </span>
-                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                                 Scheduled
                               </span>
                             </div>
@@ -608,7 +608,7 @@ export default function DashboardScreen() {
                             </div>
 
                             {item.preparationTip && (
-                              <div className="text-xs bg-[var(--bg)] text-[var(--text-muted)] p-2.5 rounded-lg border border-[var(--lead)] flex items-start gap-1.5">
+                              <div className="text-xs bg-[var(--bg)] text-[var(--text-muted)] p-3 rounded-xl border border-[var(--lead)] flex items-start gap-1.5">
                                 <Info className="h-3.5 w-3.5 text-[var(--brand-green)] shrink-0 mt-0.5" />
                                 <span>{item.preparationTip}</span>
                               </div>
@@ -617,14 +617,14 @@ export default function DashboardScreen() {
 
                           <Link
                             href={item.actionUrl}
-                            className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] transition-colors shrink-0 shadow-xs"
+                            className="inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] transition-colors shrink-0 shadow-xs"
                           >
                             {item.actionLabel}
                           </Link>
                         </div>
                       ))
                     ) : (
-                      <div className="relative overflow-hidden bg-[var(--card-bg)] rounded-lg p-8 border border-[var(--lead)] text-center text-xs text-[var(--text-muted)] shadow-xs">
+                      <div className="relative overflow-hidden bg-[var(--card-bg)] rounded-2xl p-8 border border-[var(--lead)] text-center text-xs text-[var(--text-muted)] shadow-xs">
                         <div
                           className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.04] select-none"
                           aria-hidden="true"
@@ -654,7 +654,7 @@ export default function DashboardScreen() {
                       {viewModel.recentActivity.map((item) => (
                         <div
                           key={item.id}
-                          className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-4 border border-[var(--lead)] flex items-center justify-between gap-4 text-xs shadow-xs"
+                          className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-5 border border-[var(--lead)] flex items-center justify-between gap-4 text-xs shadow-xs"
                         >
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
@@ -695,14 +695,14 @@ export default function DashboardScreen() {
                 {/* 1. Primary Action: Find a Service */}
                 <Link
                   href="/services"
-                  className="group relative bg-[var(--card-bg)] text-[var(--text-main)] p-5 rounded-lg shadow-xs hover:border-[var(--amber)] transition-all duration-200 flex flex-col justify-between border border-[var(--lead)] min-h-[140px]"
+                  className="group relative bg-[var(--card-bg)] text-[var(--text-main)] p-6 rounded-2xl shadow-xs hover:border-[var(--amber)] transition-all duration-200 flex flex-col justify-between border border-[var(--lead)] min-h-[140px]"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <div className="h-10 w-10 rounded-lg bg-[var(--amber)]/10 text-[var(--amber)] border border-[var(--amber)]/20 flex items-center justify-center group-hover:scale-105 transition-transform">
+                      <div className="h-10 w-10 rounded-xl bg-[var(--amber)]/10 text-[var(--amber)] border border-[var(--amber)]/20 flex items-center justify-center group-hover:scale-105 transition-transform">
                         <Search className="h-5 w-5" />
                       </div>
-                      <span className="text-[11px] font-bold uppercase tracking-wider bg-[var(--amber)] text-[#001A41] px-2.5 py-0.5 rounded-md">
+                      <span className="text-[11px] font-bold uppercase tracking-wider bg-[var(--amber)] text-[#001A41] px-3 py-0.5 rounded-full">
                         Primary Action
                       </span>
                     </div>
@@ -722,14 +722,14 @@ export default function DashboardScreen() {
                 {/* 2. Secondary Action: Post a Job */}
                 <Link
                   href="/post-job"
-                  className="group relative bg-[var(--card-bg)] text-[var(--text-main)] p-5 rounded-lg shadow-xs hover:border-[var(--brand-green)] transition-all duration-200 flex flex-col justify-between border border-[var(--lead)] min-h-[140px]"
+                  className="group relative bg-[var(--card-bg)] text-[var(--text-main)] p-6 rounded-2xl shadow-xs hover:border-[var(--brand-green)] transition-all duration-200 flex flex-col justify-between border border-[var(--lead)] min-h-[140px]"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <div className="h-10 w-10 rounded-lg bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] flex items-center justify-center group-hover:scale-105 transition-transform">
+                      <div className="h-10 w-10 rounded-xl bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)] flex items-center justify-center group-hover:scale-105 transition-transform">
                         <Briefcase className="h-5 w-5" />
                       </div>
-                      <span className="text-[11px] font-bold uppercase tracking-wider bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] px-2.5 py-0.5 rounded-md">
+                      <span className="text-[11px] font-bold uppercase tracking-wider bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] px-3 py-0.5 rounded-full">
                         Secondary
                       </span>
                     </div>
@@ -754,7 +754,7 @@ export default function DashboardScreen() {
             {viewModel.stateMode === 'first_run' && (
               <section
                 aria-labelledby="first-run-heading"
-                className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 sm:p-8 border border-[var(--lead)] shadow-xs space-y-6"
+                className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 sm:p-8 border border-[var(--lead)] shadow-xs space-y-6"
               >
                 <div>
                   <h3 id="first-run-heading" className="text-xl font-bold font-display text-[var(--text-main)]">
@@ -772,8 +772,8 @@ export default function DashboardScreen() {
                     How BukieBrainJobs Works
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                    <div className="p-4 rounded-lg bg-[var(--bg)] border border-[var(--lead)] space-y-1.5">
-                      <div className="h-6 w-6 rounded-md bg-[var(--amber)] text-[#001A41] font-bold flex items-center justify-center text-xs">
+                    <div className="p-4 rounded-xl bg-[var(--bg)] border border-[var(--lead)] space-y-1.5">
+                      <div className="h-6 w-6 rounded-full bg-[var(--amber)] text-[#001A41] font-bold flex items-center justify-center text-xs">
                         1
                       </div>
                       <h5 className="font-bold text-[var(--text-main)] text-sm">Discover or Request</h5>
@@ -781,8 +781,8 @@ export default function DashboardScreen() {
                         Find a service directly or post custom job details with your preferred schedule and location.
                       </p>
                     </div>
-                    <div className="p-4 rounded-lg bg-[var(--bg)] border border-[var(--lead)] space-y-1.5">
-                      <div className="h-6 w-6 rounded-md bg-[var(--amber)] text-[#001A41] font-bold flex items-center justify-center text-xs">
+                    <div className="p-4 rounded-xl bg-[var(--bg)] border border-[var(--lead)] space-y-1.5">
+                      <div className="h-6 w-6 rounded-full bg-[var(--amber)] text-[#001A41] font-bold flex items-center justify-center text-xs">
                         2
                       </div>
                       <h5 className="font-bold text-[var(--text-main)] text-sm">Review BrainWorkers</h5>
@@ -790,8 +790,8 @@ export default function DashboardScreen() {
                         Inspect verified badges, ratings, and customer reviews before agreeing on timing.
                       </p>
                     </div>
-                    <div className="p-4 rounded-lg bg-[var(--bg)] border border-[var(--lead)] space-y-1.5">
-                      <div className="h-6 w-6 rounded-md bg-[var(--amber)] text-[#001A41] font-bold flex items-center justify-center text-xs">
+                    <div className="p-4 rounded-xl bg-[var(--bg)] border border-[var(--lead)] space-y-1.5">
+                      <div className="h-6 w-6 rounded-full bg-[var(--amber)] text-[#001A41] font-bold flex items-center justify-center text-xs">
                         3
                       </div>
                       <h5 className="font-bold text-[var(--text-main)] text-sm">BukieGuarantee</h5>
@@ -814,7 +814,7 @@ export default function DashboardScreen() {
                     <h2 id="active-work-heading" className="text-base font-bold font-display text-[var(--text-main)]">
                       Active Work
                     </h2>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                       {viewModel.activeWork.length}
                     </span>
                   </div>
@@ -834,7 +834,7 @@ export default function DashboardScreen() {
                 {viewModel.hasPartialFailure && (
                   <div
                     role="alert"
-                    className="bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-lg p-5 text-[var(--danger)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    className="bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-2xl p-5 text-[var(--danger)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                   >
                     <div className="flex items-start gap-3">
                       <AlertTriangle className="h-5 w-5 text-[var(--danger)] shrink-0 mt-0.5" />
@@ -848,7 +848,7 @@ export default function DashboardScreen() {
                     </div>
                     <button
                       onClick={handleRetryActive}
-                      className="px-4 py-2 bg-[var(--danger)] hover:opacity-90 text-white text-xs font-semibold rounded-lg transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer"
+                      className="outlier-pill-button px-5 py-2.5 bg-[var(--danger)] hover:opacity-90 text-white text-xs font-semibold rounded-full transition-colors shrink-0 flex items-center gap-1.5 cursor-pointer shadow-xs"
                     >
                       <RotateCcw className="h-3.5 w-3.5" />
                       Retry Active Requests
@@ -863,14 +863,14 @@ export default function DashboardScreen() {
                       viewModel.activeWork.map((item) => (
                         <div
                           key={item.id}
-                          className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-5 border border-[var(--lead)] shadow-xs hover:border-[var(--lead-light)] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                          className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 border border-[var(--lead)] shadow-xs hover:border-[var(--lead-light)] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                         >
                           <div className="space-y-1.5 flex-1">
                             <div className="flex flex-wrap items-center gap-2">
                               <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]">
                                 {item.id}
                               </span>
-                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
+                              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                                 {item.statusLabel}
                               </span>
                               {item.preferredWorkerName && (
@@ -901,14 +901,14 @@ export default function DashboardScreen() {
 
                           <Link
                             href={item.actionUrl}
-                            className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition-colors shrink-0 shadow-xs"
+                            className="outlier-pill-button inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[var(--amber)] text-[#001A41] text-xs font-bold hover:bg-[var(--amber-hover)] transition-colors shrink-0 shadow-xs"
                           >
                             {item.actionLabel}
                           </Link>
                         </div>
                       ))
                     ) : (
-                      <div className="bg-[var(--card-bg)] rounded-lg p-6 border border-[var(--lead)] text-center text-xs text-[var(--text-muted)] shadow-xs">
+                      <div className="bg-[var(--card-bg)] rounded-2xl p-6 border border-[var(--lead)] text-center text-xs text-[var(--text-muted)] shadow-xs">
                         No active work at this moment. Click &quot;Post a Job&quot; or &quot;Find a Service&quot; to begin.
                       </div>
                     )}
@@ -927,7 +927,7 @@ export default function DashboardScreen() {
                     <h2 id="upcoming-work-heading" className="text-base font-bold font-display text-[var(--text-main)]">
                       Upcoming Work
                     </h2>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                       {viewModel.upcomingWork.length}
                     </span>
                   </div>
@@ -942,14 +942,14 @@ export default function DashboardScreen() {
                     viewModel.upcomingWork.map((item) => (
                       <div
                         key={item.id}
-                        className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-5 border border-[var(--lead)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                        className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 border border-[var(--lead)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                       >
                         <div className="space-y-2 flex-1">
                           <div className="flex items-center gap-2">
                             <span className="text-xs font-bold font-mono px-2 py-0.5 rounded bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)]">
                               {item.id}
                             </span>
-                            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
+                            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[var(--amber-dim)] text-[var(--amber)] border border-[var(--amber)]/30">
                               Scheduled
                             </span>
                           </div>
@@ -972,7 +972,7 @@ export default function DashboardScreen() {
                           </div>
 
                           {item.preparationTip && (
-                            <div className="text-xs bg-[var(--bg)] text-[var(--text-muted)] p-2.5 rounded-lg border border-[var(--lead)] flex items-start gap-1.5">
+                            <div className="text-xs bg-[var(--bg)] text-[var(--text-muted)] p-3 rounded-xl border border-[var(--lead)] flex items-start gap-1.5">
                               <Info className="h-3.5 w-3.5 text-[var(--brand-green)] shrink-0 mt-0.5" />
                               <span>{item.preparationTip}</span>
                             </div>
@@ -981,14 +981,14 @@ export default function DashboardScreen() {
 
                         <Link
                           href={item.actionUrl}
-                          className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] transition-colors shrink-0 shadow-xs"
+                          className="inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-[var(--lead)] bg-[var(--card-bg)] hover:bg-[var(--card-hover)] text-xs font-semibold text-[var(--text-main)] transition-colors shrink-0 shadow-xs"
                         >
                           {item.actionLabel}
                         </Link>
                       </div>
                     ))
                   ) : (
-                    <div className="bg-[var(--card-bg)] rounded-lg p-6 border border-[var(--lead)] text-center text-xs text-[var(--text-muted)] shadow-xs">
+                    <div className="bg-[var(--card-bg)] rounded-2xl p-6 border border-[var(--lead)] text-center text-xs text-[var(--text-muted)] shadow-xs">
                       No upcoming bookings scheduled.
                     </div>
                   )}
@@ -1018,7 +1018,7 @@ export default function DashboardScreen() {
                       viewModel.recentActivity.map((item) => (
                         <div
                           key={item.id}
-                          className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-4 border border-[var(--lead)] flex items-center justify-between gap-4 text-xs shadow-xs"
+                          className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-5 border border-[var(--lead)] flex items-center justify-between gap-4 text-xs shadow-xs"
                         >
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
@@ -1042,7 +1042,7 @@ export default function DashboardScreen() {
                         </div>
                       ))
                     ) : (
-                      <div className="bg-[var(--card-bg)] rounded-lg p-4 border border-[var(--lead)] text-center text-xs text-[var(--text-muted)] shadow-xs">
+                      <div className="bg-[var(--card-bg)] rounded-2xl p-5 border border-[var(--lead)] text-center text-xs text-[var(--text-muted)] shadow-xs">
                         No previous activity recorded.
                       </div>
                     )}
@@ -1071,7 +1071,7 @@ export default function DashboardScreen() {
                   <Link
                     key={cat.id}
                     href={cat.href}
-                    className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-3.5 border border-[var(--lead)] hover:border-[var(--amber)] transition-colors group block shadow-xs"
+                    className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-4 border border-[var(--lead)] hover:border-[var(--amber)] transition-colors group block shadow-xs"
                   >
                     <h3 className="font-bold text-sm text-[var(--text-main)] group-hover:text-[var(--amber)] transition-colors">
                       {cat.title}
@@ -1155,16 +1155,16 @@ export default function DashboardScreen() {
           onClick={closeDialog}
         >
           <div
-            className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg max-w-md w-full p-6 border border-[var(--lead)] shadow-xl space-y-4"
+            className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl max-w-md w-full p-6 border border-[var(--lead)] shadow-xl space-y-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <div className="h-10 w-10 rounded-lg bg-[var(--amber)]/10 text-[var(--amber)] border border-[var(--amber)]/20 flex items-center justify-center">
+              <div className="h-10 w-10 rounded-xl bg-[var(--amber)]/10 text-[var(--amber)] border border-[var(--amber)]/20 flex items-center justify-center">
                 <MessageSquare className="h-5 w-5" />
               </div>
               <button
                 onClick={closeDialog}
-                className="p-2 text-[var(--text-muted)] hover:text-[var(--text-main)] rounded-lg hover:bg-[var(--card-hover)] transition-colors cursor-pointer"
+                className="p-2 text-[var(--text-muted)] hover:text-[var(--text-main)] rounded-full hover:bg-[var(--card-hover)] transition-colors cursor-pointer"
                 aria-label="Close Notice"
               >
                 <X className="h-5 w-5" />
@@ -1183,7 +1183,7 @@ export default function DashboardScreen() {
             <div className="pt-2">
               <button
                 onClick={closeDialog}
-                className="w-full py-2.5 px-4 bg-[var(--amber)] text-[#001A41] text-xs font-bold rounded-lg hover:bg-[var(--amber-hover)] transition-colors cursor-pointer shadow-xs"
+                className="outlier-pill-button w-full py-2.5 px-4 bg-[var(--amber)] text-[#001A41] text-xs font-bold rounded-full hover:bg-[var(--amber-hover)] transition-colors cursor-pointer shadow-xs"
               >
                 Understood
               </button>
@@ -1204,14 +1204,14 @@ export default function DashboardScreen() {
           onClick={() => setActiveTab('home')}
         >
           <div
-            className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg max-w-md w-full p-6 border border-[var(--lead)] shadow-xl space-y-5"
+            className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl max-w-md w-full p-6 border border-[var(--lead)] shadow-xl space-y-5"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-bold font-display text-[var(--text-main)]">Customer Account Details</h3>
               <button
                 onClick={() => setActiveTab('home')}
-                className="p-2 text-[var(--text-muted)] hover:text-[var(--text-main)] rounded-lg hover:bg-[var(--card-hover)] transition-colors cursor-pointer"
+                className="p-2 text-[var(--text-muted)] hover:text-[var(--text-main)] rounded-full hover:bg-[var(--card-hover)] transition-colors cursor-pointer"
                 aria-label="Close Profile"
               >
                 <X className="h-5 w-5" />
@@ -1219,23 +1219,23 @@ export default function DashboardScreen() {
             </div>
 
             <div className="space-y-3 text-xs">
-              <div className="p-3 bg-[var(--bg)] rounded-lg border border-[var(--lead)] flex items-center justify-between">
+              <div className="p-3 bg-[var(--bg)] rounded-xl border border-[var(--lead)] flex items-center justify-between">
                 <span className="text-[var(--text-muted)]">Full Name</span>
                 <span className="font-bold text-[var(--text-main)]">{viewModel.customer.name}</span>
               </div>
-              <div className="p-3 bg-[var(--bg)] rounded-lg border border-[var(--lead)] flex items-center justify-between">
+              <div className="p-3 bg-[var(--bg)] rounded-xl border border-[var(--lead)] flex items-center justify-between">
                 <span className="text-[var(--text-muted)]">Role</span>
-                <span className="font-semibold text-[var(--brand-green)] bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2 py-0.5 rounded-md">
+                <span className="font-semibold text-[var(--brand-green)] bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2.5 py-0.5 rounded-full">
                   {getRoleDisplayLabel(viewModel.customer.role)}
                 </span>
               </div>
-              <div className="p-3 bg-[var(--bg)] rounded-lg border border-[var(--lead)] flex items-center justify-between">
+              <div className="p-3 bg-[var(--bg)] rounded-xl border border-[var(--lead)] flex items-center justify-between">
                 <span className="text-[var(--text-muted)]">Contact</span>
                 <span className="text-[var(--text-main)]">
                   {viewModel.customer.email || viewModel.customer.phone || 'Protected'}
                 </span>
               </div>
-              <div className="p-3 bg-[var(--bg)] rounded-lg border border-[var(--lead)] flex items-center justify-between">
+              <div className="p-3 bg-[var(--bg)] rounded-xl border border-[var(--lead)] flex items-center justify-between">
                 <span className="text-[var(--text-muted)]">Marketplace Region</span>
                 <span className="text-[var(--text-main)]">Nigeria (Lagos Hub)</span>
               </div>
@@ -1244,14 +1244,14 @@ export default function DashboardScreen() {
             <div className="pt-2 space-y-2">
               <button
                 onClick={handleSignOut}
-                className="w-full py-2.5 px-4 bg-[var(--danger)] text-white text-xs font-semibold rounded-lg hover:opacity-90 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                className="outlier-pill-button w-full py-2.5 px-4 bg-[var(--danger)] text-white text-xs font-semibold rounded-full hover:opacity-90 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
               >
                 <LogOut className="h-4 w-4" />
                 Sign Out
               </button>
               <button
                 onClick={() => setActiveTab('home')}
-                className="w-full py-2 px-4 border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] text-xs font-semibold rounded-lg hover:bg-[var(--card-hover)] transition-colors cursor-pointer shadow-xs"
+                className="w-full py-2 px-4 border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] text-xs font-semibold rounded-full hover:bg-[var(--card-hover)] transition-colors cursor-pointer shadow-xs"
               >
                 Close
               </button>

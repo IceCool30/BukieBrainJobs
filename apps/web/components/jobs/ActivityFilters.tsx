@@ -44,7 +44,7 @@ export function ActivityFilters({
             type="button"
             onClick={() => onFilterChange(id)}
             aria-pressed={isActive}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-md text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
               isActive
                 ? 'bg-[var(--amber)] text-[#001A41] shadow-xs font-bold'
                 : 'bg-[var(--card-bg)] text-[var(--text-muted)] border border-[var(--lead)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)]'
@@ -52,7 +52,7 @@ export function ActivityFilters({
           >
             <span>{label}</span>
             <span
-              className={`text-[11px] px-1.5 py-0.5 rounded-md ${
+              className={`text-[11px] px-2 py-0.5 rounded-md ${
                 isActive ? 'bg-[#001A41]/15 text-[#001A41] font-bold' : 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
               }`}
             >

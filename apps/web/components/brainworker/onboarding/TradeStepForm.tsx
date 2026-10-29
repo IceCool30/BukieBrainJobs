@@ -249,13 +249,13 @@ export function TradeStepForm({
       id={formId}
       onSubmit={handleSubmit}
       noValidate
-      className={`w-full max-w-4xl mx-auto space-y-10 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-6 sm:p-10 shadow-xs transition-colors ${className}`}
+      className={`w-full max-w-4xl mx-auto space-y-10 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-6 sm:p-10 shadow-xs transition-colors ${className}`}
     >
       {/* Header */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-main)]">
+        <h1 className="text-xl sm:text-2xl font-bold text-[var(--text-main)]">
           Step 2: Trade & Coverage Profile
-        </h2>
+        </h1>
         <p className="mt-2 text-sm text-[var(--text-muted)] leading-relaxed">
           Configure your primary trade specialty, practical experience tier, and the Nigerian cities where you accept jobs.
         </p>
@@ -295,14 +295,14 @@ export function TradeStepForm({
                     setPrimaryCategory(cat.key);
                   }
                 }}
-                className={`flex items-start gap-3.5 p-4 rounded-lg border text-left cursor-pointer transition focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)] ${
+                className={`flex items-start gap-3.5 p-4 rounded-xl border text-left cursor-pointer transition focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)] ${
                   isSelected
                     ? 'border-[var(--text-main)] bg-[var(--tag-bg)] ring-1 ring-[var(--text-main)]'
                     : 'border-[var(--card-border)] bg-[var(--card-bg)] hover:bg-[var(--bg)]'
                 }`}
               >
                 <div
-                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition ${
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition ${
                     isSelected
                       ? 'bg-[var(--text-main)] text-[var(--bg)]'
                       : 'bg-[var(--tag-bg)] text-[var(--text-muted)]'
@@ -368,7 +368,7 @@ export function TradeStepForm({
             onClick={handleAddTag}
             disabled={!tagInput.trim() || subSpecialties.length >= 5}
             aria-label="Add Tag"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--amber)] px-4 py-2.5 text-xs font-bold text-[#001A41] shadow-xs transition hover:bg-[var(--amber-hover)] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--amber)] px-4 py-2 text-xs font-bold text-[#001A41] shadow-xs transition-colors hover:bg-[var(--amber-hover)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Plus className="h-4 w-4" />
             <span>Add</span>
@@ -381,14 +381,14 @@ export function TradeStepForm({
             {subSpecialties.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1.5 rounded-md bg-[var(--tag-bg)] px-3 py-1.5 text-xs font-medium text-[var(--text-main)] border border-[var(--card-border)]"
+                className="inline-flex items-center gap-1.5 rounded-full bg-[var(--tag-bg)] px-3.5 py-1.5 text-xs font-medium text-[var(--text-main)] border border-[var(--card-border)]"
               >
                 <span>{tag}</span>
                 <button
                   type="button"
                   onClick={() => handleRemoveTag(tag)}
                   aria-label={`Remove ${tag}`}
-                  className="rounded-full p-0.5 text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus:outline-none"
+                  className="rounded-md p-0.5 text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus:outline-none"
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -431,14 +431,14 @@ export function TradeStepForm({
                     setExperienceLevel(tier.key);
                   }
                 }}
-                className={`p-4 rounded-lg border text-left cursor-pointer transition focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)] ${
+                className={`p-4 rounded-xl border text-left cursor-pointer transition focus:outline-none focus:ring-2 focus:ring-[var(--amber-dim)] ${
                   isSelected
                     ? 'border-[var(--text-main)] bg-[var(--tag-bg)] ring-1 ring-[var(--text-main)]'
                     : 'border-[var(--card-border)] bg-[var(--card-bg)] hover:bg-[var(--bg)]'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-[var(--text-main)] bg-[var(--tag-bg)] rounded-md px-2 py-0.5">
+                  <span className="text-xs font-bold text-[var(--text-main)] bg-[var(--tag-bg)] rounded-full px-2.5 py-0.5">
                     {tier.range}
                   </span>
                   <div
@@ -538,10 +538,10 @@ export function TradeStepForm({
             return (
               <label
                 key={cityName}
-                className={`inline-flex items-center gap-2.5 px-4 py-2.5 rounded-lg border text-xs font-semibold cursor-pointer transition select-none ${
+                className={`inline-flex items-center gap-2.5 px-4 py-2 rounded-full border text-xs font-semibold cursor-pointer transition select-none ${
                   isChecked
                     ? 'border-[var(--text-main)] bg-[var(--text-main)] text-[var(--bg)] shadow-xs'
-                    : 'border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--bg)]'
+                    : 'border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--card-hover)]'
                 }`}
               >
                 <input
@@ -553,7 +553,7 @@ export function TradeStepForm({
                   className="sr-only"
                 />
                 <div
-                  className={`h-4 w-4 rounded flex items-center justify-center transition ${
+                  className={`h-4 w-4 rounded-full flex items-center justify-center transition ${
                     isChecked
                       ? 'bg-[var(--card-bg)] text-[var(--text-main)]'
                       : 'border border-[var(--card-border)] bg-[var(--card-bg)]'
@@ -579,7 +579,7 @@ export function TradeStepForm({
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-xs transition hover:bg-[var(--bg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+          className="inline-flex items-center gap-2 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-xs transition hover:bg-[var(--card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
         >
           <ArrowLeft className="h-4 w-4 text-[var(--text-muted)]" />
           <span>Back to Identity</span>
@@ -588,7 +588,7 @@ export function TradeStepForm({
         <button
           type="submit"
           disabled={!isFormValid || isSubmitting}
-          className={`inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] shadow-xs transition hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
+          className={`outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-6 py-3 text-sm font-bold text-[#001A41] shadow-xs transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 ${
             !isFormValid || isSubmitting
               ? 'opacity-50 cursor-not-allowed'
               : 'cursor-pointer'

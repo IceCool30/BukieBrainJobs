@@ -93,7 +93,7 @@ export default function PwaInstallBanner() {
         <button
           type="button"
           onClick={handleInstallClick}
-          className="px-3.5 py-2 bg-[#296A4B] hover:bg-[#1F523A] active:bg-[#17402C] text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 shadow-sm"
+          className="outlier-pill-button px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-full transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
         >
           {isIos ? <Smartphone className="w-3.5 h-3.5" /> : <Download className="w-3.5 h-3.5" />}
           <span>{isIos ? 'Install' : 'Get App'}</span>

@@ -45,13 +45,13 @@ export default function EnterprisePage() {
 
           <div className="relative z-10 mx-auto max-w-[1280px] px-4 py-6 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between gap-4 pb-4">
-              <div className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-mono font-bold uppercase tracking-[0.14em] text-[#ABEEC8] backdrop-blur-xs">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-mono font-bold uppercase tracking-[0.14em] text-[#ABEEC8] backdrop-blur-xs">
                 <Building2 className="h-3.5 w-3.5" />
                 Enterprise
               </div>
               <Link
                 href="/services"
-                className="motion-press inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 text-xs font-bold text-white backdrop-blur-xs transition-colors hover:bg-white/20"
+                className="motion-press inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-xs font-bold text-white backdrop-blur-xs transition-colors hover:bg-white/20"
               >
                 Explore services
                 <ArrowRight className="h-4 w-4 text-[#ABEEC8]" />
@@ -59,8 +59,8 @@ export default function EnterprisePage() {
             </div>
 
           <div className="flex min-h-[408px] items-end py-8 sm:min-h-[508px] sm:py-14">
-            <div className="max-w-xl rounded-lg border border-white/20 bg-black/60 backdrop-blur-xs p-5 shadow-lg sm:p-8">
-              <div className="inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--nav-accent)]">
+            <div className="max-w-xl rounded-2xl border border-white/20 bg-black/60 backdrop-blur-xs p-6 shadow-lg sm:p-8">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--nav-accent)]">
                 <Building2 className="h-3.5 w-3.5" />
                 BukieBrainJobs for business
               </div>
@@ -115,14 +115,14 @@ export default function EnterprisePage() {
           <div className="flex flex-col gap-3 sm:flex-row md:shrink-0">
             <Link
               href="/services"
-              className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2"
+              className="outlier-pill-button motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ABEEC8] focus-visible:ring-offset-2 hover:scale-[1.02] active:scale-[0.98]"
             >
               Browse services
               <ArrowRight className="h-4 w-4 text-[#001A41]" aria-hidden="true" />
             </Link>
             <Link
               href="/"
-              className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] px-5 text-sm font-bold text-[var(--text-main)] transition-colors hover:border-[var(--rule)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
+              className="motion-press inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-6 text-sm font-bold text-[var(--text-main)] transition-colors hover:border-[var(--rule)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#296A4B] focus-visible:ring-offset-2"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to home

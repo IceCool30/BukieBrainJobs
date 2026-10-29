@@ -51,7 +51,7 @@ export function OnSiteStatusBanner({
   };
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-zinc-100 shadow-lg">
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 text-zinc-100 shadow-lg">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-800 text-amber-400">
@@ -81,7 +81,7 @@ export function OnSiteStatusBanner({
               <span className="text-base font-semibold text-zinc-100">
                 On-Site Execution Status
               </span>
-              <span className="rounded-md border border-zinc-700 bg-zinc-800 px-2 py-0.5 text-xs font-medium text-zinc-300">
+              <span className="rounded-full border border-zinc-700 bg-zinc-800 px-2.5 py-0.5 text-xs font-medium text-zinc-300">
                 {formatStatus(jobStatus)}
               </span>
             </div>
@@ -95,7 +95,7 @@ export function OnSiteStatusBanner({
 
         <div className="flex items-center gap-2">
           <span
-            className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium ${
+            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${
               isEscrowFunded
                 ? 'border border-emerald-800 bg-emerald-950 text-emerald-400'
                 : 'border border-amber-800 bg-amber-950 text-amber-400'

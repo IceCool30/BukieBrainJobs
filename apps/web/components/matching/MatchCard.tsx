@@ -17,7 +17,7 @@ import { getExplanationLabel } from '../../lib/matching/explanations';
 
 function ExplanationChip({ tag }: { tag: MatchExplanationTag }) {
   return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green)] text-[var(--brand-green)] text-xs font-mono font-medium leading-snug">
+    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--brand-green-dim)] border border-[var(--brand-green)] text-[var(--brand-green)] text-xs font-mono font-medium leading-snug">
       <CheckCircle2 className="h-3 w-3 shrink-0" aria-hidden="true" />
       {getExplanationLabel(tag)}
     </span>
@@ -46,7 +46,7 @@ function CandidateAvatar({
       <img
         src={avatarUrl}
         alt={`${displayName} profile photo`}
-        className="w-14 h-14 rounded-lg object-cover border border-[var(--lead)] shadow-sm shrink-0"
+        className="w-14 h-14 rounded-xl object-cover border border-[var(--lead)] shadow-xs shrink-0"
         loading="lazy"
       />
     );
@@ -54,7 +54,7 @@ function CandidateAvatar({
 
   return (
     <div
-      className="w-14 h-14 rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--text)] flex items-center justify-center text-lg font-bold font-mono shrink-0 select-none"
+      className="w-14 h-14 rounded-xl bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--text)] flex items-center justify-center text-lg font-bold font-mono shrink-0 select-none"
       aria-label={`${displayName} profile avatar`}
     >
       {initials}
@@ -115,7 +115,7 @@ export function MatchCard({
   return (
     <article
       aria-label={`Match ${rank}: ${profile.displayName}`}
-      className={`bg-[var(--card-bg)] border rounded-lg p-5 transition-shadow shadow-sm ${
+      className={`bg-[var(--card-bg)] border rounded-2xl p-5 transition-shadow shadow-xs ${
         isInterested
           ? 'border-[var(--brand-green)] ring-1 ring-[var(--brand-green)]'
           : 'border-[var(--lead)] hover:border-[var(--muted)]'
@@ -135,7 +135,7 @@ export function MatchCard({
               </h3>
               {profile.identityVerified && (
                 <span
-                  className="inline-flex items-center gap-0.5 text-[var(--brand-green)] bg-[var(--brand-green-dim)] border border-[var(--brand-green)] rounded-lg px-2 py-0.5 text-[10px] font-semibold"
+                  className="inline-flex items-center gap-0.5 text-[var(--brand-green)] bg-[var(--brand-green-dim)] border border-[var(--brand-green)] rounded-full px-2.5 py-0.5 text-[10px] font-semibold"
                   aria-label="Identity verified"
                 >
                   <ShieldCheck className="h-3 w-3" aria-hidden="true" />
@@ -150,7 +150,7 @@ export function MatchCard({
           </div>
         </div>
         <span
-          className="shrink-0 text-[11px] font-mono text-[var(--muted)] bg-[var(--tag-bg)] border border-[var(--lead)] rounded-lg px-2 py-0.5"
+          className="shrink-0 text-[11px] font-mono text-[var(--muted)] bg-[var(--tag-bg)] border border-[var(--lead)] rounded-full px-2.5 py-0.5"
           aria-label={`Ranked ${rank}`}
         >
           #{rank}
@@ -206,7 +206,7 @@ export function MatchCard({
         <p
           role="status"
           aria-live="polite"
-          className="text-xs text-[var(--brand-green)] bg-[var(--brand-green-dim)] border border-[var(--brand-green)] rounded-lg px-3 py-2 mb-3"
+          className="text-xs text-[var(--brand-green)] bg-[var(--brand-green-dim)] border border-[var(--brand-green)] rounded-xl px-3 py-2 mb-3"
         >
           Your interest has been noted. This is not a booking or an acceptance.
         </p>
@@ -217,7 +217,7 @@ export function MatchCard({
         <button
           type="button"
           onClick={() => onViewProfile(profile.brainWorkerId)}
-          className="flex-1 text-center text-sm font-medium text-[var(--text)] border border-[var(--lead)] rounded-lg py-2 px-3 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+          className="flex-1 text-center text-xs font-semibold text-[var(--text)] border border-[var(--lead)] rounded-full py-2.5 px-4 hover:bg-[var(--tag-bg)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
           aria-label={`View profile of ${profile.displayName}`}
         >
           View profile
@@ -228,10 +228,10 @@ export function MatchCard({
           disabled={isPending}
           aria-label={selectAriaLabel}
           aria-pressed={isInterested}
-          className={`flex-1 text-center text-sm font-semibold rounded-lg py-2 px-3 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed ${
+          className={`flex-1 text-center text-xs font-bold rounded-full py-2.5 px-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] disabled:opacity-60 disabled:cursor-not-allowed ${
             isInterested
               ? 'bg-[var(--card-bg)] border border-[var(--lead)] text-[var(--text)] hover:bg-[var(--tag-bg)]'
-              : 'bg-[var(--amber)] text-[#001A41] font-bold hover:bg-[var(--amber-hover)] shadow-sm'
+              : 'outlier-pill-button bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] shadow-xs'
           }`}
         >
           {isPending ? (

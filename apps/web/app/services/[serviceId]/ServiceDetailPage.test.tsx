@@ -1,5 +1,4 @@
 /** @vitest-environment jsdom */
-import React from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import ServiceDetailPage from './page';
@@ -28,6 +27,20 @@ describe('ServiceDetailPage', () => {
     expect(screen.getByRole('heading', { level: 1, name: /generator servicing & repair/i })).toBeInTheDocument();
     expect(screen.getByText(/power & cooling/i)).toBeInTheDocument();
     expect(screen.getByText('₦10,000')).toBeInTheDocument();
+  });
+
+  it('uses theme-safe colors over the photo hero', async () => {
+    const Component = await ServiceDetailPage({
+      params: Promise.resolve({ serviceId: 'generator' }),
+      searchParams: Promise.resolve({}),
+    });
+    render(Component);
+
+    expect(screen.getByText(/power & cooling/i)).toHaveClass(
+      'text-[var(--nav-accent)]',
+      'dark:text-[var(--brand-green)]',
+    );
+    expect(screen.getByText('₦10,000')).toHaveClass('text-white');
   });
 
   it('renders the popular jobs list for the service', async () => {

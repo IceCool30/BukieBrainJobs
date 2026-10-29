@@ -44,7 +44,7 @@ export function FunnelProgressBar({
   return (
     <nav
       aria-label="Onboarding Progress"
-      className={`w-full bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-4 sm:p-6 transition-colors ${className}`}
+      className={`w-full bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-4 sm:p-6 shadow-xs transition-colors ${className}`}
     >
       {/* Mobile Step Status Header */}
       <div className="flex items-center justify-between sm:hidden mb-3">
@@ -57,9 +57,9 @@ export function FunnelProgressBar({
       </div>
 
       {/* Mobile progress bar track */}
-      <div className="h-1.5 w-full bg-[var(--tag-bg)] rounded-md overflow-hidden sm:hidden mb-3">
+      <div className="h-1.5 w-full bg-[var(--tag-bg)] rounded-full overflow-hidden sm:hidden mb-3">
         <div
-          className="h-full bg-[var(--amber)] transition-all duration-300 rounded-md"
+          className="h-full bg-[var(--amber)] transition-all duration-300 rounded-full"
           style={{ width: `${(currentStepNumber / 4) * 100}%` }}
         />
       </div>

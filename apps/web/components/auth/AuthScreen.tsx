@@ -512,7 +512,7 @@ export default function AuthScreen({
                       ? `${validatedReturnUrl}${validatedReturnUrl.includes('?') ? '&' : '?'}jobContinuation=1`
                       : validatedReturnUrl
                 }
-                className="motion-press inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 cursor-pointer"
+                className="outlier-pill-button inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 cursor-pointer"
               >
                 Continue immediately
               </Link>
@@ -646,7 +646,7 @@ export default function AuthScreen({
         {/* Main Authentication Card */}
         <section
           aria-labelledby="auth-heading"
-          className="relative overflow-hidden rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-xs sm:p-8"
+          className="relative overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 shadow-xs sm:p-8"
         >
           {/* Subtle Trademark Watermark */}
           <div
@@ -699,13 +699,13 @@ export default function AuthScreen({
 
           {/* Mode Switcher Tabs (Sign In vs Create Account) */}
           {(mode === 'signin' || mode === 'register') && (
-            <div className="mt-6 flex rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] p-1" role="tablist" aria-label="Account access options">
+            <div className="mt-6 flex rounded-full bg-[var(--tag-bg)] border border-[var(--lead)] p-1" role="tablist" aria-label="Account access options">
               <button
                 type="button"
                 role="tab"
                 aria-selected={mode === 'signin'}
                 onClick={() => handleModeSwitch('signin')}
-                className={`motion-press flex-1 min-h-[44px] rounded-md text-sm font-bold transition-all cursor-pointer ${
+                className={`motion-press flex-1 min-h-[44px] rounded-full text-sm font-bold transition-all cursor-pointer ${
                   mode === 'signin'
                     ? 'bg-[var(--card-bg)] text-[var(--text-main)] border border-[var(--lead)] shadow-xs'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
@@ -718,7 +718,7 @@ export default function AuthScreen({
                 role="tab"
                 aria-selected={mode === 'register'}
                 onClick={() => handleModeSwitch('register')}
-                className={`motion-press flex-1 min-h-[44px] rounded-md text-sm font-bold transition-all cursor-pointer ${
+                className={`motion-press flex-1 min-h-[44px] rounded-full text-sm font-bold transition-all cursor-pointer ${
                   mode === 'register'
                     ? 'bg-[var(--card-bg)] text-[var(--text-main)] border border-[var(--lead)] shadow-xs'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
@@ -817,7 +817,7 @@ export default function AuthScreen({
                     setAuthMethod('phone');
                     setFieldErrors({});
                   }}
-                  className={`motion-press flex min-h-[44px] items-center justify-center gap-2 rounded-lg border px-3 text-xs font-bold transition-all cursor-pointer ${
+                  className={`motion-press flex min-h-[44px] items-center justify-center gap-2 rounded-md border px-3 text-xs font-bold transition-all cursor-pointer ${
                     authMethod === 'phone'
                       ? 'border-[var(--amber)] bg-[var(--amber)]/10 text-[var(--text-main)]'
                       : 'border-[var(--lead)] bg-[var(--tag-bg)] text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)]'
@@ -833,7 +833,7 @@ export default function AuthScreen({
                     setAuthMethod('email');
                     setFieldErrors({});
                   }}
-                  className={`motion-press flex min-h-[44px] items-center justify-center gap-2 rounded-lg border px-3 text-xs font-bold transition-all cursor-pointer ${
+                  className={`motion-press flex min-h-[44px] items-center justify-center gap-2 rounded-md border px-3 text-xs font-bold transition-all cursor-pointer ${
                     authMethod === 'email'
                       ? 'border-[var(--amber)] bg-[var(--amber)]/10 text-[var(--text-main)]'
                       : 'border-[var(--lead)] bg-[var(--tag-bg)] text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)]'
@@ -902,7 +902,7 @@ export default function AuthScreen({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
+                  className="outlier-pill-button flex min-h-[48px] w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <span className="inline-flex items-center gap-2">
@@ -987,7 +987,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press mt-2 flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
+                className="outlier-pill-button mt-2 flex min-h-[48px] w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -1107,7 +1107,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
+                className="outlier-pill-button flex min-h-[48px] w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -1165,7 +1165,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
+                className="outlier-pill-button flex min-h-[48px] w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -1247,7 +1247,7 @@ export default function AuthScreen({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="motion-press flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
+                className="outlier-pill-button flex min-h-[48px] w-full items-center justify-center rounded-full bg-[var(--amber)] px-6 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">

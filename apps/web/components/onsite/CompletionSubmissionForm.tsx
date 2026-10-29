@@ -56,12 +56,12 @@ export function CompletionSubmissionForm({
   };
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl">
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-100 shadow-xl">
       <div className="mb-4 flex items-center justify-between border-b border-zinc-800 pb-3">
         <h3 className="text-lg font-semibold text-zinc-100">
           Submit Work Completion
         </h3>
-        <span className="rounded-md border border-zinc-700 bg-zinc-800 px-2.5 py-1 text-xs font-medium text-zinc-300">
+        <span className="rounded-full border border-zinc-700 bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300">
           Final Verification
         </span>
       </div>
@@ -103,7 +103,7 @@ export function CompletionSubmissionForm({
                 isSubmitting ||
                 photoUrlInput.trim().length === 0
               }
-              className="min-h-[44px] rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-200 transition hover:bg-zinc-700 disabled:opacity-50"
+              className="min-h-[44px] rounded-full border border-zinc-700 bg-zinc-800 px-5 py-2 text-sm font-medium text-zinc-200 transition hover:bg-zinc-700 disabled:opacity-50"
             >
               Add photo
             </button>
@@ -153,7 +153,7 @@ export function CompletionSubmissionForm({
           type="submit"
           aria-label="Submit work completion"
           disabled={!isFormValid}
-          className="flex w-full min-h-[44px] items-center justify-center rounded-lg bg-emerald-500 px-4 py-3 text-sm font-semibold text-zinc-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
+          className="flex w-full min-h-[44px] items-center justify-center outlier-pill-button rounded-full bg-[var(--amber)] px-5 py-3 text-sm font-semibold text-[#001A41] transition hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
         >
           {isSubmitting ? 'Submitting Completion...' : 'Submit Work Completion'}
         </button>

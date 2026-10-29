@@ -237,9 +237,9 @@ export function ServiceCatalogEditor({
       {/* Header and Save CTA */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-[var(--lead)]">
         <div>
-          <h2 className="text-2xl font-bold text-[var(--text-main)] tracking-tight">
+          <h1 className="text-2xl font-bold text-[var(--text-main)] tracking-tight">
             Service Catalog & Pricing
-          </h2>
+          </h1>
           <p className="mt-1 text-sm text-[var(--text-muted)] max-w-2xl leading-relaxed">
             Select the specific trade services you offer and set your standard hourly labor rates. Clear, transparent pricing helps match you with serious customer requests.
           </p>
@@ -252,8 +252,8 @@ export function ServiceCatalogEditor({
             onClick={handleSave}
             className={
               isSaveDisabled
-                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed transition-colors'
-                : 'px-5 py-2.5 rounded-lg text-sm font-bold bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]'
+                ? 'px-5 py-2.5 rounded-full text-sm font-semibold bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed transition-colors'
+                : 'outlier-pill-button px-5 py-2.5 rounded-full text-sm font-bold bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]'
             }
           >
             {isSaving ? 'Saving Changes...' : 'Save Changes'}
@@ -265,7 +265,7 @@ export function ServiceCatalogEditor({
       {saveError && (
         <div
           role="alert"
-          className="p-4 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-sm text-[var(--danger)] font-medium"
+          className="p-4 rounded-xl bg-[var(--danger-dim)] border border-[var(--danger-border)] text-sm text-[var(--danger)] font-medium"
         >
           {saveError}
         </div>
@@ -275,14 +275,14 @@ export function ServiceCatalogEditor({
         <div
           role="status"
           aria-live="polite"
-          className="p-4 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-sm text-[var(--brand-green)] font-medium"
+          className="p-4 rounded-xl bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-sm text-[var(--brand-green)] font-medium"
         >
           {successToast}
         </div>
       )}
 
       {/* Surface 1.1: Diagnostic Call-Out Fee Card */}
-      <div className="p-6 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] shadow-xs space-y-4 transition-colors">
+      <div className="p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] shadow-sm space-y-4 transition-colors">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
             <div className="text-lg font-bold text-[var(--text-main)]">
@@ -292,7 +292,7 @@ export function ServiceCatalogEditor({
               A flat fee charged for your initial on-site visit, inspection, and fault diagnosis.
             </p>
           </div>
-          <span className="inline-flex items-center rounded-md bg-[var(--tag-bg)] border border-[var(--card-border)] px-3 py-1 text-xs font-semibold text-[var(--text-muted)]">
+          <span className="inline-flex items-center rounded-full bg-[var(--tag-bg)] border border-[var(--card-border)] px-3 py-1 text-xs font-semibold text-[var(--text-muted)]">
             ₦5,000 (Recommended standard)
           </span>
         </div>
@@ -369,8 +369,8 @@ export function ServiceCatalogEditor({
                 onKeyDown={(e) => handleTabKeyDown(e, index)}
                 className={
                   isSelected
-                    ? 'whitespace-nowrap px-4 py-2 text-sm font-semibold rounded-lg bg-[var(--text-main)] text-[var(--bg)] transition-colors'
-                    : 'whitespace-nowrap px-4 py-2 text-sm font-medium rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition-colors'
+                    ? 'whitespace-nowrap px-4 py-2 text-sm font-semibold rounded-full bg-[var(--text-main)] text-[var(--bg)] transition-colors'
+                    : 'whitespace-nowrap px-4 py-2 text-sm font-medium rounded-full text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition-colors'
                 }
               >
                 {cat.name}
@@ -394,7 +394,7 @@ export function ServiceCatalogEditor({
               return (
                 <div
                   key={service.serviceId}
-                  className="p-5 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] flex flex-col justify-between shadow-xs transition-colors"
+                  className="p-5 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] flex flex-col justify-between shadow-sm transition-all"
                 >
                   <div>
                     <h4 className="text-sm font-semibold text-[var(--text-main)]">
@@ -416,8 +416,8 @@ export function ServiceCatalogEditor({
                       onClick={() => handleAddService(service.serviceId)}
                       className={
                         isAdded
-                          ? 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed'
-                          : 'px-3 py-1.5 text-xs font-bold rounded-lg bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-colors shadow-xs'
+                          ? 'px-3.5 py-1.5 text-xs font-semibold rounded-full bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed'
+                          : 'outlier-pill-button px-3.5 py-1.5 text-xs font-bold rounded-full bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-all shadow-xs'
                       }
                     >
                       {isAdded ? 'Added' : `Add ${service.serviceName}`}
@@ -442,7 +442,7 @@ export function ServiceCatalogEditor({
         </div>
 
         {catalog.services.length === 0 ? (
-          <div className="p-8 text-center rounded-lg border border-dashed border-[var(--card-border)] bg-[var(--bg)]">
+          <div className="p-8 text-center rounded-2xl border border-dashed border-[var(--card-border)] bg-[var(--bg)]">
             <h4 className="text-base font-semibold text-[var(--text-main)]">
               No services configured yet
             </h4>
@@ -456,7 +456,7 @@ export function ServiceCatalogEditor({
               <div
                 key={item.serviceId}
                 data-testid={`configured-service-card-${item.serviceId}`}
-                className="p-5 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] shadow-xs space-y-4 transition-colors"
+                className="p-5 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] shadow-sm space-y-4 transition-all"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <div>
@@ -472,8 +472,8 @@ export function ServiceCatalogEditor({
                     <span
                       className={
                         item.status === 'ACTIVE'
-                          ? 'inline-flex items-center rounded-md bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--brand-green)]'
-                          : 'inline-flex items-center rounded-md bg-[var(--tag-bg)] border border-[var(--card-border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]'
+                          ? 'inline-flex items-center rounded-full bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--brand-green)]'
+                          : 'inline-flex items-center rounded-full bg-[var(--tag-bg)] border border-[var(--card-border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]'
                       }
                     >
                       {item.status}
@@ -554,7 +554,7 @@ export function ServiceCatalogEditor({
                       <div
                         role="alert"
                         aria-live="polite"
-                        className="flex items-center gap-2 bg-[var(--danger-dim)] p-2 rounded-lg border border-[var(--danger-border)]"
+                        className="flex items-center gap-2 bg-[var(--danger-dim)] p-2.5 rounded-xl border border-[var(--danger-border)] shadow-sm"
                       >
                         <span className="text-xs font-semibold text-[var(--danger)]">
                           Remove this service?
@@ -562,7 +562,7 @@ export function ServiceCatalogEditor({
                         <button
                           type="button"
                           onClick={() => setConfirmRemoveServiceId(null)}
-                          className="px-2.5 py-1 text-xs font-medium rounded-md bg-[var(--card-bg)] text-[var(--text-muted)] border border-[var(--card-border)] hover:bg-[var(--bg)] transition-colors"
+                          className="px-3 py-1.5 text-xs font-medium rounded-md bg-[var(--card-bg)] text-[var(--text-muted)] border border-[var(--card-border)] hover:bg-[var(--bg)] transition-colors"
                         >
                           Cancel
                         </button>
@@ -572,7 +572,7 @@ export function ServiceCatalogEditor({
                             handleRemoveService(item.serviceId);
                             setConfirmRemoveServiceId(null);
                           }}
-                          className="px-2.5 py-1 text-xs font-semibold rounded-md bg-[var(--danger)] text-white hover:opacity-90 transition-colors"
+                          className="px-3 py-1.5 text-xs font-semibold rounded-md bg-[var(--danger)] text-white hover:opacity-90 transition-colors shadow-sm"
                         >
                           Confirm Remove
                         </button>
@@ -582,7 +582,7 @@ export function ServiceCatalogEditor({
                         type="button"
                         aria-label={`Remove ${item.serviceName}`}
                         onClick={() => setConfirmRemoveServiceId(item.serviceId)}
-                        className="text-xs font-semibold text-[var(--danger)] hover:text-[var(--danger)] p-2 rounded-lg hover:bg-[var(--danger-dim)] transition-colors"
+                        className="text-xs font-semibold text-[var(--danger)] hover:text-[var(--danger)] px-3 py-1.5 rounded-md hover:bg-[var(--danger-dim)] transition-colors"
                       >
                         Remove
                       </button>

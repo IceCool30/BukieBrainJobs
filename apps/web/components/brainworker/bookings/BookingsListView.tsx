@@ -92,35 +92,35 @@ function renderStatusBadge(status: string): React.ReactElement {
   switch (status) {
     case 'CONFIRMED':
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]">
           <CheckCircle className="w-3.5 h-3.5" aria-hidden="true" />
           <span>Confirmed</span>
         </span>
       );
     case 'IN_PROGRESS':
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)]">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)]">
           <Clock className="w-3.5 h-3.5" aria-hidden="true" />
           <span>In Progress</span>
         </span>
       );
     case 'CANCELLED':
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-[var(--danger-dim)] text-[var(--danger)] border border-[var(--danger-border)]">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--danger-dim)] text-[var(--danger)] border border-[var(--danger-border)]">
           <XCircle className="w-3.5 h-3.5" aria-hidden="true" />
           <span>Cancelled</span>
         </span>
       );
     case 'EXPIRED':
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-[var(--card-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--card-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
           <Clock className="w-3.5 h-3.5" aria-hidden="true" />
           <span>Expired</span>
         </span>
       );
     default:
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-[var(--card-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--card-bg)] text-[var(--text-muted)] border border-[var(--lead)]">
           <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
           <span>{status}</span>
         </span>
@@ -167,10 +167,10 @@ export function BookingsListView({
         aria-busy="true"
         aria-label="Loading bookings schedule"
       >
-        <div className="h-8 bg-[var(--tag-bg)] rounded w-1/3" />
-        <div className="h-24 bg-[var(--card-bg)] rounded border border-[var(--lead)]" />
-        <div className="h-24 bg-[var(--card-bg)] rounded border border-[var(--lead)]" />
-        <div className="h-24 bg-[var(--card-bg)] rounded border border-[var(--lead)]" />
+        <div className="h-8 bg-[var(--tag-bg)] rounded-xl w-1/3" />
+        <div className="h-24 bg-[var(--card-bg)] rounded-2xl border border-[var(--lead)]" />
+        <div className="h-24 bg-[var(--card-bg)] rounded-2xl border border-[var(--lead)]" />
+        <div className="h-24 bg-[var(--card-bg)] rounded-2xl border border-[var(--lead)]" />
       </div>
     );
   }
@@ -179,7 +179,7 @@ export function BookingsListView({
     return (
       <div
         data-testid="bookings-error-state"
-        className="w-full max-w-4xl mx-auto p-6 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-lg text-[var(--text-main)] space-y-4"
+        className="w-full max-w-4xl mx-auto p-6 bg-[var(--danger-dim)] border border-[var(--danger-border)] rounded-2xl text-[var(--text-main)] space-y-4 shadow-sm"
         role="alert"
       >
         <div className="flex items-center gap-3">
@@ -192,7 +192,7 @@ export function BookingsListView({
         <button
           type="button"
           onClick={() => void fetchBookings()}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--tag-bg)] hover:bg-[var(--card-hover)] text-[var(--text-main)] rounded text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--card-bg)] hover:bg-[var(--card-hover)] border border-[var(--lead)] text-[var(--text-main)] rounded-lg text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none shadow-sm"
         >
           <RefreshCw className="w-4 h-4" aria-hidden="true" />
           <span>Retry</span>
@@ -207,7 +207,7 @@ export function BookingsListView({
     <div className="w-full max-w-4xl mx-auto p-4 space-y-6 text-[var(--text-main)] font-sans">
       <header className="border-b border-[var(--lead)] pb-3 flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold tracking-tight text-[var(--text-main)]">Operational Dispatch Sheet</h1>
+          <h2 className="text-lg font-bold tracking-tight text-[var(--text-main)]">Operational Dispatch Sheet</h2>
           <p className="text-xs text-[var(--text-muted)] mt-0.5">Authoritative bookings and site schedule</p>
         </div>
         <div className="text-xs text-[var(--text-muted)] font-mono">
@@ -218,7 +218,7 @@ export function BookingsListView({
       {isDegraded && (
         <div
           data-testid="bookings-degraded-banner"
-          className="p-3 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded text-amber-200 text-xs flex items-center gap-2"
+          className="p-3 bg-[var(--amber-dim)] border border-[var(--amber)]/30 rounded-xl text-amber-200 text-xs flex items-center gap-2 shadow-sm"
           role="status"
         >
           <Radio className="w-4 h-4 shrink-0 text-[var(--amber)]" aria-hidden="true" />
@@ -229,7 +229,7 @@ export function BookingsListView({
       {isOffline && (
         <div
           data-testid="bookings-offline-banner"
-          className="p-3 bg-[var(--card-bg)] border border-[var(--lead)] rounded text-[var(--text-muted)] text-xs flex items-center gap-2"
+          className="p-3 bg-[var(--card-bg)] border border-[var(--lead)] rounded-xl text-[var(--text-muted)] text-xs flex items-center gap-2 shadow-sm"
           role="status"
         >
           <WifiOff className="w-4 h-4 shrink-0 text-[var(--text-muted)]" aria-hidden="true" />
@@ -240,7 +240,7 @@ export function BookingsListView({
       {!hasAnyBookings ? (
         <div
           data-testid="bookings-empty-state"
-          className="p-8 text-center bg-[var(--bg)] border border-[var(--lead)] rounded-lg space-y-4"
+          className="p-8 text-center bg-[var(--card-bg)] border border-[var(--lead)] rounded-2xl space-y-4 shadow-sm"
         >
           <Calendar className="w-10 h-10 text-[var(--text-muted)] mx-auto" aria-hidden="true" />
           <div className="space-y-1">
@@ -251,7 +251,7 @@ export function BookingsListView({
           </div>
           <Link
             href="/brainworker/leads"
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[var(--text-main)] font-medium text-xs rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] motion-reduce:transition-none"
+            className="outlier-pill-button inline-flex items-center gap-1.5 px-4 py-2 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] font-bold text-xs rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] shadow-sm transition-all"
           >
             <span>View Available Leads</span>
             <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
@@ -354,7 +354,7 @@ function renderBookingCard(
       key={booking.bookingId}
       data-testid={`booking-card-${booking.bookingId}`}
       onClick={() => onSelectBooking?.(booking.bookingId)}
-      className="p-3.5 bg-[var(--card-bg)] border border-[var(--lead)] hover:border-[var(--rule)] rounded transition-colors motion-reduce:transition-none cursor-pointer space-y-2.5 focus-within:ring-2 focus-within:ring-emerald-500"
+      className="p-4 bg-[var(--card-bg)] border border-[var(--lead)] hover:border-[var(--lead-light)] rounded-2xl transition-all motion-reduce:transition-none cursor-pointer space-y-2.5 focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1 min-w-0">

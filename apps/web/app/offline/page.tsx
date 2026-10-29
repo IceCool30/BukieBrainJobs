@@ -52,7 +52,7 @@ export default function OfflinePage() {
             />
           </Link>
           <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-1.5 rounded-md border border-[var(--amber)]/30 bg-[var(--amber-dim)] px-2.5 py-1 text-xs font-semibold text-[var(--amber)]">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-[var(--amber)]/30 bg-[var(--amber-dim)] px-3 py-1 text-xs font-semibold text-[var(--amber)]">
               <WifiOff className="h-3.5 w-3.5 text-[var(--amber)]" aria-hidden="true" />
               <span>Offline</span>
             </div>
@@ -62,7 +62,7 @@ export default function OfflinePage() {
 
       {/* Main Offline Content */}
       <main className="flex-grow flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-        <div className="relative w-full max-w-lg overflow-hidden rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-6 sm:p-10 shadow-xs transition-colors">
+        <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-6 sm:p-10 shadow-xs transition-colors">
           {/* Subtle Trademark Watermark */}
           <div
             className="pointer-events-none absolute -right-8 -bottom-10 opacity-[0.03] select-none"
@@ -78,7 +78,7 @@ export default function OfflinePage() {
           </div>
 
           <div className="relative z-10 flex flex-col items-center text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] mb-5">
+            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] mb-5">
               <WifiOff className="h-8 w-8 text-[var(--amber)]" aria-hidden="true" />
             </div>
 
@@ -92,14 +92,14 @@ export default function OfflinePage() {
             {retryNotice && (
               <div
                 role="status"
-                className="mt-4 w-full rounded-lg border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-3 text-xs font-medium text-[var(--amber)] animate-in fade-in duration-200"
+                className="mt-4 w-full rounded-2xl border border-[var(--amber)]/30 bg-[var(--amber-dim)] p-3.5 text-xs font-medium text-[var(--amber)] animate-in fade-in duration-200"
               >
                 {retryNotice}
               </div>
             )}
 
             {/* Offline Reassurances */}
-            <div className="mt-6 w-full space-y-3 rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] p-4 text-left text-xs sm:text-sm text-[var(--text-muted)]">
+            <div className="mt-6 w-full space-y-3 rounded-2xl border border-[var(--lead)] bg-[var(--tag-bg)] p-4 text-left text-xs sm:text-sm text-[var(--text-muted)]">
               <div className="flex items-start gap-2.5">
                 <ShieldCheck className="h-4 w-4 text-[var(--brand-green)] mt-0.5 shrink-0" aria-hidden="true" />
                 <p>
@@ -126,7 +126,7 @@ export default function OfflinePage() {
                 type="button"
                 onClick={handleRetry}
                 disabled={isChecking}
-                className="motion-press flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] px-6 text-sm font-bold text-[#001A41] transition-colors shadow-xs disabled:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+                className="outlier-pill-button motion-press flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--amber)] hover:bg-[var(--amber-hover)] px-6 text-sm font-bold text-[#001A41] transition-colors shadow-xs disabled:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] hover:scale-[1.02] active:scale-[0.98]"
               >
                 <RefreshCw className={`h-4 w-4 ${isChecking ? 'animate-spin' : ''}`} aria-hidden="true" />
                 <span>{isChecking ? 'Checking Connection...' : 'Retry Connection'}</span>
@@ -142,7 +142,7 @@ export default function OfflinePage() {
 
               <Link
                 href="/"
-                className="motion-press inline-flex min-h-10 items-center justify-center gap-1.5 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors mt-1"
+                className="motion-press inline-flex min-h-10 items-center justify-center gap-1.5 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors mt-1 rounded-md px-4 py-2"
               >
                 <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>Return to Home</span>

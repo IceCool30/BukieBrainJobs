@@ -32,7 +32,7 @@ export function DispatchStatusUpdater({
         type="button"
         disabled={isUpdating}
         onClick={() => onUpdateStatus('ARRIVED')}
-        className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-50"
+        className="inline-flex items-center justify-center outlier-pill-button rounded-full bg-[var(--amber)] px-5 py-2.5 text-sm font-semibold text-[#001A41] shadow-sm transition hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--amber)] disabled:opacity-50"
       >
         {isUpdating ? 'Updating...' : 'Mark Arrived'}
       </button>
@@ -44,7 +44,7 @@ export function DispatchStatusUpdater({
       type="button"
       disabled={isUpdating}
       onClick={() => onUpdateStatus('EN_ROUTE')}
-      className="inline-flex items-center justify-center rounded-lg bg-zinc-800 px-4 py-2.5 text-sm font-semibold text-zinc-100 shadow-sm transition hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-50"
+      className="inline-flex items-center justify-center rounded-lg bg-zinc-800 px-5 py-2.5 text-sm font-semibold text-zinc-100 shadow-sm transition hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-50"
     >
       {isUpdating ? 'Updating...' : 'Mark En Route'}
     </button>

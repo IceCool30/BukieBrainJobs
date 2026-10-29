@@ -73,6 +73,18 @@ describe('BW-002 Suite 5 RED: Availability & Schedule Editor Contracts (SCH-001 
     } as unknown as MockOperationsRepository & IBrainWorkerOperationsRepository;
   });
 
+  it('renders the availability title as the page-level heading', () => {
+    render(
+      <AvailabilityEditor
+        brainWorkerId={FIXTURE_APPROVED_BRAINWORKER_A}
+        repository={mockRepository}
+      />
+    );
+    expect(
+      screen.getByRole('heading', { level: 1, name: /Availability and Weekly Schedule/i })
+    ).toBeInTheDocument();
+  });
+
   it('SCH-001: renders global dispatch duty toggle (On-Duty vs Off-Duty) with eligibility description', () => {
     render(
       <AvailabilityEditor

@@ -253,8 +253,8 @@ export function CoverageEditor({
             onClick={handleSave}
             className={
               isSaving
-                ? 'px-5 py-2.5 rounded-lg text-sm font-semibold bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed transition-colors'
-                : 'px-5 py-2.5 rounded-lg text-sm font-bold bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]'
+                ? 'px-5 py-2.5 rounded-full text-sm font-semibold bg-[var(--tag-bg)] text-[var(--text-muted)] cursor-not-allowed transition-colors'
+                : 'outlier-pill-button px-5 py-2.5 rounded-full text-sm font-bold bg-[var(--amber)] text-[#001A41] hover:bg-[var(--amber-hover)] transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--amber)]'
             }
           >
             {isSaving ? 'Saving changes...' : 'Save changes'}
@@ -265,7 +265,7 @@ export function CoverageEditor({
       {displayAlertError && (
         <div
           role="alert"
-          className="p-4 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-sm text-[var(--danger)] font-medium"
+          className="p-4 rounded-xl bg-[var(--danger-dim)] border border-[var(--danger-border)] text-sm text-[var(--danger)] font-medium"
         >
           {displayAlertError}
         </div>
@@ -275,14 +275,14 @@ export function CoverageEditor({
         <div
           role="status"
           aria-live="polite"
-          className="p-4 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-sm text-[var(--brand-green)] font-medium"
+          className="p-4 rounded-xl bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-sm text-[var(--brand-green)] font-medium"
         >
           {successToast}
         </div>
       )}
 
       {/* Primary City */}
-      <div className="p-6 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] shadow-xs space-y-4 transition-colors">
+      <div className="p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] shadow-sm space-y-4 transition-colors">
         <div>
           <h3 className="text-lg font-bold text-[var(--text-main)]">Primary operating city</h3>
           <p className="mt-1 text-sm text-[var(--text-muted)] leading-relaxed">
@@ -320,7 +320,7 @@ export function CoverageEditor({
       </div>
 
       {/* Operational Zones / LGAs */}
-      <div className="p-6 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] shadow-xs space-y-4 transition-colors">
+      <div className="p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] shadow-sm space-y-4 transition-colors">
         <div>
           <h3 className="text-lg font-bold text-[var(--text-main)]">Operational zones</h3>
           <p className="mt-1 text-sm text-[var(--text-muted)] leading-relaxed">
@@ -341,8 +341,8 @@ export function CoverageEditor({
                 htmlFor={inputId}
                 className={
                   isChecked
-                    ? 'flex items-center gap-3 p-3 rounded-lg border-2 border-[var(--text-main)] bg-[var(--tag-bg)] cursor-pointer font-semibold text-[var(--text-main)] transition-colors'
-                    : 'flex items-center gap-3 p-3 rounded-lg border border-[var(--card-border)] bg-[var(--bg)] hover:bg-[var(--card-bg)] cursor-pointer font-medium text-[var(--text-muted)] transition-colors'
+                    ? 'flex items-center gap-3 p-3 rounded-xl border-2 border-[var(--text-main)] bg-[var(--tag-bg)] cursor-pointer font-semibold text-[var(--text-main)] transition-colors'
+                    : 'flex items-center gap-3 p-3 rounded-xl border border-[var(--card-border)] bg-[var(--bg)] hover:bg-[var(--card-bg)] cursor-pointer font-medium text-[var(--text-muted)] transition-colors'
                 }
               >
                 <input
@@ -373,7 +373,7 @@ export function CoverageEditor({
       </div>
 
       {/* Travel Radius */}
-      <div className="p-6 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] shadow-xs space-y-4 transition-colors">
+      <div className="p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] shadow-sm space-y-4 transition-colors">
         <div>
           <h3 className="text-lg font-bold text-[var(--text-main)]">Travel radius</h3>
           <p className="mt-1 text-sm text-[var(--text-muted)] leading-relaxed">
@@ -392,8 +392,8 @@ export function CoverageEditor({
                 key={radius}
                 className={
                   isSelected
-                    ? 'flex items-center justify-between p-3.5 rounded-lg border-2 border-[var(--text-main)] bg-[var(--tag-bg)] cursor-pointer font-semibold text-[var(--text-main)] transition-colors'
-                    : 'flex items-center justify-between p-3.5 rounded-lg border border-[var(--card-border)] bg-[var(--bg)] hover:bg-[var(--card-bg)] cursor-pointer font-medium text-[var(--text-muted)] transition-colors'
+                    ? 'flex items-center justify-between p-3.5 rounded-xl border-2 border-[var(--text-main)] bg-[var(--tag-bg)] cursor-pointer font-semibold text-[var(--text-main)] transition-colors'
+                    : 'flex items-center justify-between p-3.5 rounded-xl border border-[var(--card-border)] bg-[var(--bg)] hover:bg-[var(--card-bg)] cursor-pointer font-medium text-[var(--text-muted)] transition-colors'
                 }
               >
                 <span className="text-sm">{radius} km</span>

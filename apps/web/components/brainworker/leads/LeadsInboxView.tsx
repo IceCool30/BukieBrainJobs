@@ -204,7 +204,7 @@ export function LeadsInboxView({
       <div className="space-y-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="px-2.5 py-0.5 text-xs font-semibold rounded-md bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]">
+            <span className="px-3 py-0.5 text-xs font-semibold rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] border border-[var(--brand-green-border)]">
               {lead.urgency.toUpperCase()}
             </span>
             <span className="text-xs text-[var(--text-muted)] font-medium">
@@ -220,7 +220,7 @@ export function LeadsInboxView({
         </div>
 
         {budgetDisplay && (
-          <div className="p-3 bg-[var(--bg)] border border-[var(--lead)] rounded-lg">
+          <div className="p-4 bg-[var(--bg)] border border-[var(--lead)] rounded-xl">
             <span className="text-xs font-medium text-[var(--text-muted)]">Customer Budget</span>
             <p className="text-lg font-bold text-[var(--text-main)]">{budgetDisplay}</p>
           </div>
@@ -252,7 +252,7 @@ export function LeadsInboxView({
               {lead.attachmentRefs.map((ref, idx) => (
                 <div
                   key={`${ref}-${idx}`}
-                  className="relative aspect-video rounded-lg overflow-hidden border border-[var(--lead)] bg-[var(--tag-bg)]"
+                  className="relative aspect-video rounded-xl overflow-hidden border border-[var(--lead)] bg-[var(--tag-bg)]"
                 >
                   <img
                     src={ref}
@@ -271,7 +271,7 @@ export function LeadsInboxView({
             type="button"
             onClick={handleAccept}
             disabled={isOffline || isSubmittingMutation || !isPending}
-            className="flex-1 px-4 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] font-bold rounded-lg shadow-xs disabled:opacity-50 disabled:cursor-not-allowed transition"
+            className="flex-1 outlier-pill-button px-5 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] font-bold rounded-full shadow-xs disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
           >
             {isSubmittingMutation ? 'Submitting...' : 'Accept'}
           </button>
@@ -279,14 +279,14 @@ export function LeadsInboxView({
             type="button"
             onClick={() => setIsDeclineModalOpen(true)}
             disabled={isOffline || isSubmittingMutation || !isPending}
-            className="flex-1 px-4 py-2.5 border border-[var(--rule)] text-[var(--text-muted)] hover:bg-[var(--card-hover)] font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition"
+            className="flex-1 px-5 py-2.5 border border-[var(--rule)] text-[var(--text-muted)] hover:bg-[var(--card-hover)] font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Decline
           </button>
         </div>
 
         {!isPending && (
-          <div className="p-3 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-lg text-sm text-[var(--text-muted)]">
+          <div className="p-3.5 bg-[var(--tag-bg)] border border-[var(--lead)] rounded-xl text-sm text-[var(--text-muted)]">
             Status: <span className="font-semibold">{lead.invitationState}</span>
             {lead.declineReason && (
               <span className="block mt-1 text-xs text-[var(--text-muted)]">
@@ -310,7 +310,7 @@ export function LeadsInboxView({
         <div
           data-testid="leads-degraded-notice"
           role="alert"
-          className="mb-4 p-3 rounded-lg bg-[var(--amber-dim)] border border-[var(--amber)]/30 text-[var(--amber)] text-sm flex items-center gap-2"
+          className="mb-4 p-4 rounded-xl bg-[var(--amber-dim)] border border-[var(--amber)]/30 text-[var(--amber)] text-sm flex items-center gap-2"
         >
           <span>Network connection is degraded. Fresh data may be delayed. Showing saved opportunities.</span>
         </div>
@@ -321,7 +321,7 @@ export function LeadsInboxView({
         <div
           data-testid="leads-offline-banner"
           role="alert"
-          className="mb-4 p-3 rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--text-main)] text-sm flex items-center gap-2"
+          className="mb-4 p-4 rounded-xl bg-[var(--tag-bg)] border border-[var(--lead)] text-[var(--text-main)] text-sm flex items-center gap-2"
         >
           <span>Offline mode: You are viewing saved job requests in read-only mode. Actions are disabled.</span>
         </div>
@@ -330,7 +330,7 @@ export function LeadsInboxView({
       {/* Header */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--text-main)]">Job Requests & Leads</h1>
+          <h2 className="text-2xl font-bold text-[var(--text-main)]">Job Requests & Leads</h2>
           <p className="mt-1 text-sm text-[var(--text-muted)]">
             Review incoming customer opportunities matching your configured services and coverage.
           </p>
@@ -345,9 +345,9 @@ export function LeadsInboxView({
           aria-label="Loading job requests"
           className="space-y-4 animate-pulse"
         >
-          <div className="h-24 bg-[var(--tag-bg)] rounded-lg" />
-          <div className="h-24 bg-[var(--tag-bg)] rounded-lg" />
-          <div className="h-24 bg-[var(--tag-bg)] rounded-lg" />
+          <div className="h-24 bg-[var(--tag-bg)] rounded-2xl" />
+          <div className="h-24 bg-[var(--tag-bg)] rounded-2xl" />
+          <div className="h-24 bg-[var(--tag-bg)] rounded-2xl" />
         </div>
       )}
 
@@ -356,14 +356,14 @@ export function LeadsInboxView({
         <div
           data-testid="leads-error-state"
           role="alert"
-          className="p-6 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)]"
+          className="p-6 rounded-2xl bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)]"
         >
           <h2 className="text-base font-semibold">Could not load job requests</h2>
           <p className="mt-1 text-sm text-[var(--danger)]">{errorMessage}</p>
           <button
             type="button"
             onClick={fetchLeads}
-            className="mt-4 px-4 py-2 bg-[var(--danger)] hover:opacity-90 text-white font-medium rounded-lg shadow-xs transition"
+            className="mt-4 px-5 py-2.5 bg-[var(--danger)] hover:opacity-90 text-white font-medium rounded-md shadow-xs transition-colors"
           >
             Retry
           </button>
@@ -374,7 +374,7 @@ export function LeadsInboxView({
       {!isLoading && !errorMessage && leads.length === 0 && (
         <div
           data-testid="leads-empty-state"
-          className="p-12 text-center bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg shadow-xs transition-colors"
+          className="p-12 text-center bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl shadow-xs transition-colors"
         >
           <h2 className="text-lg font-semibold text-[var(--text-main)]">
             No job requests available right now
@@ -411,7 +411,7 @@ export function LeadsInboxView({
                       setSelectedLeadId(lead.id);
                     }
                   }}
-                  className={`p-5 rounded-lg border transition cursor-pointer text-left ${
+                  className={`p-5 rounded-2xl border transition cursor-pointer text-left ${
                     isSelected
                       ? 'border-emerald-600 bg-[var(--brand-green-dim)] ring-1 ring-[var(--brand-green)]'
                       : 'border-[var(--card-border)] bg-[var(--card-bg)] hover:border-[var(--rule)] hover:shadow-xs'
@@ -420,10 +420,10 @@ export function LeadsInboxView({
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 text-xs font-semibold rounded-md bg-[var(--tag-bg)] text-[var(--text-muted)]">
+                        <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-[var(--tag-bg)] text-[var(--text-muted)]">
                           {lead.categoryId}
                         </span>
-                        <span className="px-2 py-0.5 text-xs font-semibold rounded-md bg-[var(--amber-dim)] text-[var(--amber)] border border-transparent">
+                        <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-[var(--amber-dim)] text-[var(--amber)] border border-transparent">
                           {lead.urgency.toUpperCase()}
                         </span>
                       </div>
@@ -456,7 +456,7 @@ export function LeadsInboxView({
               data-testid="lead-inspection-drawer"
               role="complementary"
               aria-label="Lead details"
-              className="lg:col-span-5 p-6 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg shadow-xs sticky top-6 transition-colors"
+              className="lg:col-span-5 p-6 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl shadow-xs sticky top-6 transition-colors"
             >
               <div className="flex items-center justify-between pb-4 mb-4 border-b border-[var(--card-border)]">
                 <span className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
@@ -486,7 +486,7 @@ export function LeadsInboxView({
             <button
               type="button"
               onClick={() => setSelectedLeadId(null)}
-              className="px-3 py-1.5 text-sm font-medium text-[var(--text-main)] bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg hover:bg-[var(--bg)] transition"
+              className="px-4 py-2 text-sm font-medium text-[var(--text-main)] bg-[var(--card-bg)] border border-[var(--card-border)] rounded-md hover:bg-[var(--bg)] transition-colors"
             >
               Back to job requests
             </button>
@@ -504,7 +504,7 @@ export function LeadsInboxView({
           aria-label="Decline Opportunity"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs"
         >
-          <div className="w-full max-w-lg bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-6 shadow-xl space-y-4 transition-colors">
+          <div className="w-full max-w-lg bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-6 shadow-xl space-y-4 transition-colors">
             <div>
               <h3 className="text-lg font-bold text-[var(--text-main)]">Decline Opportunity</h3>
               <p className="mt-1 text-sm text-[var(--text-muted)]">
@@ -521,7 +521,7 @@ export function LeadsInboxView({
                     type="button"
                     data-testid={`decline-reason-${opt.reason}`}
                     onClick={() => setSelectedDeclineReason(opt.reason)}
-                    className={`w-full p-3 text-left rounded-lg border transition flex flex-col ${
+                    className={`w-full p-3.5 text-left rounded-xl border transition flex flex-col ${
                       isSelected
                         ? 'border-emerald-600 bg-[var(--brand-green-dim)] ring-1 ring-[var(--brand-green)]'
                         : 'border-[var(--lead)] hover:border-[var(--rule)] bg-[var(--card-bg)]'
@@ -542,7 +542,7 @@ export function LeadsInboxView({
                   setSelectedDeclineReason(null);
                 }}
                 disabled={isSubmittingMutation}
-                className="px-4 py-2 border border-[var(--rule)] text-[var(--text-muted)] font-medium rounded-lg hover:bg-[var(--card-hover)] transition"
+                className="px-4 py-2 border border-[var(--rule)] text-[var(--text-muted)] font-medium rounded-md hover:bg-[var(--card-hover)] transition-colors"
               >
                 Cancel
               </button>
@@ -550,7 +550,7 @@ export function LeadsInboxView({
                 type="button"
                 onClick={handleConfirmDecline}
                 disabled={!selectedDeclineReason || isSubmittingMutation}
-                className="px-4 py-2 bg-[var(--danger)] hover:opacity-90 text-white font-medium rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
+                className="px-5 py-2.5 bg-[var(--danger)] hover:opacity-90 text-white font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
               >
                 {isSubmittingMutation ? 'Declining...' : 'Confirm Decline'}
               </button>

@@ -238,14 +238,18 @@ describe('MatchResultsScreen', () => {
   it('match count header uses singular for single result', async () => {
     renderScreen('REQ-51829');
     await waitFor(() => {
-      expect(screen.getByText(/1 brainworker found/i)).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', { level: 1, name: /1 brainworker found/i })
+      ).toBeInTheDocument();
     });
   });
 
   it('match count header uses plural for multiple results', async () => {
     renderScreen('REQ-84920');
     await waitFor(() => {
-      expect(screen.getByText(/2 brainworkers found/i)).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', { level: 1, name: /2 brainworkers found/i })
+      ).toBeInTheDocument();
     });
   });
 

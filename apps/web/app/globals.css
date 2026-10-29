@@ -559,6 +559,15 @@ html.theme-switching *, html.theme-switching *::before, html.theme-switching *::
   animation-play-state: paused;
 }
 
+/* Amber stays deep for readable text and badges, so primary pill fills use coral in light mode. */
+:root[data-theme='light'] .outlier-pill-button[class~='bg-[var(--amber)]'][class~='text-[#001A41]'] {
+  background-color: var(--outlier-coral);
+}
+
+:root[data-theme='light'] .outlier-pill-button[class~='bg-[var(--amber)]'][class~='text-[#001A41]']:is(:hover, :active) {
+  background-color: var(--outlier-coral-hover);
+}
+
 .outlier-pill-button {
   border-radius: 9999px;
   transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 180ms ease;
@@ -569,4 +578,3 @@ html.theme-switching *, html.theme-switching *::before, html.theme-switching *::
 .outlier-pill-button:active {
   transform: scale(0.98);
 }
-

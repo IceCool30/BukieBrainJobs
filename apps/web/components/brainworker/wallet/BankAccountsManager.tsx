@@ -73,7 +73,7 @@ export function BankAccountsManager({
             type="button"
             data-testid="add-bank-account-button"
             onClick={() => setIsFormOpen(true)}
-            className="inline-flex items-center rounded-lg bg-[var(--tag-bg)] px-3 py-1.5 text-xs font-medium text-[var(--text-main)] border border-[var(--lead)] hover:bg-[var(--card-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--rule)]"
+            className="inline-flex items-center rounded-full bg-[var(--card-bg)] px-3.5 py-1.5 text-xs font-semibold text-[var(--text-main)] border border-[var(--lead)] hover:bg-[var(--card-hover)] shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--rule)]"
           >
             + Add Bank Account
           </button>
@@ -84,7 +84,7 @@ export function BankAccountsManager({
       {isFormOpen && (
         <form
           onSubmit={handleSave}
-          className="rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] p-4 space-y-4"
+          className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 space-y-4 shadow-sm"
         >
           <div className="flex items-center justify-between border-b border-[var(--lead)] pb-3">
             <h3 className="text-sm font-medium text-[var(--text-main)]">
@@ -175,7 +175,7 @@ export function BankAccountsManager({
             <button
               type="button"
               onClick={() => setIsFormOpen(false)}
-              className="rounded-lg border border-[var(--lead)] px-3 py-1.5 text-xs text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
+              className="rounded-full border border-[var(--lead)] px-3.5 py-1.5 text-xs font-semibold text-[var(--text-muted)] hover:bg-[var(--card-hover)] transition-all"
             >
               Cancel
             </button>
@@ -183,7 +183,7 @@ export function BankAccountsManager({
               type="submit"
               data-testid="save-bank-account-button"
               disabled={!canSave}
-              className="rounded-lg bg-[var(--amber)] px-4 py-1.5 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)]"
+              className="outlier-pill-button rounded-full bg-[var(--amber)] px-4 py-1.5 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] disabled:cursor-not-allowed disabled:bg-[var(--tag-bg)] disabled:text-[var(--text-muted)] shadow-sm transition-all"
             >
               {isSubmitting ? 'Verifying...' : 'Save Account'}
             </button>
@@ -201,7 +201,7 @@ export function BankAccountsManager({
             <div
               key={acc.id}
               data-testid={`bank-account-item-${acc.id}`}
-              className="relative rounded-xl border border-[var(--lead)] bg-[var(--bg)] p-4 transition-all hover:border-[var(--rule)]"
+              className="relative rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 shadow-sm transition-all hover:border-[var(--lead-light)]"
             >
               <div className="flex items-start justify-between">
                 <div>
@@ -243,7 +243,7 @@ export function BankAccountsManager({
                       <button
                         type="button"
                         onClick={() => setDeletingAccountId(null)}
-                        className="rounded px-2 py-0.5 text-[11px] text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
+                        className="rounded-lg border border-[var(--lead)] px-2.5 py-1 text-[11px] text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
                       >
                         Cancel
                       </button>
@@ -251,7 +251,7 @@ export function BankAccountsManager({
                         type="button"
                         data-testid="confirm-delete-account-button"
                         onClick={() => handleConfirmDelete(acc.id)}
-                        className="rounded bg-[var(--danger)] px-2 py-0.5 text-[11px] font-medium text-white hover:opacity-90"
+                        className="rounded-lg bg-[var(--danger)] px-3 py-1 text-[11px] font-semibold text-white hover:opacity-90 shadow-sm"
                       >
                         Confirm
                       </button>
@@ -264,7 +264,7 @@ export function BankAccountsManager({
         })}
 
         {accounts.length === 0 && !isFormOpen && (
-          <div className="col-span-full rounded-xl border border-dashed border-[var(--lead)] p-8 text-center">
+          <div className="col-span-full rounded-2xl border border-dashed border-[var(--lead)] p-8 text-center">
             <p className="text-xs text-[var(--text-muted)]">
               No bank accounts connected yet. Link your Nigerian bank account to receive withdrawals.
             </p>

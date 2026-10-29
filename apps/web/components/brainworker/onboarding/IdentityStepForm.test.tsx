@@ -78,6 +78,9 @@ describe('BW-001 Suite 5: Stepper Progress & Identity Form Contracts', () => {
     it('renders legal first, middle (optional), and last name inputs', () => {
       render(<IdentityStepForm onSave={vi.fn()} />);
 
+      expect(
+        screen.getByRole('heading', { level: 1, name: /Step 1: Legal Identity Verification/i })
+      ).toBeInTheDocument();
       expect(screen.getByLabelText(/Legal First Name/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Middle Name/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Legal Last Name/i)).toBeInTheDocument();

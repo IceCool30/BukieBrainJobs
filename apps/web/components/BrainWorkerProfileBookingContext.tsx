@@ -29,7 +29,7 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
   const suggestion = !hasInitialService && profile.category ? `Suggested service focus: ${profile.category}` : undefined;
 
   return (
-    <aside className="bbj-card-interactive h-fit rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 lg:sticky lg:top-6 shadow-xs">
+    <aside className="bbj-card-interactive h-fit rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 sm:p-6 lg:sticky lg:top-6 shadow-xs">
       <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">Book this BrainWorker</p>
       <h2 className="mt-2 font-display text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-main)]">Confirm service & location</h2>
       <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">Choose the service you need and the active city for your job.</p>
@@ -71,12 +71,12 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
       </div>
 
       {suggestion && (
-        <p className="mt-4 rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-3 text-xs leading-5 text-[var(--text-main)]">
+        <p className="mt-4 rounded-xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-3 text-xs leading-5 text-[var(--text-main)]">
           {suggestion}. Select the service that matches your job before continuing.
         </p>
       )}
 
-      <div className="mt-5 space-y-2 rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] p-3.5 text-xs text-[var(--text-muted)]">
+      <div className="mt-5 space-y-2 rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] p-3.5 text-xs text-[var(--text-muted)]">
         <div className="flex items-center gap-2 font-medium">
           <Clock className="h-4 w-4 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
           <span>Typically completed in 2 to 4 hours</span>
@@ -90,7 +90,7 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
       {bookingUrl ? (
         <Link
           href={bookingUrl}
-          className="motion-press mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+          className="outlier-pill-button rounded-full mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
         >
           <span>Continue to booking</span>
           <ArrowRight className="h-4 w-4 text-[#001A41]" aria-hidden="true" />
@@ -99,7 +99,7 @@ export default function BrainWorkerProfileBookingContext({ profile, initialConte
         <button
           type="button"
           disabled
-          className="mt-6 inline-flex min-h-12 w-full cursor-not-allowed items-center justify-center rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-5 text-sm font-bold text-[var(--text-muted)]"
+          className="rounded-lg mt-6 inline-flex min-h-12 w-full cursor-not-allowed items-center justify-center border border-[var(--lead)] bg-[var(--tag-bg)] px-5 text-sm font-bold text-[var(--text-muted)]"
         >
           Choose a service and city
         </button>

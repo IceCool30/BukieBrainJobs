@@ -52,7 +52,7 @@ function ServiceCard({
   onReview: () => void;
 }) {
   return (
-    <article className="bbj-card-interactive flex h-full flex-col overflow-hidden rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:border-[var(--rule)] transition-all">
+    <article className="bbj-card-interactive flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:border-[var(--rule)] transition-all">
       <div className="relative aspect-[5/3] overflow-hidden bg-[var(--tag-bg)]">
         <Image
           src={category.photoUrl}
@@ -62,10 +62,10 @@ function ServiceCard({
           className="object-cover transition-transform duration-300 hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#001A41]/60 via-transparent to-transparent" />
-        <span className="absolute left-3.5 top-3.5 inline-flex items-center rounded border border-[var(--tag-border)] bg-[var(--card-bg)]/95 dark:bg-[var(--card-bg)]/90 px-2 py-0.5 font-mono text-[11px] font-medium text-[var(--text-main)] shadow-xs backdrop-blur-xs">
+        <span className="absolute left-3.5 top-3.5 inline-flex items-center rounded-full border border-[var(--tag-border)] bg-[var(--card-bg)]/95 dark:bg-[var(--card-bg)]/90 px-2.5 py-0.5 font-mono text-[11px] font-medium text-[var(--text-main)] shadow-xs backdrop-blur-xs">
           From {category.startingPrice}
         </span>
-        <span className="absolute right-3.5 top-3.5 rounded border border-white/10 bg-[var(--brand-navy)]/90 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--nav-accent)] dark:text-[var(--brand-green)] backdrop-blur-xs">
+        <span className="absolute right-3.5 top-3.5 rounded-full border border-white/10 bg-[var(--brand-navy)]/90 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--nav-accent)] dark:text-[var(--brand-green)] backdrop-blur-xs">
           {category.group}
         </span>
       </div>
@@ -101,7 +101,7 @@ function ServiceCard({
           <button
             type="button"
             onClick={onReview}
-            className="motion-press inline-flex min-h-11 items-center gap-2 rounded-lg bg-[var(--amber)] px-4 text-xs font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+            className="outlier-pill-button motion-press inline-flex min-h-11 items-center gap-2 rounded-full bg-[var(--amber)] px-5 text-xs font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 hover:scale-[1.02] active:scale-[0.98]"
           >
             Review details
             <ArrowRight className="h-3.5 w-3.5 text-[#001A41]" aria-hidden="true" />
@@ -325,7 +325,7 @@ function ServicesDirectory() {
         <div className="mb-4 sm:mb-6 flex items-center justify-between">
           <Link
             href="/"
-            className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-lg"
+            className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] rounded-md px-3 py-1.5"
           >
             <ArrowLeft className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />
             Back to home
@@ -335,7 +335,7 @@ function ServicesDirectory() {
         {showInvalidCityNotice && (
           <div
             role="status"
-            className="mb-6 flex items-start justify-between gap-3 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-sm text-[var(--text-main)]"
+            className="mb-6 flex items-start justify-between gap-3 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-sm text-[var(--text-main)]"
           >
             <div className="flex items-start gap-3">
               <Info className="mt-0.5 h-5 w-5 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
@@ -351,7 +351,7 @@ function ServicesDirectory() {
               type="button"
               onClick={() => setDismissedCityNotice(true)}
               aria-label="Dismiss notice"
-              className="inline-flex h-12 w-12 min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-lg text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
+              className="inline-flex h-12 w-12 min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-md text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -362,7 +362,7 @@ function ServicesDirectory() {
         {showInvalidCategoryNotice && (
           <div
             role="status"
-            className="mb-6 flex items-start justify-between gap-3 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-sm text-[var(--text-main)]"
+            className="mb-6 flex items-start justify-between gap-3 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 text-sm text-[var(--text-main)]"
           >
             <div className="flex items-start gap-3">
               <Info className="mt-0.5 h-5 w-5 shrink-0 text-[var(--brand-green)]" aria-hidden="true" />
@@ -378,7 +378,7 @@ function ServicesDirectory() {
               type="button"
               onClick={() => setDismissedCategoryNotice(true)}
               aria-label="Dismiss notice"
-              className="inline-flex h-12 w-12 min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-lg text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
+              className="inline-flex h-12 w-12 min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-md text-[var(--text-muted)] hover:bg-[var(--card-hover)] hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -386,7 +386,7 @@ function ServicesDirectory() {
         )}
 
         {/* Controls & Filter Bar */}
-        <div className="rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] p-4 shadow-xs sm:p-5">
+        <div className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] p-4 shadow-xs sm:p-5">
           <div className="flex flex-col gap-1">
             <h1 className="font-display tracking-trades text-xl font-bold uppercase text-[var(--text-main)] sm:text-2xl">
               Browse by category
@@ -425,7 +425,7 @@ function ServicesDirectory() {
                     type="button"
                     onClick={handleClearSearch}
                     aria-label="Clear search"
-                    className="absolute right-1 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-md text-[var(--text-muted)] hover:text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--amber)]"
                   >
                     <X className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -453,7 +453,7 @@ function ServicesDirectory() {
                 aria-haspopup="listbox"
                 aria-expanded={cityDropdownOpen}
                 aria-label={`Filter by city: currently ${selectedCity || "All cities"}`}
-                className={`motion-press inline-flex min-h-11 items-center gap-2 rounded-lg border px-3.5 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] ${
+                className={`motion-press inline-flex min-h-11 items-center gap-2 rounded-md border px-4 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] ${
                   selectedCity
                     ? "border-[var(--brand-green)] bg-[var(--brand-green-dim)] text-[var(--brand-green)]"
                     : "border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--card-hover)]"
@@ -468,7 +468,7 @@ function ServicesDirectory() {
                 <div
                   role="listbox"
                   aria-label="Active Nigerian cities"
-                  className="absolute left-0 sm:left-auto sm:right-0 top-full z-40 mt-2 w-64 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] py-2 shadow-lg"
+                  className="absolute left-0 sm:left-auto sm:right-0 top-full z-40 mt-2 w-64 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] text-[var(--text-main)] py-2 shadow-lg"
                 >
                   <button
                     type="button"
@@ -528,7 +528,7 @@ function ServicesDirectory() {
               }`}
             >
               <span
-                className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors sm:h-11 sm:w-11 ${
+                className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors sm:h-11 sm:w-11 ${
                   selectedCategory === "All" ? "bg-[var(--brand-green-dim)]" : "bg-[var(--tag-bg)]"
                 }`}
               >
@@ -552,7 +552,7 @@ function ServicesDirectory() {
                   }`}
                 >
                   <span
-                    className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors sm:h-11 sm:w-11 ${
+                    className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors sm:h-11 sm:w-11 ${
                       isSelected ? "bg-[var(--brand-green-dim)]" : "bg-[var(--tag-bg)]"
                     }`}
                   >
@@ -569,7 +569,7 @@ function ServicesDirectory() {
             <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-[var(--lead)] pt-3 text-xs">
               <span className="font-semibold text-[var(--text-muted)]">Active filters:</span>
               {selectedCategory !== "All" && (
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--tag-border)] bg-[var(--brand-green-dim)] px-2.5 py-1 font-mono text-[11px] font-semibold text-[var(--brand-green)]">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--tag-border)] bg-[var(--brand-green-dim)] px-3 py-1 font-mono text-[11px] font-semibold text-[var(--brand-green)]">
                   {TASK_LABELS[selectedCategory] ?? selectedCategory}
                   <button
                     type="button"
@@ -582,7 +582,7 @@ function ServicesDirectory() {
                 </span>
               )}
               {selectedCity && (
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--tag-border)] bg-[var(--brand-green-dim)] px-2.5 py-1 font-mono text-[11px] font-semibold text-[var(--brand-green)]">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--tag-border)] bg-[var(--brand-green-dim)] px-3 py-1 font-mono text-[11px] font-semibold text-[var(--brand-green)]">
                   <MapPin className="h-3 w-3" />
                   {selectedCity}
                   <button
@@ -596,7 +596,7 @@ function ServicesDirectory() {
                 </span>
               )}
               {searchQuery && (
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--tag-border)] bg-[var(--tag-bg)] px-2.5 py-1 font-mono text-[11px] font-semibold text-[var(--text-main)]">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--tag-border)] bg-[var(--tag-bg)] px-3 py-1 font-mono text-[11px] font-semibold text-[var(--text-main)]">
                   &quot;{searchQuery}&quot;
                   <button
                     type="button"
@@ -621,7 +621,7 @@ function ServicesDirectory() {
 
         {/* Results Grid or Empty State */}
         {filteredCategories.length === 0 ? (
-          <div className="mt-8 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-6 py-12 text-center shadow-xs">
+          <div className="mt-8 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] px-6 py-12 text-center shadow-xs">
             <h2 className="font-display text-xl font-bold text-[var(--text-main)]">
               No services match that search
             </h2>
@@ -631,7 +631,7 @@ function ServicesDirectory() {
             <button
               type="button"
               onClick={handleResetFilters}
-              className="motion-press mt-5 inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+              className="outlier-pill-button motion-press mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--amber)] px-5 text-sm font-bold text-[#001A41] transition-colors hover:bg-[var(--amber-hover)] shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2 hover:scale-[1.02] active:scale-[0.98]"
             >
               Reset filters
             </button>
@@ -649,7 +649,7 @@ function ServicesDirectory() {
         )}
 
         {/* Trust Notice Aside */}
-        <aside className="mt-10 flex flex-col gap-4 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+        <aside className="mt-10 flex flex-col gap-4 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 shadow-xs sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <div>
             <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-green)]">
               Before you continue
@@ -663,7 +663,7 @@ function ServicesDirectory() {
           </div>
           <Link
             href="/guarantee"
-            className="motion-press inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-4 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] hover:border-[var(--rule)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
+            className="motion-press inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-5 text-sm font-bold text-[var(--text-main)] transition-colors hover:bg-[var(--card-hover)] hover:border-[var(--rule)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)] focus-visible:ring-offset-2"
           >
             Read BukieGuarantee
             <ArrowRight className="h-4 w-4 text-[var(--amber)]" aria-hidden="true" />

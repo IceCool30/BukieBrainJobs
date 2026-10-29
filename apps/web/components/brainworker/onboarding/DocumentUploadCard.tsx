@@ -202,7 +202,7 @@ export function DocumentUploadCard({
   return (
     <div
       id={id}
-      className={`w-full rounded-lg border bg-[var(--card-bg)] p-5 transition-colors ${
+      className={`w-full rounded-xl border bg-[var(--card-bg)] p-5 transition-colors ${
         activeError
           ? 'border-[var(--danger-border)]'
           : isDragging
@@ -244,7 +244,7 @@ export function DocumentUploadCard({
       {activeError && (
         <div
           role="alert"
-          className="mb-4 flex items-center gap-2 rounded-lg bg-[var(--danger-dim)] px-3 py-2 text-xs font-medium text-[var(--danger)] border border-[var(--danger-border)]"
+          className="mb-4 flex items-center gap-2 rounded-xl bg-[var(--danger-dim)] px-3 py-2 text-xs font-medium text-[var(--danger)] border border-[var(--danger-border)]"
         >
           <AlertCircle className="h-4 w-4 shrink-0 text-[var(--danger)]" />
           <span>{activeError}</span>
@@ -255,22 +255,22 @@ export function DocumentUploadCard({
       {value ? (
         <div className="space-y-4">
           {isImage ? (
-            <div className="relative overflow-hidden rounded-lg border border-[var(--card-border)] bg-[var(--bg)]">
+            <div className="relative overflow-hidden rounded-xl border border-[var(--card-border)] bg-[var(--bg)]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previewSrc}
                 alt={`Preview of ${value.fileName}`}
-                className="max-h-48 w-full object-contain rounded-lg bg-[var(--bg)] p-1"
+                className="max-h-48 w-full object-contain rounded-xl bg-[var(--bg)] p-1"
               />
             </div>
           ) : isPdf ? (
-            <div className="flex items-center gap-4 rounded-lg border border-[var(--card-border)] bg-[var(--bg)] p-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[var(--danger-dim)] text-[var(--danger)]">
+            <div className="flex items-center gap-4 rounded-xl border border-[var(--card-border)] bg-[var(--bg)] p-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--danger-dim)] text-[var(--danger)]">
                 <FileText className="h-6 w-6" />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="rounded-md bg-[var(--danger-dim)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--danger)] border border-[var(--danger-border)]">
+                  <span className="rounded-full bg-[var(--danger-dim)] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--danger)] border border-[var(--danger-border)]">
                     PDF Document
                   </span>
                 </div>
@@ -338,7 +338,7 @@ export function DocumentUploadCard({
               fileInputRef.current?.click();
             }
           }}
-          className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed px-6 py-8 text-center transition ${
+          className={`flex flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-8 text-center transition ${
             isDragging
               ? 'border-[var(--text-main)] bg-[var(--tag-bg)]'
               : 'border-[var(--card-border)] hover:border-[var(--rule)] bg-[var(--bg)]'

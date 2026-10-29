@@ -67,8 +67,8 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
   if (user && user.role !== 'brainworker') {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4 transition-colors">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-[var(--danger-border)] p-8 shadow-xs text-center space-y-4 transition-colors">
-          <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--danger-dim)] border border-[var(--danger-border)] px-3 py-1 text-xs font-semibold text-[var(--danger)]">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl border border-[var(--danger-border)] p-8 shadow-xs text-center space-y-4 transition-colors">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[var(--danger-dim)] border border-[var(--danger-border)] px-3 py-1 text-xs font-semibold text-[var(--danger)]">
             {user.role === 'customer' ? 'Customer Account Detected' : 'Unauthorized Access'}
           </div>
           <h2 className="text-xl font-bold text-[var(--text-main)]">Access Restricted</h2>
@@ -77,7 +77,7 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
+            className="outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
           >
             {user.role === 'customer' ? 'Return to Customer Dashboard' : 'Return Home'}
           </Link>
@@ -107,7 +107,7 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
 
         {/* Loading state while resolving auth and profile */}
         {(!user || !isProfileLoaded) && (
-          <div className="p-12 text-center bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg border border-[var(--card-border)] shadow-xs transition-colors">
+          <div className="p-12 text-center bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl border border-[var(--card-border)] shadow-xs transition-colors">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-[var(--lead)] border-t-transparent" />
             <p className="mt-3 text-sm text-[var(--text-muted)]">Checking provider authorization...</p>
           </div>
@@ -115,10 +115,10 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
 
         {/* Incomplete Operational Profile Banner */}
         {user && isProfileLoaded && operationalProfile && !operationalProfile.isComplete && (
-          <div role="region" aria-label="Provider setup required" className="p-6 rounded-lg bg-[var(--card-bg)] border border-[var(--card-border)] shadow-xs space-y-4 transition-colors">
+          <div role="region" aria-label="Provider setup required" className="p-6 rounded-2xl bg-[var(--card-bg)] border border-[var(--card-border)] shadow-xs space-y-4 transition-colors">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-2.5 py-0.5 text-xs font-bold text-[var(--amber)]">
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-3 py-0.5 text-xs font-bold text-[var(--amber)]">
                   <AlertTriangle className="h-3.5 w-3.5 text-[var(--amber)]" />
                   <span>Action Needed</span>
                 </div>
@@ -132,13 +132,13 @@ export default function BrainWorkerLeadsPage(): React.ReactElement {
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/brainworker/services"
-                  className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-4 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-colors"
+                  className="outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Configure Services & Rates
                 </Link>
                 <Link
                   href="/brainworker/availability"
-                  className="inline-flex items-center justify-center rounded-lg bg-[var(--card-bg)] border border-[var(--card-border)] px-4 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-xs hover:bg-[var(--bg)] transition-colors"
+                  className="inline-flex items-center justify-center rounded-lg bg-[var(--card-bg)] border border-[var(--lead)] px-4 py-2.5 text-sm font-semibold text-[var(--text-main)] shadow-sm hover:bg-[var(--card-hover)] transition-all"
                 >
                   Set Hours & Coverage
                 </Link>

@@ -99,8 +99,8 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
   if (user.role !== 'brainworker') {
     return (
       <div className="min-h-screen bg-[var(--bg)] p-6 flex items-center justify-center transition-colors">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-[var(--amber)]/30 p-8 text-center space-y-4 shadow-xs transition-colors">
-          <div className="inline-flex items-center gap-1.5 rounded-md bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-3 py-1 text-xs font-semibold text-[var(--amber)]">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl border border-[var(--amber)]/30 p-8 text-center space-y-4 shadow-xs transition-colors">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[var(--amber-dim)] border border-[var(--amber)]/30 px-3 py-1 text-xs font-semibold text-[var(--amber)]">
             Customer Account Detected
           </div>
           <h2 className="text-xl font-bold text-[var(--text-main)]">Provider Status Restricted</h2>
@@ -109,7 +109,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition"
+            className="outlier-pill-button inline-flex items-center justify-center rounded-full bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
           >
             Return to Customer Dashboard
           </Link>
@@ -129,7 +129,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
   if (!record) {
     return (
       <div className="min-h-screen bg-[var(--bg)] p-6 flex items-center justify-center transition-colors">
-        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-lg border border-[var(--card-border)] p-8 text-center space-y-4 shadow-xs transition-colors">
+        <div className="max-w-md w-full bg-[var(--card-bg)] rounded-2xl border border-[var(--card-border)] p-8 text-center space-y-4 shadow-xs transition-colors">
           <h2 className="text-xl font-bold text-[var(--text-main)]">No Application Found</h2>
           <p className="text-sm text-[var(--text-muted)]">
             You have not submitted a BrainWorker onboarding application yet.
@@ -137,7 +137,7 @@ export default function BrainWorkerVerificationStatusPage(): React.ReactElement 
           <button
             type="button"
             onClick={() => router.push('/brainworker/onboarding')}
-            className="inline-flex items-center gap-2 rounded-lg bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-sm hover:bg-[var(--amber-hover)] transition"
+            className="outlier-pill-button inline-flex items-center gap-2 rounded-full bg-[var(--amber)] px-5 py-2.5 text-sm font-bold text-[#001A41] shadow-xs hover:bg-[var(--amber-hover)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
           >
             Start Onboarding
           </button>

@@ -108,7 +108,7 @@ export function SecuritySection({
   return (
     <div className="space-y-6">
       {/* Password Update Card */}
-      <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-[var(--lead)] shadow-xs space-y-6">
+      <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 sm:p-7 border border-[var(--lead)] shadow-xs space-y-6">
         <div className="pb-6 border-b border-[var(--lead)]">
           <h2 className="text-xl font-bold font-display text-[var(--text-main)]">
             Security & Login Credentials
@@ -121,7 +121,7 @@ export function SecuritySection({
         {passwordError && (
           <div
             role="alert"
-            className="p-3.5 rounded-lg bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs flex items-center gap-2.5"
+            className="p-3.5 rounded-xl bg-[var(--danger-dim)] border border-[var(--danger-border)] text-[var(--danger)] text-xs flex items-center gap-2.5"
           >
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{passwordError}</span>
@@ -131,14 +131,14 @@ export function SecuritySection({
         {passwordSuccess && (
           <div
             role="status"
-            className="p-3.5 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2.5"
+            className="p-3.5 rounded-xl bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2.5"
           >
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             <span>{passwordSuccess}</span>
           </div>
         )}
 
-        <form onSubmit={handlePasswordSubmit} className="space-y-4 max-w-lg">
+        <form onSubmit={handlePasswordSubmit} className="space-y-4 max-w-xl">
           <div>
             <label htmlFor="current-password" className="block text-xs font-semibold text-[var(--text-main)] mb-1.5">
               Current Password
@@ -193,7 +193,7 @@ export function SecuritySection({
           <button
             type="submit"
             disabled={isUpdatingPassword || isOffline}
-            className="min-h-[48px] px-6 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+            className="outlier-pill-button min-h-[48px] px-8 py-2.5 bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold rounded-full transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-xs"
           >
             {isUpdatingPassword ? (
               <>
@@ -208,7 +208,7 @@ export function SecuritySection({
       </div>
 
       {/* Linked Authentication Providers */}
-      <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-[var(--lead)] shadow-xs space-y-4">
+      <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 sm:p-7 border border-[var(--lead)] shadow-xs space-y-4">
         <h3 className="text-sm font-bold font-display text-[var(--text-main)]">
           Connected Sign-In Methods
         </h3>
@@ -227,7 +227,7 @@ export function SecuritySection({
                 <p className="text-[11px] text-[var(--text-muted)]">Fast sign-in via SMS verification code</p>
               </div>
             </div>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] text-[10px] font-bold border border-[var(--brand-green-border)]">
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] text-[10px] font-bold border border-[var(--brand-green-border)]">
               <ShieldCheck className="h-3 w-3" />
               Active
             </span>
@@ -243,7 +243,7 @@ export function SecuritySection({
                 <p className="text-[11px] text-[var(--text-muted)]">Traditional login credential</p>
               </div>
             </div>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] text-[10px] font-bold border border-[var(--brand-green-border)]">
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--brand-green-dim)] text-[var(--brand-green)] text-[10px] font-bold border border-[var(--brand-green-border)]">
               <ShieldCheck className="h-3 w-3" />
               Active
             </span>
@@ -265,7 +265,7 @@ export function SecuritySection({
       </div>
 
       {/* Active Sessions */}
-      <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-lg p-6 border border-[var(--lead)] shadow-xs space-y-4">
+      <div className="bg-[var(--card-bg)] text-[var(--text-main)] rounded-2xl p-6 sm:p-7 border border-[var(--lead)] shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h3 className="text-sm font-bold font-display text-[var(--text-main)]">
@@ -291,7 +291,7 @@ export function SecuritySection({
         {sessionSuccess && (
           <div
             role="status"
-            className="p-3 rounded-lg bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2"
+            className="p-3.5 rounded-xl bg-[var(--brand-green-dim)] border border-[var(--brand-green-border)] text-[var(--brand-green)] text-xs flex items-center gap-2"
           >
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             <span>{sessionSuccess}</span>
@@ -302,7 +302,7 @@ export function SecuritySection({
           {activeSessions.map((session) => (
             <div
               key={session.id}
-              className="p-4 rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)]/20 flex items-center justify-between gap-3"
+              className="p-4 rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)]/20 flex items-center justify-between gap-3"
             >
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center shrink-0">
@@ -312,7 +312,7 @@ export function SecuritySection({
                   <p className="text-xs font-bold text-[var(--text-main)] flex items-center gap-2">
                     <span>{session.device}</span>
                     {session.isCurrent && (
-                      <span className="px-2 py-0.5 rounded-full bg-[var(--amber)] text-[#001A41] text-[9px] font-bold">
+                      <span className="px-2.5 py-0.5 rounded-full bg-[var(--amber)] text-[#001A41] text-[9px] font-bold">
                         This Device
                       </span>
                     )}

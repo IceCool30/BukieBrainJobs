@@ -32,12 +32,12 @@ export function ProfileSidebar({
     <aside
       role="navigation"
       aria-label="Desktop Sidebar"
-      className="hidden lg:flex flex-col w-64 bg-[var(--card-bg)] text-[var(--text-main)] p-6 shrink-0 rounded-lg border border-[var(--lead)] shadow-xs min-h-[calc(100vh-4rem)]"
+      className="hidden lg:flex flex-col w-64 bg-[var(--card-bg)] text-[var(--text-main)] p-6 shrink-0 rounded-2xl border border-[var(--lead)] shadow-xs min-h-[calc(100vh-4rem)]"
     >
       {/* Brand / Logo */}
       <div className="mb-8">
         <Link href="/dashboard" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-lg bg-[var(--tag-bg)] flex items-center justify-center border border-[var(--lead)] group-hover:border-[var(--amber)] transition">
+          <div className="w-10 h-10 rounded-xl bg-[var(--tag-bg)] flex items-center justify-center border border-[var(--lead)] group-hover:border-[var(--amber)] transition">
             <Image
               src="/images/logo-badge-512.png"
               alt="BukieBrainJobs"
@@ -60,7 +60,7 @@ export function ProfileSidebar({
         <button
           type="button"
           onClick={() => router.push('/dashboard')}
-          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer text-left"
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-md text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer text-left"
         >
           <Home className="h-4 w-4" />
           <span>Home</span>
@@ -69,7 +69,7 @@ export function ProfileSidebar({
         <button
           type="button"
           onClick={() => router.push('/jobs')}
-          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer text-left"
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-md text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer text-left"
         >
           <Briefcase className="h-4 w-4" />
           <span>Jobs / Bookings</span>
@@ -78,7 +78,7 @@ export function ProfileSidebar({
         <button
           type="button"
           onClick={() => router.push('/messages')}
-          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer text-left"
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-md text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer text-left"
         >
           <MessageSquare className="h-4 w-4" />
           <span>Messages</span>
@@ -87,7 +87,7 @@ export function ProfileSidebar({
         <button
           type="button"
           onClick={() => router.push('/notifications')}
-          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer text-left"
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-md text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer text-left"
         >
           <Bell className="h-4 w-4" />
           <span>Notifications</span>
@@ -96,7 +96,7 @@ export function ProfileSidebar({
         <button
           type="button"
           aria-current="page"
-          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-bold text-[#001A41] bg-[var(--amber)] shadow-xs transition cursor-pointer text-left"
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-bold text-[#001A41] bg-[var(--amber)] shadow-xs transition cursor-pointer text-left"
         >
           <User className="h-4 w-4 text-[#001A41]" />
           <span>Profile & Settings</span>
@@ -111,7 +111,7 @@ export function ProfileSidebar({
         </div>
         <div className="pt-3 border-t border-[var(--lead)] flex items-center justify-between">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-8 h-8 rounded-lg bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] font-bold text-xs flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-[var(--tag-bg)] text-[var(--text-main)] border border-[var(--lead)] font-bold text-xs flex items-center justify-center shrink-0">
             {customerName ? customerName.charAt(0).toUpperCase() : 'C'}
           </div>
           <div className="min-w-0">
@@ -127,7 +127,7 @@ export function ProfileSidebar({
           type="button"
           onClick={onSignOut}
           aria-label="Sign out"
-          className="p-1.5 text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] rounded-lg transition shrink-0 cursor-pointer"
+          className="p-1.5 text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] rounded-md transition shrink-0 cursor-pointer"
         >
           <LogOut className="h-4 w-4" />
         </button>
@@ -214,17 +214,17 @@ export function ProfileNoticeDialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby="dialog-heading"
-        className="bg-[var(--card-bg)] rounded-lg max-w-sm w-full p-6 shadow-xl border border-[var(--lead)] relative text-center text-[var(--text-main)]"
+        className="bg-[var(--card-bg)] rounded-2xl max-w-sm w-full p-6 shadow-xl border border-[var(--lead)] relative text-center text-[var(--text-main)]"
       >
         <button
           type="button"
           onClick={onClose}
           aria-label="Close dialog"
-          className="absolute top-4 right-4 p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer"
+          className="absolute top-4 right-4 p-1 rounded-md text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-hover)] transition cursor-pointer"
         >
           <X className="h-5 w-5" />
         </button>
-        <div className="mx-auto w-12 h-12 rounded-lg bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center mb-3">
+        <div className="mx-auto w-12 h-12 rounded-xl bg-[var(--tag-bg)] text-[var(--amber)] border border-[var(--lead)] flex items-center justify-center mb-3">
           <MessageSquare className="h-6 w-6" />
         </div>
         <h3 id="dialog-heading" className="text-lg font-bold font-display text-[var(--text-main)] mb-2">
@@ -236,7 +236,7 @@ export function ProfileNoticeDialog({
         <button
           type="button"
           onClick={onClose}
-          className="w-full py-2.5 px-4 rounded-lg bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold transition cursor-pointer"
+          className="outlier-pill-button w-full py-2.5 px-4 rounded-full bg-[var(--amber)] hover:bg-[var(--amber-hover)] text-[#001A41] text-xs font-bold transition cursor-pointer shadow-xs hover:scale-[1.02] active:scale-[0.98]"
         >
           Got it
         </button>

@@ -64,7 +64,7 @@ export function ReviewsCounterResponseTab({
 
       <div data-testid="reviews-list" className="space-y-4">
         {reviews.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-[var(--lead)] p-8 text-center text-[var(--text-muted)]">
+          <div className="rounded-2xl border border-dashed border-[var(--lead)] p-8 text-center text-[var(--text-muted)]">
             No client reviews posted yet.
           </div>
         ) : (
@@ -74,7 +74,7 @@ export function ReviewsCounterResponseTab({
             return (
               <div
                 key={review.id}
-                className="rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 space-y-4 shadow-sm"
+                className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-5 space-y-4 shadow-sm"
               >
                 {/* Review Header: Customer name, rating, date */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[var(--lead)] pb-3">
@@ -107,11 +107,11 @@ export function ReviewsCounterResponseTab({
 
                 {/* Criteria breakdown if present */}
                 {review.criteriaScores && (
-                  <div className="flex flex-wrap gap-3 text-xs text-[var(--text-muted)]">
+                  <div className="flex flex-wrap gap-2 text-xs text-[var(--text-muted)]">
                     {Object.entries(review.criteriaScores).map(([key, score]) => (
                       <span
                         key={key}
-                        className="rounded bg-[var(--tag-bg)] px-2 py-0.5 border border-[var(--lead)] capitalize"
+                        className="rounded-full bg-[var(--tag-bg)] px-2.5 py-0.5 border border-[var(--lead)] capitalize font-medium"
                       >
                         {key}: {score}/5
                       </span>
@@ -128,7 +128,7 @@ export function ReviewsCounterResponseTab({
                 {review.artisanResponse && (
                   <div
                     data-testid="artisan-response-card"
-                    className="rounded-lg border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4 space-y-1.5"
+                    className="rounded-xl border border-[var(--brand-green-border)] bg-[var(--brand-green-dim)] p-4 space-y-1.5"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-xs font-semibold text-[var(--brand-green)]">
@@ -154,14 +154,14 @@ export function ReviewsCounterResponseTab({
                         type="button"
                         data-testid={`open-counter-response-btn-${review.id}`}
                         onClick={() => handleOpenForm(review.id)}
-                        className="rounded-lg bg-[var(--tag-bg)] border border-[var(--lead)] px-3 py-1.5 text-xs font-semibold text-[var(--brand-green)] hover:bg-[var(--card-hover)]"
+                        className="rounded-full bg-[var(--card-bg)] border border-[var(--lead)] px-3.5 py-1.5 text-xs font-semibold text-[var(--brand-green)] hover:bg-[var(--card-hover)] shadow-sm transition-all"
                       >
                         Respond to Client
                       </button>
                     ) : (
                       <form
                         onSubmit={(e) => handleSubmitResponse(review.id, e)}
-                        className="rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] p-4 space-y-3"
+                        className="rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-4 space-y-3 shadow-sm"
                       >
                         <div className="flex justify-between items-center">
                           <label className="text-xs font-semibold text-[var(--text-main)]">
@@ -173,7 +173,7 @@ export function ReviewsCounterResponseTab({
                         </div>
 
                         {error && (
-                          <div className="rounded bg-[var(--danger-dim)] border border-[var(--danger-border)] p-2 text-xs text-[var(--danger)]">
+                          <div className="rounded-xl bg-[var(--danger-dim)] border border-[var(--danger-border)] p-2 text-xs text-[var(--danger)]">
                             {error}
                           </div>
                         )}
@@ -184,21 +184,21 @@ export function ReviewsCounterResponseTab({
                           value={responseText}
                           onChange={(e) => setResponseText(e.target.value)}
                           placeholder="Write your response to the client..."
-                          className="w-full rounded-lg border border-[var(--lead)] bg-[var(--card-bg)] px-3 py-2 text-xs text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--amber)]"
+                          className="w-full rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)] px-3 py-2 text-xs text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--amber)]"
                         />
 
                         <div className="flex justify-end gap-2">
                           <button
                             type="button"
                             onClick={handleCancelForm}
-                            className="rounded-lg bg-[var(--tag-bg)] px-3 py-1.5 text-xs font-medium text-[var(--text-muted)] hover:bg-[var(--card-hover)]"
+                            className="rounded-lg border border-[var(--lead)] px-3.5 py-1.5 text-xs font-semibold text-[var(--text-muted)] hover:bg-[var(--card-hover)] transition-all"
                           >
                             Cancel
                           </button>
                           <button
                             type="submit"
                             data-testid="submit-counter-response-btn"
-                            className="rounded-lg bg-[var(--amber)] px-3 py-1.5 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)]"
+                            className="outlier-pill-button rounded-full bg-[var(--amber)] px-4 py-1.5 text-xs font-bold text-[#001A41] hover:bg-[var(--amber-hover)] shadow-sm transition-all"
                           >
                             Submit Response
                           </button>
