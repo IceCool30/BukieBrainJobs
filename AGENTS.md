@@ -87,9 +87,9 @@ This file defines the standards and operational map every contributor must follo
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
 - **Active Phase**: Phase 3 Full Two-Sided Marketplace Lifecycle.
-- **Active Slice**: Item 3.3 Post-Job Completion & Escrow Release (`BW-009`). Phases 1 to 5 complete and verified; PR creation pending.
-- **Current Product Baseline**: BW-008 On-Site Work & In-Progress Verification (Item 3.2, PR #64), merged at `7501ce7`.
-- **Next Product Slice**: Item 3.4 Dispute Handling & Support Interface (`BW-010`).
+- **Active Slice**: Item 3.4 Dispute Handling & Support Interface (`BW-010`), status: LOCAL UNCOMMITTED / PM REVIEW PENDING.
+- **Current Product Baseline**: BW-008 On-Site Work & In-Progress Verification (Item 3.2, PR #64), merged at `7501ce7`; BW-009 Post-Job Completion & Escrow Release (Item 3.3), PR creation pending.
+- **Next Product Slice**: Phase 4 Mobile Application (`apps/mobile`) following merge of Phase 3 items.
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`

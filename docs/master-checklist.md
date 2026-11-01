@@ -2,11 +2,11 @@
 
 **Document ID:** CHECKLIST-001  
 **Status:** Living Canonical Roadmap Tracker  
-**Last Updated:** 2026-10-17
+**Last Updated:** 2026-10-31
 
 This document provides a single, unified checklist of what has been built, what is partially implemented, and what remains to be completed across the BukieBrainJobs monorepo. It establishes the sequential order of execution so engineering moves forward in focused phases rather than scattered work.
 
-**Current product baseline:** BW-006 Earnings, Wallet & Payouts merged in PR #60 at `3f0cc64`. Phase 2 is recorded complete; gate and context maintenance is complete and explicitly authorized for merge to `main`. The next product slice awaits owner selection and approval. Verification counts below are retained historical feature reports, not checks rerun during this update.
+**Current product baseline:** BW-008 On-Site Work & In-Progress Verification merged in PR #64 at `7501ce7`; BW-009 Post-Job Completion & Escrow Release PR creation pending; BW-010 Dispute Handling & Support Interface (Item 3.4) PM REVIEW ACCEPTED / OWNER COMMIT APPROVAL PENDING / LOCAL UNCOMMITTED. Phase 4 Mobile Application is active. Phase 4.1 Native Navigation & Shared Shell (items 4.1.1 to 4.1.3) complete and PM accepted. Phase 4.2.1 Native public discovery (MOB-001) PM REVIEW ACCEPTED (46/46 tests passing, web/Android/iOS static exports verified, 10/10 Playwright compiled-app steps green, all touch targets >= 48dp). Phase 4.2.2 Native booking preparation and multi-step job posting forms is active. All work remains local and uncommitted.
 
 ---
 
@@ -23,8 +23,8 @@ This document provides a single, unified checklist of what has been built, what 
 | **Customer Notifications & Messaging** | **Complete** | Messaging (WEB-017) and Notification Center (WEB-018) both complete and live in production. |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
 | **BrainWorker Platform** | **Complete** | BW-001 Onboarding & Identity, BW-002 Service Catalog & Availability, BW-003 Leads Inbox, BW-004 Booking Management, Item 2.2 Operating Dashboard, BW-005 Profile & Portfolio Management, and BW-006 Earnings, Wallet & Payouts are recorded complete. Latest merge: BW-006, PR #60 at `3f0cc64`; 42/42 wallet contracts reported in Item 2.6. |
-| **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Item 3.1 Collaborative Scheduling & Dispatch (BW-007) complete and verified (42 contracts: 10 SCHED, 10 REP, 12 COMP, 10 ROUTE). Customer state machine, provider booking management (BW-004), and unified scheduling route active. Items 3.2 to 3.4 remain outstanding. |
-| **Mobile Application (`apps/mobile`)** | **Not Built** | Expo starter only. Full native reconstruction required. |
+| **Full Two-Sided Marketplace Lifecycle** | **Complete (Item 3.4 PM Accepted)** | BW-007 (Item 3.1), BW-008 (Item 3.2, PR #64 merged), BW-009 (Item 3.3), and BW-010 (Item 3.4) completed; BW-010 PM review accepted, owner commit approval pending. |
+| **Mobile Application (`apps/mobile`)** | **In Progress (Phase 4.1 & 4.2.1 Complete; 4.2.2 Active)** | Expo Router tabs, Obsidian Titanium Gunmetal Dark tokens, safe area handling (items 4.1.1 to 4.1.3), and Phase 4.2.1 Native public discovery (MOB-001) complete and PM accepted with 46/46 mobile unit/integration tests passing across 6 suites, web/Android/iOS static exports verified, and 10/10 Playwright steps green with continuous video. Phase 4.2.2 Native booking preparation and multi-step job posting forms is active. |
 | **Admin & Operational Console** | **Not Built** | Worker vetting, dispute mediation, category management, analytics. |
 | **Corporate Portal (`/enterprise`)** | **Deferred** | Kept intentionally as Coming Soon until consumer launch. |
 | **Backend & Database Integration** | **Deferred** | Prisma schema exists. Real PostgreSQL connection and REST/GraphQL APIs deferred. |
@@ -193,25 +193,31 @@ Phase 7: Launch Readiness
 - [x] Mutual rating exchange: Double-blind mutual rating system unlocking ratings upon dual submission across punctuality, quality, communication, and overall criteria.
 - [x] Verified implementation: 42/42 completion contracts passed (10 COMPL, 10 REP, 12 COMP, 10 ROUTE); monorepo web tests green; 7/7 type-check clean; 44 static and dynamic routes compiled cleanly.
 
-#### 3.4 Dispute Handling & Support Interface
-- [ ] Formal dispute creation screen: Customer or worker specifies dispute category (poor workmanship, uncompleted task, damage, pricing disagreement).
-- [ ] Evidence upload surface: Photos, receipts, chat transcript excerpt.
-- [ ] Dispute status timeline: Under review by BukieBrainJobs team, mediation proposal, resolution reached.
-- [ ] Customer help center: Knowledge base, FAQs, and ticket submission.
+#### 3.4 Dispute Handling & Support Interface (`BW-010`, PM REVIEW ACCEPTED / OWNER COMMIT APPROVAL PENDING / LOCAL UNCOMMITTED)
+- [x] Pure domain contracts (DISP-001 to DISP-010): Enforce canonical 17.5% platform fee schedule (10% service fee + 7.5% trust fee = 1750 bps, 82.5% tasker share), integer Kobo settlement arithmetic, dispute categories, and state machine transitions.
+- [x] In-memory repository contracts (REP-001 to REP-010): Private mapping, deep clone isolation, participant tenant authorization, duplicate protection, session-scoped evidence store with draft isolation, and timeline auditing.
+- [x] UI component suite (UI-001 to UI-011): DisputeBookingPageView with caller-filtered queries (`getDisputeByBookingId(targetBookingId, currentUser.id)`), cross-record integrity checks, zero demo backdoors, truthful preview heading (`Dispute Workspace Preview: Dispute Resolution and Support`), `LOCAL RECORD: ${status}` badges, `Retry Local Status Update` action, DisputeInitiationModal with synchronous submission locking, DisputeCounterEvidenceModal for BrainWorker counter-evidence with repeat-safe submission, DisputeTimelineView with submitted evidence gallery and accessible fallback thumbnail rendering on load failure, DisputeEvidenceUploader with `useId()` session scoping, BrainWorkerDisputeBanner with `role="alert"`, 44px touch targets, and simulated local status disclosure, HelpCenterView with amber focus ring and honest emergency/qualification/mediation prototype disclosures, and SupportTicketForm rendered in an explicitly read-only, unavailable state with all fields and submit button disabled, with no fake submission simulation.
+- [x] Protected dynamic route integration (ROUTE-001 to ROUTE-021): Next.js 15 App Router `/disputes/[bookingId]` with async server component awaiting params and `key={bookingId}` on client view, unauthenticated redirect, 403 participant access control and cross-record mismatch closure (ROUTE-018), 404 booking alerts, reactive offline listeners, state clearance on route change, StrictMode replay resilience (ROUTE-015), A-to-B navigation isolation (ROUTE-016), local booking status sync failure/retry recovery (ROUTE-017, ROUTE-019), idempotent counter-evidence submission retry (ROUTE-020), distinct evidence preservation (ROUTE-020b), unswallowed route params error propagation (ROUTE-012b), and back link navigation rendering "Back to Booking Detail" (ROUTE-021) navigating customers to their protected completion view (`/completion/[bookingId]`) and preserving the BrainWorker destination (`/brainworker/bookings/[bookingId]`).
+- [x] Verified local test suite: 110/110 dispute and booking integration tests passing across 6 suites (106 dispute + 4 BookingDetailView tests), 25/25 cross-route completion tests passing, 44/44 deterministic scheduling tests passing, full web suite passing with 1,879/1,879 tests across 126 suites, 0 type errors, 0 lint errors, production build exit code 0. Captured complete 17-screenshot catalog in `docs/screenshots/` without dev overlays.
+- [x] Product Manager Review: Accepted by PM. Owner commit approval pending; all work remains strictly local and uncommitted.
+- [ ] Reserved: Production PostgreSQL database migrations and backend settlement webhooks (Reserved for Mr. Solomon).
+- [ ] Reserved: Production deployment and native mobile screen rollout (Phase 4).
 
 ---
 
 ### Phase 4: Mobile Application (`apps/mobile`)
 
 #### 4.1 Native Navigation & Shared Shell
-- [ ] Expo Router configuration with bottom tabs: Home, Services, Jobs, Messages, Profile.
-- [ ] Brand-aligned design token implementation in React Native StyleSheet.
-- [ ] Safe area and status bar handling for iOS and Android.
+- [x] Expo Router configuration with bottom tabs: Home, Services, Jobs, Messages, Profile (IA-001 aligned, verified with 3/3 tabs tests and 17/17 content guardrail tests in apps/mobile).
+- [x] Brand-aligned design token implementation in React Native StyleSheet (THEME-001, Obsidian Titanium Gunmetal Dark: dark default; persisted light/dark selection via AsyncStorage; home-header toggle; selected theme restored across home, tab, service-detail, and booking routes; verified in the full 95/95 mobile suite).
+- [x] Safe area and status bar handling for iOS and Android (RootLayout SafeAreaProvider + StatusBar whose icon style follows the selected theme and whose background uses the matching canvas, react-native-safe-area-context ~4.12.0 matching Expo SDK 52 standardized across marketing home, tab screens with double-inset prevention, BrainWorker registration, and dynamic tab bar safe-area insets in apps/mobile/app/(tabs)/_layout.tsx preventing BottomTabBar inset overrides, verified with 8/8 safe-area tests and 4/4 tab tests including nonzero bottom inset regression).
 
 #### 4.2 Customer Native Experiences
-- [ ] Native public discovery: Homepage, category list, service detail screens.
-- [ ] Native booking preparation and multi-step job posting forms.
-- [ ] Native customer activity hub with segmented controls for All, Active, Upcoming, Past.
+- [x] Native public discovery: Homepage, category list, service detail screens (MOB-001: VERIFIED & PASSED; 46/46 mobile unit and integration tests passing across 6 suites; standalone marketing home in app/index.tsx with exact amber primary CTA #FF6B35 / rgb(255, 107, 53), 48dp CTA buttons, and 48dp AllServicesLink; services catalog in app/(tabs)/services.tsx with search input, filter pills, and service cards meeting 48dp targets; shared bottom tab bar geometry resolved in app/(tabs)/_layout.tsx to 75x49px >= 48dp, with home/jobs/messages/profile kept untouched; service detail in app/services/[id].tsx with 48x48 back button, "Examples in this local catalog", and honest LOCAL PREVIEW disclaimers; browser/device emulation verified 10/10 green with continuous video recorded at docs/screenshots/videos/expo-mob001-discovery-verification.webm and 9 repository-relative screenshots; native Android/iOS runtime unavailable).
+##### 4.2.2 Native Booking Preparation and Job Posting (IN PROGRESS)
+- [x] Native booking preparation (`MOB-BOOK-001`): Complete and PM accepted after owner-delegated review; local preview only. Verified in the actual Expo web app at 375x812 mobile browser emulation in light and dark themes. Native iOS/Android runtime and screen-reader QA unavailable.
+- [x] Multi-step native job-posting flow (`/post-job`, `MOB-POST-001`): PM accepted on 2026-10-31 under the product owner's delegation; native in-memory local preview only. The [QA report](reports/MOB-POST-001-native-job-posting-qa.md) records 136/136 mobile tests across 14 files, including 8 native-focus regressions covering web DOM focus versus native API dispatch, and compiled Expo browser-emulation checks. This is not native-runtime proof. Actual native iOS/Android runtime, screen-reader and device-specific QA remain unverified. Phase 4.2.2 remains IN PROGRESS.
+- [ ] Native customer activity hub with segmented controls for All, Active, Upcoming, Past. MOB-ACT-001: delegated PM scope approval on 31 Oct 2026; implementation not started; acceptance not accepted; Phase 4.2.2 IN PROGRESS. See decision MOB-ACT-001-DEC-001.
 - [ ] Native booking lifecycle screens with full offline caching.
 
 #### 4.3 BrainWorker Native Experiences

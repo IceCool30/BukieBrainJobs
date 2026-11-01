@@ -23,6 +23,8 @@
   "include": [
     "app/**/*.ts",
     "app/**/*.tsx",
+    "lib/**/*.ts",
+    "lib/**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
   ],
