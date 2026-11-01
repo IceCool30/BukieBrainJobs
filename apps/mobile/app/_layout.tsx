@@ -1,15 +1,28 @@
 import React from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useThemeMode, useTrades } from '../lib/theme';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useThemeColors, useThemeMode } from '../lib/theme';
 
 export default function RootLayout() {
-  const c = useTrades();
   const mode = useThemeMode();
+  const c = useThemeColors();
   return (
-    <>
-      <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: c.bg } }} />
-    </>
+    <SafeAreaProvider>
+      <StatusBar style={mode === 'dark' ? 'light' : 'dark'} backgroundColor={c.canvas} />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: c.canvas },
+        }}
+      >
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="brainworker/register" />
+        <Stack.Screen name="services/[id]" />
+        <Stack.Screen name="book" />
+        <Stack.Screen name="post-job" />
+      </Stack>
+    </SafeAreaProvider>
   );
 }

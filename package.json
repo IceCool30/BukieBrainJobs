@@ -37,6 +37,7 @@
     "node": ">=20"
   },
   "overrides": {
+    "react-native-screens": "~4.4.0",
     "fast-uri": "^4.2.3",
     "@xmldom/xmldom": "^0.9.12",
     "xmldom": "^0.6.0",
