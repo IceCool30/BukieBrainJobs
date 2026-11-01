@@ -141,7 +141,58 @@ describe('BW-010 Phase 1 RED: Domain Logic Contracts', () => {
 
       const result = validateDisputeInitiation(input);
       expect(result.valid).toBe(false);
-      expect(result.error).toContain('Dispute description must not be empty');
+      expect(result.error).toContain('Dispute description must');
+    });
+
+    it('rejects description shorter than 20 trimmed characters (19 characters)', () => {
+      const input: DisputeInitiationInput = {
+        bookingId: 'book-disp-005c',
+        bookingStatus: 'IN_PROGRESS',
+        customerId: 'usr-customer-05',
+        brainWorkerId: 'usr-worker-05',
+        callerId: 'usr-customer-05',
+        callerRole: 'customer',
+        category: 'WORKMANSHIP_DEFECT',
+        description: '1234567890123456789', // 19 chars
+      };
+
+      const result = validateDisputeInitiation(input);
+      expect(result.valid).toBe(false);
+      expect(result.error).toContain('between 20 and 2000 characters');
+    });
+
+    it('accepts description with exactly 20 trimmed characters', () => {
+      const input: DisputeInitiationInput = {
+        bookingId: 'book-disp-005d',
+        bookingStatus: 'IN_PROGRESS',
+        customerId: 'usr-customer-05',
+        brainWorkerId: 'usr-worker-05',
+        callerId: 'usr-customer-05',
+        callerRole: 'customer',
+        category: 'WORKMANSHIP_DEFECT',
+        description: '12345678901234567890', // 20 chars
+      };
+
+      const result = validateDisputeInitiation(input);
+      expect(result.valid).toBe(true);
+      expect(result.error).toBeUndefined();
+    });
+
+    it('rejects description exceeding 2000 trimmed characters (2001 characters)', () => {
+      const input: DisputeInitiationInput = {
+        bookingId: 'book-disp-005e',
+        bookingStatus: 'IN_PROGRESS',
+        customerId: 'usr-customer-05',
+        brainWorkerId: 'usr-worker-05',
+        callerId: 'usr-customer-05',
+        callerRole: 'customer',
+        category: 'WORKMANSHIP_DEFECT',
+        description: 'a'.repeat(2001),
+      };
+
+      const result = validateDisputeInitiation(input);
+      expect(result.valid).toBe(false);
+      expect(result.error).toContain('between 20 and 2000 characters');
     });
   });
 
@@ -191,6 +242,43 @@ describe('BW-010 Phase 1 RED: Domain Logic Contracts', () => {
       const result = validateDisputeEvidence({ evidenceList });
       expect(result.valid).toBe(false);
       expect(result.error).toContain('Unsupported evidence file type');
+    });
+
+    it('accepts image/webp MIME type as valid evidence format', () => {
+      const evidenceList: DisputeEvidence[] = [
+        {
+          id: 'ev-webp-01',
+          uploaderId: 'usr-customer-06',
+          uploaderRole: 'customer',
+          fileType: 'image/webp' as DisputeAllowedMimeType,
+          previewUrl: 'blob:mock-webp-preview',
+          caption: 'webp_damage_photo.webp',
+          uploadedAt: '2026-10-20T12:00:00Z',
+          sizeBytes: 524288,
+        },
+      ];
+
+      const result = validateDisputeEvidence({ evidenceList });
+      expect(result.valid).toBe(true);
+      expect(result.error).toBeUndefined();
+    });
+
+    it('rejects unsupported image/gif MIME format', () => {
+      const evidenceList = [
+        {
+          id: 'ev-gif',
+          uploaderId: 'usr-customer-06',
+          uploaderRole: 'customer' as const,
+          fileType: 'image/gif' as unknown as DisputeAllowedMimeType,
+          previewUrl: 'blob:mock-gif-preview',
+          uploadedAt: '2026-10-20T12:00:00Z',
+          sizeBytes: 1024,
+        },
+      ];
+
+      const result = validateDisputeEvidence({ evidenceList });
+      expect(result.valid).toBe(false);
+      expect(result.error).toContain('Unsupported evidence file type: image/gif');
     });
   });
 

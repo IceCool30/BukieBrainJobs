@@ -1,7 +1,7 @@
 // apps/web/lib/scheduling/repository.test.ts
 // BW-007 Phase 2: Collaborative Scheduling and Dispatch Repository Contracts
 
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   getSchedulingRepository,
   resetSchedulingRepository,
@@ -12,6 +12,8 @@ import type {
 } from './types';
 
 describe('BW-007 Phase 2: SchedulingRepository Contracts', () => {
+  const referenceNow = new Date('2026-10-24T10:00:00.000Z');
+
   const sampleWindow: ArrivalWindow = {
     date: '2026-10-25',
     startHour: 10,
@@ -27,7 +29,14 @@ describe('BW-007 Phase 2: SchedulingRepository Contracts', () => {
   };
 
   beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(referenceNow);
     resetSchedulingRepository();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
   it('REP-001: seedBookingSchedule initializes and getBookingSchedule retrieves record', async () => {
@@ -75,6 +84,53 @@ describe('BW-007 Phase 2: SchedulingRepository Contracts', () => {
     expect(request.requesterRole).toBe('CLIENT');
     expect(request.proposedWindows).toEqual([newCandidateWindow]);
     expect(request.createdAt).toBeDefined();
+  });
+
+  it('REP-002b: proposeReschedule rejects candidate windows in the past or less than 1 hour ahead', async () => {
+    const repo = getSchedulingRepository();
+    await repo.seedBookingSchedule({
+      bookingId: 'booking-002-past',
+      jobStatus: 'CONFIRMED',
+      agreedArrivalWindow: sampleWindow,
+    });
+
+    const pastWindow: ArrivalWindow = {
+      date: '2026-10-23',
+      startHour: 14,
+      endHour: 17,
+      display: 'Friday, Oct 23, 2026, 2:00 PM - 5:00 PM WAT',
+    };
+
+    const pastProposal: ProposeRescheduleInput = {
+      bookingId: 'booking-002-past',
+      requesterRole: 'CLIENT',
+      requesterId: 'client-123',
+      proposedWindows: [pastWindow],
+      reason: 'PARTS_PROCUREMENT',
+    };
+
+    await expect(repo.proposeReschedule(pastProposal)).rejects.toThrow(
+      /future with a minimum 1 hour ahead/i
+    );
+
+    const tooCloseWindow: ArrivalWindow = {
+      date: '2026-10-24',
+      startHour: 10,
+      endHour: 12,
+      display: 'Saturday, Oct 24, 2026, 10:00 AM - 12:00 PM WAT',
+    };
+
+    const tooCloseProposal: ProposeRescheduleInput = {
+      bookingId: 'booking-002-past',
+      requesterRole: 'CLIENT',
+      requesterId: 'client-123',
+      proposedWindows: [tooCloseWindow],
+      reason: 'PARTS_PROCUREMENT',
+    };
+
+    await expect(repo.proposeReschedule(tooCloseProposal)).rejects.toThrow(
+      /future with a minimum 1 hour ahead/i
+    );
   });
 
   it('REP-003: proposeReschedule throws when another request for the same booking is already PENDING', async () => {

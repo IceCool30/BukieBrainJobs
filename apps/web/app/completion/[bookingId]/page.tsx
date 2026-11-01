@@ -317,6 +317,7 @@ export default function CompletionPage({
         <EscrowReleaseActions
           jobStatus={completionState.jobStatus}
           escrowStatus={completionState.escrowStatus}
+          isDisputed={completionState.isDisputed}
           onConfirmSatisfaction={handleConfirmSatisfaction}
           onRaiseDispute={() => setIsDisputeModalOpen(true)}
           isSubmitting={isSubmitting}

@@ -5,7 +5,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import React from 'react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import * as authStorage from '../../lib/auth/storage';
 import {
@@ -32,6 +32,8 @@ vi.mock('next/navigation', () => ({
 }));
 
 describe('BW-007 Collaborative Scheduling & Dispatch Route Contracts (ROUTE-001 to ROUTE-010)', () => {
+  const referenceNow = new Date('2026-10-24T10:00:00.000Z');
+
   const mockCustomer: AuthUser = {
     id: 'cust-101',
     name: 'Amara Kanu',
@@ -65,8 +67,15 @@ describe('BW-007 Collaborative Scheduling & Dispatch Route Contracts (ROUTE-001 
   const defaultParams = Promise.resolve({ bookingId: 'bk-101' });
 
   beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(referenceNow);
     vi.clearAllMocks();
     resetSchedulingRepository();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
   it('ROUTE-001: unauthenticated visitor accessing /scheduling/bk-101 redirects to /login?redirect=/scheduling/bk-101 without querying repository', async () => {
@@ -146,6 +155,33 @@ describe('BW-007 Collaborative Scheduling & Dispatch Route Contracts (ROUTE-001 
     expect(await screen.findByRole('button', { name: /^accept$/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /^decline$/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /counter/i })).toBeInTheDocument();
+  });
+
+  it('ROUTE-005b: customer proposing candidate window in the past is rejected with domain error and does not mutate schedule', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(mockCustomer);
+    const repo = getSchedulingRepository();
+    await repo.seedBookingSchedule({
+      bookingId: 'bk-101',
+      jobStatus: 'CONFIRMED',
+      agreedArrivalWindow: sampleWindow,
+    });
+
+    const pastWindow: ArrivalWindow = {
+      date: '2026-10-23',
+      startHour: 10,
+      endHour: 13,
+      display: 'Friday, Oct 23, 2026, 10:00 AM - 1:00 PM WAT',
+    };
+
+    await expect(
+      repo.proposeReschedule({
+        bookingId: 'bk-101',
+        requesterRole: 'CLIENT',
+        requesterId: 'cust-101',
+        proposedWindows: [pastWindow],
+        reason: 'CUSTOMER_UNAVAILABLE',
+      })
+    ).rejects.toThrow(/future with a minimum 1 hour ahead/i);
   });
 
   it('ROUTE-006: artisan viewing pending customer reschedule request sees candidate windows, Accept, Decline, and Counter options', async () => {

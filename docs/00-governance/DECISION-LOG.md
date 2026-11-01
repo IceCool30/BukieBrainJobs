@@ -267,6 +267,8 @@ The public homepage is customer-first, supports three marketplace entry paths, s
 
 **Source references:** `docs/04-public-website/WEB-006-SERVICES-DISCOVERY.md`, `docs/04-public-website/WEB-004-SERVICE-DETAIL.md`, `docs/04-public-website/WEB-005-PUBLIC-BRAINWORKER-PROFILE.md`, `PLAT-002`, and `DESIGN.md`.
 
+MOB-ACT-001: delegated PM scope approval on 31 Oct 2026; implementation not started; acceptance not accepted; Phase 4.2.2 IN PROGRESS. Reference: docs/specs/MOB-ACT-001-native-customer-activity-hub.md
+
 ## Adding a decision
 
 Do not edit a historical decision to hide a change. If a decision changes, create a new decision, link the superseded decision and explain the reason.
