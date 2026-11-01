@@ -32,6 +32,7 @@ export type DisputeParticipantRole = 'customer' | 'brainworker';
 export type DisputeAllowedMimeType =
   | 'image/jpeg'
   | 'image/png'
+  | 'image/webp'
   | 'application/pdf';
 
 export interface DisputeEvidence {

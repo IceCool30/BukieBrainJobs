@@ -1,0 +1,1337 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.overrides", "pnpm.patchedDependencies". See https://pnpm.io/settings for the new home of each setting.
+
+> @bukiebrainjobs/web@1.0.0 test /home/ubuntu/.gemini/antigravity/scratch/BukieBrainJobs/apps/web
+> vitest run
+
+
+ RUN  v4.1.12 /home/ubuntu/.gemini/antigravity/scratch/BukieBrainJobs/apps/web
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders authenticated header with "Jobs & Bookings" and supporting text
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders persistent desktop sidebar navigation with active indicator on "Jobs / Bookings"
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders persistent mobile bottom navigation with active indicator on "Jobs"
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders activity filters (All, Active, Upcoming, Past) with URL synchronization
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > preserves accurate filter counts across tab selection (All count remains total count)
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > separates Activity Type and Activity Status visually on each card
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders master-detail desktop layout: selecting an item displays its detail pane
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders master-detail desktop layout: selecting an item displays its detail pane
+An update to LifecycleStateSurface inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders decorative logo watermark at subtle opacity in activity detail
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ lib/matching/matching.test.ts (36 tests) 3638ms
+     ✓ scopes selection state to customer and job  306ms
+     ✓ no cross-customer mutation is possible  364ms
+     ✓ always has jobReferenceCode, jobTitle, state, and candidates array  426ms
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > handles deep linking via ?id= query param on mount
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > handles deep linking via ?id= query param on mount
+An update to LifecycleStateSurface inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > displays honest "Activity not found" notice for invalid id without crashing
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders first-run empty state when no activities exist
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders filtered empty state when filter has zero items
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders loading skeleton state
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders partial failure state with retry button
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders partial failure state with retry button
+An update to LifecycleStateSurface inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ app/services/ServicesDirectory.test.tsx (30 tests) 3309ms
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders offline degraded state with cache notice banner
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders WEB-013 lifecycle step indicator and honest meaning line for awaiting response
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders WEB-013 confirmed booking state with confirmation headline
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders WEB-013 confirmed booking state with confirmation headline
+An update to LifecycleStateSurface inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders WEB-013 decline state with honest wording and alternatives CTA
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders WEB-013 expired state with recreate CTA
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ lib/auth/auth.test.ts (16 tests) 4104ms
+       ✓ successfully completes mock Google authentication with Customer role  356ms
+       ✓ successfully completes mock Apple authentication with BrainWorker role without false approval  353ms
+       ✓ returns clear error on simulated provider failure  353ms
+       ✓ sends OTP code to valid Nigerian numbers in local 080... format  302ms
+       ✓ verifies valid 6-digit OTP and assigns selected role  352ms
+       ✓ rejects incorrect OTP (e.g. 000000)  351ms
+       ✓ signs in with valid email and password  352ms
+       ✓ rejects invalid password credentials  352ms
+       ✓ registers new account with explicit role without implying approval  351ms
+       ✓ rejects duplicate registration attempts with actionable error  354ms
+       ✓ handles forgot password safely without revealing account existence  301ms
+       ✓ resets password with valid requirements  301ms
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > does not render mock acceptance or decline controls in customer UI
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders booking-specific cancellation modal title and text when cancelling confirmed booking
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders booking-specific cancellation modal title and text when cancelling confirmed booking
+An update to LifecycleStateSurface inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > does not display decline state when authoritative jobStatus is CONFIRMED despite stale decline response
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > traps focus and restores focus upon modal dismissal
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > closing mobile detail view cleanly removes id parameter from URL and closes view
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > not-found reset control clears invalid ID and preserves active filter view
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders "Activity not found" and does not fall through to the first activity on invalid deep-link /jobs?id=NON-EXISTENT-999
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders first-run empty state when an authenticated customer has no activities (customer isolation)
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > renders "Activity not found" instead of first-run empty state when an authenticated customer with zero activities visits /jobs?id=NON-EXISTENT-999
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > restores only customer-scoped activities and does not inject global mock fixture on partial-failure retry for non-default customer
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/jobs/JobsScreen.test.tsx > WEB-011 JobsScreen Component (TDD) > does not inject global mock activities when customer with zero activities retries partial failure
+An update to JobsScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ app/jobs/JobsScreen.test.tsx (33 tests) 5598ms
+     ✓ renders authenticated header with "Jobs & Bookings" and supporting text  399ms
+     ✓ renders partial failure state with retry button  333ms
+     ✓ allows opening CancellationModal and cancelling an open request  554ms
+     ✓ renders first-run empty state when an authenticated customer has no activities (customer isolation)  302ms
+     ✓ renders "Activity not found" instead of first-run empty state when an authenticated customer with zero activities visits /jobs?id=NON-EXISTENT-999  301ms
+ ✓ app/login/LoginScreen.test.tsx (14 tests) 7487ms
+     ✓ allows switching between Sign In and Create Account and preserves entered contact input  454ms
+     ✓ accepts 080... format, displays masked phone, and verifies valid OTP code  1009ms
+     ✓ rejects invalid OTP code with clear error feedback  986ms
+     ✓ authenticates with valid email and password  2076ms
+     ✓ authenticates with Google mock provider  500ms
+     ✓ handles simulated Google failure when mockAuthError=google is passed  523ms
+     ✓ authenticates with Apple mock provider  711ms
+     ✓ handles forgot password flow without exposing account enumeration  664ms
+ ✓ app/profile/ProfileScreen.test.tsx (10 tests) 3001ms
+     ✓ renders authenticated header with Profile & Settings title  389ms
+     ✓ navigates between sub-sections using tab buttons  791ms
+     ✓ updates personal details with validation and confirmation  435ms
+     ✓ adds and manages saved addresses with Nigerian landmark instructions  361ms
+     ✓ validates password complexity when updating password in security section  323ms
+ ✓ app/book/BookingScreen.test.tsx (12 tests) 7583ms
+     ✓ renders booking preparation page with valid service, price, city, and worker  360ms
+     ✓ rejects whitespace-only address and notes input  686ms
+     ✓ clears field validation error on user input  471ms
+     ✓ submits valid form and transitions to accessible confirmation state  2558ms
+     ✓ handles mockError=1 failure state and preserves user input for retry  2844ms
+ ✓ components/brainworker/catalog/ServiceCatalogEditor.test.tsx (25 tests) 1991ms
+stderr | app/dashboard/DashboardScreen.test.tsx > WEB-010 DashboardScreen Component > renders authenticated dashboard with customer greeting and operational identity
+Received `true` for a non-boolean attribute `priority`.
+
+If you want to write it to the DOM, pass a string instead: priority="true" or priority={value.toString()}.
+
+ ✓ app/job/MatchResultsScreen.test.tsx (23 tests) 4015ms
+     ✓ shows job context panel with reference code  347ms
+     ✓ express interest button changes to "Withdraw interest" after clicking  301ms
+ ✓ app/dashboard/DashboardScreen.test.tsx (16 tests) 2485ms
+     ✓ renders authenticated dashboard with customer greeting and operational identity  351ms
+stderr | components/review/ReviewPromptModal.test.tsx > ReviewPromptModal (TDD Suite 4: MDL-001 to MDL-017) > MDL-009: Submitting state lock > disables submit button and shows spinner during async submission
+An update to ReviewPromptModal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ReviewPromptModal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ components/review/ReviewPromptModal.test.tsx (17 tests) 2379ms
+       ✓ displays "Select a rating" for all 4 criteria and 0 stars selected  451ms
+ ✓ app/jobs/PaymentsEscrow.test.tsx (30 tests) 2305ms
+stderr | components/messages/ChatScreen.test.tsx > ChatScreen Component Contract (CHT-001 through CHT-020) > CHT-010: Failed state rendering > should render failed state with red alert icon and Retry text button
+An update to ChatScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ChatScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ChatScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | components/messages/ChatScreen.test.tsx > ChatScreen Component Contract (CHT-001 through CHT-020) > CHT-010: Failed state rendering > should render failed state with red alert icon and Retry text button
+An update to ChatComposer inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ChatComposer inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ components/PwaHome.test.tsx (5 tests) 2623ms
+     ✓ preserves the selected city when a service card is chosen  1400ms
+     ✓ shows a visible focus ring on service cards  420ms
+     ✓ uses Outlier coral for the navy-text search action  303ms
+ ✓ components/brainworker/onboarding/TradeStepForm.test.tsx (11 tests) 2056ms
+       ✓ renders all 8 canonical trade categories with radio semantics  330ms
+       ✓ allows adding and removing sub-specialty tags with a maximum of 5 tags  395ms
+       ✓ disables Save button until all fields are valid and invokes onSave with structured data  303ms
+stderr | components/messages/ChatScreen.test.tsx > ChatScreen Component Contract (CHT-001 through CHT-020) > CHT-011: Retry behavior > should trigger re-transmission when clicking Retry on a failed message
+An update to ChatScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ChatScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ChatScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | components/messages/ChatScreen.test.tsx > ChatScreen Component Contract (CHT-001 through CHT-020) > CHT-011: Retry behavior > should trigger re-transmission when clicking Retry on a failed message
+An update to ChatComposer inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ChatComposer inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | components/messages/ChatScreen.test.tsx > ChatScreen Component Contract (CHT-001 through CHT-020) > CHT-013: Keyboard submission behavior > should submit message when pressing Enter
+An update to ChatScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ChatScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | components/messages/ChatScreen.test.tsx > ChatScreen Component Contract (CHT-001 through CHT-020) > CHT-013: Keyboard submission behavior > should submit message when pressing Enter
+An update to ChatComposer inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ChatComposer inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | components/messages/ChatScreen.test.tsx > ChatScreen Component Contract (CHT-001 through CHT-020) > CHT-020: Focus retention after send > should retain focus in textarea after sending message
+An update to ChatScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ChatScreen inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | components/messages/ChatScreen.test.tsx > ChatScreen Component Contract (CHT-001 through CHT-020) > CHT-020: Focus retention after send > should retain focus in textarea after sending message
+An update to ChatComposer inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ChatComposer inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ components/messages/ChatScreen.test.tsx (24 tests) 1662ms
+       ✓ should render failed state with red alert icon and Retry text button  434ms
+stderr | app/disputes/[bookingId]/DisputesRoute.test.tsx > BW-010 Phase 4: /disputes/[bookingId] Route Integration (ROUTE-001 to ROUTE-009) > ROUTE-009: Preserves submitted evidence in timeline without revoking blob preview upon modal close
+Received `true` for a non-boolean attribute `unoptimized`.
+
+If you want to write it to the DOM, pass a string instead: unoptimized="true" or unoptimized={value.toString()}.
+
+ ✓ components/review/PublicReviewFeed.test.tsx (11 tests) 1357ms
+       ✓ fetches next slice, shows spinner, and appends cards to feed when "Load more reviews" is clicked  359ms
+       ✓ displays "Showing all 12 reviews" and hides "Load more" button when all reviews are loaded  337ms
+stderr | app/disputes/[bookingId]/DisputesRoute.test.tsx > BW-010 Phase 4: /disputes/[bookingId] Route Integration (ROUTE-001 to ROUTE-009) > ROUTE-018: Mismatched participant records fail closed into 403 and never disclose another participant dispute body or evidence
+An update to DisputeBookingPageView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to DisputeBookingPageView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to DisputeBookingPageView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ components/messages/ConversationHub.test.tsx (34 tests) 1499ms
+ ✓ components/notifications/NotificationCenter.test.tsx (11 tests) 1689ms
+       ✓ renders the "Notifications" heading and accessible tablist with 4 tabs  328ms
+ ✓ components/review/ReportReviewModal.test.tsx (10 tests) 1431ms
+       ✓ displays 6 approved radio reasons with subtitle "Tell us why you believe this review should be reviewed."  370ms
+ ✓ app/brainworker/BrainWorkerOperationsRoutes.test.tsx (10 tests) 1560ms
+     ✓ INT-004: approved BrainWorker loads /brainworker/services, renders ServiceCatalogEditor, and saves catalog updates  465ms
+     ✓ INT-005: /brainworker/availability integrates AvailabilityEditor and CoverageEditor, deriving verifiedCities authoritatively from onboarding repository  385ms
+ ✓ app/disputes/[bookingId]/DisputesRoute.test.tsx (25 tests) 2842ms
+stderr | components/brainworker/bookings/BookingsUI.test.tsx > BW-004 Phase 7: UI Implementation (UI-001 to UI-024) > UI-001: list loading
+An update to BookingsListView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingsListView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/brainworker/BW003Phase7ProductionVerification.test.tsx > BW-003 Phase 7 RED: Production Verification / Final Feature Audit > Offline and Degraded Behavior > PROD-028: LeadsInboxView renders offline banner and disables actions
+An update to LeadsInboxView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to LeadsInboxView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/brainworker/BW003Phase7ProductionVerification.test.tsx > BW-003 Phase 7 RED: Production Verification / Final Feature Audit > Offline and Degraded Behavior > PROD-029: LeadsInboxView renders degraded notice when isDegraded is true
+An update to LeadsInboxView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to LeadsInboxView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/brainworker/BW003Phase7ProductionVerification.test.tsx > BW-003 Phase 7 RED: Production Verification / Final Feature Audit > Accessibility Requirements > PROD-032: leads feed region has proper ARIA labels
+An update to LeadsInboxView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to LeadsInboxView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ components/brainworker/onboarding/IdentityStepForm.test.tsx (14 tests) 1029ms
+ ✓ app/brainworker/BW003Phase7ProductionVerification.test.tsx (45 tests) 1186ms
+stderr | components/brainworker/bookings/BookingsUI.test.tsx > BW-004 Phase 7: UI Implementation (UI-001 to UI-024) > UI-016: reduced motion
+An update to BookingDetailView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingDetailView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | components/brainworker/bookings/BookingsUI.test.tsx > BW-004 Phase 7: UI Implementation (UI-001 to UI-024) > UI-018: mobile detail fully usable at 320px
+An update to BookingDetailView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingDetailView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ app/brainworker/BrainWorkerLeadsRoute.test.tsx (10 tests) 971ms
+ ✓ app/page.test.tsx (1 test) 1080ms
+     ✓ keeps the selected city in the service-discovery URL after choosing a category  1076ms
+ ✓ app/brainworker/BrainWorkerProfileRoute.test.tsx (10 tests) 1159ms
+stderr | components/brainworker/bookings/BookingsUI.test.tsx > BW-004 Phase 7: UI Implementation (UI-001 to UI-024) > UI-021: no control approves, rejects, or auto-decides a scope request
+An update to BookingDetailView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingDetailView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | components/brainworker/bookings/BookingsUI.test.tsx > BW-004 Phase 7: UI Implementation (UI-001 to UI-024) > UI-023: the surface emits domain events only and creates no notification record
+An update to BookingDetailView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to BookingDetailView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ components/brainworker/bookings/BookingsUI.test.tsx (24 tests) 1165ms
+ ✓ components/brainworker/catalog/AvailabilityEditor.test.tsx (12 tests) 864ms
+ ✓ components/brainworker/onboarding/CredentialsAndReviewForms.test.tsx (10 tests) 806ms
+ ✓ app/brainworker/BrainWorkerBookingsRoute.test.tsx (11 tests) 872ms
+ ✓ app/brainworker/dashboard/BrainWorkerDashboardRoute.test.tsx (10 tests) 917ms
+ ✓ app/brainworker/BrainWorkerWalletRoute.test.tsx (10 tests) 825ms
+ ✓ components/VisualBranding.test.tsx (7 tests) 987ms
+     ✓ PwaHome: renders official logo-icon and branded title in mobile PWA header  384ms
+ ✓ components/brainworker/catalog/CoverageEditor.test.tsx (10 tests) 785ms
+stderr | components/disputes/disputes.test.tsx > BW-010 Phase 3: Dispute UI Component Contracts (UI-001 to UI-010 & Review Regressions) > UI-002: DisputeInitiationModal calls onSubmit with { category, reason, description, evidence } when valid form is submitted
+An update to DisputeInitiationModal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ app/post-job/PostJobScreen.test.tsx (18 tests) 22937ms
+     ✓ renders page hero, five form sections, and preview summary card with defaults  610ms
+     ✓ synchronizes title and category selection with the live review summary card  929ms
+     ✓ reveals date picker when specific date is selected and rejects past dates via min attribute  319ms
+     ✓ updates budget and budget type in preview  509ms
+     ✓ validates minimum lengths for title and description  819ms
+     ✓ requires preferredDate when urgency is specific_date  3697ms
+     ✓ clears field errors as user types valid content  794ms
+     ✓ saves draft to storage and navigates to login with returnUrl and handoff parameters  3481ms
+     ✓ submits successfully and transitions to the Request Received confirmation view  3737ms
+     ✓ handles simulated submission error without losing user form input  3756ms
+     ✓ enters error state and preserves form input when repository.createJob rejects without false success fallback  3070ms
+ ✓ components/trades/TradesRequisitionBoard.test.tsx (4 tests) 653ms
+stderr | app/notifications/NotificationsPage.test.tsx > WEB-018 Route Integration, Bell Badge & Placeholder Retirement (INT-001 through INT-010) > INT-006: DashboardScreen placeholder retirement > navigates to /notifications without opening placeholder modal or rendering "Soon" badge
+Received `true` for a non-boolean attribute `priority`.
+
+If you want to write it to the DOM, pass a string instead: priority="true" or priority={value.toString()}.
+
+ ✓ app/offline/OfflineScreen.test.tsx (4 tests) 754ms
+     ✓ displays connection checking feedback when retry button is clicked while still offline  507ms
+stderr | app/notifications/NotificationsPage.test.tsx > WEB-018 Route Integration, Bell Badge & Placeholder Retirement (INT-001 through INT-010) > INT-010: Static generation safety > executes component tree safely without throwing location ReferenceErrors
+An update to NotificationCenter inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to NotificationCenter inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ app/notifications/NotificationsPage.test.tsx (13 tests) 844ms
+       ✓ navigates to /notifications without opening placeholder modal or rendering "Soon" badge  335ms
+stderr | components/disputes/disputes.test.tsx > BW-010 Phase 3: Dispute UI Component Contracts (UI-001 to UI-010 & Review Regressions) > UI-002d: DisputeInitiationModal prevents same-tick duplicate submissions with exactly one callback
+An update to DisputeInitiationModal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | components/disputes/disputes.test.tsx > BW-010 Phase 3: Dispute UI Component Contracts (UI-001 to UI-010 & Review Regressions) > UI-003e: DisputeEvidenceUploader preserves submitted evidence for DisputeTimelineView while cancelling uncommitted drafts
+Received `true` for a non-boolean attribute `unoptimized`.
+
+If you want to write it to the DOM, pass a string instead: unoptimized="true" or unoptimized={value.toString()}.
+
+ ✓ app/guarantee/GuaranteePage.test.tsx (4 tests) 853ms
+     ✓ renders page heading, brand kicker, and back link  384ms
+ ✓ components/disputes/disputes.test.tsx (36 tests) 1336ms
+stderr | components/brainworker/leads/LeadsInboxView.test.tsx > BW-003 Phase 5 RED: Lead Feed & Inspection UI Contracts (UI-001 through UI-012) > UI-001: displays loading skeleton while feed query is unresolved and does not flash empty state
+An update to LeadsInboxView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to LeadsInboxView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | components/brainworker/leads/LeadsInboxView.test.tsx > BW-003 Phase 5 RED: Lead Feed & Inspection UI Contracts (UI-001 through UI-012) > UI-012: respects prefers-reduced-motion configuration on animated layout elements
+An update to LeadsInboxView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to LeadsInboxView inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ components/brainworker/leads/LeadsInboxView.test.tsx (13 tests) 656ms
+stderr | app/completion/[bookingId]/CompletionRoute.test.tsx > BW-009 Post-Job Completion & Escrow Release Route Contracts (ROUTE-001 to ROUTE-010) > ROUTE-003: loading state rendered while booking and completion records resolve
+An update to CompletionPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ app/enterprise/EnterprisePage.test.tsx (4 tests) 609ms
+stderr | components/notifications/NotificationStates.test.tsx > WEB-018 Notification UI States & Push UX (STA-001 through STA-013) > STA-007: Error state and retry handling > renders error card with retry button when initial fetch rejects
+An update to NotificationCenter inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to NotificationCenter inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ components/notifications/NotificationStates.test.tsx (13 tests) 704ms
+ ✓ app/scheduling/SchedulingRoute.test.tsx (11 tests) 694ms
+ ✓ app/completion/[bookingId]/CompletionRoute.test.tsx (11 tests) 1053ms
+ ✓ app/services/[serviceId]/ServiceDetailPage.test.tsx (7 tests) 872ms
+     ✓ renders service title, group, and starting price for a valid service  301ms
+ ✓ app/onsite/OnSiteRoute.test.tsx (10 tests) 866ms
+ ✓ components/scheduling/SchedulingUI.test.tsx (12 tests) 642ms
+stderr | app/messages/HubPage.test.tsx > HubPage Route Integration Contract (INT-001, INT-002, INT-005, INT-006) > INT-001: Authenticated Hub Rendering > renders conversation hub with conversation list for authenticated customer
+An update to MessagesHubPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/messages/HubPage.test.tsx > HubPage Route Integration Contract (INT-001, INT-002, INT-005, INT-006) > INT-005: Navigation Link to Messages > provides direct link or navigation targeting /messages without coming soon modal
+An update to MessagesHubPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | app/messages/HubPage.test.tsx > HubPage Route Integration Contract (INT-001, INT-002, INT-005, INT-006) > INT-006: Dashboard Messages Route Navigation > navigates directly to /messages from messages entry point
+An update to MessagesHubPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ app/messages/HubPage.test.tsx (4 tests) 321ms
+ ✓ components/brainworker/profile/ProfileUI.test.tsx (12 tests) 644ms
+ ✓ app/brainworker/BrainWorkerRoutes.test.tsx (17 tests) 801ms
+     ✓ INT-001: /brainworker/register renders provider signup form and advances to onboarding upon submit  315ms
+stderr | app/brainworkers/[brainworkerId]/ProfilePage.test.tsx > PublicBrainWorkerProfilePage Integration (WEB-016) > renders BrainWorker profile page with integrated PublicReviewFeed defaulting to service focus
+Received `true` for a non-boolean attribute `priority`.
+
+If you want to write it to the DOM, pass a string instead: priority="true" or priority={value.toString()}.
+Received `true` for a non-boolean attribute `fill`.
+
+If you want to write it to the DOM, pass a string instead: fill="true" or fill={value.toString()}.
+
+stderr | app/brainworkers/[brainworkerId]/ProfilePage.test.tsx > PublicBrainWorkerProfilePage Integration (WEB-016) > renders BrainWorker profile page with integrated PublicReviewFeed defaulting to service focus
+An update to PublicReviewFeed inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PublicReviewFeed inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PublicReviewFeed inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PublicReviewFeed inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PublicReviewFeed inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PublicReviewFeed inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ components/brainworker/onboarding/DocumentUploadCard.test.tsx (17 tests) 625ms
+ ✓ components/onsite/OnSiteUI.test.tsx (12 tests) 587ms
+ ✓ app/brainworkers/[brainworkerId]/ProfilePage.test.tsx (2 tests) 812ms
+     ✓ renders BrainWorker profile page with integrated PublicReviewFeed defaulting to service focus  541ms
+ ✓ app/messages/[jobId]/ChatPage.test.tsx (3 tests) 461ms
+       ✓ renders active chat screen with participant identity and booking details  372ms
+ ✓ components/brainworker/wallet/WalletUI.test.tsx (12 tests) 455ms
+ ✓ components/brainworker/bookings/BookingDetailView.test.tsx (4 tests) 524ms
+ ✓ components/Navbar.test.tsx (4 tests) 635ms
+ ✓ components/completion/completion.test.tsx (14 tests) 537ms
+ ✓ components/brainworker/BrainWorkerHeader.test.tsx (3 tests) 426ms
+ ✓ components/messages/LocationShareModal.test.tsx (8 tests) 469ms
+stderr | components/messages/MediaUploadStaging.test.tsx > MediaUploadStaging Component Contract (MED-001 through MED-008) > MED-007: Uploaded image photo card rendering > should render uploaded image as aspect-ratio constrained photo card
+An update to MediaUploadStaging inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to MediaUploadStaging inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ components/messages/MediaUploadStaging.test.tsx (8 tests) 381ms
+ ✓ components/brainworker/dashboard/DashboardUI.test.tsx (12 tests) 332ms
+ ✓ components/brainworker/onboarding/VerificationStatusMonitor.test.tsx (7 tests) 385ms
+ ✓ components/review/ReviewPromptCard.test.tsx (8 tests) 333ms
+ ✓ components/ThemeToggle.test.tsx (6 tests) 439ms
+ ✓ app/not-found.test.tsx (1 test) 369ms
+     ✓ renders the 404 header, branding, status badge, and recovery navigation links  364ms
+ ✓ components/notifications/NotificationCard.test.tsx (12 tests) 246ms
+ ✓ lib/brainworker/catalog/repository.test.ts (12 tests) 81ms
+ ✓ lib/messaging/repository.test.ts (51 tests) 71ms
+ ✓ lib/brainworker/catalog/store.test.ts (40 tests) 77ms
+ ✓ lib/brainworker/useBrainWorkerRegistration.test.ts (9 tests) 120ms
+ ✓ lib/brainworker/bookings/domain.test.ts (40 tests) 49ms
+ ✓ lib/brainworker/wallet/types.test.ts (10 tests) 42ms
+ ✓ lib/jobs/arch002-alignment.test.ts (22 tests) 80ms
+ ✓ lib/brainworker/repository.test.ts (18 tests) 31ms
+ ✓ lib/messaging/validation.test.ts (54 tests) 86ms
+ ✓ lib/notifications/repository.test.ts (22 tests) 37ms
+ ✓ lib/services/services.test.ts (54 tests) 55ms
+ ✓ hooks/useIsPwa.test.ts (3 tests) 48ms
+ ✓ lib/brainworker/leads/quotation.test.ts (16 tests) 35ms
+ ✓ lib/review/validation.test.ts (35 tests) 51ms
+ ✓ lib/messaging/queue.test.ts (24 tests) 39ms
+ ✓ lib/brainworker/wallet/repository.test.ts (10 tests) 24ms
+ ✓ lib/jobs/lifecycle.test.ts (20 tests) 22ms
+ ✓ lib/messaging/repository-boundary.test.ts (6 tests) 31ms
+ ✓ lib/payment/repository.test.ts (33 tests) 38ms
+ ✓ lib/brainworker/profile/domain.test.ts (10 tests) 33ms
+ ✓ lib/brainworker/bookings/scopeadjustment.test.ts (18 tests) 36ms
+ ✓ lib/brainworker/catalog/validation.test.ts (10 tests) 79ms
+ ✓ lib/brainworker/dashboard/service.test.ts (8 tests) 51ms
+ ✓ lib/review/repository.test.ts (46 tests) 50ms
+ ✓ lib/scheduling/repository.test.ts (11 tests) 40ms
+ ✓ lib/brainworker/leads/repository.test.ts (10 tests) 26ms
+ ✓ lib/onsite/repository.test.ts (10 tests) 23ms
+ ✓ lib/jobs/jobs.test.ts (20 tests) 30ms
+ ✓ lib/brainworker/profile/repository.test.ts (10 tests) 27ms
+ ✓ lib/brainworker/bookings/cancellation.test.ts (8 tests) 31ms
+ ✓ lib/profile/repository.test.ts (15 tests) 18ms
+ ✓ lib/brainworker/bookings/repository.test.ts (14 tests) 27ms
+ ✓ lib/brainworker/leads/invitations.test.ts (10 tests) 21ms
+ ✓ lib/notifications/types.test.ts (21 tests) 17ms
+ ✓ lib/notifications/push-adapter.test.ts (11 tests) 20ms
+ ✓ lib/brainworker/bookings/checkin.test.ts (15 tests) 19ms
+ ✓ lib/post-job/post-job.test.ts (14 tests) 21ms
+ ✓ lib/booking/booking.test.ts (20 tests) 15ms
+ ✓ lib/scheduling/types.test.ts (10 tests) 42ms
+ ✓ lib/notifications/deep-link.test.ts (25 tests) 18ms
+ ✓ lib/disputes/repository.test.ts (12 tests) 16ms
+ ✓ lib/brainworker/store.test.ts (13 tests) 16ms
+ ✓ lib/disputes/evidence-store.test.ts (10 tests) 30ms
+ ✓ lib/completion/repository.test.ts (10 tests) 18ms
+ ✓ lib/brainworker/dashboard/domain.test.ts (10 tests) 18ms
+ ✓ lib/dashboard/dashboard.test.ts (13 tests) 16ms
+ ✓ lib/theme/trades-tokens.test.ts (7 tests) 13ms
+ ✓ lib/disputes/domain.test.ts (23 tests) 20ms
+ ✓ lib/jobs/repository.test.ts (1 test) 16ms
+ ✓ lib/route-integrity.test.ts (9 tests) 20ms
+ ✓ lib/brainworker/bookings/dispatch.test.ts (8 tests) 15ms
+ ✓ lib/brainworker/validation.test.ts (14 tests) 20ms
+ ✓ lib/brainworker/leads/domain.test.ts (7 tests) 10ms
+ ✓ lib/mock/homepage-data.test.ts (15 tests) 19ms
+ ✓ lib/onsite/domain.test.ts (10 tests) 15ms
+ ✓ lib/completion/domain.test.ts (10 tests) 12ms
+stderr | lib/theme.test.ts > theme engine > reads the saved value and survives blocked storage
+[theme] Failed to read stored theme: blocked
+
+ ✓ lib/theme.test.ts (4 tests) 7ms
+ ✓ lib/brainworker/types.test.ts (5 tests) 10ms
+
+ Test Files  126 passed (126)
+      Tests  1879 passed (1879)
+   Start at  05:56:12
+   Duration  46.61s (transform 13.68s, setup 27.99s, import 34.64s, tests 122.47s, environment 99.24s)
+

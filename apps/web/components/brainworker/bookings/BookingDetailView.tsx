@@ -45,6 +45,9 @@ import type {
   LocationSnapshot,
   BookingRefusalReason,
 } from '../../../lib/brainworker/bookings/types';
+import { BrainWorkerDisputeBanner } from '../../disputes/BrainWorkerDisputeBanner';
+import { getDisputeRepository } from '../../../lib/disputes/repository';
+import type { IDisputeRepository, DisputeRecord } from '../../../lib/disputes/types';
 
 export interface BookingDetailViewProps {
   brainWorkerId: string;
@@ -53,6 +56,8 @@ export interface BookingDetailViewProps {
   initialDetail?: ProviderBookingDetail;
   isOffline?: boolean;
   onBack?: () => void;
+  disputeRepository?: IDisputeRepository;
+  onDisputeRespond?: (bookingId: string) => void;
 }
 
 const CANCELLATION_OPTIONS: ReadonlyArray<{
@@ -141,12 +146,54 @@ export function BookingDetailView({
   initialDetail,
   isOffline = false,
   onBack,
+  disputeRepository,
+  onDisputeRespond,
 }: BookingDetailViewProps): React.ReactElement {
   const [booking, setBooking] = useState<ProviderBookingDetail | null>(initialDetail ?? null);
+  const [disputeRecord, setDisputeRecord] = useState<DisputeRecord | null>(null);
+  const [disputeLoadError, setDisputeLoadError] = useState<string | null>(null);
+  const [disputeReloadCount, setDisputeReloadCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(!initialDetail);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [activeRefusal, setActiveRefusal] = useState<BookingRefusalReason | null>(null);
   const [isSubmittingAction, setIsSubmittingAction] = useState<boolean>(false);
+
+  useEffect(() => {
+    let isCurrent = true;
+    const loadDispute = async () => {
+      try {
+        const repo = disputeRepository ?? getDisputeRepository();
+        const record = await repo.getDisputeByBookingId(bookingId, brainWorkerId);
+        if (isCurrent) {
+          setDisputeRecord(record);
+          setDisputeLoadError(null);
+        }
+      } catch (err: unknown) {
+        if (isCurrent) {
+          setDisputeRecord(null);
+          setDisputeLoadError(
+            err instanceof Error ? err.message : 'Dispute details unavailable'
+          );
+        }
+      }
+    };
+    void loadDispute();
+    return () => {
+      isCurrent = false;
+    };
+  }, [bookingId, brainWorkerId, disputeRepository, disputeReloadCount]);
+
+  const handleDisputeRetry = useCallback(() => {
+    setDisputeReloadCount((c) => c + 1);
+  }, []);
+
+  const handleDisputeRespond = useCallback(() => {
+    if (onDisputeRespond) {
+      onDisputeRespond(bookingId);
+    } else if (typeof window !== 'undefined') {
+      window.location.assign(`/disputes/${bookingId}`);
+    }
+  }, [onDisputeRespond, bookingId]);
 
   // Cancellation dialog state
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState<boolean>(false);
@@ -466,6 +513,79 @@ export function BookingDetailView({
           <span>Device is currently offline. Mutation actions are disabled until connection is restored.</span>
         </div>
       )}
+
+      {/* Dispute Banner (BW-010) */}
+      {disputeRecord !== null ? (
+        <div data-testid="booking-dispute-banner-container">
+          <BrainWorkerDisputeBanner
+            dispute={disputeRecord}
+            onRespond={handleDisputeRespond}
+          />
+        </div>
+      ) : booking.jobStatus === 'DISPUTED' ? (
+        disputeLoadError !== null ? (
+          <div data-testid="dispute-error-banner">
+            <aside
+              aria-label="Dispute load failure alert"
+              className="flex flex-col gap-3 rounded-lg border border-[var(--crimson)] bg-[var(--card-bg)] p-4 text-[var(--text-main)] shadow-sm sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-2 w-2 rounded-full bg-[var(--crimson)]" aria-hidden="true" />
+                  <h3 className="text-xs font-bold text-[var(--text-main)]">
+                    Unable to Load Dispute Details
+                  </h3>
+                </div>
+                <p className="text-xs text-[var(--text-muted)]">
+                  {disputeLoadError}. Please retry or check the dispute resolution workspace.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleDisputeRetry}
+                  className="flex min-h-[44px] shrink-0 items-center justify-center rounded-md border border-[var(--lead)] bg-[var(--card-bg)] px-4 text-xs font-semibold text-[var(--text-main)] transition hover:bg-[var(--bg)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+                >
+                  Retry
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDisputeRespond}
+                  className="flex min-h-[44px] shrink-0 items-center justify-center rounded-md bg-[var(--amber)] px-4 text-xs font-semibold text-[var(--amber-text)] shadow-sm transition hover:opacity-90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+                >
+                  Review Workspace
+                </button>
+              </div>
+            </aside>
+          </div>
+        ) : (
+          <div data-testid="dispute-unavailable-banner">
+            <aside
+              aria-label="Active dispute status alert"
+              className="flex flex-col gap-3 rounded-lg border border-[var(--rule)] bg-[var(--card-bg)] p-4 text-[var(--text-main)] shadow-sm sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-2 w-2 rounded-full bg-[var(--amber)]" aria-hidden="true" />
+                  <h3 className="text-xs font-bold text-[var(--text-main)]">
+                    Dispute Active on Booking
+                  </h3>
+                </div>
+                <p className="text-xs text-[var(--text-muted)]">
+                  Dispute details are currently unavailable for this booking. You can visit the dispute resolution workspace to review active mediation records.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleDisputeRespond}
+                className="flex min-h-[44px] shrink-0 items-center justify-center rounded-md bg-[var(--amber)] px-4 text-xs font-semibold text-[var(--amber-text)] shadow-sm transition hover:opacity-90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--amber)]"
+              >
+                Review Dispute Workspace
+              </button>
+            </aside>
+          </div>
+        )
+      ) : null}
 
       {/* =================================================================== */}
       {/* Block 1: State Block (UI-007, UI-017)                               */}

@@ -2,6 +2,102 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-10-30: Phase 4 Mobile Discovery: Native Public Discovery (Item 4.2.1, MOB-001)
+
+- **Branch**: `feature/bw-010-dispute-support`
+- **Current State**: Phase 4.2.1 IN PROGRESS / UNIT & INTEGRATION TESTS VERIFIED / COMPILED EXPO QA VERIFIED / NATIVE SIMULATOR QA UNAVAILABLE / PENDING PM REVIEW (HEAD at `4ff62d6`, origin at `4ff62d6`; strictly local, uncommitted, and unpushed). Item 3.4 (BW-010) and Phase 4.1 remain PM accepted, owner commit approval pending. Phase 4.2.1 remains unchecked [ ] pending PM review. Next product slice is Phase 4.2.2 Native booking preparation and multi-step job posting forms.
+- **Scope**: Implemented and verified native public discovery across homepage, category catalog, and service detail screens (`MOB-001`):
+  1. **Canonical Discovery Domain (`apps/mobile/lib/services.ts`)**: Built pure TypeScript domain module sourcing all 8 canonical services and 3 category groups (`Power & Cooling`, `Utilities & Structure`, `Home & Lifestyle`) from `apps/web/lib/mock/homepage-data.ts`. Omitted all geographic coverage claims (`NIGERIAN_LOCATIONS`, `CANONICAL_CITIES`) to prevent unsubstantiated availability claims. Implemented whitespace-trimmed live query filtering without arbitrary character caps, and array `.find()` lookup for `getServiceById`.
+  2. **Standalone Public Homepage (`apps/mobile/app/index.tsx`)**: Preserved approved brand wordmark, logo icon, and marketing hero copy without bottom tabs. Routed 6 featured service rows and "View all services" link to `/(tabs)/services`. Standardized all touch targets to minHeight >= 48dp on Android and >= 44pt on iOS. Replaced ThemeButton with Obsidian Titanium Gunmetal Dark tokens. Kept all functions <= 25 lines with zero section comments.
+  3. **Category Directory & Catalog (`apps/mobile/app/(tabs)/services.tsx`)**: Leveraged existing tab title "Services" as single screen heading, omitting duplicate in-page titles or subtitles. Added truthful LOCAL PREVIEW notice card: "This preview does not include live service listings or booking actions." Implemented accessible TextInput search with 48x48 clear button, horizontal scroll of text-only group filter pills (`All`, `Power & Cooling`, `Utilities & Structure`, `Home & Lifestyle`), 8 service cards with uppercase mono group tags and descriptions navigating to `/services/[id]`, and empty search/filter state with 48dp "Reset filters" action button. Extracted sub-components to ensure all UI functions remain strictly <= 25 lines.
+  4. **Service Detail Screen (`apps/mobile/app/services/[id].tsx`)**: Implemented root stack screen with full 4-edge safe area protection (`edges={['top', 'left', 'right', 'bottom']}`). Header features 48x48 back button calling `router.back()` and mono group tag badge. Renders large title, full description, and canonical task examples under truthful heading "Examples in this local catalog". Displays honest LOCAL PREVIEW card: "This preview does not include live service booking or worker dispatch actions." Omitted all dummy booking buttons, roadmap promises, and location lists. Handled unknown service IDs with accessible 48dp "Back to services directory" fallback.
+  5. **Untouched Scope Boundary**: Confirmed zero modifications to `app/(tabs)/home.tsx`, `app/(tabs)/jobs.tsx`, `app/(tabs)/messages.tsx`, and `app/(tabs)/profile.tsx` via `git status` and `git diff`. Zero backend, database, or migration changes.
+  6. **Native Simulator and Emulator Environment Audit**:
+     - **iOS Simulator**: Confirmed that iOS Simulator strictly requires macOS and Xcode (`xcrun simctl`). Checked the authorized environment inventory (Termux, Cloud Shell, Codespaces, Colab, active container); zero macOS hosts exist. Native iOS Simulator is therefore unavailable. No native iOS claims are made.
+     - **Android Emulator**: Installed official Android SDK `cmdline-tools`, `platform-tools` (adb), and `emulator` (37.2.13.0). Verified that hardware acceleration (`/dev/kvm`) is missing in this Linux container (`vmx|svm = 0` in `/proc/cpuinfo`). Tested 4 distinct configurations:
+       a. `android-36 x86_64 google_apis_playstore`: Failed under software emulation due to lack of AVX/F16C instructions in QEMU TCG.
+       b. `android-30 x86_64 google_apis`: Failed due to Ranchu userdata keystore encryption failure in TCG leaving `/data` unmounted.
+       c. `android-30 x86 aosp_atd`: Booted `surfaceflinger`, `zygote`, and reached ADB `device` state, but `PackageManagerService` remained blocked for >15 minutes due to cryptographic hashing of 21 APEX packages (~20.7s per package under TCG).
+       d. `android-28 x86 default` (`pie_phone`): Booted with SwiftShader software rendering to ADB `device` state, but `/data` partition failed to mount during `post-fs-data` initialization without hardware acceleration.
+     - **Native Android Coverage Status**: UNAVAILABLE without hardware virtualization (`/dev/kvm`), physical device attachment via ADB, or remote cloud device infrastructure.
+  7. **Real Compiled Expo Mobile App QA (Browser/Device Emulation)**:
+     - Bundled the actual compiled Expo application using `expo export --platform web --output-dir dist-web` directly from `apps/mobile`.
+     - Corrected marketing homepage primary CTA (`FindWorkerButton` in `app/index.tsx`) to use exact amber (`#FF6B35` / `rgb(255, 107, 53)`) with static stylesheet flattening, preventing Radix Slot style wipeout on web, and gave `AllServicesLink` a real 48dp minimum target size (`minHeight: 48, minWidth: 48`).
+     - Added `accessibilityLabel="Search services"` to search input, `accessibilityState={{ selected: active }}` to filter pills, and `accessibilityLabel="Services list"` in `app/(tabs)/services.tsx`.
+     - Rewrote Playwright automation script (`scripts/verify-expo-mobile-qa.mjs`) with strict outcome assertions and touch-target enforcement failing on violations, simulating mobile viewports at 375x812 portrait and 812x375 landscape with touch enabled, outputting directly to `docs/screenshots`.
+     - Verified all 10 interactive steps: standalone marketing homepage with exact amber CTA, 48dp CTA buttons, and 48dp `AllServicesLink`; navigation via CTA to services catalog; accessible search input; live text search with query "AC" positively displaying AC card and query "AC Repair" uniquely matching AC Repair & Gas Refill; search clear action (48x48dp target) restoring all 8 cards; category filter pill "Utilities & Structure" returning exactly 2 cards (Plumbing & Pipe Fitting and Electrical & Solar Inverter); empty state on non-matching query displaying zero cards and 48dp reset button; reset action restoring all 8 cards; navigation to service detail (`app/services/[id].tsx`); landscape orientation; back navigation to catalog; and invalid service ID fallback screen.
+     - Safe-area status: confirmed at source level (`app/safe-area.test.ts` 8/8 green); native OS runtime safe-area insets marked unavailable in browser emulation.
+     - Metro export audit: `expo export --platform web` succeeded cleanly (1.44 MB JS bundle); `expo export --platform android` and `ios` failed on upstream `@react-native/codegen` in `react-native-screens@4.27.0` (`SearchBarNativeComponent.ts: Unknown prop type for "onSearchFocus"`), confirming native runtime is unavailable without native toolchain and dependency alignment.
+     - Captured continuous video recording (`docs/screenshots/videos/expo-mob001-discovery-verification.webm`) and 9 screen-by-screen captures (`expo-mob001-01` to `expo-mob001-09`).
+  8. **Historical Viewport Artifacts Retained**: Preserved earlier standalone HTML replica (`preview-discovery.html` via `scripts/verify-mobile-discovery-qa.mjs`) and its captures (`mob001-01` through `mob001-10`, `mob001-discovery-verification.webm`) labeled strictly as historical reference.
+  9. **Overall QA Status**:
+     - Unit & Integration Coverage: 45/45 tests VERIFIED (100% green).
+     - Browser/Device-Emulated Expo Coverage: Discovery screens verified; BLOCKED by shared bottom tab bar touch-target hard assertion failure (exit code 1: 5 tabs measure 75x45px < 48dp).
+     - Shared Navigation Shell: Left untouched per PM steering (`apps/mobile/app/(tabs)/_layout.tsx`).
+     - Native Android Coverage: UNAVAILABLE (no KVM hardware acceleration on Linux container host).
+     - Native iOS Coverage: UNAVAILABLE (no macOS host in authorized inventory).
+     - Milestone Gate Status: BLOCKED (kept unchecked [ ]).
+- **Verification Gates**:
+  - Full mobile unit and integration test suite: 6 test suites passed, 45/45 tests passed (`services.test.ts` 8/8, `services-discovery.test.ts` 5/5, `content-guardrails.test.ts` 17/17, `safe-area.test.ts` 8/8, `tabs.test.ts` 4/4, `theme.test.ts` 3/3).
+  - TypeScript compiler: `pnpm --filter @bukiebrainjobs/mobile type-check` passed with 0 errors (`tsc --noEmit`).
+  - Expo compatibility: `CI=1 pnpm --filter @bukiebrainjobs/mobile exec expo install --check` verified.
+  - Skill gate guard: `bash scripts/check-skill-gate.sh` passed.
+  - Diff check: `git diff --check` passed cleanly with code 0.
+  - Punctuation hygiene: Strictly zero em dashes, en dashes, or double hyphens across code, comments, documentation, and screen copy.
+
+## 2026-10-30: Phase 4 Mobile Foundation: Safe Area and Status Bar Handling (Item 4.1.3)
+
+- **Branch**: `feature/bw-010-dispute-support`
+- **Current State**: Phase 4.1.1 through 4.1.3 PM REVIEW ACCEPTED / OWNER COMMIT APPROVAL PENDING / LOCAL UNCOMMITTED (HEAD at `4ff62d6`, origin at `4ff62d6`; strictly local, uncommitted, and unpushed). Item 3.4 (BW-010) remains PM accepted, owner commit approval pending. Next slice is Phase 4.2.1 Native public discovery: Homepage, category list, service detail screens.
+- **Scope**: Implemented and verified safe area and status bar handling for iOS and Android (Item 4.1.3):
+  1. **RootLayout Configuration**: Configured `apps/mobile/app/_layout.tsx` with light status bar on dark strip (`obsidianDarkTokens.strip`) wrapped in `<SafeAreaProvider>` from `react-native-safe-area-context`.
+  2. **Screen Safe-Area Standardization**: Protected marketing home (`app/index.tsx`) and BrainWorker registration (`app/brainworker/register.tsx`) across all 4 edges (`edges={['top', 'left', 'right', 'bottom']}`) with keyboard avoidance on registration.
+  3. **Double-Inset Prevention**: Tab screens (`home.tsx`, `services.tsx`, `jobs.tsx`, `messages.tsx`, `profile.tsx`) protected with `edges={['left', 'right']}` to prevent double vertical insets from header and bottom bar.
+  4. **Deprecated API Elimination**: Prohibited deprecated `react-native` `SafeAreaView` across all mobile screens.
+  5. **Expo SDK 52 Compatibility**: Aligned dependency to `react-native-safe-area-context: "~4.12.0"` matching Expo SDK 52 requirements.
+  6. **Lockfile Churn Isolation**: Restored `@expo/bunyan` engine format and reverted unrelated `@babel/types` and `@babel/parser` versions to `7.29.8`, preserving only entries required by the safe-area version and its peer-resolution hashes. Verified clean with `pnpm install --frozen-lockfile`.
+  7. **Dynamic Tab Bar Inset Resolution**: Resolved `BottomTabBar.tsx` custom height and bottom padding override blocker: `getTabBarStyle` and `getTabBarOptions` in `app/(tabs)/_layout.tsx` compute dynamically from `useSafeAreaInsets()`, adding `insets.bottom` to `height` (`BASE_TAB_BAR_HEIGHT = 60`) and `paddingBottom` (`BASE_TAB_BAR_PADDING_BOTTOM = 8`), strictly preserving the 46px visual content area without double-counting.
+- **Verification Gates**:
+  - Mobile test suite: 4 test suites passed, 32/32 tests passed (`safe-area.test.ts` 8/8, `tabs.test.ts` 4/4, `content-guardrails.test.ts` 17/17, `theme.test.ts` 3/3).
+  - TypeScript compiler: `pnpm --filter @bukiebrainjobs/mobile type-check` passed with 0 errors (`tsc --noEmit`).
+  - Expo compatibility: `CI=1 pnpm --filter @bukiebrainjobs/mobile exec expo install --check` confirmed `react-native-safe-area-context` matches Expo SDK 52; existing React Native 0.76.7 and vector-icons 14.1.0 mismatches preserved untouched.
+  - Frozen install verification: `pnpm install --frozen-lockfile` succeeded with lockfile up to date.
+  - Skill gate guard: `bash scripts/check-skill-gate.sh` passed.
+  - Diff check: `git diff --check` passed cleanly with code 0.
+  - Punctuation hygiene: Strictly zero em dashes, en dashes, or double hyphens.
+
+## 2026-10-30: Item 3.4 (BW-010) Dispute Handling & Support Interface: Blocking Follow-Up Truthfulness & Final Verification
+
+- **Branch**: `feature/bw-010-dispute-support`
+- **Current State**: PM REVIEW ACCEPTED / OWNER COMMIT APPROVAL PENDING / LOCAL UNCOMMITTED (HEAD at `4ff62d6`, origin at `4ff62d6`; strictly local, uncommitted, and unpushed).
+- **Scope**: Addressed all blocking follow-up items for Item 3.4 (Dispute Handling & Support Interface, BW-010):
+  1. **Eliminated Unqualified Escrow and Live-Service Claims**: Removed all unqualified claims of escrow pauses, real payment holds, mediator engagement, live ticket routing, or background checks across all dispute views, headers, banners, modals, and FAQs.
+  2. **Truthful Workspace Header and Disclaimers**: `DisputeBookingPageView.tsx` header updated to `Dispute Workspace Preview: Dispute Resolution and Support`. The route header in every state plainly states that this is a local preview workspace and does not manage real escrow, funds, payment, or release timers.
+  3. **Local Record Status Badges**: Labeled the status badge explicitly as a local record status (`LOCAL RECORD: ${status}`), ensuring states like "UNDER REVIEW" are not mistaken for review by a real platform mediation team.
+  4. **Renamed Recovery and Status Actions**: Renamed retry/status actions from "Escrow Sync" to local record updates (`Retry Local Status Update`), describing failures as a failed local booking-record update.
+  5. **Qualified FAQ and Help Center Disclosures**: `HelpCenterView.tsx` clarifies that the preview does not dispatch support tickets or contact emergency services, worker verification badges reflect simulated sample data without external background checks, and dispute notes/evidence are stored locally without contacting a platform mediator. Empty search state avoids claiming to "contact support directly".
+  6. **Simulated Worker Banner**: `BrainWorkerDisputeBanner.tsx` describes simulated local status only with explicit notice that real escrow and payment are unaffected and no platform mediator has been contacted, with `role="alert"`.
+  7. **Modal Prototype Disclosure**: `DisputeInitiationModal.tsx` description clarifies: "This local preview records your dispute and pauses its simulated completion timer. It does not hold, move, or release real funds."
+  8. **Strict Trimmed Description Boundary**: Domain and UI enforce 20 to 2,000 characters (`DISP-004`), with helper copy "At least 20 characters required".
+  9. **Thumbnail Accessibility & Next.js Image**: Replaced raw `<img>` in `DisputeTimelineView.tsx` with `<Image ... unoptimized ... />` from `next/image`; fallback renders semantic `role="img"` and `aria-label="Image Preview (Unavailable)"` (`UI-011`).
+  10. **Strict ID-Based Counter-Evidence Retry Identity**: In `handleCounterEvidenceSubmit`, deduplication keys strictly on `existing.id === item.id`. Distinct uploads with identical names are preserved (`ROUTE-020b`), while ambiguous write retries remain duplicate-safe (`ROUTE-020`).
+  11. **Evidence URL Session Lifetime**: In `evidence-store.ts`, `releaseCommittedBlobs` strictly guards `entry.status === 'COMMITTED'`, never revoking uncommitted drafts or foreign sessions. Committed preview URLs have session lifetime in this local prototype.
+  12. **Async Route-State Isolation**: Added `activeBookingIdRef` to `DisputeBookingPageView.tsx` to guard all mutation handlers against route changes, preventing stale mutations from updating newly navigated bookings (`ROUTE-016`).
+  13. **No Swallowed Route Infrastructure Errors**: Rejections on `params` propagate directly to Next.js error boundaries, while empty `bookingId` fails closed into 404 (`ROUTE-012b`).
+  14. **Fresh 17-Screenshot Evidence Set**: Captured complete 17 browser screenshots in `docs/screenshots/` and mirrored them to the artifacts directory, free of dev overlays, with dark, light, tablet, mobile, modal, partial sync failure, counter-evidence submission, navigation retention, offline states, and the seeded customer completion return flow verified.
+  15. **Truthful Cross-Route Disputed Completion State & Disabled Release Actions**: Resolved cross-route flow blocker reached from dispute breadcrumb. In `AutoReleaseCountdownCard.tsx`, replaced unqualified escrow freeze and mediation claims with truthful local preview copy ('Dispute Active: Auto-Release Paused', simulated countdown paused in local workspace, no real funds or platform mediation). In `EscrowReleaseActions.tsx` and `app/completion/[bookingId]/page.tsx`, forwarded and enforced `isDisputed`: disabled 'Inspect & Release Escrow' and set dispute action to disabled 'Dispute Active' whenever `isDisputed: true`, even if stale `escrowStatus` is `ESCROW_HELD`. Verified via browser automation and added focused regressions (`COMP-003b`, `COMP-008b`, `ROUTE-011`).
+- **Verification Gates**:
+  - Focused dispute tests: 106/106 passed across 5 suites (`domain.test.ts` 23/23, `repository.test.ts` 12/12, `evidence-store.test.ts` 10/10, `disputes.test.tsx` 36/36, `DisputesRoute.test.tsx` 25/25).
+  - Booking detail view dispute tests: 4/4 passed (`BookingDetailView.test.tsx`).
+  - Total dispute-related contracts: 110/110 passed.
+  - Cross-route completion regression tests: 25/25 passed across 2 suites (`completion.test.tsx` 14/14, `CompletionRoute.test.tsx` 11/11).
+  - Monorepo type-check: `pnpm --filter @bukiebrainjobs/web type-check` passed with 0 errors (`reports/type-check.log`).
+  - Monorepo lint: `pnpm --filter @bukiebrainjobs/web lint` passed with 0 errors (`reports/lint.log`).
+  - Monorepo build: `pnpm --filter @bukiebrainjobs/web build` passed with exit code 0 (`reports/build.log`).
+  - Full web test suite: 126/126 test files passed, 1,879/1,879 tests passed with 0 failures (`reports/full-web-suite.log`).
+  - Skill gate guard: `bash scripts/check-skill-gate.sh` and `node --test scripts/check-skill-gate.test.mjs` passed 22/22.
+  - Punctuation hygiene: Strictly zero em dashes, en dashes, or double hyphens.
+
 ## 2026-10-29: Outlier Design Authority and Mandatory Skill Gate
 
 - **Branch**: `docs/outlier-design-system-authority`, based on `main` at `6dee9d4`. Changes remain local and uncommitted. No push, merge, rebase, or deployment was performed.
@@ -808,3 +904,67 @@ vercel --prod
   - Vercel Production Deployment: Live and verified with HTTP 200 on `/messages` and `/messages/job-act-001`
 - **Voice and Slop Audit**: 0 em dashes in code, docs, UI copy, and tests; 0 corporate filler terms; state-honest plain language throughout
 - **Status**: PASS (WEB-017 Formally Closed and Marked Complete / Live)
+
+## 2026-10-30: BW-010 Dispute Handling & Support Interface Second Review Blockers Resolution
+- **Environment**: Local Linux dev environment (`task-8967` Next.js dev server on port 3000)
+- **Branch**: `feature/bw-010-dispute-support` (100% uncommitted and unstaged)
+- **Trigger**: Second Review Blockers Resolution (SupportTicketForm Read-Only Unavailable Flow & Breadcrumb Route Truth)
+- **Resolved Findings**:
+  1. SupportTicketForm Read-Only & Unavailable State:
+     - Component disabled all input fields: category `<select>`, email `<input>`, booking reference `<input>`, and message `<textarea>` with `disabled` attribute.
+     - Submit `<button>` permanently disabled with `disabled` attribute.
+     - Removed fake submission and simulation logic (`isSubmitted` state, `Your support ticket inquiry has been simulated locally...`, `submitError`, and simulated review wording).
+     - Form submission handler safely calls `event.preventDefault()` with no-op execution.
+     - Preserves `initialBookingId` in disabled booking reference input.
+     - Verified through 4 component tests (UI-010, UI-010b, UI-010c, UI-010d) and route integration test (ROUTE-014).
+  2. Breadcrumb Navigation & Destination Truth:
+     - Back link label updated to "Back to Booking Detail" across `DisputeBookingPageView.tsx` and specifications.
+     - Customer back link destination updated to the protected role-tailored completion view at `/completion/[bookingId]` (per approved BW-009 specification), resolving the /bookings owner blocker.
+     - BrainWorker back link destination preserved as `/brainworker/bookings/[bookingId]`.
+     - Verified through dual-role route integration tests (ROUTE-021a for customer asserting `/completion/book-101`, ROUTE-021b for BrainWorker asserting `/brainworker/bookings/book-101`).
+- **Commands Executed & Results**:
+  - `bash scripts/check-skill-gate.sh && node --test scripts/check-skill-gate.test.mjs`: Passed 22/22 tests with 0 failures
+  - `pnpm --filter @bukiebrainjobs/web type-check`: Passed (`tsc --noEmit`) with 0 errors
+  - `pnpm --filter @bukiebrainjobs/web test app/disputes/ components/disputes/`: Passed 61/61 tests across 2 files
+  - `pnpm --filter @bukiebrainjobs/web test`: Passed 1,879/1,879 tests across 126 test files with 0 failures
+  - `pnpm --filter @bukiebrainjobs/web build`: Passed with exit code 0, compiling all 44 static and dynamic routes cleanly
+  - Browser verification: Captured complete 17 browser screenshots against live Next.js dev server on port 3000 covering desktop, mobile, tablet, light/dark themes, modal states, partial sync failure and retry recovery, counter-evidence submission, navigation retention, offline states, and the seeded customer return flow at /completion/book-101 showing disabled release actions and truthful paused countdown disclosure; updated `docs/screenshots/README.md`.
+- **Voice and Slop Audit**: 0 em dashes in code, tests, documentation, and user copy; 0 corporate fluff; state-honest local prototype language throughout.
+- **Status**: PASS (PM REVIEW ACCEPTED / OWNER COMMIT APPROVAL PENDING / LOCAL UNCOMMITTED)
+
+## 2026-10-30: MOB-001 Native Public Discovery Compiled Expo Verification & Touch-Target Resolution
+- **Environment**: Local Linux dev environment (Expo SDK 52, Node 24.19, Playwright with Google Chrome)
+- **Branch**: `feature/bw-010-dispute-support` (100% uncommitted and unstaged)
+- **Trigger**: MOB-001 Shared Bottom Tab Bar Blocker Resolution & Final QA Verification
+- **Resolved Findings**:
+  1. Shared Bottom Tab Bar Touch Targets (75x49px >= 48dp):
+     - Initial QA measurement caught all 5 bottom tabs rendering at 75x45px (3px below the 48dp threshold) due to `BASE_TAB_BAR_HEIGHT = 60` with 14px vertical padding and 1px border.
+     - Per PM decision, applied minimal geometry fix in `apps/mobile/app/(tabs)/_layout.tsx`: updated `BASE_TAB_BAR_HEIGHT = 64` and added `tabBarItemStyle: { minHeight: 48 }`.
+     - Verified on compiled Expo app bundle (`dist-web`): all 5 tabs (`Home`, `Services`, `Jobs`, `Messages`, `Profile`) measure 75x49px, satisfying >= 48x48dp.
+     - Kept `apps/mobile/app/(tabs)/home.tsx`, `jobs.tsx`, `messages.tsx`, and `profile.tsx` 100% untouched.
+  2. Automated Hard Assertion & Regression Coverage:
+     - Added unit regression test in `apps/mobile/app/tabs.test.ts` enforcing minimum 48dp content height and `tabBarItemStyle.minHeight`.
+     - Preserved hard assertion in `scripts/verify-expo-mobile-qa.mjs` throwing on any missing, invisible, wrong-count, or undersized bottom tab.
+     - Full 10-step Playwright run exited 0 with continuous video recording (`expo-mob001-discovery-verification.webm`) and 9 repository-relative screenshots under `docs/screenshots`.
+  3. Native Static Bundle Resolution (Expo SDK 52 / React Native 0.76 Alignment):
+     - Identified that unpinned transitive peer dependency previously resolved `react-native-screens@4.27.0` (incompatible with RN 0.76 codegen).
+     - Aligned dependency to Expo SDK 52 bundled version: added `"react-native-screens": "~4.4.0"` to `apps/mobile/package.json` and root `package.json` overrides.
+     - Executed static exports across all platforms: Android (`.hbc` Hermes bytecode 2.88 MB), iOS (`.hbc` Hermes bytecode 2.89 MB), and Web (`.js` 1.43 MB), all compiling 100% cleanly.
+- **Commands Executed & Results**:
+  - `pnpm --filter @bukiebrainjobs/mobile test`: Passed 46/46 tests across 6 test suites with 0 failures
+  - `pnpm --filter @bukiebrainjobs/mobile type-check`: Passed (`tsc --noEmit`) with 0 errors
+  - `pnpm --filter @bukiebrainjobs/mobile exec expo export --platform android`: Passed with 2.88 MB Hermes bytecode bundle generated cleanly
+  - `pnpm --filter @bukiebrainjobs/mobile exec expo export --platform ios`: Passed with 2.89 MB Hermes bytecode bundle generated cleanly
+  - `pnpm --filter @bukiebrainjobs/mobile exec expo export --platform web --output-dir dist-web`: Passed with 1.43 MB web bundle generated cleanly
+  - `node scripts/verify-expo-mobile-qa.mjs`: Passed all 10 verification steps and assertions (exit code 0)
+  - `bash scripts/check-skill-gate.sh`: Passed
+- **Voice and Slop Audit**: 0 em dashes in code, tests, documentation, and user copy; 0 corporate filler terms.
+- **Status**: PASS (MOB-001 VERIFIED & PASSED / LOCAL UNCOMMITTED)
+
+
+## 2026-10-30: Phase 4.2.2 Native Booking Preparation and Theme Route QA
+- **Phase status**: `MOB-BOOK-001` is complete and PM accepted after owner-delegated review; the local preview does not create a live booking or payment. Phase 4.2.2 remains IN PROGRESS. Multi-step `/post-job` remains unapproved.
+- **Checks**: Mobile Vitest passed 95/95 tests across 12 files; `pnpm run type-check` passed; skill-gate regression suite passed 22/22; fresh `expo export --platform web --output-dir /tmp/bbj-mobile-web-20261030-1930 --clear` passed; `git diff --check` passed.
+- **Browser QA**: The actual Expo web export was rendered in Playwright Chrome with an iPhone user agent, `375x812` viewport, touch emulation, and reduced motion. Home, Services, Jobs, Messages, and Profile were checked in both themes. Bottom navigation and service filters were visible; horizontal filter scrolling was confirmed; no page overflow or browser errors were observed. Native iOS/Android runtime and screen-reader QA are unavailable, so this is browser emulation only.
+- **Evidence**: New [dark-theme tab screenshots](screenshots/expo-theme-tabs-20261030-1930/01-dark-theme-tabs.png) and [light-theme tab screenshots](screenshots/expo-theme-tabs-20261030-1930/02-light-theme-tabs.png). Existing recordings: [MOB-001 discovery verification](screenshots/videos/expo-mob001-discovery-verification.webm) and [MOB-BOOK-001 booking preparation verification](screenshots/videos/mob-book-001-booking-preparation-verification-v3.webm). This tab-theme pass used screenshots, not a new recording.
+- **Repository state**: `feature/bw-010-dispute-support` at `4ff62d645b2ccd0c611e1edbc1ce3d21849c1f86`; zero staged paths. No commit, push, merge, or deploy was performed.

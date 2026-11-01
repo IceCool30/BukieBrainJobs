@@ -18,6 +18,7 @@ export const MAX_EVIDENCE_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5,242,880 bytes 
 export const ALLOWED_EVIDENCE_MIME_TYPES: readonly DisputeAllowedMimeType[] = [
   'image/jpeg',
   'image/png',
+  'image/webp',
   'application/pdf',
 ];
 
@@ -62,6 +63,14 @@ export function validateDisputeInitiation(
     return {
       valid: false,
       error: 'Dispute description must not be empty',
+    };
+  }
+
+  const trimmedDescription = input.description.trim();
+  if (trimmedDescription.length < 20 || trimmedDescription.length > 2000) {
+    return {
+      valid: false,
+      error: 'Dispute description must be between 20 and 2000 characters',
     };
   }
 
