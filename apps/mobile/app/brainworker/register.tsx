@@ -52,6 +52,7 @@ export default function MobileBrainWorkerRegisterScreen() {
         <ScrollView contentContainerStyle={s.page} keyboardShouldPersistTaps="handled">
           <RegisterHeader onBack={() => router.back()} />
           <RegisterCard form={form} errors={errors} set={set} onSubmit={handleSubmit} />
+          <RegisterPreviewLink onOpen={() => router.push('/brainworker/workspace-preview')} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -134,6 +135,25 @@ function RegisterSubmitButton({ onSubmit }: { onSubmit: () => void }) {
   );
 }
 
+function RegisterPreviewLink({ onOpen }: { onOpen: () => void }) {
+  const c = useTrades();
+  const linkColor = c.mode === 'light' ? c.amberHover : c.amber;
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="View sample workspace preview"
+      onPress={onOpen}
+      style={({ pressed }) => [
+        s.previewLink,
+        { backgroundColor: pressed ? c.cardBg : 'transparent', borderColor: linkColor },
+      ]}
+    >
+      <Ionicons name="eye-outline" size={18} color={linkColor} accessible={false} />
+      <Text style={[s.previewLinkLabel, { color: linkColor }]}>View Sample Workspace Preview</Text>
+    </Pressable>
+  );
+}
+
 function Field({ label, error, ...input }: TextInputProps & { label: string; error?: string }) {
   const c = useTrades();
   const [focused, setFocused] = useState(false);
@@ -173,4 +193,6 @@ const s = StyleSheet.create({
   error: { fontSize: 13, marginTop: 6 },
   submit: { minHeight: 48, borderRadius: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 8 },
   submitLabel: { color: '#FFFFFF', fontFamily: mono, fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
+  previewLink: { minHeight: 48, borderRadius: 8, borderWidth: 1, borderStyle: 'dashed', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingHorizontal: 16, marginTop: 4 },
+  previewLinkLabel: { fontFamily: mono, fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
 });

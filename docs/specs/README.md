@@ -26,6 +26,7 @@ Detailed product UX briefs continue to be archived under `docs/04-public-website
 | `MOB-POST-001` | Native Multi-Step Job Posting | PM accepted for scoped native implementation (owner-delegated PM acceptance, 31 Oct 2026); local preview only; native-device QA unverified; Phase 4.2.2 IN PROGRESS | `docs/specs/MOB-POST-001-native-job-posting.md` |
 | `MOB-ACT-001` | Native Customer Activity Hub | PM accepted on 2026-11-02 under owner delegation; static in-memory preview only; Phase 4.2.2 IN PROGRESS | `docs/specs/MOB-ACT-001-native-customer-activity-hub.md` |
 | `MOB-LIFE-001` | Native Customer Booking Lifecycle Presentation | PM accepted on 2026-11-03 under owner delegation; UI-only local samples; native runtime QA unverified; Phase 4.2.2 IN PROGRESS | `docs/specs/MOB-LIFE-001-native-booking-lifecycle-ui-only.md` |
+| `MOB-WORK-001` | Native BrainWorker Workspace & Local Lead Alert Preview | PM accepted on 2026-11-03 for scoped UI-only local sample workspace preview; real push deferred; native runtime/screen-reader unverified; Phase 4.3 Item 1 IN PROGRESS | `docs/specs/MOB-WORK-001-native-brainworker-workspace-preview.md` |
 | `WEB-010` | Customer Dashboard | Live in Production | `docs/04-public-website/WEB-010A-CUSTOMER-DASHBOARD-DESIGN-BRIEF.md` |
 | `WEB-011` | Customer Jobs & Bookings Activity Hub | Live in Production | `docs/specs/WEB-011-customer-jobs-and-bookings.md` |
 | `WEB-012` | Customer Job Matching & Match Results | Live in Production | `docs/specs/WEB-012-matching.md` |

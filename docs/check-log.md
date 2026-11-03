@@ -2,6 +2,63 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-11-03: Phase 4.3 Native BrainWorker Workspace & Local Lead Alert Preview (Item 1, MOB-WORK-001)
+
+- **Branch**: `feature/mobile-accepted-slices`
+- **Current State**: MOB-WORK-001 accepted by PM on 2026-11-03 for the scoped UI-only local sample workspace preview, based on reviewed source, TDD evidence, and passing verification. Phase 4.3 Item 1 remains IN PROGRESS because real push notification delivery and backend integration remain deferred. Physical iOS and Android device runtime, Dynamic Type, and native screen readers remain explicitly unverified.
+- **Scope**: Scoped UI-only native BrainWorker workspace preview and in-app lead alert presentation:
+  1. **Controlled Entry Link**: Dedicated link on `/brainworker/register` (`apps/mobile/app/brainworker/register.tsx`) with label `View Sample Workspace Preview` navigating to `/brainworker/workspace-preview`. Registration submit Alert and return to `/` preserved.
+  2. **Dedicated Preview Stack Route**: Standalone stack screen at `/brainworker/workspace-preview` (`apps/mobile/app/brainworker/workspace-preview.tsx`) registered in root stack layout (`apps/mobile/app/_layout.tsx`). All five customer tabs (`home`, `services`, `jobs`, `messages`, `profile`) preserved and unmodified.
+  3. **Truthful Local Disclaimer Banner**: Prominently displayed: "Sample preview only. The leads shown here are local examples. This is not a live BrainWorker account, lead feed or push alert service."
+  4. **Workspace Header Block**: Eyebrow `BRAINWORKER WORKSPACE`, title `BrainWorker workspace preview`, subtitle `Explore sample leads and alert details.`, and mode badge `SAMPLE PREVIEW`. Zero fabricated worker identity, rating, or live availability claims.
+  5. **In-App Lead Alert Banner**: Plainly labelled sample lead alert banner with explicit `View sample details` action meeting 48dp minimum hit target.
+  6. **Static Lead Feed & Detail Inspection**: Exactly 3 immutable sample leads (`lead_gen_01`, `lead_ac_02`, `lead_plumb_03`) based on canonical service categories with strict BW-003 privacy masking and explicit sample timeframe, urgency, and budget values. Dedicated `Back to Lead Feed` action restoring the feed view.
+- **Verification Gates**:
+  - Skill Gate Guard (`bash scripts/check-skill-gate.sh && node --test scripts/check-skill-gate.test.mjs`): PASS (22/22 tests green).
+  - Mobile unit test suite (`pnpm --filter @bukiebrainjobs/mobile test`): PASS (19/19 test files, 198/198 tests green; verifies source-level decorative accessible={false} flags declared on all 5 workspace Ionicons and registration preview link icon).
+  - Mobile TypeScript check (`pnpm --filter @bukiebrainjobs/mobile type-check`): PASS with 0 diagnostics.
+  - Web static export (`expo export --platform web`): PASS (1.64 MB bundle).
+  - Android static export (`expo export --platform android`): PASS (3.25 MB Hermes `.hbc`).
+  - iOS static export (`expo export --platform ios`): PASS (3.25 MB Hermes `.hbc`).
+  - Compiled Expo Browser QA (`node scripts/verify-expo-workspace.mjs`): PASS (entry link navigation, alert detail inspection, lead card inspection, Back to Lead Feed flow, touch targets >= 48px, zero overflow at 375px portrait and landscape, verified explicit accessibilityRole="text" and accessibilityLabel on feed and detail disclaimers, verified vertical stacking and absence of collision across all 3 sample cards at 375px, verified direct /brainworker/workspace-preview navigation and 125% rendered-text scaling proxy from 24px to 30px without blowout while keeping native Dynamic Type, generated web accessibility tree, and native screen readers explicitly unverified, full-scan text contrast >= 4.5:1 across 41 feed and 16 detail nodes, full-scan icon contrast >= 3:1 across 4 feed and 3 detail icons, anti-fabrication assertions, zero console errors).
+  - Rendered WCAG AA Contrast Ratios (using nearest non-transparent computed background resolution across fully opaque token surfaces; >= 4.5:1 for normal text, >= 3:1 for controls/boundaries/icons):
+    - Full-scan text (all visible nodes >= 4.5:1): Dark feed 41 nodes (6.04:1 to 17.50:1); Dark details 16 nodes (6.04:1 to 17.50:1); Light feed 41 nodes (4.61:1 to 17.16:1); Light details 16 nodes (4.61:1 to 17.16:1).
+    - Full-scan icons (all visible icons >= 3:1): Dark feed 4 icons (6.34:1 to 7.03:1); Dark details 3 icons (6.34:1 to 7.03:1); Light feed 4 icons (4.37:1 to 12.90:1); Light details 3 icons (4.37:1 to 12.90:1).
+    - Representative elements:
+      - Dark mode Registration Link Text: `#FF6B35` on `#0B0E13` = 6.82:1 (>= 4.5:1).
+      - Dark mode Registration Link Border: `#FF6B35` on `#0B0E13` = 6.82:1 (>= 3:1).
+      - Dark mode Workspace Title: `#F0F4F9` on `#0B0E13` = 17.50:1 (>= 4.5:1).
+      - Dark mode Disclaimer Banner Text: `#8897AB` on `#07090D` = 6.70:1 (>= 4.5:1).
+      - Dark mode Badge Text: `#FF6B35` on `#07090D` = 7.03:1 (>= 4.5:1).
+      - Dark mode CTA Normal Text & Icon: `#0B0E13` on `#FF6B35` = 6.82:1 (>= 4.5:1 text, >= 3:1 icon).
+      - Dark mode CTA Pressed Text & Icon: `#0B0E13` on `#FF7D4D` = 7.63:1 (>= 4.5:1 text, >= 3:1 icon).
+      - Dark mode Clickable Card Boundary: border `#8897AB` on `#13171E` = 6.04:1 (>= 3:1).
+      - Dark mode Card Normal Title: `#F0F4F9` on `#13171E` = 16.26:1 (>= 4.5:1).
+      - Dark mode Card Pressed Title: `#F0F4F9` on `#191E27` = 15.13:1 (>= 4.5:1).
+      - Dark mode Detail Back Button Text & Icon: `#FF6B35` on `#13171E` = 6.34:1 (>= 4.5:1 text, >= 3:1 icon).
+      - Dark mode AC Detail Title: `#F0F4F9` on `#13171E` = 16.26:1 (>= 4.5:1).
+      - Light mode Registration Link Text: `#B34312` (`c.amberHover`) on `#F7F9FC` = 5.34:1 (>= 4.5:1).
+      - Light mode Registration Link Border: `#B34312` (`c.amberHover`) on `#F7F9FC` = 5.34:1 (>= 3:1).
+      - Light mode Workspace Title: `#001A41` on `#F7F9FC` = 16.27:1 (>= 4.5:1).
+      - Light mode Disclaimer Banner Text: `#D6E4F5` on `#001A41` = 13.30:1 (>= 4.5:1).
+      - Light mode Badge Text: `#ABEEC8` on `#001A41` = 12.90:1 (>= 4.5:1).
+      - Light mode CTA Normal Text & Icon: `#FFFFFF` on `#CC4A14` = 4.61:1 (>= 4.5:1 text, >= 3:1 icon).
+      - Light mode CTA Pressed Text & Icon: `#FFFFFF` on `#B34312` = 5.63:1 (>= 4.5:1 text, >= 3:1 icon).
+      - Light mode Clickable Card Boundary: border `#475569` on `#FFFFFF` = 7.58:1 (>= 3:1).
+      - Light mode Card Normal Title: `#001A41` on `#FFFFFF` = 17.16:1 (>= 4.5:1).
+      - Light mode Card Pressed Title: `#001A41` on `#F1F3F6` = 15.43:1 (>= 4.5:1).
+      - Light mode Plumbing Detail Title: `#001A41` on `#FFFFFF` = 17.16:1 (>= 4.5:1).
+      - Light mode Detail Back Button Text & Icon: `#CC4A14` on `#FFFFFF` = 4.61:1 (>= 4.5:1 text, >= 3:1 icon).
+- **Evidence Captures**:
+  - Screenshots:
+    - [`expo-mob-work-001-01-register-preview-link-dark.png`](screenshots/expo-mob-work-001-01-register-preview-link-dark.png) (375x812 Portrait Dark, registration preview link)
+    - [`expo-mob-work-001-02-workspace-feed-dark.png`](screenshots/expo-mob-work-001-02-workspace-feed-dark.png) (375x812 Portrait Dark, workspace preview feed)
+    - [`expo-mob-work-001-03-alert-detail-dark.png`](screenshots/expo-mob-work-001-03-alert-detail-dark.png) (375x812 Portrait Dark, lead alert detail view)
+    - [`expo-mob-work-001-04-lead-detail-dark.png`](screenshots/expo-mob-work-001-04-lead-detail-dark.png) (375x812 Portrait Dark, AC lead detail view)
+    - [`expo-mob-work-001-05-workspace-landscape-dark.png`](screenshots/expo-mob-work-001-05-workspace-landscape-dark.png) (844x390 Landscape Dark, zero overflow)
+    - [`expo-mob-work-001-06-workspace-feed-light.png`](screenshots/expo-mob-work-001-06-workspace-feed-light.png) (375x812 Portrait Light, light mode workspace feed)
+    - [`expo-mob-work-001-07-lead-detail-light.png`](screenshots/expo-mob-work-001-07-lead-detail-light.png) (375x812 Portrait Light, light mode detail view)
+
 ## 2026-11-03: Phase 4 Mobile Customer Booking Lifecycle Presentation (Item 4.2.2, MOB-LIFE-001)
 
 - **Branch**: `feature/mobile-accepted-slices`
