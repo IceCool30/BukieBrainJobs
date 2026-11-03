@@ -118,3 +118,29 @@ export function getDeclineReasonLabel(code: DeclineReasonCode): string {
 export type PreviewOutcome =
   | { type: 'ACCEPTED'; message: string }
   | { type: 'DECLINED'; reasonCode: DeclineReasonCode; reasonLabel: string; message: string };
+
+export const CHECKIN_SIMULATION_DISCLAIMER =
+  'This location is simulated and does not prove or guarantee physical presence. This preview does not confirm your on-site presence or check in a booking.';
+
+export interface CheckInSampleJob {
+  readonly serviceTitle: string;
+  readonly locationArea: string;
+  readonly landmark: string;
+  readonly bookingStatusTag: string;
+  readonly explanatorySubtext: string;
+  readonly simulationExplanation: string;
+  readonly presentationBoundaryNotice: string;
+}
+
+export const CHECKIN_SAMPLE_JOB: CheckInSampleJob = Object.freeze({
+  serviceTitle: 'Generator Servicing & Repair (Sample)',
+  locationArea: 'Ikeja, Lagos (Allen Avenue area)',
+  landmark: 'Near Allen Roundabout',
+  bookingStatusTag: 'CONFIRMED (Sample)',
+  explanatorySubtext:
+    'In production, arrival check-in captures a single location snapshot without continuous tracking. This preview demonstrates the interface layout without accessing device sensors. Location is simulated and does not prove or guarantee physical presence.',
+  simulationExplanation:
+    'This preview demonstrated the on-site verification layout. Location is simulated and does not prove or guarantee physical presence. In production, a single location snapshot is recorded upon arrival without background tracking or continuous location monitoring.',
+  presentationBoundaryNotice:
+    'This is only a temporary UI presentation state, not a booking status change, check-in record, arrival proof, or persistence.',
+});

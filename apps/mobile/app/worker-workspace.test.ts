@@ -223,7 +223,7 @@ describe('MOB-WORK-001 Native BrainWorker Workspace Preview Guardrails', () => {
   it('marks all decorative Ionicons as accessible={false} on workspace-preview and register preview link', () => {
     const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
     const iconMatches = screenContent.match(/<Ionicons[^>]*>/g) || [];
-    expect(iconMatches.length).toBe(8);
+    expect(iconMatches.length).toBe(14);
     iconMatches.forEach((tag) => {
       expect(tag).toContain('accessible={false}');
     });
@@ -317,5 +317,46 @@ describe('MOB-WORK-001 Native BrainWorker Workspace Preview Guardrails', () => {
     expect(declineCancelFunc, 'verifyLandscapeDeclineCancel must be defined').not.toBeNull();
     expect(declineCancelFunc!).toContain('verifyTouchTarget');
     expect(declineCancelFunc!).toContain('verifyViewportBounds');
+  });
+
+  describe('MOB-WORK-003 Native Check-In Location Simulation Preview Guardrails', () => {
+    it('provides local entry button on accepted sample lead preview to reveal check-in sample inline', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      expect(screenContent).toContain('Preview on-site check-in');
+      expect(screenContent).toContain('showCheckIn');
+      expect(screenContent).toContain('CheckInSimulationSection');
+    });
+
+    it('renders initial unsimulated arrival state with exact disclaimer and schematic', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      expect(screenContent).toContain('SAMPLE LOCATION SIMULATION');
+      expect(screenContent).toContain('LOCAL PREVIEW ONLY');
+      expect(screenContent).toContain('Simulated Site Location');
+      expect(screenContent).toContain('Arrival Snapshot: Not simulated');
+      expect(screenContent).toContain('CONFIRMED (Sample)');
+      expect(screenContent).toContain('Simulate on-site check-in');
+      expect(screenContent).toContain('Simulate on-site check-in for sample generator repair');
+    });
+
+    it('renders simulated outcome with exact SIMULATED ARRIVAL (Preview) badge and Arrival view previewed in memory stamp', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      expect(screenContent).toContain('SAMPLE CHECK-IN SIMULATED');
+      expect(screenContent).toContain('On-Site Arrival Simulated (Preview)');
+      expect(screenContent).toContain('SIMULATED ARRIVAL (Preview)');
+      expect(screenContent).toContain('Arrival view previewed in memory');
+      expect(screenContent).toContain('Reset location simulation');
+    });
+
+    it('strictly excludes coordinates, map tiles, and escrow/payment from check-in preview', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      expect(screenContent).not.toMatch(/latitude|longitude/i);
+      expect(screenContent).not.toMatch(/google\.maps|mapbox/i);
+      expect(screenContent).not.toMatch(/escrow|payout|payment/i);
+    });
+
+    it('preserves 48dp minimum touch target for all check-in interactive triggers', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      expect(screenContent).toContain('minHeight: 48');
+    });
   });
 });

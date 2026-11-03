@@ -91,3 +91,40 @@ This section catalogs the 7 compiled Expo mobile screen verification captures fo
 | [`expo-mob-work-002-05-declined-outcome-dark.png`](./expo-mob-work-002-05-declined-outcome-dark.png) | 375x812 | Portrait | Dark | Declined Outcome Card (`app/brainworker/workspace-preview.tsx`) | In-memory simulated declined outcome card showing amber accent border, selected reason label, truthful local simulation notice, and Reset preview outcome button in Outlier dark theme. |
 | [`expo-mob-work-002-06-invitation-actions-light.png`](./expo-mob-work-002-06-invitation-actions-light.png) | 375x812 | Portrait | Light | Invitation Actions Card: Light (`app/brainworker/workspace-preview.tsx`) | Alert detail invitation actions card rendered in Outlier light theme tokens with verified button border contrast and legible action text. |
 | [`expo-mob-work-002-07-decline-modal-light.png`](./expo-mob-work-002-07-decline-modal-light.png) | 375x812 | Portrait | Light | Decline Modal: Light (`app/brainworker/workspace-preview.tsx`) | Decline modal dialog rendered in Outlier light theme tokens showing all 6 canonical decline reasons with verified radio border contrast and Cancel button. |
+
+---
+
+# BukieBrainJobs MOB-WORK-003 Native BrainWorker On-Site Check-In Location Simulation Preview Screenshots
+
+This section catalogs the 7 compiled Expo mobile screen verification captures for Milestone 4.3 (BrainWorker Native Experiences, `MOB-WORK-003`). All captures verify the native on-site check-in location simulation preview on the BrainWorker workspace preview route (`app/brainworker/workspace-preview.tsx`) in Chromium browser emulation of a compiled Expo Web export (`expo export --platform web` built to a temporary directory outside the git tree and served with SPA fallback). Hardware device sensors, native iOS/Android permissions, live GPS fixes, and native Dynamic Type are explicitly not claimed.
+
+## Test Commands and Verification Results
+
+- Focused Verifier Unit Test: `node scripts/verify-expo-workspace.test.mjs` (7 passed, 0 failed)
+- Guardrails Unit Test Suite: `pnpm --filter @bukiebrainjobs/mobile test app/worker-workspace.test.ts` (34 passed, 0 failed)
+- Helper Unit Test Suite: `pnpm --filter @bukiebrainjobs/mobile test lib/worker-workspace-preview.test.ts` (11 passed, 0 failed)
+- Independent M3 Browser QA Run: `node scripts/verify-expo-workspace.mjs --slice=MOB-WORK-003` (PASSED cleanly)
+- Verified M3 Interactions:
+  - Acceptance of sample lead `lead_gen_01` into local in-memory accepted outcome.
+  - Inline check-in preview expansion with `CheckInEntryButton` (`Preview on-site check-in`).
+  - State 1 initial unsimulated arrival layout (`SAMPLE LOCATION SIMULATION`, `LOCAL PREVIEW ONLY`, `Arrival Snapshot: Not simulated`, `CONFIRMED (Sample)`) captured after opening the inline check-in panel and before simulation.
+  - Single-tap check-in simulation triggering State 2 (`SIMULATED ARRIVAL (Preview)` and `Arrival view previewed in memory`).
+  - Strict preservation of booking status tag (`CONFIRMED (Sample)`) with zero status changes and no dialog/modal popups.
+  - In-memory reset via `Reset location simulation` cleanly restoring State 1 without unmounting the check-in section.
+  - OS-preference check verifying that browser `prefers-color-scheme: light` does not override the app-selected obsidian dark theme tokens while the app remains in dark mode.
+  - App-selected light mode verification toggled via the accessible home-screen theme toggle (`Switch to light mode`), verifying saved light tokens and WCAG AA contrast on the expanded inline check-in panel.
+  - Compact landscape viewport (844x390) with zero horizontal overflow.
+  - Clearly labelled 125% browser text-scaling proxy with zero horizontal overflow and legible labels.
+  - Zero external network requests, zero location sensor calls, and zero console/page errors.
+
+## Compiled Expo App Screenshot Catalog
+
+| Filename | Viewport | Orientation | Theme / Mode | Screen / State | Description |
+|---|---|---|---|---|---|
+| [`expo-mob-work-003-01-checkin-ready-dark.png`](./expo-mob-work-003-01-checkin-ready-dark.png) | 375x812 | Portrait | Obsidian Dark | State 1: Initial Unsimulated View (`app/brainworker/workspace-preview.tsx`) | Inline check-in simulation section captured after expanding the inline check-in panel and before simulation, showing `SAMPLE LOCATION SIMULATION` eyebrow, `LOCAL PREVIEW ONLY` badge, mandatory location simulation disclaimer, sample job card (`CONFIRMED (Sample)`), schematic card with `Arrival Snapshot: Not simulated`, and `Simulate on-site check-in` button (minHeight: 48). |
+| [`expo-mob-work-003-02-checkin-simulated-dark.png`](./expo-mob-work-003-02-checkin-simulated-dark.png) | 375x812 | Portrait | Obsidian Dark | State 2: Simulated Outcome View (`app/brainworker/workspace-preview.tsx`) | Simulated arrival view showing `SAMPLE CHECK-IN SIMULATED`, `SIMULATED ARRIVAL (Preview)` status badge, `Arrival view previewed in memory` verification stamp, temporary preview boundary disclaimer, and `Reset location simulation` button. No modal appeared and booking status remains unmutated. |
+| [`expo-mob-work-003-03-checkin-reset-dark.png`](./expo-mob-work-003-03-checkin-reset-dark.png) | 375x812 | Portrait | Obsidian Dark | State 1: Restored Unsimulated View (`app/brainworker/workspace-preview.tsx`) | Clean return to State 1 following tap on `Reset location simulation`. `Arrival Snapshot: Not simulated` and `Simulate on-site check-in` are restored in memory while keeping the check-in section open. |
+| [`expo-mob-work-003-04-checkin-simulated-light-scheme.png`](./expo-mob-work-003-04-checkin-simulated-light-scheme.png) | 375x812 | Portrait | prefers-color-scheme: light (App Dark Retained) | OS-Preference Test While App Remains Dark (`app/brainworker/workspace-preview.tsx`) | Separate OS-preference test under browser `prefers-color-scheme: light` verifying retention of obsidian dark tokens while the app-selected theme remains dark, not serving as light-theme evidence. |
+| [`expo-mob-work-003-05-checkin-simulated-landscape.png`](./expo-mob-work-003-05-checkin-simulated-landscape.png) | 844x390 | Landscape | Obsidian Dark | Compact Landscape View (`app/brainworker/workspace-preview.tsx`) | Responsive simulated arrival view in compact 844x390 landscape viewport with zero horizontal overflow, visible controls, and verified >= 48px touch targets. |
+| [`expo-mob-work-003-06-checkin-simulated-scaled-text.png`](./expo-mob-work-003-06-checkin-simulated-scaled-text.png) | 375x812 | Portrait | 125% Text Scaling Proxy (Obsidian Dark) | Browser Text Scaling Proxy (`app/brainworker/workspace-preview.tsx`) | 125% rendered-text scaling proxy applied in browser emulation verifying zero layout overflow, legible disclaimers, and intact `SIMULATED ARRIVAL (Preview)` badge without clipping. |
+| [`expo-mob-work-003-07-checkin-ready-app-light.png`](./expo-mob-work-003-07-checkin-ready-app-light.png) | 375x812 | Portrait | App-Selected Light Mode | State 1: App-Selected Light Ready View (`app/brainworker/workspace-preview.tsx`) | Route rendered in app-selected light mode activated via the accessible home-screen theme toggle (`Switch to light mode`), navigating to the accepted lead preview and expanding the inline check-in panel. Demonstrates State 1 unsimulated check-in interface with verified light tokens and WCAG AA contrast compliance. |

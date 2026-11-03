@@ -6,6 +6,8 @@ import {
   getSampleLeadById,
   BW003_DECLINE_REASONS,
   getDeclineReasonLabel,
+  CHECKIN_SIMULATION_DISCLAIMER,
+  CHECKIN_SAMPLE_JOB,
   type WorkerSampleLead,
   type DeclineReasonCode,
 } from './worker-workspace-preview';
@@ -101,5 +103,32 @@ describe('MOB-WORK-001 native BrainWorker workspace preview helper', () => {
     expect(getDeclineReasonLabel('RATE_BUDGET_MISMATCH')).toBe('Rate or budget mismatch');
     expect(getDeclineReasonLabel('TEMPORARILY_UNAVAILABLE')).toBe('Temporarily unavailable');
     expect(getDeclineReasonLabel('OTHER')).toBe('Other reason');
+  });
+
+  describe('MOB-WORK-003 native BrainWorker on-site check-in location simulation preview helpers', () => {
+    it('defines the approved location simulation disclaimer copy', () => {
+      expect(CHECKIN_SIMULATION_DISCLAIMER).toBe(
+        'This location is simulated and does not prove or guarantee physical presence. This preview does not confirm your on-site presence or check in a booking.',
+      );
+    });
+
+    it('defines the sample check-in job parameters without real coordinates or escrow', () => {
+      const job = CHECKIN_SAMPLE_JOB;
+      expect(job).toBeDefined();
+      expect(job.serviceTitle).toBe('Generator Servicing & Repair (Sample)');
+      expect(job.locationArea).toBe('Ikeja, Lagos (Allen Avenue area)');
+      expect(job.landmark).toBe('Near Allen Roundabout');
+      expect(job.bookingStatusTag).toBe('CONFIRMED (Sample)');
+      expect(job.explanatorySubtext).toContain('In production, arrival check-in captures a single location snapshot');
+      expect(job.explanatorySubtext).toContain('Location is simulated and does not prove or guarantee physical presence.');
+      expect(job.simulationExplanation).toContain('This preview demonstrated the on-site verification layout.');
+      expect(job.presentationBoundaryNotice).toBe(
+        'This is only a temporary UI presentation state, not a booking status change, check-in record, arrival proof, or persistence.',
+      );
+      expect(job).not.toHaveProperty('latitude');
+      expect(job).not.toHaveProperty('longitude');
+      expect(job).not.toHaveProperty('escrow');
+      expect(job).not.toHaveProperty('payment');
+    });
   });
 });

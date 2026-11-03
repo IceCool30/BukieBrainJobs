@@ -19,6 +19,8 @@ import {
   BW003_DECLINE_REASONS,
   getDeclineReasonLabel,
   getSampleLeadById,
+  CHECKIN_SIMULATION_DISCLAIMER,
+  CHECKIN_SAMPLE_JOB,
   type WorkerSampleLead,
   type SampleLeadAlert,
   type DeclineReasonCode,
@@ -51,20 +53,33 @@ function useModalStates() {
   };
 }
 
+function useCheckInSimulationState() {
+  const [showCheckIn, setShowCheckIn] = useState(false);
+  const [isArrivalSimulated, setIsArrivalSimulated] = useState(false);
+  const resetArrival = () => setIsArrivalSimulated(false);
+  const resetCheckIn = () => {
+    setShowCheckIn(false);
+    setIsArrivalSimulated(false);
+  };
+  return { showCheckIn, setShowCheckIn, isArrivalSimulated, setIsArrivalSimulated, resetArrival, resetCheckIn };
+}
+
 function useWorkspacePreviewState() {
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   const [previewOutcome, setPreviewOutcome] = useState<PreviewOutcome | null>(null);
   const modals = useModalStates();
+  const checkIn = useCheckInSimulationState();
 
   const resetAll = () => {
     setSelectedLeadId(null);
     setPreviewOutcome(null);
+    checkIn.resetCheckIn();
     modals.setAcceptModalVisible(false);
     modals.setDeclineModalVisible(false);
     modals.setSelectedReason(null);
   };
 
-  return { selectedLeadId, setSelectedLeadId, previewOutcome, setPreviewOutcome, resetAll, ...modals };
+  return { selectedLeadId, setSelectedLeadId, previewOutcome, setPreviewOutcome, resetAll, ...modals, ...checkIn };
 }
 
 function useAcceptDeclineHandlers(state: ReturnType<typeof useWorkspacePreviewState>) {
@@ -113,6 +128,42 @@ type MainBodyProps = {
   state: ReturnType<typeof useWorkspacePreviewState>;
 };
 
+function useDetailCallbacks(state: ReturnType<typeof useWorkspacePreviewState>) {
+  return {
+    onResetOutcome: () => {
+      state.setPreviewOutcome(null);
+      state.resetCheckIn();
+    },
+    onOpenAccept: () => state.setAcceptModalVisible(true),
+    onOpenDecline: () => state.setDeclineModalVisible(true),
+    onOpenCheckIn: () => state.setShowCheckIn(true),
+    onSimulateArrival: () => state.setIsArrivalSimulated(true),
+  };
+}
+
+function DetailViewWithState({
+  lead,
+  onBack,
+  state,
+}: {
+  lead: WorkerSampleLead;
+  onBack: () => void;
+  state: ReturnType<typeof useWorkspacePreviewState>;
+}) {
+  const cbs = useDetailCallbacks(state);
+  return (
+    <SampleLeadDetailView
+      lead={lead}
+      onBack={onBack}
+      previewOutcome={state.previewOutcome}
+      showCheckIn={state.showCheckIn}
+      isArrivalSimulated={state.isArrivalSimulated}
+      onResetArrival={state.resetArrival}
+      {...cbs}
+    />
+  );
+}
+
 function WorkspaceMainBody({ selectedLead, onBack, state }: MainBodyProps) {
   if (!selectedLead) {
     return (
@@ -122,16 +173,7 @@ function WorkspaceMainBody({ selectedLead, onBack, state }: MainBodyProps) {
       />
     );
   }
-  return (
-    <SampleLeadDetailView
-      lead={selectedLead}
-      onBack={onBack}
-      previewOutcome={state.previewOutcome}
-      onResetOutcome={() => state.setPreviewOutcome(null)}
-      onOpenAccept={() => state.setAcceptModalVisible(true)}
-      onOpenDecline={() => state.setDeclineModalVisible(true)}
-    />
-  );
+  return <DetailViewWithState lead={selectedLead} onBack={onBack} state={state} />;
 }
 
 type WorkspaceModalsProps = {
@@ -433,10 +475,51 @@ type LeadDetailProps = {
   onResetOutcome: () => void;
   onOpenAccept: () => void;
   onOpenDecline: () => void;
+  showCheckIn: boolean;
+  onOpenCheckIn: () => void;
+  isArrivalSimulated: boolean;
+  onSimulateArrival: () => void;
+  onResetArrival: () => void;
 };
 
+type LeadDetailActionsProps = {
+  isAlert: boolean;
+  outcome: PreviewOutcome | null;
+  onReset: () => void;
+  onAccept: () => void;
+  onDecline: () => void;
+  showCheckIn: boolean;
+  onOpenCheckIn: () => void;
+  isArrivalSimulated: boolean;
+  onSimulateArrival: () => void;
+  onResetArrival: () => void;
+};
+
+function LeadDetailActions(props: LeadDetailActionsProps) {
+  if (!props.isAlert) return null;
+  const isAccepted = props.outcome?.type === 'ACCEPTED';
+  return (
+    <>
+      <InvitationActionSection
+        outcome={props.outcome}
+        onReset={props.onReset}
+        onAccept={props.onAccept}
+        onDecline={props.onDecline}
+        onOpenCheckIn={props.onOpenCheckIn}
+      />
+      {isAccepted && props.showCheckIn ? (
+        <CheckInSimulationSection
+          isArrivalSimulated={props.isArrivalSimulated}
+          onSimulateArrival={props.onSimulateArrival}
+          onResetArrival={props.onResetArrival}
+        />
+      ) : null}
+    </>
+  );
+}
+
 function SampleLeadDetailView(props: LeadDetailProps) {
-  const { lead, onBack, previewOutcome, onResetOutcome, onOpenAccept, onOpenDecline } = props;
+  const { lead, onBack, previewOutcome, onResetOutcome, onOpenAccept, onOpenDecline, ...checkInProps } = props;
   const c = useThemeColors();
   const isAlert = lead.id === SAMPLE_LEAD_ALERT.id;
   return (
@@ -445,14 +528,14 @@ function SampleLeadDetailView(props: LeadDetailProps) {
       <DetailHeaderInfo lead={lead} />
       <DetailProblemSection problemDetail={lead.problemDetail} />
       <DetailMetaGrid lead={lead} />
-      {isAlert ? (
-        <InvitationActionSection
-          outcome={previewOutcome}
-          onReset={onResetOutcome}
-          onAccept={onOpenAccept}
-          onDecline={onOpenDecline}
-        />
-      ) : null}
+      <LeadDetailActions
+        isAlert={isAlert}
+        outcome={previewOutcome}
+        onReset={onResetOutcome}
+        onAccept={onOpenAccept}
+        onDecline={onOpenDecline}
+        {...checkInProps}
+      />
       <DetailNoticeBlock c={c} />
     </View>
   );
@@ -463,14 +546,16 @@ function InvitationActionSection({
   onReset,
   onAccept,
   onDecline,
+  onOpenCheckIn,
 }: {
   outcome: PreviewOutcome | null;
   onReset: () => void;
   onAccept: () => void;
   onDecline: () => void;
+  onOpenCheckIn: () => void;
 }) {
   if (outcome) {
-    return <InvitationOutcomeCard outcome={outcome} onReset={onReset} />;
+    return <InvitationOutcomeCard outcome={outcome} onReset={onReset} onOpenCheckIn={onOpenCheckIn} />;
   }
   return <InvitationActionCard onAccept={onAccept} onDecline={onDecline} />;
 }
@@ -546,28 +631,214 @@ function DeclineButton({ onDecline }: { onDecline: () => void }) {
   );
 }
 
-function InvitationOutcomeCard({
-  outcome,
-  onReset,
-}: {
+type InvitationOutcomeCardProps = {
   outcome: PreviewOutcome;
   onReset: () => void;
-}) {
+  onOpenCheckIn?: () => void;
+};
+
+function InvitationOutcomeCard({ outcome, onReset, onOpenCheckIn }: InvitationOutcomeCardProps) {
   const c = useThemeColors();
   const isAccepted = outcome.type === 'ACCEPTED';
   const amberCol = c.mode === 'light' ? c.amberHover : c.amber;
-  const titleCol = isAccepted ? c.green : amberCol;
-  const borderCol = isAccepted ? c.green : c.amber;
   return (
-    <View style={[s.outcomeCard, { backgroundColor: c.canvas, borderColor: borderCol }]}>
-      <Text accessibilityRole="header" style={[s.outcomeTitle, { color: titleCol }]}>
+    <View style={[s.outcomeCard, { backgroundColor: c.canvas, borderColor: isAccepted ? c.green : c.amber }]}>
+      <Text accessibilityRole="header" style={[s.outcomeTitle, { color: isAccepted ? c.green : amberCol }]}>
         {isAccepted ? 'Sample Lead Accepted (Preview)' : 'Sample Lead Declined (Preview)'}
       </Text>
-      {!isAccepted && (
-        <Text style={[s.outcomeReason, { color: c.mainText }]}>Reason: {outcome.reasonLabel}</Text>
-      )}
+      {!isAccepted && <Text style={[s.outcomeReason, { color: c.mainText }]}>Reason: {outcome.reasonLabel}</Text>}
       <Text style={[s.outcomeDesc, { color: c.mutedText }]}>{outcome.message}</Text>
+      {isAccepted && onOpenCheckIn && <CheckInEntryButton onPress={onOpenCheckIn} />}
       <ResetOutcomeButton onReset={onReset} />
+    </View>
+  );
+}
+
+function CheckInEntryButton({ onPress }: { onPress: () => void }) {
+  const c = useThemeColors();
+  const bg = c.mode === 'light' ? c.amberHover : c.amber;
+  const fg = c.mode === 'dark' ? c.canvas : c.card;
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Simulate on-site check-in for sample generator repair"
+      onPress={onPress}
+      style={({ pressed }) => [s.checkInEntryBtn, { backgroundColor: pressed ? c.amberHover : bg }]}
+    >
+      <Ionicons name="location-outline" size={18} color={fg} accessible={false} />
+      <Text style={[s.checkInEntryBtnText, { color: fg }]}>Preview on-site check-in</Text>
+    </Pressable>
+  );
+}
+
+function CheckInDisclaimer() {
+  const c = useThemeColors();
+  return (
+    <View style={[s.checkInNoticeBox, { backgroundColor: c.strip, borderColor: c.divider }]}>
+      <Ionicons name="information-circle-outline" size={16} color={c.amber} accessible={false} />
+      <Text
+        accessibilityRole="alert"
+        accessibilityLabel={CHECKIN_SIMULATION_DISCLAIMER}
+        style={[s.checkInNoticeText, { color: getStripTextColor(c, c.mutedText) }]}
+      >
+        {CHECKIN_SIMULATION_DISCLAIMER}
+      </Text>
+    </View>
+  );
+}
+
+function CheckInHeaderBlock() {
+  const c = useThemeColors();
+  const tagColor = getStripAccentColor(c, c.amber);
+  return (
+    <View style={s.checkInHeaderRow}>
+      <Text style={[s.checkInEyebrow, { color: c.green }]}>SAMPLE LOCATION SIMULATION</Text>
+      <View style={[s.localPreviewTag, { backgroundColor: c.strip, borderColor: c.divider }]}>
+        <Text style={[s.localPreviewTagText, { color: tagColor }]}>LOCAL PREVIEW ONLY</Text>
+      </View>
+    </View>
+  );
+}
+
+function CheckInJobInfoCard() {
+  const c = useThemeColors();
+  const job = CHECKIN_SAMPLE_JOB;
+  const statusTag = job.bookingStatusTag || 'CONFIRMED (Sample)';
+  return (
+    <View style={[s.jobInfoCard, { backgroundColor: c.card, borderColor: c.divider }]}>
+      <View style={s.jobInfoStatusRow}>
+        <Text accessibilityRole="header" style={[s.jobInfoTitle, { color: c.mainText }]}>
+          {job.serviceTitle}
+        </Text>
+        <View style={[s.confirmedTag, { backgroundColor: c.strip, borderColor: c.divider }]}>
+          <Text style={[s.confirmedTagText, { color: c.amber }]}>{statusTag}</Text>
+        </View>
+      </View>
+      <Text style={[s.jobInfoLocation, { color: c.amber }]}>{job.locationArea}</Text>
+      <Text style={[s.jobInfoLandmark, { color: c.mutedText }]}>Landmark: {job.landmark}</Text>
+      <Text style={[s.jobInfoSubtext, { color: c.mutedText }]}>{job.explanatorySubtext}</Text>
+    </View>
+  );
+}
+
+function CheckInSchematicCard() {
+  const c = useThemeColors();
+  return (
+    <View style={[s.schematicCard, { backgroundColor: c.card, borderColor: c.mutedText }]}>
+      <View style={s.schematicHeaderRow}>
+        <Ionicons name="location-outline" size={20} color={c.amber} accessible={false} />
+        <Text style={[s.schematicTitle, { color: c.mainText }]}>Simulated Site Location</Text>
+      </View>
+      <Text style={[s.schematicStatus, { color: c.mutedText }]}>Arrival Snapshot: Not simulated</Text>
+    </View>
+  );
+}
+
+function CheckInActionButton({ onSimulate }: { onSimulate: () => void }) {
+  const c = useThemeColors();
+  const bg = c.mode === 'light' ? c.amberHover : c.amber;
+  const fg = c.mode === 'dark' ? c.canvas : c.card;
+  return (
+    <View style={s.actionTriggerCol}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Simulate on-site check-in for sample generator repair"
+        onPress={onSimulate}
+        style={({ pressed }) => [s.actionBtn, { backgroundColor: pressed ? c.amberHover : bg }]}
+      >
+        <Ionicons name="navigate-outline" size={18} color={fg} accessible={false} />
+        <Text style={[s.actionBtnText, { color: fg }]}>Simulate on-site check-in</Text>
+      </Pressable>
+      <Text style={[s.actionSubtext, { color: c.mutedText }]}>
+        Tapping directly sets the temporary in-memory arrival preview view without opening a separate confirmation modal.
+      </Text>
+    </View>
+  );
+}
+
+function CheckInState1View({ onSimulate }: { onSimulate: () => void }) {
+  return (
+    <View style={s.stateBlock}>
+      <CheckInHeaderBlock />
+      <CheckInJobInfoCard />
+      <CheckInSchematicCard />
+      <CheckInActionButton onSimulate={onSimulate} />
+    </View>
+  );
+}
+
+function CheckInSimulatedHeader() {
+  const c = useThemeColors();
+  return (
+    <View style={s.simulatedHeaderCol}>
+      <Text style={[s.checkInEyebrow, { color: c.green }]}>SAMPLE CHECK-IN SIMULATED</Text>
+      <Text accessibilityRole="header" style={[s.simulatedTitle, { color: c.mainText }]}>
+        On-Site Arrival Simulated (Preview)
+      </Text>
+    </View>
+  );
+}
+
+function CheckInSimulatedStatusCard() {
+  const c = useThemeColors();
+  const job = CHECKIN_SAMPLE_JOB;
+  return (
+    <View style={[s.simulatedCard, { backgroundColor: c.card, borderColor: c.green }]}>
+      <View style={[s.statusBadge, { backgroundColor: c.strip, borderColor: c.green }]}>
+        <Ionicons name="checkmark-circle-outline" size={16} color={c.green} accessible={false} />
+        <Text style={[s.statusBadgeText, { color: c.green }]}>SIMULATED ARRIVAL (Preview)</Text>
+      </View>
+      <Text style={[s.stampText, { color: c.mainText }]}>Arrival view previewed in memory</Text>
+      <Text style={[s.timingText, { color: c.mutedText }]}>Timing: Current preview session only</Text>
+      <Text style={[s.explanationText, { color: c.mutedText }]}>{job.simulationExplanation}</Text>
+      <Text style={[s.boundaryNotice, { color: c.amber }]}>{job.presentationBoundaryNotice}</Text>
+    </View>
+  );
+}
+
+function CheckInResetButton({ onReset }: { onReset: () => void }) {
+  const c = useThemeColors();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Reset location simulation"
+      onPress={onReset}
+      style={({ pressed }) => [s.resetBtn, { borderColor: c.mutedText, opacity: pressed ? 0.7 : 1 }]}
+    >
+      <Ionicons name="refresh-outline" size={16} color={c.mainText} accessible={false} />
+      <Text style={[s.resetBtnText, { color: c.mainText }]}>Reset location simulation</Text>
+    </Pressable>
+  );
+}
+
+function CheckInState2View({ onReset }: { onReset: () => void }) {
+  return (
+    <View style={s.stateBlock}>
+      <CheckInSimulatedHeader />
+      <CheckInSimulatedStatusCard />
+      <CheckInResetButton onReset={onReset} />
+    </View>
+  );
+}
+
+function CheckInSimulationSection({
+  isArrivalSimulated,
+  onSimulateArrival,
+  onResetArrival,
+}: {
+  isArrivalSimulated: boolean;
+  onSimulateArrival: () => void;
+  onResetArrival: () => void;
+}) {
+  const c = useThemeColors();
+  return (
+    <View style={[s.checkInContainer, { backgroundColor: c.canvas, borderColor: c.amber }]}>
+      <CheckInDisclaimer />
+      {isArrivalSimulated ? (
+        <CheckInState2View onReset={onResetArrival} />
+      ) : (
+        <CheckInState1View onSimulate={onSimulateArrival} />
+      )}
     </View>
   );
 }
@@ -1119,5 +1390,164 @@ const s = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
     flex: 1,
+  },
+  checkInEntryBtn: {
+    minHeight: 48,
+    borderRadius: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingHorizontal: 14,
+    marginTop: 8,
+  },
+  checkInEntryBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  checkInContainer: {
+    borderRadius: 8,
+    borderWidth: 1.5,
+    padding: 14,
+    gap: 12,
+    marginTop: 10,
+  },
+  checkInNoticeBox: {
+    borderRadius: 6,
+    borderWidth: 1,
+    padding: 10,
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'flex-start',
+  },
+  checkInNoticeText: {
+    fontSize: 12,
+    lineHeight: 17,
+    flex: 1,
+  },
+  stateBlock: {
+    gap: 10,
+  },
+  checkInHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  checkInEyebrow: {
+    fontFamily: mono,
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+  jobInfoCard: {
+    borderRadius: 6,
+    borderWidth: 1,
+    padding: 12,
+    gap: 6,
+  },
+  jobInfoStatusRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  jobInfoTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  confirmedTag: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+  },
+  confirmedTagText: {
+    fontFamily: mono,
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  jobInfoLocation: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  jobInfoLandmark: {
+    fontSize: 12,
+  },
+  jobInfoSubtext: {
+    fontSize: 12,
+    lineHeight: 17,
+    marginTop: 4,
+  },
+  schematicCard: {
+    borderRadius: 6,
+    borderWidth: 1,
+    padding: 12,
+    gap: 6,
+  },
+  schematicHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  schematicTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  schematicStatus: {
+    fontSize: 12,
+  },
+  actionTriggerCol: {
+    gap: 6,
+  },
+  actionSubtext: {
+    fontSize: 11,
+    lineHeight: 16,
+  },
+  simulatedHeaderCol: {
+    gap: 4,
+  },
+  simulatedTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  simulatedCard: {
+    borderRadius: 6,
+    borderWidth: 1,
+    padding: 12,
+    gap: 8,
+  },
+  statusBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    borderWidth: 1,
+    alignSelf: 'flex-start',
+  },
+  statusBadgeText: {
+    fontFamily: mono,
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  stampText: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  timingText: {
+    fontSize: 12,
+  },
+  explanationText: {
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  boundaryNotice: {
+    fontSize: 11,
+    lineHeight: 16,
+    fontWeight: '500',
   },
 });
