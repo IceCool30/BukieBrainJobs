@@ -1,6 +1,8 @@
 import http from 'http';
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
+import { execSync } from 'child_process';
 import { chromium } from 'playwright';
 
 const PORT = 8081;
@@ -19,20 +21,20 @@ function getMimeType(filePath) {
   return 'application/octet-stream';
 }
 
-function serveStaticFile(req, res) {
+function serveStaticFile(req, res, distDir = DIST_WEB) {
   const cleanUrl = req.url.split('?')[0];
-  let filePath = path.join(DIST_WEB, cleanUrl === '/' ? 'index.html' : cleanUrl);
+  let filePath = path.join(distDir, cleanUrl === '/' ? 'index.html' : cleanUrl);
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
-    filePath = path.join(DIST_WEB, 'index.html');
+    filePath = path.join(distDir, 'index.html');
   }
   res.writeHead(200, { 'Content-Type': getMimeType(filePath) });
   fs.createReadStream(filePath).pipe(res);
 }
 
-function startWebServer() {
+function startWebServer(distDir = DIST_WEB, port = PORT) {
   return new Promise((resolve) => {
-    const server = http.createServer(serveStaticFile);
-    server.listen(PORT, '127.0.0.1', () => resolve(server));
+    const server = http.createServer((req, res) => serveStaticFile(req, res, distDir));
+    server.listen(port, '127.0.0.1', () => resolve(server));
   });
 }
 
@@ -687,6 +689,234 @@ async function executeWork002QaFlow(page) {
   await verifyWork002LightFlow(page);
 }
 
+async function verifyWork003LeadGenAccept(page) {
+  console.log('Navigating to lead_gen_01 detail...');
+  const alertBtn = page.getByRole('button', { name: 'View sample details for lead alert' });
+  await verifyTouchTarget(alertBtn, 'Lead alert details button');
+  await alertBtn.tap();
+  await page.waitForTimeout(300);
+  console.log('Accepting lead_gen_01 invitation...');
+  const acceptBtn = page.getByRole('button', { name: 'Accept sample lead' });
+  await verifyTouchTarget(acceptBtn, 'Accept sample lead button');
+  await acceptBtn.tap();
+  await page.waitForTimeout(300);
+  const confirmBtn = page.getByRole('button', { name: 'Confirm sample acceptance' });
+  await verifyTouchTarget(confirmBtn, 'Confirm acceptance button');
+  await confirmBtn.tap();
+  await page.waitForTimeout(300);
+  const outcomeTitle = page.getByRole('heading', { name: 'Sample Lead Accepted (Preview)' });
+  if ((await outcomeTitle.count()) === 0) {
+    throw new Error('Accepted outcome title missing after confirmation');
+  }
+}
+
+async function verifyWork003State1Unsimulated(page) {
+  const checkInBtn = page.locator('[role="button"]').filter({ hasText: 'Preview on-site check-in' });
+  if ((await checkInBtn.count()) === 0) throw new Error('Preview on-site check-in button missing');
+  await verifyTouchTarget(checkInBtn, 'Preview on-site check-in entry button');
+  await checkInBtn.tap();
+  await page.waitForTimeout(300);
+  await verifyOverflow(page, 'State 1 unsimulated check-in');
+  const eyebrow = page.getByText('SAMPLE LOCATION SIMULATION');
+  if ((await eyebrow.count()) === 0) throw new Error('Missing eyebrow: SAMPLE LOCATION SIMULATION');
+  const badge = page.getByText('LOCAL PREVIEW ONLY');
+  if ((await badge.count()) === 0) throw new Error('Missing badge: LOCAL PREVIEW ONLY');
+  const disclaimer = page.getByText('This location is simulated and does not prove or guarantee physical presence.');
+  if ((await disclaimer.count()) === 0) throw new Error('Missing check-in disclaimer');
+  const snapshot = page.getByText('Arrival Snapshot: Not simulated');
+  if ((await snapshot.count()) === 0) throw new Error('Missing Arrival Snapshot: Not simulated');
+  const tag = page.getByText('CONFIRMED (Sample)');
+  if ((await tag.count()) === 0) throw new Error('Missing CONFIRMED (Sample) booking status tag');
+  await measureContrast(page, eyebrow, 4.5, 'State 1 Eyebrow');
+  await measureContrast(page, disclaimer, 4.5, 'State 1 Disclaimer');
+  await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-003-01-checkin-ready-dark.png') });
+}
+
+async function verifyWork003State2Simulated(page) {
+  const simBtn = page.locator('[role="button"]').filter({ hasText: 'Simulate on-site check-in' });
+  await verifyTouchTarget(simBtn, 'Simulate on-site check-in action button');
+  await simBtn.tap();
+  await page.waitForTimeout(300);
+  await verifyOverflow(page, 'State 2 simulated check-in');
+  const simBadge = page.getByText('SIMULATED ARRIVAL (Preview)');
+  if ((await simBadge.count()) === 0) throw new Error('Missing exact visible string: SIMULATED ARRIVAL (Preview)');
+  const stampText = page.getByText('Arrival view previewed in memory');
+  if ((await stampText.count()) === 0) throw new Error('Missing exact visible string: Arrival view previewed in memory');
+  const modalHeading = page.getByRole('heading', { name: /Accept Sample Lead\?|Decline Sample Lead/ });
+  if ((await modalHeading.count()) > 0) throw new Error('Unexpected dialog/modal appeared during check-in simulation');
+  const bodyText = await page.locator('body').innerText();
+  if (/IN_PROGRESS|In Progress/i.test(bodyText) && !/In production/i.test(bodyText)) {
+    throw new Error('Rendered booking status illegally changed');
+  }
+  await measureContrast(page, simBadge, 4.5, 'State 2 Simulated Badge');
+  await measureContrast(page, stampText, 4.5, 'State 2 Stamp Text');
+  await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-003-02-checkin-simulated-dark.png') });
+}
+
+async function verifyWork003ResetRestoration(page) {
+  const resetBtn = page.getByRole('button', { name: 'Reset location simulation' });
+  await verifyTouchTarget(resetBtn, 'Reset location simulation button');
+  await resetBtn.tap();
+  await page.waitForTimeout(300);
+  if ((await page.getByText('Arrival Snapshot: Not simulated').count()) === 0) {
+    throw new Error('Reset failed: Arrival Snapshot: Not simulated is missing');
+  }
+  if ((await page.getByText('SIMULATED ARRIVAL (Preview)').count()) > 0) {
+    throw new Error('Reset failed: SIMULATED ARRIVAL (Preview) is still visible');
+  }
+  await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-003-03-checkin-reset-dark.png') });
+  await page.locator('[role="button"]').filter({ hasText: 'Simulate on-site check-in' }).tap();
+  await page.waitForTimeout(300);
+}
+
+async function verifyWork003LightScheme(page) {
+  console.log('Verifying OS-preference test while app remains dark (prefers-color-scheme: light)...');
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.waitForTimeout(300);
+  const bg = await page.evaluate(() => {
+    return window.getComputedStyle(document.body).backgroundColor || window.getComputedStyle(document.documentElement).backgroundColor;
+  });
+  const currentBgRgb = parseRgb(bg);
+  if (luminance(currentBgRgb.r, currentBgRgb.g, currentBgRgb.b) > 0.1) {
+    throw new Error(`OS light preference caused unexpected light background while app dark (${bg})`);
+  }
+  await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-003-04-checkin-simulated-light-scheme.png') });
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.waitForTimeout(200);
+}
+
+async function verifyWork003Landscape(page) {
+  await page.setViewportSize({ width: 844, height: 390 });
+  await page.waitForTimeout(300);
+  await verifyOverflow(page, 'M3 compact landscape');
+  const landscapeReset = page.getByRole('button', { name: 'Reset location simulation' });
+  await verifyTouchTarget(landscapeReset, 'Landscape reset button');
+  await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-003-05-checkin-simulated-landscape.png') });
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.waitForTimeout(200);
+}
+
+async function verifyWork003ScaledText(page) {
+  await page.evaluate(() => {
+    document.querySelectorAll('*').forEach((el) => {
+      if (el.children.length === 0 && el.textContent.trim().length > 0) {
+        const computed = parseFloat(window.getComputedStyle(el).fontSize);
+        if (!isNaN(computed)) {
+          el.setAttribute('data-orig-font-size', el.style.fontSize || '');
+          el.style.fontSize = `${computed * 1.25}px`;
+        }
+      }
+    });
+  });
+  await page.waitForTimeout(300);
+  await verifyOverflow(page, '125% browser text-scaling proxy on M3 simulated check-in');
+  if ((await page.getByText('SIMULATED ARRIVAL (Preview)').count()) === 0) {
+    throw new Error('SIMULATED ARRIVAL (Preview) label vanished under 125% text scale');
+  }
+  await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-003-06-checkin-simulated-scaled-text.png') });
+  await restoreScaledFonts(page);
+}
+
+async function verifyWork003LightState1(page) {
+  const checkInBtn = page.locator('[role="button"]').filter({ hasText: 'Preview on-site check-in' });
+  await verifyTouchTarget(checkInBtn, 'Light Preview on-site check-in button');
+  await checkInBtn.tap();
+  await page.waitForTimeout(300);
+  await verifyOverflow(page, 'State 1 light check-in');
+  const eyebrow = page.getByText('SAMPLE LOCATION SIMULATION');
+  const disclaimer = page.getByText('This location is simulated and does not prove or guarantee physical presence.');
+  const snapshot = page.getByText('Arrival Snapshot: Not simulated');
+  if ((await snapshot.count()) === 0) throw new Error('Missing Light Arrival Snapshot: Not simulated');
+  await measureContrast(page, eyebrow, 4.5, 'Light State 1 Eyebrow');
+  await measureContrast(page, disclaimer, 4.5, 'Light State 1 Disclaimer');
+  const bg = await getEffectiveBg(eyebrow);
+  const currentBgRgb = parseRgb(bg);
+  if (luminance(currentBgRgb.r, currentBgRgb.g, currentBgRgb.b) < 0.5) {
+    throw new Error(`App light mode failed: background was dark (${bg})`);
+  }
+  await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-003-07-checkin-ready-app-light.png') });
+}
+
+async function verifyWork003AppLightFlow(page) {
+  console.log('Verifying app-selected light mode via home-screen toggle...');
+  await toggleTheme(page, 'Switch to light mode');
+  try {
+    await page.goto(`${BASE_URL}/brainworker/workspace-preview`, { waitUntil: 'networkidle' });
+    await page.waitForTimeout(300);
+    await verifyWork003LeadGenAccept(page);
+    await verifyWork003LightState1(page);
+  } finally {
+    await toggleTheme(page, 'Switch to dark mode');
+  }
+}
+
+async function executeWork003QaFlow(page) {
+  console.log('Starting MOB-WORK-003 check-in simulation QA flow...');
+  await page.goto(`${BASE_URL}/brainworker/workspace-preview`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(300);
+  await verifyWork003LeadGenAccept(page);
+  await verifyWork003State1Unsimulated(page);
+  await verifyWork003State2Simulated(page);
+  await verifyWork003ResetRestoration(page);
+  await verifyWork003LightScheme(page);
+  await verifyWork003Landscape(page);
+  await verifyWork003ScaledText(page);
+  await verifyWork003AppLightFlow(page);
+}
+
+async function verifyWork003ReadyScrollAndAssert(page, label) {
+  const simBtn = page.locator('[role="button"]').filter({ hasText: 'Simulate on-site check-in' });
+  if ((await simBtn.count()) === 0) throw new Error(`${label}: missing Simulate on-site check-in button`);
+  await verifyTouchTarget(simBtn, `${label} Simulate on-site check-in button`);
+  await simBtn.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  const box = await simBtn.boundingBox();
+  if (!box || box.y < 0 || box.y + box.height > 812) {
+    throw new Error(`${label}: action button outside 375x812 viewport: ${JSON.stringify(box)}`);
+  }
+  const disclaimer = page.getByText('This location is simulated and does not prove or guarantee physical presence.');
+  if ((await disclaimer.count()) === 0) throw new Error(`${label}: missing disclaimer`);
+  const snapshot = page.getByText('Arrival Snapshot: Not simulated');
+  if ((await snapshot.count()) === 0) throw new Error(`${label}: missing Arrival Snapshot: Not simulated`);
+}
+
+async function verifyWork003ReadyDark(page) {
+  console.log('Capturing M3 ready state in dark mode...');
+  await page.goto(`${BASE_URL}/brainworker/workspace-preview`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(300);
+  await verifyWork003LeadGenAccept(page);
+  const checkInBtn = page.locator('[role="button"]').filter({ hasText: 'Preview on-site check-in' });
+  await verifyTouchTarget(checkInBtn, 'Dark Preview on-site check-in button');
+  await checkInBtn.tap();
+  await page.waitForTimeout(300);
+  await verifyWork003ReadyScrollAndAssert(page, 'Dark');
+  await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-003-01-checkin-ready-dark.png') });
+}
+
+async function verifyWork003ReadyLight(page) {
+  console.log('Capturing M3 ready state in app light mode...');
+  await toggleTheme(page, 'Switch to light mode');
+  try {
+    await page.goto(`${BASE_URL}/brainworker/workspace-preview`, { waitUntil: 'networkidle' });
+    await page.waitForTimeout(300);
+    await verifyWork003LeadGenAccept(page);
+    const checkInBtn = page.locator('[role="button"]').filter({ hasText: 'Preview on-site check-in' });
+    await verifyTouchTarget(checkInBtn, 'Light Preview on-site check-in button');
+    await checkInBtn.tap();
+    await page.waitForTimeout(300);
+    await verifyWork003ReadyScrollAndAssert(page, 'Light');
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-003-07-checkin-ready-app-light.png') });
+  } finally {
+    await toggleTheme(page, 'Switch to dark mode');
+  }
+}
+
+async function executeWork003ReadyCapturesFlow(page) {
+  console.log('Executing narrow MOB-WORK-003 ready-captures flow...');
+  await verifyWork003ReadyDark(page);
+  await verifyWork003ReadyLight(page);
+}
+
 async function executeQaSteps(page) {
   await verifyRegisterLinkFlow(page);
   await verifyWorkspaceFeed(page);
@@ -716,20 +946,52 @@ async function closeAll(page, context, browser, server) {
 }
 
 async function runQa() {
+  const isWork003Ready = process.argv.includes('--slice=MOB-WORK-003-ready-captures') || process.env.SLICE === 'MOB-WORK-003-ready-captures';
+  const isWork003 = process.argv.includes('--slice=MOB-WORK-003') || process.env.SLICE === 'MOB-WORK-003';
   const isWork002 = process.argv.includes('--slice=MOB-WORK-002') || process.env.SLICE === 'MOB-WORK-002';
-  const server = await startWebServer();
+  let tmpExportDir = null;
+  let server = null;
+  const needsWebExport = isWork003 || isWork003Ready;
+
+  if (needsWebExport) {
+    tmpExportDir = fs.mkdtempSync(path.join(os.tmpdir(), 'expo-work003-web-'));
+    console.log(`Compiling fresh Expo web export to ${tmpExportDir} via pnpm...`);
+    execSync(`pnpm --filter @bukiebrainjobs/mobile exec expo export --platform web --output-dir "${tmpExportDir}"`, {
+      stdio: 'inherit',
+      env: { ...process.env, CI: '1' },
+    });
+  }
+  server = needsWebExport ? await startWebServer(tmpExportDir) : await startWebServer();
+
   const browser = await launchBrowser();
   const context = await browser.newContext({ viewport: { width: 375, height: 812 }, hasTouch: true });
   const page = await context.newPage();
   const errors = [];
+  const nonLocalRequests = [];
   page.on('pageerror', (err) => errors.push(err.message));
   page.on('console', (msg) => (msg.type() === 'error' ? errors.push(msg.text()) : null));
+  page.on('request', (req) => {
+    const url = req.url();
+    if (!url.startsWith('http://127.0.0.1:') && !url.startsWith('http://localhost:')) {
+      nonLocalRequests.push(url);
+    }
+  });
 
   try {
     if (isWork002) {
       await executeWork002QaFlow(page);
       if (errors.length > 0) throw new Error(`Browser errors:\n${errors.join('\n')}`);
       console.log('PASS: All MOB-WORK-002 Expo Playwright QA verifications passed cleanly!');
+    } else if (isWork003Ready) {
+      await executeWork003ReadyCapturesFlow(page);
+      if (errors.length > 0) throw new Error(`Browser errors:\n${errors.join('\n')}`);
+      if (nonLocalRequests.length > 0) throw new Error(`Non-local requests detected:\n${nonLocalRequests.join('\n')}`);
+      console.log('PASS: All MOB-WORK-003 ready-captures verifications passed cleanly!');
+    } else if (isWork003) {
+      await executeWork003QaFlow(page);
+      if (errors.length > 0) throw new Error(`Browser errors:\n${errors.join('\n')}`);
+      if (nonLocalRequests.length > 0) throw new Error(`Non-local requests detected:\n${nonLocalRequests.join('\n')}`);
+      console.log('PASS: All MOB-WORK-003 Expo Playwright QA verifications passed cleanly!');
     } else {
       await executeQaSteps(page);
       if (errors.length > 0) throw new Error(`Browser errors:\n${errors.join('\n')}`);
@@ -737,6 +999,10 @@ async function runQa() {
     }
   } finally {
     await closeAll(page, context, browser, server);
+    if (tmpExportDir && fs.existsSync(tmpExportDir)) {
+      fs.rmSync(tmpExportDir, { recursive: true, force: true });
+      console.log(`Cleaned up temporary export directory ${tmpExportDir}`);
+    }
   }
 }
 
