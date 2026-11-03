@@ -19,9 +19,7 @@ vi.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
 }));
 
-// @ts-expect-error Node module available in Vitest test runner
 import { readFileSync } from 'node:fs';
-// @ts-expect-error Node module available in Vitest test runner
 import { resolve } from 'node:path';
 
 declare const __dirname: string;
