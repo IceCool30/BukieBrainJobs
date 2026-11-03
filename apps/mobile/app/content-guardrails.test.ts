@@ -1,6 +1,4 @@
-// @ts-expect-error Node module available in Vitest test runner
 import { readFileSync } from 'node:fs';
-// @ts-expect-error Node module available in Vitest test runner
 import { resolve } from 'node:path';
 
 declare const __dirname: string;

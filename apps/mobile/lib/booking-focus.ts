@@ -17,10 +17,10 @@ const FIELD_ORDER: readonly BookingFocusField[] = [
   'paymentPreference',
 ];
 
-export function focusFirstInvalidBookingControl<Target>(
+export function focusFirstInvalidBookingControl<T extends Record<BookingFocusField, unknown>>(
   errors: Partial<Record<BookingFocusField, string | undefined>>,
-  targets: Record<BookingFocusField, Target>,
-  focus: (target: Target) => void,
+  targets: T,
+  focus: (target: T[BookingFocusField]) => void,
 ): BookingFocusField | undefined {
   for (const field of FIELD_ORDER) {
     if (errors[field]) {
