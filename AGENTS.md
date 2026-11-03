@@ -86,10 +86,10 @@ This file defines the standards and operational map every contributor must follo
 
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
-- **Active Phase**: Phase 3 Full Two-Sided Marketplace Lifecycle.
-- **Active Slice**: Item 3.4 Dispute Handling & Support Interface (`BW-010`), status: LOCAL UNCOMMITTED / PM REVIEW PENDING.
-- **Current Product Baseline**: BW-008 On-Site Work & In-Progress Verification (Item 3.2, PR #64), merged at `7501ce7`; BW-009 Post-Job Completion & Escrow Release (Item 3.3), PR creation pending.
-- **Next Product Slice**: Phase 4 Mobile Application (`apps/mobile`) following merge of Phase 3 items.
+- **Active Phase**: Phase 4 Mobile Application (`apps/mobile`), Item 4.2.2 Native Booking Preparation, Job Posting, Customer Activity, and Lifecycle (IN PROGRESS).
+- **Active Slice**: None active; no next slice selected under delegated PM authority. Completed accepted slices: MOB-ACT-001 Native Customer Activity Hub (PM accepted 2026-11-02, committed and pushed as `990ef37`), standalone mobile type-check baseline repair (committed as `7040787`), and MOB-LIFE-001 Native Booking Lifecycle Presentation (UI-only, PM accepted on 2026-11-03 under owner delegation; local uncommitted at acceptance time; native runtime unverified; Phase 4.2.2 IN PROGRESS with persistence and full offline caching separate and unchecked).
+- **Current Product Baseline**: BW-008 On-Site Work & In-Progress Verification (Item 3.2, PR #64), merged at `7501ce7`; BW-009 Post-Job Completion & Escrow Release (Item 3.3), PR creation pending; BW-010 Dispute Handling & Support Interface (Item 3.4, PM REVIEW ACCEPTED / OWNER COMMIT APPROVAL PENDING / LOCAL UNCOMMITTED).
+- **Next Product Slice**: Pending next slice authorization under Phase 4 Mobile Application (`apps/mobile`), with Phase 4.2.2 IN PROGRESS (lifecycle persistence and full offline caching remain separate and unchecked); no next slice selected under delegated PM authority.
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`
