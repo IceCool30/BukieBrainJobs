@@ -57,4 +57,56 @@ describe('MOB-ACT-001 Native Customer Activity Hub Screen', () => {
     expect(jobsContent).not.toContain('sqlite');
     expect(jobsContent).not.toContain('fetch(');
   });
+
+  describe('MOB-LIFE-001 Native Booking Lifecycle Presentation (UI-Only)', () => {
+    it('enforces minHeight 48 and minWidth 48 on activity card touch targets with accessible role and hint', () => {
+      const jobsContent = readMobileFile('app/(tabs)/jobs.tsx');
+      expect(jobsContent).toContain('accessibilityRole="button"');
+      expect(jobsContent).toContain('accessibilityHint="Opens lifecycle details"');
+      expect(jobsContent).toContain('minHeight: 48');
+    });
+
+    it('wires sample card selection to in-place lifecycle detail with local state', () => {
+      const jobsContent = readMobileFile('app/(tabs)/jobs.tsx');
+      expect(jobsContent).toContain('selectedSampleIndex');
+      expect(jobsContent).toContain('setSelectedSampleIndex');
+    });
+
+    it('renders dedicated Back button in detail view with accessible role, min 48px target, and label', () => {
+      const jobsContent = readMobileFile('app/(tabs)/jobs.tsx');
+      expect(jobsContent).toContain('Back to activity list');
+      expect(jobsContent).toContain('Back to Activity');
+      expect(jobsContent).toContain('accessibilityLabel="Back to activity list"');
+      expect(jobsContent).toContain('isLight ? c.amberHover : c.amber');
+      expect(jobsContent).toContain('isLight ? c.card : c.strip');
+    });
+
+    it('resets selected sample on navigation blur', () => {
+      const jobsContent = readMobileFile('app/(tabs)/jobs.tsx');
+      expect(jobsContent).toContain("addListener('blur'");
+      expect(jobsContent).toContain('setSelectedSampleIndex(null)');
+    });
+
+    it('renders truthful narrative and canonical headings without schedule, personal, or price fabrication', () => {
+      const jobsContent = readMobileFile('app/(tabs)/jobs.tsx');
+      expect(jobsContent).toContain('getSampleLifecycleHeading');
+      expect(jobsContent).toContain('getSampleLifecycleNarrative');
+      expect(jobsContent).not.toMatch(/₦|NGN|\$[0-9]|price|hourly/i);
+      expect(jobsContent).not.toMatch(/workerName|customerPhone|avatar/i);
+      expect(jobsContent).not.toMatch(/appointmentTime|scheduleDate|countdown/i);
+    });
+
+    it('renders generic linear milestone indicator and handles cancelled state without progression sequence', () => {
+      const jobsContent = readMobileFile('app/(tabs)/jobs.tsx');
+      expect(jobsContent).toContain('getSampleMilestoneProgression');
+      expect(jobsContent).toContain('isSampleCancelled');
+      expect(jobsContent).not.toContain('CancelledTerminalBlock');
+      expect(jobsContent).toContain('accessibilityRole="header" style={[styles.headingLabel');
+    });
+
+    it('renders sample context block with activity type and local demonstration disclaimer', () => {
+      const jobsContent = readMobileFile('app/(tabs)/jobs.tsx');
+      expect(jobsContent).toContain('LIFECYCLE_SAMPLE_DISCLAIMER');
+    });
+  });
 });
