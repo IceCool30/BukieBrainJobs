@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  Modal,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -14,32 +16,168 @@ import {
   WORKER_WORKSPACE_DISCLAIMER,
   SAMPLE_WORKER_LEADS,
   SAMPLE_LEAD_ALERT,
+  BW003_DECLINE_REASONS,
+  getDeclineReasonLabel,
   getSampleLeadById,
   type WorkerSampleLead,
   type SampleLeadAlert,
+  type DeclineReasonCode,
+  type PreviewOutcome,
 } from '../../lib/worker-workspace-preview';
+
+function useEscapeDismiss(visible: boolean, onDismiss: () => void) {
+  useEffect(() => {
+    if (Platform.OS === 'web' && visible) {
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onDismiss();
+      };
+      window.addEventListener('keydown', onKeyDown);
+      return () => window.removeEventListener('keydown', onKeyDown);
+    }
+  }, [visible, onDismiss]);
+}
+
+function useModalStates() {
+  const [acceptModalVisible, setAcceptModalVisible] = useState(false);
+  const [declineModalVisible, setDeclineModalVisible] = useState(false);
+  const [selectedReason, setSelectedReason] = useState<DeclineReasonCode | null>(null);
+  return {
+    acceptModalVisible,
+    setAcceptModalVisible,
+    declineModalVisible,
+    setDeclineModalVisible,
+    selectedReason,
+    setSelectedReason,
+  };
+}
+
+function useWorkspacePreviewState() {
+  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
+  const [previewOutcome, setPreviewOutcome] = useState<PreviewOutcome | null>(null);
+  const modals = useModalStates();
+
+  const resetAll = () => {
+    setSelectedLeadId(null);
+    setPreviewOutcome(null);
+    modals.setAcceptModalVisible(false);
+    modals.setDeclineModalVisible(false);
+    modals.setSelectedReason(null);
+  };
+
+  return { selectedLeadId, setSelectedLeadId, previewOutcome, setPreviewOutcome, resetAll, ...modals };
+}
+
+function useAcceptDeclineHandlers(state: ReturnType<typeof useWorkspacePreviewState>) {
+  const onConfirmAccept = () => {
+    state.setAcceptModalVisible(false);
+    state.setPreviewOutcome({
+      type: 'ACCEPTED',
+      message: 'This was a local in-memory preview demonstration. No response was transmitted to any server and no active booking was created.',
+    });
+  };
+
+  const onConfirmDecline = () => {
+    if (!state.selectedReason) return;
+    state.setDeclineModalVisible(false);
+    state.setPreviewOutcome({
+      type: 'DECLINED',
+      reasonCode: state.selectedReason,
+      reasonLabel: getDeclineReasonLabel(state.selectedReason),
+      message: 'This was a local in-memory preview demonstration. No response was transmitted to any server.',
+    });
+    state.setSelectedReason(null);
+  };
+
+  return { onConfirmAccept, onConfirmDecline };
+}
+
+function WorkspaceFeedView({
+  onSelectAlert,
+  onSelectLead,
+}: {
+  onSelectAlert: () => void;
+  onSelectLead: (id: string) => void;
+}) {
+  return (
+    <>
+      <WorkspaceHeaderBlock />
+      <SampleLeadAlertBanner onSelect={onSelectAlert} />
+      <SampleLeadFeedList onSelectLead={onSelectLead} />
+    </>
+  );
+}
+
+type MainBodyProps = {
+  selectedLead: WorkerSampleLead | null;
+  onBack: () => void;
+  state: ReturnType<typeof useWorkspacePreviewState>;
+};
+
+function WorkspaceMainBody({ selectedLead, onBack, state }: MainBodyProps) {
+  if (!selectedLead) {
+    return (
+      <WorkspaceFeedView
+        onSelectAlert={() => state.setSelectedLeadId(SAMPLE_LEAD_ALERT.id)}
+        onSelectLead={(id) => state.setSelectedLeadId(id)}
+      />
+    );
+  }
+  return (
+    <SampleLeadDetailView
+      lead={selectedLead}
+      onBack={onBack}
+      previewOutcome={state.previewOutcome}
+      onResetOutcome={() => state.setPreviewOutcome(null)}
+      onOpenAccept={() => state.setAcceptModalVisible(true)}
+      onOpenDecline={() => state.setDeclineModalVisible(true)}
+    />
+  );
+}
+
+type WorkspaceModalsProps = {
+  state: ReturnType<typeof useWorkspacePreviewState>;
+  onConfirmAccept: () => void;
+  onConfirmDecline: () => void;
+};
+
+function WorkspaceModals({ state, onConfirmAccept, onConfirmDecline }: WorkspaceModalsProps) {
+  const onCancelDecline = () => {
+    state.setDeclineModalVisible(false);
+    state.setSelectedReason(null);
+  };
+  return (
+    <>
+      <AcceptConfirmationModal
+        visible={state.acceptModalVisible}
+        onCancel={() => state.setAcceptModalVisible(false)}
+        onConfirm={onConfirmAccept}
+      />
+      <DeclineModal
+        visible={state.declineModalVisible}
+        selectedReason={state.selectedReason}
+        onSelectReason={(code) => state.setSelectedReason(code)}
+        onCancel={onCancelDecline}
+        onConfirm={onConfirmDecline}
+      />
+    </>
+  );
+}
 
 export default function MobileBrainWorkerWorkspacePreviewScreen() {
   const router = useRouter();
   const c = useThemeColors();
-  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
-  const selectedLead = selectedLeadId ? getSampleLeadById(selectedLeadId) : null;
+  const state = useWorkspacePreviewState();
+  const { onConfirmAccept, onConfirmDecline } = useAcceptDeclineHandlers(state);
+  const lead = state.selectedLeadId ? getSampleLeadById(state.selectedLeadId) ?? null : null;
 
   return (
     <SafeAreaView style={[s.fill, { backgroundColor: c.canvas }]} edges={['top', 'left', 'right', 'bottom']}>
       <WorkspaceTopNav onBack={() => router.back()} />
       <ScrollView contentContainerStyle={s.scrollContent} keyboardShouldPersistTaps="handled">
         <WorkspaceDisclaimerBanner />
-        {selectedLead ? (
-          <SampleLeadDetailView lead={selectedLead} onBack={() => setSelectedLeadId(null)} />
-        ) : (
-          <>
-            <WorkspaceHeaderBlock />
-            <SampleLeadAlertBanner onSelect={() => setSelectedLeadId(SAMPLE_LEAD_ALERT.id)} />
-            <SampleLeadFeedList onSelectLead={(id) => setSelectedLeadId(id)} />
-          </>
-        )}
+        <WorkspaceMainBody selectedLead={lead} onBack={state.resetAll} state={state} />
       </ScrollView>
+      <WorkspaceModals state={state} onConfirmAccept={onConfirmAccept} onConfirmDecline={onConfirmDecline} />
     </SafeAreaView>
   );
 }
@@ -288,21 +426,372 @@ function DetailNoticeBlock({ c }: { c: ReturnType<typeof useThemeColors> }) {
   );
 }
 
-function SampleLeadDetailView({
-  lead,
-  onBack,
-}: {
+type LeadDetailProps = {
   lead: WorkerSampleLead;
   onBack: () => void;
-}) {
+  previewOutcome: PreviewOutcome | null;
+  onResetOutcome: () => void;
+  onOpenAccept: () => void;
+  onOpenDecline: () => void;
+};
+
+function SampleLeadDetailView(props: LeadDetailProps) {
+  const { lead, onBack, previewOutcome, onResetOutcome, onOpenAccept, onOpenDecline } = props;
   const c = useThemeColors();
+  const isAlert = lead.id === SAMPLE_LEAD_ALERT.id;
   return (
     <View style={[s.detailCard, { backgroundColor: c.card, borderColor: c.divider }]}>
       <DetailBackBtn onBack={onBack} />
       <DetailHeaderInfo lead={lead} />
       <DetailProblemSection problemDetail={lead.problemDetail} />
       <DetailMetaGrid lead={lead} />
+      {isAlert ? (
+        <InvitationActionSection
+          outcome={previewOutcome}
+          onReset={onResetOutcome}
+          onAccept={onOpenAccept}
+          onDecline={onOpenDecline}
+        />
+      ) : null}
       <DetailNoticeBlock c={c} />
+    </View>
+  );
+}
+
+function InvitationActionSection({
+  outcome,
+  onReset,
+  onAccept,
+  onDecline,
+}: {
+  outcome: PreviewOutcome | null;
+  onReset: () => void;
+  onAccept: () => void;
+  onDecline: () => void;
+}) {
+  if (outcome) {
+    return <InvitationOutcomeCard outcome={outcome} onReset={onReset} />;
+  }
+  return <InvitationActionCard onAccept={onAccept} onDecline={onDecline} />;
+}
+
+function InvitationActionCardHeader() {
+  const c = useThemeColors();
+  const tagColor = getStripAccentColor(c, c.amber);
+  const eyebrowColor = c.mode === 'light' ? c.amberHover : c.amber;
+  return (
+    <View style={s.actionHeaderRow}>
+      <Text style={[s.actionEyebrow, { color: eyebrowColor }]}>SAMPLE INVITATION ACTIONS</Text>
+      <View style={[s.localPreviewTag, { backgroundColor: c.strip, borderColor: c.divider }]}>
+        <Text style={[s.localPreviewTagText, { color: tagColor }]}>LOCAL PREVIEW</Text>
+      </View>
+    </View>
+  );
+}
+
+function InvitationActionCard({
+  onAccept,
+  onDecline,
+}: {
+  onAccept: () => void;
+  onDecline: () => void;
+}) {
+  const c = useThemeColors();
+  return (
+    <View style={[s.actionCard, { backgroundColor: c.canvas, borderColor: c.amber }]}>
+      <InvitationActionCardHeader />
+      <Text style={[s.actionDescription, { color: c.mutedText }]}>
+        Preview how direct lead invitations are handled. Actions taken here are simulated locally; no server response or booking is created.
+      </Text>
+      <View style={s.actionBtnCol}>
+        <AcceptButton onAccept={onAccept} />
+        <DeclineButton onDecline={onDecline} />
+      </View>
+    </View>
+  );
+}
+
+function AcceptButton({ onAccept }: { onAccept: () => void }) {
+  const c = useThemeColors();
+  const bg = c.mode === 'light' ? c.amberHover : c.amber;
+  const fg = c.mode === 'dark' ? c.canvas : c.card;
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Accept sample lead"
+      onPress={onAccept}
+      style={({ pressed }) => [s.actionBtn, { backgroundColor: pressed ? c.amberHover : bg }]}
+    >
+      <Ionicons name="checkmark-circle-outline" size={18} color={fg} accessible={false} />
+      <Text style={[s.actionBtnText, { color: fg }]}>Accept sample lead</Text>
+    </Pressable>
+  );
+}
+
+function DeclineButton({ onDecline }: { onDecline: () => void }) {
+  const c = useThemeColors();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Decline sample lead"
+      onPress={onDecline}
+      style={({ pressed }) => [
+        s.actionBtnOutline,
+        { borderColor: c.mutedText, backgroundColor: pressed ? c.cardHover : 'transparent' },
+      ]}
+    >
+      <Ionicons name="close-circle-outline" size={18} color={c.mainText} accessible={false} />
+      <Text style={[s.actionBtnText, { color: c.mainText }]}>Decline sample lead</Text>
+    </Pressable>
+  );
+}
+
+function InvitationOutcomeCard({
+  outcome,
+  onReset,
+}: {
+  outcome: PreviewOutcome;
+  onReset: () => void;
+}) {
+  const c = useThemeColors();
+  const isAccepted = outcome.type === 'ACCEPTED';
+  const amberCol = c.mode === 'light' ? c.amberHover : c.amber;
+  const titleCol = isAccepted ? c.green : amberCol;
+  const borderCol = isAccepted ? c.green : c.amber;
+  return (
+    <View style={[s.outcomeCard, { backgroundColor: c.canvas, borderColor: borderCol }]}>
+      <Text accessibilityRole="header" style={[s.outcomeTitle, { color: titleCol }]}>
+        {isAccepted ? 'Sample Lead Accepted (Preview)' : 'Sample Lead Declined (Preview)'}
+      </Text>
+      {!isAccepted && (
+        <Text style={[s.outcomeReason, { color: c.mainText }]}>Reason: {outcome.reasonLabel}</Text>
+      )}
+      <Text style={[s.outcomeDesc, { color: c.mutedText }]}>{outcome.message}</Text>
+      <ResetOutcomeButton onReset={onReset} />
+    </View>
+  );
+}
+
+function ResetOutcomeButton({ onReset }: { onReset: () => void }) {
+  const c = useThemeColors();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Reset preview outcome"
+      onPress={onReset}
+      style={({ pressed }) => [s.resetBtn, { borderColor: c.mutedText, opacity: pressed ? 0.7 : 1 }]}
+    >
+      <Ionicons name="refresh-outline" size={16} color={c.mainText} accessible={false} />
+      <Text style={[s.resetBtnText, { color: c.mainText }]}>Reset preview outcome</Text>
+    </Pressable>
+  );
+}
+
+type AcceptModalProps = {
+  visible: boolean;
+  onCancel: () => void;
+  onConfirm: () => void;
+};
+
+function AcceptConfirmationModal({ visible, onCancel, onConfirm }: AcceptModalProps) {
+  const c = useThemeColors();
+  useEscapeDismiss(visible, onCancel);
+  return (
+    <Modal visible={visible} transparent animationType="none" onRequestClose={onCancel}>
+      <View style={s.modalOverlay}>
+        <View testID="accept-modal-card" style={[s.modalCard, { backgroundColor: c.card, borderColor: c.mutedText }]}>
+          <Text accessibilityRole="header" style={[s.modalTitle, { color: c.mainText }]}>
+            Accept Sample Lead?
+          </Text>
+          <Text style={[s.modalBody, { color: c.mutedText }]}>
+            This is an interface preview only. Confirming will show how an accepted state appears locally. No real customer booking will be created and no provider commitment is made.
+          </Text>
+          <AcceptModalActions onCancel={onCancel} onConfirm={onConfirm} />
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function AcceptModalActions({ onCancel, onConfirm }: { onCancel: () => void; onConfirm: () => void }) {
+  const c = useThemeColors();
+  const confirmBg = c.mode === 'light' ? c.amberHover : c.amber;
+  const confirmFg = c.mode === 'dark' ? c.canvas : c.card;
+  return (
+    <View style={s.modalActionsRow}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Cancel acceptance preview"
+        onPress={onCancel}
+        style={({ pressed }) => [s.modalCancelBtn, { borderColor: c.mutedText, opacity: pressed ? 0.7 : 1 }]}
+      >
+        <Text style={[s.modalActionBtnText, { color: c.mainText }]}>Cancel</Text>
+      </Pressable>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Confirm sample acceptance"
+        onPress={onConfirm}
+        style={({ pressed }) => [s.modalConfirmBtn, { backgroundColor: pressed ? c.amberHover : confirmBg }]}
+      >
+        <Text style={[s.modalActionBtnText, { color: confirmFg }]}>Confirm sample acceptance</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+type DeclineModalProps = {
+  visible: boolean;
+  selectedReason: DeclineReasonCode | null;
+  onSelectReason: (code: DeclineReasonCode) => void;
+  onCancel: () => void;
+  onConfirm: () => void;
+};
+
+function DeclineModal({ visible, selectedReason, onSelectReason, onCancel, onConfirm }: DeclineModalProps) {
+  const c = useThemeColors();
+  useEscapeDismiss(visible, onCancel);
+  return (
+    <Modal visible={visible} transparent animationType="none" onRequestClose={onCancel}>
+      <View style={s.modalOverlay}>
+        <View testID="decline-modal-card" style={[s.modalCard, { backgroundColor: c.card, borderColor: c.mutedText }]}>
+          <DeclineModalHeader />
+          <DeclineReasonList selectedReason={selectedReason} onSelectReason={onSelectReason} />
+          <DeclineModalActions selectedReason={selectedReason} onCancel={onCancel} onConfirm={onConfirm} />
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function DeclineModalHeader() {
+  const c = useThemeColors();
+  return (
+    <View style={s.declineHeaderGap}>
+      <Text accessibilityRole="header" style={[s.modalTitle, { color: c.mainText }]}>
+        Decline Sample Lead
+      </Text>
+      <Text style={[s.modalSubtitle, { color: c.mutedText }]}>
+        Select a reason to preview the decline flow. No response will be submitted.
+      </Text>
+    </View>
+  );
+}
+
+type DeclineReasonListProps = {
+  selectedReason: DeclineReasonCode | null;
+  onSelectReason: (code: DeclineReasonCode) => void;
+};
+
+function DeclineReasonList({ selectedReason, onSelectReason }: DeclineReasonListProps) {
+  return (
+    <ScrollView style={s.reasonListScroll}>
+      {BW003_DECLINE_REASONS.map((reason) => (
+        <DeclineReasonOption
+          key={reason.code}
+          code={reason.code}
+          label={reason.label}
+          isSelected={selectedReason === reason.code}
+          onSelect={() => onSelectReason(reason.code)}
+        />
+      ))}
+    </ScrollView>
+  );
+}
+
+function DeclineRadioBullet({ isSelected, border, bulletBg }: { isSelected: boolean; border: string; bulletBg: string }) {
+  return (
+    <View style={[s.radioCircle, { borderColor: border }]}>
+      {isSelected && <View style={[s.radioInner, { backgroundColor: bulletBg }]} />}
+    </View>
+  );
+}
+
+type DeclineReasonOptionProps = {
+  code: DeclineReasonCode;
+  label: string;
+  isSelected: boolean;
+  onSelect: () => void;
+};
+
+function DeclineReasonOption({ label, isSelected, onSelect }: DeclineReasonOptionProps) {
+  const c = useThemeColors();
+  const accent = c.mode === 'light' ? c.amberHover : c.amber;
+  const border = isSelected ? accent : c.mutedText;
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{ checked: isSelected }}
+      accessibilityLabel={label}
+      onPress={onSelect}
+      style={({ pressed }) => [
+        s.reasonOptionRow,
+        { borderColor: border, backgroundColor: pressed ? c.cardHover : 'transparent' },
+      ]}
+    >
+      <DeclineRadioBullet isSelected={isSelected} border={border} bulletBg={accent} />
+      <Text style={[s.reasonOptionText, { color: c.mainText }]}>{label}</Text>
+    </Pressable>
+  );
+}
+
+function DeclineCancelBtn({ onCancel, c }: { onCancel: () => void; c: ReturnType<typeof useThemeColors> }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Cancel decline preview"
+      onPress={onCancel}
+      style={({ pressed }) => [s.modalCancelBtn, { borderColor: c.mutedText, opacity: pressed ? 0.7 : 1 }]}
+    >
+      <Text style={[s.modalActionBtnText, { color: c.mainText }]}>Cancel</Text>
+    </Pressable>
+  );
+}
+
+type DeclineActionsProps = {
+  selectedReason: DeclineReasonCode | null;
+  onCancel: () => void;
+  onConfirm: () => void;
+};
+
+type DeclineConfirmBtnProps = {
+  isDisabled: boolean;
+  onConfirm: () => void;
+  confirmBg: string;
+  confirmFg: string;
+  c: ReturnType<typeof useThemeColors>;
+};
+
+function DeclineConfirmBtn({ isDisabled, onConfirm, confirmBg, confirmFg, c }: DeclineConfirmBtnProps) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Confirm sample decline"
+      accessibilityState={{ disabled: isDisabled }}
+      disabled={isDisabled}
+      onPress={onConfirm}
+      style={({ pressed }) => [
+        s.modalConfirmBtn,
+        {
+          backgroundColor: pressed && !isDisabled ? c.amberHover : confirmBg,
+          borderColor: isDisabled ? c.mutedText : 'transparent',
+          borderWidth: isDisabled ? 1 : 0,
+        },
+      ]}
+    >
+      <Text style={[s.modalActionBtnText, { color: confirmFg }]}>Confirm sample decline</Text>
+    </Pressable>
+  );
+}
+
+function DeclineModalActions({ selectedReason, onCancel, onConfirm }: DeclineActionsProps) {
+  const c = useThemeColors();
+  const isDisabled = selectedReason === null;
+  const confirmBg = isDisabled ? c.cardHover : (c.mode === 'light' ? c.amberHover : c.amber);
+  const confirmFg = isDisabled ? c.mutedText : (c.mode === 'dark' ? c.canvas : c.card);
+  return (
+    <View style={s.modalActionsRow}>
+      <DeclineCancelBtn onCancel={onCancel} c={c} />
+      <DeclineConfirmBtn isDisabled={isDisabled} onConfirm={onConfirm} confirmBg={confirmBg} confirmFg={confirmFg} c={c} />
     </View>
   );
 }
@@ -449,4 +938,186 @@ const s = StyleSheet.create({
   metaValue: { fontSize: 13 },
   detailNotice: { borderRadius: 6, borderWidth: 1, padding: 10 },
   detailNoticeText: { fontSize: 11, lineHeight: 16 },
+  actionCard: {
+    borderRadius: 8,
+    borderWidth: 1.5,
+    padding: 14,
+    gap: 10,
+    marginTop: 4,
+  },
+  actionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  actionEyebrow: {
+    fontFamily: mono,
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+  localPreviewTag: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+  },
+  localPreviewTagText: {
+    fontFamily: mono,
+    fontSize: 9,
+    fontWeight: '700',
+    letterSpacing: 0.6,
+  },
+  actionDescription: {
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  actionBtnCol: {
+    gap: 8,
+  },
+  actionBtn: {
+    minHeight: 48,
+    borderRadius: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingHorizontal: 12,
+  },
+  actionBtnOutline: {
+    minHeight: 48,
+    borderRadius: 6,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingHorizontal: 12,
+  },
+  actionBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  outcomeCard: {
+    borderRadius: 8,
+    borderWidth: 1.5,
+    padding: 14,
+    gap: 8,
+    marginTop: 4,
+  },
+  outcomeTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  outcomeReason: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  outcomeDesc: {
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  resetBtn: {
+    minHeight: 48,
+    borderRadius: 6,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingHorizontal: 12,
+    alignSelf: 'flex-start',
+    marginTop: 4,
+  },
+  resetBtnText: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  modalCard: {
+    width: '100%',
+    maxWidth: 420,
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 14,
+    gap: 10,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  modalSubtitle: {
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  modalBody: {
+    fontSize: 13,
+    lineHeight: 19,
+  },
+  modalActionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 10,
+    marginTop: 6,
+  },
+  modalCancelBtn: {
+    minHeight: 48,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalConfirmBtn: {
+    minHeight: 48,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalActionBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  declineHeaderGap: {
+    gap: 4,
+  },
+  reasonListScroll: {
+    maxHeight: 160,
+  },
+  reasonOptionRow: {
+    minHeight: 48,
+    borderRadius: 6,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 8,
+  },
+  radioCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  radioInner: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  reasonOptionText: {
+    fontSize: 13,
+    fontWeight: '500',
+    flex: 1,
+  },
 });

@@ -86,10 +86,10 @@ This file defines the standards and operational map every contributor must follo
 
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
-- **Active Phase**: Phase 4.3 BrainWorker Native Experiences (`apps/mobile`), Item 1 Worker mobile workspace and lead push notifications (IN PROGRESS).
-- **Active Slice**: MOB-WORK-001 Native BrainWorker Workspace & Local Lead Alert Preview (PM accepted on 2026-11-03 for the UI-only local sample preview based on reviewed source, TDD evidence, and passing verification; Phase 4.3 Item 1 remains IN PROGRESS because live push delivery and backend integration remain deferred, and physical device/screen-reader runtime remains unverified).
-- **Current Product Baseline**: BW-008 On-Site Work & In-Progress Verification (Item 3.2, PR #64), merged at `7501ce7`; BW-009 Post-Job Completion & Escrow Release (Item 3.3), PR creation pending; BW-010 Dispute Handling & Support Interface (Item 3.4, PM REVIEW ACCEPTED / OWNER COMMIT APPROVAL PENDING / LOCAL UNCOMMITTED).
-- **Next Product Slice**: Pending next slice authorization under Phase 4.3 BrainWorker Native Experiences (`apps/mobile`), to be selected and scoped after this acceptance, with backend, database, authentication, network APIs, production persistence, offline caching, and live push delivery kept out of scope.
+- **Active Phase**: Phase 4.3 BrainWorker Native Experiences (`apps/mobile`), Item 2 Immediate job invitation accept/decline action modals (IN PROGRESS).
+- **Active Slice**: MOB-WORK-002 Native BrainWorker Workspace Immediate Job Invitation Accept/Decline Action Modals Preview (UI-only preview in progress; Phase 4.3 Item 1 accepted as MOB-WORK-001 at `2252aca`, Item 1 push delivery deferred; Item 2 backend integration deferred).
+- **Current Product Baseline**: BW-008 On-Site Work & In-Progress Verification (Item 3.2, PR #64), merged at `7501ce7`; BW-009 Post-Job Completion & Escrow Release (Item 3.3), PR creation pending; BW-010 Dispute Handling & Support Interface (Item 3.4, PM REVIEW ACCEPTED / OWNER COMMIT APPROVAL PENDING / LOCAL UNCOMMITTED); mobile accepted baseline at `2252aca`.
+- **Next Product Slice**: Pending next slice authorization under Phase 4.3 BrainWorker Native Experiences (`apps/mobile`), Item 3 (GPS provider check-in and on-site verification), with backend, database, authentication, network APIs, production persistence, and live push delivery kept out of scope.
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`

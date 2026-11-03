@@ -325,6 +325,146 @@ async function verifyWorkspaceFeed(page) {
   await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-001-02-workspace-feed-dark.png') });
 }
 
+async function measureBorderContrast(locator, minRatio, label) {
+  const border = await locator.evaluate((el) => window.getComputedStyle(el).borderColor);
+  const bg = await getEffectiveBg(locator);
+  const ratio = contrastRatio(parseRgb(border), parseRgb(bg));
+  console.log(`Border Contrast [${label}]: border=${border}, bg=${bg}, ratio=${ratio.toFixed(2)}:1`);
+  if (ratio < minRatio) {
+    throw new Error(`Border contrast failure [${label}]: ${ratio.toFixed(2)}:1 < ${minRatio}:1`);
+  }
+}
+
+async function verifyInvitationCard(page, themeLabel) {
+  const actionCard = page.getByText('SAMPLE INVITATION ACTIONS');
+  if ((await actionCard.count()) === 0) {
+    throw new Error(`Invitation action card missing in ${themeLabel} mode`);
+  }
+  const acceptBtn = page.getByRole('button', { name: 'Accept sample lead' });
+  const declineBtn = page.getByRole('button', { name: 'Decline sample lead' });
+  await verifyTouchTarget(acceptBtn, `${themeLabel} Accept button`);
+  await verifyTouchTarget(declineBtn, `${themeLabel} Decline button`);
+  await measureBorderContrast(declineBtn, 3.0, `${themeLabel} Decline Button Border`);
+  await scanVisibleTextContrast(page, `${themeLabel} Invitation Actions Text`);
+  await measureIconContrast(page, `${themeLabel} Invitation Actions Icons`);
+
+  if (themeLabel === 'Dark') {
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-002-01-invitation-actions-dark.png') });
+  } else {
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-002-06-invitation-actions-light.png') });
+  }
+}
+
+async function verifyAcceptModalDismissal(page, themeLabel) {
+  const acceptBtn = page.getByRole('button', { name: 'Accept sample lead' });
+  await acceptBtn.tap();
+  await page.waitForTimeout(300);
+  const title = page.getByRole('heading', { name: 'Accept Sample Lead?' });
+  if ((await title.count()) === 0) throw new Error('Accept modal title missing');
+  await measureContrast(page, title, 4.5, `${themeLabel} Accept Modal Title`);
+  await scanVisibleTextContrast(page, `${themeLabel} Accept Modal Text`);
+  const cancelBtn = page.getByRole('button', { name: 'Cancel acceptance preview' });
+  await measureBorderContrast(cancelBtn, 3.0, `${themeLabel} Accept Cancel Border`);
+  await measureBorderContrast(page.getByTestId('accept-modal-card'), 3.0, `${themeLabel} Accept Modal Card Border`);
+
+  if (themeLabel === 'Dark') {
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-002-02-accept-modal-dark.png') });
+  }
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(300);
+  if ((await page.getByRole('heading', { name: 'Accept Sample Lead?' }).count()) > 0) {
+    throw new Error('Escape should dismiss accept modal');
+  }
+}
+
+async function verifyAcceptModalConfirm(page, themeLabel) {
+  const acceptBtn = page.getByRole('button', { name: 'Accept sample lead' });
+  await acceptBtn.tap();
+  await page.waitForTimeout(300);
+  const confirmBtn = page.getByRole('button', { name: 'Confirm sample acceptance' });
+  await confirmBtn.tap();
+  await page.waitForTimeout(300);
+  const outcome = page.getByRole('heading', { name: 'Sample Lead Accepted (Preview)' });
+  if ((await outcome.count()) === 0) throw new Error('Accepted outcome missing after confirm');
+  await measureContrast(page, outcome, 4.5, `${themeLabel} Accepted Outcome Title`);
+  await scanVisibleTextContrast(page, `${themeLabel} Accepted Outcome Text`);
+  await measureIconContrast(page, `${themeLabel} Accepted Outcome Icons`);
+
+  if (themeLabel === 'Dark') {
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-002-03-accepted-outcome-dark.png') });
+  }
+  const resetBtn = page.getByRole('button', { name: 'Reset preview outcome' });
+  await verifyTouchTarget(resetBtn, 'Reset outcome button');
+  await resetBtn.tap();
+  await page.waitForTimeout(300);
+}
+
+async function verifyDeclineModalDismissal(page, themeLabel) {
+  const declineBtn = page.getByRole('button', { name: 'Decline sample lead' });
+  await declineBtn.tap();
+  await page.waitForTimeout(300);
+  const title = page.getByRole('heading', { name: 'Decline Sample Lead' });
+  if ((await title.count()) === 0) throw new Error('Decline modal title missing');
+  await measureContrast(page, title, 4.5, `${themeLabel} Decline Modal Title`);
+  await scanVisibleTextContrast(page, `${themeLabel} Decline Modal Text`);
+  const cancelBtn = page.getByRole('button', { name: 'Cancel decline preview' });
+  await measureBorderContrast(cancelBtn, 3.0, `${themeLabel} Decline Cancel Border`);
+  await measureBorderContrast(page.getByTestId('decline-modal-card'), 3.0, `${themeLabel} Decline Modal Card Border`);
+
+  if (themeLabel === 'Dark') {
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-002-04-decline-modal-dark.png') });
+  } else {
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-002-07-decline-modal-light.png') });
+  }
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(300);
+  if ((await page.getByRole('heading', { name: 'Decline Sample Lead' }).count()) > 0) {
+    throw new Error('Escape should dismiss decline modal');
+  }
+}
+
+async function selectDeclineReasonAndConfirm(page, themeLabel) {
+  const confirmBtn = page.getByRole('button', { name: 'Confirm sample decline' });
+  const isAriaDisabled = await confirmBtn.getAttribute('aria-disabled');
+  if (isAriaDisabled !== 'true') throw new Error('Confirm decline button must be disabled before reason selection');
+  const radio = page.getByRole('radio', { name: 'Rate or budget mismatch' });
+  await verifyTouchTarget(radio, 'Decline radio option');
+  await measureBorderContrast(radio, 3.0, `${themeLabel} Decline Radio Unselected Border`);
+  await radio.tap();
+  await page.waitForTimeout(300);
+  await measureBorderContrast(radio, 3.0, `${themeLabel} Decline Radio Selected Border`);
+  await confirmBtn.tap();
+  await page.waitForTimeout(300);
+}
+
+async function verifyDeclineModalConfirm(page, themeLabel) {
+  const declineBtn = page.getByRole('button', { name: 'Decline sample lead' });
+  await declineBtn.tap();
+  await page.waitForTimeout(300);
+  await selectDeclineReasonAndConfirm(page, themeLabel);
+  const outcome = page.getByRole('heading', { name: 'Sample Lead Declined (Preview)' });
+  if ((await outcome.count()) === 0) throw new Error('Declined outcome missing after confirm');
+  await measureContrast(page, outcome, 4.5, `${themeLabel} Declined Outcome Title`);
+  await scanVisibleTextContrast(page, `${themeLabel} Declined Outcome Text`);
+  await measureIconContrast(page, `${themeLabel} Declined Outcome Icons`);
+
+  if (themeLabel === 'Dark') {
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'expo-mob-work-002-05-declined-outcome-dark.png') });
+  }
+  const resetBtn = page.getByRole('button', { name: 'Reset preview outcome' });
+  await resetBtn.tap();
+  await page.waitForTimeout(300);
+}
+
+async function verifyInvitationActionFlow(page, themeLabel) {
+  console.log(`Verifying invitation action preview modals in ${themeLabel} mode...`);
+  await verifyInvitationCard(page, themeLabel);
+  await verifyAcceptModalDismissal(page, themeLabel);
+  await verifyAcceptModalConfirm(page, themeLabel);
+  await verifyDeclineModalDismissal(page, themeLabel);
+  await verifyDeclineModalConfirm(page, themeLabel);
+}
+
 async function verifyAlertDetailFlow(page) {
   console.log('Verifying alert detail inspection and back flow...');
   const alertBtn = page.getByRole('button', { name: 'View sample details for lead alert' });
@@ -352,6 +492,8 @@ async function verifyLeadCardDetailFlow(page) {
   await page.waitForTimeout(300);
   await verifyOverflow(page, 'AC lead detail inspection');
   await verifyDisclaimerA11y(page, 'AC lead detail inspection');
+  const actionsCard = page.getByText('SAMPLE INVITATION ACTIONS');
+  if ((await actionsCard.count()) > 0) throw new Error('Invitation actions must not appear on generic lead card');
   await scanVisibleTextContrast(page, 'Dark AC Detail Text');
   await measureIconContrast(page, 'Dark AC Detail Icons');
   const title = page.getByRole('heading', { name: 'AC Repair & Gas Refill' });
@@ -471,6 +613,80 @@ async function restoreScaledFonts(page) {
   await page.waitForTimeout(300);
 }
 
+async function verifyWork002LightFlow(page) {
+  await toggleTheme(page, 'Switch to light mode');
+  try {
+    await page.goto(`${BASE_URL}/brainworker/workspace-preview`, { waitUntil: 'networkidle' });
+    await page.waitForTimeout(300);
+    const lightAlertBtn = page.getByRole('button', { name: 'View sample details for lead alert' });
+    await lightAlertBtn.tap();
+    await page.waitForTimeout(300);
+    await verifyInvitationActionFlow(page, 'Light');
+  } finally {
+    await toggleTheme(page, 'Switch to dark mode');
+  }
+}
+
+async function verifyViewportBounds(locator, label, maxWidth = 844, maxHeight = 390) {
+  const box = await locator.boundingBox();
+  if (!box) throw new Error(`Target not found for ${label}`);
+  const inBounds = box.x >= 0 && box.y >= 0 && box.x + box.width <= maxWidth && box.y + box.height <= maxHeight;
+  if (!inBounds) {
+    throw new Error(`${label} bounds (${box.x},${box.y},${box.width},${box.height}) exceed ${maxWidth}x${maxHeight}`);
+  }
+}
+
+async function verifyLandscapeAcceptCancel(page) {
+  await page.getByRole('button', { name: 'Accept sample lead' }).tap();
+  await page.waitForTimeout(300);
+  if ((await page.getByRole('heading', { name: 'Accept Sample Lead?' }).count()) === 0) throw new Error('Accept modal missing');
+  await verifyOverflow(page, 'Landscape accept modal');
+  const cancelBtn = page.getByRole('button', { name: 'Cancel acceptance preview' });
+  await verifyTouchTarget(cancelBtn, 'Landscape accept cancel button');
+  await verifyViewportBounds(cancelBtn, 'Landscape accept cancel button', 844, 390);
+  await cancelBtn.tap();
+  await page.waitForTimeout(300);
+  if ((await page.getByRole('heading', { name: 'Accept Sample Lead?' }).count()) > 0) throw new Error('Accept modal did not close');
+}
+
+async function verifyLandscapeDeclineCancel(page) {
+  await page.getByRole('button', { name: 'Decline sample lead' }).tap();
+  await page.waitForTimeout(300);
+  if ((await page.getByRole('heading', { name: 'Decline Sample Lead' }).count()) === 0) throw new Error('Decline modal missing');
+  await verifyOverflow(page, 'Landscape decline modal');
+  const cancelBtn = page.getByRole('button', { name: 'Cancel decline preview' });
+  await verifyTouchTarget(cancelBtn, 'Landscape decline cancel button');
+  await verifyViewportBounds(cancelBtn, 'Landscape decline cancel button', 844, 390);
+  await cancelBtn.tap();
+  await page.waitForTimeout(300);
+  if ((await page.getByRole('heading', { name: 'Decline Sample Lead' }).count()) > 0) throw new Error('Decline modal did not close');
+  if ((await page.getByText(/Sample Lead (Accepted|Declined) \(Preview\)/).count()) > 0) throw new Error('Outcome recorded on cancel');
+}
+
+async function verifyLandscapeModalCancelFlow(page) {
+  console.log('Verifying landscape invitation modals with Cancel dismissal...');
+  await page.setViewportSize({ width: 844, height: 390 });
+  await page.waitForTimeout(200);
+  await verifyOverflow(page, 'MOB-WORK-002 landscape invitation detail');
+  await verifyLandscapeAcceptCancel(page);
+  await verifyLandscapeDeclineCancel(page);
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.waitForTimeout(200);
+}
+
+async function executeWork002QaFlow(page) {
+  console.log('Starting MOB-WORK-002 invitation modal QA flow...');
+  await page.goto(`${BASE_URL}/brainworker/workspace-preview`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(300);
+  const alertBtn = page.getByRole('button', { name: 'View sample details for lead alert' });
+  await alertBtn.tap();
+  await page.waitForTimeout(300);
+  await verifyInvitationActionFlow(page, 'Dark');
+  await verifyLandscapeModalCancelFlow(page);
+  await verifyLargeText(page);
+  await verifyWork002LightFlow(page);
+}
+
 async function executeQaSteps(page) {
   await verifyRegisterLinkFlow(page);
   await verifyWorkspaceFeed(page);
@@ -500,6 +716,7 @@ async function closeAll(page, context, browser, server) {
 }
 
 async function runQa() {
+  const isWork002 = process.argv.includes('--slice=MOB-WORK-002') || process.env.SLICE === 'MOB-WORK-002';
   const server = await startWebServer();
   const browser = await launchBrowser();
   const context = await browser.newContext({ viewport: { width: 375, height: 812 }, hasTouch: true });
@@ -509,9 +726,15 @@ async function runQa() {
   page.on('console', (msg) => (msg.type() === 'error' ? errors.push(msg.text()) : null));
 
   try {
-    await executeQaSteps(page);
-    if (errors.length > 0) throw new Error(`Browser errors:\n${errors.join('\n')}`);
-    console.log('PASS: All MOB-WORK-001 Expo Playwright QA verifications passed cleanly!');
+    if (isWork002) {
+      await executeWork002QaFlow(page);
+      if (errors.length > 0) throw new Error(`Browser errors:\n${errors.join('\n')}`);
+      console.log('PASS: All MOB-WORK-002 Expo Playwright QA verifications passed cleanly!');
+    } else {
+      await executeQaSteps(page);
+      if (errors.length > 0) throw new Error(`Browser errors:\n${errors.join('\n')}`);
+      console.log('PASS: All MOB-WORK-001 Expo Playwright QA verifications passed cleanly!');
+    }
   } finally {
     await closeAll(page, context, browser, server);
   }

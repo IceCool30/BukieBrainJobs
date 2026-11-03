@@ -87,3 +87,34 @@ export const SAMPLE_LEAD_ALERT: SampleLeadAlert = Object.freeze({
 export function getSampleLeadById(id: string): WorkerSampleLead | undefined {
   return SAMPLE_WORKER_LEADS.find((lead) => lead.id === id);
 }
+
+export interface DeclineReason {
+  readonly code:
+    | 'SCHEDULE_CONFLICT'
+    | 'OUTSIDE_COVERAGE_AREA'
+    | 'SKILL_TOOL_MISMATCH'
+    | 'RATE_BUDGET_MISMATCH'
+    | 'TEMPORARILY_UNAVAILABLE'
+    | 'OTHER';
+  readonly label: string;
+}
+
+export type DeclineReasonCode = DeclineReason['code'];
+
+export const BW003_DECLINE_REASONS: readonly DeclineReason[] = Object.freeze([
+  Object.freeze({ code: 'SCHEDULE_CONFLICT', label: 'Schedule conflict' }),
+  Object.freeze({ code: 'OUTSIDE_COVERAGE_AREA', label: 'Outside coverage area' }),
+  Object.freeze({ code: 'SKILL_TOOL_MISMATCH', label: 'Skill or tool mismatch' }),
+  Object.freeze({ code: 'RATE_BUDGET_MISMATCH', label: 'Rate or budget mismatch' }),
+  Object.freeze({ code: 'TEMPORARILY_UNAVAILABLE', label: 'Temporarily unavailable' }),
+  Object.freeze({ code: 'OTHER', label: 'Other reason' }),
+]);
+
+export function getDeclineReasonLabel(code: DeclineReasonCode): string {
+  const found = BW003_DECLINE_REASONS.find((r) => r.code === code);
+  return found ? found.label : code;
+}
+
+export type PreviewOutcome =
+  | { type: 'ACCEPTED'; message: string }
+  | { type: 'DECLINED'; reasonCode: DeclineReasonCode; reasonLabel: string; message: string };

@@ -74,3 +74,20 @@ The following artifacts were captured from an earlier standalone HTML replica (`
 - [`mob001-discovery-verification.webm`](./videos/mob001-discovery-verification.webm)
 - [`mob001-01-homepage-portrait.png`](./mob001-01-homepage-portrait.png) through [`mob001-10-service-detail-large-text.png`](./mob001-10-service-detail-large-text.png)
 
+---
+
+# BukieBrainJobs MOB-WORK-002 Native BrainWorker Workspace Immediate Invitation Action Modals Screenshots
+
+This section catalogs the 7 compiled Expo mobile screen verification captures for Milestone 4.3 (BrainWorker Native Experiences, `MOB-WORK-002`). All captures verify the native immediate job invitation accept/decline action modals on the BrainWorker workspace preview route (`app/brainworker/workspace-preview.tsx`) across 375x812 mobile portrait viewport, retaining truthful simulated prototype disclosures, 6 canonical BW-003 decline reasons, local in-memory outcome cards, theme contrast compliance (Dark and Light), and zero backend mutations.
+
+## Compiled Expo App Screenshot Catalog
+
+| Filename | Viewport | Orientation | Theme | Screen / State | Description |
+|---|---|---|---|---|---|
+| [`expo-mob-work-002-01-invitation-actions-dark.png`](./expo-mob-work-002-01-invitation-actions-dark.png) | 375x812 | Portrait | Dark | Invitation Actions Card (`app/brainworker/workspace-preview.tsx`) | Alert detail inspection showing the dedicated SAMPLE INVITATION ACTIONS card for Generator Servicing & Repair with LOCAL PREVIEW badge, truthful simulation disclaimer, and React Native 48 logical-unit Accept and Decline buttons (browser CSS >= 48x48 measurement, native dp/pt unverified) in Outlier dark theme. |
+| [`expo-mob-work-002-02-accept-modal-dark.png`](./expo-mob-work-002-02-accept-modal-dark.png) | 375x812 | Portrait | Dark | Accept Confirmation Modal (`app/brainworker/workspace-preview.tsx`) | Transparent overlay modal confirming acceptance preview with explicit disclaimer that no server booking or provider commitment is made, Cancel button, and Confirm button in Outlier dark theme. |
+| [`expo-mob-work-002-03-accepted-outcome-dark.png`](./expo-mob-work-002-03-accepted-outcome-dark.png) | 375x812 | Portrait | Dark | Accepted Outcome Card (`app/brainworker/workspace-preview.tsx`) | In-memory simulated accepted outcome card showing green accent border, truthful local preview notice, and accessible Reset preview outcome button in Outlier dark theme. |
+| [`expo-mob-work-002-04-decline-modal-dark.png`](./expo-mob-work-002-04-decline-modal-dark.png) | 375x812 | Portrait | Dark | Decline Modal: 6 Reasons (`app/brainworker/workspace-preview.tsx`) | Single-choice decline reason modal listing all 6 canonical BW-003 reasons with accessible radio buttons, disabled confirmation until selection, and Cancel action in Outlier dark theme. |
+| [`expo-mob-work-002-05-declined-outcome-dark.png`](./expo-mob-work-002-05-declined-outcome-dark.png) | 375x812 | Portrait | Dark | Declined Outcome Card (`app/brainworker/workspace-preview.tsx`) | In-memory simulated declined outcome card showing amber accent border, selected reason label, truthful local simulation notice, and Reset preview outcome button in Outlier dark theme. |
+| [`expo-mob-work-002-06-invitation-actions-light.png`](./expo-mob-work-002-06-invitation-actions-light.png) | 375x812 | Portrait | Light | Invitation Actions Card: Light (`app/brainworker/workspace-preview.tsx`) | Alert detail invitation actions card rendered in Outlier light theme tokens with verified button border contrast and legible action text. |
+| [`expo-mob-work-002-07-decline-modal-light.png`](./expo-mob-work-002-07-decline-modal-light.png) | 375x812 | Portrait | Light | Decline Modal: Light (`app/brainworker/workspace-preview.tsx`) | Decline modal dialog rendered in Outlier light theme tokens showing all 6 canonical decline reasons with verified radio border contrast and Cancel button. |
