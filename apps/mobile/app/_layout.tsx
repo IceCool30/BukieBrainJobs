@@ -19,6 +19,7 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="brainworker/register" />
+        <Stack.Screen name="brainworker/workspace-preview" />
         <Stack.Screen name="services/[id]" />
         <Stack.Screen name="book" />
         <Stack.Screen name="post-job" />
