@@ -4,7 +4,10 @@ import {
   SAMPLE_WORKER_LEADS,
   SAMPLE_LEAD_ALERT,
   getSampleLeadById,
+  BW003_DECLINE_REASONS,
+  getDeclineReasonLabel,
   type WorkerSampleLead,
+  type DeclineReasonCode,
 } from './worker-workspace-preview';
 import { CANONICAL_SERVICES } from './services';
 
@@ -75,5 +78,28 @@ describe('MOB-WORK-001 native BrainWorker workspace preview helper', () => {
     const first = SAMPLE_WORKER_LEADS[0];
     expect(getSampleLeadById(first.id)).toEqual(first);
     expect(getSampleLeadById('non_existent')).toBeUndefined();
+  });
+
+  it('exports exactly 6 canonical BW-003 decline reasons with code and label', () => {
+    expect(BW003_DECLINE_REASONS).toBeDefined();
+    expect(BW003_DECLINE_REASONS.length).toBe(6);
+    const codes = BW003_DECLINE_REASONS.map((r) => r.code);
+    expect(codes).toEqual([
+      'SCHEDULE_CONFLICT',
+      'OUTSIDE_COVERAGE_AREA',
+      'SKILL_TOOL_MISMATCH',
+      'RATE_BUDGET_MISMATCH',
+      'TEMPORARILY_UNAVAILABLE',
+      'OTHER',
+    ]);
+  });
+
+  it('resolves decline reason label by canonical code', () => {
+    expect(getDeclineReasonLabel('SCHEDULE_CONFLICT')).toBe('Schedule conflict');
+    expect(getDeclineReasonLabel('OUTSIDE_COVERAGE_AREA')).toBe('Outside coverage area');
+    expect(getDeclineReasonLabel('SKILL_TOOL_MISMATCH')).toBe('Skill or tool mismatch');
+    expect(getDeclineReasonLabel('RATE_BUDGET_MISMATCH')).toBe('Rate or budget mismatch');
+    expect(getDeclineReasonLabel('TEMPORARILY_UNAVAILABLE')).toBe('Temporarily unavailable');
+    expect(getDeclineReasonLabel('OTHER')).toBe('Other reason');
   });
 });
