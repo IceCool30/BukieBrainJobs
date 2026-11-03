@@ -2,8 +2,8 @@
 
 **Decision ID:** MOB-ACT-001-DEC-001
 **Status:** Approved for scoped implementation under delegated PM authority
-**Implementation:** Not started
-**Acceptance:** Not accepted
+**Implementation:** Complete
+**Acceptance:** PM review accepted on 2026-11-02
 **Phase:** 4.2.2 IN PROGRESS. Booking lifecycle and offline caching remain separate and unchecked.
 
 ## 1. Scope
@@ -78,7 +78,7 @@ Playwright bounds are browser CSS pixels only, not proof of native logical units
 
 Keep the static fixture, pure filtering function, type/status visible-label mappings, and exact sample notice in apps/mobile/lib/activity-preview.ts. Use the existing Vitest setup without adding dependencies. Tests in apps/mobile/lib/activity-preview.test.ts must cover actual filter outcomes for All, Active, Upcoming and Past, type/status visible-label mappings, fixture category and service-title values, and the exact notice and Sample-only presentation. Source-text checks are not behavior proof; compiled Expo Playwright separately tests visible rendered behavior.
 
-Export and test the actual compiled Expo app, not source text alone: `pnpm --filter @bukiebrainjobs/mobile exec expo export --platform web --output-dir dist-web`. A future Playwright runner at `scripts/verify-expo-activity-hub.mjs` must exercise all four filters, default selection, visible labels, accessibility selected state, sample badges and notice, both themes, CTA navigation and contrast including pressed states, CSS-pixel target bounds, both viewports and horizontal overflow. A future report may be written to `docs/reports/MOB-ACT-001-native-customer-activity-hub-qa.md`. These test and QA files are planned only and are not created in this documentation-only task.
+Export and test the actual compiled Expo app, not source text alone: `pnpm --filter @bukiebrainjobs/mobile exec expo export --platform web --output-dir dist-web`. The Playwright runner at `scripts/verify-expo-activity-hub.mjs` exercises all four filters, default selection, visible labels, accessibility selected state, sample badges and notice, both themes, CTA navigation and contrast including pressed states, CSS-pixel target bounds, both viewports and horizontal overflow. The QA report is recorded in `docs/reports/MOB-ACT-001-native-customer-activity-hub-qa.md`. Both the verifier and QA report are created and verified in compiled Expo browser emulation.
 
 ## 7. Acceptance criteria
 
