@@ -2,7 +2,7 @@
 
 Mandatory Skill Gate: PASS.
 
-**Status:** The actual Expo app passed the recorded browser-emulation checks. PM acceptance remains pending. Native iOS/Android and assistive-technology behavior is not verified.
+**Status:** Delegated PM implementation acceptance was recorded on 2026-10-31 for this native in-memory local-preview slice. The latest follow-up verification confirms 219/219 mobile tests passing across 19 files, 50/50 focused job-posting tests passing, and TypeScript exit 0 with 0 errors. Pre-follow-up runs verified 218/218 across 19 files (49 focused tests), while the initial post-merge QA baseline established 147/147 tests. Actual native iOS/Android runtime and assistive-technology behavior remain explicitly unverified.
 
 ## Runtime emulation
 
@@ -28,11 +28,38 @@ The clean RED run recorded eight focus timeouts: Back from Location, Schedule, B
 
 ## Tests and type-check
 
-The test-only refactor preserves all 13 fields, all three invalid values, all 39 field/value pairs, the test name, and the existing assertions. The focused helper test passed 46/46. The full mobile suite now passes 14 files and 136/136 tests: the original 128 plus 8 new native-accessibility-focus regression cases. An AST check found every function-like declaration and callback within limits: route 63 declarations, max 25 lines; new regression 21 declarations, max 13 lines; helper 33 declarations, max 21 lines; helper tests 60 declarations, max 24 lines; existing Expo runner 44 declarations, max 24 lines.
+### Latest Follow-Up Verification Run
+- **Focused job-posting suite:** `pnpm --filter @bukiebrainjobs/mobile test lib/job-posting.test.ts` passed 1 file and 50/50 tests (exit 0), including `does not label a numeric amount when budget type is unspecified` confirming numeric formatting without type suffix when unspecified.
+- **Full mobile test suite:** `pnpm --filter @bukiebrainjobs/mobile test` passed 19 files and 219/219 tests (exit 0).
+- **Mobile type-check:** `pnpm --filter @bukiebrainjobs/mobile type-check` passed with 0 errors (exit 0).
+- **Skill gate suite:** `node --test scripts/check-skill-gate.test.mjs` passed 22/22 tests (exit 0).
+- **Skill gate script:** `bash scripts/check-skill-gate.sh` passed (exit 0).
 
-`pnpm --filter @bukiebrainjobs/mobile type-check` exits 2 with exactly the same 11 known baseline diagnostics: ten unused `@ts-expect-error` directives and one booking-focus type mismatch in `app/book.tsx`. Output is byte-identical to the pre-fix run. The changed route and new test add no diagnostic. TypeScript is not green.
+### Pre-Follow-Up Verification Run (Prior QA State)
+- **Focused job-posting suite:** 49/49 focused tests passed.
+- **Full mobile test suite:** 19 files and 218/218 tests passed.
+- **Mobile type-check:** `pnpm --filter @bukiebrainjobs/mobile type-check` passed with 0 errors (exit 0).
+- **Static exports:** `expo export --platform web` (1.62 MB bundle, exit 0), `expo export --platform android` (3.22 MB Hermes `.hbc`, exit 0), and `expo export --platform ios` (3.22 MB Hermes `.hbc`, exit 0).
 
-The skill-gate script passed before edits and after verification.
+### Historical Initial Slice Verification (2026-10-31 Baseline)
+- The test-only refactor preserves all 13 fields, all three invalid values, all 39 field/value pairs, the test name, and the existing assertions. The initial PM implementation acceptance baseline recorded 15 files and 147/147 tests passing, covering the 8 native-accessibility-focus regression cases and 3 AST and simulation-guard regression tests. Baseline TypeScript diagnostics (11 unused `@ts-expect-error` directives in test files and booking-focus generic typing in `lib/booking-focus.ts`) were cleanly resolved with TypeScript exiting 0 with 0 diagnostics. The skill-gate script passed before edits and after verification. Retained as historical evidence.
+
+## Static exports
+
+Static compilation succeeded across all three platforms without runtime errors:
+- Web: `expo export --platform web` exited 0 (1.62 MB bundle)
+- Android: `expo export --platform android` exited 0 (3.22 MB Hermes `.hbc`)
+- iOS: `expo export --platform ios` exited 0 (3.22 MB Hermes `.hbc`)
+
+## Screenshots
+
+Six distinct browser-emulated screenshots of the compiled Expo application were captured at mobile portrait viewport, separately distinguishing Budget, Review, and Local Preview:
+- [`expo-mob-post-001-01-requirement-action.png`](../screenshots/expo-mob-post-001-01-requirement-action.png): Step 1 Job Requirement showing the Service category section with category options, job title input populated ("Service a 5kVA generator"), description populated, and visible Continue button scrolled into view.
+- [`expo-mob-post-001-02-location-action.png`](../screenshots/expo-mob-post-001-02-location-action.png): Step 2 Location showing canonical city "Lagos" selected, street address input populated ("14 Admiralty Way, Lekki Phase 1"), Back button, and Continue button.
+- [`expo-mob-post-001-03-schedule-action.png`](../screenshots/expo-mob-post-001-03-schedule-action.png): Step 3 Schedule showing timing preference "Flexible / Within a week" selected, Back button, and Continue button.
+- [`expo-mob-post-001-04-budget-preference.png`](../screenshots/expo-mob-post-001-04-budget-preference.png): Standalone Step 4 Budget Preference showing optional budget amount populated ("25000"), "Fixed" budget type chip selected, live helper display formatted as "₦25,000 (Fixed)", and accessible Continue button.
+- [`expo-mob-post-001-05-review-summary.png`](../screenshots/expo-mob-post-001-05-review-summary.png): Step 5 Review showing summarized cards for all entered parameters, including Budget formatted as "₦25,000 (Fixed)", mock-auth notice, and edit shortcut action.
+- [`expo-mob-post-001-06-local-preview-complete.png`](../screenshots/expo-mob-post-001-06-local-preview-complete.png): Completed Local Request Preview captured from the top header through the generated local reference (REQ-93130) and summary card down to the disabled "Preview ready" button.
 
 ## Native accessibility focus correction
 

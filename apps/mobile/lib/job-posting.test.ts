@@ -10,12 +10,14 @@ import {
   PREFERRED_WORKERS,
   URGENCY_OPTIONS,
   createEmptyJobDraft,
+  formatBudgetDisplay,
   getCategoryTitle,
   getFirstInvalidStep,
   getNextStep,
   getPreferredWorkerName,
   getPreviousStep,
   normalizeCategoryId,
+  shouldSimulatePostJobFailure,
   submitJobPostingRequest,
   validateJobPosting,
   validateJobStep,
@@ -508,4 +510,36 @@ it('simulated local preview failure returns the exact local error copy', () => {
       'We could not create the local preview. Check your details and try again.',
     );
   }
+});
+
+it('strictly forbids simulated failures in production even with mockError query param', () => {
+  expect(shouldSimulatePostJobFailure(false, '1')).toBe(false);
+  expect(shouldSimulatePostJobFailure(false, ['1'])).toBe(false);
+  expect(shouldSimulatePostJobFailure(false, undefined)).toBe(false);
+  expect(shouldSimulatePostJobFailure(false, '0')).toBe(false);
+});
+
+it('permits simulated failure only in development environment with exact mockError=1 param', () => {
+  expect(shouldSimulatePostJobFailure(true, '1')).toBe(true);
+  expect(shouldSimulatePostJobFailure(true, '0')).toBe(false);
+  expect(shouldSimulatePostJobFailure(true, 'true')).toBe(false);
+  expect(shouldSimulatePostJobFailure(true, undefined)).toBe(false);
+  expect(shouldSimulatePostJobFailure(true, ['1'])).toBe(false);
+});
+
+it('formats a fixed amount of 25000 as ₦25,000 while preserving numeric value and Negotiable behavior', () => {
+  const fixedDraft = validDraft({ budget: '25000', budgetType: 'fixed' });
+  expect(fixedDraft.budget).toBe('25000');
+  expect(formatBudgetDisplay(fixedDraft.budget, fixedDraft.budgetType)).toBe('₦25,000 (Fixed)');
+
+  const negotiableDraft = validDraft({ budget: '25000', budgetType: 'negotiable' });
+  expect(negotiableDraft.budget).toBe('25000');
+  expect(formatBudgetDisplay(negotiableDraft.budget, negotiableDraft.budgetType)).toBe('₦25,000 (Negotiable)');
+});
+
+it('does not label a numeric amount when budget type is unspecified', () => {
+  const unspecifiedDraft = validDraft({ budget: '25000', budgetType: 'unspecified' });
+  expect(unspecifiedDraft.budget).toBe('25000');
+  expect(formatBudgetDisplay(unspecifiedDraft.budget, unspecifiedDraft.budgetType)).toBe('₦25,000');
+  expect(formatBudgetDisplay(unspecifiedDraft.budget)).toBe('₦25,000');
 });
