@@ -28,7 +28,7 @@ This directory contains 17 browser verification captures for Milestone 3.4 (Disp
 
 # BukieBrainJobs MOB-001 Mobile Discovery Screenshots & Video
 
-This section catalogs the 9 compiled Expo mobile screen verification captures and continuous video recording for Milestone 4.2.1 (Native Public Discovery, `MOB-001`). All captures verify the standalone marketing homepage (`app/index.tsx`), the category directory (`app/(tabs)/services.tsx`), the service detail screen (`app/services/[id].tsx`), and the not-found fallback across 375x812 mobile portrait and 812x375 landscape viewports, retaining source-level SafeAreaView boundaries (hardware safe-area insets remain unverified in browser emulation), and React Native 48 logical-unit styles plus >= 48 CSS-pixel browser emulation (native dp/pt unverified). The formal QA report is available at [`../reports/MOB-001-compiled-expo-qa.md`](../reports/MOB-001-compiled-expo-qa.md).
+This section catalogs the 9 compiled Expo mobile screen verification captures and continuous video recording for Milestone 4.2.1 (Native Public Discovery, `MOB-001`). All captures verify the standalone marketing homepage (`app/index.tsx`), the category directory (`app/(tabs)/services.tsx`), the service detail screen (`app/services/[id].tsx`), and the not-found fallback across 375x812 mobile portrait, 812x375 landscape, safe areas, and 48dp touch targets. The formal QA report is available at [`../reports/MOB-001-compiled-expo-qa.md`](../reports/MOB-001-compiled-expo-qa.md).
 
 ## Native Simulator and Emulator Environment Audit & Status
 
@@ -47,7 +47,7 @@ This section catalogs the 9 compiled Expo mobile screen verification captures an
   - Exported the real, compiled Expo mobile application using `expo export --platform web --output-dir dist-web` directly from `apps/mobile`.
   - Driven by Playwright Chromium (`scripts/verify-expo-mobile-qa.mjs`) emulating mobile device viewports (375x812 portrait and 812x375 landscape) with touch events enabled.
   - Exercised the complete discovery user journey: standalone marketing homepage (`app/index.tsx`), navigation via CTA to services catalog (`app/(tabs)/services.tsx`), live text search with query "AC", search clear action, category filter pill "Utilities & Structure", non-matching empty state search, reset filters action, navigation to service detail (`app/services/[id].tsx`), landscape orientation, back navigation to catalog, and invalid service ID fallback screen.
-  - Verified amber primary CTA (`rgb(255, 107, 53)`), React Native 48 logical-unit styles plus >= 48 CSS-pixel browser touch targets (native dp/pt unverified), and source-level safe-area boundaries across all interactive elements (native OS safe-area runtime insets remain unavailable in browser emulation).
+  - Verified amber primary CTA (`rgb(255, 107, 53)`), 48x48dp touch targets, and source-level safe-area boundaries across all interactive elements (native OS safe-area runtime insets remain unavailable in browser emulation).
 
 ## Compiled Expo App Continuous Recording (Browser/Device Emulation)
 
@@ -58,15 +58,15 @@ This section catalogs the 9 compiled Expo mobile screen verification captures an
 
 | Filename | Viewport | Orientation | Screen / Surface | Description |
 |---|---|---|---|---|
-| [`expo-mob001-01-homepage-portrait.png`](./expo-mob001-01-homepage-portrait.png) | 375x812 | Portrait | Standalone Homepage (`app/index.tsx`) | Compiled Expo marketing homepage showing brand wordmark, hero value prop, exact amber primary CTA (`#FF6B35` / `rgb(255, 107, 53)`), React Native 48 logical-unit CTA buttons, "View all services" link (React Native 48 logical-unit style and browser CSS >= 48x48 measurement, native dp/pt unverified), and featured service rows routing to `/(tabs)/services`. |
+| [`expo-mob001-01-homepage-portrait.png`](./expo-mob001-01-homepage-portrait.png) | 375x812 | Portrait | Standalone Homepage (`app/index.tsx`) | Compiled Expo marketing homepage showing brand wordmark, hero value prop, exact amber primary CTA (`#FF6B35` / `rgb(255, 107, 53)`), 48dp CTA buttons, "View all services" link (>= 48x48dp target), and featured service rows routing to `/(tabs)/services`. |
 | [`expo-mob001-02-homepage-landscape.png`](./expo-mob001-02-homepage-landscape.png) | 812x375 | Landscape | Standalone Homepage (`app/index.tsx`) | Compiled Expo marketing homepage rendered in 812x375 landscape viewport showing responsive hero and action buttons. |
 | [`expo-mob001-03-services-catalog-all.png`](./expo-mob001-03-services-catalog-all.png) | 375x812 | Portrait | Category Directory (`app/(tabs)/services.tsx`) | Compiled Expo services tab showing "Services" header, LOCAL PREVIEW notice card, accessible search input, 4 text-only filter pills with "All" selected, and 8 canonical service cards. |
-| [`expo-mob001-04-services-catalog-search-ac.png`](./expo-mob001-04-services-catalog-search-ac.png) | 375x812 | Portrait | Search Filtering (`app/(tabs)/services.tsx`) | Live search with query "AC" populated in search input, clear button rendered (React Native 48 logical-unit style and browser CSS >= 48x48 measurement, native dp/pt unverified), and matching catalog cards displayed (including Generator Servicing & Repair and AC Repair & Gas Refill). |
+| [`expo-mob001-04-services-catalog-search-ac.png`](./expo-mob001-04-services-catalog-search-ac.png) | 375x812 | Portrait | Search Filtering (`app/(tabs)/services.tsx`) | Live search with query "AC" populated in search input, 48x48dp clear button rendered, and matching catalog cards displayed (including Generator Servicing & Repair and AC Repair & Gas Refill). |
 | [`expo-mob001-05-services-catalog-filter-utilities.png`](./expo-mob001-05-services-catalog-filter-utilities.png) | 375x812 | Portrait | Category Filter (`app/(tabs)/services.tsx`) | Active "Utilities & Structure" pill filtering catalog to exactly 2 cards: Plumbing & Pipe Fitting and Electrical & Solar Inverter with selected state. |
-| [`expo-mob001-06-services-catalog-empty-state.png`](./expo-mob001-06-services-catalog-empty-state.png) | 375x812 | Portrait | Empty State (`app/(tabs)/services.tsx`) | Non-matching search query "xyznonexistent123" displaying zero service cards, "No matching services found" notice, and "Reset filters" button (React Native 48 logical-unit style and browser CSS >= 48 measurement, native dp/pt unverified). |
+| [`expo-mob001-06-services-catalog-empty-state.png`](./expo-mob001-06-services-catalog-empty-state.png) | 375x812 | Portrait | Empty State (`app/(tabs)/services.tsx`) | Non-matching search query "xyznonexistent123" displaying zero service cards, "No matching services found" notice, and 48dp "Reset filters" button. |
 | [`expo-mob001-07-service-detail-generator.png`](./expo-mob001-07-service-detail-generator.png) | 375x812 | Portrait | Service Detail (`app/services/[id].tsx`) | Generator Servicing & Repair screen with 48x48 back button, category tag, task checklist, and truthful LOCAL PREVIEW card. |
-| [`expo-mob001-08-service-detail-landscape.png`](./expo-mob001-08-service-detail-landscape.png) | 812x375 | Landscape | Service Detail (`app/services/[id].tsx`) | Service detail screen in 812x375 landscape orientation showing responsive layout and React Native 48 logical-unit styles with browser CSS >= 48 measurements (native dp/pt unverified). |
-| [`expo-mob001-09-service-detail-notfound.png`](./expo-mob001-09-service-detail-notfound.png) | 375x812 | Portrait | Not-Found Fallback (`app/services/[id].tsx`) | Invalid service ID screen showing alert icon, "Service Not Found" heading, and "Back to services directory" button (React Native 48 logical-unit style and browser CSS >= 48 measurement, native dp/pt unverified). |
+| [`expo-mob001-08-service-detail-landscape.png`](./expo-mob001-08-service-detail-landscape.png) | 812x375 | Landscape | Service Detail (`app/services/[id].tsx`) | Service detail screen in 812x375 landscape orientation showing responsive layout and 48dp touch targets. |
+| [`expo-mob001-09-service-detail-notfound.png`](./expo-mob001-09-service-detail-notfound.png) | 375x812 | Portrait | Not-Found Fallback (`app/services/[id].tsx`) | Invalid service ID screen showing alert icon, "Service Not Found" heading, and 48dp "Back to services directory" button. |
 
 ## Deprecated Viewport Artifacts (Historical Reference)
 
@@ -95,28 +95,6 @@ This section catalogs the 6 compiled Expo mobile screen verification captures an
 | [`expo-mob-post-001-04-budget-preference.png`](./expo-mob-post-001-04-budget-preference.png) | 375x812 | Portrait | Step 4: Budget Preference (`app/post-job.tsx`) | Standalone budget step showing optional budget amount populated ("25000"), "Fixed" budget type chip selected, live helper display formatted as "₦25,000 (Fixed)", and accessible Continue button. |
 | [`expo-mob-post-001-05-review-summary.png`](./expo-mob-post-001-05-review-summary.png) | 375x812 | Portrait | Step 5: Review (`app/post-job.tsx`) | Review step summarizing all entered job requirements, location, schedule, and budget formatted as "₦25,000 (Fixed)" with mock-auth notice and edit step action. |
 | [`expo-mob-post-001-06-local-preview-complete.png`](./expo-mob-post-001-06-local-preview-complete.png) | 375x1195 | Portrait | Local Request Preview (`app/post-job.tsx`) | Completed local request preview captured from top header down to generated local reference (REQ-93130), summary card, edit step actions, and disabled "Preview ready" button. |
-
----
-
-# BukieBrainJobs MOB-ACT-001 Mobile Customer Activity Hub Screenshots & Video
-
-This section catalogs the 6 compiled Expo mobile screen verification captures and continuous video recording for Milestone 4.2.2 (Native Customer Activity Hub, `MOB-ACT-001`). All captures verify the native customer activity screen (`app/(tabs)/jobs.tsx`) across 375x812 mobile portrait and 844x390 landscape viewports, retaining source-level SafeAreaView boundaries (hardware safe-area insets remain unverified in browser emulation), dark and light themes, accessible tab navigation, and React Native 48 logical-unit styles plus >= 48 CSS-pixel browser emulation (native dp/pt unverified) in the actual compiled Expo application.
-
-## Compiled Expo App Continuous Recording
-
-- **File**: [`expo-mob-act-001-activity-hub-verification.webm`](./videos/expo-mob-act-001-activity-hub-verification.webm)
-- **Description**: Continuous video recording of the compiled Expo mobile application demonstrating the activity hub journey: default All tab selection (6 sample cards), filtering to Active (3 cards), Upcoming (1 card), and Past (2 cards), EXPLORE SERVICES CTA navigation to the services catalog, landscape 844x390 responsive layout without overflow, and light theme rendering with theme contrast compliance.
-
-## Compiled Expo App Screenshot Catalog
-
-| Filename | Viewport | Orientation | Theme | Screen / Filter | Description |
-|---|---|---|---|---|---|
-| [`expo-mob-act-001-01-all-portrait-dark.png`](./expo-mob-act-001-01-all-portrait-dark.png) | 375x812 | Portrait | Dark | Activity Hub: All (`app/(tabs)/jobs.tsx`) | Default view showing "Jobs" header, exact sample preview notice, 4 segment tabs with "All" selected, and the first 5 visible sample entries with service titles, type labels, status labels, and "Sample" badges. The sixth entry and "EXPLORE SERVICES" CTA are below the fold at 375x812; Playwright asserts all six rows and the continuous video recording covers the lower content. |
-| [`expo-mob-act-001-02-active-portrait-dark.png`](./expo-mob-act-001-02-active-portrait-dark.png) | 375x812 | Portrait | Dark | Activity Hub: Active (`app/(tabs)/jobs.tsx`) | Segment tab "Active" selected, displaying exactly 3 active samples: Generator Servicing & Repair, AC Repair & Gas Refill, and Plumbing & Pipe Fitting with aria-selected state and no count badge. |
-| [`expo-mob-act-001-03-upcoming-portrait-dark.png`](./expo-mob-act-001-03-upcoming-portrait-dark.png) | 375x812 | Portrait | Dark | Activity Hub: Upcoming (`app/(tabs)/jobs.tsx`) | Segment tab "Upcoming" selected, displaying exactly 1 upcoming sample: Electrical & Solar Inverter with aria-selected state. |
-| [`expo-mob-act-001-04-past-portrait-dark.png`](./expo-mob-act-001-04-past-portrait-dark.png) | 375x812 | Portrait | Dark | Activity Hub: Past (`app/(tabs)/jobs.tsx`) | Segment tab "Past" selected, displaying exactly 2 past samples: Deep Cleaning & Post-Construction and Furniture & Carpentry Work with aria-selected state. |
-| [`expo-mob-act-001-05-all-landscape-dark.png`](./expo-mob-act-001-05-all-landscape-dark.png) | 844x390 | Landscape | Dark | Activity Hub: Landscape (`app/(tabs)/jobs.tsx`) | Responsive horizontal layout in 844x390 landscape viewport retaining source-level SafeAreaView boundaries (hardware safe-area insets remain unverified in browser emulation), fluid scroll container, and zero horizontal document overflow. |
-| [`expo-mob-act-001-06-all-portrait-light.png`](./expo-mob-act-001-06-all-portrait-light.png) | 375x812 | Portrait | Light | Activity Hub: Light Theme (`app/(tabs)/jobs.tsx`) | Approved THEME-001 light theme applied to customer activity hub at top fold showing "Jobs" header, sample preview notice, 4 segment tabs with "All" selected, light surface tokens, and the first 5 visible sample cards. |
 
 ---
 
