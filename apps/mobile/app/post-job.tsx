@@ -30,11 +30,13 @@ import {
   PREFERRED_WORKERS,
   URGENCY_OPTIONS,
   createEmptyJobDraft,
+  formatBudgetDisplay,
   getFirstInvalidStep,
   getNextStep,
   getPreferredWorkerName,
   getPreviousStep,
   getStepNumber,
+  shouldSimulatePostJobFailure,
   submitJobPostingRequest,
   validateJobPosting,
   validateJobStep,
@@ -135,7 +137,7 @@ function BudgetStep({ draft, visibleErrors, update, focusRefs }: StepProps) {
   const colors = useThemeColors();
   return (
     <View style={styles.section}>
-      <Field label="Budget (optional)" value={draft.budget} onChangeText={(value) => update('budget', value)} error={visibleErrors.budget} keyboardType="decimal-pad" focusRef={focusRefs.budget} />
+      <Field label="Budget (optional)" value={draft.budget} onChangeText={(value) => update('budget', value)} error={visibleErrors.budget} helper={draft.budget.trim() !== '' ? formatBudgetDisplay(draft.budget, draft.budgetType) : undefined} keyboardType="decimal-pad" focusRef={focusRefs.budget} />
       {draft.budget.trim() !== '' ? (
         <ChoiceChips label="Budget type" options={BUDGET_TYPE_CHOICE_OPTIONS} selected={draft.budgetType} onSelect={(value) => update('budgetType', value as JobPostingDraft['budgetType'])} wrap focusRef={focusRefs.budgetType} />
       ) : null}
@@ -147,7 +149,7 @@ function BudgetStep({ draft, visibleErrors, update, focusRefs }: StepProps) {
 }
 function PostJobView() {
   const params = useLocalSearchParams<{ mockError?: string | string[] }>();
-  const initialSimulateFailure = __DEV__ && params.mockError === '1';
+  const initialSimulateFailure = shouldSimulatePostJobFailure(__DEV__, params.mockError);
   const state = usePostJobState(initialSimulateFailure);
   const focusRefs = usePostJobFocusRefs();
   usePostJobEffects(state, focusRefs);
@@ -356,7 +358,7 @@ function PostJobReviewSummary({ state, service }: { state: PostJobState; service
       <SummaryRow label="Timing" value={URGENCY_OPTIONS.find((item) => item.value === state.draft.urgency)?.label ?? state.draft.urgency} />
       {state.draft.urgency === 'specific_date' && state.draft.preferredDate.trim() !== '' ? <SummaryRow label="Preferred date" value={state.draft.preferredDate.trim()} /> : null}
       {state.draft.arrivalWindow.trim() !== '' ? <SummaryRow label="Arrival window" value={state.draft.arrivalWindow} /> : null}
-      {state.draft.budget.trim() !== '' ? <SummaryRow label="Budget" value={`${state.draft.budget.trim()} (${state.draft.budgetType === 'fixed' ? 'Fixed' : 'Negotiable'})`} /> : null}
+      {state.draft.budget.trim() !== '' ? <SummaryRow label="Budget" value={formatBudgetDisplay(state.draft.budget, state.draft.budgetType)} /> : null}
       {state.draft.preferredWorkerId.trim() !== '' ? <SummaryRow label="Preferred BrainWorker" value={getPreferredWorkerName(state.draft.preferredWorkerId)} /> : null}
     </FormCard>
   );

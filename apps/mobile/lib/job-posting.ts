@@ -419,6 +419,29 @@ function createSubmissionResult(draft: JobPostingDraft, normalized: ReturnType<t
   };
 }
 
+export function shouldSimulatePostJobFailure(
+  isDev: boolean,
+  mockErrorParam?: string | string[],
+): boolean {
+  return Boolean(isDev && mockErrorParam === '1');
+}
+
+export function formatBudgetDisplay(budget: string, budgetType?: JobBudgetType): string {
+  const trimmed = budget.trim();
+  if (!trimmed) {
+    return '';
+  }
+  const suffix = budgetType === 'negotiable' ? ' (Negotiable)' : budgetType === 'fixed' ? ' (Fixed)' : '';
+  const num = Number(trimmed);
+  if (!Number.isFinite(num) || num <= 0) {
+    return `${trimmed}${suffix}`;
+  }
+  const parts = trimmed.split('.');
+  const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const formattedAmount = parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
+  return `₦${formattedAmount}${suffix}`;
+}
+
 export function submitJobPostingRequest(
   draft: JobPostingDraft,
   options: { mockError?: boolean } = {},
