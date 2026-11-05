@@ -1,9 +1,19 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 
+import { Tabs } from 'expo-router';
+
 vi.mock('expo-router', () => {
-  const Screen = () => null;
+  const Screen = (props: { name: string; options?: unknown }) => ({
+    type: 'Tabs.Screen',
+    props,
+  });
   const Tabs = Object.assign(
-    ({ children }: { children?: unknown }) => children ?? null,
+    ({ children, ...props }: { children?: unknown; [key: string]: unknown }) => ({
+      type: 'Tabs',
+      props: { ...props, children },
+    }),
     { Screen }
   );
   return {
@@ -29,6 +39,7 @@ import {
   TAB_ROUTES,
   getTabBarOptions,
   getTabBarStyle,
+  renderTabScreen,
 } from './(tabs)/_layout';
 import { obsidianDarkTokens, obsidianLightTokens } from '../lib/theme';
 
@@ -92,5 +103,31 @@ describe('4.1.1 Expo Router Bottom Tabs Configuration', () => {
       BASE_TAB_BAR_HEIGHT - BASE_TAB_BAR_PADDING_TOP - BASE_TAB_BAR_PADDING_BOTTOM;
     expect(innerContentHeight).toBeGreaterThanOrEqual(48);
     expect(options.tabBarItemStyle?.minHeight).toBeGreaterThanOrEqual(48);
+  });
+
+  it('preserves Home as the initial tab route in both TAB_ROUTES and rendered tab hierarchy', () => {
+    // 1. IA-001 route contract: 'home' is explicitly index 0
+    expect(TAB_ROUTES[0].name).toBe('home');
+    expect(TAB_ROUTES[0].title).toBe('Home');
+
+    // 2. renderTabScreen creates the initial Screen element with name="home"
+    const firstScreen = renderTabScreen(TAB_ROUTES[0]) as unknown as {
+      type: string;
+      props: { name: string; options: { title: string; tabBarLabel: string } };
+    };
+    expect(firstScreen.type).toBe(Tabs.Screen);
+    expect(firstScreen.props.name).toBe('home');
+    expect(firstScreen.props.options.title).toBe('Home');
+    expect(firstScreen.props.options.tabBarLabel).toBe('Home');
+
+    // 3. Inspect app/(tabs)/_layout.tsx to verify that:
+    // a) <Tabs> omits initialRouteName (avoiding TS2322 incompatibility with Expo Router 58 TabsProps)
+    // b) screens are mapped in order of TAB_ROUTES (making 'home' the first declared screen in the navigator)
+    const layoutSource = readFileSync(
+      resolve(__dirname, '(tabs)/_layout.tsx'),
+      'utf8'
+    );
+    expect(layoutSource).not.toMatch(/<Tabs[^>]*\binitialRouteName=/);
+    expect(layoutSource).toContain('{TAB_ROUTES.map(renderTabScreen)}');
   });
 });

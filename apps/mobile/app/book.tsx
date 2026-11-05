@@ -8,6 +8,9 @@ import {
   Text,
   TextInput,
   View,
+  type PressableInstance,
+  type TextInputInstance,
+  type ViewInstance,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ACTIVE_MARKETPLACE_CITIES } from '@bukiebrainjobs/validation';
@@ -59,15 +62,15 @@ const DATE_SHORTCUTS = [
 
 type DraftField = keyof BookingPreparationDraft;
 type BookingController = ReturnType<typeof useBookingController>;
-type BookingHeading = View;
+type BookingHeading = ViewInstance;
 type BookingFocusRefs = {
-  serviceId: RefObject<View>;
-  city: RefObject<View>;
-  streetAddress: RefObject<TextInput>;
-  date: RefObject<TextInput>;
-  arrivalWindow: RefObject<View>;
-  jobDescription: RefObject<TextInput>;
-  paymentPreference: RefObject<View>;
+  serviceId: RefObject<PressableInstance | null>;
+  city: RefObject<PressableInstance | null>;
+  streetAddress: RefObject<TextInputInstance | null>;
+  date: RefObject<TextInputInstance | null>;
+  arrivalWindow: RefObject<PressableInstance | null>;
+  jobDescription: RefObject<TextInputInstance | null>;
+  paymentPreference: RefObject<PressableInstance | null>;
 };
 
 const ARRIVAL_OPTIONS = ARRIVAL_WINDOWS.map((value) => ({ value, label: value }));
@@ -75,20 +78,20 @@ const PAYMENT_OPTIONS = PAYMENT_PREFERENCES.map((value) => ({ value, label: valu
 
 function useBookingFocusRefs(): BookingFocusRefs {
   return {
-    serviceId: useRef<View>(null),
-    city: useRef<View>(null),
-    streetAddress: useRef<TextInput>(null),
-    date: useRef<TextInput>(null),
-    arrivalWindow: useRef<View>(null),
-    jobDescription: useRef<TextInput>(null),
-    paymentPreference: useRef<View>(null),
+    serviceId: useRef<PressableInstance>(null),
+    city: useRef<PressableInstance>(null),
+    streetAddress: useRef<TextInputInstance>(null),
+    date: useRef<TextInputInstance>(null),
+    arrivalWindow: useRef<PressableInstance>(null),
+    jobDescription: useRef<TextInputInstance>(null),
+    paymentPreference: useRef<PressableInstance>(null),
   };
 }
 
-function focusNativeElement(target: View | TextInput | null) {
+function focusNativeElement(target: ViewInstance | TextInputInstance | PressableInstance | null) {
   if (!target || Platform.OS === 'web') return;
   const node = findNodeHandle(target);
-  if (node !== null) AccessibilityInfo.setAccessibilityFocus(node);
+  if (node != null) AccessibilityInfo.setAccessibilityFocus(node);
 }
 
 function focusInvalidBookingControl(
@@ -108,7 +111,7 @@ function ServiceChoice({ service, active, onSelect, focusRef }: {
   service: MobileServiceCategory;
   active: boolean;
   onSelect: () => void;
-  focusRef?: RefObject<View>;
+  focusRef?: RefObject<PressableInstance | null>;
 }) {
   const c = useThemeColors();
   return (
@@ -128,7 +131,7 @@ function ServiceSection({ selectedId, onSelect, error, focusRef }: {
   selectedId: string;
   onSelect: (serviceId: string) => void;
   error?: string;
-  focusRef: RefObject<View>;
+  focusRef: RefObject<PressableInstance | null>;
 }) {
   return (
     <View style={styles.section}>
@@ -146,7 +149,7 @@ function CityField({ city, onChange, error, focusRef }: {
   city: string;
   onChange: (value: string) => void;
   error?: string;
-  focusRef: RefObject<View>;
+  focusRef: RefObject<PressableInstance | null>;
 }) {
   return (
     <View style={styles.section}>
@@ -160,7 +163,7 @@ function AddressFields({ draft, update, errors, focusRef }: {
   draft: BookingPreparationDraft;
   update: (field: DraftField, value: string) => void;
   errors: Record<string, string>;
-  focusRef: RefObject<TextInput>;
+  focusRef: RefObject<TextInputInstance | null>;
 }) {
   return (
     <View style={styles.section}>
@@ -178,8 +181,8 @@ function LocationSection({ draft, update, errors, cityRef, streetAddressRef }: {
   draft: BookingPreparationDraft;
   update: (field: DraftField, value: string) => void;
   errors: Record<string, string>;
-  cityRef: RefObject<View>;
-  streetAddressRef: RefObject<TextInput>;
+  cityRef: RefObject<PressableInstance | null>;
+  streetAddressRef: RefObject<TextInputInstance | null>;
 }) {
   return (
     <View style={styles.section}>
@@ -194,7 +197,7 @@ function DateField({ value, onChange, error, focusRef }: {
   value: string;
   onChange: (value: string) => void;
   error?: string;
-  focusRef: RefObject<TextInput>;
+  focusRef: RefObject<TextInputInstance | null>;
 }) {
   const selected = DATE_SHORTCUTS.find((choice) => getBookingDateShortcut(choice.value) === value)?.value ?? '';
   const choose = (choice: string) => {
@@ -215,7 +218,7 @@ function ArrivalField({ value, onChange, error, focusRef }: {
   value: string;
   onChange: (value: string) => void;
   error?: string;
-  focusRef: RefObject<View>;
+  focusRef: RefObject<PressableInstance | null>;
 }) {
   return (
     <View style={styles.section}>
@@ -230,8 +233,8 @@ function ScheduleSection({ draft, update, errors, dateRef, arrivalRef }: {
   draft: BookingPreparationDraft;
   update: (field: DraftField, value: string) => void;
   errors: Record<string, string>;
-  dateRef: RefObject<TextInput>;
-  arrivalRef: RefObject<View>;
+  dateRef: RefObject<TextInputInstance | null>;
+  arrivalRef: RefObject<PressableInstance | null>;
 }) {
   return (
     <View style={styles.section}>
@@ -246,7 +249,7 @@ function DescriptionSection({ draft, update, error, focusRef }: {
   draft: BookingPreparationDraft;
   update: (field: DraftField, value: string) => void;
   error?: string;
-  focusRef: RefObject<TextInput>;
+  focusRef: RefObject<TextInputInstance | null>;
 }) {
   return (
     <View style={styles.section}>
@@ -262,7 +265,7 @@ function PaymentSection({ draft, update, error, focusRef }: {
   draft: BookingPreparationDraft;
   update: (field: DraftField, value: string) => void;
   error?: string;
-  focusRef: RefObject<View>;
+  focusRef: RefObject<PressableInstance | null>;
 }) {
   const c = useThemeColors();
   return (
@@ -296,7 +299,7 @@ function BookingSummary({ draft }: { draft: BookingPreparationDraft }) {
 function SubmissionResult({ reference, onEdit, headingRef }: {
   reference: string | null;
   onEdit: () => void;
-  headingRef: RefObject<BookingHeading>;
+  headingRef: RefObject<BookingHeading | null>;
 }) {
   const c = useThemeColors();
   if (!reference) return null;
@@ -436,7 +439,7 @@ function BookingHeader({ onBack }: { onBack: () => void }) {
 
 function BookingActions({ controller, resultHeadingRef }: {
   controller: BookingController;
-  resultHeadingRef: RefObject<BookingHeading>;
+  resultHeadingRef: RefObject<BookingHeading | null>;
 }) {
   const { form, submission } = controller;
   const label = submission.reference ? 'Preview ready'
@@ -456,7 +459,7 @@ function BookingActions({ controller, resultHeadingRef }: {
 function BookingForm({ controller, onBack, resultHeadingRef }: {
   controller: BookingController;
   onBack: () => void;
-  resultHeadingRef: RefObject<BookingHeading>;
+  resultHeadingRef: RefObject<BookingHeading | null>;
 }) {
   return (
     <FormScreen>

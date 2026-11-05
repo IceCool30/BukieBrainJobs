@@ -9,7 +9,7 @@ export default function RootLayout() {
   const c = useThemeColors();
   return (
     <SafeAreaProvider>
-      <StatusBar style={mode === 'dark' ? 'light' : 'dark'} backgroundColor={c.canvas} />
+      <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
           headerShown: false,

@@ -1,5 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, findNodeHandle, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  AccessibilityInfo,
+  findNodeHandle,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  type PressableInstance,
+  type TextInputInstance,
+  type ViewInstance,
+} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import {
   ChoiceChips,
@@ -69,21 +80,21 @@ const WORKER_OPTIONS: ChoiceOption[] = PREFERRED_WORKERS.map((worker) => ({
 }));
 
 type FocusRefs = {
-  jobType: React.RefObject<View>;
-  categoryId: React.RefObject<View>;
-  title: React.RefObject<TextInput>;
-  description: React.RefObject<TextInput>;
-  city: React.RefObject<View>;
-  streetAddress: React.RefObject<TextInput>;
-  landmark: React.RefObject<TextInput>;
-  urgency: React.RefObject<View>;
-  preferredDate: React.RefObject<TextInput>;
-  arrivalWindow: React.RefObject<View>;
-  budget: React.RefObject<TextInput>;
-  budgetType: React.RefObject<View>;
-  preferredWorkerId: React.RefObject<View>;
-  reviewHeading: React.RefObject<View>;
-  resultHeading: React.RefObject<View>;
+  jobType: React.RefObject<PressableInstance | null>;
+  categoryId: React.RefObject<PressableInstance | null>;
+  title: React.RefObject<TextInputInstance | null>;
+  description: React.RefObject<TextInputInstance | null>;
+  city: React.RefObject<PressableInstance | null>;
+  streetAddress: React.RefObject<TextInputInstance | null>;
+  landmark: React.RefObject<TextInputInstance | null>;
+  urgency: React.RefObject<PressableInstance | null>;
+  preferredDate: React.RefObject<TextInputInstance | null>;
+  arrivalWindow: React.RefObject<PressableInstance | null>;
+  budget: React.RefObject<TextInputInstance | null>;
+  budgetType: React.RefObject<PressableInstance | null>;
+  preferredWorkerId: React.RefObject<PressableInstance | null>;
+  reviewHeading: React.RefObject<ViewInstance | null>;
+  resultHeading: React.RefObject<ViewInstance | null>;
 };
 type StepProps = {
   draft: JobPostingDraft;
@@ -196,32 +207,32 @@ function usePostJobState(initialSimulateFailure: boolean): PostJobState {
 
 function usePostJobFocusRefs(): FocusRefs {
   return useRef<FocusRefs>({
-    jobType: React.createRef<View>(),
-    categoryId: React.createRef<View>(),
-    title: React.createRef<TextInput>(),
-    description: React.createRef<TextInput>(),
-    city: React.createRef<View>(),
-    streetAddress: React.createRef<TextInput>(),
-    landmark: React.createRef<TextInput>(),
-    urgency: React.createRef<View>(),
-    preferredDate: React.createRef<TextInput>(),
-    arrivalWindow: React.createRef<View>(),
-    budget: React.createRef<TextInput>(),
-    budgetType: React.createRef<View>(),
-    preferredWorkerId: React.createRef<View>(),
-    reviewHeading: React.createRef<View>(),
-    resultHeading: React.createRef<View>(),
+    jobType: React.createRef<PressableInstance>(),
+    categoryId: React.createRef<PressableInstance>(),
+    title: React.createRef<TextInputInstance>(),
+    description: React.createRef<TextInputInstance>(),
+    city: React.createRef<PressableInstance>(),
+    streetAddress: React.createRef<TextInputInstance>(),
+    landmark: React.createRef<TextInputInstance>(),
+    urgency: React.createRef<PressableInstance>(),
+    preferredDate: React.createRef<TextInputInstance>(),
+    arrivalWindow: React.createRef<PressableInstance>(),
+    budget: React.createRef<TextInputInstance>(),
+    budgetType: React.createRef<PressableInstance>(),
+    preferredWorkerId: React.createRef<PressableInstance>(),
+    reviewHeading: React.createRef<ViewInstance>(),
+    resultHeading: React.createRef<ViewInstance>(),
   }).current;
 }
 
-function focusNativeElement(target: View | TextInput | null) {
+function focusNativeElement(target: ViewInstance | TextInputInstance | PressableInstance | null) {
   if (Platform.OS === 'web') {
-    target?.focus?.();
+    (target as unknown as { focus?: () => void })?.focus?.();
     return;
   }
   if (!target) return;
   const node = findNodeHandle(target);
-  if (node !== null) AccessibilityInfo.setAccessibilityFocus(node);
+  if (node != null) AccessibilityInfo.setAccessibilityFocus(node);
 }
 
 function usePostJobEffects(state: PostJobState, focusRefs: FocusRefs) {
@@ -375,7 +386,7 @@ function PostJobReviewCommitment({ state }: { state: PostJobState }) {
   );
 }
 
-function PostJobReviewResult({ state, resultHeadingRef }: { state: PostJobState; resultHeadingRef: React.RefObject<View> }) {
+function PostJobReviewResult({ state, resultHeadingRef }: { state: PostJobState; resultHeadingRef: React.RefObject<ViewInstance | null> }) {
   const c = useThemeColors();
   if (!state.result) return null;
   return (
@@ -404,7 +415,7 @@ function PostJobReviewActions({ state }: { state: PostJobState }) {
   );
 }
 
-function PostJobReview({ state, service, reviewHeadingRef, resultHeadingRef }: { state: PostJobState; service: ReturnType<typeof getServiceById>; reviewHeadingRef: React.RefObject<View>; resultHeadingRef: React.RefObject<View> }) {
+function PostJobReview({ state, service, reviewHeadingRef, resultHeadingRef }: { state: PostJobState; service: ReturnType<typeof getServiceById>; reviewHeadingRef: React.RefObject<ViewInstance | null>; resultHeadingRef: React.RefObject<ViewInstance | null> }) {
   return (
     <View style={styles.section}>
       <View ref={reviewHeadingRef} accessible focusable accessibilityRole="header" accessibilityLabel="Review">

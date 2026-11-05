@@ -224,7 +224,7 @@ describe('MOB-WORK-001 Native BrainWorker Workspace Preview Guardrails', () => {
     const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
     const iconMatches = screenContent.match(/<Ionicons[^>]*>/g) || [];
     expect(iconMatches.length).toBe(14);
-    iconMatches.forEach((tag) => {
+    iconMatches.forEach((tag: string) => {
       expect(tag).toContain('accessible={false}');
     });
 

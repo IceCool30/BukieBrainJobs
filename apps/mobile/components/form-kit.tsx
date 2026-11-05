@@ -9,6 +9,9 @@ import {
   TextInput,
   View,
   type KeyboardTypeOptions,
+  type PressableInstance,
+  type ScrollViewInstance,
+  type TextInputInstance,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,7 +24,7 @@ export type ChoiceOption = {
 
 type FormScreenProps = {
   children: ReactNode;
-  scrollRef?: RefObject<ScrollView>;
+  scrollRef?: RefObject<ScrollViewInstance | null>;
 };
 
 export function FormScreen({ children, scrollRef }: FormScreenProps) {
@@ -127,7 +130,7 @@ type FieldProps = {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   accessibilityLabel?: string;
   testID?: string;
-  focusRef?: RefObject<TextInput>;
+  focusRef?: RefObject<TextInputInstance | null>;
 };
 
 type FieldLabelProps = Pick<FieldProps, 'label' | 'required'> & { colors: MobileThemeTokens };
@@ -205,14 +208,14 @@ type ChoiceChipsProps = {
   selected: string;
   onSelect: (value: string) => void;
   wrap?: boolean;
-  focusRef?: RefObject<View>;
+  focusRef?: RefObject<PressableInstance | null>;
 };
 
 type ChoiceChipProps = {
   option: ChoiceOption;
   selected: string;
   onSelect: (value: string) => void;
-  focusRef?: RefObject<View>;
+  focusRef?: RefObject<PressableInstance | null>;
   colors: MobileThemeTokens;
 };
 
