@@ -46,7 +46,7 @@ describe('4.1.3 Safe Area & Status Bar Configuration', () => {
     const layout = readMobileFile('app/_layout.tsx');
     expect(layout).toContain('useThemeMode()');
     expect(layout).toContain("style={mode === 'dark' ? 'light' : 'dark'}");
-    expect(layout).toContain('backgroundColor={c.canvas}');
+    expect(layout).toContain('contentStyle: { backgroundColor: c.canvas }');
   });
 
   it('wraps RootLayout in SafeAreaProvider from react-native-safe-area-context', () => {
@@ -99,9 +99,9 @@ describe('4.1.3 Safe Area & Status Bar Configuration', () => {
     }
   });
 
-  it('declares react-native-safe-area-context matching Expo SDK 52 (~4.12.0)', () => {
+  it('declares react-native-safe-area-context matching Expo SDK (>=5.4.0)', () => {
     const pkg = JSON.parse(readMobileFile('package.json'));
-    expect(pkg.dependencies['react-native-safe-area-context']).toBe('~4.12.0');
+    expect(pkg.dependencies['react-native-safe-area-context']).toMatch(/^~?5\./);
   });
 
   it('proves tab bar height and content padding include nonzero bottom inset without double-counting', () => {

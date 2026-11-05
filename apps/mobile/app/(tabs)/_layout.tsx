@@ -1,4 +1,5 @@
 import React, { type ComponentProps } from 'react';
+import type { ColorValue, OpaqueColorValue } from 'react-native';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -101,19 +102,22 @@ function TabIcon({
 }: {
   tab: TabRoute;
   focused: boolean;
-  color: string;
+  color?: ColorValue;
   size?: number;
 }) {
+  // @expo/vector-icons accepts `string | OpaqueColorValue`, whereas RN 0.88 ColorValue is wider.
+  // The cast is isolated to this third-party icon prop boundary.
+  const iconColor = typeof color === 'string' ? color : (color as OpaqueColorValue | undefined);
   return (
     <Ionicons
       name={focused ? tab.iconActive : tab.icon}
       size={size ?? 22}
-      color={color}
+      color={iconColor}
     />
   );
 }
 
-function renderTabScreen(tab: TabRoute) {
+export function renderTabScreen(tab: TabRoute) {
   return (
     <Tabs.Screen
       key={tab.name}
@@ -137,7 +141,7 @@ export default function TabLayout() {
     [insets.bottom, tokens]
   );
   return (
-    <Tabs initialRouteName="home" screenOptions={screenOptions}>
+    <Tabs screenOptions={screenOptions}>
       {TAB_ROUTES.map(renderTabScreen)}
     </Tabs>
   );
