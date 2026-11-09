@@ -10,30 +10,30 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- **Product phase**: Phase 4.3 BrainWorker Native Experiences (`apps/mobile`).
-- **Active slice ID**: `MOB-WORK-002` (Native BrainWorker Workspace Immediate Job Invitation Accept/Decline Action Modals Preview).
-- **Governing checklist item**: Phase 4.3 Item 2 (`Immediate job invitation accept/decline action modals`). This slice covers the local UI preview subset only. Authoritative invitation response infrastructure, booking mutation, and live backend integration remain open.
-- **Current product milestone**: Phase 4.1 Native Navigation & Shared Shell complete and PM accepted; Phase 4.2 Customer Native Experiences baseline accepted (with MOB-ACT-001 committed as `990ef37`, mobile type-check baseline repair committed as `7040787`, and MOB-LIFE-001 native booking lifecycle presentation UI-only accepted and committed as `35b4f0b`). Phase 4.2.2 remains IN PROGRESS for deferred lifecycle persistence and offline caching. Older uncommitted MOB-POST and MOB-001 local working tree work remains separate and unstaged. Phase 4.3 Item 1 MOB-WORK-001 accepted, committed, and pushed as `2252aca` (Item 1 remains IN PROGRESS for deferred push delivery and backend integration). Phase 4.3 Item 2 MOB-WORK-002 approved for scoped UI-only preview implementation.
-- **Current product baseline**: Mobile accepted feature baseline at `2252aca`.
+- **Product phase**: Phase 4 Mobile Application (`apps/mobile`) - Next Slice: UI-Only Visual Alignment Pass.
+- **Active slice ID**: Pending next slice scoping: Mobile UI-Only Visual Alignment Pass (reconciling mobile visual styling, typography, tokens, contrast, and layout quality with the website/PWA standard).
+- **Governing checklist item**: Phase 4 Mobile Application. The product owner is unhappy with current mobile visual quality compared with the website/PWA; the next item is to scope a UI-only visual alignment pass across mobile screens.
+- **Current product milestone**:
+  - Phase 4.1 Native Navigation & Shared Shell: Complete and PM accepted.
+  - Phase 4.2 Customer Native Experiences: UI baselines accepted (MOB-001, MOB-BOOK-001, MOB-POST-001, MOB-ACT-001 at `990ef37`, mobile type-check baseline repair at `7040787`, MOB-LIFE-001 native booking lifecycle presentation UI-only at `35b4f0b`). Phase 4.2.2 remains IN PROGRESS for deferred lifecycle persistence and offline caching.
+  - Phase 4.3 BrainWorker Native Experiences: Local UI-preview portions of MOB-WORK-001 (workspace preview, committed and pushed at `2252aca`), MOB-WORK-002 (invitation action modals preview, committed and pushed at `c806442`), and MOB-WORK-003 (on-site check-in preview, committed and pushed at `8f94843`) are accepted and pushed. Real lead push delivery, live invitation response mutations, and real GPS/device validation remain open.
+  - Upgrades & Maintenance: Expo SDK 58 upgrade accepted, verified, and pushed at `cfea7e9` with all 25 workspace overrides consolidated into `pnpm-workspace.yaml`. Last verified mobile checks: 222/222 passing tests across 19 suites, `tsc --noEmit` exit 0, static Android export bundled cleanly (3.6MB, 48 assets), and Expo Go tunnel verified HTTP 200 when checked on Nov 5, 2026 (compiled browser emulation and Expo Go tunnel only; native device QA remains unverified).
+  - Uncommitted local work: Photo-led homepage restoration files (web: `HeroSection.tsx` and `page.test.tsx`; mobile: `app/index.tsx`, `content-guardrails.test.ts`, and `hero-mobile-1080.jpg`) remain local, uncommitted, and unaccepted. Existing `docs/screenshots/*` files and video are separate MOB-001 QA evidence, and the uncommitted MOB-POST evidence update in `docs/master-checklist.md` remains distinct and separate.
+  - Next item: Scope a UI-only visual alignment pass to elevate mobile visual fidelity and token consistency to match the approved website/PWA design.
+- **Current product baseline**: Mobile accepted feature baseline on branch `feature/mobile-accepted-slices` at commit `cfea7e9`.
 - **Scope and functional boundaries**:
-  - Extend existing native preview route at `/brainworker/workspace-preview` (`apps/mobile/app/brainworker/workspace-preview.tsx`). No new routes.
-  - Invitation action controls shown exclusively on the sample detail view for `lead_gen_01` (`SAMPLE_LEAD_ALERT.id`). Other sample leads (`lead_ac_02`, `lead_plumb_03`) display standard lead details with zero invitation actions.
-  - Prominent invitation action preview card stating actions are local simulations with zero backend response or booking created.
-  - Accessible Accept confirmation modal with clear preview disclaimer.
-  - Accessible Decline modal requiring a single-choice reason from the 6 canonical BW-003 reasons (`SCHEDULE_CONFLICT`, `OUTSIDE_COVERAGE_AREA`, `SKILL_TOOL_MISMATCH`, `RATE_BUDGET_MISMATCH`, `TEMPORARILY_UNAVAILABLE`, `OTHER`). Zero free-form text.
-  - Temporary in-memory outcome card displayed upon confirmation on this screen only.
-  - State automatically clears when leaving sample detail view (navigating back to lead feed).
-  - All 5 customer tabs (`home`, `services`, `jobs`, `messages`, `profile`) in `apps/mobile/app/(tabs)/` remain preserved and unmodified.
+  - Scoping only: no implementation or UI redesign in this documentation synchronization pass.
+  - All customer and worker routes in `apps/mobile` preserved.
+  - Real push notifications, live invitation responses, GPS device checks, backend/database, persistence, and full offline caching remain open or deferred.
 - **Explicit non-goals and exclusions**:
   - Zero backend, database, or live auth (no PostgreSQL, Prisma, JWTs).
   - Zero network APIs, HTTP calls, or WebSocket streaming.
   - Zero state persistence (no AsyncStorage, SQLite, MMKV, or file caching).
   - Zero booking creation, status mutations, or customer notification dispatch.
-  - Zero push notifications (`expo-notifications`, token registration, APNs/FCM keys).
-  - Zero GPS location check-in (Phase 4.3 Item 3).
-  - Zero camera, photo attachments, or biometrics (Phase 4.4).
-  - `docs/master-checklist.md` is preserved without edits.
-- **Specification**: `docs/specs/MOB-WORK-002-native-invitation-action-modals-preview.md` (Approved Specification) and decision record `docs/21-decision-log/MOB-WORK-002-NATIVE-INVITATION-ACTION-MODALS-PREVIEW.md`.
+  - Zero live push notifications (`expo-notifications`, token registration, APNs/FCM keys).
+  - Zero live GPS location hardware checks or permissions.
+  - Zero camera, photo attachments, or biometrics.
+  - `docs/check-log.md` is preserved without edits.
 
 ## Completed BW-003 Scope Record
 
@@ -79,6 +79,21 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Execution Gate**: No implementation code until `/scope`, `/audit`, and `/architect` are completed and the required BW-003 specification package is approved.
 
 ## Completed & Verified Slices
+
+- [x] **MOB-WORK-003 BrainWorker On-Site Check-In Preview (Item 4.3.3)**
+  - **Status**: Local UI-preview accepted, committed, and pushed at `8f94843`.
+  - **Spec**: `docs/specs/MOB-WORK-003-native-check-in-preview.md` (Approved Specification) and decision record `docs/21-decision-log/MOB-WORK-003-NATIVE-CHECK-IN-PREVIEW.md`.
+  - **Functional boundaries**: Sample check-in preview with simulated radius proximity and manual code entry on `/brainworker/workspace-preview`. UI-only preview; real GPS device location confirmation, geolocation hardware permissions, and backend arrival verification remain open.
+
+- [x] **MOB-WORK-002 BrainWorker Invitation Action Modals Preview (Item 4.3.2)**
+  - **Status**: Local UI-preview accepted, committed, and pushed at `c806442`.
+  - **Spec**: `docs/specs/MOB-WORK-002-native-invitation-action-modals-preview.md` (Approved Specification) and decision record `docs/21-decision-log/MOB-WORK-002-NATIVE-INVITATION-ACTION-MODALS-PREVIEW.md`.
+  - **Functional boundaries**: Accessible Accept confirmation and Decline reason-taxonomy modals with in-memory outcome card on `/brainworker/workspace-preview`. UI-only preview; live invitation response submission, booking mutations, and backend integration remain open.
+
+- [x] **MOB-WORK-001 BrainWorker Operating Workspace Preview (Item 4.3.1)**
+  - **Status**: Local UI-preview accepted, committed, and pushed at `2252aca`.
+  - **Spec**: `docs/specs/MOB-WORK-001-native-worker-workspace-preview.md` (Approved Specification) and decision record `docs/21-decision-log/MOB-WORK-001-NATIVE-WORKER-WORKSPACE-PREVIEW.md`.
+  - **Functional boundaries**: Dedicated sample workspace preview screen at `/brainworker/workspace-preview` showing sample lead alert card with 48dp touch targets and lead details. UI-only preview; real lead push notification delivery and backend integration remain open.
 
 - [x] **BW-005 BrainWorker Profile & Portfolio Management (Item 2.7)**
   - **Status**: Merged to `main` at `f5fd39d`, PR #59.
