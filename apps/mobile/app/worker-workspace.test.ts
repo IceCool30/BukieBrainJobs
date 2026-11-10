@@ -512,6 +512,22 @@ describe('MOB-WORK-001 Native BrainWorker Workspace Preview Guardrails', () => {
       expect(contrast(toRgb(obsidianDarkTokens.ctaText), toRgb(obsidianDarkTokens.ctaPressed))).toBeGreaterThanOrEqual(4.5);
     });
 
+    it('enforces title-case interface typography on registration action buttons', () => {
+      const registerContent = readMobileFile('app/brainworker/register.tsx');
+      const buttonMatch = registerContent.match(/function RegisterSubmitButton[\s\S]*?\n\}/);
+      expect(buttonMatch).not.toBeNull();
+      expect(buttonMatch![0]).toContain('>Continue to Onboarding<');
+      expect(buttonMatch![0]).toContain('accessibilityLabel="Continue to onboarding"');
+
+      const submitStyleMatch = registerContent.match(/submitLabel:\s*\{([^}]*)\}/);
+      expect(submitStyleMatch).not.toBeNull();
+      expect(submitStyleMatch![1]).not.toMatch(/fontFamily:\s*mono/);
+
+      const previewStyleMatch = registerContent.match(/previewLinkLabel:\s*\{([^}]*)\}/);
+      expect(previewStyleMatch).not.toBeNull();
+      expect(previewStyleMatch![1]).not.toMatch(/fontFamily:\s*mono/);
+    });
+
     it('enforces theme-safe default border contrast on registration inputs', () => {
       const registerContent = readMobileFile('app/brainworker/register.tsx');
       const fieldMatch = registerContent.match(/function Field[\s\S]*?\n\}/);
