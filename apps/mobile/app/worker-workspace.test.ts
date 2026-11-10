@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { getStripAccentColor, getStripTextColor, obsidianDarkTokens, obsidianLightTokens } from '../lib/theme';
 
 declare const __dirname: string;
 
@@ -28,6 +29,27 @@ describe('MOB-WORK-001 Native BrainWorker Workspace Preview Guardrails', () => {
     const m2Branch = runQaBody.slice(runQaBody.indexOf('if (isWork002)'), runQaBody.indexOf(elseMarker));
     const m1Branch = runQaBody.slice(runQaBody.indexOf(elseMarker));
     return { m2Branch, m1Branch };
+  };
+
+  type Rgb = { r: number; g: number; b: number };
+  const toRgb = (hex: string): Rgb => {
+    const clean = hex.replace('#', '');
+    return {
+      r: parseInt(clean.slice(0, 2), 16),
+      g: parseInt(clean.slice(2, 4), 16),
+      b: parseInt(clean.slice(4, 6), 16),
+    };
+  };
+
+  const contrast = (c1: Rgb, c2: Rgb): number => {
+    const lum = (c: Rgb) => {
+      const a = [c.r, c.g, c.b].map((v) => {
+        const s = v / 255;
+        return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+      });
+      return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+    };
+    return (Math.max(lum(c1), lum(c2)) + 0.05) / (Math.min(lum(c1), lum(c2)) + 0.05);
   };
 
   it('registers brainworker/workspace-preview in root stack layout', () => {
@@ -423,6 +445,95 @@ describe('MOB-WORK-001 Native BrainWorker Workspace Preview Guardrails', () => {
       expect(screenContent).not.toMatch(/expo-location|geolocation|navigator\.geolocation/i);
       expect(screenContent).not.toMatch(/expo-notifications/i);
       expect(screenContent).not.toMatch(/prisma|supabase|postgre/i);
+    });
+  });
+
+  describe('MOB-VIS-001 Registration, Form Kit, and Workspace Status Contrast Standards', () => {
+    it('enforces registration submit button Outlier CTA fill and high-contrast label/icon', () => {
+      const registerContent = readMobileFile('app/brainworker/register.tsx');
+      const buttonMatch = registerContent.match(/function RegisterSubmitButton[\s\S]*?\n\}/);
+      expect(buttonMatch).not.toBeNull();
+      const buttonCode = buttonMatch![0];
+      expect(buttonCode).toContain('backgroundColor: pressed ? c.ctaPressed : c.ctaFill');
+      expect(buttonCode).toContain('color: c.ctaText');
+      expect(buttonCode).toContain('color={c.ctaText}');
+
+      expect(contrast(toRgb(obsidianLightTokens.ctaText), toRgb(obsidianLightTokens.ctaFill))).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(toRgb(obsidianLightTokens.ctaText), toRgb(obsidianLightTokens.ctaPressed))).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(toRgb(obsidianDarkTokens.ctaText), toRgb(obsidianDarkTokens.ctaFill))).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(toRgb(obsidianDarkTokens.ctaText), toRgb(obsidianDarkTokens.ctaPressed))).toBeGreaterThanOrEqual(4.5);
+    });
+
+    it('enforces theme-safe default border contrast on registration inputs', () => {
+      const registerContent = readMobileFile('app/brainworker/register.tsx');
+      const fieldMatch = registerContent.match(/function Field[\s\S]*?\n\}/);
+      expect(fieldMatch).not.toBeNull();
+      const fieldCode = fieldMatch![0];
+      expect(fieldCode).toContain('const borderColor = error ? c.danger : focused ? c.amber : c.textMuted');
+      expect(fieldCode).toContain('backgroundColor: c.bg');
+
+      expect(contrast(toRgb(obsidianLightTokens.textMuted), toRgb(obsidianLightTokens.bg))).toBeGreaterThanOrEqual(3.0);
+      expect(contrast(toRgb(obsidianDarkTokens.textMuted), toRgb(obsidianDarkTokens.bg))).toBeGreaterThanOrEqual(3.0);
+      expect(contrast(toRgb(obsidianLightTokens.amber), toRgb(obsidianLightTokens.bg))).toBeGreaterThanOrEqual(3.0);
+      expect(contrast(toRgb(obsidianDarkTokens.amber), toRgb(obsidianDarkTokens.bg))).toBeGreaterThanOrEqual(3.0);
+    });
+
+    it('enforces theme-safe default border contrast in shared form-kit input style', () => {
+      const formKit = readMobileFile('components/form-kit.tsx');
+      const styleMatch = formKit.match(/function getFieldInputStyle[\s\S]*?\n\}/);
+      expect(styleMatch).not.toBeNull();
+      const styleCode = styleMatch![0];
+      expect(styleCode).toContain('backgroundColor: colors.card');
+      expect(styleCode).toContain('borderColor: error ? colors.danger : isFocused ? colors.amber : colors.mutedText');
+
+      expect(contrast(toRgb(obsidianLightTokens.mutedText), toRgb(obsidianLightTokens.card))).toBeGreaterThanOrEqual(3.0);
+      expect(contrast(toRgb(obsidianDarkTokens.mutedText), toRgb(obsidianDarkTokens.card))).toBeGreaterThanOrEqual(3.0);
+      expect(contrast(toRgb(obsidianLightTokens.amber), toRgb(obsidianLightTokens.card))).toBeGreaterThanOrEqual(3.0);
+      expect(contrast(toRgb(obsidianDarkTokens.amber), toRgb(obsidianDarkTokens.card))).toBeGreaterThanOrEqual(3.0);
+    });
+
+    it('enforces strip-safe confirmed tag contrast in CheckInJobInfoCard', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      const jobInfoMatch = screenContent.match(/function CheckInJobInfoCard[\s\S]*?\n\}/);
+      expect(jobInfoMatch).not.toBeNull();
+      const jobInfoCode = jobInfoMatch![0];
+      expect(jobInfoCode).toContain('backgroundColor: c.strip');
+      expect(jobInfoCode).toContain('color: getStripAccentColor(c, c.amber)');
+
+      const lightFg = getStripAccentColor(obsidianLightTokens, obsidianLightTokens.amber);
+      expect(contrast(toRgb(lightFg), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(4.5);
+      const darkFg = getStripAccentColor(obsidianDarkTokens, obsidianDarkTokens.amber);
+      expect(contrast(toRgb(darkFg), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(4.5);
+    });
+
+    it('enforces strip-safe simulated arrival badge and icon contrast in CheckInSimulatedStatusCard', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      const statusMatch = screenContent.match(/function CheckInSimulatedStatusCard[\s\S]*?\n\}/);
+      expect(statusMatch).not.toBeNull();
+      const statusCode = statusMatch![0];
+      expect(statusCode).toContain('backgroundColor: c.strip');
+      expect(statusCode).toContain('borderColor: getStripAccentColor(c, c.green)');
+      expect(statusCode).toContain('color={getStripAccentColor(c, c.green)}');
+      expect(statusCode).toContain('color: getStripAccentColor(c, c.green)');
+
+      const lightFg = getStripAccentColor(obsidianLightTokens, obsidianLightTokens.green);
+      expect(contrast(toRgb(lightFg), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(4.5);
+      const darkFg = getStripAccentColor(obsidianDarkTokens, obsidianDarkTokens.green);
+      expect(contrast(toRgb(darkFg), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(4.5);
+    });
+
+    it('enforces strip-safe information icon contrast in CheckInDisclaimer', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      const disclaimerMatch = screenContent.match(/function CheckInDisclaimer[\s\S]*?\n\}/);
+      expect(disclaimerMatch).not.toBeNull();
+      const disclaimerCode = disclaimerMatch![0];
+      expect(disclaimerCode).toContain('backgroundColor: c.strip');
+      expect(disclaimerCode).toContain('color={getStripAccentColor(c, c.amber)}');
+
+      const lightIcon = getStripAccentColor(obsidianLightTokens, obsidianLightTokens.amber);
+      expect(contrast(toRgb(lightIcon), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(3.0);
+      const darkIcon = getStripAccentColor(obsidianDarkTokens, obsidianDarkTokens.amber);
+      expect(contrast(toRgb(darkIcon), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(3.0);
     });
   });
 });

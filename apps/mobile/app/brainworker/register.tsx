@@ -127,10 +127,10 @@ function RegisterSubmitButton({ onSubmit }: { onSubmit: () => void }) {
     <Pressable
       accessibilityRole="button"
       onPress={onSubmit}
-      style={({ pressed }) => [s.submit, { backgroundColor: pressed ? c.amberHover : c.amber }]}
+      style={({ pressed }) => [s.submit, { backgroundColor: pressed ? c.ctaPressed : c.ctaFill }]}
     >
-      <Text style={s.submitLabel}>CONTINUE TO ONBOARDING</Text>
-      <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
+      <Text style={[s.submitLabel, { color: c.ctaText }]}>CONTINUE TO ONBOARDING</Text>
+      <Ionicons name="arrow-forward" size={16} color={c.ctaText} />
     </Pressable>
   );
 }
@@ -157,7 +157,7 @@ function RegisterPreviewLink({ onOpen }: { onOpen: () => void }) {
 function Field({ label, error, ...input }: TextInputProps & { label: string; error?: string }) {
   const c = useTrades();
   const [focused, setFocused] = useState(false);
-  const borderColor = error ? c.danger : focused ? c.amber : c.rule;
+  const borderColor = error ? c.danger : focused ? c.amber : c.textMuted;
   return (
     <View style={s.field}>
       <Text style={[s.label, { color: c.textMuted }]}>{label}</Text>

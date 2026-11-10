@@ -2,8 +2,30 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import * as ts from 'typescript';
+import { obsidianDarkTokens, obsidianLightTokens } from '../lib/theme';
 
 declare const __dirname: string;
+
+type Rgb = { r: number; g: number; b: number };
+const toRgb = (hex: string): Rgb => {
+  const clean = hex.replace('#', '');
+  return {
+    r: parseInt(clean.slice(0, 2), 16),
+    g: parseInt(clean.slice(2, 4), 16),
+    b: parseInt(clean.slice(4, 6), 16),
+  };
+};
+
+const contrast = (c1: Rgb, c2: Rgb): number => {
+  const lum = (c: Rgb) => {
+    const a = [c.r, c.g, c.b].map((v) => {
+      const s = v / 255;
+      return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+    });
+    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+  };
+  return (Math.max(lum(c1), lum(c2)) + 0.05) / (Math.min(lum(c1), lum(c2)) + 0.05);
+};
 
 const source = readFileSync(resolve(__dirname, 'post-job.tsx'), 'utf8');
 
@@ -126,4 +148,72 @@ it('aligns post-job review summary and step progress visual contracts with Outli
   expect(postJobSource).toContain('stepIndicator');
   // Review cards align with Outlier card layout and spacing
   expect(postJobSource).toContain('SummaryRow');
+});
+
+it('enforces theme-safe progress bar boundary contrast against canvas', () => {
+  const postJobSource = readFileSync(resolve(__dirname, 'post-job.tsx'), 'utf8');
+  const formKitSource = readFileSync(resolve(__dirname, '../components/form-kit.tsx'), 'utf8');
+  const stepMatch = postJobSource.match(/function StepProgress[\s\S]*?\n\}/);
+  expect(stepMatch).not.toBeNull();
+  const stepCode = stepMatch![0];
+  expect(stepCode).toMatch(/barColor\s*=\s*isCurrent\s*\?\s*\(?c\.mode\s*===\s*'light'\s*\?\s*c\.amber\s*:\s*c\.ctaFill\)?\s*:\s*isCompleted\s*\?\s*\(?c\.mode\s*===\s*'light'\s*\?\s*c\.amber\s*:\s*c\.ctaFill\)?\s*:\s*(?:c\.divider|c\.mutedText)/);
+  expect(stepCode).toContain('backgroundColor: barColor');
+  expect(stepCode).toMatch(/opacity:\s*isCurrent\s*\?\s*1\s*:\s*isCompleted\s*\?\s*0\.8\s*:\s*(?:0\.4|0\.7)/);
+
+  const formMatch = postJobSource.match(/function PostJobForm[\s\S]*?\n\}/);
+  expect(formMatch).not.toBeNull();
+  expect(formMatch![0]).toContain('<FormScreen>');
+
+  const formScreenMatch = formKitSource.match(/export function FormScreen[\s\S]*?\n\}/);
+  expect(formScreenMatch).not.toBeNull();
+  expect(formScreenMatch![0]).toContain('backgroundColor: c.canvas');
+
+  const lightCurrentBar = obsidianLightTokens.amber;
+  expect(contrast(toRgb(lightCurrentBar), toRgb(obsidianLightTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+
+  const darkCurrentBar = obsidianDarkTokens.ctaFill;
+  expect(contrast(toRgb(darkCurrentBar), toRgb(obsidianDarkTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+});
+
+const compositeRgb = (fg: Rgb, bg: Rgb, a: number): Rgb => ({
+  r: Math.round(fg.r * a + bg.r * (1 - a)),
+  g: Math.round(fg.g * a + bg.g * (1 - a)),
+  b: Math.round(fg.b * a + bg.b * (1 - a)),
+});
+
+function extractStepProgressTokens(stepCode: string) {
+  const opacityMatch = stepCode.match(/opacity:\s*isCurrent\s*\?\s*([0-9.]+)\s*:\s*isCompleted\s*\?\s*([0-9.]+)\s*:\s*([0-9.]+)/);
+  const barColorMatch = stepCode.match(/barColor\s*=\s*[\s\S]*?:\s*c\.([a-zA-Z0-9_]+)\s*;/);
+  expect(opacityMatch).not.toBeNull();
+  expect(barColorMatch).not.toBeNull();
+  return {
+    currentOpacity: parseFloat(opacityMatch![1]),
+    completedOpacity: parseFloat(opacityMatch![2]),
+    pendingOpacity: parseFloat(opacityMatch![3]),
+    pendingBarToken: barColorMatch![1] as keyof typeof obsidianLightTokens,
+  };
+}
+
+function computeStepBarContrast(tokens: typeof obsidianLightTokens | typeof obsidianDarkTokens, tokenKey: string, opacity: number) {
+  const fg = toRgb((tokens as Record<string, string>)[tokenKey]);
+  const bg = toRgb(tokens.canvas);
+  return contrast(compositeRgb(fg, bg, opacity), bg);
+}
+
+it('enforces progress bar current, complete, and pending boundary contrast and visual distinctness', () => {
+  const stepMatch = readFileSync(resolve(__dirname, 'post-job.tsx'), 'utf8').match(/function StepProgress[\s\S]*?\n\}/);
+  expect(stepMatch).not.toBeNull();
+  const { currentOpacity, completedOpacity, pendingOpacity, pendingBarToken } = extractStepProgressTokens(stepMatch![0]);
+
+  expect(currentOpacity).toBeGreaterThan(completedOpacity);
+  expect(completedOpacity).toBeGreaterThanOrEqual(pendingOpacity);
+  expect(pendingBarToken).not.toBe('amber');
+  expect(pendingBarToken).not.toBe('ctaFill');
+
+  expect(computeStepBarContrast(obsidianLightTokens, 'amber', currentOpacity)).toBeGreaterThanOrEqual(3.0);
+  expect(computeStepBarContrast(obsidianDarkTokens, 'ctaFill', currentOpacity)).toBeGreaterThanOrEqual(3.0);
+  expect(computeStepBarContrast(obsidianLightTokens, 'amber', completedOpacity)).toBeGreaterThanOrEqual(3.0);
+  expect(computeStepBarContrast(obsidianDarkTokens, 'ctaFill', completedOpacity)).toBeGreaterThanOrEqual(3.0);
+  expect(computeStepBarContrast(obsidianLightTokens, pendingBarToken, pendingOpacity)).toBeGreaterThanOrEqual(3.0);
+  expect(computeStepBarContrast(obsidianDarkTokens, pendingBarToken, pendingOpacity)).toBeGreaterThanOrEqual(3.0);
 });

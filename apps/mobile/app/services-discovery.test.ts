@@ -21,6 +21,7 @@ vi.mock('react-native-safe-area-context', () => ({
 
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { getStripAccentColor, getStripTextColor, obsidianDarkTokens, obsidianLightTokens } from '../lib/theme';
 
 declare const __dirname: string;
 
@@ -28,6 +29,27 @@ describe('4.2.1 Native Public Discovery Integration & Screen Standards', () => {
   const mobileRoot = resolve(__dirname, '..');
   const readMobileFile = (relativePath: string) =>
     readFileSync(resolve(mobileRoot, relativePath), 'utf8');
+
+  type Rgb = { r: number; g: number; b: number };
+  const toRgb = (hex: string): Rgb => {
+    const clean = hex.replace('#', '');
+    return {
+      r: parseInt(clean.slice(0, 2), 16),
+      g: parseInt(clean.slice(2, 4), 16),
+      b: parseInt(clean.slice(4, 6), 16),
+    };
+  };
+
+  const contrast = (c1: Rgb, c2: Rgb): number => {
+    const lum = (c: Rgb) => {
+      const a = [c.r, c.g, c.b].map((v) => {
+        const s = v / 255;
+        return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+      });
+      return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+    };
+    return (Math.max(lum(c1), lum(c2)) + 0.05) / (Math.min(lum(c1), lum(c2)) + 0.05);
+  };
 
   it('declares service detail route in RootLayout stack', () => {
     const layout = readMobileFile('app/_layout.tsx');
@@ -74,6 +96,108 @@ describe('4.2.1 Native Public Discovery Integration & Screen Standards', () => {
     expect(services).toContain('getStripTextColor(c, c.mainText)');
     expect(services).toContain('color: active ? c.card : getStripTextColor(c, c.mainText)');
     expect(services).toContain('getStripAccentColor(c, c.amber)');
+  });
+
+  it('enforces theme-safe filter pill active boundary and label contrast', () => {
+    const services = readMobileFile('app/(tabs)/services.tsx');
+    const pillMatch = services.match(/function FilterPillItem[\s\S]*?\n\}/);
+    expect(pillMatch).not.toBeNull();
+    const pillCode = pillMatch![0];
+    expect(pillCode).toContain("backgroundColor: active ? c.amber : pressed ? (c.mode === 'light' ? c.strip : c.cardHover) : c.strip");
+    expect(pillCode).toContain("borderColor: active ? c.amber : pressed ? (c.mode === 'light' ? c.stripAccent : c.mutedText) : (c.mode === 'light' ? c.divider : getStripTextColor(c, c.mutedText))");
+    expect(pillCode).toContain('color: active ? c.card : getStripTextColor(c, c.mainText)');
+
+    expect(contrast(toRgb(obsidianLightTokens.amber), toRgb(obsidianLightTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianDarkTokens.amber), toRgb(obsidianDarkTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianLightTokens.card), toRgb(obsidianLightTokens.amber))).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(toRgb(obsidianDarkTokens.card), toRgb(obsidianDarkTokens.amber))).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('enforces theme-safe filter pill inactive and pressed contrast', () => {
+    expect(contrast(toRgb(obsidianLightTokens.divider), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(3.0);
+    const darkDefaultStripBorder = getStripTextColor(obsidianDarkTokens, obsidianDarkTokens.mutedText);
+    expect(contrast(toRgb(darkDefaultStripBorder), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianLightTokens.stripAccent), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianDarkTokens.mutedText), toRgb(obsidianDarkTokens.cardHover))).toBeGreaterThanOrEqual(3.0);
+
+    const lightStripFg = getStripTextColor(obsidianLightTokens, obsidianLightTokens.mainText);
+    expect(contrast(toRgb(lightStripFg), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(4.5);
+    const darkStripFg = getStripTextColor(obsidianDarkTokens, obsidianDarkTokens.mainText);
+    expect(contrast(toRgb(darkStripFg), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(toRgb(darkStripFg), toRgb(obsidianDarkTokens.cardHover))).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('enforces theme-safe search input boundary contrast against card and canvas', () => {
+    const services = readMobileFile('app/(tabs)/services.tsx');
+    const searchMatch = services.match(/function ServicesSearchInput[\s\S]*?\n\}/);
+    expect(searchMatch).not.toBeNull();
+    const searchCode = searchMatch![0];
+    expect(searchCode).toContain('backgroundColor: c.card');
+    expect(searchCode).toContain('borderColor: isFocused ? c.amber : c.mutedText');
+
+    expect(contrast(toRgb(obsidianLightTokens.mutedText), toRgb(obsidianLightTokens.card))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianLightTokens.mutedText), toRgb(obsidianLightTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianDarkTokens.mutedText), toRgb(obsidianDarkTokens.card))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianDarkTokens.mutedText), toRgb(obsidianDarkTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+
+    expect(contrast(toRgb(obsidianLightTokens.amber), toRgb(obsidianLightTokens.card))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianLightTokens.amber), toRgb(obsidianLightTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianDarkTokens.amber), toRgb(obsidianDarkTokens.card))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianDarkTokens.amber), toRgb(obsidianDarkTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+  });
+
+  it('enforces theme-safe reset button contrast in empty state', () => {
+    const services = readMobileFile('app/(tabs)/services.tsx');
+    const emptyMatch = services.match(/function ServicesEmptyState[\s\S]*?\n\}/);
+    expect(emptyMatch).not.toBeNull();
+    const emptyCode = emptyMatch![0];
+    expect(emptyCode).toContain("backgroundColor: pressed ? (c.mode === 'light' ? c.strip : c.cardHover) : c.strip");
+    expect(emptyCode).toContain("borderColor: pressed ? (c.mode === 'light' ? c.stripAccent : c.mutedText) : (c.mode === 'light' ? c.divider : getStripTextColor(c, c.mutedText))");
+    expect(emptyCode).toContain('color: getStripAccentColor(c, c.amber)');
+
+    expect(contrast(toRgb(obsidianLightTokens.divider), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(3.0);
+    const darkDefaultBorder = getStripTextColor(obsidianDarkTokens, obsidianDarkTokens.mutedText);
+    expect(contrast(toRgb(darkDefaultBorder), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianLightTokens.stripAccent), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianDarkTokens.mutedText), toRgb(obsidianDarkTokens.cardHover))).toBeGreaterThanOrEqual(3.0);
+
+    const lightResetFg = getStripAccentColor(obsidianLightTokens, obsidianLightTokens.amber);
+    expect(contrast(toRgb(lightResetFg), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(4.5);
+    const darkResetFg = getStripAccentColor(obsidianDarkTokens, obsidianDarkTokens.amber);
+    expect(contrast(toRgb(darkResetFg), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(toRgb(darkResetFg), toRgb(obsidianDarkTokens.cardHover))).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('source-binds detail back control boundaries and state-aware foreground', () => {
+    const detail = readMobileFile('app/services/[id].tsx');
+    const headerMatch = detail.match(/function ServiceDetailHeader[\s\S]*?\n\}/);
+    expect(headerMatch).not.toBeNull();
+    const headerCode = headerMatch![0];
+    expect(headerCode).toContain('backgroundColor: pressed ? c.cardHover : c.strip');
+    expect(headerCode).toContain("borderColor: pressed ? c.mutedText : (c.mode === 'light' ? c.divider : getStripTextColor(c, c.mutedText))");
+    expect(headerCode).toMatch(/pressed\s*&&\s*c\.mode\s*===\s*'light'\s*\?\s*c\.mainText\s*:\s*getStripTextColor\(c,\s*c\.mainText\)/);
+
+    const notFoundMatch = detail.match(/function ServiceNotFoundView[\s\S]*?\n\}/);
+    expect(notFoundMatch).not.toBeNull();
+    const notFoundCode = notFoundMatch![0];
+    expect(notFoundCode).toContain('backgroundColor: pressed ? c.cardHover : c.strip');
+    expect(notFoundCode).toContain("borderColor: pressed ? c.mutedText : (c.mode === 'light' ? c.divider : getStripTextColor(c, c.mutedText))");
+    expect(notFoundCode).toMatch(/pressed\s*&&\s*c\.mode\s*===\s*'light'\s*\?\s*c\.mainText\s*:\s*getStripTextColor\(c,\s*c\.mainText\)/);
+  });
+
+  it('enforces theme-safe detail back control boundary and foreground contrast across states', () => {
+    expect(contrast(toRgb(obsidianLightTokens.divider), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(3.0);
+    const darkDefaultBorder = getStripTextColor(obsidianDarkTokens, obsidianDarkTokens.mutedText);
+    expect(contrast(toRgb(darkDefaultBorder), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianLightTokens.mutedText), toRgb(obsidianLightTokens.cardHover))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianDarkTokens.mutedText), toRgb(obsidianDarkTokens.cardHover))).toBeGreaterThanOrEqual(3.0);
+
+    const lightStripFg = getStripTextColor(obsidianLightTokens, obsidianLightTokens.mainText);
+    const darkStripFg = getStripTextColor(obsidianDarkTokens, obsidianDarkTokens.mainText);
+    expect(contrast(toRgb(lightStripFg), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(toRgb(obsidianLightTokens.mainText), toRgb(obsidianLightTokens.cardHover))).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(toRgb(darkStripFg), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(toRgb(darkStripFg), toRgb(obsidianDarkTokens.cardHover))).toBeGreaterThanOrEqual(4.5);
   });
 
   it('ensures Service Detail screen protects safe area, renders catalog examples, and handles not-found state', () => {

@@ -171,10 +171,10 @@ function CancelledNotice() {
 function ActivitySampleCard({ sample, onPress }: CardProps) {
   const c = useThemeColors();
   const isCancelled = sample.status === 'cancelled';
-  const pressedBg = isCancelled && c.mode === 'light' ? c.card : c.strip;
+  const pressedBg = c.mode === 'light' ? (isCancelled ? c.card : c.cardHover) : c.strip;
   const cardStyle = ({ pressed }: { pressed: boolean }) => [
     styles.card,
-    { backgroundColor: pressed ? pressedBg : c.card, borderColor: isCancelled ? c.danger : c.divider },
+    { backgroundColor: pressed ? pressedBg : c.card, borderColor: isCancelled ? c.danger : c.mutedText },
   ];
 
   return (
@@ -324,12 +324,13 @@ function MilestoneIndicatorBlock({ sampleIndex }: { sampleIndex: number }) {
 
 function SampleContextBlock({ sample }: { sample: ActivitySample }) {
   const c = useThemeColors();
+  const contextTextColor = getStripTextColor(c, c.mutedText);
   return (
     <View style={[styles.detailSection, { backgroundColor: c.strip, borderColor: c.divider }]}>
-      <Text style={[styles.typeLabel, { color: c.mutedText }]}>
+      <Text style={[styles.typeLabel, { color: contextTextColor }]}>
         ENTRY TYPE: {ACTIVITY_TYPE_LABELS[sample.type].toUpperCase()}
       </Text>
-      <Text style={[styles.disclaimerText, { color: c.mutedText }]}>
+      <Text style={[styles.disclaimerText, { color: contextTextColor }]}>
         {LIFECYCLE_SAMPLE_DISCLAIMER}
       </Text>
     </View>
