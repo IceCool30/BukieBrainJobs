@@ -10,25 +10,30 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- **Product phase**: Phase 4 Mobile Application (`apps/mobile`) - Next Slice: UI-Only Visual Alignment Pass.
-- **Active slice ID**: Pending next slice scoping: Mobile UI-Only Visual Alignment Pass (reconciling mobile visual styling, typography, tokens, contrast, and layout quality with the website/PWA standard).
-- **Governing checklist item**: Phase 4 Mobile Application. The product owner is unhappy with current mobile visual quality compared with the website/PWA; the next item is to scope a UI-only visual alignment pass across mobile screens.
+- **Product phase**: Phase 4 Mobile Application (`apps/mobile`) - Visual Alignment Program (`MOB-VIS-001`).
+- **Active slice ID**: `MOB-VIS-001` Slice 3: Shared Form Kit, Booking Prep & Job Posting (Next Active Slice; Slices 1 and 2 completed and pushed).
+- **Governing checklist item**: Phase 4 Mobile Application Item 4.5 (`MOB-VIS-001`).
 - **Current product milestone**:
   - Phase 4.1 Native Navigation & Shared Shell: Complete and PM accepted.
   - Phase 4.2 Customer Native Experiences: UI baselines accepted (MOB-001, MOB-BOOK-001, MOB-POST-001, MOB-ACT-001 at `990ef37`, mobile type-check baseline repair at `7040787`, MOB-LIFE-001 native booking lifecycle presentation UI-only at `35b4f0b`). Phase 4.2.2 remains IN PROGRESS for deferred lifecycle persistence and offline caching.
   - Phase 4.3 BrainWorker Native Experiences: Local UI-preview portions of MOB-WORK-001 (workspace preview, committed and pushed at `2252aca`), MOB-WORK-002 (invitation action modals preview, committed and pushed at `c806442`), and MOB-WORK-003 (on-site check-in preview, committed and pushed at `8f94843`) are accepted and pushed. Real lead push delivery, live invitation response mutations, and real GPS/device validation remain open.
-  - Upgrades & Maintenance: Expo SDK 58 upgrade accepted, verified, and pushed at `cfea7e9` with all 25 workspace overrides consolidated into `pnpm-workspace.yaml`. Last verified mobile checks: 222/222 passing tests across 19 suites, `tsc --noEmit` exit 0, static Android export bundled cleanly (3.6MB, 48 assets), and Expo Go tunnel verified HTTP 200 when checked on Nov 5, 2026 (compiled browser emulation and Expo Go tunnel only; native device QA remains unverified).
-  - Uncommitted local work: Photo-led homepage restoration files (web: `HeroSection.tsx` and `page.test.tsx`; mobile: `app/index.tsx`, `content-guardrails.test.ts`, and `hero-mobile-1080.jpg`) remain local, uncommitted, and unaccepted. Existing `docs/screenshots/*` files and video are separate MOB-001 QA evidence, and the uncommitted MOB-POST evidence update in `docs/master-checklist.md` remains distinct and separate.
-  - Next item: Scope a UI-only visual alignment pass to elevate mobile visual fidelity and token consistency to match the approved website/PWA design.
-- **Current product baseline**: Mobile accepted feature baseline on branch `feature/mobile-accepted-slices` at commit `cfea7e9`.
+  - Upgrades & Maintenance: Expo SDK 58 upgrade accepted, verified, and pushed at `cfea7e9`.
+  - Visual Alignment (`MOB-VIS-001`): Slices 1 and 2 completed and pushed on branch `feature/mobile-accepted-slices`:
+    - Slice 1 (Tokens, Shell & Home Screen) committed/pushed at `b82a365`: reconciled Outlier tokens, pill buttons, title-case labels, exact owner-approved native-home headline (`Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on BukieBrainJobs`), tab bar active tints (`#F7803C` dark / `#ABEEC8` light), home header theme toggle, and CTA navy-on-coral tokens (`ctaFill: #F7803C` with `ctaText: #001A41`).
+    - Slice 2 (Discovery & Service Detail) committed/pushed at `56d5ac79b05e216802ea43114452696f94edb16a`: refined `app/(tabs)/services.tsx`, `app/services/[id].tsx`, and `app/services-discovery.test.ts`, preserving 8 canonical services, routes, and mock behavior. Verified with 229 passing tests across 19 files, `tsc --noEmit` exit 0, Android Expo export bundled with 1,430 modules, and compiled Expo browser emulation (390x844 and 375x812 in dark and light modes; report in `/tmp/bbj-mobile-slice2-qa/browser-emulation-report.json` confirming 8 service cards, zero page-level horizontal overflow, 50px search input, 48px CTA/back button, CTA `#F7803C` with `#001A41` text across all 4 theme/viewport combinations; Playwright interaction verification for search, clear, filters, reset, routing, and booking navigation; browser emulation checks, not native-device QA; Vercel canceled exact-SHA deployment `dpl_CrHz1QvqeQsoGkUWpQiSbm77TSZY` solely because mobile changes do not affect the Next.js app / skip unaffected project, not failed build).
+  - Uncommitted local work: Separate web homepage candidate at `apps/web/components/HeroSection.tsx` and `apps/web/app/page.test.tsx` remains uncommitted and separately unaccepted (not merged or approved). Preserved QA evidence under `docs/screenshots/*` and `docs/check-log.md` remains uncommitted and unmodified.
+  - Next Active Slice: Slice 3 (Shared Form Kit, Booking Prep & Job Posting). Scoped files: `apps/mobile/components/form-kit.tsx`, `apps/mobile/app/book.tsx`, `apps/mobile/app/post-job.tsx`, `apps/mobile/app/book.test.tsx`, `apps/mobile/app/post-job-native-focus.test.ts`.
+- **Current product baseline**: Mobile accepted feature baseline on branch `feature/mobile-accepted-slices` at commit `56d5ac7`.
 - **Scope and functional boundaries**:
-  - Scoping only: no implementation or UI redesign in this documentation synchronization pass.
-  - All customer and worker routes in `apps/mobile` preserved.
-  - Real push notifications, live invitation responses, GPS device checks, backend/database, persistence, and full offline caching remain open or deferred.
+  - UI-only visual alignment for Slice 3: upgrade `form-kit.tsx` primitives, rounded choice chips, input focus states, step indicator polish, review card layout.
+  - All existing mobile routes, screens, mock data boundaries, and navigation architectures strictly preserved.
+  - Zero backend, database, authentication, or network APIs.
+  - Zero state persistence.
+  - No claims of native iOS/Android, VoiceOver/TalkBack, device safe-area, or physical keyboard verification (unproven criteria remain open).
 - **Explicit non-goals and exclusions**:
   - Zero backend, database, or live auth (no PostgreSQL, Prisma, JWTs).
   - Zero network APIs, HTTP calls, or WebSocket streaming.
-  - Zero state persistence (no AsyncStorage, SQLite, MMKV, or file caching).
+  - Zero state persistence (no AsyncStorage beyond existing theme preference, no SQLite, MMKV, or file caching).
   - Zero booking creation, status mutations, or customer notification dispatch.
   - Zero live push notifications (`expo-notifications`, token registration, APNs/FCM keys).
   - Zero live GPS location hardware checks or permissions.
@@ -79,6 +84,16 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Execution Gate**: No implementation code until `/scope`, `/audit`, and `/architect` are completed and the required BW-003 specification package is approved.
 
 ## Completed & Verified Slices
+
+- [x] **MOB-VIS-001 Slice 2: Discovery & Service Detail (Item 4.5.2)**
+  - **Status**: Committed and pushed at `56d5ac79b05e216802ea43114452696f94edb16a`.
+  - **Spec**: `docs/specs/MOB-VIS-001-mobile-visual-alignment-roadmap.md` (Slice 2).
+  - **Functional boundaries**: Refined `app/(tabs)/services.tsx`, `app/services/[id].tsx`, and `app/services-discovery.test.ts`. Preserved 8 canonical services, routes, and mock behavior. Added 50px search input, rounded filter pills, card elevation, streamlined local preview badge, 48x48 back button, and navy-on-coral primary CTA (`ctaFill: #F7803C`, `ctaText: #001A41`). Verified with 229 passing tests across 19 suites, clean type-check, Android export (1,430 modules), and compiled Expo browser emulation (dark/light, 390x844 and 375x812 viewports). Browser emulation checks only; native device QA unverified. Vercel deployment `dpl_CrHz1QvqeQsoGkUWpQiSbm77TSZY` canceled as skip-unaffected-project.
+
+- [x] **MOB-VIS-001 Slice 1: Foundation Tokens, Shell & Home Screen (Item 4.5.1)**
+  - **Status**: Committed and pushed at `b82a365`.
+  - **Spec**: `docs/specs/MOB-VIS-001-mobile-visual-alignment-roadmap.md` (Slice 1).
+  - **Functional boundaries**: Reconciled Outlier tokens (`ctaFill: #F7803C`, `ctaText: #001A41`, `ctaPressed: #FF8D4D` with 6.62:1 contrast dark/light), pill buttons (`borderRadius: 9999`), title-case labels, exact owner-approved native-home headline (`Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on BukieBrainJobs`), tab bar active tints (`#F7803C` dark / `#ABEEC8` light via `getStripAccentColor`), home header theme toggle, and updated home source-contract tests.
 
 - [x] **MOB-WORK-003 BrainWorker On-Site Check-In Preview (Item 4.3.3)**
   - **Status**: Local UI-preview accepted, committed, and pushed at `8f94843`.
