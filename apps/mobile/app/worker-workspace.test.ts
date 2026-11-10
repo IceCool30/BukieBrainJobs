@@ -71,6 +71,13 @@ describe('MOB-WORK-001 Native BrainWorker Workspace Preview Guardrails', () => {
     expect(registerContent).not.toContain("router.replace('/brainworker/workspace-preview')");
   });
 
+  it('enforces 48dp minimum touch target for register header back navigation', () => {
+    const registerContent = readMobileFile('app/brainworker/register.tsx');
+    const backStyleMatch = registerContent.match(/back:\s*\{[^}]*\}/);
+    expect(backStyleMatch).not.toBeNull();
+    expect(backStyleMatch![0]).toContain('minHeight: 48');
+  });
+
   it('preserves all five customer tabs unmodified', () => {
     const tabLayout = readMobileFile('app/(tabs)/_layout.tsx');
     expect(tabLayout).toContain("name: 'home'");
