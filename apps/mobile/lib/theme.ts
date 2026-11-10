@@ -18,7 +18,7 @@ const STORAGE_KEY = 'bbj_theme_mode';
  * - Rule: #2D3748
  * - Main Text: #F0F4F9
  * - Muted Text: #8897AB
- * - Amber: #FF6B35
+ * - Amber: #F7803C
  * - Green: #2FE896
  */
 type ThemeMode = 'light' | 'dark';
@@ -33,8 +33,14 @@ export const obsidianDarkTokens = {
   rule: '#2D3748',
   mainText: '#F0F4F9',
   mutedText: '#8897AB',
-  amber: '#FF6B35',
+  amber: '#F7803C',
+  amberHover: '#FF8D4D',
   green: '#2FE896',
+
+  // Semantic primary CTA tokens (Outlier pill: coral fill with brand navy text)
+  ctaFill: '#F7803C',
+  ctaText: '#001A41',
+  ctaPressed: '#FF8D4D',
 
   // Semantic compatibility aliases for mobile screens
   bg: '#0B0E13',
@@ -47,7 +53,6 @@ export const obsidianDarkTokens = {
   brandGreen: '#2FE896',
   stripAccent: '#2FE896',
   stripText: '#9FB2C8',
-  amberHover: '#FF7D4D',
   danger: '#FF6B6B',
 } as const;
 
@@ -64,25 +69,30 @@ export const obsidianLightTokens = {
   canvas: '#F7F9FC',
   strip: '#001A41',
   card: '#FFFFFF',
-  divider: '#E5E9F0',
+  divider: '#E2E8F0',
   rule: '#CBD5E1',
   mainText: '#001A41',
-  mutedText: '#475569',
-  amber: '#CC4A14',
+  mutedText: '#53647A',
+  amber: '#C2410C',
+  amberHover: '#9A3412',
   green: '#296A4B',
+
+  // Semantic primary CTA tokens (Outlier pill: coral fill with brand navy text)
+  ctaFill: '#F7803C',
+  ctaText: '#001A41',
+  ctaPressed: '#FF8D4D',
 
   // Semantic compatibility aliases for mobile screens
   bg: '#F7F9FC',
   stripBg: '#001A41',
   cardBg: '#FFFFFF',
   cardHover: '#F1F3F6',
-  lead: '#E5E9F0',
+  lead: '#E2E8F0',
   textMain: '#001A41',
-  textMuted: '#475569',
+  textMuted: '#53647A',
   brandGreen: '#296A4B',
   stripAccent: tradesColorTokens.light.stripAccent,
   stripText: tradesColorTokens.light.stripText,
-  amberHover: '#B34312',
   danger: '#DC2626',
 } as const;
 
@@ -96,7 +106,11 @@ export type MobileThemeTokens = {
   mainText: string;
   mutedText: string;
   amber: string;
+  amberHover: string;
   green: string;
+  ctaFill: string;
+  ctaText: string;
+  ctaPressed: string;
   bg: string;
   stripBg: string;
   cardBg: string;
@@ -107,7 +121,6 @@ export type MobileThemeTokens = {
   brandGreen: string;
   stripAccent: string;
   stripText: string;
-  amberHover: string;
   danger: string;
 };
 

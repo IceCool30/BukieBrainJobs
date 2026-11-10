@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 declare const __dirname: string;
 
 import { describe, expect, it } from 'vitest';
-import { obsidianDarkTokens } from '../lib/theme';
+import { obsidianDarkTokens, obsidianLightTokens } from '../lib/theme';
 
 describe('Phase 4 Content & Interaction Guardrails', () => {
   const mobileRoot = resolve(__dirname, '..');
@@ -173,6 +173,23 @@ describe('Phase 4 Content & Interaction Guardrails', () => {
     expect(indexContent).not.toContain('Connect directly with skilled professionals');
   });
 
+  it('enforces approved headline and paired-professional photo asset on marketing home screen', () => {
+    const indexContent = readMobileFile('app/index.tsx');
+    expect(indexContent).toContain(
+      'Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on',
+    );
+    expect(indexContent).toContain('hero-mobile-1080.jpg');
+    expect(indexContent).not.toContain('Hire elite Nigerian artisans');
+  });
+
+  it('rejects overly dark overlays that obscure paired workers and enforces vibrant photo-led scrim', () => {
+    const indexContent = readMobileFile('app/index.tsx');
+    expect(indexContent).not.toContain('rgba(0, 26, 65, 0.78)');
+    expect(indexContent).not.toContain('rgba(0, 26, 65, 0.50)');
+    expect(indexContent).toMatch(/rgba\(0,\s*26,\s*65,\s*0\.(2[5-9]|3[0-5])\)/);
+    expect(indexContent).toContain('textShadowColor');
+  });
+
   it('prohibits obvious section comments from mobile screen JSX', () => {
     const uiScreens = [
       'app/index.tsx',
@@ -232,5 +249,129 @@ describe('Phase 4 Content & Interaction Guardrails', () => {
         }
       }
     }
+  });
+
+  it('enforces Outlier color tokens and dedicated primary CTA contrast tokens', () => {
+    // Semantic amber text and accent tokens
+    expect(obsidianDarkTokens.amber).toBe('#F7803C');
+    expect(obsidianDarkTokens.amberHover).toBe('#FF8D4D');
+    expect(obsidianLightTokens.amber).toBe('#C2410C');
+    expect(obsidianLightTokens.amberHover).toBe('#9A3412');
+
+    // Dedicated primary CTA tokens (brand navy #001A41 text on coral #F7803C fill)
+    expect(obsidianDarkTokens.ctaFill).toBe('#F7803C');
+    expect(obsidianDarkTokens.ctaText).toBe('#001A41');
+    expect(obsidianDarkTokens.ctaPressed).toBe('#FF8D4D');
+    expect(obsidianLightTokens.ctaFill).toBe('#F7803C');
+    expect(obsidianLightTokens.ctaText).toBe('#001A41');
+    expect(obsidianLightTokens.ctaPressed).toBe('#FF8D4D');
+
+    // Light surfaces and borders reconciled to web Outlier rules
+    expect(obsidianLightTokens.canvas).toBe('#F7F9FC');
+    expect(obsidianLightTokens.card).toBe('#FFFFFF');
+    expect(obsidianLightTokens.divider).toBe('#E2E8F0');
+    expect(obsidianLightTokens.rule).toBe('#CBD5E1');
+    expect(obsidianLightTokens.mainText).toBe('#001A41');
+    expect(obsidianLightTokens.mutedText).toBe('#53647A');
+    expect(obsidianLightTokens.strip).toBe('#001A41');
+    expect(obsidianLightTokens.stripText).toBe('#D6E4F5');
+  });
+
+  it('enforces exact owner-approved native home headline without extra punctuation', () => {
+    const indexContent = readMobileFile('app/index.tsx');
+    expect(indexContent).toContain(
+      'Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on',
+    );
+    expect(indexContent).toContain('BukieBrainJobs</Text>');
+    expect(indexContent).not.toContain('BukieBrainJobs.</Text>');
+  });
+
+  it('enforces title-case button labels and prohibits uppercase monospace labels on native home', () => {
+    const indexContent = readMobileFile('app/index.tsx');
+    expect(indexContent).not.toContain('>FIND A BRAINWORKER<');
+    expect(indexContent).not.toContain('>BECOME A BRAINWORKER<');
+    expect(indexContent).toContain('>Find a BrainWorker<');
+    expect(indexContent).toContain('>Become a BrainWorker<');
+    expect(indexContent).toContain('>Post a Job<');
+  });
+
+  it('enforces primary CTA uses dedicated ctaFill and ctaText with pill geometry', () => {
+    const indexContent = readMobileFile('app/index.tsx');
+    const findBtn = indexContent.match(/function FindWorkerButton\(\)[\s\S]*?\n}/)?.[0] ?? '';
+    expect(findBtn).toContain('c.ctaFill');
+    expect(findBtn).toContain('c.ctaText');
+    expect(findBtn).not.toContain('c.amber');
+    expect(indexContent).toContain('borderRadius: 9999');
+  });
+
+  it('aligns brand on left and theme toggle on right in home header', () => {
+    const indexContent = readMobileFile('app/index.tsx');
+    const brand = indexContent.match(/function Brand\(\)[\s\S]*?\n}/)?.[0] ?? '';
+    expect(brand).toContain('brandLeft');
+    expect(brand.indexOf('brandLeft')).toBeLessThan(brand.indexOf('ThemeToggle'));
+  });
+
+  it('enforces primary CTA and ghost action buttons consume pressed tokens', () => {
+    const indexContent = readMobileFile('app/index.tsx');
+    const findBtn = indexContent.match(/function FindWorkerButton\(\)[\s\S]*?\n}/)?.[0] ?? '';
+    expect(findBtn).toContain('c.ctaPressed');
+    expect(findBtn).toMatch(/const\s*\[pressed,\s*setPressed\]\s*=\s*(?:React\.)?useState\(false\)/);
+    expect(findBtn).toContain('onPressIn={() => setPressed(true)}');
+    expect(findBtn).toContain('onPressOut={() => setPressed(false)}');
+    expect(findBtn, 'Pressable must use plain style, not a callback, to survive Expo Router Slot merging').not.toMatch(/style=\{\s*\(\s*\{\s*pressed/);
+    expect(findBtn, 'Link asChild must not supply static style that masks child pressed style in Slot merging').not.toMatch(/<Link[^>]*style=/);
+    expect(findBtn).toMatch(/backgroundColor:\s*pressed\s*\?\s*c\.ctaPressed\s*:\s*c\.ctaFill/);
+
+    const registerBtn = indexContent.match(/function RegisterWorkerButton\(\)[\s\S]*?\n}/)?.[0] ?? '';
+    expect(registerBtn).toContain('ghostPressed');
+    expect(registerBtn).toMatch(/const\s*\[pressed,\s*setPressed\]\s*=\s*(?:React\.)?useState\(false\)/);
+    expect(registerBtn).toContain('onPressIn={() => setPressed(true)}');
+    expect(registerBtn).toContain('onPressOut={() => setPressed(false)}');
+    expect(registerBtn, 'Register button Pressable must use plain style to survive Slot merging').not.toMatch(/style=\{\s*\(\s*\{\s*pressed/);
+    expect(registerBtn, 'Register Link asChild must not supply static style').not.toMatch(/<Link[^>]*style=/);
+    expect(registerBtn).toContain('pressed && s.ghostPressed');
+
+    const postJobBtn = indexContent.match(/function PostJobButton\(\)[\s\S]*?\n}/)?.[0] ?? '';
+    expect(postJobBtn).toContain('ghostPressed');
+    expect(postJobBtn).toMatch(/const\s*\[pressed,\s*setPressed\]\s*=\s*(?:React\.)?useState\(false\)/);
+    expect(postJobBtn).toContain('onPressIn={() => setPressed(true)}');
+    expect(postJobBtn).toContain('onPressOut={() => setPressed(false)}');
+    expect(postJobBtn, 'Post job button Pressable must use plain style to survive Slot merging').not.toMatch(/style=\{\s*\(\s*\{\s*pressed/);
+    expect(postJobBtn, 'Post job Link asChild must not supply static style').not.toMatch(/<Link[^>]*style=/);
+    expect(postJobBtn).toContain('pressed && s.ghostPressed');
+  });
+
+  it('enforces StyleSheet.flatten on Pressables inside Link asChild to prevent Slot style array crashes', () => {
+    const indexContent = readMobileFile('app/index.tsx');
+
+    const findBtn = indexContent.match(/function FindWorkerButton\(\)[\s\S]*?\n}/)?.[0] ?? '';
+    expect(findBtn).toContain('<Link href="/(tabs)/services" asChild>');
+    expect(findBtn).not.toMatch(/<Link[^>]*style=/);
+    expect(findBtn).toMatch(/const\s*\[pressed,\s*setPressed\]\s*=\s*(?:React\.)?useState\(false\)/);
+    expect(findBtn).toContain('onPressIn={() => setPressed(true)}');
+    expect(findBtn).toContain('onPressOut={() => setPressed(false)}');
+    expect(findBtn).toContain(
+      'style={StyleSheet.flatten([s.button, { backgroundColor: pressed ? c.ctaPressed : c.ctaFill }])}',
+    );
+
+    const registerBtn = indexContent.match(/function RegisterWorkerButton\(\)[\s\S]*?\n}/)?.[0] ?? '';
+    expect(registerBtn).toContain('<Link href="/brainworker/register" asChild>');
+    expect(registerBtn).not.toMatch(/<Link[^>]*style=/);
+    expect(registerBtn).toMatch(/const\s*\[pressed,\s*setPressed\]\s*=\s*(?:React\.)?useState\(false\)/);
+    expect(registerBtn).toContain('onPressIn={() => setPressed(true)}');
+    expect(registerBtn).toContain('onPressOut={() => setPressed(false)}');
+    expect(registerBtn).toContain(
+      'style={StyleSheet.flatten([s.button, s.ghost, pressed && s.ghostPressed])}',
+    );
+
+    const postJobBtn = indexContent.match(/function PostJobButton\(\)[\s\S]*?\n}/)?.[0] ?? '';
+    expect(postJobBtn).toContain('<Link href="/post-job" asChild>');
+    expect(postJobBtn).not.toMatch(/<Link[^>]*style=/);
+    expect(postJobBtn).toMatch(/const\s*\[pressed,\s*setPressed\]\s*=\s*(?:React\.)?useState\(false\)/);
+    expect(postJobBtn).toContain('onPressIn={() => setPressed(true)}');
+    expect(postJobBtn).toContain('onPressOut={() => setPressed(false)}');
+    expect(postJobBtn).toContain(
+      'style={StyleSheet.flatten([s.button, s.ghost, pressed && s.ghostPressed])}',
+    );
   });
 });

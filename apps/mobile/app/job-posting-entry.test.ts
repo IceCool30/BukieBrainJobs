@@ -22,6 +22,6 @@ describe('MOB-POST-001 homepage entry and route registration', () => {
   it('homepage preserves existing FIND A BRAINWORKER primary action', () => {
     const filePath = path.resolve(__dirname, 'index.tsx');
     const source = fs.readFileSync(filePath, 'utf8');
-    expect(source).toContain('FIND A BRAINWORKER');
+    expect(source).toContain('Find a BrainWorker');
   });
 });
