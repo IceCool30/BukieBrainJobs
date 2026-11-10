@@ -136,7 +136,7 @@ function RegisterSubmitButton({ onSubmit }: { onSubmit: () => void }) {
       onPress={onSubmit}
       style={({ pressed }) => [s.submit, { backgroundColor: pressed ? c.ctaPressed : c.ctaFill }]}
     >
-      <Text style={[s.submitLabel, { color: c.ctaText }]}>CONTINUE TO ONBOARDING</Text>
+      <Text style={[s.submitLabel, { color: c.ctaText }]}>Continue to Onboarding</Text>
       <Ionicons name="arrow-forward" size={16} color={c.ctaText} accessible={false} />
     </Pressable>
   );
@@ -201,7 +201,7 @@ const s = StyleSheet.create({
   input: { minHeight: 48, borderRadius: 6, borderWidth: 1, paddingHorizontal: 14, fontSize: 16 },
   error: { fontSize: 13, marginTop: 6 },
   submit: { minHeight: 48, borderRadius: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 8 },
-  submitLabel: { color: '#FFFFFF', fontFamily: mono, fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
+  submitLabel: { color: '#FFFFFF', fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
   previewLink: { minHeight: 48, borderRadius: 8, borderWidth: 1, borderStyle: 'dashed', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingHorizontal: 16, marginTop: 4 },
-  previewLinkLabel: { fontFamily: mono, fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
+  previewLinkLabel: { fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
 });
