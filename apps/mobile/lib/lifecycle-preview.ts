@@ -15,6 +15,8 @@ export type MilestoneWithProgress = LifecycleMilestone & {
 export const LIFECYCLE_SAMPLE_DISCLAIMER =
   'This is a local demonstration of the booking lifecycle. No live service record or provider assignment exists.';
 
+export const CANCELLED_PREVIEW_NOTICE = 'Preview record: read only';
+
 export const LIFECYCLE_MILESTONES: ReadonlyArray<LifecycleMilestone> = [
   { id: 'step_open', label: 'Request Submitted', canonicalStatus: 'OPEN' },
   { id: 'step_pending_acceptance', label: 'Worker Response Pending', canonicalStatus: 'PENDING_ACCEPTANCE' },

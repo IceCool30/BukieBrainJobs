@@ -19,6 +19,7 @@ import {
   type ActivitySegment,
 } from '../../lib/activity-preview';
 import {
+  CANCELLED_PREVIEW_NOTICE,
   LIFECYCLE_SAMPLE_DISCLAIMER,
   getSampleLifecycleHeading,
   getSampleLifecycleNarrative,
@@ -87,7 +88,14 @@ function JobsTabItem({ tab, selected, onSelect }: TabItemProps) {
   const c = useThemeColors();
   const accent = getStripAccentColor(c, c.amber);
   const textMuted = getStripTextColor(c, c.mutedText);
-  const tabItemStyle = [styles.tabItem, selected && styles.tabItemSelected, selected && { borderBottomColor: accent }];
+  const tabItemStyle = [
+    styles.tabItem,
+    selected && styles.tabItemSelected,
+    selected && {
+      borderBottomColor: accent,
+      backgroundColor: c.mode === 'light' ? 'rgba(0, 26, 65, 0.06)' : 'rgba(255, 255, 255, 0.06)',
+    },
+  ];
 
   return (
     <Pressable
@@ -132,11 +140,14 @@ function ActivityHubList({ samples, onSelectSample, onExplore }: HubListProps) {
 
 function ActivityCardHeader({ sample }: { sample: ActivitySample }) {
   const c = useThemeColors();
+  const isCancelled = sample.status === 'cancelled';
+  const badgeColor = isCancelled ? c.danger : getStripAccentColor(c, c.amber);
+  const badgeBg = isCancelled && c.mode === 'light' ? c.card : c.strip;
   return (
     <View style={styles.cardHeader}>
       <Text style={[styles.typeLabel, { color: c.mutedText }]}>{ACTIVITY_TYPE_LABELS[sample.type]}</Text>
-      <View style={[styles.badge, { backgroundColor: c.strip, borderColor: c.divider }]}>
-        <Text style={[styles.badgeText, { color: getStripAccentColor(c, c.amber) }]}>{sample.badge}</Text>
+      <View style={[styles.badge, { backgroundColor: badgeBg, borderColor: isCancelled ? c.danger : c.divider }]}>
+        <Text style={[styles.badgeText, { color: badgeColor }]}>{sample.badge}</Text>
       </View>
     </View>
   );
@@ -147,11 +158,23 @@ type CardProps = {
   onPress: () => void;
 };
 
+function CancelledNotice() {
+  const c = useThemeColors();
+  return (
+    <View style={styles.cancelledInlineNotice}>
+      <Ionicons name="information-circle-outline" size={13} color={c.danger} />
+      <Text style={[styles.cancelledInlineText, { color: c.danger }]}>{CANCELLED_PREVIEW_NOTICE}</Text>
+    </View>
+  );
+}
+
 function ActivitySampleCard({ sample, onPress }: CardProps) {
   const c = useThemeColors();
+  const isCancelled = sample.status === 'cancelled';
+  const pressedBg = isCancelled && c.mode === 'light' ? c.card : c.strip;
   const cardStyle = ({ pressed }: { pressed: boolean }) => [
     styles.card,
-    { backgroundColor: pressed ? c.strip : c.card, borderColor: c.divider },
+    { backgroundColor: pressed ? pressedBg : c.card, borderColor: isCancelled ? c.danger : c.divider },
   ];
 
   return (
@@ -164,7 +187,8 @@ function ActivitySampleCard({ sample, onPress }: CardProps) {
     >
       <ActivityCardHeader sample={sample} />
       <Text style={[styles.serviceTitle, { color: c.mainText }]}>{sample.serviceTitle}</Text>
-      <Text style={[styles.statusLabel, { color: c.mutedText }]}>{ACTIVITY_STATUS_LABELS[sample.status]}</Text>
+      <Text style={[styles.statusLabel, { color: isCancelled ? c.danger : c.mutedText }]}>{ACTIVITY_STATUS_LABELS[sample.status]}</Text>
+      {isCancelled && <CancelledNotice />}
     </Pressable>
   );
 }
@@ -218,13 +242,21 @@ function CurrentStateBlock({ sampleIndex, sample }: { sampleIndex: number; sampl
   const c = useThemeColors();
   const heading = getSampleLifecycleHeading(sampleIndex);
   const narrative = getSampleLifecycleNarrative(sampleIndex);
-  const accentColor = isSampleCancelled(sampleIndex) ? c.danger : c.amber;
+  const cancelled = isSampleCancelled(sampleIndex);
+  const accentColor = cancelled ? c.danger : c.amber;
+  const badgeBg = cancelled && c.mode === 'light' ? c.card : c.strip;
 
   return (
-    <View style={[styles.detailSection, { backgroundColor: c.card, borderColor: c.divider }]}>
+    <View style={[styles.detailSection, { backgroundColor: c.card, borderColor: cancelled ? c.danger : c.divider }]}>
       <ActivityCardHeader sample={sample} />
       <Text accessibilityRole="header" style={[styles.serviceTitle, { color: c.mainText }]}>{sample.serviceTitle}</Text>
       <Text accessibilityRole="header" style={[styles.headingLabel, { color: accentColor }]}>{heading}</Text>
+      {cancelled && (
+        <View style={[styles.cancelledBadge, { backgroundColor: badgeBg, borderColor: c.danger }]}>
+          <Ionicons name="alert-circle-outline" size={14} color={c.danger} />
+          <Text style={[styles.cancelledBadgeText, { color: c.danger }]}>{CANCELLED_PREVIEW_NOTICE}</Text>
+        </View>
+      )}
       <Text style={[styles.narrativeText, { color: c.mutedText }]}>{narrative}</Text>
     </View>
   );
@@ -234,6 +266,17 @@ type MilestoneItemProps = {
   step: MilestoneWithProgress;
   isLast: boolean;
 };
+
+function ActiveStepMarker() {
+  const c = useThemeColors();
+  const markerColor = getStripAccentColor(c, c.amber);
+  return (
+    <View style={[styles.activeStepMarker, { backgroundColor: c.strip, borderColor: markerColor }]}>
+      <View style={[styles.activeMarkerDot, { backgroundColor: markerColor }]} />
+      <Text style={[styles.stepStateLabel, { color: markerColor }]}>Current step</Text>
+    </View>
+  );
+}
 
 function MilestoneStepItem({ step, isLast }: MilestoneItemProps) {
   const c = useThemeColors();
@@ -252,7 +295,9 @@ function MilestoneStepItem({ step, isLast }: MilestoneItemProps) {
       </View>
       <View style={styles.stepContent}>
         <Text style={[styles.stepLabel, { color: labelColor, fontWeight: isActive ? '700' : '500' }]}>{step.label}</Text>
-        <Text style={[styles.stepStateLabel, { color: isDone ? c.green : isActive ? c.amber : c.mutedText }]}>{stateLabel}</Text>
+        <View style={styles.stepStateRow}>
+          {isActive ? <ActiveStepMarker /> : <Text style={[styles.stepStateLabel, { color: isDone ? c.green : c.mutedText }]}>{stateLabel}</Text>}
+        </View>
       </View>
     </View>
   );
@@ -332,14 +377,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     paddingHorizontal: 16,
+    paddingVertical: 6,
   },
   tabItem: {
-    paddingVertical: 12,
-    paddingHorizontal: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 48,
     minWidth: 48,
+    borderRadius: 20,
   },
   tabItemSelected: {
     borderBottomWidth: 2,
@@ -364,7 +411,7 @@ const styles = StyleSheet.create({
   },
   card: {
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
     gap: 8,
     minHeight: 48,
@@ -384,7 +431,7 @@ const styles = StyleSheet.create({
   badge: {
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: 4,
+    borderRadius: 6,
     borderWidth: 1,
   },
   badgeText: {
@@ -400,6 +447,17 @@ const styles = StyleSheet.create({
   statusLabel: {
     fontSize: 13,
   },
+  cancelledInlineNotice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginTop: 4,
+  },
+  cancelledInlineText: {
+    fontFamily: mono,
+    fontSize: 11,
+    fontWeight: '600',
+  },
   actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -407,7 +465,7 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingHorizontal: 18,
     paddingVertical: 12,
-    borderRadius: 8,
+    borderRadius: 12,
     minHeight: 48,
     minWidth: 48,
   },
@@ -439,7 +497,7 @@ const styles = StyleSheet.create({
   },
   detailSection: {
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
     gap: 10,
   },
@@ -447,6 +505,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     fontFamily: mono,
+  },
+  cancelledBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 6,
+    borderWidth: 1,
+    alignSelf: 'flex-start',
+  },
+  cancelledBadgeText: {
+    fontFamily: mono,
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0.3,
   },
   narrativeText: {
     fontSize: 13,
@@ -484,6 +558,24 @@ const styles = StyleSheet.create({
   },
   stepLabel: {
     fontSize: 14,
+  },
+  stepStateRow: {
+    marginTop: 3,
+  },
+  activeStepMarker: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 12,
+    borderWidth: 1,
+    alignSelf: 'flex-start',
+  },
+  activeMarkerDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
   },
   stepStateLabel: {
     fontFamily: mono,
