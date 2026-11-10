@@ -678,7 +678,7 @@ function CheckInDisclaimer() {
   const c = useThemeColors();
   return (
     <View style={[s.checkInNoticeBox, { backgroundColor: c.strip, borderColor: c.divider }]}>
-      <Ionicons name="information-circle-outline" size={16} color={c.amber} accessible={false} />
+      <Ionicons name="information-circle-outline" size={16} color={getStripAccentColor(c, c.amber)} accessible={false} />
       <Text
         accessibilityRole="alert"
         accessibilityLabel={CHECKIN_SIMULATION_DISCLAIMER}
@@ -714,7 +714,7 @@ function CheckInJobInfoCard() {
           {job.serviceTitle}
         </Text>
         <View style={[s.confirmedTag, { backgroundColor: c.strip, borderColor: c.divider }]}>
-          <Text style={[s.confirmedTagText, { color: c.amber }]}>{statusTag}</Text>
+          <Text style={[s.confirmedTagText, { color: getStripAccentColor(c, c.amber) }]}>{statusTag}</Text>
         </View>
       </View>
       <Text style={[s.jobInfoLocation, { color: c.amber }]}>{job.locationArea}</Text>
@@ -787,9 +787,9 @@ function CheckInSimulatedStatusCard() {
   const job = CHECKIN_SAMPLE_JOB;
   return (
     <View style={[s.simulatedCard, { backgroundColor: c.card, borderColor: c.green }]}>
-      <View style={[s.statusBadge, { backgroundColor: c.strip, borderColor: c.green }]}>
-        <Ionicons name="checkmark-circle-outline" size={16} color={c.green} accessible={false} />
-        <Text style={[s.statusBadgeText, { color: c.green }]}>SIMULATED ARRIVAL (Preview)</Text>
+      <View style={[s.statusBadge, { backgroundColor: c.strip, borderColor: getStripAccentColor(c, c.green) }]}>
+        <Ionicons name="checkmark-circle-outline" size={16} color={getStripAccentColor(c, c.green)} accessible={false} />
+        <Text style={[s.statusBadgeText, { color: getStripAccentColor(c, c.green) }]}>SIMULATED ARRIVAL (Preview)</Text>
       </View>
       <Text style={[s.stampText, { color: c.mainText }]}>Arrival view previewed in memory</Text>
       <Text style={[s.timingText, { color: c.mutedText }]}>Timing: Current preview session only</Text>

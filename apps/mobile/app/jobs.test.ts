@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { getStripAccentColor, obsidianDarkTokens, obsidianLightTokens } from '../lib/theme';
+import { getStripAccentColor, getStripTextColor, obsidianDarkTokens, obsidianLightTokens } from '../lib/theme';
 
 declare const __dirname: string;
 
@@ -9,6 +9,27 @@ describe('MOB-ACT-001 Native Customer Activity Hub Screen', () => {
   const mobileRoot = resolve(__dirname, '..');
   const readMobileFile = (relativePath: string) =>
     readFileSync(resolve(mobileRoot, relativePath), 'utf8');
+
+  type Rgb = { r: number; g: number; b: number };
+  const toRgb = (hex: string): Rgb => {
+    const clean = hex.replace('#', '');
+    return {
+      r: parseInt(clean.slice(0, 2), 16),
+      g: parseInt(clean.slice(2, 4), 16),
+      b: parseInt(clean.slice(4, 6), 16),
+    };
+  };
+
+  const contrast = (c1: Rgb, c2: Rgb): number => {
+    const lum = (c: Rgb) => {
+      const a = [c.r, c.g, c.b].map((v) => {
+        const s = v / 255;
+        return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+      });
+      return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+    };
+    return (Math.max(lum(c1), lum(c2)) + 0.05) / (Math.min(lum(c1), lum(c2)) + 0.05);
+  };
 
   it('preserves tab structure with All, Active, Upcoming, Past in order and defaults to All', () => {
     const jobsContent = readMobileFile('app/(tabs)/jobs.tsx');
@@ -152,27 +173,6 @@ describe('MOB-ACT-001 Native Customer Activity Hub Screen', () => {
     it('enforces theme-specific contrast standards for active marker and cancelled preview elements', () => {
       const jobsContent = readMobileFile('app/(tabs)/jobs.tsx');
 
-      type Rgb = { r: number; g: number; b: number };
-      const toRgb = (hex: string): Rgb => {
-        const clean = hex.replace('#', '');
-        return {
-          r: parseInt(clean.slice(0, 2), 16),
-          g: parseInt(clean.slice(2, 4), 16),
-          b: parseInt(clean.slice(4, 6), 16),
-        };
-      };
-
-      const contrast = (c1: Rgb, c2: Rgb): number => {
-        const lum = (c: Rgb) => {
-          const a = [c.r, c.g, c.b].map((v) => {
-            const s = v / 255;
-            return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
-          });
-          return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-        };
-        return (Math.max(lum(c1), lum(c2)) + 0.05) / (Math.min(lum(c1), lum(c2)) + 0.05);
-      };
-
       expect(jobsContent).toMatch(/ActiveStepMarker[\s\S]*?getStripAccentColor\(c,\s*c\.amber\)/);
 
       const darkMarker = getStripAccentColor(obsidianDarkTokens, obsidianDarkTokens.amber);
@@ -192,6 +192,75 @@ describe('MOB-ACT-001 Native Customer Activity Hub Screen', () => {
 
       const darkCancelledContrast = contrast(toRgb(obsidianDarkTokens.danger), toRgb(obsidianDarkTokens.strip));
       expect(darkCancelledContrast).toBeGreaterThanOrEqual(4.5);
+    });
+
+    it('enforces light-mode pressed non-cancelled activity card contrast and preserves cancelled card', () => {
+      const jobsContent = readMobileFile('app/(tabs)/jobs.tsx');
+
+      const cardMatch = jobsContent.match(/function ActivitySampleCard[\s\S]*?\n\}/);
+      expect(cardMatch).not.toBeNull();
+      const cardCode = cardMatch![0];
+      expect(cardCode).toMatch(/pressedBg\s*=\s*(?:isCancelled\s*&&\s*c\.mode\s*===\s*'light'\s*\?\s*c\.card\s*:\s*c\.mode\s*===\s*'light'\s*\?\s*c\.cardHover|c\.mode\s*===\s*'light'\s*\?\s*\(?\s*isCancelled\s*\?\s*c\.card\s*:\s*c\.cardHover\s*\)?)\s*:\s*c\.strip/);
+      expect(cardCode).toContain('backgroundColor: pressed ? pressedBg : c.card');
+      expect(cardCode).toContain('style={[styles.serviceTitle, { color: c.mainText }]}');
+      expect(cardCode).toContain('color: isCancelled ? c.danger : c.mutedText');
+
+      expect(contrast(toRgb(obsidianLightTokens.mainText), toRgb(obsidianLightTokens.cardHover))).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(toRgb(obsidianLightTokens.mutedText), toRgb(obsidianLightTokens.cardHover))).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(toRgb(obsidianDarkTokens.mainText), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(toRgb(obsidianDarkTokens.mutedText), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(4.5);
+    });
+
+    it('enforces strip-safe context text contrast in SampleContextBlock', () => {
+      const jobsContent = readMobileFile('app/(tabs)/jobs.tsx');
+      const contextBlockMatch = jobsContent.match(/function SampleContextBlock[\s\S]*?\n\}/);
+      expect(contextBlockMatch).not.toBeNull();
+      const contextBlockCode = contextBlockMatch![0];
+      expect(contextBlockCode).toContain('backgroundColor: c.strip');
+      expect(contextBlockCode).toMatch(/const\s+contextTextColor\s*=\s*getStripTextColor\(c,\s*c\.mutedText\)/);
+      expect(contextBlockCode).toContain('style={[styles.typeLabel, { color: contextTextColor }]}');
+      expect(contextBlockCode).toContain('style={[styles.disclaimerText, { color: contextTextColor }]}');
+
+      const lightContextFg = getStripTextColor(obsidianLightTokens, obsidianLightTokens.mutedText);
+      expect(contrast(toRgb(lightContextFg), toRgb(obsidianLightTokens.strip))).toBeGreaterThanOrEqual(4.5);
+
+      const darkContextFg = getStripTextColor(obsidianDarkTokens, obsidianDarkTokens.mutedText);
+      expect(contrast(toRgb(darkContextFg), toRgb(obsidianDarkTokens.strip))).toBeGreaterThanOrEqual(4.5);
+    });
+
+    function extractCardTokens(cardCode: string) {
+      const borderMatch = cardCode.match(/borderColor:\s*isCancelled\s*\?\s*c\.danger\s*:\s*c\.([a-zA-Z0-9_]+)/);
+      const defaultBgMatch = cardCode.match(/backgroundColor:\s*pressed\s*\?\s*pressedBg\s*:\s*c\.([a-zA-Z0-9_]+)/);
+      const lightPressedBgMatch = cardCode.match(/isCancelled\s*\?\s*c\.card\s*:\s*c\.([a-zA-Z0-9_]+)/);
+      const darkPressedBgMatch = cardCode.match(/:\s*c\.([a-zA-Z0-9_]+)\s*;\s*const\s+cardStyle/);
+      expect(borderMatch).not.toBeNull();
+      expect(defaultBgMatch).not.toBeNull();
+      expect(lightPressedBgMatch).not.toBeNull();
+      expect(darkPressedBgMatch).not.toBeNull();
+      return {
+        borderToken: borderMatch![1] as keyof typeof obsidianLightTokens,
+        defaultBgToken: defaultBgMatch![1] as keyof typeof obsidianLightTokens,
+        lightPressedBgToken: lightPressedBgMatch![1] as keyof typeof obsidianLightTokens,
+        darkPressedBgToken: darkPressedBgMatch![1] as keyof typeof obsidianDarkTokens,
+      };
+    }
+
+    it('enforces non-cancelled activity card boundary contrast of at least 3:1 in default and pressed states across both themes', () => {
+      const cardMatch = readMobileFile('app/(tabs)/jobs.tsx').match(/function ActivitySampleCard[\s\S]*?\n\}/);
+      expect(cardMatch).not.toBeNull();
+      const cardCode = cardMatch![0];
+      expect(cardCode).toMatch(/borderColor:\s*isCancelled\s*\?\s*c\.danger/);
+
+      const tokens = extractCardTokens(cardCode);
+      const lightDefault = contrast(toRgb(obsidianLightTokens[tokens.borderToken] as string), toRgb(obsidianLightTokens[tokens.defaultBgToken] as string));
+      const darkDefault = contrast(toRgb(obsidianDarkTokens[tokens.borderToken] as string), toRgb(obsidianDarkTokens[tokens.defaultBgToken] as string));
+      const lightPressed = contrast(toRgb(obsidianLightTokens[tokens.borderToken] as string), toRgb(obsidianLightTokens[tokens.lightPressedBgToken] as string));
+      const darkPressed = contrast(toRgb(obsidianDarkTokens[tokens.borderToken] as string), toRgb(obsidianDarkTokens[tokens.darkPressedBgToken] as string));
+
+      expect(lightDefault).toBeGreaterThanOrEqual(3.0);
+      expect(darkDefault).toBeGreaterThanOrEqual(3.0);
+      expect(lightPressed).toBeGreaterThanOrEqual(3.0);
+      expect(darkPressed).toBeGreaterThanOrEqual(3.0);
     });
   });
 });

@@ -432,25 +432,17 @@ function PostJobReview({ state, service, reviewHeadingRef, resultHeadingRef }: {
 function StepProgress({ currentStep }: { currentStep: JobStep }) {
   const c = useThemeColors();
   const currentStepNumber = getStepNumber(currentStep);
-
   return (
     <View style={styles.stepProgressRow} accessibilityRole="progressbar" accessibilityLabel={`Step ${currentStepNumber} of ${JOB_STEPS.length}`}>
       {JOB_STEPS.map((stepItem, index) => {
         const stepNum = index + 1;
         const isCompleted = stepNum < currentStepNumber;
         const isCurrent = stepNum === currentStepNumber;
-        const barColor = isCurrent ? c.ctaFill : isCompleted ? (c.mode === 'light' ? c.amber : c.ctaFill) : c.divider;
-
+        const barColor = isCurrent ? (c.mode === 'light' ? c.amber : c.ctaFill) : isCompleted ? (c.mode === 'light' ? c.amber : c.ctaFill) : c.mutedText;
         return (
           <View
             key={stepItem}
-            style={[
-              styles.stepIndicator,
-              {
-                backgroundColor: barColor,
-                opacity: isCurrent ? 1 : isCompleted ? 0.8 : 0.4,
-              },
-            ]}
+            style={[styles.stepIndicator, { backgroundColor: barColor, opacity: isCurrent ? 1 : isCompleted ? 0.8 : 0.7 }]}
           />
         );
       })}

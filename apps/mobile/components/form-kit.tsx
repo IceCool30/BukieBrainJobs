@@ -163,7 +163,7 @@ function getFieldInputStyle(colors: MobileThemeTokens, multiline: boolean | unde
     multiline && styles.multilineInput,
     {
       backgroundColor: colors.card,
-      borderColor: error ? colors.danger : isFocused ? colors.amber : colors.divider,
+      borderColor: error ? colors.danger : isFocused ? colors.amber : colors.mutedText,
       borderWidth: error || isFocused ? 1.5 : 1,
       color: colors.mainText,
     },

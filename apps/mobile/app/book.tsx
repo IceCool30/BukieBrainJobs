@@ -119,11 +119,13 @@ function ServiceChoice({ service, active, onSelect, focusRef }: {
       accessibilityState={{ selected: active }} onPress={onSelect}
       style={({ pressed }) => [styles.serviceChoice, {
         backgroundColor: active ? c.cardHover : pressed ? c.cardHover : c.card,
-        borderColor: active ? c.ctaFill : pressed ? c.rule : c.divider,
+        borderColor: active ? (c.mode === 'light' ? c.amber : c.ctaFill) : c.mutedText,
         borderWidth: active ? 1.5 : 1,
         opacity: pressed ? 0.9 : 1,
       }]}>
-      <Text style={[styles.serviceTitle, { color: active ? (c.mode === 'light' ? c.amber : c.ctaFill) : c.mainText }]}>{service.title}</Text>
+      {({ pressed }) => (
+        <Text style={[styles.serviceTitle, { color: active ? (c.mode === 'light' ? (pressed ? c.amberHover : c.amber) : c.ctaFill) : c.mainText }]}>{service.title}</Text>
+      )}
     </Pressable>
   );
 }

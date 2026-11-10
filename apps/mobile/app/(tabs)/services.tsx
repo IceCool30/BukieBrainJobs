@@ -98,7 +98,7 @@ function ClearSearchButton({ onClear }: { onClear: () => void }) {
 function ServicesSearchInput({ query, onChangeQuery, onClear }: SearchProps) {
   const c = useThemeColors();
   const [isFocused, setIsFocused] = useState(false);
-  const boxStyle = [styles.searchBox, { backgroundColor: c.card, borderColor: isFocused ? c.amber : c.divider }];
+  const boxStyle = [styles.searchBox, { backgroundColor: c.card, borderColor: isFocused ? c.amber : c.mutedText }];
 
   return (
     <View style={boxStyle}>
@@ -130,8 +130,8 @@ function FilterPillItem({ name, active, onSelect }: PillItemProps) {
       style={({ pressed }) => [
         styles.pill,
         {
-          backgroundColor: active ? c.amber : pressed ? c.cardHover : c.strip,
-          borderColor: active ? c.amber : c.divider,
+          backgroundColor: active ? c.amber : pressed ? (c.mode === 'light' ? c.strip : c.cardHover) : c.strip,
+          borderColor: active ? c.amber : pressed ? (c.mode === 'light' ? c.stripAccent : c.mutedText) : (c.mode === 'light' ? c.divider : getStripTextColor(c, c.mutedText)),
         },
       ]}
     >
@@ -221,16 +221,17 @@ function ServicesEmptyState({ onReset }: { onReset: () => void }) {
     <View style={styles.emptyContainer}>
       <Ionicons name="search-outline" size={32} color={c.mutedText} />
       <Text style={[styles.emptyTitle, { color: c.mainText }]}>No matching services found</Text>
-      <Text style={[styles.emptySubtitle, { color: c.mutedText }]}>
-        Try adjusting your search terms or filter selection.
-      </Text>
+      <Text style={[styles.emptySubtitle, { color: c.mutedText }]}>Try adjusting your search terms or filter selection.</Text>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Reset filters and search"
         onPress={onReset}
         style={({ pressed }) => [
           styles.resetBtn,
-          { backgroundColor: pressed ? c.cardHover : c.strip, borderColor: c.divider },
+          {
+            backgroundColor: pressed ? (c.mode === 'light' ? c.strip : c.cardHover) : c.strip,
+            borderColor: pressed ? (c.mode === 'light' ? c.stripAccent : c.mutedText) : (c.mode === 'light' ? c.divider : getStripTextColor(c, c.mutedText)),
+          },
         ]}
       >
         <Text style={[styles.resetBtnText, { color: getStripAccentColor(c, c.amber) }]}>Reset filters</Text>

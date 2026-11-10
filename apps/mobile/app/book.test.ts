@@ -151,4 +151,107 @@ describe('MOB-BOOK-001 native booking preparation', () => {
     const textStyle = formKit.match(/primaryButtonText:\s*\{([\s\S]*?)\}/)?.[1] ?? '';
     expect(textStyle).not.toContain('mono');
   });
+
+  it('source-binds ServiceChoice selected fill, border logic, and pressed opacity', () => {
+    const bookContent = readMobileFile('app/book.tsx');
+    const choiceMatch = bookContent.match(/function ServiceChoice[\s\S]*?(?=\nfunction ServiceSection)/);
+    expect(choiceMatch).not.toBeNull();
+    const choiceCode = choiceMatch![0];
+
+    expect(choiceCode).toContain('backgroundColor: active ? c.cardHover : pressed ? c.cardHover : c.card');
+    expect(choiceCode).toMatch(/borderColor:\s*active\s*\?\s*\(?c\.mode\s*===\s*'light'\s*\?\s*c\.amber\s*:\s*c\.ctaFill\)?\s*:\s*(?:pressed\s*\?\s*c\.rule\s*:\s*c\.divider|c\.mutedText)/);
+    expect(choiceCode).toContain('opacity: pressed ? 0.9 : 1');
+  });
+
+  it('enforces theme-safe ServiceChoice border contrast against fill and canvas across states', () => {
+    const lightBorder = obsidianLightTokens.amber;
+    expect(contrast(toRgb(lightBorder), toRgb(obsidianLightTokens.cardHover))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(lightBorder), toRgb(obsidianLightTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+
+    const darkBorder = obsidianDarkTokens.ctaFill;
+    expect(contrast(toRgb(darkBorder), toRgb(obsidianDarkTokens.cardHover))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(darkBorder), toRgb(obsidianDarkTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+
+    const lightPressedFill = composite(toRgb(obsidianLightTokens.cardHover), toRgb(obsidianLightTokens.canvas), 0.9);
+    const lightPressedBorder = composite(toRgb(lightBorder), toRgb(obsidianLightTokens.canvas), 0.9);
+    expect(contrast(lightPressedBorder, lightPressedFill)).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(lightPressedBorder, toRgb(obsidianLightTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+
+    const darkPressedFill = composite(toRgb(obsidianDarkTokens.cardHover), toRgb(obsidianDarkTokens.canvas), 0.9);
+    const darkPressedBorder = composite(toRgb(darkBorder), toRgb(obsidianDarkTokens.canvas), 0.9);
+    expect(contrast(darkPressedBorder, darkPressedFill)).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(darkPressedBorder, toRgb(obsidianDarkTokens.canvas))).toBeGreaterThanOrEqual(3.0);
+  });
+
+  function assertInactiveBorderContrasts(choiceCode: string) {
+    const borderMatch = choiceCode.match(/borderColor:\s*active\s*\?\s*\(.*?\)\s*:\s*(?:pressed\s*\?\s*c\.([a-zA-Z0-9_]+)\s*:\s*c\.([a-zA-Z0-9_]+)|c\.([a-zA-Z0-9_]+))/);
+    expect(borderMatch).not.toBeNull();
+    const pressedToken = (borderMatch![1] ?? borderMatch![3]) as keyof typeof obsidianLightTokens;
+    const defaultToken = (borderMatch![2] ?? borderMatch![3]) as keyof typeof obsidianLightTokens;
+
+    expect(contrast(toRgb(obsidianLightTokens[defaultToken] as string), toRgb(obsidianLightTokens.card))).toBeGreaterThanOrEqual(3.0);
+    expect(contrast(toRgb(obsidianDarkTokens[defaultToken] as string), toRgb(obsidianDarkTokens.card))).toBeGreaterThanOrEqual(3.0);
+
+    const lightPressedBorder = composite(toRgb(obsidianLightTokens[pressedToken] as string), toRgb(obsidianLightTokens.canvas), 0.9);
+    const lightPressedBg = composite(toRgb(obsidianLightTokens.cardHover), toRgb(obsidianLightTokens.canvas), 0.9);
+    expect(contrast(lightPressedBorder, lightPressedBg)).toBeGreaterThanOrEqual(3.0);
+
+    const darkPressedBorder = composite(toRgb(obsidianDarkTokens[pressedToken] as string), toRgb(obsidianDarkTokens.canvas), 0.9);
+    const darkPressedBg = composite(toRgb(obsidianDarkTokens.cardHover), toRgb(obsidianDarkTokens.canvas), 0.9);
+    expect(contrast(darkPressedBorder, darkPressedBg)).toBeGreaterThanOrEqual(3.0);
+  }
+
+  function extractActiveLabelTokens(choiceCode: string) {
+    const pressableChildMatch = choiceCode.match(/<Pressable\b[\s\S]*?>\s*(\{\(\{\s*pressed\s*\}\)\s*=>[\s\S]*?)\s*<\/Pressable>/);
+    expect(pressableChildMatch).not.toBeNull();
+    const pressableChild = pressableChildMatch![1];
+    expect(pressableChild.trim()).toMatch(/^\{\(\{\s*pressed\s*\}\)\s*=>/);
+
+    const textMatch = pressableChild.match(/<Text[\s\S]*?style=\{[\s\S]*?(color:\s*[\s\S]*?)\}[^>]*?>[\s\S]*?\{service\.title\}[\s\S]*?<\/Text>/);
+    expect(textMatch).not.toBeNull();
+    const activeColorMatch = textMatch![1].match(/color:\s*active\s*\?\s*([\s\S]*?)\s*:\s*c\.mainText/);
+    expect(activeColorMatch).not.toBeNull();
+    const modeMatch = activeColorMatch![1].trim().replace(/^\(|\)$/g, '').match(/c\.mode\s*===\s*'light'\s*\?\s*([\s\S]*?)\s*:\s*c\.([a-zA-Z0-9_]+)\s*$/);
+    expect(modeMatch).not.toBeNull();
+
+    const lightExpr = modeMatch![1].trim().replace(/^\(|\)$/g, '');
+    const pressedTernary = lightExpr.match(/pressed\s*\?\s*c\.([a-zA-Z0-9_]+)\s*:\s*c\.([a-zA-Z0-9_]+)/);
+    const single = lightExpr.match(/c\.([a-zA-Z0-9_]+)/);
+    return {
+      lightPressed: (pressedTernary ? pressedTernary[1] : single![1]) as keyof typeof obsidianLightTokens,
+      lightDefault: (pressedTernary ? pressedTernary[2] : single![1]) as keyof typeof obsidianLightTokens,
+      darkToken: modeMatch![2] as keyof typeof obsidianDarkTokens,
+    };
+  }
+
+  function assertActiveLabelContrasts(tokens: { lightPressed: keyof typeof obsidianLightTokens; lightDefault: keyof typeof obsidianLightTokens; darkToken: keyof typeof obsidianDarkTokens }) {
+    expect(contrast(toRgb(obsidianLightTokens[tokens.lightDefault] as string), toRgb(obsidianLightTokens.cardHover))).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(toRgb(obsidianDarkTokens[tokens.darkToken] as string), toRgb(obsidianDarkTokens.cardHover))).toBeGreaterThanOrEqual(4.5);
+
+    const lightPressedLabel = composite(toRgb(obsidianLightTokens[tokens.lightPressed] as string), toRgb(obsidianLightTokens.canvas), 0.9);
+    const lightPressedBg = composite(toRgb(obsidianLightTokens.cardHover), toRgb(obsidianLightTokens.canvas), 0.9);
+    expect(contrast(lightPressedLabel, lightPressedBg)).toBeGreaterThanOrEqual(4.5);
+
+    const darkPressedLabel = composite(toRgb(obsidianDarkTokens[tokens.darkToken] as string), toRgb(obsidianDarkTokens.canvas), 0.9);
+    const darkPressedBg = composite(toRgb(obsidianDarkTokens.cardHover), toRgb(obsidianDarkTokens.canvas), 0.9);
+    expect(contrast(darkPressedLabel, darkPressedBg)).toBeGreaterThanOrEqual(4.5);
+  }
+
+  it('enforces theme-safe inactive boundary and active label contrast across default and pressed states', () => {
+    const choiceMatch = readMobileFile('app/book.tsx').match(/function ServiceChoice[\s\S]*?(?=\nfunction ServiceSection)/);
+    expect(choiceMatch).not.toBeNull();
+    const choiceCode = choiceMatch![0];
+
+    expect(choiceCode).toMatch(/borderColor:\s*active\s*\?\s*\(?c\.mode\s*===\s*'light'\s*\?\s*c\.amber\s*:\s*c\.ctaFill\)?/);
+    expect(choiceCode).toContain('opacity: pressed ? 0.9 : 1');
+
+    assertInactiveBorderContrasts(choiceCode);
+
+    const tokens = extractActiveLabelTokens(choiceCode);
+    expect(tokens.lightDefault).toBe('amber');
+    expect(tokens.lightPressed).toBe('amberHover');
+    expect(tokens.darkToken).toBe('ctaFill');
+
+    assertActiveLabelContrasts(tokens);
+  });
 });

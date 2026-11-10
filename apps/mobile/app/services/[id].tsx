@@ -48,19 +48,16 @@ function ServiceNotFoundView({ onBack }: { onBack: () => void }) {
         <Ionicons name="alert-circle-outline" size={32} color={getStripAccentColor(c, c.amber)} />
       </View>
       <Text style={[styles.notFoundTitle, { color: c.mainText }]}>Service Not Found</Text>
-      <Text style={[styles.notFoundBody, { color: c.mutedText }]}>
-        The requested service category could not be found in our directory.
-      </Text>
+      <Text style={[styles.notFoundBody, { color: c.mutedText }]}>The requested service category could not be found in our directory.</Text>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Back to services directory"
         onPress={onBack}
-        style={({ pressed }) => [
-          styles.secondaryBtn,
-          { backgroundColor: pressed ? c.cardHover : c.strip, borderColor: c.divider },
-        ]}
+        style={({ pressed }) => [styles.secondaryBtn, { backgroundColor: pressed ? c.cardHover : c.strip, borderColor: pressed ? c.mutedText : (c.mode === 'light' ? c.divider : getStripTextColor(c, c.mutedText)) }]}
       >
-        <Text style={[styles.secondaryBtnText, { color: getStripTextColor(c, c.mainText) }]}>Back to services</Text>
+        {({ pressed }) => (
+          <Text style={[styles.secondaryBtnText, { color: pressed && c.mode === 'light' ? c.mainText : getStripTextColor(c, c.mainText) }]}>Back to services</Text>
+        )}
       </Pressable>
     </View>
   );
@@ -74,17 +71,14 @@ function ServiceDetailHeader({ group, onBack }: { group: string; onBack: () => v
         accessibilityRole="button"
         accessibilityLabel="Back to services"
         onPress={onBack}
-        style={({ pressed }) => [
-          styles.backBtn,
-          { backgroundColor: pressed ? c.cardHover : c.strip, borderColor: c.divider },
-        ]}
+        style={({ pressed }) => [styles.backBtn, { backgroundColor: pressed ? c.cardHover : c.strip, borderColor: pressed ? c.mutedText : (c.mode === 'light' ? c.divider : getStripTextColor(c, c.mutedText)) }]}
       >
-        <Ionicons name="arrow-back" size={20} color={getStripTextColor(c, c.mainText)} />
+        {({ pressed }) => (
+          <Ionicons name="arrow-back" size={20} color={pressed && c.mode === 'light' ? c.mainText : getStripTextColor(c, c.mainText)} />
+        )}
       </Pressable>
       <View style={[styles.headerBadge, { backgroundColor: c.strip, borderColor: c.divider }]}>
-        <Text style={[styles.groupTag, { color: getStripAccentColor(c, c.amber) }]}>
-          {group.toUpperCase()}
-        </Text>
+        <Text style={[styles.groupTag, { color: getStripAccentColor(c, c.amber) }]}>{group.toUpperCase()}</Text>
       </View>
     </View>
   );
