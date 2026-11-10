@@ -181,7 +181,7 @@ function Field({ label, error, ...input }: TextInputProps & { label: string; err
 const s = StyleSheet.create({
   fill: { flex: 1 },
   page: { flexGrow: 1, padding: 20, gap: 16 },
-  back: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', minHeight: 44 },
+  back: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', minHeight: 48 },
   backLabel: { fontSize: 15, fontWeight: '600' },
   card: { borderRadius: 8, borderWidth: StyleSheet.hairlineWidth, padding: 20 },
   eyebrow: { fontFamily: mono, fontSize: 11, fontWeight: '700', letterSpacing: 1.3 },
