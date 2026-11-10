@@ -48,7 +48,7 @@ function HomePreviewBanner() {
   return (
     <View style={[styles.previewCard, { backgroundColor: c.strip, borderColor: c.divider }]}>
       <View style={styles.previewHeader}>
-        <Ionicons name="information-circle-outline" size={18} color={getStripAccentColor(c, c.amber)} />
+        <Ionicons name="information-circle-outline" size={18} color={getStripAccentColor(c, c.amber)} accessible={false} />
         <Text style={[styles.previewTitle, { color: getStripAccentColor(c, c.amber) }]}>
           LOCAL PREVIEW
         </Text>
@@ -64,7 +64,7 @@ function CategoryHeader({ onSeeAll }: { onSeeAll: () => void }) {
   const c = useThemeColors();
   return (
     <View style={styles.sectionRow}>
-      <Text style={[styles.sectionTitle, { color: c.mainText }]}>
+      <Text accessibilityRole="header" style={[styles.sectionTitle, { color: c.mainText }]}>
         Marketplace Categories
       </Text>
       <Pressable
@@ -105,7 +105,7 @@ function CategoryIcon({ icon }: { icon: IconName }) {
   const c = useThemeColors();
   return (
     <View style={[styles.iconWrapper, { backgroundColor: c.strip }]}>
-      <Ionicons name={icon} size={22} color={getStripAccentColor(c, c.amber)} />
+      <Ionicons name={icon} size={22} color={getStripAccentColor(c, c.amber)} accessible={false} />
     </View>
   );
 }
@@ -129,7 +129,7 @@ function CategoryItem({ item, onSelect }: { item: Category; onSelect: () => void
       <Text style={[styles.categoryName, { color: c.mainText }]}>
         {item.title}
       </Text>
-      <Ionicons name="chevron-forward" size={18} color={c.mutedText} />
+      <Ionicons name="chevron-forward" size={18} color={c.mutedText} accessible={false} />
     </Pressable>
   );
 }
@@ -141,7 +141,7 @@ function ActivitySection() {
       <Text style={[styles.infoEyebrow, { color: c.mutedText }]}>
         ACTIVITY
       </Text>
-      <Text style={[styles.infoTitle, { color: c.mainText }]}>
+      <Text accessibilityRole="header" style={[styles.infoTitle, { color: c.mainText }]}>
         No active bookings
       </Text>
       <Text style={[styles.infoBody, { color: c.mutedText }]}>

@@ -50,7 +50,7 @@ function ProfilePreviewBanner() {
   return (
     <View style={[styles.previewCard, { backgroundColor: c.strip, borderColor: c.divider }]}>
       <View style={styles.previewHeader}>
-        <Ionicons name="information-circle-outline" size={16} color={getStripAccentColor(c, c.amber)} />
+        <Ionicons name="information-circle-outline" size={16} color={getStripAccentColor(c, c.amber)} accessible={false} />
         <Text style={[styles.previewTitle, { color: getStripAccentColor(c, c.amber) }]}>
           LOCAL PREVIEW
         </Text>
@@ -72,12 +72,14 @@ function ProfileSectionRow({
   const c = useThemeColors();
   return (
     <View
+      accessible={true}
+      accessibilityLabel={item.label}
       style={[
         styles.menuRow,
         !isFirst && { borderTopWidth: 1, borderTopColor: c.rule },
       ]}
     >
-      <Ionicons name={item.icon} size={20} color={c.amber} />
+      <Ionicons name={item.icon} size={20} color={c.amber} accessible={false} />
       <Text style={[styles.menuLabel, { color: c.mainText }]}>
         {item.label}
       </Text>

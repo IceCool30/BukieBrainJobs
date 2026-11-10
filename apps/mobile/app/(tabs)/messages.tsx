@@ -40,9 +40,9 @@ function EmptyMessagesCard() {
   return (
     <View style={[styles.emptyCard, { backgroundColor: c.card, borderColor: c.divider }]}>
       <View style={[styles.iconCircle, { backgroundColor: c.strip }]}>
-        <Ionicons name="chatbubbles-outline" size={28} color={getStripTextColor(c, c.mutedText)} />
+        <Ionicons name="chatbubbles-outline" size={28} color={getStripTextColor(c, c.mutedText)} accessible={false} />
       </View>
-      <Text style={[styles.emptyTitle, { color: c.mainText }]}>
+      <Text accessibilityRole="header" style={[styles.emptyTitle, { color: c.mainText }]}>
         No conversations
       </Text>
       <Text style={[styles.emptyBody, { color: c.mutedText }]}>

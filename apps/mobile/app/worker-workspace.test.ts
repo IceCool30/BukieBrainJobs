@@ -52,6 +52,23 @@ describe('MOB-WORK-001 Native BrainWorker Workspace Preview Guardrails', () => {
     return (Math.max(lum(c1), lum(c2)) + 0.05) / (Math.min(lum(c1), lum(c2)) + 0.05);
   };
 
+  const blendRgb = (fg: Rgb, bg: Rgb, alpha: number): Rgb => ({
+    r: Math.round(fg.r * alpha + bg.r * (1 - alpha)),
+    g: Math.round(fg.g * alpha + bg.g * (1 - alpha)),
+    b: Math.round(fg.b * alpha + bg.b * (1 - alpha)),
+  });
+
+  const assertThemePressedContrast = (
+    tokens: typeof obsidianDarkTokens | typeof obsidianLightTokens,
+    alpha: number
+  ) => {
+    const bg = toRgb(tokens.bg);
+    const textPressed = blendRgb(toRgb(tokens.textMain), bg, alpha);
+    const amberPressed = blendRgb(toRgb(tokens.amber), bg, alpha);
+    expect(contrast(textPressed, bg)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(amberPressed, bg)).toBeGreaterThanOrEqual(4.5);
+  };
+
   it('registers brainworker/workspace-preview in root stack layout', () => {
     const layoutContent = readMobileFile('app/_layout.tsx');
     expect(layoutContent).toContain('name="brainworker/workspace-preview"');
@@ -71,11 +88,35 @@ describe('MOB-WORK-001 Native BrainWorker Workspace Preview Guardrails', () => {
     expect(registerContent).not.toContain("router.replace('/brainworker/workspace-preview')");
   });
 
-  it('enforces 48dp minimum touch target for register header back navigation', () => {
+  it('enforces 48dp minimum touch target and accessible contrast for register header back navigation', () => {
     const registerContent = readMobileFile('app/brainworker/register.tsx');
+    const headerMatch = registerContent.match(/function RegisterHeader[\s\S]*?\n\}/);
+    expect(headerMatch).not.toBeNull();
+    const headerBlock = headerMatch![0];
+
     const backStyleMatch = registerContent.match(/back:\s*\{[^}]*\}/);
     expect(backStyleMatch).not.toBeNull();
     expect(backStyleMatch![0]).toContain('minHeight: 48');
+    expect(backStyleMatch![0]).toContain('minWidth: 48');
+
+    const opacityMatch = headerBlock.match(/pressed\s*&&\s*\{\s*opacity:\s*([0-9.]+)\s*\}/);
+    expect(opacityMatch).not.toBeNull();
+    const pressedOpacity = parseFloat(opacityMatch![1]);
+    expect(pressedOpacity).toBeLessThan(1.0);
+
+    assertThemePressedContrast(obsidianDarkTokens, pressedOpacity);
+    assertThemePressedContrast(obsidianLightTokens, pressedOpacity);
+  });
+
+  it('enforces register form accessibility standards, headings, and field error announcements', () => {
+    const registerContent = readMobileFile('app/brainworker/register.tsx');
+    expect(registerContent).toContain('<Text accessibilityRole="header" style={[s.heading');
+    expect(registerContent).toContain('accessibilityLabel="Continue to onboarding"');
+    expect(registerContent).toContain('aria-invalid={!!error}');
+    expect(registerContent).toContain('accessibilityHint={error}');
+    expect(registerContent).toContain('<Ionicons name="arrow-back" size={18} color={c.amber} accessible={false} />');
+    expect(registerContent).toContain('<Ionicons name="arrow-forward" size={16} color={c.ctaText} accessible={false} />');
+    expect(registerContent).toContain('<Ionicons name="eye-outline" size={18} color={linkColor} accessible={false} />');
   });
 
   it('preserves all five customer tabs unmodified', () => {
