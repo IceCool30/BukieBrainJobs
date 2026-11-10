@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -44,7 +44,7 @@ function ServiceNotFoundView({ onBack }: { onBack: () => void }) {
   const c = useThemeColors();
   return (
     <View style={styles.notFoundContainer}>
-      <View style={[styles.iconBox, { backgroundColor: c.strip }]}>
+      <View style={[styles.iconBox, { backgroundColor: c.strip, borderColor: c.divider }]}>
         <Ionicons name="alert-circle-outline" size={32} color={getStripAccentColor(c, c.amber)} />
       </View>
       <Text style={[styles.notFoundTitle, { color: c.mainText }]}>Service Not Found</Text>
@@ -55,11 +55,12 @@ function ServiceNotFoundView({ onBack }: { onBack: () => void }) {
         accessibilityRole="button"
         accessibilityLabel="Back to services directory"
         onPress={onBack}
-        style={[styles.actionBtn, { backgroundColor: c.strip, borderColor: c.divider }]}
+        style={({ pressed }) => [
+          styles.secondaryBtn,
+          { backgroundColor: pressed ? c.cardHover : c.strip, borderColor: c.divider },
+        ]}
       >
-        <Text style={[styles.actionBtnText, { color: getStripTextColor(c, c.mainText) }]}>
-          Back to services
-        </Text>
+        <Text style={[styles.secondaryBtnText, { color: getStripTextColor(c, c.mainText) }]}>Back to services</Text>
       </Pressable>
     </View>
   );
@@ -73,12 +74,15 @@ function ServiceDetailHeader({ group, onBack }: { group: string; onBack: () => v
         accessibilityRole="button"
         accessibilityLabel="Back to services"
         onPress={onBack}
-        style={[styles.backBtn, { backgroundColor: c.strip }]}
+        style={({ pressed }) => [
+          styles.backBtn,
+          { backgroundColor: pressed ? c.cardHover : c.strip, borderColor: c.divider },
+        ]}
       >
         <Ionicons name="arrow-back" size={20} color={getStripTextColor(c, c.mainText)} />
       </Pressable>
-      <View style={styles.headerBadge}>
-        <Text style={[styles.groupTag, { color: c.amber }]}>
+      <View style={[styles.headerBadge, { backgroundColor: c.strip, borderColor: c.divider }]}>
+        <Text style={[styles.groupTag, { color: getStripAccentColor(c, c.amber) }]}>
           {group.toUpperCase()}
         </Text>
       </View>
@@ -89,14 +93,14 @@ function ServiceDetailHeader({ group, onBack }: { group: string; onBack: () => v
 function ServiceTasksSection({ tasks }: { tasks: readonly string[] }) {
   const c = useThemeColors();
   return (
-    <View style={styles.sectionArea}>
+    <View style={[styles.tasksCard, { backgroundColor: c.card, borderColor: c.divider }]}>
       <Text style={[styles.sectionHeading, { color: c.mainText }]}>
         Examples in this local catalog
       </Text>
       <View style={styles.tasksList}>
         {tasks.map((task) => (
           <View key={task} style={styles.taskRow}>
-            <Ionicons name="checkmark-circle-outline" size={18} color={c.green} />
+            <Ionicons name="checkmark-circle" size={18} color={c.green} />
             <Text style={[styles.taskText, { color: c.mainText }]}>
               {task}
             </Text>
@@ -110,14 +114,14 @@ function ServiceTasksSection({ tasks }: { tasks: readonly string[] }) {
 function ServicePreviewActionCard() {
   const c = useThemeColors();
   return (
-    <View style={[styles.previewCard, { backgroundColor: c.card, borderColor: c.divider }]}>
+    <View style={[styles.previewCard, { backgroundColor: c.strip, borderColor: c.divider }]}>
       <View style={styles.previewHeader}>
-        <Ionicons name="information-circle-outline" size={18} color={c.amber} />
-        <Text style={[styles.previewTitle, { color: c.amber }]}>
+        <Ionicons name="information-circle-outline" size={16} color={getStripAccentColor(c, c.amber)} />
+        <Text style={[styles.previewTitle, { color: getStripAccentColor(c, c.amber) }]}>
           LOCAL PREVIEW
         </Text>
       </View>
-      <Text style={[styles.previewBody, { color: c.mutedText }]}>
+      <Text style={[styles.previewBody, { color: c.stripText }]}>
         This preview does not include live service booking or worker dispatch actions.
       </Text>
     </View>
@@ -137,16 +141,32 @@ function ServiceTitle({ service }: { service: MobileServiceCategory }) {
 function ServiceBookingAction({ service }: { service: MobileServiceCategory }) {
   const c = useThemeColors();
   const router = useRouter();
+  const [pressed, setPressed] = useState(false);
+  const btnStyle = StyleSheet.flatten([
+    styles.actionBtn,
+    { backgroundColor: pressed ? c.ctaPressed : c.ctaFill, borderColor: pressed ? c.ctaPressed : c.ctaFill },
+  ]);
+
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel="Prepare booking request"
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Prepare booking request"
       onPress={() => router.push({ pathname: '/book', params: { serviceId: service.id } })}
-      style={[styles.actionBtn, { backgroundColor: c.amber, borderColor: c.amber }]}>
-      <Text style={[styles.actionBtnText, { color: c.canvas }]}>Prepare booking request</Text>
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
+      style={btnStyle}
+    >
+      <Text style={[styles.actionBtnText, { color: c.ctaText }]}>
+        Prepare booking request
+      </Text>
     </Pressable>
   );
 }
 
-function ServiceDetailContent({ service, onBack }: {
+function ServiceDetailContent({
+  service,
+  onBack,
+}: {
   service: MobileServiceCategory;
   onBack: () => void;
 }) {
@@ -163,7 +183,7 @@ function ServiceDetailContent({ service, onBack }: {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: { padding: 18, gap: 20, paddingBottom: 36 },
+  content: { padding: 18, gap: 18, paddingBottom: 36 },
   headerBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -173,14 +193,16 @@ const styles = StyleSheet.create({
   backBtn: {
     width: 48,
     height: 48,
-    borderRadius: 8,
+    borderRadius: 9999,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   headerBadge: {
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 4,
+    borderRadius: 9999,
+    borderWidth: 1,
   },
   groupTag: {
     fontFamily: mono,
@@ -189,24 +211,30 @@ const styles = StyleSheet.create({
     letterSpacing: 0.8,
   },
   titleArea: { gap: 10 },
-  mainTitle: { fontSize: 24, fontWeight: '800', letterSpacing: -0.5 },
+  mainTitle: { fontSize: 24, fontWeight: '800', letterSpacing: -0.5, lineHeight: 30 },
   description: { fontSize: 14, lineHeight: 22 },
-  sectionArea: { gap: 12 },
+  tasksCard: {
+    padding: 18,
+    borderRadius: 12,
+    borderWidth: 1,
+    gap: 14,
+  },
   sectionHeading: { fontSize: 16, fontWeight: '700' },
-  tasksList: { gap: 8 },
+  tasksList: { gap: 10 },
   taskRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    paddingVertical: 4,
+    paddingVertical: 2,
   },
-  taskText: { fontSize: 14 },
+  taskText: { fontSize: 14, lineHeight: 20, flex: 1 },
   previewCard: {
-    padding: 16,
-    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 10,
     borderWidth: 1,
-    gap: 10,
-    marginTop: 6,
+    gap: 6,
+    marginTop: 2,
   },
   previewHeader: {
     flexDirection: 'row',
@@ -230,7 +258,8 @@ const styles = StyleSheet.create({
   iconBox: {
     width: 64,
     height: 64,
-    borderRadius: 12,
+    borderRadius: 16,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
@@ -238,9 +267,21 @@ const styles = StyleSheet.create({
   notFoundTitle: { fontSize: 20, fontWeight: '700' },
   notFoundBody: { fontSize: 14, textAlign: 'center', lineHeight: 20 },
   actionBtn: {
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 9999,
+    borderWidth: 1,
+    minHeight: 48,
+    minWidth: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 6,
+  },
+  actionBtnText: { fontSize: 15, fontWeight: '700' },
+  secondaryBtn: {
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 8,
+    borderRadius: 9999,
     borderWidth: 1,
     minHeight: 48,
     minWidth: 48,
@@ -248,5 +289,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 8,
   },
-  actionBtnText: { fontSize: 14, fontWeight: '600' },
+  secondaryBtnText: { fontSize: 14, fontWeight: '600' },
 });

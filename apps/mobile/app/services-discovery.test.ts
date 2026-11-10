@@ -59,6 +59,13 @@ describe('4.2.1 Native Public Discovery Integration & Screen Standards', () => {
     expect(services).toContain('accessibilityState={{ selected: active }}');
     expect(services).toContain('accessibilityLabel="Services list"');
     expect(services, 'Must not duplicate tab title in scroll content').not.toContain('Service Directory');
+    // Slice 2 visual alignment contracts
+    expect(services).toContain('isFocused');
+    expect(services).toContain('onFocus');
+    expect(services).toContain('onBlur');
+    expect(services).toContain('item.icon');
+    expect(services).toContain('borderRadius: 9999');
+    expect(services).toContain('cardHover');
   });
 
   it('uses strip-safe foregrounds for Services filters and preview labels', () => {
@@ -81,6 +88,13 @@ describe('4.2.1 Native Public Discovery Integration & Screen Standards', () => {
     expect(detail).not.toContain('Service Coverage Areas');
     expect(detail).toContain('router.back()');
     expect(detail).toContain('This preview does not include live service booking');
+    // Slice 2 visual alignment contracts: pill CTA with Outlier tokens
+    expect(detail).toContain('c.ctaFill');
+    expect(detail).toContain('c.ctaText');
+    expect(detail).toContain('c.ctaPressed');
+    expect(detail).toContain('tasksCard');
+    expect(detail).toContain('minHeight: 48');
+    expect(detail).toContain('minWidth: 48');
   });
 
   it('prohibits fabricated prices and ratings across discovery screens', () => {

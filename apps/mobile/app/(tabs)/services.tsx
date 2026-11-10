@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, type ComponentProps } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -74,7 +74,7 @@ function ServicesPreviewBanner() {
   return (
     <View style={[styles.noticeCard, { backgroundColor: c.strip, borderColor: c.divider }]}>
       <View style={styles.noticeHeader}>
-        <Ionicons name="information-circle-outline" size={16} color={getStripAccentColor(c, c.amber)} />
+        <Ionicons name="information-circle-outline" size={15} color={getStripAccentColor(c, c.amber)} />
         <Text style={[styles.noticeTitle, { color: getStripAccentColor(c, c.amber) }]}>
           LOCAL PREVIEW
         </Text>
@@ -97,9 +97,12 @@ function ClearSearchButton({ onClear }: { onClear: () => void }) {
 
 function ServicesSearchInput({ query, onChangeQuery, onClear }: SearchProps) {
   const c = useThemeColors();
+  const [isFocused, setIsFocused] = useState(false);
+  const boxStyle = [styles.searchBox, { backgroundColor: c.card, borderColor: isFocused ? c.amber : c.divider }];
+
   return (
-    <View style={[styles.searchBox, { backgroundColor: c.card, borderColor: c.divider }]}>
-      <Ionicons name="search-outline" size={18} color={c.mutedText} />
+    <View style={boxStyle}>
+      <Ionicons name="search-outline" size={18} color={isFocused ? c.amber : c.mutedText} />
       <TextInput
         style={[styles.searchInput, { color: c.mainText }]}
         placeholder="Search services..."
@@ -107,6 +110,8 @@ function ServicesSearchInput({ query, onChangeQuery, onClear }: SearchProps) {
         accessibilityLabel="Search services"
         value={query}
         onChangeText={onChangeQuery}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         autoCorrect={false}
       />
       {query.length > 0 ? <ClearSearchButton onClear={onClear} /> : null}
@@ -122,10 +127,10 @@ function FilterPillItem({ name, active, onSelect }: PillItemProps) {
       accessibilityLabel={`Filter by ${name}`}
       accessibilityState={{ selected: active }}
       onPress={() => onSelect(name)}
-      style={[
+      style={({ pressed }) => [
         styles.pill,
         {
-          backgroundColor: active ? c.amber : c.strip,
+          backgroundColor: active ? c.amber : pressed ? c.cardHover : c.strip,
           borderColor: active ? c.amber : c.divider,
         },
       ]}
@@ -163,13 +168,22 @@ function ServicesList({
   );
 }
 
-function ServiceCardTop({ group }: { group: string }) {
+function ServiceCardTop({
+  group,
+  icon,
+}: { group: string; icon: ComponentProps<typeof Ionicons>['name'] }) {
   const c = useThemeColors();
+  const accent = getStripAccentColor(c, c.amber);
   return (
     <View style={styles.cardTop}>
-      <Text style={[styles.groupTag, { color: c.amber }]}>
-        {group.toUpperCase()}
-      </Text>
+      <View style={styles.badgeRow}>
+        <View style={[styles.iconWrap, { backgroundColor: c.strip, borderColor: c.divider }]}>
+          <Ionicons name={icon} size={16} color={accent} />
+        </View>
+        <View style={[styles.groupBadge, { backgroundColor: c.strip, borderColor: c.divider }]}>
+          <Text style={[styles.groupTag, { color: accent }]}>{group.toUpperCase()}</Text>
+        </View>
+      </View>
       <Ionicons name="chevron-forward" size={16} color={c.mutedText} />
     </View>
   );
@@ -190,7 +204,7 @@ function ServiceCard({ item, onSelect }: CardProps) {
         },
       ]}
     >
-      <ServiceCardTop group={item.group} />
+      <ServiceCardTop group={item.group} icon={item.icon} />
       <Text style={[styles.serviceTitle, { color: c.mainText }]}>
         {item.title}
       </Text>
@@ -206,9 +220,7 @@ function ServicesEmptyState({ onReset }: { onReset: () => void }) {
   return (
     <View style={styles.emptyContainer}>
       <Ionicons name="search-outline" size={32} color={c.mutedText} />
-      <Text style={[styles.emptyTitle, { color: c.mainText }]}>
-        No matching services found
-      </Text>
+      <Text style={[styles.emptyTitle, { color: c.mainText }]}>No matching services found</Text>
       <Text style={[styles.emptySubtitle, { color: c.mutedText }]}>
         Try adjusting your search terms or filter selection.
       </Text>
@@ -216,11 +228,12 @@ function ServicesEmptyState({ onReset }: { onReset: () => void }) {
         accessibilityRole="button"
         accessibilityLabel="Reset filters and search"
         onPress={onReset}
-        style={[styles.resetBtn, { backgroundColor: c.strip, borderColor: c.divider }]}
+        style={({ pressed }) => [
+          styles.resetBtn,
+          { backgroundColor: pressed ? c.cardHover : c.strip, borderColor: c.divider },
+        ]}
       >
-        <Text style={[styles.resetBtnText, { color: getStripAccentColor(c, c.amber) }]}>
-          Reset filters
-        </Text>
+        <Text style={[styles.resetBtnText, { color: getStripAccentColor(c, c.amber) }]}>Reset filters</Text>
       </Pressable>
     </View>
   );
@@ -230,10 +243,11 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: 18, gap: 16, paddingBottom: 32 },
   noticeCard: {
-    padding: 14,
-    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 10,
     borderWidth: 1,
-    gap: 6,
+    gap: 4,
   },
   noticeHeader: {
     flexDirection: 'row',
@@ -253,9 +267,9 @@ const styles = StyleSheet.create({
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 8,
+    borderRadius: 9999,
     borderWidth: 1,
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
     minHeight: 48,
     gap: 8,
   },
@@ -278,8 +292,8 @@ const styles = StyleSheet.create({
   },
   pill: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 20,
+    paddingVertical: 10,
+    borderRadius: 9999,
     borderWidth: 1,
     minHeight: 48,
     alignItems: 'center',
@@ -289,18 +303,38 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
   },
-  list: { gap: 10 },
+  list: { gap: 12 },
   card: {
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
     padding: 16,
-    gap: 8,
+    gap: 10,
     minHeight: 64,
   },
   cardTop: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  badgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  iconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  groupBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    justifyContent: 'center',
   },
   groupTag: {
     fontFamily: mono,
@@ -335,7 +369,7 @@ const styles = StyleSheet.create({
   resetBtn: {
     paddingHorizontal: 20,
     paddingVertical: 12,
-    borderRadius: 8,
+    borderRadius: 9999,
     borderWidth: 1,
     minHeight: 48,
     alignItems: 'center',
