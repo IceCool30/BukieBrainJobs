@@ -101,8 +101,14 @@ function RegisterFormFields({
 function RegisterHeader({ onBack }: { onBack: () => void }) {
   const c = useTrades();
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel="Go back" onPress={onBack} hitSlop={8} style={s.back}>
-      <Ionicons name="arrow-back" size={18} color={c.amber} />
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Go back"
+      onPress={onBack}
+      hitSlop={8}
+      style={({ pressed }) => [s.back, pressed && { opacity: 0.95 }]}
+    >
+      <Ionicons name="arrow-back" size={18} color={c.amber} accessible={false} />
       <Text style={[s.backLabel, { color: c.textMain }]}>Back</Text>
     </Pressable>
   );
@@ -126,11 +132,12 @@ function RegisterSubmitButton({ onSubmit }: { onSubmit: () => void }) {
   return (
     <Pressable
       accessibilityRole="button"
+      accessibilityLabel="Continue to onboarding"
       onPress={onSubmit}
       style={({ pressed }) => [s.submit, { backgroundColor: pressed ? c.ctaPressed : c.ctaFill }]}
     >
       <Text style={[s.submitLabel, { color: c.ctaText }]}>CONTINUE TO ONBOARDING</Text>
-      <Ionicons name="arrow-forward" size={16} color={c.ctaText} />
+      <Ionicons name="arrow-forward" size={16} color={c.ctaText} accessible={false} />
     </Pressable>
   );
 }
@@ -164,6 +171,8 @@ function Field({ label, error, ...input }: TextInputProps & { label: string; err
       <TextInput
         {...input}
         accessibilityLabel={label}
+        aria-invalid={!!error}
+        accessibilityHint={error}
         placeholderTextColor={c.textMuted}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
@@ -181,7 +190,7 @@ function Field({ label, error, ...input }: TextInputProps & { label: string; err
 const s = StyleSheet.create({
   fill: { flex: 1 },
   page: { flexGrow: 1, padding: 20, gap: 16 },
-  back: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', minHeight: 48 },
+  back: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', minHeight: 48, minWidth: 48 },
   backLabel: { fontSize: 15, fontWeight: '600' },
   card: { borderRadius: 8, borderWidth: StyleSheet.hairlineWidth, padding: 20 },
   eyebrow: { fontFamily: mono, fontSize: 11, fontWeight: '700', letterSpacing: 1.3 },

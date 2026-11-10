@@ -135,4 +135,25 @@ describe('4.1.1 Expo Router Bottom Tabs Configuration', () => {
     expect(layoutSource).not.toMatch(/<Tabs[^>]*\binitialRouteName=/);
     expect(layoutSource).toContain('{TAB_ROUTES.map(renderTabScreen)}');
   });
+
+  it('enforces accessible headings, labels, and hidden decorative icons on home, messages, and profile tabs', () => {
+    const homeSource = readFileSync(resolve(__dirname, '(tabs)/home.tsx'), 'utf8');
+    expect(homeSource).toContain('<Text accessibilityRole="header" style={[styles.sectionTitle');
+    expect(homeSource).toContain('<Text accessibilityRole="header" style={[styles.infoTitle');
+    expect(homeSource).toContain('accessibilityLabel="View all categories in services tab"');
+    expect(homeSource).toContain('accessibilityRole="button"');
+    expect(homeSource).toContain('styles.seeAllBtn');
+    expect(homeSource).toContain('accessible={false}');
+
+    const messagesSource = readFileSync(resolve(__dirname, '(tabs)/messages.tsx'), 'utf8');
+    expect(messagesSource).toContain('<Text accessibilityRole="header" style={[styles.heading');
+    expect(messagesSource).toContain('<Text accessibilityRole="header" style={[styles.emptyTitle');
+    expect(messagesSource).toContain('accessible={false}');
+
+    const profileSource = readFileSync(resolve(__dirname, '(tabs)/profile.tsx'), 'utf8');
+    expect(profileSource).toContain('<Text accessibilityRole="header" style={[styles.heading');
+    expect(profileSource).toContain('accessible={true}');
+    expect(profileSource).toContain('accessibilityLabel={item.label}');
+    expect(profileSource).toContain('accessible={false}');
+  });
 });
