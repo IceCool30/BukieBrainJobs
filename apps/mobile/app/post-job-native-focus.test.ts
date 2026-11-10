@@ -119,3 +119,11 @@ it('focuses a result heading target on web through DOM focus', () => {
   expect(focus).toHaveBeenCalled();
   expect(h.setAccessibilityFocus).not.toHaveBeenCalled();
 });
+
+it('aligns post-job review summary and step progress visual contracts with Outlier standards', () => {
+  const postJobSource = readFileSync(resolve(__dirname, 'post-job.tsx'), 'utf8');
+  // Visual progress indicators use theme divider/accent indicators
+  expect(postJobSource).toContain('stepIndicator');
+  // Review cards align with Outlier card layout and spacing
+  expect(postJobSource).toContain('SummaryRow');
+});

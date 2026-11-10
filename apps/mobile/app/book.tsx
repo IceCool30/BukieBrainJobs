@@ -118,11 +118,12 @@ function ServiceChoice({ service, active, onSelect, focusRef }: {
     <Pressable ref={focusRef} accessibilityRole="button" accessibilityLabel={service.title}
       accessibilityState={{ selected: active }} onPress={onSelect}
       style={({ pressed }) => [styles.serviceChoice, {
-        backgroundColor: active ? c.cardHover : c.card,
-        borderColor: active ? c.amber : c.divider,
-        opacity: pressed ? 0.84 : 1,
+        backgroundColor: active ? c.cardHover : pressed ? c.cardHover : c.card,
+        borderColor: active ? c.ctaFill : pressed ? c.rule : c.divider,
+        borderWidth: active ? 1.5 : 1,
+        opacity: pressed ? 0.9 : 1,
       }]}>
-      <Text style={[styles.serviceTitle, { color: c.mainText }]}>{service.title}</Text>
+      <Text style={[styles.serviceTitle, { color: active ? (c.mode === 'light' ? c.amber : c.ctaFill) : c.mainText }]}>{service.title}</Text>
     </Pressable>
   );
 }

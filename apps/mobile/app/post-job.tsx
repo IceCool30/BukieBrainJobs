@@ -429,12 +429,42 @@ function PostJobReview({ state, service, reviewHeadingRef, resultHeadingRef }: {
   );
 }
 
+function StepProgress({ currentStep }: { currentStep: JobStep }) {
+  const c = useThemeColors();
+  const currentStepNumber = getStepNumber(currentStep);
+
+  return (
+    <View style={styles.stepProgressRow} accessibilityRole="progressbar" accessibilityLabel={`Step ${currentStepNumber} of ${JOB_STEPS.length}`}>
+      {JOB_STEPS.map((stepItem, index) => {
+        const stepNum = index + 1;
+        const isCompleted = stepNum < currentStepNumber;
+        const isCurrent = stepNum === currentStepNumber;
+        const barColor = isCurrent ? c.ctaFill : isCompleted ? (c.mode === 'light' ? c.amber : c.ctaFill) : c.divider;
+
+        return (
+          <View
+            key={stepItem}
+            style={[
+              styles.stepIndicator,
+              {
+                backgroundColor: barColor,
+                opacity: isCurrent ? 1 : isCompleted ? 0.8 : 0.4,
+              },
+            ]}
+          />
+        );
+      })}
+    </View>
+  );
+}
+
 function PostJobForm({ state, focusRefs, service }: { state: PostJobState; focusRefs: FocusRefs; service: ReturnType<typeof getServiceById> }) {
   const router = useRouter();
   const update = (key: keyof JobPostingDraft, value: JobPostingDraft[keyof JobPostingDraft]) => updatePostJobDraft(state, key, value);
   return (
     <FormScreen>
       <FormHeader title={JOB_STEP_TITLES[state.step]} eyebrow={`Step ${getStepNumber(state.step)} of ${JOB_STEPS.length}`} onBack={() => goBackPostJob(state, router)} />
+      <StepProgress currentStep={state.step} />
       {state.step === 'job_requirement' ? <JobRequirementStep draft={state.draft} visibleErrors={state.visibleErrors} update={update} focusRefs={focusRefs} /> : null}
       {state.step === 'location' ? <LocationStep draft={state.draft} visibleErrors={state.visibleErrors} update={update} focusRefs={focusRefs} /> : null}
       {state.step === 'schedule' ? <ScheduleStep draft={state.draft} visibleErrors={state.visibleErrors} update={update} focusRefs={focusRefs} /> : null}
@@ -451,6 +481,17 @@ function PostJobForm({ state, focusRefs, service }: { state: PostJobState; focus
 }
 
 const styles = StyleSheet.create({
+  stepProgressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 4,
+  },
+  stepIndicator: {
+    flex: 1,
+    height: 4,
+    borderRadius: 2,
+  },
   section: { gap: 12 },
   actions: { gap: 10 },
   error: { fontSize: 12, lineHeight: 18 },

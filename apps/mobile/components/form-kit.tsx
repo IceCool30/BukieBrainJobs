@@ -1,4 +1,4 @@
-import React, { type ReactNode, type RefObject } from 'react';
+import React, { useState, type ReactNode, type RefObject } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -71,7 +71,7 @@ function FormBackButton({ label, onPress, c }: FormBackButtonProps) {
         styles.backButton,
         {
           backgroundColor: pressed && c.mode === 'dark' ? c.cardHover : c.strip,
-          borderColor: c.divider,
+          borderColor: pressed ? c.amber : c.divider,
         },
       ]}
     >
@@ -157,19 +157,21 @@ type FieldInputProps = {
   colors: MobileThemeTokens;
 };
 
-function getFieldInputStyle(colors: MobileThemeTokens, multiline: boolean | undefined, error: string | undefined) {
+function getFieldInputStyle(colors: MobileThemeTokens, multiline: boolean | undefined, error: string | undefined, isFocused: boolean) {
   return [
     styles.input,
     multiline && styles.multilineInput,
     {
       backgroundColor: colors.card,
-      borderColor: error ? colors.danger : colors.divider,
+      borderColor: error ? colors.danger : isFocused ? colors.amber : colors.divider,
+      borderWidth: error || isFocused ? 1.5 : 1,
       color: colors.mainText,
     },
   ];
 }
 
 function FieldInput({ field, colors }: FieldInputProps) {
+  const [isFocused, setIsFocused] = useState(false);
   const accessibilityLabel = `${field.accessibilityLabel ?? field.label}${field.required ? ', required' : ''}`;
   return (
     <TextInput
@@ -179,6 +181,8 @@ function FieldInput({ field, colors }: FieldInputProps) {
       accessibilityHint={field.error ?? field.helper}
       value={field.value}
       onChangeText={field.onChangeText}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       placeholder={field.placeholder}
       placeholderTextColor={colors.mutedText}
       multiline={field.multiline}
@@ -186,7 +190,7 @@ function FieldInput({ field, colors }: FieldInputProps) {
       keyboardType={field.keyboardType}
       autoCapitalize={field.autoCapitalize ?? 'sentences'}
       autoCorrect={false}
-      style={getFieldInputStyle(colors, field.multiline, field.error)}
+      style={getFieldInputStyle(colors, field.multiline, field.error, isFocused)}
     />
   );
 }
@@ -228,15 +232,16 @@ function ChoiceChip({ option, selected, onSelect, focusRef, colors }: ChoiceChip
       accessibilityLabel={option.label}
       accessibilityState={{ selected: active }}
       onPress={() => onSelect(option.value)}
-      style={[
+      style={({ pressed }) => [
         styles.chip,
         {
-          backgroundColor: active ? colors.amber : colors.card,
-          borderColor: active ? colors.amber : colors.divider,
+          backgroundColor: active ? colors.ctaFill : pressed ? colors.cardHover : colors.card,
+          borderColor: active ? colors.ctaFill : pressed ? colors.rule : colors.divider,
+          opacity: pressed ? 0.9 : 1,
         },
       ]}
     >
-      <Text style={[styles.chipText, { color: active ? colors.canvas : colors.mainText }]}>
+      <Text style={[styles.chipText, { color: active ? colors.ctaText : colors.mainText }]}>
         {option.label}
       </Text>
     </Pressable>
@@ -301,12 +306,11 @@ export function PrimaryButton({ label, onPress, disabled = false, accessibilityL
       style={({ pressed }) => [
         styles.primaryButton,
         {
-          backgroundColor: disabled ? c.rule : pressed ? c.amberHover : c.amber,
-          opacity: disabled ? 0.7 : 1,
+          backgroundColor: disabled ? c.rule : pressed ? c.ctaPressed : c.ctaFill,
         },
       ]}
     >
-      <Text style={[styles.primaryButtonText, { color: c.canvas }]}>{label}</Text>
+      <Text style={[styles.primaryButtonText, { color: disabled ? c.mainText : c.ctaText }]}>{label}</Text>
     </Pressable>
   );
 }
@@ -323,8 +327,9 @@ export function SecondaryButton({ label, onPress, disabled = false, accessibilit
       style={({ pressed }) => [
         styles.secondaryButton,
         {
-          backgroundColor: pressed ? c.cardHover : 'transparent',
-          borderColor: c.divider,
+          backgroundColor: pressed ? c.cardHover : c.card,
+          borderColor: pressed ? c.rule : c.divider,
+          opacity: disabled ? 0.65 : 1,
         },
       ]}
     >
@@ -363,7 +368,7 @@ export function SummaryRow({ label, value, onEdit, editLabel }: SummaryRowProps)
         <Text style={[styles.summaryLabel, { color: colors.mutedText }]}>{label}</Text>
         <Text style={[styles.summaryValue, { color: colors.mainText }]}>{value}</Text>
       </View>
-      {onEdit ? <SummaryEditButton label={label} editLabel={editLabel} onEdit={onEdit} color={colors.amber} /> : null}
+      {onEdit ? <SummaryEditButton label={label} editLabel={editLabel} onEdit={onEdit} color={colors.mode === 'light' ? colors.amber : colors.ctaFill} /> : null}
     </View>
   );
 }
@@ -458,24 +463,23 @@ const styles = StyleSheet.create({
   errorSummaryItem: { fontSize: 13, lineHeight: 19 },
   primaryButton: {
     minHeight: 48,
-    borderRadius: 8,
+    borderRadius: 9999,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
   },
   primaryButtonText: {
-    fontFamily: mono,
     fontSize: 13,
     fontWeight: '700',
     letterSpacing: 0.6,
   },
   secondaryButton: {
     minHeight: 48,
-    borderRadius: 8,
+    borderRadius: 9999,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
   },
   secondaryButtonText: { fontSize: 14, fontWeight: '600' },
   summaryRow: {
