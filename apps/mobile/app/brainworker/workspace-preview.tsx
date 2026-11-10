@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -365,7 +366,9 @@ function LeadCardFooter({ lead }: { lead: WorkerSampleLead }) {
     <View style={[s.leadFooterStacked, { borderTopColor: c.divider }]}>
       <View style={s.footerField}>
         <Text style={[s.footerLabel, { color: c.mutedText }]}>SAMPLE BUDGET</Text>
-        <Text style={[s.leadBudget, { color: c.mainText }]}>{lead.sampleBudget}</Text>
+        <View style={[s.priceBadge, { backgroundColor: c.cardHover, borderColor: c.mutedText }]}>
+          <Text style={[s.priceBadgeText, { color: c.mainText }]}>{lead.sampleBudget}</Text>
+        </View>
       </View>
       <View style={s.footerField}>
         <Text style={[s.footerLabel, { color: c.mutedText }]}>TIMEFRAME</Text>
@@ -864,20 +867,39 @@ type AcceptModalProps = {
   onConfirm: () => void;
 };
 
+function AcceptModalContent({ onCancel, onConfirm }: { onCancel: () => void; onConfirm: () => void }) {
+  const c = useThemeColors();
+  return (
+    <>
+      <Text accessibilityRole="header" style={[s.modalTitle, { color: c.mainText }]}>
+        Accept Sample Lead?
+      </Text>
+      <Text style={[s.modalBody, { color: c.mutedText }]}>
+        This is an interface preview only. Confirming will show how an accepted state appears locally. No real customer booking will be created and no provider commitment is made. No response will be sent or saved.
+      </Text>
+      <AcceptModalActions onCancel={onCancel} onConfirm={onConfirm} />
+    </>
+  );
+}
+
 function AcceptConfirmationModal({ visible, onCancel, onConfirm }: AcceptModalProps) {
   const c = useThemeColors();
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
   useEscapeDismiss(visible, onCancel);
   return (
     <Modal visible={visible} transparent animationType="none" onRequestClose={onCancel}>
-      <View style={s.modalOverlay}>
-        <View testID="accept-modal-card" style={[s.modalCard, { backgroundColor: c.card, borderColor: c.mutedText }]}>
-          <Text accessibilityRole="header" style={[s.modalTitle, { color: c.mainText }]}>
-            Accept Sample Lead?
-          </Text>
-          <Text style={[s.modalBody, { color: c.mutedText }]}>
-            This is an interface preview only. Confirming will show how an accepted state appears locally. No real customer booking will be created and no provider commitment is made.
-          </Text>
-          <AcceptModalActions onCancel={onCancel} onConfirm={onConfirm} />
+      <View style={[s.modalOverlay, isLandscape ? s.overlayCenter : s.overlayBottom]}>
+        <View
+          testID="accept-modal-card"
+          style={[
+            s.modalCard,
+            isLandscape ? s.cardLandscape : s.cardPortrait,
+            { backgroundColor: c.card, borderColor: c.mutedText },
+          ]}
+        >
+          {!isLandscape && <View style={[s.sheetHandle, { backgroundColor: c.mutedText }]} />}
+          <AcceptModalContent onCancel={onCancel} onConfirm={onConfirm} />
         </View>
       </View>
     </Modal>
@@ -920,11 +942,21 @@ type DeclineModalProps = {
 
 function DeclineModal({ visible, selectedReason, onSelectReason, onCancel, onConfirm }: DeclineModalProps) {
   const c = useThemeColors();
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
   useEscapeDismiss(visible, onCancel);
   return (
     <Modal visible={visible} transparent animationType="none" onRequestClose={onCancel}>
-      <View style={s.modalOverlay}>
-        <View testID="decline-modal-card" style={[s.modalCard, { backgroundColor: c.card, borderColor: c.mutedText }]}>
+      <View style={[s.modalOverlay, isLandscape ? s.overlayCenter : s.overlayBottom]}>
+        <View
+          testID="decline-modal-card"
+          style={[
+            s.modalCard,
+            isLandscape ? s.cardLandscape : s.cardPortrait,
+            { backgroundColor: c.card, borderColor: c.mutedText },
+          ]}
+        >
+          {!isLandscape && <View style={[s.sheetHandle, { backgroundColor: c.mutedText }]} />}
           <DeclineModalHeader />
           <DeclineReasonList selectedReason={selectedReason} onSelectReason={onSelectReason} />
           <DeclineModalActions selectedReason={selectedReason} onCancel={onCancel} onConfirm={onConfirm} />
@@ -1077,7 +1109,9 @@ function DetailMetaGrid({ lead }: { lead: WorkerSampleLead }) {
       </View>
       <View style={s.metaItem}>
         <Text style={[s.metaLabel, { color: c.mutedText }]}>SAMPLE BUDGET</Text>
-        <Text style={[s.metaValue, { color: c.mainText }]}>{lead.sampleBudget}</Text>
+        <View style={[s.priceBadge, { backgroundColor: c.cardHover, borderColor: c.mutedText }]}>
+          <Text style={[s.priceBadgeText, { color: c.mainText }]}>{lead.sampleBudget}</Text>
+        </View>
       </View>
       <View style={s.metaItem}>
         <Text style={[s.metaLabel, { color: c.mutedText }]}>PRICING MODE</Text>
@@ -1159,11 +1193,25 @@ const s = StyleSheet.create({
   sectionTitle: { fontSize: 18, fontWeight: '700' },
   sectionCount: { fontSize: 12 },
   leadCard: {
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
     padding: 16,
     gap: 6,
     minHeight: 48,
+  },
+  priceBadge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    marginTop: 2,
+  },
+  priceBadgeText: {
+    fontFamily: mono,
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
   leadCardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   leadCategory: { fontFamily: mono, fontSize: 10, fontWeight: '700', letterSpacing: 0.8 },
@@ -1307,17 +1355,46 @@ const s = StyleSheet.create({
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  overlayBottom: {
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: 0,
+  },
+  overlayCenter: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
   },
+  sheetHandle: {
+    width: 36,
+    height: 4,
+    borderRadius: 2,
+    alignSelf: 'center',
+    marginBottom: 6,
+    opacity: 0.6,
+  },
   modalCard: {
     width: '100%',
-    maxWidth: 420,
-    borderRadius: 12,
-    borderWidth: 1,
-    padding: 14,
+    padding: 16,
     gap: 10,
+  },
+  cardPortrait: {
+    maxWidth: 480,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderWidth: 1,
+    paddingBottom: 28,
+  },
+  cardLandscape: {
+    maxWidth: 520,
+    borderRadius: 16,
+    borderWidth: 1,
+    maxHeight: 340,
+    padding: 14,
+    gap: 8,
   },
   modalTitle: {
     fontSize: 18,
@@ -1364,7 +1441,7 @@ const s = StyleSheet.create({
   },
   reasonOptionRow: {
     minHeight: 48,
-    borderRadius: 6,
+    borderRadius: 8,
     borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
