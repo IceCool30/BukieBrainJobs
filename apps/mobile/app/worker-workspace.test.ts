@@ -98,6 +98,7 @@ describe('MOB-WORK-001 Native BrainWorker Workspace Preview Guardrails', () => {
     expect(screenContent).toContain('Accept Sample Lead?');
     expect(screenContent).toContain('Confirm sample acceptance');
     expect(screenContent).toContain('interface preview');
+    expect(screenContent).toContain('No response will be sent or saved.');
   });
 
   it('provides decline modal with single-choice selection across all 6 canonical BW-003 reasons', () => {
@@ -357,6 +358,71 @@ describe('MOB-WORK-001 Native BrainWorker Workspace Preview Guardrails', () => {
     it('preserves 48dp minimum touch target for all check-in interactive triggers', () => {
       const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
       expect(screenContent).toContain('minHeight: 48');
+    });
+  });
+
+  describe('MOB-VIS-001 Slice 5 BrainWorker Workspace & Modals Alignment', () => {
+    it('renders sample-budget values in a high-contrast monospace price badge with sample range label', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      expect(screenContent).toContain('priceBadge');
+      expect(screenContent).toContain('priceBadgeText');
+      expect(screenContent).toContain('SAMPLE BUDGET');
+      expect(screenContent).toContain('lead.sampleBudget');
+    });
+
+    it('clarifies lead card hierarchy order: category/urgency, title, location, summary, footer', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      const headerIdx = screenContent.indexOf('<LeadCardHeader lead={lead} />');
+      const bodyIdx = screenContent.indexOf('<LeadCardBody lead={lead} />');
+      const footerIdx = screenContent.indexOf('<LeadCardFooter lead={lead} />');
+      expect(headerIdx).toBeGreaterThan(0);
+      expect(bodyIdx).toBeGreaterThan(headerIdx);
+      expect(footerIdx).toBeGreaterThan(bodyIdx);
+
+      const titleIdx = screenContent.indexOf('lead.serviceTitle');
+      const zoneIdx = screenContent.indexOf('lead.neighborhood');
+      const summaryIdx = screenContent.indexOf('lead.problemSummary');
+      expect(titleIdx).toBeGreaterThan(0);
+      expect(zoneIdx).toBeGreaterThan(titleIdx);
+      expect(summaryIdx).toBeGreaterThan(zoneIdx);
+    });
+
+    it('restyles dialogs as portrait bottom sheets with centered landscape fallbacks', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      expect(screenContent).toContain('useWindowDimensions');
+      expect(screenContent).toContain('overlayBottom');
+      expect(screenContent).toContain('overlayCenter');
+      expect(screenContent).toContain('cardPortrait');
+      expect(screenContent).toContain('cardLandscape');
+      expect(screenContent).toContain('sheetHandle');
+    });
+
+    it('keeps modal content bounded and scrollable with accessible close and confirm actions', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      expect(screenContent).toContain('reasonListScroll');
+      expect(screenContent).toContain('Cancel acceptance preview');
+      expect(screenContent).toContain('Confirm sample acceptance');
+      expect(screenContent).toContain('Cancel decline preview');
+      expect(screenContent).toContain('Confirm sample decline');
+      expect(screenContent).toContain('minHeight: 48');
+    });
+
+    it('provides accessible decline radio options with visible selected state and touch targets >= 48dp', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      expect(screenContent).toContain('accessibilityRole="radio"');
+      expect(screenContent).toContain('accessibilityState={{ checked: isSelected }}');
+      expect(screenContent).toContain('DeclineRadioBullet');
+      expect(screenContent).toContain('s.reasonOptionRow');
+      expect(screenContent).toContain('minHeight: 48');
+    });
+
+    it('strictly preserves UI-only preview boundaries without side-effect APIs', () => {
+      const screenContent = readMobileFile('app/brainworker/workspace-preview.tsx');
+      expect(screenContent).not.toMatch(/fetch\(|axios|graphql/i);
+      expect(screenContent).not.toMatch(/AsyncStorage|sqlite|mmkv/i);
+      expect(screenContent).not.toMatch(/expo-location|geolocation|navigator\.geolocation/i);
+      expect(screenContent).not.toMatch(/expo-notifications/i);
+      expect(screenContent).not.toMatch(/prisma|supabase|postgre/i);
     });
   });
 });
