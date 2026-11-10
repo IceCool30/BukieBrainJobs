@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { getStripTextColor, mono, useThemeColors, useThemeMode, toggleThemeMode } from '../lib/theme';
+import { getStripTextColor, getStripAccentColor, mono, useThemeColors, useThemeMode, toggleThemeMode } from '../lib/theme';
 
 const FEATURED_SERVICES = [
   { id: 'generator', title: 'Generator Servicing & Repair', group: 'Power & Cooling' },
@@ -78,14 +78,15 @@ function AllServicesLink({ onPress }: { onPress: () => void }) {
 
 function Brand() {
   const c = useThemeColors();
-  const mode = useThemeMode();
   return (
     <View style={s.brand}>
-      <Image source={require('../assets/images/logo-icon.png')} style={s.logo} accessibilityIgnoresInvertColors />
+      <View style={s.brandLeft}>
+        <Image source={require('../assets/images/logo-icon.png')} style={s.logo} accessibilityIgnoresInvertColors />
+        <Text accessibilityRole="header" style={[s.wordmark, { color: c.textMain }]}>
+          Bukie<Text style={{ color: c.brandGreen }}>BrainJobs</Text>
+        </Text>
+      </View>
       <ThemeToggle accessibilityRole="button" style={{ minWidth: 48, minHeight: 48 }} />
-      <Text accessibilityRole="header" style={[s.wordmark, { color: c.textMain }]}>
-        Bukie<Text style={{ color: c.brandGreen }}>BrainJobs</Text>
-      </Text>
     </View>
   );
 }
@@ -104,7 +105,7 @@ function ThemeToggle({
       accessibilityRole={accessibilityRole}
       accessibilityLabel={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       onPress={toggleThemeMode}
-      style={[s.themeToggle, style, { backgroundColor: c.strip }]}
+      style={[s.themeToggle, style, { backgroundColor: c.strip, borderColor: c.divider }]}
     >
       <Ionicons name={mode === 'dark' ? 'sunny-outline' : 'moon-outline'} size={20} color={getStripTextColor(c, c.textMain)} />
     </Pressable>
@@ -114,40 +115,50 @@ function ThemeToggle({
 function Hero() {
   const c = useThemeColors();
   return (
-    <View style={[s.hero, { backgroundColor: c.stripBg, borderColor: c.lead }]}>
+    <View style={[s.hero, { borderColor: c.lead }]}>
+      <Image source={require('../assets/images/hero-mobile-1080.jpg')} style={s.heroBackdrop} resizeMode="cover" accessibilityIgnoresInvertColors />
+      <View style={s.heroOverlay} />
       <Text style={[s.heroTitle, { color: getStripTextColor(c, '#FFFFFF') }]}>
-        Find a BrainWorker for the job, or offer your skills for work that respects your time.
+        Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on{' '}
+        <Text style={{ color: getStripAccentColor(c, '#2FE896') }}>BukieBrainJobs</Text>
       </Text>
+      <Text style={s.heroBody}>Find a BrainWorker for the job, or offer your skills for work that respects your time.</Text>
       <HeroActions />
     </View>
   );
 }
 
 function FindWorkerButton() {
+  const [pressed, setPressed] = React.useState(false);
   const c = useThemeColors();
   return (
     <Link href="/(tabs)/services" asChild>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Find a BrainWorker"
-        style={StyleSheet.flatten([s.button, { backgroundColor: c.amber }])}
+        onPressIn={() => setPressed(true)}
+        onPressOut={() => setPressed(false)}
+        style={StyleSheet.flatten([s.button, { backgroundColor: pressed ? c.ctaPressed : c.ctaFill }])}
       >
-        <Ionicons name="search" size={16} color="#FFFFFF" />
-        <Text style={s.buttonLabel}>FIND A BRAINWORKER</Text>
+        <Ionicons name="search" size={16} color={c.ctaText} />
+        <Text style={[s.buttonLabel, { color: c.ctaText }]}>Find a BrainWorker</Text>
       </Pressable>
     </Link>
   );
 }
 
 function RegisterWorkerButton() {
+  const [pressed, setPressed] = React.useState(false);
   return (
     <Link href="/brainworker/register" asChild>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Become a BrainWorker"
-        style={StyleSheet.flatten([s.button, s.ghost])}
+        onPressIn={() => setPressed(true)}
+        onPressOut={() => setPressed(false)}
+        style={StyleSheet.flatten([s.button, s.ghost, pressed && s.ghostPressed])}
       >
-        <Text style={s.buttonLabel}>BECOME A BRAINWORKER</Text>
+        <Text style={s.buttonLabel}>Become a BrainWorker</Text>
         <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
       </Pressable>
     </Link>
@@ -165,12 +176,15 @@ function HeroActions() {
 }
 
 function PostJobButton() {
+  const [pressed, setPressed] = React.useState(false);
   return (
     <Link href="/post-job" asChild>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Post a Job"
-        style={StyleSheet.flatten([s.button, s.ghost])}
+        onPressIn={() => setPressed(true)}
+        onPressOut={() => setPressed(false)}
+        style={StyleSheet.flatten([s.button, s.ghost, pressed && s.ghostPressed])}
       >
         <Text style={s.buttonLabel}>Post a Job</Text>
       </Pressable>
@@ -204,31 +218,37 @@ function ServiceRow({
 const s = StyleSheet.create({
   fill: { flex: 1 },
   page: { padding: 20, paddingBottom: 40, gap: 16 },
-  brand: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 4 },
+  brand: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 4 },
+  brandLeft: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   logo: { width: 32, height: 32, borderRadius: 8 },
   wordmark: { fontSize: 18, fontWeight: '800', letterSpacing: -0.4 },
   themeToggle: {
     minWidth: 48,
     minHeight: 48,
-    borderRadius: 8,
+    borderRadius: 9999,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 6,
   },
-  hero: { borderRadius: 8, borderWidth: StyleSheet.hairlineWidth, padding: 22, gap: 16 },
-  heroTitle: { color: '#FFFFFF', fontSize: 22, lineHeight: 28, fontWeight: '800', letterSpacing: -0.6 },
+  hero: { borderRadius: 12, borderWidth: StyleSheet.hairlineWidth, padding: 22, gap: 16, overflow: 'hidden', position: 'relative', backgroundColor: '#001A41' },
+  heroBackdrop: { ...StyleSheet.absoluteFill, width: '100%', height: '100%' },
+  heroOverlay: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(0, 26, 65, 0.30)' },
+  heroTitle: { color: '#FFFFFF', fontSize: 22, lineHeight: 28, fontWeight: '800', letterSpacing: -0.6, textShadowColor: 'rgba(0, 0, 0, 0.85)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
+  heroBody: { color: 'rgba(255, 255, 255, 0.90)', fontSize: 14, lineHeight: 20, textShadowColor: 'rgba(0, 0, 0, 0.75)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
   actions: { gap: 12 },
   button: {
     minHeight: 48,
-    borderRadius: 8,
+    borderRadius: 9999,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
     paddingHorizontal: 16,
   },
-  buttonLabel: { color: '#FFFFFF', fontFamily: mono, fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
+  buttonLabel: { color: '#FFFFFF', fontSize: 14, fontWeight: '700', letterSpacing: -0.2 },
   ghost: { borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.28)', backgroundColor: 'rgba(255, 255, 255, 0.06)' },
+  ghostPressed: { backgroundColor: 'rgba(255, 255, 255, 0.14)' },
   eyebrow: { fontFamily: mono, fontSize: 11, fontWeight: '600', letterSpacing: 1.3, marginTop: 8 },
   list: { borderRadius: 8, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16, paddingVertical: 14, minHeight: 56 },

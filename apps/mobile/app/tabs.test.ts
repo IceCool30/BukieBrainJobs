@@ -78,6 +78,8 @@ describe('4.1.1 Expo Router Bottom Tabs Configuration', () => {
     expect(TAB_BAR_OPTIONS.tabBarStyle.borderTopColor).toBe(obsidianDarkTokens.divider);
     expect(TAB_BAR_OPTIONS.headerStyle.backgroundColor).toBe(obsidianDarkTokens.strip);
     expect(TAB_BAR_OPTIONS.headerTintColor).toBe(obsidianDarkTokens.mainText);
+    expect('fontFamily' in TAB_BAR_OPTIONS.headerTitleStyle).toBe(false);
+    expect(TAB_BAR_OPTIONS.headerTitleStyle.letterSpacing).toBe(-0.4);
   });
 
   it('applies the selected light tokens when light mode is active', () => {
@@ -85,8 +87,11 @@ describe('4.1.1 Expo Router Bottom Tabs Configuration', () => {
 
     expect(options.tabBarStyle.backgroundColor).toBe(obsidianLightTokens.strip);
     expect(options.tabBarActiveTintColor).toBe(obsidianLightTokens.stripAccent);
+    expect(options.tabBarActiveTintColor).not.toBe(obsidianLightTokens.amber);
     expect(options.tabBarInactiveTintColor).toBe(obsidianLightTokens.stripText);
     expect(options.headerTintColor).toBe(obsidianLightTokens.stripText);
+    expect('fontFamily' in options.headerTitleStyle).toBe(false);
+    expect(options.headerTitleStyle.letterSpacing).toBe(-0.4);
   });
 
   it('computes tab bar options dynamically with safe area insets', () => {

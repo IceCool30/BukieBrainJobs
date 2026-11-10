@@ -38,9 +38,9 @@ describe('4.2.1 Native Public Discovery Integration & Screen Standards', () => {
     const home = readMobileFile('app/index.tsx');
     expect(home).toContain("router.push('/(tabs)/services')");
     expect(home).toContain('FEATURED_SERVICES');
-    expect(home).toContain('FIND A BRAINWORKER');
+    expect(home).toContain('Find a BrainWorker');
     expect(home).toContain('View all services');
-    expect(home).toContain('StyleSheet.flatten([s.button, { backgroundColor: c.amber }])');
+    expect(home).toContain('{ backgroundColor: pressed ? c.ctaPressed : c.ctaFill }');
     expect(home).toContain('minHeight: 48');
     expect(home).toContain('minWidth: 48');
   });

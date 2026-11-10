@@ -3,7 +3,7 @@ import type { ColorValue, OpaqueColorValue } from 'react-native';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getStripAccentColor, getStripTextColor, mono, obsidianDarkTokens, useThemeColors, type MobileThemeTokens } from '../../lib/theme';
+import { getStripAccentColor, getStripTextColor, obsidianDarkTokens, useThemeColors, type MobileThemeTokens } from '../../lib/theme';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
@@ -84,10 +84,9 @@ export function getTabBarOptions(
     },
     headerTintColor: getStripTextColor(tokens, tokens.mainText),
     headerTitleStyle: {
-      fontFamily: mono,
       fontSize: 16,
       fontWeight: '700' as const,
-      letterSpacing: 0.5,
+      letterSpacing: -0.4,
     },
   };
 }
