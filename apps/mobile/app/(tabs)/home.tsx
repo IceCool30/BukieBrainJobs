@@ -71,6 +71,8 @@ function CategoryHeader({ onSeeAll }: { onSeeAll: () => void }) {
         accessibilityRole="button"
         accessibilityLabel="View all categories in services tab"
         onPress={onSeeAll}
+        hitSlop={8}
+        style={styles.seeAllBtn}
       >
         <Text style={[styles.sectionAction, { color: c.amber }]}>
           See all
@@ -183,6 +185,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700',
+  },
+  seeAllBtn: {
+    minHeight: 48,
+    minWidth: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 8,
   },
   sectionAction: {
     fontSize: 13,

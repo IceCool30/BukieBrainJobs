@@ -67,6 +67,12 @@ describe('4.2.1 Native Public Discovery Integration & Screen Standards', () => {
     expect(home).toContain('minWidth: 48');
   });
 
+  it('enforces 48dp minimum touch target for See all button on home screen', () => {
+    const homeTab = readMobileFile('app/(tabs)/home.tsx');
+    expect(homeTab).toContain('minHeight: 48');
+    expect(homeTab).toContain('minWidth: 48');
+  });
+
   it('ensures Services directory renders all 8 canonical services with accessible search and filter pills', () => {
     const services = readMobileFile('app/(tabs)/services.tsx');
     expect(services).toContain("from '../../lib/services'");
