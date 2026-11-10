@@ -2,7 +2,7 @@
 
 **Document ID:** MOB-VIS-001
 
-**Status:** In Progress (Slices 1, 2 & 3 Completed & Pushed; Next: Slice 4 Customer Activity Hub & Lifecycle)
+**Status:** In Progress (Slices 1, 2, 3 & 4 Completed & Pushed; Next: Slice 5 BrainWorker Workspace & Modals)
 
 **Governing Authority:** [THEME-001](../../docs/specs/THEME-001-light-dark-toggle.md), [.agents/skills/bukiebrainjobs-outlier-design-system](../../.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md), [docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md](../../docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md)
 
@@ -37,7 +37,7 @@ This inventory represents a source-level structural and stylistic code compariso
 | **Service Detail** (`app/services/[id].tsx`)                        | Clear typography hierarchy, pill group tag, subtle checklist card with theme-aware checkmarks, primary book action.                                                                                                  | Aligned in Slice 2 (`56d5ac7`): 48x48 back button, clean typography hierarchy, soft card container for task examples with theme-aware checkmarks, and primary CTA using `ctaFill: #F7803C` / `ctaText: #001A41` (>= 48dp). | Completed in Slice 2 (`56d5ac7`). Refined back button geometry (48x48), introduced soft card container for task examples, harmonized amber and green accents, and implemented navy-on-coral primary CTA.                                                                                                                                                                                                                                |
 | **Booking Prep** (`app/book.tsx` & `form-kit.tsx`)                  | Multi-step flow: clean step indicator, pill choice chips, subtle input borders with amber focus glow.                                                                                                                | Aligned in Slice 3 (`42e6ab7`): Upgraded form kit primitives with rounded choice chips (16 booking chips), refined input focus states, balanced summary rows, softened step headers, and compliant touch targets (>= 48px). | Completed in Slice 3 (`42e6ab7`). Upgraded `form-kit.tsx` primitives: rounded choice chips, refined input focus states, balanced summary rows, softened step headers, all tested controls >= 48px, zero horizontal overflow. |
 | **Job Posting** (`app/post-job.tsx`)                                | Step-by-step progress tracker, polished character counters, category selection chips.                                                                                                                                | Aligned in Slice 3 (`42e6ab7`): Leveraged upgraded form kit primitives, rounded category chips (11 post-job chips), step progress tracker, character counter styling, review card layout, all tested controls >= 48px. | Completed in Slice 3 (`42e6ab7`). Leveraged upgraded `form-kit.tsx` primitives, aligned chip geometry, softened card surfaces and helper text, all tested controls >= 48px, zero horizontal overflow. |
-| **Customer Activity & Lifecycle** (`app/(tabs)/jobs.tsx`)           | Segmented tab controls and milestone progression cards; web defines `.telemetry-beacon` in `globals.css` (animated green status pulse used in `TradesRequisitionBoard.tsx`).                                           | Flat segmented bar with basic underline, stark milestone timeline with hard vertical lines.                                                                                                    | Implement refined segmented pill tabs; propose adapting an active milestone status pulse (inspired by web `.telemetry-beacon`, but clearly designated as a proposed native adaptation needing `/architect` design comparison and delegated PM approval before implementation); polish card surfaces. Target for Slice 4.                                                                                                                     |
+| **Customer Activity & Lifecycle** (`app/(tabs)/jobs.tsx`)           | Segmented tab controls and milestone progression cards; web defines `.telemetry-beacon` in `globals.css` (animated green status pulse used in `TradesRequisitionBoard.tsx`).                                           | Aligned in Slice 4 (`f930358`): Refined segmented pill tabs for All/Active/Upcoming/Past, card elevation, static theme-aware Current step marker (dark #F7803C on #07090D; light #ABEEC8 on #001A41), and read-only cancelled sample notice with exact text "Preview record: read only". | Completed in Slice 4 (`f930358`). Refined segmented pill tabs for All/Active/Upcoming/Past, card elevation, static theme-aware Current step marker (dark #F7803C on #07090D; light #ABEEC8 on #001A41), and read-only cancelled sample notice with exact text "Preview record: read only" while maintaining existing routes and in-memory sample fixtures. |
 | **BrainWorker Workspace** (`app/brainworker/workspace-preview.tsx`) | Lead cards with clear price tags, distance badges, and bottom-sheet confirmation modals.                                                                                                                             | Dense, flat alert box, monospace metadata labels, standard centered alert modals.                                                                                                               | Elevate lead alert card with badge styling; polish Accept/Decline action modals with rounded geometry and clean taxonomy rows. Target for Slice 5.                                                                                                                                                                                                                                                                                         |
 
 ---
@@ -135,10 +135,10 @@ To avoid sprawling changes and ensure regression-free execution, visual alignmen
 [Slice 3: Form Kit, Booking Prep & Job Posting] (COMPLETED & PUSHED - 42e6ab7)
        │
        ▼
-[Slice 4: Customer Activity Hub & Lifecycle] (NEXT ACTIVE SLICE)
+[Slice 4: Customer Activity Hub & Lifecycle] (COMPLETED & PUSHED - f930358)
        │
        ▼
-[Slice 5: BrainWorker Workspace & Modals]
+[Slice 5: BrainWorker Workspace & Modals] (NEXT ACTIVE SLICE)
 ```
 
 ### Slice Breakdown
@@ -148,8 +148,8 @@ To avoid sprawling changes and ensure regression-free execution, visual alignmen
 | **Slice 1** | **Foundation Tokens, Shell & Home Screen** | **Completed & Pushed** (`b82a365`) | `apps/mobile/lib/theme.ts`<br/>`apps/mobile/app/(tabs)/_layout.tsx`<br/>`apps/mobile/app/index.tsx`<br/>`apps/mobile/app/tabs.test.ts`<br/>`apps/mobile/app/services-discovery.test.ts`<br/>`apps/mobile/app/job-posting-entry.test.ts` | Align Outlier color tokens, pill button geometry, tab bar styling (dark active tint `#F7803C`, light active tint `#ABEEC8`), title-case labels, exact owner-approved native-home headline, polished home header theme toggle against approved baseline, and align existing home source-contract tests to title-case and `ctaFill`. |
 | **Slice 2** | **Discovery & Service Detail**             | **Completed & Pushed** (`56d5ac7`) | `apps/mobile/app/(tabs)/services.tsx`<br/>`apps/mobile/app/services/[id].tsx`<br/>`apps/mobile/app/services-discovery.test.ts`                                                                                                          | Refined services catalog and detail screens preserving 8 canonical services, routes, and mock behavior: 50px search input, rounded filter pills, card elevation, streamlined local preview badge, refined task list, 48px CTA/back button, and navy-on-coral primary CTA.                                                          |
 | **Slice 3** | **Shared Form Kit, Booking & Job Posting** | **Completed & Pushed** (`42e6ab7`) | `apps/mobile/components/form-kit.tsx`<br/>`apps/mobile/app/book.tsx`<br/>`apps/mobile/app/post-job.tsx`<br/>`apps/mobile/app/book.test.ts`<br/>`apps/mobile/app/post-job-native-focus.test.ts`                                           | Form primitives upgrade (`form-kit.tsx`), rounded choice chips (16 booking chips, 11 post-job chips), input focus states, step indicator polish, review card layout, touch targets >= 48px, zero horizontal overflow, disabled label contrast 10.855:1 dark and 11.555:1 light. Strictly UI-only preview; no backend, auth, network APIs, or state persistence. |
-| **Slice 4** | **Customer Activity & Booking Lifecycle**  | **Next Active Slice**              | `apps/mobile/app/(tabs)/jobs.tsx`<br/>`apps/mobile/lib/lifecycle-preview.ts`<br/>`apps/mobile/app/jobs.test.ts`                                                                                                                         | Segmented control styling, milestone cards with proposed active indicator (adapted from web `.telemetry-beacon`), status chip colors, cancel state treatment. Target for Slice 4.                                                                                                                                                   |
-| **Slice 5** | **BrainWorker Workspace & Action Modals**  | Pending                            | `apps/mobile/app/brainworker/workspace-preview.tsx`<br/>`apps/mobile/lib/worker-workspace-preview.ts`<br/>`apps/mobile/app/worker-workspace.test.ts`                                                                                    | Lead card visual hierarchy, price badge, bottom-sheet style confirmation modals, decline taxonomy list polish.                                                                                                                                                                                                                     |
+| **Slice 4** | **Customer Activity & Booking Lifecycle**  | **Completed & Pushed** (`f930358`) | `apps/mobile/app/(tabs)/jobs.tsx`<br/>`apps/mobile/lib/lifecycle-preview.ts`<br/>`apps/mobile/app/jobs.test.ts`                                                                                                                         | Refined segmented control for All/Active/Upcoming/Past, card elevation, static theme-aware Current step marker (dark #F7803C on #07090D; light #ABEEC8 on #001A41), and read-only cancelled sample notice with exact text "Preview record: read only". Preserved in-memory samples and existing routes without backend, database, auth, network, or mutating cancellation. |
+| **Slice 5** | **BrainWorker Workspace & Action Modals**  | **Next Active Slice**              | `apps/mobile/app/brainworker/workspace-preview.tsx`<br/>`apps/mobile/lib/worker-workspace-preview.ts`<br/>`apps/mobile/app/worker-workspace.test.ts`                                                                                    | UI-only scope: workspace preview and action modals only, backend and database work deferred. Target for Slice 5.                                                                                                                                                                                                                      |
 
 ---
 
@@ -264,33 +264,59 @@ Slice 3 aligned shared form controls, booking preparation, and job posting with 
 
 ---
 
-### 6.4 Slice 4 Specification: Customer Activity Hub & Lifecycle (Next Active Slice)
+### 6.4 Slice 4 Completion & Acceptance Record (Committed & Pushed at `f9303584e90d16144ff78ff4dcc0ddbd86344514`)
 
-Slice 4 addresses customer activity, job tracking, and booking lifecycle presentation to align them with the Outlier design language:
+Slice 4 completed customer activity, job tracking, and booking lifecycle presentation alignment with the Outlier design language:
 
-- **Target Files**:
-  - `apps/mobile/app/(tabs)/jobs.tsx`
-  - `apps/mobile/lib/lifecycle-preview.ts`
-  - `apps/mobile/app/jobs.test.ts`
-- **Primary Focus**:
-  - Segmented control styling for All, Active, Upcoming, and Past activity tabs.
-  - Milestone progression cards with proposed active status indicator (inspired by web `.telemetry-beacon`, subject to `/architect` design comparison and delegated PM approval).
-  - Status chip colors and high-contrast badges for booking states.
-  - Cancellation state visual treatment and detail summary layout.
-- **Functional Boundaries & Explicit Exclusions**:
-  - Strictly UI-only preview.
-  - Preserves all mock data boundaries, sample fixtures, and in-memory lifecycle presentation.
-  - Zero backend, database, authentication, or network APIs.
-  - Persistence and full offline caching remain explicitly deferred.
-  - No claims of native iOS/Android runtime verification, VoiceOver/TalkBack screen reader verification, physical safe-area, or hardware behavior.
+- **Target Files Modified and Committed**: Changed exactly and only `apps/mobile/app/(tabs)/jobs.tsx`, `apps/mobile/lib/lifecycle-preview.ts`, and `apps/mobile/app/jobs.test.ts` committed and pushed at exact SHA `f9303584e90d16144ff78ff4dcc0ddbd86344514`.
+- **Accepted Scope & Architectural Preservation**:
+  - Maintained All, Active, Upcoming, and Past activity tabs.
+  - Maintained in-memory samples and existing routes without alteration.
+  - Added a static theme-aware Current step marker (dark #F7803C on #07090D; light #ABEEC8 on #001A41).
+  - Added a read-only cancelled sample notice with exact text: `Preview record: read only`.
+  - Strictly UI-only preview: zero backend, database, auth, network APIs, or mutating cancellation.
+- **Verification Evidence**:
+  - Focused test suite: 19/19 passed (`pnpm --filter @bukiebrainjobs/mobile test jobs.test.ts`).
+  - Full mobile test suite: 237/237 passed across 19 files.
+  - Mobile TypeScript check: `pnpm --filter @bukiebrainjobs/mobile type-check` (`tsc --noEmit`) passed.
+  - Android Expo bundle export: `expo export --platform android` passed with 1,430 modules (bundle export, not an APK/AAB).
+  - Web export: `expo export --platform web` passed with 941 modules.
+  - Git hygiene: `git diff --check` passed clean.
+  - Compiled Expo browser emulation: Passed at 390x844 (standard mobile) and 375x812 (compact mobile) in dark and light modes, with no horizontal overflow, and themes were restored afterward.
+  - Contrast ratios verified:
+    - active marker `#ABEEC8` on `#001A41` at 12.904:1 light
+    - `#F7803C` on `#07090D` at 7.693:1 dark
+    - cancelled light label `#DC2626` on `#FFFFFF` at 4.829:1 in normal and pressed states
+    - cancelled dark label `#FF6B6B` on `#13171E` at 6.473:1
+- **Explicit Verification Boundaries & Non-Goals**:
+  - Native simulator/device behavior, physical safe area/keyboard, and VoiceOver/TalkBack remain explicitly unverified.
+  - Full-surface contrast audit across all non-tested surfaces remains unverified.
+  - Vercel deployment outcome: The exact-SHA Vercel deployment was CANCELED because the monorepo skipped the unaffected Next.js project; no build failed and no manual deployment was started.
 
-#### Slice 4 Acceptance Criteria (Target)
+#### Slice 4 Acceptance Criteria
 
-- [ ] **Segmented Tab Controls**: Refined segmented control with Outlier pill styling and active indicator.
-- [ ] **Milestone Progression**: Polished lifecycle milestone cards with clear timeline geometry and status badges.
-- [ ] **Status Badge Contrast**: High-contrast status badges in dark and light themes (>= 4.5:1).
-- [ ] **Touch Target Compliance**: Interactive tabs and action buttons meet minimum 48x48dp.
-- [ ] **Test & Type Integrity**: Mobile test suite passes 100%; `tsc --noEmit` exits 0; static export bundles cleanly.
+- [x] **Segmented Tab Controls**: Refined segmented control with Outlier pill styling for All, Active, Upcoming, and Past.
+- [x] **Milestone Progression & Current Step Marker**: Polished lifecycle milestone cards with static theme-aware Current step marker (dark #F7803C on #07090D; light #ABEEC8 on #001A41).
+- [x] **Status Badge & Cancelled Notice Contrast**: High-contrast status badges and read-only cancelled sample notice with exact text `Preview record: read only` (active marker `#ABEEC8` on `#001A41` at 12.904:1 light; `#F7803C` on `#07090D` at 7.693:1 dark; cancelled light label `#DC2626` on `#FFFFFF` at 4.829:1 in normal and pressed states; cancelled dark label `#FF6B6B` on `#13171E` at 6.473:1).
+- [x] **Touch Target Compliance & Layout**: Zero horizontal overflow across 390x844 and 375x812 viewports in dark and light modes, themes restored afterward.
+- [x] **Test & Build Integrity**: Focused test 19/19; full suite 237/237 across 19 files; mobile type-check passed; Android Expo bundle export passed with 1,430 modules (bundle, not APK/AAB); web export passed with 941 modules; `git diff --check` passed.
+
+---
+
+### 6.5 Slice 5 Specification: BrainWorker Workspace & Modals (Next Active Slice)
+
+Slice 5 addresses the BrainWorker workspace preview and action modals:
+
+- **Target Files (Exact Three Paths)**:
+  - `apps/mobile/app/brainworker/workspace-preview.tsx`
+  - `apps/mobile/lib/worker-workspace-preview.ts`
+  - `apps/mobile/app/worker-workspace.test.ts`
+- **Scope & Boundaries**:
+  - Strictly UI-only scope: workspace preview and action modals only.
+  - Elevate lead alert cards, price badges, and bottom-sheet style confirmation modals with Outlier geometry.
+  - Polish decline taxonomy list and selection states.
+  - Backend and database work deferred.
+  - Native simulator/device behavior, physical safe area/keyboard, and VoiceOver/TalkBack remain explicitly unverified.
 
 ---
 
