@@ -69,8 +69,23 @@ describe('4.2.1 Native Public Discovery Integration & Screen Standards', () => {
 
   it('enforces 48dp minimum touch target for See all button on home screen', () => {
     const homeTab = readMobileFile('app/(tabs)/home.tsx');
-    expect(homeTab).toContain('minHeight: 48');
-    expect(homeTab).toContain('minWidth: 48');
+    const headerMatch = homeTab.match(/function CategoryHeader[\s\S]*?\n\}/);
+    expect(headerMatch).not.toBeNull();
+    const headerCode = headerMatch![0];
+
+    const pressableMatch = headerCode.match(/<Pressable\b[^>]*accessibilityLabel="View all categories in services tab"[^>]*>/);
+    expect(pressableMatch).not.toBeNull();
+    expect(pressableMatch![0]).toContain('style={styles.seeAllBtn}');
+
+    const styleMatch = homeTab.match(/seeAllBtn:\s*\{([^}]*)\}/);
+    expect(styleMatch).not.toBeNull();
+    const styleProps = styleMatch![1];
+    const minHeight = styleProps.match(/minHeight:\s*(\d+)/);
+    const minWidth = styleProps.match(/minWidth:\s*(\d+)/);
+    expect(minHeight).not.toBeNull();
+    expect(Number(minHeight![1])).toBe(48);
+    expect(minWidth).not.toBeNull();
+    expect(Number(minWidth![1])).toBe(48);
   });
 
   it('ensures Services directory renders all 8 canonical services with accessible search and filter pills', () => {
