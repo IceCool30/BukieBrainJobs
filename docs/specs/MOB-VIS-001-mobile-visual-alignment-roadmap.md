@@ -2,7 +2,7 @@
 
 **Document ID:** MOB-VIS-001
 
-**Status:** In Progress (Slice 1 & Slice 2 Completed & Pushed; Next: Slice 3 Shared Form Kit, Booking Prep & Job Posting)
+**Status:** In Progress (Slices 1, 2 & 3 Completed & Pushed; Next: Slice 4 Customer Activity Hub & Lifecycle)
 
 **Governing Authority:** [THEME-001](../../docs/specs/THEME-001-light-dark-toggle.md), [.agents/skills/bukiebrainjobs-outlier-design-system](../../.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md), [docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md](../../docs/02-design-system/LIVE-EXPERIENCE-STANDARD.md)
 
@@ -35,8 +35,8 @@ This inventory represents a source-level structural and stylistic code compariso
 | **App Shell & Tabs** (`app/(tabs)/_layout.tsx`)                     | Sticky strip navigation (`--strip-bg`), subtle borders (`--lead` / `--rule`), clean tab icons with active state indicators (`--nav-accent: #ABEEC8`).                                                                | Aligned in Slice 1 (`b82a365`): Refined tab bar geometry with dual-theme active indicator (`#F7803C` dark, `#ABEEC8` light on persistent navy strip via `getStripAccentColor`), polished title typography, and correct strip colors. | Completed in Slice 1 (`b82a365`). Tab bar geometry refined with subtle active indicator (dark active tint `#F7803C`, light active tint `#ABEEC8` on persistent navy strip, not semantic amber `#C2410C`), polished header styling, and correct theme strip colors.                                                                                                                                                                     |
 | **Services Catalog** (`app/(tabs)/services.tsx`)                    | Search bar with smooth focus outline, rounded category filter pills, elevated service cards with category badges.                                                                                                    | Aligned in Slice 2 (`56d5ac7`): Streamlined local preview badge, 50px modern search input with clear action, rounded horizontal category filter pills with active tint, elevated service cards with category badges, and preserved 8 canonical services. | Completed in Slice 2 (`56d5ac7`). Streamlined notice banner into a subtle, non-intrusive badge; aligned filter pills to rounded radius; added card elevation and icon accents; implemented modern 50px search input with clear action.                                                                                                                                                                                                   |
 | **Service Detail** (`app/services/[id].tsx`)                        | Clear typography hierarchy, pill group tag, subtle checklist card with theme-aware checkmarks, primary book action.                                                                                                  | Aligned in Slice 2 (`56d5ac7`): 48x48 back button, clean typography hierarchy, soft card container for task examples with theme-aware checkmarks, and primary CTA using `ctaFill: #F7803C` / `ctaText: #001A41` (>= 48dp). | Completed in Slice 2 (`56d5ac7`). Refined back button geometry (48x48), introduced soft card container for task examples, harmonized amber and green accents, and implemented navy-on-coral primary CTA.                                                                                                                                                                                                                                |
-| **Booking Prep** (`app/book.tsx` & `form-kit.tsx`)                  | Multi-step flow: clean step indicator, pill choice chips, subtle input borders with amber focus glow.                                                                                                                | Blocky form cards, monospace section labels, dense error banners, square choice chips.                                                                                                         | Upgrade `form-kit.tsx` primitives: rounded choice chips, refined input focus states, balanced summary rows, softened step headers. Target for Slice 3.                                                                                                                                                                                                                                                                                    |
-| **Job Posting** (`app/post-job.tsx`)                                | Step-by-step progress tracker, polished character counters, category selection chips.                                                                                                                                | Monospace step headers, dense warning cards, blocky text inputs.                                                                                                                               | Leverage upgraded `form-kit.tsx` primitives, align chip geometry, soften card surfaces and helper text. Target for Slice 3.                                                                                                                                                                                                                                                                                                              |
+| **Booking Prep** (`app/book.tsx` & `form-kit.tsx`)                  | Multi-step flow: clean step indicator, pill choice chips, subtle input borders with amber focus glow.                                                                                                                | Aligned in Slice 3 (`42e6ab7`): Upgraded form kit primitives with rounded choice chips (16 booking chips), refined input focus states, balanced summary rows, softened step headers, and compliant touch targets (>= 48px). | Completed in Slice 3 (`42e6ab7`). Upgraded `form-kit.tsx` primitives: rounded choice chips, refined input focus states, balanced summary rows, softened step headers, all tested controls >= 48px, zero horizontal overflow. |
+| **Job Posting** (`app/post-job.tsx`)                                | Step-by-step progress tracker, polished character counters, category selection chips.                                                                                                                                | Aligned in Slice 3 (`42e6ab7`): Leveraged upgraded form kit primitives, rounded category chips (11 post-job chips), step progress tracker, character counter styling, review card layout, all tested controls >= 48px. | Completed in Slice 3 (`42e6ab7`). Leveraged upgraded `form-kit.tsx` primitives, aligned chip geometry, softened card surfaces and helper text, all tested controls >= 48px, zero horizontal overflow. |
 | **Customer Activity & Lifecycle** (`app/(tabs)/jobs.tsx`)           | Segmented tab controls and milestone progression cards; web defines `.telemetry-beacon` in `globals.css` (animated green status pulse used in `TradesRequisitionBoard.tsx`).                                           | Flat segmented bar with basic underline, stark milestone timeline with hard vertical lines.                                                                                                    | Implement refined segmented pill tabs; propose adapting an active milestone status pulse (inspired by web `.telemetry-beacon`, but clearly designated as a proposed native adaptation needing `/architect` design comparison and delegated PM approval before implementation); polish card surfaces. Target for Slice 4.                                                                                                                     |
 | **BrainWorker Workspace** (`app/brainworker/workspace-preview.tsx`) | Lead cards with clear price tags, distance badges, and bottom-sheet confirmation modals.                                                                                                                             | Dense, flat alert box, monospace metadata labels, standard centered alert modals.                                                                                                               | Elevate lead alert card with badge styling; polish Accept/Decline action modals with rounded geometry and clean taxonomy rows. Target for Slice 5.                                                                                                                                                                                                                                                                                         |
 
@@ -132,10 +132,10 @@ To avoid sprawling changes and ensure regression-free execution, visual alignmen
 [Slice 2: Discovery & Services Catalog] (COMPLETED & PUSHED - 56d5ac7)
        │
        ▼
-[Slice 3: Form Kit, Booking Prep & Job Posting] (NEXT ACTIVE SLICE)
+[Slice 3: Form Kit, Booking Prep & Job Posting] (COMPLETED & PUSHED - 42e6ab7)
        │
        ▼
-[Slice 4: Customer Activity Hub & Lifecycle]
+[Slice 4: Customer Activity Hub & Lifecycle] (NEXT ACTIVE SLICE)
        │
        ▼
 [Slice 5: BrainWorker Workspace & Modals]
@@ -147,8 +147,8 @@ To avoid sprawling changes and ensure regression-free execution, visual alignmen
 | ----------- | ------------------------------------------ | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Slice 1** | **Foundation Tokens, Shell & Home Screen** | **Completed & Pushed** (`b82a365`) | `apps/mobile/lib/theme.ts`<br/>`apps/mobile/app/(tabs)/_layout.tsx`<br/>`apps/mobile/app/index.tsx`<br/>`apps/mobile/app/tabs.test.ts`<br/>`apps/mobile/app/services-discovery.test.ts`<br/>`apps/mobile/app/job-posting-entry.test.ts` | Align Outlier color tokens, pill button geometry, tab bar styling (dark active tint `#F7803C`, light active tint `#ABEEC8`), title-case labels, exact owner-approved native-home headline, polished home header theme toggle against approved baseline, and align existing home source-contract tests to title-case and `ctaFill`. |
 | **Slice 2** | **Discovery & Service Detail**             | **Completed & Pushed** (`56d5ac7`) | `apps/mobile/app/(tabs)/services.tsx`<br/>`apps/mobile/app/services/[id].tsx`<br/>`apps/mobile/app/services-discovery.test.ts`                                                                                                          | Refined services catalog and detail screens preserving 8 canonical services, routes, and mock behavior: 50px search input, rounded filter pills, card elevation, streamlined local preview badge, refined task list, 48px CTA/back button, and navy-on-coral primary CTA.                                                          |
-| **Slice 3** | **Shared Form Kit, Booking & Job Posting** | **Next Active Slice**              | `apps/mobile/components/form-kit.tsx`<br/>`apps/mobile/app/book.tsx`<br/>`apps/mobile/app/post-job.tsx`<br/>`apps/mobile/app/book.test.tsx`<br/>`apps/mobile/app/post-job-native-focus.test.ts`                                         | Form primitives upgrade, rounded choice chips, input focus states, step indicator polish, review card layout. Strictly UI-only preview; no backend, auth, network APIs, or state persistence.                                                                                                                                      |
-| **Slice 4** | **Customer Activity & Booking Lifecycle**  | Pending                            | `apps/mobile/app/(tabs)/jobs.tsx`<br/>`apps/mobile/lib/lifecycle-preview.ts`<br/>`apps/mobile/app/jobs.test.ts`                                                                                                                         | Segmented control styling, milestone cards with proposed active indicator (adapted from web `.telemetry-beacon`), status chip colors, cancel state treatment.                                                                                                                                                                      |
+| **Slice 3** | **Shared Form Kit, Booking & Job Posting** | **Completed & Pushed** (`42e6ab7`) | `apps/mobile/components/form-kit.tsx`<br/>`apps/mobile/app/book.tsx`<br/>`apps/mobile/app/post-job.tsx`<br/>`apps/mobile/app/book.test.ts`<br/>`apps/mobile/app/post-job-native-focus.test.ts`                                           | Form primitives upgrade (`form-kit.tsx`), rounded choice chips (16 booking chips, 11 post-job chips), input focus states, step indicator polish, review card layout, touch targets >= 48px, zero horizontal overflow, disabled label contrast 10.855:1 dark and 11.555:1 light. Strictly UI-only preview; no backend, auth, network APIs, or state persistence. |
+| **Slice 4** | **Customer Activity & Booking Lifecycle**  | **Next Active Slice**              | `apps/mobile/app/(tabs)/jobs.tsx`<br/>`apps/mobile/lib/lifecycle-preview.ts`<br/>`apps/mobile/app/jobs.test.ts`                                                                                                                         | Segmented control styling, milestone cards with proposed active indicator (adapted from web `.telemetry-beacon`), status chip colors, cancel state treatment. Target for Slice 4.                                                                                                                                                   |
 | **Slice 5** | **BrainWorker Workspace & Action Modals**  | Pending                            | `apps/mobile/app/brainworker/workspace-preview.tsx`<br/>`apps/mobile/lib/worker-workspace-preview.ts`<br/>`apps/mobile/app/worker-workspace.test.ts`                                                                                    | Lead card visual hierarchy, price badge, bottom-sheet style confirmation modals, decline taxonomy list polish.                                                                                                                                                                                                                     |
 
 ---
@@ -226,36 +226,71 @@ Slice 2 refined the public discovery and service detail experience:
 
 ---
 
-### 6.3 Slice 3 Specification: Shared Form Kit, Booking Prep & Job Posting (Next Active Slice)
+### 6.3 Slice 3 Completion & Acceptance Record (Committed & Pushed at `42e6ab7`)
 
-Slice 3 addresses form controls and multi-step customer input screens to align them with the Outlier design language:
+Slice 3 aligned shared form controls, booking preparation, and job posting with the Outlier visual system:
+
+- **Target Files Committed**: `apps/mobile/components/form-kit.tsx`, `apps/mobile/app/book.tsx`, `apps/mobile/app/post-job.tsx`, `apps/mobile/app/book.test.ts`, and `apps/mobile/app/post-job-native-focus.test.ts` committed and pushed at `42e6ab77829fa603f6115ec975cafa7605c4bf00`.
+- **Accepted Scope**: Shared mobile form kit, booking prep, job-posting UI.
+- **Visual & Component Refinement**:
+  - Upgraded `form-kit.tsx` primitives: rounded choice chips (`borderRadius: 20`), refined input focus states with theme-aware borders, balanced summary rows, and softened step headers.
+  - Booking Prep (`app/book.tsx`): integrated upgraded form primitives, 16 booking choice chips, clean step transitions, and clear pricing summary rows.
+  - Job Posting (`app/post-job.tsx`): 11 category selection chips, step progress tracker, character counter styling, and review card layout.
+  - Touch target compliance: all tested controls meet minimum 48px touch targets.
+  - Horizontal overflow: zero horizontal overflow across all tested screens and viewports.
+  - Contrast compliance: disabled label contrast confirmed at 10.855:1 in dark mode and 11.555:1 in light mode.
+- **Verification Evidence**:
+  - Full mobile test suite: 232 mobile tests passing across 19 files.
+  - TypeScript check: `pnpm --filter @bukiebrainjobs/mobile type-check` (`tsc --noEmit`) exited 0.
+  - Android Expo bundle export: `expo export --platform android` bundled cleanly (bundle export, not an APK/AAB).
+  - Git hygiene: `git diff --check` exited clean with zero whitespace errors.
+  - Compiled Expo browser emulation: verified at 390x844 (standard mobile) and 375x812 (compact mobile) viewports in both dark and light modes.
+  - Chip counts: verified 16 booking chips and 11 post-job chips.
+- **Explicit Verification Boundaries & Non-Goals**:
+  - Browser-emulation/local-preview checks are not native iOS/Android proof.
+  - Physical safe-area and keyboard behavior, VoiceOver/TalkBack, and full-surface contrast audit remain unverified.
+  - Strictly UI-only preview: preserves all mock data boundaries, sample fixtures, validation rules, and in-memory submission flows.
+  - Backend/database integration explicitly deferred (zero PostgreSQL, Prisma, JWT auth, or network APIs).
+  - Vercel deployment outcome: deployment for exact commit `42e6ab77829fa603f6115ec975cafa7605c4bf00` was canceled because the monorepo skipped the unaffected Next.js project; no build failed and no manual deployment was started.
+
+#### Slice 3 Acceptance Criteria
+
+- [x] **Form Primitives**: `form-kit.tsx` components upgraded with Outlier geometry, focus states, rounded choice chips, and dual-theme tokens.
+- [x] **Booking Screen Alignment**: `/book` flow renders polished step headers, 16 rounded choice chips, high-contrast summary rows, and touch targets >= 48px.
+- [x] **Job Posting Screen Alignment**: `/post-job` flow renders 11 category selection chips, progress tracker, character counters, review cards, and touch targets >= 48px.
+- [x] **Touch Target & Geometry Verification**: All tested controls meet minimum 48px touch target; zero page-level horizontal overflow across 390x844 and 375x812 viewports in dark and light modes.
+- [x] **Contrast Verification**: Disabled label contrast measured at 10.855:1 dark and 11.555:1 light (browser-emulation checks; full-surface contrast audit across all surfaces remains unverified).
+- [x] **Test & Build Integrity**: 232 mobile tests passing across 19 files; `tsc --noEmit` exit 0; Android Expo bundle export clean; `git diff --check` clean.
+
+---
+
+### 6.4 Slice 4 Specification: Customer Activity Hub & Lifecycle (Next Active Slice)
+
+Slice 4 addresses customer activity, job tracking, and booking lifecycle presentation to align them with the Outlier design language:
 
 - **Target Files**:
-  - `apps/mobile/components/form-kit.tsx`
-  - `apps/mobile/app/book.tsx`
-  - `apps/mobile/app/post-job.tsx`
-  - `apps/mobile/app/book.test.tsx` (and `apps/mobile/app/book.test.ts`)
-  - `apps/mobile/app/post-job-native-focus.test.ts`
+  - `apps/mobile/app/(tabs)/jobs.tsx`
+  - `apps/mobile/lib/lifecycle-preview.ts`
+  - `apps/mobile/app/jobs.test.ts`
 - **Primary Focus**:
-  - Upgrade `form-kit.tsx` primitives: rounded choice chips (`borderRadius: 20`, 48dp touch target), refined input borders with amber focus ring, softened summary cards, and clean step progress indicator.
-  - Refine Booking Preparation (`book.tsx`): integrate upgraded form primitives, streamline step transitions, format pricing summary rows cleanly.
-  - Refine Job Posting (`post-job.tsx`): category selection chips, step progress tracker, character counter styling, review card layout.
-  - Touch target compliance: all interactive form chips, counter buttons, back navigation, and submit actions meet minimum 48x48dp.
-  - Color & contrast alignment: form inputs and CTA buttons follow dual-theme tokens (`ctaFill: #F7803C`, `ctaText: #001A41`, `card: #13171E` dark / `#FFFFFF` light).
+  - Segmented control styling for All, Active, Upcoming, and Past activity tabs.
+  - Milestone progression cards with proposed active status indicator (inspired by web `.telemetry-beacon`, subject to `/architect` design comparison and delegated PM approval).
+  - Status chip colors and high-contrast badges for booking states.
+  - Cancellation state visual treatment and detail summary layout.
 - **Functional Boundaries & Explicit Exclusions**:
   - Strictly UI-only preview.
-  - Preserves all mock data boundaries, sample fixtures, validation rules, and in-memory submission flows.
+  - Preserves all mock data boundaries, sample fixtures, and in-memory lifecycle presentation.
   - Zero backend, database, authentication, or network APIs.
-  - Zero state persistence.
-  - No claims of native iOS/Android runtime verification, VoiceOver/TalkBack screen reader verification, physical device safe-area insets, or physical hardware keyboard handling (these criteria remain explicitly open until real device verification is possible).
+  - Persistence and full offline caching remain explicitly deferred.
+  - No claims of native iOS/Android runtime verification, VoiceOver/TalkBack screen reader verification, physical safe-area, or hardware behavior.
 
-#### Slice 3 Acceptance Criteria (Target)
+#### Slice 4 Acceptance Criteria (Target)
 
-- [ ] **Form Primitives**: `form-kit.tsx` components support Outlier geometry, focus states, and dual-theme tokens.
-- [ ] **Booking Screen Alignment**: `/book` flow renders polished step headers, rounded choice chips, and high-contrast summary cards.
-- [ ] **Job Posting Screen Alignment**: `/post-job` flow renders clean category chips, progress tracker, and review cards.
-- [ ] **Touch Target & Accessibility**: All interactive elements >= 48dp; contrast >= 4.5:1 in dark and light modes.
-- [ ] **Test & Type Integrity**: Existing test suites pass 100%; `tsc --noEmit` exits 0; static export bundles cleanly.
+- [ ] **Segmented Tab Controls**: Refined segmented control with Outlier pill styling and active indicator.
+- [ ] **Milestone Progression**: Polished lifecycle milestone cards with clear timeline geometry and status badges.
+- [ ] **Status Badge Contrast**: High-contrast status badges in dark and light themes (>= 4.5:1).
+- [ ] **Touch Target Compliance**: Interactive tabs and action buttons meet minimum 48x48dp.
+- [ ] **Test & Type Integrity**: Mobile test suite passes 100%; `tsc --noEmit` exits 0; static export bundles cleanly.
 
 ---
 
