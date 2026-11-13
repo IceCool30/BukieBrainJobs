@@ -2,6 +2,21 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-11-13: Active Branch Audit
+
+- **Trigger**: The repository became public, allowing branch enumeration after the initial reconciliation.
+- **Active unmerged work**: `feature/bw-010-dispute-support` at `096af24` (1 November 2026) contains the BW-010 specification and full implementation, based on `main` at `2191542`; PM review is accepted and owner commit approval and merge are pending. The branch tip is `840d443` after the skill install. `feature/mobile-accepted-slices` at `535beda` (11 November 2026) contains accepted Phase 4 native screens, specifications, and QA records, also based on `main`, pending merge; the branch tip is `01fa0db` after the skill install.
+- **Correction**: The main-line documents no longer claim BW-010 has no specification. They now distinguish the merged BW-009 baseline from the unmerged BW-010 and mobile branch work.
+- **Not done**: Neither active branch was merged or rewritten. Each received the skill installation as a separate commit, and their own status records remain authoritative for their branch work.
+- **Verification**: Branch heads and merge bases checked with `git merge-base --is-ancestor` against `main`; no application code changed.
+
+## 2026-11-13: Loop-State Documentation Reconciliation
+
+- **Branch**: `freebuff/43ca39b364eac5817600619c`, based on `main` at `2191542`. The working tree was clean and level with `origin/main` before the edit.
+- **Scope**: Reconciled loop-state documents with merged history. Corrected BW-009 from "PR creation pending" to merged via PR #65 at `05944bb`, recorded Item 3.4 (BW-010) as the only open Phase 3 slice, refreshed the master checklist baseline and date, filled the missing BW-004 to BW-009 rows in the specification index, and backfilled the missing BW-007 and BW-008 verification records from their retained feature reports. Also corrected the README phase and baseline, the documentation index date and specification inventory, the stale WEB-012 authorization hold in the active artifact matrix, and eleven archived slice references in `docs/scope.md` that pointed at spec files which no longer exist.
+- **Gate finding and resolution**: `human-production-engineering` was required by `.clinerules`, `AGENTS.md`, `CLAUDE.md`, and `scripts/check-skill-gate.sh`, but absent from `.agents/skills/`. Commit `20a93ac` added the name to the gate without vendoring the skill. Installed it from https://github.com/IceCool30/human-production-engineering-skill at `4fba725` (MIT, copyright Solomon Bukie) with `SKILL.md`, `README.md`, `LICENSE`, `examples/`, and `rules/`. The `AGENTS.md` inventory now points to the installed path, and `.gitignore` now un-ignores it.
+- **Verification**: `bash scripts/check-skill-gate.sh`, `node --test scripts/check-skill-gate.test.mjs`, `git diff --check`, and a repository-wide stale-status scan. Results are recorded in the session report.
+- **Boundary**: Documentation only. No application code, tests, dependencies, or deployed behavior changed. Historical test counts are quoted from retained feature reports and were not rerun.
 ## 2026-10-30: Phase 4 Mobile Discovery: Native Public Discovery (Item 4.2.1, MOB-001)
 
 - **Branch**: `feature/bw-010-dispute-support`
@@ -135,6 +150,20 @@ This file records verification checks executed across the codebase under `/check
   - TypeScript compiler checks: `pnpm type-check` reported 7/7 packages clean (0 errors).
   - Punctuation hygiene: Zero em dashes, en dashes, or double hyphens.
   - Skill gate guard: `bash scripts/check-skill-gate.sh` passed.
+
+## 2026-10-18: BW-007 Collaborative Scheduling & Dispatch (Item 3.1) Backfilled Record
+
+- **Source**: `CHANGELOG.md`, `docs/master-checklist.md`, and `docs/specs/BW-007-collaborative-scheduling-dispatch.md`. Backfilled during the 2026-11-13 reconciliation because this slice merged without a check-log entry.
+- **Merge**: PR #63 at `0764acf`.
+- **Recorded verification**: 42/42 scheduling contracts (10 SCHED, 10 REP, 12 COMP, 10 ROUTE); 1,665/1,665 monorepo web tests; 7/7 type-check clean; 44 static and dynamic routes compiled cleanly.
+- **Not rerun**: These counts come from the retained feature report. No command was rerun for this backfill.
+
+## 2026-10-18: BW-008 On-Site Work & In-Progress Verification (Item 3.2) Backfilled Record
+
+- **Source**: `CHANGELOG.md`, `docs/master-checklist.md`, and `docs/specs/BW-008-onsite-verification.md`. Backfilled during the 2026-11-13 reconciliation because this slice merged without a check-log entry.
+- **Merge**: PR #64 at `7501ce7`.
+- **Recorded verification**: 42/42 on-site contracts (10 ONSITE, 10 REP, 12 COMP, 10 ROUTE); 1,707/1,707 monorepo web tests; 7/7 type-check clean; 44 static and dynamic routes compiled cleanly.
+- **Not rerun**: These counts come from the retained feature report. No command was rerun for this backfill.
 
 ## 2026-10-17: Maintenance Merge Authorization
 

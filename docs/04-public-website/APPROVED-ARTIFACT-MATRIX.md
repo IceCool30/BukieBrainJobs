@@ -23,7 +23,7 @@
 | WEB-010A | Customer Dashboard & Authenticated Home Design Brief | Screen-level visual and interaction design brief for the authenticated customer dashboard | Approved implementation contract | Yes |
 | WEB-011 | Customer Jobs & Bookings Product & UX Specification | Unified customer activity management, request tracking, and booking history | Approved product specification | Yes |
 | WEB-011A | Customer Jobs & Bookings Design Brief | Screen-level visual and interaction design brief for customer jobs and bookings | Approved implementation contract | Yes |
-| WEB-012 | Customer Job Matching & Proposal Review Product & UX Specification | Candidate discovery, algorithmic match evaluation, proposal review, and BrainWorker selection | Approved Product & UX Specification; Implementation Authorization Withheld | Yes |
+| WEB-012 | Customer Job Matching & Proposal Review Product & UX Specification | Candidate discovery, algorithmic match evaluation, proposal review, and BrainWorker selection | Approved implementation contract; implemented and live in production | Yes |
 
 **WEB-009 / WEB-009A status reconciliation (30 October 2026):** [WEB-009 v1.1](../specs/WEB-009-customer-job-posting.md) is the canonical product specification approved under delegated PM authority. WEB-009A was previously registered here as `Approved implementation contract`; that historical label is retained as provenance, not proof of its separate gates. The unchanged brief remains `Draft, Ready for Agent Review`, and its sections 30-31 design-review verdict and Product Architect authorization are not established by this record. The matrix alone does not authorize implementation. [MOB-POST-001](../specs/MOB-POST-001-native-job-posting.md) defines the native product decisions under the [scoped decision](../21-decision-log/MOB-POST-001-NATIVE-JOB-POSTING.md). On 2026-10-30 the requesting PM reviewed and approved the final MOB-POST-001 document set for scoped native implementation under owner delegation. No separate or external human review and no Product Architect approval is claimed. No scope expansion. WEB-009A provenance and sections 30-31 gates remain not established.
 
@@ -110,7 +110,7 @@
 ## WEB-012 rules
 
 - WEB-012 specifies customer job matching and proposal review.
-- Implementation authorization is explicitly withheld pending formal approval of WEB-012A Design Brief.
+- WEB-012 was implemented and is live in production. The earlier authorization hold is retained as historical context only.
 - No production or prototype implementation files may be merged to main until implementation authorization is granted.
 
 ## Design workflow

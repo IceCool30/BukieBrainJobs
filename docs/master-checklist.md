@@ -2,11 +2,11 @@
 
 **Document ID:** CHECKLIST-001  
 **Status:** Living Canonical Roadmap Tracker  
-**Last Updated:** 2026-10-31
+**Last Updated:** 2026-11-13
 
 This document provides a single, unified checklist of what has been built, what is partially implemented, and what remains to be completed across the BukieBrainJobs monorepo. It establishes the sequential order of execution so engineering moves forward in focused phases rather than scattered work.
 
-**Current product baseline:** BW-008 On-Site Work & In-Progress Verification merged in PR #64 at `7501ce7`; BW-009 Post-Job Completion & Escrow Release PR creation pending; BW-010 Dispute Handling & Support Interface (Item 3.4) PM REVIEW ACCEPTED / OWNER COMMIT APPROVAL PENDING / LOCAL UNCOMMITTED. Phase 4 Mobile Application is active. Phase 4.1 Native Navigation & Shared Shell (items 4.1.1 to 4.1.3) complete and PM accepted. Phase 4.2.1 Native public discovery (MOB-001) PM REVIEW ACCEPTED (46/46 tests passing, web/Android/iOS static exports verified, 10/10 Playwright compiled-app steps green, all touch targets >= 48dp). Phase 4.2.2 Native booking preparation and multi-step job posting forms is active. All work remains local and uncommitted.
+**Current product baseline:** BW-009 Post-Job Completion & Escrow Release merged in PR #65 at `05944bb`, with the follow-up quote fix at `5fc9278`. BW-010 Dispute Handling & Support Interface (Item 3.4) is PM review accepted and owner commit approval pending, committed on `feature/bw-010-dispute-support` at `096af24` (branch tip `840d443`). Phase 4 Mobile Application is active on `feature/mobile-accepted-slices` at `535beda` (branch tip `01fa0db`). Phase 4.1 Native Navigation & Shared Shell (items 4.1.1 to 4.1.3) complete and PM accepted. Phase 4.2.1 Native public discovery (MOB-001) PM REVIEW ACCEPTED (46/46 tests passing, web/Android/iOS static exports verified, 10/10 Playwright compiled-app steps green, all touch targets >= 48dp). Phase 4.2.2 Native booking preparation and multi-step job posting forms is active. Verification counts below are retained historical feature reports, not checks rerun during this update.
 
 ---
 

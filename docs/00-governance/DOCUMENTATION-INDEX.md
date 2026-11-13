@@ -3,7 +3,7 @@
 **Document ID:** GOV-005  
 **Version:** 2.0  
 **Status:** Active  
-**Last Updated:** 2026-09-21  
+**Last Updated:** 2026-11-13
 
 This index is the canonical navigation map for all documentation in the BukieBrainJobs repository.
 
@@ -106,6 +106,20 @@ Governed by `/architect` [DECIDE] and `/develop` [BUILD] of the 9-Command Engine
 - `WEB-012-matching.md`: Job matching build specification.
 - `WEB-013-customer-booking-lifecycle.md`: Booking lifecycle build specification.
 - `WEB-014-customer-profile-settings.md`: Customer profile and account settings build specification.
+- `WEB-015-customer-payments-escrow.md`: Customer payments and escrow experience build specification.
+- `WEB-016-customer-reviews-reputation.md`: Customer reviews and reputation build specification.
+- `WEB-017-messaging-chat.md`: In-app messaging and real-time chat build specification.
+- `WEB-018-notification-center.md`: Notification center and push UX build specification.
+- `THEME-001-light-dark-toggle.md`: Light and dark theme behavior, saved preference, and toggle placement.
+- `BW-001-onboarding.md`: BrainWorker onboarding and identity verification build specification.
+- `BW-002-service-catalog-availability.md`: Service catalog and availability build specification.
+- `BW-003-leads-inbox.md`: Leads inbox build specification.
+- `BW-004-booking-management.md`: Booking management and fulfillment build specification.
+- `BW-005-profile-portfolio.md`: Profile and portfolio management build specification.
+- `BW-006-wallet-payouts.md`: Earnings, wallet, and payouts build specification.
+- `BW-007-collaborative-scheduling-dispatch.md`: Collaborative scheduling and dispatch build specification.
+- `BW-008-onsite-verification.md`: On-site work and in-progress verification build specification.
+- `BW-009-post-job-completion.md`: Post-job completion and escrow release build specification.
 
 ---
 
