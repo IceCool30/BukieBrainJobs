@@ -81,7 +81,7 @@ Work in this repository is executed sequentially to maintain platform coherence:
 - `BW-008`: On-site check-in, on-site scope adjustments, work completion photo proof, and customer confirmation. **(Complete & Verified)**
 - `BW-009`: Post-job completion, customer satisfaction release, 72-hour auto-release, and double-blind mutual ratings. **(Complete & Verified)**
 - **Remaining Scope in Phase 3**:
-  - Dispute resolution workflow, evidence upload, and customer support center (`BW-010`). No specification exists yet.
+  - Dispute resolution workflow, evidence upload, and customer support center (`BW-010`). Specification and implementation exist on `feature/bw-010-dispute-support` at `096af24`, pending review and merge.
   - Real escrow payment hold and release mechanisms. These stay in Phase 5 backend integration.
 
 ### Milestone 7: Corporate Portal

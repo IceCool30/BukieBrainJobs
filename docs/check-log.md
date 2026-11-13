@@ -2,6 +2,14 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-11-13: Active Branch Audit
+
+- **Trigger**: The repository became public, allowing branch enumeration after the initial reconciliation.
+- **Active unmerged work**: `feature/bw-010-dispute-support` at `096af24` (1 November 2026) contains the BW-010 specification and full implementation, based on `main` at `2191542`, pending review and merge. `feature/mobile-accepted-slices` at `535beda` (11 November 2026) contains accepted Phase 4 native screens, specifications, and QA records, also based on `main`, pending merge.
+- **Correction**: The main-line documents no longer claim BW-010 has no specification. They now distinguish the merged BW-009 baseline from the unmerged BW-010 and mobile branch work.
+- **Not done**: Neither active branch was merged or rewritten during this audit. Their own status records remain authoritative for their branch work.
+- **Verification**: Branch heads and merge bases checked with `git merge-base --is-ancestor` against `main`; no application code changed.
+
 ## 2026-11-13: Loop-State Documentation Reconciliation
 
 - **Branch**: `freebuff/43ca39b364eac5817600619c`, based on `main` at `2191542`. The working tree was clean and level with `origin/main` before the edit.
