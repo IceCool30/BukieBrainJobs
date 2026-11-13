@@ -61,5 +61,6 @@ scripts/free-ports.cjs
 !.agents/skills/bukiebrainjobs-trades-design-system/
 !.agents/skills/bukiebrainjobs-outlier-design-system/
 !.agents/skills/reverse-engineer-anything/
+!.agents/skills/human-production-engineering/
 .agents/skills/bukiebrainjobs-trades-design-system/references/images/
 .env*

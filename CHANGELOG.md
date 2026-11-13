@@ -7,6 +7,7 @@ The format follows practical release notes written plainly in engineering langua
 ## [Unreleased]
 
 ### Added
+- Installed the mandatory `human-production-engineering` skill from https://github.com/IceCool30/human-production-engineering-skill at `4fba725`, including its MIT license, three reference examples, and four agent rule templates, and un-ignored the new skill directory in `.gitignore`.
 - BW-009 Post-Job Completion & Escrow Release (Item 3.3 in Master Checklist): Implemented two-sided post-job completion review, customer satisfaction confirmation, 72-hour escrow auto-release logic, dispute hold freeze mechanics, double-blind mutual ratings (punctuality, quality, communication, overall), and protected route at `/completion/[bookingId]`. Passed all 42 contracts (`COMPL-001..010`, `REP-001..010`, `COMP-001..012`, `ROUTE-001..010`) across domain, repository, UI components, and route integration. Monorepo web tests green with zero regressions.
 - BW-008 On-Site Work & In-Progress Verification (Item 3.2 in Master Checklist): Implemented collaborative technician arrival check-in, escrow gate validation, integer kobo scope adjustment workflows, work completion photo proof submission, and protected two-sided route at `/onsite/[bookingId]`. Passed all 42 contracts (`ONSITE-001..010`, `REP-001..010`, `COMP-001..012`, `ROUTE-001..010`) across domain, repository, UI, and route integration layers. Zero regressions across 114 test files and 1,707 passing tests.
 - Added 14 native Node regression tests for the eight-skill gate, including missing REA in required and optional rule files.
@@ -18,6 +19,7 @@ The format follows practical release notes written plainly in engineering langua
 - Added `scripts/nine-status.sh` and `"loop:status"` command in root `package.json`.
 
 ### Changed
+- Reconciled the loop-state documents with merged history: corrected BW-009 to merged via PR #65 at `05944bb`, recorded Item 3.4 (BW-010) as the only open Phase 3 slice, refreshed the master checklist baseline, filled the missing BW-004 to BW-009 specification index rows, backfilled the BW-007 and BW-008 verification records, refreshed the README status and documentation index, cleared the stale WEB-012 authorization hold in the active artifact matrix, and repointed eleven archived slice references in `docs/scope.md` to their actual documents.
 - Enforced REA in the mandatory gate and mirrored agent declarations, aligned all counts to eight unique skills, and removed the duplicate Trades Design System inventory row.
 - Refreshed active-task notes through merged BW-006 at `3f0cc64`, corrected BW-005/Profile versus BW-006/Wallet routing, and left the next product slice awaiting owner selection. Historical feature evidence remains separate from fresh maintenance checks.
 - Expanded `AGENTS.md` to conform to the canonical NINE context map schema, recording Termux environment limits and cloud Codespace execution requirements.

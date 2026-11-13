@@ -3,7 +3,8 @@
 **Document ID:** PROD-002  
 **Version:** 2.0  
 **Status:** Active Product Baseline  
-**Last Updated:** 2026-09-21  
+**Last Updated:** 2026-11-13
+
 **Master Checklist:** See [docs/master-checklist.md](../master-checklist.md) for the complete, sequential engineering execution order.
 
 ---
@@ -63,24 +64,25 @@ Work in this repository is executed sequentially to maintain platform coherence:
   - `WEB-018`: In-App Notification Center (`/notifications`)
 
 ### Milestone 5: BrainWorker Platform
-**Status: In Progress (Phase 2 Active - Milestone Slice 1 Complete)**
+**Status: Complete (Phase 2 Recorded Complete)**
 - `BW-001`: BrainWorker Onboarding, NIN/BVN identity check, and trade credential verification (`/brainworker/register`, `/brainworker/onboarding`, `/brainworker/verification-status`, `/brainworker/dashboard`). **(Complete & Verified Live in Production)**
-- `BW-002`: Service Catalog and Working Hours Availability scheduler.
-- BrainWorker Operating Dashboard (`/brainworker/dashboard`).
-- Local Job Requests & Leads Inbox with direct quote/accept/decline actions.
-- Earnings, Wallet, and Nigerian bank payout setup.
-- Worker Profile and portfolio before/after photo gallery.
+- `BW-002`: Service Catalog and Working Hours Availability scheduler. **(Complete & Verified)**
+- BrainWorker Operating Dashboard (`/brainworker/dashboard`). **(Complete & Verified)**
+- Local Job Requests & Leads Inbox with direct quote/accept/decline actions (`BW-003`). **(Complete & Verified)**
+- Earnings, Wallet, and Nigerian bank payout setup (`BW-006`). **(Complete & Verified)**
+- Worker Profile and portfolio before/after photo gallery (`BW-005`). **(Complete & Verified)**
+- Booking management and fulfillment (`BW-004`). **(Complete & Verified)**
 
 ### Milestone 6: Booking Lifecycle & Payments
-**Status: Partially Complete (Customer Lifecycle Live; Two-Sided Completion Planned)**
+**Status: Partially Complete (Customer Lifecycle and Phase 3 Items 3.1 to 3.3 Live on Main; Item 3.4 Open)**
 - `WEB-013`: Customer lifecycle state machine complete (awaiting response, confirmed, declined, expired, cancelled).
+- `BW-003`: Worker-side invitation accept and decline actions. **(Complete & Verified)**
+- `BW-007`: Mutual arrival window scheduling and technician dispatch tracking. **(Complete & Verified)**
+- `BW-008`: On-site check-in, on-site scope adjustments, work completion photo proof, and customer confirmation. **(Complete & Verified)**
+- `BW-009`: Post-job completion, customer satisfaction release, 72-hour auto-release, and double-blind mutual ratings. **(Complete & Verified)**
 - **Remaining Scope in Phase 3**:
-  - Worker-side invitation accept and decline actions.
-  - Mutual arrival window scheduling and technician dispatch tracking.
-  - On-site check-in and on-site scope adjustments.
-  - Work completion photo proof and customer confirmation release.
-  - Dispute resolution workflow, evidence upload, and customer support center.
-  - Real escrow payment hold and release mechanisms.
+  - Dispute resolution workflow, evidence upload, and customer support center (`BW-010`). No specification exists yet.
+  - Real escrow payment hold and release mechanisms. These stay in Phase 5 backend integration.
 
 ### Milestone 7: Corporate Portal
 **Status: Deferred (Post-Launch)**

@@ -2,11 +2,11 @@
 
 **Document ID:** CHECKLIST-001  
 **Status:** Living Canonical Roadmap Tracker  
-**Last Updated:** 2026-10-17
+**Last Updated:** 2026-11-13
 
 This document provides a single, unified checklist of what has been built, what is partially implemented, and what remains to be completed across the BukieBrainJobs monorepo. It establishes the sequential order of execution so engineering moves forward in focused phases rather than scattered work.
 
-**Current product baseline:** BW-006 Earnings, Wallet & Payouts merged in PR #60 at `3f0cc64`. Phase 2 is recorded complete; gate and context maintenance is complete and explicitly authorized for merge to `main`. The next product slice awaits owner selection and approval. Verification counts below are retained historical feature reports, not checks rerun during this update.
+**Current product baseline:** BW-009 Post-Job Completion & Escrow Release merged in PR #65 at `05944bb`, with the follow-up quote fix at `5fc9278`. Phase 2 is recorded complete. Phase 3 Items 3.1 (BW-007), 3.2 (BW-008), and 3.3 (BW-009) are recorded complete and verified. Item 3.4 Dispute Handling & Support Interface is the only open slice in Phase 3 and the next product task. Verification counts below are retained historical feature reports, not checks rerun during this update.
 
 ---
 
@@ -23,7 +23,7 @@ This document provides a single, unified checklist of what has been built, what 
 | **Customer Notifications & Messaging** | **Complete** | Messaging (WEB-017) and Notification Center (WEB-018) both complete and live in production. |
 | **Customer Profile & Account Settings** | **Complete** | Personal info, saved addresses, auth credentials, notification rules, account data management. |
 | **BrainWorker Platform** | **Complete** | BW-001 Onboarding & Identity, BW-002 Service Catalog & Availability, BW-003 Leads Inbox, BW-004 Booking Management, Item 2.2 Operating Dashboard, BW-005 Profile & Portfolio Management, and BW-006 Earnings, Wallet & Payouts are recorded complete. Latest merge: BW-006, PR #60 at `3f0cc64`; 42/42 wallet contracts reported in Item 2.6. |
-| **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Item 3.1 Collaborative Scheduling & Dispatch (BW-007) complete and verified (42 contracts: 10 SCHED, 10 REP, 12 COMP, 10 ROUTE). Customer state machine, provider booking management (BW-004), and unified scheduling route active. Items 3.2 to 3.4 remain outstanding. |
+| **Full Two-Sided Marketplace Lifecycle** | **Partially Built** | Items 3.1 to 3.3 are complete and verified: BW-007 Collaborative Scheduling & Dispatch (42 contracts: 10 SCHED, 10 REP, 12 COMP, 10 ROUTE), BW-008 On-Site Work & In-Progress Verification (42 contracts), and BW-009 Post-Job Completion & Escrow Release (42 contracts). Item 3.4 Dispute Handling & Support Interface is the only outstanding slice in the phase. |
 | **Mobile Application (`apps/mobile`)** | **Not Built** | Expo starter only. Full native reconstruction required. |
 | **Admin & Operational Console** | **Not Built** | Worker vetting, dispute mediation, category management, analytics. |
 | **Corporate Portal (`/enterprise`)** | **Deferred** | Kept intentionally as Coming Soon until consumer launch. |

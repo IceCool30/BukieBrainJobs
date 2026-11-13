@@ -87,9 +87,9 @@ This file defines the standards and operational map every contributor must follo
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
 - **Active Phase**: Phase 3 Full Two-Sided Marketplace Lifecycle.
-- **Active Slice**: Item 3.3 Post-Job Completion & Escrow Release (`BW-009`). Phases 1 to 5 complete and verified; PR creation pending.
-- **Current Product Baseline**: BW-008 On-Site Work & In-Progress Verification (Item 3.2, PR #64), merged at `7501ce7`.
-- **Next Product Slice**: Item 3.4 Dispute Handling & Support Interface (`BW-010`).
+- **Active Slice**: Item 3.4 Dispute Handling & Support Interface (`BW-010`). It is the only open item in Phase 3, and no specification exists yet, so the slice starts at `/scope`.
+- **Current Product Baseline**: BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65), merged at `05944bb`.
+- **Next Product Slice**: Phase 4 Mobile Application (`apps/mobile`), after Item 3.4 is verified and merged.
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`
@@ -140,7 +140,7 @@ Every developer, AI agent, and remote execution environment (Google Cloud Shell 
 | `ui-ux-pro-max` | BukieBrainJobs Skill Suite | Visual design intelligence, component hierarchy, typography, design tokens | Active in `.agents/skills/ui-ux-pro-max/` |
 | `agent-skills-test-driven-development` | [agent-skills-tdd](https://github.com/obra/superpowers) | Test-driven development for all logic changes, bug fixes, and new features | Active in `.agents/skills/agent-skills-test-driven-development/` |
 | `bukiebrainjobs-outlier-design-system` | [Local canonical adaptation](.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md); [complete upstream engine](https://github.com/IceCool30/outlier-ai-visual-skill-engine) | Web/PWA Outlier visual system and direct links to its full source files. The local adaptation, live CSS, feature specifications, and THEME-001 govern this project's implementation. | Active in `.agents/skills/bukiebrainjobs-outlier-design-system/` |
-| `human-production-engineering` | [IceCool30/human-production-engineering-skill](https://github.com/IceCool30/human-production-engineering-skill) | Senior human-grade production engineering: zero swallowed exceptions, ACID transactions, structured logging, concurrency, and bounded timeouts | Active in `.agents/skills/human-production-engineering/` |
+| `human-production-engineering` | [IceCool30/human-production-engineering-skill](https://github.com/IceCool30/human-production-engineering-skill) | Senior human-grade production engineering: zero swallowed exceptions, ACID transactions, structured logging, concurrency, and bounded timeouts | Active in `.agents/skills/human-production-engineering/` (installed from the upstream repository at `4fba725`). |
 
 
 

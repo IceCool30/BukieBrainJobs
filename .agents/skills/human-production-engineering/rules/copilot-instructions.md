@@ -1,0 +1,18 @@
+# BukieBrainJobs — GitHub Copilot Instructions: Senior Human Production Engineering & Code Standard
+
+All GitHub Copilot completions, chat agents, and PR review agents must adhere strictly to these rules:
+
+## 1. Strictly Banned Patterns
+- **NO Swallowed Exceptions**: Never write bare `except Exception: return None`, empty `catch (e) {}`, or catch blocks that discard error context. Always log with full stack trace or reraise.
+- **NO Raw Console/Print Logging**: Never use `console.log()` or `print()` in production business logic. Use structured, leveled loggers.
+- **NO Unbounded Network/IO**: Never call external HTTP services, message queues, or child processes without explicit timeouts, retry policies, and backoff with jitter.
+- **NO Non-Transactional Mutations**: Never execute multi-step database mutations sequentially without an explicit atomic transaction boundary (`prisma.$transaction(...)` or SQL transaction).
+- **NO Silent Concurrency Flaws**: Never assume single-threaded execution. Always use atomic row locking, idempotency tokens, or distributed locks when mutating shared balances, stock, or status.
+- **NO Hardcoded Magic Constants**: Never hardcode URLs, credentials, timeouts, or batch sizes inline in business logic.
+
+## 2. Mandatory Architectural Requirements
+- **Explicit Domain Errors**: Create typed, domain-specific exceptions. Differentiate transient (retryable) errors from permanent (fatal) errors.
+- **Structured Observability**: Attach contextual metadata (`user_id`, `request_id`, `order_id`, `trace_id`) to every operational log.
+- **Resource Lifecycle Hygiene**: Always clean up resources using context managers or `try-finally`. Rely on connection pooling.
+- **Strict Typing & Edge Validation**: Validate incoming payloads at boundaries using Zod/schemas before reaching domain logic. Avoid `any`.
+- **Idempotency on Write Operations**: Every mutating external API call or worker job must take and pass an idempotency key.
