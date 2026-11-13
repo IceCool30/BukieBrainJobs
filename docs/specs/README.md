@@ -31,14 +31,21 @@ Detailed product UX briefs continue to be archived under `docs/04-public-website
 | `MOB-WORK-003` | Native BrainWorker On-Site Check-In Location Simulation Preview | PM accepted on 2026-11-03 for scoped UI-only local preview implementation. Real GPS sensing and real on-site verification are not implemented. Native iOS/Android runtime QA remains unverified. Phase 4.3 Item 3 IN PROGRESS | `docs/specs/MOB-WORK-003-native-checkin-location-simulation-preview.md` |
 | `WEB-010` | Customer Dashboard | Live in Production | `docs/04-public-website/WEB-010A-CUSTOMER-DASHBOARD-DESIGN-BRIEF.md` |
 | `WEB-011` | Customer Jobs & Bookings Activity Hub | Live in Production | `docs/specs/WEB-011-customer-jobs-and-bookings.md` |
-| `WEB-012` | Customer Job Matching & Match Results | Live in Production | `docs/04-public-website/WEB-012-CUSTOMER-JOB-MATCHING-PRODUCT-UX-SPECIFICATION.md` |
+| `WEB-012` | Customer Job Matching & Match Results | Live in Production | `docs/specs/WEB-012-matching.md` |
 | `WEB-013` | Customer Booking Acceptance & Lifecycle | Live in Production | `docs/specs/WEB-013-customer-booking-lifecycle.md` |
 | `WEB-014` | Customer Profile & Account Settings | Live in Production | `docs/specs/WEB-014-customer-profile-settings.md` |
 | `WEB-015` | Customer Payments & Escrow UX | Live in Production | `docs/specs/WEB-015-customer-payments-escrow.md` |
 | `WEB-016` | Customer Reviews & Reputation | Live in Production | `docs/specs/WEB-016-customer-reviews-reputation.md` |
 | `WEB-017` | In-App Messaging & Real-Time Chat | Live in Production | `docs/specs/WEB-017-messaging-chat.md` |
 | `WEB-018` | Notification Center & Push UX | Live in Production | `docs/specs/WEB-018-notification-center.md` |
+| `THEME-001` | Light and Dark Theme Toggle | Approved & Implemented | `docs/specs/THEME-001-light-dark-toggle.md` |
 | `BW-001` | BrainWorker Onboarding & Identity Verification | Live in Production | `docs/specs/BW-001-onboarding.md` |
 | `BW-002` | BrainWorker Service Catalog & Availability | Complete & Verified | `docs/specs/BW-002-service-catalog-availability.md` |
-| `BW-003` | BrainWorker Job Requests & Leads Inbox | Candidate Next Scope | `docs/specs/BW-003-leads-inbox.md` |
+| `BW-003` | BrainWorker Job Requests & Leads Inbox | Complete & Verified | `docs/specs/BW-003-leads-inbox.md` |
+| `BW-004` | BrainWorker Booking Management & Fulfillment | Complete & Verified | `docs/specs/BW-004-booking-management.md` |
+| `BW-005` | BrainWorker Profile & Portfolio Management | Complete & Verified | `docs/specs/BW-005-profile-portfolio.md` |
+| `BW-006` | BrainWorker Earnings, Wallet & Payouts | Complete & Verified | `docs/specs/BW-006-wallet-payouts.md` |
+| `BW-007` | Collaborative Scheduling & Dispatch | Complete & Verified | `docs/specs/BW-007-collaborative-scheduling-dispatch.md` |
+| `BW-008` | On-Site Work & In-Progress Verification | Complete & Verified | `docs/specs/BW-008-onsite-verification.md` |
+| `BW-009` | Post-Job Completion & Escrow Release | Complete & Verified | `docs/specs/BW-009-post-job-completion.md` |
 
