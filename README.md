@@ -28,7 +28,7 @@ Shared business rules, trust model, booking model, and design system stay one so
 
 ## Current repository status
 
-**Phase:** Phase 3 Full Two-Sided Marketplace Lifecycle. Phase 1 and Phase 2 are recorded complete. Items 3.1 to 3.3 are complete and verified. Item 3.4 Dispute Handling & Support Interface has a specification and full implementation on `feature/bw-010-dispute-support` at `096af24`, pending review and merge.
+**Phase:** Phase 3 Full Two-Sided Marketplace Lifecycle. Phase 1 and Phase 2 are recorded complete. Items 3.1 to 3.3 are complete and verified. Item 3.4 Dispute Handling & Support Interface has a specification and full implementation on `feature/bw-010-dispute-support` at `096af24`; PM review is accepted and owner commit approval and merge are pending.
 
 **Code status:** The core Customer Web Platform is live in production on main at `https://bukie-brain-jobs.vercel.app`. The public website, authentication, customer dashboard, job posting, matching results, and activity hub with booking lifecycle are verified and deployed.
 
@@ -38,7 +38,7 @@ Shared business rules, trust model, booking model, and design system stay one so
 - `services/socket-server`: Real-time messaging service
 - `docs/`: Governance, product roadmap, design system, master checklist, and build specifications
 
-The current product baseline is BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65), merged at `05944bb`, with the follow-up quote fix at `5fc9278`. BW-005 is Profile & Portfolio Management, not the wallet feature. The mandatory skill gate now includes all nine skills, with `human-production-engineering` installed from its upstream repository at `4fba725`. The next product slice is Item 3.4 (BW-010), pending review and merge. Accepted Phase 4 native work is on `feature/mobile-accepted-slices` at `535beda`, also unmerged. Feature test and build results in the checklist are historical reports, not fresh verification from this maintenance task. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
+The current product baseline is BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65), merged at `05944bb`, with the follow-up quote fix at `5fc9278`. BW-005 is Profile & Portfolio Management, not the wallet feature. The mandatory skill gate now includes all nine skills, with `human-production-engineering` installed from its upstream repository at `4fba725`. The next product slice is Item 3.4 (BW-010), with owner commit approval and merge pending. Accepted Phase 4 native work is on `feature/mobile-accepted-slices` at `535beda` (branch tip `01fa0db`), also unmerged. Feature test and build results in the checklist are historical reports, not fresh verification from this maintenance task. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
 
 ## Current web/PWA visual system
 

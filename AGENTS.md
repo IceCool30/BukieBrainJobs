@@ -87,9 +87,9 @@ This file defines the standards and operational map every contributor must follo
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
 - **Active Phase**: Phase 3 Full Two-Sided Marketplace Lifecycle.
-- **Active Slice**: Item 3.4 Dispute Handling & Support Interface (`BW-010`). The specification and full implementation exist on `feature/bw-010-dispute-support` at `096af24` and await review and merge. `main` remains at the BW-009 baseline.
+- **Active Slice**: Item 3.4 Dispute Handling & Support Interface (`BW-010`). The specification and full implementation exist on `feature/bw-010-dispute-support` at `096af24`, with the branch tip at `840d443` after the skill install. PM review is accepted and owner commit approval and merge are pending. `main` remains at the BW-009 baseline.
 - **Current Product Baseline**: BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65), merged at `05944bb`.
-- **Next Product Slice**: Phase 4 Mobile Application (`apps/mobile`). Accepted native work exists on `feature/mobile-accepted-slices` at `535beda` and awaits merge to `main`.
+- **Next Product Slice**: Phase 4 Mobile Application (`apps/mobile`). Accepted native work exists on `feature/mobile-accepted-slices` at `535beda`, with the branch tip at `01fa0db` after the skill install, and awaits merge to `main`.
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`

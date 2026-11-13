@@ -10,7 +10,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 - **Product phase**: Phase 3 Full Two-Sided Marketplace Lifecycle.
 - **Current product baseline**: BW-009 Post-Job Completion & Escrow Release (Item 3.3), merged into `main` via PR #65 at `05944bb`, with the follow-up JSX quote fix at `5fc9278`.
-- **Next product milestone**: Item 3.4 Dispute Handling & Support Interface (`BW-010`). The specification and full implementation exist on `feature/bw-010-dispute-support` at `096af24` and await review and merge. Accepted Phase 4 native work exists on `feature/mobile-accepted-slices` at `535beda`, also unmerged.
+- **Next product milestone**: Item 3.4 Dispute Handling & Support Interface (`BW-010`). The specification and full implementation exist on `feature/bw-010-dispute-support` at `096af24`, with the branch tip at `840d443` after the skill install; PM review is accepted and owner commit approval and merge are pending. Accepted Phase 4 native work exists on `feature/mobile-accepted-slices` at `535beda`, with the branch tip at `01fa0db`, also unmerged.
 - **Recorded implementation status for BW-009**: Phases 1 to 5 verified. 42/42 contracts passed (`COMPL-001..010`, `REP-001..010`, `COMP-001..012`, `ROUTE-001..010`); 4/4 completion test suites passed; 7/7 monorepo type-check clean; `/completion/[bookingId]` compiles cleanly. These counts come from the retained feature report and were not rerun during this documentation reconciliation.
 - **Specification**: `docs/specs/BW-009-post-job-completion.md`.
 
