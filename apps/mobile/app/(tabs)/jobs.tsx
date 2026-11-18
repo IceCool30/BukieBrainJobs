@@ -86,23 +86,20 @@ function JobsScreenBody({ selectedIndex, samples, onSelect, onBack, onExplore }:
 
 function JobsTabItem({ tab, selected, onSelect }: TabItemProps) {
   const c = useThemeColors();
+  const [isFocused, setIsFocused] = useState(false);
   const accent = getStripAccentColor(c, c.amber);
   const textMuted = getStripTextColor(c, c.mutedText);
+  const bg = c.mode === 'light' ? 'rgba(0, 26, 65, 0.06)' : 'rgba(255, 255, 255, 0.06)';
   const tabItemStyle = [
     styles.tabItem,
     selected && styles.tabItemSelected,
-    selected && {
-      borderBottomColor: accent,
-      backgroundColor: c.mode === 'light' ? 'rgba(0, 26, 65, 0.06)' : 'rgba(255, 255, 255, 0.06)',
-    },
+    selected && { borderBottomColor: accent, backgroundColor: bg },
+    isFocused && { borderBottomColor: c.amber, borderColor: c.amber },
   ];
-
   return (
     <Pressable
-      accessibilityRole="tab"
-      accessibilityState={{ selected }}
-      aria-selected={selected}
-      onPress={onSelect}
+      accessibilityRole="tab" accessibilityState={{ selected }} aria-selected={selected}
+      onPress={onSelect} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)}
       style={tabItemStyle}
     >
       <Text style={[styles.tabLabel, { color: selected ? accent : textMuted }]}>{tab}</Text>
@@ -113,7 +110,11 @@ function JobsTabItem({ tab, selected, onSelect }: TabItemProps) {
 function JobsTabBar({ activeTab, onSelectTab }: TabBarProps) {
   const c = useThemeColors();
   return (
-    <View style={[styles.tabBar, { backgroundColor: c.strip, borderBottomColor: c.divider }]}>
+    <View
+      style={[styles.tabBar, { backgroundColor: c.strip, borderBottomColor: c.divider }]}
+      accessibilityRole="tablist"
+      accessibilityLabel="Job activity filters"
+    >
       {TABS.map((tab) => (
         <JobsTabItem key={tab} tab={tab} selected={activeTab === tab} onSelect={() => onSelectTab(tab)} />
       ))}
@@ -170,19 +171,20 @@ function CancelledNotice() {
 
 function ActivitySampleCard({ sample, onPress }: CardProps) {
   const c = useThemeColors();
+  const [isFocused, setIsFocused] = useState(false);
   const isCancelled = sample.status === 'cancelled';
   const pressedBg = c.mode === 'light' ? (isCancelled ? c.card : c.cardHover) : c.strip;
   const cardStyle = ({ pressed }: { pressed: boolean }) => [
     styles.card,
     { backgroundColor: pressed ? pressedBg : c.card, borderColor: isCancelled ? c.danger : c.mutedText },
+    isFocused && { borderColor: c.amber },
   ];
-
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`View details for ${sample.serviceTitle}`}
       accessibilityHint="Opens lifecycle details"
-      onPress={onPress}
+      onPress={onPress} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)}
       style={cardStyle}
     >
       <ActivityCardHeader sample={sample} />
@@ -217,20 +219,21 @@ function ActivitySampleList({ samples, onSelectSample }: SampleListProps) {
 
 function BackButton({ onBack }: { onBack: () => void }) {
   const c = useThemeColors();
+  const [isFocused, setIsFocused] = useState(false);
   const isLight = c.mode === 'light';
   const textColor = isLight ? c.amberHover : c.amber;
   const pressedBg = isLight ? c.card : c.strip;
-  const buttonStyle = ({ pressed }: { pressed: boolean }) => [
-    styles.backButton,
-    { backgroundColor: pressed ? pressedBg : 'transparent', borderColor: c.divider },
-  ];
-
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Back to activity list"
       onPress={onBack}
-      style={buttonStyle}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      style={({ pressed }) => [
+        styles.backButton,
+        { backgroundColor: pressed ? pressedBg : 'transparent', borderColor: isFocused ? c.amber : c.divider },
+      ]}
     >
       <Ionicons name="chevron-back" size={18} color={textColor} />
       <Text style={[styles.backButtonText, { color: textColor }]}>Back to Activity</Text>
@@ -363,7 +366,6 @@ function ExploreServicesButton({ onPress }: { onPress: () => void }) {
     styles.actionButton,
     { backgroundColor: pressed ? c.amberHover : c.amber },
   ];
-
   return (
     <Pressable accessibilityRole="button" accessibilityLabel="Explore services" onPress={onPress} style={buttonStyle}>
       <Ionicons name="grid-outline" size={16} color={ctaFg} />
@@ -388,6 +390,8 @@ const styles = StyleSheet.create({
     minHeight: 48,
     minWidth: 48,
     borderRadius: 20,
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
   },
   tabItemSelected: {
     borderBottomWidth: 2,

@@ -62,16 +62,19 @@ type FormBackButtonProps = {
 };
 
 function FormBackButton({ label, onPress, c }: FormBackButtonProps) {
+  const [isFocused, setIsFocused] = useState(false);
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
       onPress={onPress}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       style={({ pressed }) => [
         styles.backButton,
         {
           backgroundColor: pressed && c.mode === 'dark' ? c.cardHover : c.strip,
-          borderColor: pressed ? c.amber : c.divider,
+          borderColor: isFocused ? c.amber : pressed ? c.amber : c.divider,
         },
       ]}
     >
@@ -179,6 +182,7 @@ function FieldInput({ field, colors }: FieldInputProps) {
       testID={field.testID}
       accessibilityLabel={accessibilityLabel}
       accessibilityHint={field.error ?? field.helper}
+      aria-invalid={Boolean(field.error)}
       value={field.value}
       onChangeText={field.onChangeText}
       onFocus={() => setIsFocused(true)}
@@ -224,26 +228,27 @@ type ChoiceChipProps = {
 };
 
 function ChoiceChip({ option, selected, onSelect, focusRef, colors }: ChoiceChipProps) {
+  const [isFocused, setIsFocused] = useState(false);
   const active = selected === option.value;
+  const activeBorder = colors.mode === 'light' ? colors.ctaText : colors.ctaFill;
+  const activeFocusBorder = colors.mode === 'light' ? colors.amber : colors.mainText;
+  const border = isFocused ? (active ? activeFocusBorder : colors.amber) : (active ? activeBorder : colors.mutedText);
   return (
     <Pressable
       ref={focusRef}
-      accessibilityRole="button"
+      accessibilityRole="radio"
       accessibilityLabel={option.label}
-      accessibilityState={{ selected: active }}
+      accessibilityState={{ checked: active }}
       onPress={() => onSelect(option.value)}
-      style={({ pressed }) => [
-        styles.chip,
-        {
-          backgroundColor: active ? colors.ctaFill : pressed ? colors.cardHover : colors.card,
-          borderColor: active ? colors.ctaFill : pressed ? colors.rule : colors.divider,
-          opacity: pressed ? 0.9 : 1,
-        },
-      ]}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      style={({ pressed }) => [styles.chip, {
+        backgroundColor: active ? colors.ctaFill : pressed ? colors.cardHover : colors.card,
+        borderColor: border,
+        opacity: pressed ? 0.9 : 1,
+      }]}
     >
-      <Text style={[styles.chipText, { color: active ? colors.ctaText : colors.mainText }]}>
-        {option.label}
-      </Text>
+      <Text style={[styles.chipText, { color: active ? colors.ctaText : colors.mainText }]}>{option.label}</Text>
     </Pressable>
   );
 }
@@ -251,7 +256,7 @@ function ChoiceChip({ option, selected, onSelect, focusRef, colors }: ChoiceChip
 export function ChoiceChips({ label, options, selected, onSelect, wrap = false, focusRef }: ChoiceChipsProps) {
   const colors = useThemeColors();
   return (
-    <View style={styles.field} accessibilityLabel={label}>
+    <View style={styles.field} accessibilityRole="radiogroup" accessibilityLabel={label}>
       <Text style={[styles.label, { color: colors.mainText }]}>{label}</Text>
       <View style={[styles.chipRow, wrap && styles.chipWrap]}>
         {options.map((option, index) => (
@@ -316,6 +321,7 @@ export function PrimaryButton({ label, onPress, disabled = false, accessibilityL
 }
 
 export function SecondaryButton({ label, onPress, disabled = false, accessibilityLabel }: ButtonProps) {
+  const [isFocused, setIsFocused] = useState(false);
   const c = useThemeColors();
   return (
     <Pressable
@@ -324,14 +330,13 @@ export function SecondaryButton({ label, onPress, disabled = false, accessibilit
       accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.secondaryButton,
-        {
-          backgroundColor: pressed ? c.cardHover : c.card,
-          borderColor: pressed ? c.rule : c.divider,
-          opacity: disabled ? 0.65 : 1,
-        },
-      ]}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      style={({ pressed }) => [styles.secondaryButton, {
+        backgroundColor: pressed ? c.cardHover : c.card,
+        borderColor: isFocused ? c.amber : pressed ? c.rule : c.divider,
+        opacity: disabled ? 0.65 : 1,
+      }]}
     >
       <Text style={[styles.secondaryButtonText, { color: c.mainText }]}>{label}</Text>
     </Pressable>

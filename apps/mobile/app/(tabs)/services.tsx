@@ -88,8 +88,19 @@ function ServicesPreviewBanner() {
 
 function ClearSearchButton({ onClear }: { onClear: () => void }) {
   const c = useThemeColors();
+  const [isFocused, setIsFocused] = useState(false);
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel="Clear search" onPress={onClear} style={styles.clearBtn}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Clear search"
+      onPress={onClear}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      style={[
+        styles.clearBtn,
+        { borderColor: isFocused ? c.amber : 'transparent' },
+      ]}
+    >
       <Ionicons name="close-circle" size={18} color={c.mutedText} />
     </Pressable>
   );
@@ -107,6 +118,7 @@ function ServicesSearchInput({ query, onChangeQuery, onClear }: SearchProps) {
         style={[styles.searchInput, { color: c.mainText }]}
         placeholder="Search services..."
         placeholderTextColor={c.mutedText}
+        accessibilityRole="search"
         accessibilityLabel="Search services"
         value={query}
         onChangeText={onChangeQuery}
@@ -121,23 +133,23 @@ function ServicesSearchInput({ query, onChangeQuery, onClear }: SearchProps) {
 
 function FilterPillItem({ name, active, onSelect }: PillItemProps) {
   const c = useThemeColors();
+  const [isFocused, setIsFocused] = useState(false);
+  const activeFocusBorder = c.mode === 'light' ? c.card : c.mainText;
+  const pillStyle = ({ pressed }: { pressed: boolean }) => [
+    styles.pill,
+    {
+      backgroundColor: active ? c.amber : pressed ? (c.mode === 'light' ? c.strip : c.cardHover) : c.strip,
+      borderColor: active ? c.amber : pressed ? (c.mode === 'light' ? c.stripAccent : c.mutedText) : (c.mode === 'light' ? c.divider : getStripTextColor(c, c.mutedText)),
+    },
+    isFocused && { borderColor: active ? activeFocusBorder : c.amber },
+  ];
   return (
     <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={`Filter by ${name}`}
-      accessibilityState={{ selected: active }}
-      onPress={() => onSelect(name)}
-      style={({ pressed }) => [
-        styles.pill,
-        {
-          backgroundColor: active ? c.amber : pressed ? (c.mode === 'light' ? c.strip : c.cardHover) : c.strip,
-          borderColor: active ? c.amber : pressed ? (c.mode === 'light' ? c.stripAccent : c.mutedText) : (c.mode === 'light' ? c.divider : getStripTextColor(c, c.mutedText)),
-        },
-      ]}
+      accessibilityRole="button" accessibilityLabel={`Filter by ${name}`} accessibilityState={{ selected: active }}
+      onPress={() => onSelect(name)} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)}
+      style={pillStyle}
     >
-      <Text style={[styles.pillText, { color: active ? c.card : getStripTextColor(c, c.mainText) }]}>
-        {name}
-      </Text>
+      <Text style={[styles.pillText, { color: active ? c.card : getStripTextColor(c, c.mainText) }]}>{name}</Text>
     </Pressable>
   );
 }
@@ -217,21 +229,22 @@ function ServiceCard({ item, onSelect }: CardProps) {
 
 function ServicesEmptyState({ onReset }: { onReset: () => void }) {
   const c = useThemeColors();
+  const [isFocused, setIsFocused] = useState(false);
   return (
     <View style={styles.emptyContainer}>
       <Ionicons name="search-outline" size={32} color={c.mutedText} />
       <Text style={[styles.emptyTitle, { color: c.mainText }]}>No matching services found</Text>
       <Text style={[styles.emptySubtitle, { color: c.mutedText }]}>Try adjusting your search terms or filter selection.</Text>
       <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Reset filters and search"
-        onPress={onReset}
+        accessibilityRole="button" accessibilityLabel="Reset filters and search"
+        onPress={onReset} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)}
         style={({ pressed }) => [
           styles.resetBtn,
           {
             backgroundColor: pressed ? (c.mode === 'light' ? c.strip : c.cardHover) : c.strip,
             borderColor: pressed ? (c.mode === 'light' ? c.stripAccent : c.mutedText) : (c.mode === 'light' ? c.divider : getStripTextColor(c, c.mutedText)),
           },
+          isFocused && { borderColor: c.amber },
         ]}
       >
         <Text style={[styles.resetBtnText, { color: getStripAccentColor(c, c.amber) }]}>Reset filters</Text>
@@ -285,6 +298,9 @@ const styles = StyleSheet.create({
     minWidth: 48,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'transparent',
+    borderRadius: 9999,
   },
   pillsRow: {
     flexDirection: 'row',

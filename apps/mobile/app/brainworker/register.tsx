@@ -100,13 +100,20 @@ function RegisterFormFields({
 
 function RegisterHeader({ onBack }: { onBack: () => void }) {
   const c = useTrades();
+  const [focused, setFocused] = useState(false);
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Go back"
       onPress={onBack}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       hitSlop={8}
-      style={({ pressed }) => [s.back, pressed && { opacity: 0.95 }]}
+      style={({ pressed }) => [
+        s.back,
+        { borderColor: focused ? c.amber : 'transparent' },
+        pressed && { opacity: 0.95 },
+      ]}
     >
       <Ionicons name="arrow-back" size={18} color={c.amber} accessible={false} />
       <Text style={[s.backLabel, { color: c.textMain }]}>Back</Text>
@@ -144,15 +151,21 @@ function RegisterSubmitButton({ onSubmit }: { onSubmit: () => void }) {
 
 function RegisterPreviewLink({ onOpen }: { onOpen: () => void }) {
   const c = useTrades();
+  const [focused, setFocused] = useState(false);
   const linkColor = c.mode === 'light' ? c.amberHover : c.amber;
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="View sample workspace preview"
       onPress={onOpen}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       style={({ pressed }) => [
         s.previewLink,
-        { backgroundColor: pressed ? c.cardBg : 'transparent', borderColor: linkColor },
+        {
+          backgroundColor: pressed ? c.cardBg : 'transparent',
+          borderColor: focused ? c.amber : linkColor,
+        },
       ]}
     >
       <Ionicons name="eye-outline" size={18} color={linkColor} accessible={false} />
@@ -190,7 +203,7 @@ function Field({ label, error, ...input }: TextInputProps & { label: string; err
 const s = StyleSheet.create({
   fill: { flex: 1 },
   page: { flexGrow: 1, padding: 20, gap: 16 },
-  back: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', minHeight: 48, minWidth: 48 },
+  back: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', minHeight: 48, minWidth: 48, borderWidth: 1, borderColor: 'transparent', borderRadius: 6, paddingHorizontal: 4 },
   backLabel: { fontSize: 15, fontWeight: '600' },
   card: { borderRadius: 8, borderWidth: StyleSheet.hairlineWidth, padding: 20 },
   eyebrow: { fontFamily: mono, fontSize: 11, fontWeight: '700', letterSpacing: 1.3 },
@@ -201,7 +214,7 @@ const s = StyleSheet.create({
   input: { minHeight: 48, borderRadius: 6, borderWidth: 1, paddingHorizontal: 14, fontSize: 16 },
   error: { fontSize: 13, marginTop: 6 },
   submit: { minHeight: 48, borderRadius: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 8 },
-  submitLabel: { color: '#FFFFFF', fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
+  submitLabel: { fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
   previewLink: { minHeight: 48, borderRadius: 8, borderWidth: 1, borderStyle: 'dashed', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingHorizontal: 16, marginTop: 4 },
   previewLinkLabel: { fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
 });

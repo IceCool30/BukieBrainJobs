@@ -100,12 +100,15 @@ function ThemeToggle({
 }) {
   const c = useThemeColors();
   const mode = useThemeMode();
+  const [isFocused, setIsFocused] = React.useState(false);
   return (
     <Pressable
       accessibilityRole={accessibilityRole}
       accessibilityLabel={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       onPress={toggleThemeMode}
-      style={[s.themeToggle, style, { backgroundColor: c.strip, borderColor: c.divider }]}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      style={[s.themeToggle, style, { backgroundColor: c.strip, borderColor: isFocused ? c.amber : c.divider }]}
     >
       <Ionicons name={mode === 'dark' ? 'sunny-outline' : 'moon-outline'} size={20} color={getStripTextColor(c, c.textMain)} />
     </Pressable>

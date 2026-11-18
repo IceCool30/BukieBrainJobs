@@ -227,13 +227,19 @@ export default function MobileBrainWorkerWorkspacePreviewScreen() {
 
 function WorkspaceTopNav({ onBack }: { onBack: () => void }) {
   const c = useThemeColors();
+  const [focused, setFocused] = useState(false);
   return (
     <View style={[s.navBar, { borderBottomColor: c.divider }]}>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Go back to registration"
         onPress={onBack}
-        style={({ pressed }) => [s.navBackBtn, { opacity: pressed ? 0.7 : 1 }]}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={({ pressed }) => [
+          s.navBackBtn,
+          { borderColor: focused ? c.amber : 'transparent', opacity: pressed ? 0.7 : 1 },
+        ]}
       >
         <Ionicons name="arrow-back" size={20} color={c.amber} accessible={false} />
         <Text style={[s.navBackText, { color: c.mainText }]}>Registration</Text>
@@ -420,12 +426,18 @@ function SampleLeadCard({
 
 function DetailBackBtn({ onBack }: { onBack: () => void }) {
   const c = useThemeColors();
+  const [focused, setFocused] = useState(false);
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Back to lead feed"
       onPress={onBack}
-      style={({ pressed }) => [s.detailBackBtn, { opacity: pressed ? 0.7 : 1 }]}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={({ pressed }) => [
+        s.detailBackBtn,
+        { borderColor: focused ? c.amber : 'transparent', opacity: pressed ? 0.7 : 1 },
+      ]}
     >
       <Ionicons name="arrow-back" size={18} color={c.amber} accessible={false} />
       <Text style={[s.detailBackBtnText, { color: c.amber }]}>Back to Lead Feed</Text>
@@ -618,14 +630,18 @@ function AcceptButton({ onAccept }: { onAccept: () => void }) {
 
 function DeclineButton({ onDecline }: { onDecline: () => void }) {
   const c = useThemeColors();
+  const [focused, setFocused] = useState(false);
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Decline sample lead"
       onPress={onDecline}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       style={({ pressed }) => [
         s.actionBtnOutline,
         { borderColor: c.mutedText, backgroundColor: pressed ? c.cardHover : 'transparent' },
+        focused && { borderColor: c.amber },
       ]}
     >
       <Ionicons name="close-circle-outline" size={18} color={c.mainText} accessible={false} />
@@ -666,7 +682,10 @@ function CheckInEntryButton({ onPress }: { onPress: () => void }) {
       accessibilityRole="button"
       accessibilityLabel="Simulate on-site check-in for sample generator repair"
       onPress={onPress}
-      style={({ pressed }) => [s.checkInEntryBtn, { backgroundColor: pressed ? c.amberHover : bg }]}
+      style={({ pressed }) => [
+        s.checkInEntryBtn,
+        { backgroundColor: pressed ? c.amberHover : bg },
+      ]}
     >
       <Ionicons name="location-outline" size={18} color={fg} accessible={false} />
       <Text style={[s.checkInEntryBtnText, { color: fg }]}>Preview on-site check-in</Text>
@@ -801,12 +820,18 @@ function CheckInSimulatedStatusCard() {
 
 function CheckInResetButton({ onReset }: { onReset: () => void }) {
   const c = useThemeColors();
+  const [focused, setFocused] = useState(false);
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Reset location simulation"
       onPress={onReset}
-      style={({ pressed }) => [s.resetBtn, { borderColor: c.mutedText, opacity: pressed ? 0.7 : 1 }]}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={({ pressed }) => [
+        s.resetBtn,
+        { borderColor: focused ? c.amber : c.mutedText, opacity: pressed ? 0.7 : 1 },
+      ]}
     >
       <Ionicons name="refresh-outline" size={16} color={c.mainText} accessible={false} />
       <Text style={[s.resetBtnText, { color: c.mainText }]}>Reset location simulation</Text>
@@ -848,12 +873,18 @@ function CheckInSimulationSection({
 
 function ResetOutcomeButton({ onReset }: { onReset: () => void }) {
   const c = useThemeColors();
+  const [focused, setFocused] = useState(false);
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Reset preview outcome"
       onPress={onReset}
-      style={({ pressed }) => [s.resetBtn, { borderColor: c.mutedText, opacity: pressed ? 0.7 : 1 }]}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={({ pressed }) => [
+        s.resetBtn,
+        { borderColor: focused ? c.amber : c.mutedText, opacity: pressed ? 0.7 : 1 },
+      ]}
     >
       <Ionicons name="refresh-outline" size={16} color={c.mainText} accessible={false} />
       <Text style={[s.resetBtnText, { color: c.mainText }]}>Reset preview outcome</Text>
@@ -906,28 +937,56 @@ function AcceptConfirmationModal({ visible, onCancel, onConfirm }: AcceptModalPr
   );
 }
 
+function AcceptCancelBtn({ onCancel, c }: { onCancel: () => void; c: ReturnType<typeof useThemeColors> }) {
+  const [focused, setFocused] = useState(false);
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Cancel acceptance preview"
+      onPress={onCancel}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={({ pressed }) => [
+        s.modalCancelBtn,
+        { borderColor: focused ? c.amber : c.mutedText, opacity: pressed ? 0.7 : 1 },
+      ]}
+    >
+      <Text style={[s.modalActionBtnText, { color: c.mainText }]}>Cancel</Text>
+    </Pressable>
+  );
+}
+
+type AcceptConfirmBtnProps = {
+  onConfirm: () => void;
+  confirmBg: string;
+  confirmFg: string;
+  c: ReturnType<typeof useThemeColors>;
+};
+
+function AcceptConfirmBtn({ onConfirm, confirmBg, confirmFg, c }: AcceptConfirmBtnProps) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Confirm sample acceptance"
+      onPress={onConfirm}
+      style={({ pressed }) => [
+        s.modalConfirmBtn,
+        { backgroundColor: pressed ? c.amberHover : confirmBg },
+      ]}
+    >
+      <Text style={[s.modalActionBtnText, { color: confirmFg }]}>Confirm sample acceptance</Text>
+    </Pressable>
+  );
+}
+
 function AcceptModalActions({ onCancel, onConfirm }: { onCancel: () => void; onConfirm: () => void }) {
   const c = useThemeColors();
   const confirmBg = c.mode === 'light' ? c.amberHover : c.amber;
   const confirmFg = c.mode === 'dark' ? c.canvas : c.card;
   return (
     <View style={s.modalActionsRow}>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Cancel acceptance preview"
-        onPress={onCancel}
-        style={({ pressed }) => [s.modalCancelBtn, { borderColor: c.mutedText, opacity: pressed ? 0.7 : 1 }]}
-      >
-        <Text style={[s.modalActionBtnText, { color: c.mainText }]}>Cancel</Text>
-      </Pressable>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Confirm sample acceptance"
-        onPress={onConfirm}
-        style={({ pressed }) => [s.modalConfirmBtn, { backgroundColor: pressed ? c.amberHover : confirmBg }]}
-      >
-        <Text style={[s.modalActionBtnText, { color: confirmFg }]}>Confirm sample acceptance</Text>
-      </Pressable>
+      <AcceptCancelBtn onCancel={onCancel} c={c} />
+      <AcceptConfirmBtn onConfirm={onConfirm} confirmBg={confirmBg} confirmFg={confirmFg} c={c} />
     </View>
   );
 }
@@ -1018,14 +1077,18 @@ type DeclineReasonOptionProps = {
 
 function DeclineReasonOption({ label, isSelected, onSelect }: DeclineReasonOptionProps) {
   const c = useThemeColors();
+  const [focused, setFocused] = useState(false);
   const accent = c.mode === 'light' ? c.amberHover : c.amber;
-  const border = isSelected ? accent : c.mutedText;
+  const activeFocusBorder = c.mode === 'light' ? c.strip : c.mainText;
+  const border = focused ? (isSelected ? activeFocusBorder : accent) : (isSelected ? accent : c.mutedText);
   return (
     <Pressable
       accessibilityRole="radio"
       accessibilityState={{ checked: isSelected }}
       accessibilityLabel={label}
       onPress={onSelect}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       style={({ pressed }) => [
         s.reasonOptionRow,
         { borderColor: border, backgroundColor: pressed ? c.cardHover : 'transparent' },
@@ -1038,12 +1101,18 @@ function DeclineReasonOption({ label, isSelected, onSelect }: DeclineReasonOptio
 }
 
 function DeclineCancelBtn({ onCancel, c }: { onCancel: () => void; c: ReturnType<typeof useThemeColors> }) {
+  const [focused, setFocused] = useState(false);
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Cancel decline preview"
       onPress={onCancel}
-      style={({ pressed }) => [s.modalCancelBtn, { borderColor: c.mutedText, opacity: pressed ? 0.7 : 1 }]}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={({ pressed }) => [
+        s.modalCancelBtn,
+        { borderColor: focused ? c.amber : c.mutedText, opacity: pressed ? 0.7 : 1 },
+      ]}
     >
       <Text style={[s.modalActionBtnText, { color: c.mainText }]}>Cancel</Text>
     </Pressable>
@@ -1136,6 +1205,10 @@ const s = StyleSheet.create({
     gap: 8,
     minHeight: 48,
     minWidth: 48,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    borderRadius: 6,
+    paddingHorizontal: 4,
   },
   navBackText: { fontSize: 15, fontWeight: '600' },
   disclaimerCard: {
@@ -1193,7 +1266,7 @@ const s = StyleSheet.create({
   sectionTitle: { fontSize: 18, fontWeight: '700' },
   sectionCount: { fontSize: 12 },
   leadCard: {
-    borderRadius: 12,
+    borderRadius: 8,
     borderWidth: 1,
     padding: 16,
     gap: 6,
@@ -1237,6 +1310,10 @@ const s = StyleSheet.create({
     minHeight: 48,
     minWidth: 48,
     alignSelf: 'flex-start',
+    borderWidth: 1,
+    borderColor: 'transparent',
+    borderRadius: 6,
+    paddingHorizontal: 4,
   },
   detailBackBtnText: { fontSize: 14, fontWeight: '600' },
   detailCategory: { fontFamily: mono, fontSize: 11, fontWeight: '700', letterSpacing: 1 },
