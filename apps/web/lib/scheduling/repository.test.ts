@@ -29,7 +29,7 @@ describe('BW-007 Phase 2: SchedulingRepository Contracts', () => {
   };
 
   beforeEach(() => {
-    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.useFakeTimers({ toFake: ['Date'], shouldAdvanceTime: true });
     vi.setSystemTime(referenceNow);
     resetSchedulingRepository();
   });

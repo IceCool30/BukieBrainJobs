@@ -43,9 +43,9 @@ export const SmileVerificationSchema = z.object({
 export const VerificationWebhookSchema = z.object({
   // Smile Identity webhook payload structure
   jobId: z.string(),
-  partnerParams: z.record(z.any()).optional(),
-  result: z.record(z.any()).optional(),
-  actions: z.record(z.any()).optional(),
+  partnerParams: z.record(z.string(), z.any()).optional(),
+  result: z.record(z.string(), z.any()).optional(),
+  actions: z.record(z.string(), z.any()).optional(),
 })
 
 export const UpdateVerificationStatusSchema = z.object({

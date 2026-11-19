@@ -67,7 +67,7 @@ describe('BW-007 Collaborative Scheduling & Dispatch Route Contracts (ROUTE-001 
   const defaultParams = Promise.resolve({ bookingId: 'bk-101' });
 
   beforeEach(() => {
-    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.useFakeTimers({ toFake: ['Date'], shouldAdvanceTime: true });
     vi.setSystemTime(referenceNow);
     vi.clearAllMocks();
     resetSchedulingRepository();
