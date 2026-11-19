@@ -39,6 +39,21 @@ import {
   type WorkProofSampleAsset,
   type AttachedWorkProof,
 } from '../../lib/work-proof-preview';
+import {
+  BIOMETRIC_PREVIEW_DISCLAIMER,
+  SAMPLE_WALLET_DATA,
+  createInitialBiometricState,
+  simulateBiometricAuth,
+  toggleBiometricSetting,
+  lockWallet,
+  setBiometricType,
+  cancelBiometricAuth,
+  getBiometricLabel,
+  getWalletPendingText,
+  getWalletSettlementText,
+  type BiometricType,
+  type BiometricAuthState,
+} from '../../lib/biometric-auth-preview';
 
 function useEscapeDismiss(visible: boolean, onDismiss: () => void) {
   useEffect(() => {
@@ -137,15 +152,44 @@ function createWorkspaceResetAll(
   };
 }
 
+function useBiometricWalletState() {
+  const [bioState, setBioState] = useState<BiometricAuthState>(() => createInitialBiometricState());
+  const [promptVisible, setPromptVisible] = useState(false);
+  const openPrompt = () => setPromptVisible(true);
+  const closePrompt = () => {
+    setPromptVisible(false);
+    setBioState((prev) => cancelBiometricAuth(prev));
+  };
+  const onSimulate = (success: boolean) => {
+    setBioState((prev) => simulateBiometricAuth(prev, success));
+    if (success) setPromptVisible(false);
+  };
+  const onToggle = () => setBioState((prev) => toggleBiometricSetting(prev));
+  const onLock = () => setBioState((prev) => lockWallet(prev));
+  const onSelectType = (t: BiometricType) => setBioState((prev) => setBiometricType(prev, t));
+  return { bioState, promptVisible, openPrompt, closePrompt, onSimulate, onToggle, onLock, onSelectType };
+}
+
 function useWorkspacePreviewState() {
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   const [previewOutcome, setPreviewOutcome] = useState<PreviewOutcome | null>(null);
   const modals = useModalStates();
   const checkIn = useCheckInSimulationState();
   const workProofs = useWorkProofPreviewState();
+  const bio = useBiometricWalletState();
   const resetAll = createWorkspaceResetAll(setSelectedLeadId, setPreviewOutcome, checkIn, workProofs, modals);
 
-  return { selectedLeadId, setSelectedLeadId, previewOutcome, setPreviewOutcome, resetAll, ...modals, ...checkIn, ...workProofs };
+  return {
+    selectedLeadId,
+    setSelectedLeadId,
+    previewOutcome,
+    setPreviewOutcome,
+    resetAll,
+    ...modals,
+    ...checkIn,
+    ...workProofs,
+    ...bio,
+  };
 }
 
 function useAcceptDeclineHandlers(state: ReturnType<typeof useWorkspacePreviewState>) {
@@ -172,16 +216,35 @@ function useAcceptDeclineHandlers(state: ReturnType<typeof useWorkspacePreviewSt
   return { onConfirmAccept, onConfirmDecline };
 }
 
+type FeedViewProps = {
+  onSelectAlert: () => void;
+  onSelectLead: (id: string) => void;
+  bioState: BiometricAuthState;
+  onOpenPrompt: () => void;
+  onLock: () => void;
+  onToggle: () => void;
+  onSelectType: (t: BiometricType) => void;
+};
+
 function WorkspaceFeedView({
   onSelectAlert,
   onSelectLead,
-}: {
-  onSelectAlert: () => void;
-  onSelectLead: (id: string) => void;
-}) {
+  bioState,
+  onOpenPrompt,
+  onLock,
+  onToggle,
+  onSelectType,
+}: FeedViewProps) {
   return (
     <>
       <WorkspaceHeaderBlock />
+      <BiometricWalletSection
+        bioState={bioState}
+        onOpenPrompt={onOpenPrompt}
+        onLock={onLock}
+        onToggle={onToggle}
+        onSelectType={onSelectType}
+      />
       <SampleLeadAlertBanner onSelect={onSelectAlert} />
       <SampleLeadFeedList onSelectLead={onSelectLead} />
     </>
@@ -243,6 +306,11 @@ function WorkspaceMainBody({ selectedLead, onBack, state }: MainBodyProps) {
       <WorkspaceFeedView
         onSelectAlert={() => state.setSelectedLeadId(SAMPLE_LEAD_ALERT.id)}
         onSelectLead={(id) => state.setSelectedLeadId(id)}
+        bioState={state.bioState}
+        onOpenPrompt={state.openPrompt}
+        onLock={state.onLock}
+        onToggle={state.onToggle}
+        onSelectType={state.onSelectType}
       />
     );
   }
@@ -270,7 +338,7 @@ function WorkProofModals({ state }: { state: ReturnType<typeof useWorkspacePrevi
   );
 }
 
-function WorkspaceModals({ state, onConfirmAccept, onConfirmDecline }: WorkspaceModalsProps) {
+function LeadDecisionModals({ state, onConfirmAccept, onConfirmDecline }: WorkspaceModalsProps) {
   const onCancelDecline = () => {
     state.setDeclineModalVisible(false);
     state.setSelectedReason(null);
@@ -289,7 +357,21 @@ function WorkspaceModals({ state, onConfirmAccept, onConfirmDecline }: Workspace
         onCancel={onCancelDecline}
         onConfirm={onConfirmDecline}
       />
+    </>
+  );
+}
+
+function WorkspaceModals({ state, onConfirmAccept, onConfirmDecline }: WorkspaceModalsProps) {
+  return (
+    <>
+      <LeadDecisionModals state={state} onConfirmAccept={onConfirmAccept} onConfirmDecline={onConfirmDecline} />
       <WorkProofModals state={state} />
+      <BiometricPromptModal
+        visible={state.promptVisible}
+        bioState={state.bioState}
+        onClose={state.closePrompt}
+        onSimulate={state.onSimulate}
+      />
     </>
   );
 }
@@ -1690,6 +1772,354 @@ function DetailMetaGrid({ lead }: { lead: WorkerSampleLead }) {
   );
 }
 
+const BioIcon = Ionicons;
+
+function BiometricNoticeCard() {
+  const c = useThemeColors();
+  return (
+    <View style={[s.bioNoticeCard, { backgroundColor: c.strip, borderColor: c.divider }]}>
+      <BioIcon name="shield-checkmark-outline" size={18} color={c.amber} accessible={false} />
+      <Text accessibilityRole="alert" style={[s.bioNoticeText, { color: c.mutedText }]}>
+        {BIOMETRIC_PREVIEW_DISCLAIMER}
+      </Text>
+    </View>
+  );
+}
+
+type BioToggleProps = {
+  isEnabled: boolean;
+  onToggle: () => void;
+};
+
+function BiometricToggleRow({ isEnabled, onToggle }: BioToggleProps) {
+  const c = useThemeColors();
+  const statusText = isEnabled ? 'Enabled' : 'Disabled';
+  return (
+    <View style={s.bioSettingRow}>
+      <View style={s.bioSettingLabelCol}>
+        <Text style={[s.bioSettingLabel, { color: c.mainText }]}>Biometric Wallet Lock</Text>
+        <Text style={[s.bioSettingCaption, { color: c.mutedText }]}>Quick authentication preview</Text>
+      </View>
+      <Pressable
+        accessibilityRole="switch"
+        accessibilityLabel="Toggle biometric quick wallet lock"
+        accessibilityState={{ checked: isEnabled }}
+        onPress={onToggle}
+        style={[s.bioSwitchTrack, { backgroundColor: isEnabled ? c.amber : c.cardHover, borderColor: c.divider }]}
+      >
+        <Text style={[s.bioSwitchStatus, { color: isEnabled ? (c.mode === 'dark' ? c.canvas : c.card) : c.mutedText }]}>
+          {statusText}
+        </Text>
+      </Pressable>
+    </View>
+  );
+}
+
+type SensorPillProps = {
+  type: BiometricType;
+  label: string;
+  isSelected: boolean;
+  onSelect: () => void;
+};
+
+function SensorTypePill({ label, isSelected, onSelect }: SensorPillProps) {
+  const c = useThemeColors();
+  const bg = isSelected ? c.cardHover : 'transparent';
+  const border = isSelected ? c.amber : c.divider;
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Select ${label} simulation`}
+      onPress={onSelect}
+      style={[s.sensorPillBtn, { backgroundColor: bg, borderColor: border }]}
+    >
+      <Text style={[s.sensorPillText, { color: isSelected ? c.amber : c.mutedText }]}>{label}</Text>
+    </Pressable>
+  );
+}
+
+type SensorSelectorProps = {
+  currentType: BiometricType;
+  onSelect: (type: BiometricType) => void;
+};
+
+function SensorTypeSelector({ currentType, onSelect }: SensorSelectorProps) {
+  const c = useThemeColors();
+  return (
+    <View style={s.sensorSelectorBlock}>
+      <Text style={[s.sensorSelectorTitle, { color: c.mutedText }]}>SIMULATED SENSOR</Text>
+      <View style={s.sensorPillsRow}>
+        <SensorTypePill type="FACE_ID" label="Face ID" isSelected={currentType === 'FACE_ID'} onSelect={() => onSelect('FACE_ID')} />
+        <SensorTypePill type="FINGERPRINT" label="Fingerprint" isSelected={currentType === 'FINGERPRINT'} onSelect={() => onSelect('FINGERPRINT')} />
+      </View>
+    </View>
+  );
+}
+
+type UnlockButtonProps = {
+  biometricLabel: string;
+  onPress: () => void;
+};
+
+function UnlockWalletButton({ biometricLabel, onPress }: UnlockButtonProps) {
+  const [isFocused, setIsFocused] = useState(false);
+  const c = useThemeColors();
+  const fg = c.mode === 'dark' ? c.canvas : c.card;
+  const bg = c.mode === 'light' ? c.amberHover : c.amber;
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Unlock Wallet with ${biometricLabel}`}
+      onPress={onPress}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      style={({ pressed }) => [s.unlockWalletBtn, { backgroundColor: pressed ? c.amberHover : bg }]}
+    >
+      <BioIcon name="lock-open-outline" size={18} color={fg} accessible={false} />
+      <Text style={[s.unlockWalletBtnText, { color: fg }]}>Unlock Wallet with {biometricLabel}</Text>
+      {isFocused && <View pointerEvents="none" style={[s.outerFocusRing, { borderColor: c.amber }]} />}
+    </Pressable>
+  );
+}
+
+type LockedWalletProps = {
+  bioState: BiometricAuthState;
+  onUnlockPress: () => void;
+};
+
+function LockedWalletCard({ bioState, onUnlockPress }: LockedWalletProps) {
+  const c = useThemeColors();
+  const label = getBiometricLabel(bioState.biometricType);
+  return (
+    <View style={[s.walletCard, { backgroundColor: c.card, borderColor: c.divider }]}>
+      <View style={s.walletMaskRow}>
+        <BioIcon name="lock-closed" size={24} color={c.amber} accessible={false} />
+        <View style={s.walletMaskTextCol}>
+          <Text style={[s.walletMaskedFigure, { color: c.mutedText }]}>••••••••••</Text>
+          <Text style={[s.walletMaskCaption, { color: c.mutedText }]}>Balance locked with biometrics</Text>
+        </View>
+      </View>
+      <UnlockWalletButton biometricLabel={label} onPress={onUnlockPress} />
+    </View>
+  );
+}
+
+function LockWalletButton({ onLock }: { onLock: () => void }) {
+  const c = useThemeColors();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Lock wallet immediately"
+      onPress={onLock}
+      style={({ pressed }) => [
+        s.lockWalletBtn,
+        { borderColor: c.divider, backgroundColor: pressed ? c.cardHover : 'transparent' },
+      ]}
+    >
+      <BioIcon name="lock-closed-outline" size={16} color={c.mainText} accessible={false} />
+      <Text style={[s.lockWalletBtnText, { color: c.mainText }]}>Lock Wallet</Text>
+    </Pressable>
+  );
+}
+
+function UnlockedWalletBalanceRow() {
+  const c = useThemeColors();
+  return (
+    <View style={s.unlockedBalanceBlock}>
+      <Text style={[s.unlockedBalanceLabel, { color: c.mutedText }]}>AVAILABLE BALANCE</Text>
+      <Text style={[s.unlockedBalanceValue, { color: c.mainText }]}>{SAMPLE_WALLET_DATA.availableBalance}</Text>
+      <Text style={[s.unlockedPendingText, { color: c.amber }]}>
+        {getWalletPendingText()}
+      </Text>
+    </View>
+  );
+}
+
+function UnlockedWalletBankRow() {
+  const c = useThemeColors();
+  return (
+    <View style={[s.walletBankRow, { borderColor: c.divider }]}>
+      <View>
+        <Text style={[s.walletBankName, { color: c.mainText }]}>{SAMPLE_WALLET_DATA.sampleBankName}</Text>
+        <Text style={[s.walletAccountMask, { color: c.mutedText }]}>{SAMPLE_WALLET_DATA.sampleAccountMask}</Text>
+      </View>
+      <Text style={[s.walletLastSettlement, { color: c.mutedText }]}>{getWalletSettlementText()}</Text>
+    </View>
+  );
+}
+
+function UnlockedWalletCard({ onLock }: { onLock: () => void }) {
+  const c = useThemeColors();
+  return (
+    <View style={[s.walletCard, { backgroundColor: c.card, borderColor: c.green }]}>
+      <UnlockedWalletBalanceRow />
+      <UnlockedWalletBankRow />
+      <LockWalletButton onLock={onLock} />
+    </View>
+  );
+}
+
+function BiometricPromptHeader({ bioType, onClose }: { bioType: BiometricType; onClose: () => void }) {
+  const c = useThemeColors();
+  const label = getBiometricLabel(bioType);
+  return (
+    <View style={s.modalHeaderRow}>
+      <Text accessibilityRole="header" style={[s.modalTitle, { color: c.mainText }]}>
+        Confirm {label}
+      </Text>
+      <Pressable accessibilityRole="button" accessibilityLabel="Close biometric prompt" onPress={onClose} style={s.modalCloseIconBtn}>
+        <BioIcon name="close-circle-outline" size={24} color={c.mutedText} accessible={false} />
+      </Pressable>
+    </View>
+  );
+}
+
+function SimulateSuccessButton({ onSimulateSuccess }: { onSimulateSuccess: () => void }) {
+  const [isFocused, setIsFocused] = useState(false);
+  const c = useThemeColors();
+  const fg = c.mode === 'dark' ? c.canvas : c.card;
+  const bg = c.mode === 'light' ? c.amberHover : c.amber;
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Simulate successful biometric scan"
+      onPress={onSimulateSuccess}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      style={({ pressed }) => [s.simSuccessBtn, { backgroundColor: pressed ? c.amberHover : bg }]}
+    >
+      <Text style={[s.simSuccessBtnText, { color: fg }]}>Simulate Success</Text>
+      {isFocused && <View pointerEvents="none" style={[s.outerFocusRing, { borderColor: c.amber }]} />}
+    </Pressable>
+  );
+}
+
+function SimulateFailureButton({ onSimulateFailure }: { onSimulateFailure: () => void }) {
+  const c = useThemeColors();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Simulate failed biometric scan"
+      onPress={onSimulateFailure}
+      style={({ pressed }) => [
+        s.simFailureBtn,
+        { borderColor: c.divider, backgroundColor: pressed ? c.cardHover : 'transparent' },
+      ]}
+    >
+      <Text style={[s.simFailureBtnText, { color: c.mainText }]}>Simulate Failure</Text>
+    </Pressable>
+  );
+}
+
+type PromptContentProps = {
+  bioState: BiometricAuthState;
+  onClose: () => void;
+  onSimulate: (success: boolean) => void;
+};
+
+function BiometricPromptIconBlock({ bioType }: { bioType: BiometricType }) {
+  const c = useThemeColors();
+  const icon = bioType === 'FACE_ID' ? 'scan-outline' : 'finger-print-outline';
+  return (
+    <View style={[s.bioPromptIconBox, { backgroundColor: c.strip, borderColor: c.divider }]}>
+      <BioIcon name={icon} size={48} color={c.amber} accessible={false} />
+    </View>
+  );
+}
+
+function BiometricPromptModalContent({ bioState, onClose, onSimulate }: PromptContentProps) {
+  const c = useThemeColors();
+  const label = getBiometricLabel(bioState.biometricType);
+  return (
+    <>
+      <BiometricPromptHeader bioType={bioState.biometricType} onClose={onClose} />
+      <BiometricPromptIconBlock bioType={bioState.biometricType} />
+      <Text style={[s.bioPromptSubtitle, { color: c.mutedText }]}>
+        Scan your {label} to unlock your sample BrainWorker wallet.
+      </Text>
+      {bioState.errorMessage && (
+        <View style={[s.bioErrorBox, { borderColor: c.amber }]}>
+          <Text accessibilityRole="alert" style={[s.bioErrorText, { color: c.amber }]}>
+            {bioState.errorMessage}
+          </Text>
+        </View>
+      )}
+      <View style={s.bioPromptActionsRow}>
+        <SimulateFailureButton onSimulateFailure={() => onSimulate(false)} />
+        <SimulateSuccessButton onSimulateSuccess={() => onSimulate(true)} />
+      </View>
+    </>
+  );
+}
+
+type PromptModalProps = {
+  visible: boolean;
+  bioState: BiometricAuthState;
+  onClose: () => void;
+  onSimulate: (success: boolean) => void;
+};
+
+function BiometricPromptModal(props: PromptModalProps) {
+  const c = useThemeColors();
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
+  useEscapeDismiss(props.visible, props.onClose);
+  return (
+    <Modal visible={props.visible} transparent animationType="none" onRequestClose={props.onClose}>
+      <View style={[s.modalOverlay, isLandscape ? s.overlayCenter : s.overlayBottom]}>
+        <View style={[s.modalCard, isLandscape ? s.cardLandscape : s.cardPortrait, { backgroundColor: c.card, borderColor: c.mutedText }]}>
+          {!isLandscape && <View style={[s.sheetHandle, { backgroundColor: c.mutedText }]} />}
+          <BiometricPromptModalContent {...props} />
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function BiometricWalletHeader() {
+  const c = useThemeColors();
+  const badgeColor = getStripAccentColor(c, c.amber);
+  return (
+    <View style={s.bioSectionHeaderRow}>
+      <View style={s.bioSectionTitleCol}>
+        <Text style={[s.bioEyebrow, { color: c.green }]}>WALLET ACCESS</Text>
+        <Text accessibilityRole="header" style={[s.bioSectionHeading, { color: c.mainText }]}>
+          BrainWorker Wallet
+        </Text>
+      </View>
+      <View style={[s.sampleBadge, { backgroundColor: c.strip, borderColor: c.divider }]}>
+        <Text style={[s.sampleBadgeText, { color: badgeColor }]}>SAMPLE PREVIEW</Text>
+      </View>
+    </View>
+  );
+}
+
+type BioSectionProps = {
+  bioState: BiometricAuthState;
+  onOpenPrompt: () => void;
+  onLock: () => void;
+  onToggle: () => void;
+  onSelectType: (type: BiometricType) => void;
+};
+
+function BiometricWalletSection(props: BioSectionProps) {
+  const c = useThemeColors();
+  const isLocked = props.bioState.walletLockStatus === 'LOCKED';
+  return (
+    <View style={[s.bioWalletContainer, { backgroundColor: c.card, borderColor: c.divider }]}>
+      <BiometricWalletHeader />
+      <BiometricNoticeCard />
+      <BiometricToggleRow isEnabled={props.bioState.isBiometricEnabled} onToggle={props.onToggle} />
+      <SensorTypeSelector currentType={props.bioState.biometricType} onSelect={props.onSelectType} />
+      {isLocked ? (
+        <LockedWalletCard bioState={props.bioState} onUnlockPress={props.onOpenPrompt} />
+      ) : (
+        <UnlockedWalletCard onLock={props.onLock} />
+      )}
+    </View>
+  );
+}
+
 const s = StyleSheet.create({
   fill: { flex: 1 },
   scrollContent: { padding: 16, gap: 16, paddingBottom: 40 },
@@ -2424,5 +2854,245 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16,
+  },
+  bioWalletContainer: {
+    borderRadius: 8,
+    borderWidth: 1.5,
+    padding: 14,
+    gap: 12,
+  },
+  bioSectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 8,
+  },
+  bioSectionTitleCol: {
+    flex: 1,
+    gap: 2,
+  },
+  bioEyebrow: {
+    fontFamily: mono,
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+  bioSectionHeading: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  bioNoticeCard: {
+    borderRadius: 6,
+    borderWidth: 1,
+    padding: 10,
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'flex-start',
+  },
+  bioNoticeText: {
+    fontSize: 12,
+    lineHeight: 17,
+    flex: 1,
+  },
+  bioSettingRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    minHeight: 48,
+    gap: 10,
+  },
+  bioSettingLabelCol: {
+    flex: 1,
+    gap: 2,
+  },
+  bioSettingLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  bioSettingCaption: {
+    fontSize: 12,
+  },
+  bioSwitchTrack: {
+    minHeight: 48,
+    paddingHorizontal: 16,
+    borderRadius: 24,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bioSwitchStatus: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  sensorSelectorBlock: {
+    gap: 6,
+  },
+  sensorSelectorTitle: {
+    fontFamily: mono,
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.8,
+  },
+  sensorPillsRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  sensorPillBtn: {
+    flex: 1,
+    minHeight: 48,
+    borderRadius: 6,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+  },
+  sensorPillText: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  walletCard: {
+    borderRadius: 8,
+    borderWidth: 1,
+    padding: 14,
+    gap: 12,
+  },
+  walletMaskRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 4,
+  },
+  walletMaskTextCol: {
+    flex: 1,
+    gap: 2,
+  },
+  walletMaskedFigure: {
+    fontFamily: mono,
+    fontSize: 20,
+    fontWeight: '700',
+    letterSpacing: 2,
+  },
+  walletMaskCaption: {
+    fontSize: 12,
+  },
+  unlockWalletBtn: {
+    minHeight: 48,
+    borderRadius: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingHorizontal: 16,
+  },
+  unlockWalletBtnText: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  unlockedBalanceBlock: {
+    gap: 4,
+  },
+  unlockedBalanceLabel: {
+    fontFamily: mono,
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.8,
+  },
+  unlockedBalanceValue: {
+    fontFamily: mono,
+    fontSize: 22,
+    fontWeight: '800',
+  },
+  unlockedPendingText: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  walletBankRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    paddingTop: 8,
+    gap: 8,
+  },
+  walletBankName: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  walletAccountMask: {
+    fontFamily: mono,
+    fontSize: 12,
+  },
+  walletLastSettlement: {
+    fontSize: 11,
+  },
+  lockWalletBtn: {
+    minHeight: 48,
+    borderRadius: 6,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingHorizontal: 14,
+  },
+  lockWalletBtnText: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  bioPromptIconBox: {
+    height: 100,
+    borderRadius: 8,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  bioPromptSubtitle: {
+    fontSize: 13,
+    lineHeight: 18,
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  bioErrorBox: {
+    borderRadius: 6,
+    borderWidth: 1,
+    padding: 8,
+    marginBottom: 8,
+  },
+  bioErrorText: {
+    fontSize: 12,
+    lineHeight: 16,
+    textAlign: 'center',
+    fontWeight: '500',
+  },
+  bioPromptActionsRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 4,
+  },
+  simSuccessBtn: {
+    flex: 1,
+    minHeight: 48,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+  },
+  simSuccessBtnText: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  simFailureBtn: {
+    flex: 1,
+    minHeight: 48,
+    borderRadius: 6,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+  },
+  simFailureBtnText: {
+    fontSize: 13,
+    fontWeight: '600',
   },
 });
