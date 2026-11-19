@@ -27,6 +27,18 @@ import {
   type DeclineReasonCode,
   type PreviewOutcome,
 } from '../../lib/worker-workspace-preview';
+import {
+  WORK_PROOF_DISCLAIMER,
+  SAMPLE_WORK_PROOF_ASSETS,
+  INITIAL_ATTACHED_WORK_PROOFS,
+  canAttachProof,
+  attachWorkProof,
+  removeWorkProof,
+  getWorkProofsByCategory,
+  type WorkProofCategory,
+  type WorkProofSampleAsset,
+  type AttachedWorkProof,
+} from '../../lib/work-proof-preview';
 
 function useEscapeDismiss(visible: boolean, onDismiss: () => void) {
   useEffect(() => {
@@ -65,22 +77,75 @@ function useCheckInSimulationState() {
   return { showCheckIn, setShowCheckIn, isArrivalSimulated, setIsArrivalSimulated, resetArrival, resetCheckIn };
 }
 
+function useWorkProofActions(
+  setProofs: React.Dispatch<React.SetStateAction<AttachedWorkProof[]>>,
+  setPickerVisible: React.Dispatch<React.SetStateAction<boolean>>,
+  selectedProof: AttachedWorkProof | null,
+  setSelectedProof: React.Dispatch<React.SetStateAction<AttachedWorkProof | null>>,
+  setActiveCategory: React.Dispatch<React.SetStateAction<WorkProofCategory>>
+) {
+  const onAttach = (asset: WorkProofSampleAsset) => {
+    setProofs((prev) => attachWorkProof(prev, asset));
+    setPickerVisible(false);
+  };
+  const onRemove = (proofId: string) => {
+    setProofs((prev) => removeWorkProof(prev, proofId));
+    if (selectedProof?.id === proofId) setSelectedProof(null);
+  };
+  const resetProofs = () => {
+    setProofs([...INITIAL_ATTACHED_WORK_PROOFS]);
+    setActiveCategory('BEFORE');
+    setPickerVisible(false);
+    setSelectedProof(null);
+  };
+  return { onAttach, onRemove, resetProofs };
+}
+
+function useWorkProofPreviewState() {
+  const [proofs, setProofs] = useState<AttachedWorkProof[]>([...INITIAL_ATTACHED_WORK_PROOFS]);
+  const [activeCategory, setActiveCategory] = useState<WorkProofCategory>('BEFORE');
+  const [pickerVisible, setPickerVisible] = useState(false);
+  const [selectedProof, setSelectedProof] = useState<AttachedWorkProof | null>(null);
+  const actions = useWorkProofActions(setProofs, setPickerVisible, selectedProof, setSelectedProof, setActiveCategory);
+  return {
+    proofs,
+    activeCategory,
+    setActiveCategory,
+    pickerVisible,
+    setPickerVisible,
+    selectedProof,
+    setSelectedProof,
+    ...actions,
+  };
+}
+
+function createWorkspaceResetAll(
+  setSelectedLeadId: (id: string | null) => void,
+  setPreviewOutcome: (outcome: PreviewOutcome | null) => void,
+  checkIn: ReturnType<typeof useCheckInSimulationState>,
+  workProofs: ReturnType<typeof useWorkProofPreviewState>,
+  modals: ReturnType<typeof useModalStates>
+) {
+  return () => {
+    setSelectedLeadId(null);
+    setPreviewOutcome(null);
+    checkIn.resetCheckIn();
+    workProofs.resetProofs();
+    modals.setAcceptModalVisible(false);
+    modals.setDeclineModalVisible(false);
+    modals.setSelectedReason(null);
+  };
+}
+
 function useWorkspacePreviewState() {
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   const [previewOutcome, setPreviewOutcome] = useState<PreviewOutcome | null>(null);
   const modals = useModalStates();
   const checkIn = useCheckInSimulationState();
+  const workProofs = useWorkProofPreviewState();
+  const resetAll = createWorkspaceResetAll(setSelectedLeadId, setPreviewOutcome, checkIn, workProofs, modals);
 
-  const resetAll = () => {
-    setSelectedLeadId(null);
-    setPreviewOutcome(null);
-    checkIn.resetCheckIn();
-    modals.setAcceptModalVisible(false);
-    modals.setDeclineModalVisible(false);
-    modals.setSelectedReason(null);
-  };
-
-  return { selectedLeadId, setSelectedLeadId, previewOutcome, setPreviewOutcome, resetAll, ...modals, ...checkIn };
+  return { selectedLeadId, setSelectedLeadId, previewOutcome, setPreviewOutcome, resetAll, ...modals, ...checkIn, ...workProofs };
 }
 
 function useAcceptDeclineHandlers(state: ReturnType<typeof useWorkspacePreviewState>) {
@@ -134,11 +199,16 @@ function useDetailCallbacks(state: ReturnType<typeof useWorkspacePreviewState>) 
     onResetOutcome: () => {
       state.setPreviewOutcome(null);
       state.resetCheckIn();
+      state.resetProofs();
     },
     onOpenAccept: () => state.setAcceptModalVisible(true),
     onOpenDecline: () => state.setDeclineModalVisible(true),
     onOpenCheckIn: () => state.setShowCheckIn(true),
     onSimulateArrival: () => state.setIsArrivalSimulated(true),
+    onChangeCategory: (cat: WorkProofCategory) => state.setActiveCategory(cat),
+    onOpenPicker: () => state.setPickerVisible(true),
+    onSelectProof: (proof: AttachedWorkProof) => state.setSelectedProof(proof),
+    onRemoveProof: (id: string) => state.onRemove(id),
   };
 }
 
@@ -160,6 +230,8 @@ function DetailViewWithState({
       showCheckIn={state.showCheckIn}
       isArrivalSimulated={state.isArrivalSimulated}
       onResetArrival={state.resetArrival}
+      proofs={state.proofs}
+      activeCategory={state.activeCategory}
       {...cbs}
     />
   );
@@ -183,6 +255,21 @@ type WorkspaceModalsProps = {
   onConfirmDecline: () => void;
 };
 
+function WorkProofModals({ state }: { state: ReturnType<typeof useWorkspacePreviewState> }) {
+  return (
+    <>
+      <SampleProofPickerModal
+        visible={state.pickerVisible}
+        activeCategory={state.activeCategory}
+        attachedProofs={state.proofs}
+        onClose={() => state.setPickerVisible(false)}
+        onSelectAsset={state.onAttach}
+      />
+      <WorkProofDetailModal proof={state.selectedProof} onClose={() => state.setSelectedProof(null)} />
+    </>
+  );
+}
+
 function WorkspaceModals({ state, onConfirmAccept, onConfirmDecline }: WorkspaceModalsProps) {
   const onCancelDecline = () => {
     state.setDeclineModalVisible(false);
@@ -202,6 +289,7 @@ function WorkspaceModals({ state, onConfirmAccept, onConfirmDecline }: Workspace
         onCancel={onCancelDecline}
         onConfirm={onConfirmDecline}
       />
+      <WorkProofModals state={state} />
     </>
   );
 }
@@ -495,6 +583,12 @@ type LeadDetailProps = {
   isArrivalSimulated: boolean;
   onSimulateArrival: () => void;
   onResetArrival: () => void;
+  proofs: readonly AttachedWorkProof[];
+  activeCategory: WorkProofCategory;
+  onChangeCategory: (cat: WorkProofCategory) => void;
+  onOpenPicker: () => void;
+  onSelectProof: (proof: AttachedWorkProof) => void;
+  onRemoveProof: (id: string) => void;
 };
 
 type LeadDetailActionsProps = {
@@ -508,7 +602,35 @@ type LeadDetailActionsProps = {
   isArrivalSimulated: boolean;
   onSimulateArrival: () => void;
   onResetArrival: () => void;
+  proofs: readonly AttachedWorkProof[];
+  activeCategory: WorkProofCategory;
+  onChangeCategory: (cat: WorkProofCategory) => void;
+  onOpenPicker: () => void;
+  onSelectProof: (proof: AttachedWorkProof) => void;
+  onRemoveProof: (id: string) => void;
 };
+
+function AcceptedDetailSections(props: LeadDetailActionsProps) {
+  return (
+    <>
+      {props.showCheckIn && (
+        <CheckInSimulationSection
+          isArrivalSimulated={props.isArrivalSimulated}
+          onSimulateArrival={props.onSimulateArrival}
+          onResetArrival={props.onResetArrival}
+        />
+      )}
+      <WorkProofPreviewSection
+        proofs={props.proofs}
+        activeCategory={props.activeCategory}
+        onChangeCategory={props.onChangeCategory}
+        onOpenPicker={props.onOpenPicker}
+        onSelectProof={props.onSelectProof}
+        onRemoveProof={props.onRemoveProof}
+      />
+    </>
+  );
+}
 
 function LeadDetailActions(props: LeadDetailActionsProps) {
   if (!props.isAlert) return null;
@@ -522,13 +644,7 @@ function LeadDetailActions(props: LeadDetailActionsProps) {
         onDecline={props.onDecline}
         onOpenCheckIn={props.onOpenCheckIn}
       />
-      {isAccepted && props.showCheckIn ? (
-        <CheckInSimulationSection
-          isArrivalSimulated={props.isArrivalSimulated}
-          onSimulateArrival={props.onSimulateArrival}
-          onResetArrival={props.onResetArrival}
-        />
-      ) : null}
+      {isAccepted && <AcceptedDetailSections {...props} />}
     </>
   );
 }
@@ -879,6 +995,233 @@ function CheckInSimulationSection({
   );
 }
 
+const ProofIcon = Ionicons;
+
+function WorkProofDisclaimerCard() {
+  const c = useThemeColors();
+  return (
+    <View style={[s.workProofDisclaimerCard, { backgroundColor: c.strip, borderColor: c.divider }]}>
+      <ProofIcon name="information-circle-outline" size={16} color={c.amber} accessible={false} />
+      <Text style={[s.workProofDisclaimerText, { color: c.mutedText }]}>
+        {WORK_PROOF_DISCLAIMER}
+      </Text>
+    </View>
+  );
+}
+
+type CategoryTabItemProps = {
+  label: string;
+  count: number;
+  isActive: boolean;
+  onPress: () => void;
+};
+
+function WorkProofCategoryTabItem({ label, count, isActive, onPress }: CategoryTabItemProps) {
+  const c = useThemeColors();
+  const bg = isActive ? (c.mode === 'light' ? c.amberHover : c.amber) : c.card;
+  const fg = isActive ? (c.mode === 'dark' ? c.canvas : c.card) : c.mutedText;
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${label}, ${count} of 3 photos attached`}
+      onPress={onPress}
+      style={[s.categoryTabBtn, { backgroundColor: bg, borderColor: isActive ? c.amber : c.divider }]}
+    >
+      <Text style={[s.categoryTabText, { color: fg, fontWeight: isActive ? '700' : '500' }]}>
+        {label} ({count}/3)
+      </Text>
+    </Pressable>
+  );
+}
+
+type WorkProofCategoryTabsProps = {
+  activeCategory: WorkProofCategory;
+  proofs: readonly AttachedWorkProof[];
+  onChangeCategory: (cat: WorkProofCategory) => void;
+};
+
+function WorkProofCategoryTabs({ activeCategory, proofs, onChangeCategory }: WorkProofCategoryTabsProps) {
+  const beforeCount = getWorkProofsByCategory(proofs, 'BEFORE').length;
+  const afterCount = getWorkProofsByCategory(proofs, 'AFTER').length;
+  return (
+    <View style={s.categoryTabsRow}>
+      <WorkProofCategoryTabItem
+        label="Before Work"
+        count={beforeCount}
+        isActive={activeCategory === 'BEFORE'}
+        onPress={() => onChangeCategory('BEFORE')}
+      />
+      <WorkProofCategoryTabItem
+        label="After Work"
+        count={afterCount}
+        isActive={activeCategory === 'AFTER'}
+        onPress={() => onChangeCategory('AFTER')}
+      />
+    </View>
+  );
+}
+
+type AttachProofButtonProps = {
+  disabled: boolean;
+  onPress: () => void;
+};
+
+function AttachProofButton({ disabled, onPress }: AttachProofButtonProps) {
+  const [isFocused, setIsFocused] = useState(false);
+  const c = useThemeColors();
+  const bg = disabled ? c.cardHover : c.mode === 'light' ? c.amberHover : c.amber;
+  const fg = disabled ? c.mutedText : c.mode === 'dark' ? c.canvas : c.card;
+  const label = disabled ? 'Maximum proofs reached for this category' : 'Attach sample proof photo';
+  const text = disabled ? 'Limit Reached (3/3)' : 'Attach Proof Photo';
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      disabled={disabled}
+      onPress={onPress}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      style={({ pressed }) => [s.attachProofBtn, { backgroundColor: pressed && !disabled ? c.amberHover : bg, opacity: disabled ? 0.6 : 1 }]}
+    >
+      <ProofIcon name="camera-outline" size={18} color={fg} accessible={false} />
+      <Text style={[s.attachProofBtnText, { color: fg }]}>{text}</Text>
+      {isFocused && !disabled && <View pointerEvents="none" style={[s.outerFocusRing, { borderColor: c.amber }]} />}
+    </Pressable>
+  );
+}
+
+function WorkProofThumbnailRemoveBtn({
+  title,
+  onRemove,
+}: {
+  title: string;
+  onRemove: () => void;
+}) {
+  const c = useThemeColors();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Remove work proof: ${title}`}
+      onPress={onRemove}
+      style={({ pressed }) => [s.proofRemoveBtn, { opacity: pressed ? 0.6 : 1 }]}
+    >
+      <ProofIcon name="trash-outline" size={18} color={c.mode === 'light' ? '#DC2626' : '#FF6B6B'} accessible={false} />
+    </Pressable>
+  );
+}
+
+type ProofThumbnailProps = {
+  item: AttachedWorkProof;
+  onSelect: (item: AttachedWorkProof) => void;
+  onRemove: (id: string) => void;
+};
+
+function WorkProofThumbnailCard({ item, onSelect, onRemove }: ProofThumbnailProps) {
+  const c = useThemeColors();
+  return (
+    <View style={[s.proofCard, { backgroundColor: c.card, borderColor: c.divider }]}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`View proof photo details: ${item.title}`}
+        onPress={() => onSelect(item)}
+        style={s.proofCardBody}
+      >
+        <View style={[s.proofImagePlaceholder, { backgroundColor: c.strip }]}>
+          <ProofIcon name="image-outline" size={24} color={c.amber} accessible={false} />
+          <Text style={[s.proofDimensionsTag, { color: c.mutedText }]}>{item.simulatedFileSize}</Text>
+        </View>
+        <View style={s.proofMetaCol}>
+          <Text style={[s.proofCardTitle, { color: c.mainText }]} numberOfLines={1}>{item.title}</Text>
+          <Text style={[s.proofCardCaption, { color: c.mutedText }]} numberOfLines={2}>{item.caption}</Text>
+        </View>
+      </Pressable>
+      <WorkProofThumbnailRemoveBtn title={item.title} onRemove={() => onRemove(item.id)} />
+    </View>
+  );
+}
+
+function WorkProofEmptyState({ category }: { category: WorkProofCategory }) {
+  const c = useThemeColors();
+  const label = category === 'BEFORE' ? 'before-work' : 'after-work';
+  return (
+    <View style={[s.proofEmptyBox, { backgroundColor: c.strip, borderColor: c.divider }]}>
+      <ProofIcon name="images-outline" size={28} color={c.mutedText} accessible={false} />
+      <Text style={[s.proofEmptyText, { color: c.mutedText }]}>
+        No {label} proof photos attached yet. Tap "Attach Proof Photo" to choose a local sample.
+      </Text>
+    </View>
+  );
+}
+
+function WorkProofHeaderBlock() {
+  const c = useThemeColors();
+  const tagColor = getStripAccentColor(c, c.amber);
+  return (
+    <View style={s.workProofHeaderRow}>
+      <View style={s.workProofTitleCol}>
+        <Text style={[s.workProofEyebrow, { color: c.mode === 'light' ? c.amberHover : c.amber }]}>
+          WORK PROOFS PREVIEW
+        </Text>
+        <Text style={[s.workProofHeading, { color: c.mainText }]}>
+          Before & After Job Verification
+        </Text>
+      </View>
+      <View style={[s.localPreviewTag, { backgroundColor: c.strip, borderColor: c.divider }]}>
+        <Text style={[s.localPreviewTagText, { color: tagColor }]}>BW-009 / BW-010</Text>
+      </View>
+    </View>
+  );
+}
+
+type ProofListProps = {
+  category: WorkProofCategory;
+  categoryProofs: readonly AttachedWorkProof[];
+  onSelectProof: (proof: AttachedWorkProof) => void;
+  onRemoveProof: (id: string) => void;
+};
+
+function WorkProofThumbnailList({ category, categoryProofs, onSelectProof, onRemoveProof }: ProofListProps) {
+  if (categoryProofs.length === 0) {
+    return <WorkProofEmptyState category={category} />;
+  }
+  return (
+    <>
+      {categoryProofs.map((item) => (
+        <WorkProofThumbnailCard key={item.id} item={item} onSelect={onSelectProof} onRemove={onRemoveProof} />
+      ))}
+    </>
+  );
+}
+
+type WorkProofSectionProps = {
+  proofs: readonly AttachedWorkProof[];
+  activeCategory: WorkProofCategory;
+  onChangeCategory: (cat: WorkProofCategory) => void;
+  onOpenPicker: () => void;
+  onSelectProof: (proof: AttachedWorkProof) => void;
+  onRemoveProof: (id: string) => void;
+};
+
+function WorkProofPreviewSection(props: WorkProofSectionProps) {
+  const c = useThemeColors();
+  const categoryProofs = getWorkProofsByCategory(props.proofs, props.activeCategory);
+  const canAttach = canAttachProof(props.proofs, props.activeCategory);
+  return (
+    <View style={[s.workProofSection, { backgroundColor: c.canvas, borderColor: c.amber }]}>
+      <WorkProofHeaderBlock />
+      <WorkProofCategoryTabs activeCategory={props.activeCategory} proofs={props.proofs} onChangeCategory={props.onChangeCategory} />
+      <WorkProofThumbnailList
+        category={props.activeCategory}
+        categoryProofs={categoryProofs}
+        onSelectProof={props.onSelectProof}
+        onRemoveProof={props.onRemoveProof}
+      />
+      <AttachProofButton disabled={!canAttach} onPress={props.onOpenPicker} />
+      <WorkProofDisclaimerCard />
+    </View>
+  );
+}
+
 function ResetOutcomeButton({ onReset }: { onReset: () => void }) {
   const c = useThemeColors();
   const [focused, setFocused] = useState(false);
@@ -1173,6 +1516,155 @@ function DeclineModalActions({ selectedReason, onCancel, onConfirm }: DeclineAct
       <DeclineCancelBtn onCancel={onCancel} c={c} />
       <DeclineConfirmBtn isDisabled={isDisabled} onConfirm={onConfirm} confirmBg={confirmBg} confirmFg={confirmFg} c={c} />
     </View>
+  );
+}
+
+type SampleOptionProps = {
+  asset: WorkProofSampleAsset;
+  isAttached: boolean;
+  onSelect: () => void;
+};
+
+function SamplePickerOptionRow({ asset, isAttached, onSelect }: SampleOptionProps) {
+  const c = useThemeColors();
+  const label = `Select sample: ${asset.title}${isAttached ? ' (already attached)' : ''}`;
+  const icon = isAttached ? 'checkmark-circle' : 'add-circle-outline';
+  const rowBorder = isAttached ? c.mutedText : c.divider;
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      disabled={isAttached}
+      onPress={onSelect}
+      style={({ pressed }) => [
+        s.sampleOptionRow,
+        { backgroundColor: c.card, borderColor: rowBorder, opacity: isAttached ? 0.5 : pressed ? 0.7 : 1 },
+      ]}
+    >
+      <View style={s.sampleOptionBody}>
+        <Text style={[s.sampleOptionTrade, { color: c.amber }]}>{asset.trade} • {asset.simulatedFileSize}</Text>
+        <Text style={[s.sampleOptionTitle, { color: c.mainText }]}>{asset.title}</Text>
+        <Text style={[s.sampleOptionCaption, { color: c.mutedText }]}>{asset.caption}</Text>
+      </View>
+      <ProofIcon name={icon} size={22} color={isAttached ? c.amber : c.mainText} accessible={false} />
+    </Pressable>
+  );
+}
+
+type PickerContentProps = {
+  activeCategory: WorkProofCategory;
+  attachedProofs: readonly AttachedWorkProof[];
+  onClose: () => void;
+  onSelectAsset: (asset: WorkProofSampleAsset) => void;
+};
+
+function SampleProofPickerHeader({ category, onClose }: { category: WorkProofCategory; onClose: () => void }) {
+  const c = useThemeColors();
+  const title = `Select Sample ${category === 'BEFORE' ? 'Before' : 'After'} Photo`;
+  return (
+    <View style={s.modalHeaderRow}>
+      <Text accessibilityRole="header" style={[s.modalTitle, { color: c.mainText }]}>{title}</Text>
+      <Pressable accessibilityRole="button" accessibilityLabel="Close sample photo picker" onPress={onClose} style={s.modalCloseIconBtn}>
+        <ProofIcon name="close-circle-outline" size={24} color={c.mutedText} accessible={false} />
+      </Pressable>
+    </View>
+  );
+}
+
+function SampleProofPickerContent({ activeCategory, attachedProofs, onClose, onSelectAsset }: PickerContentProps) {
+  const availableAssets = SAMPLE_WORK_PROOF_ASSETS.filter((a) => a.category === activeCategory);
+  return (
+    <>
+      <SampleProofPickerHeader category={activeCategory} onClose={onClose} />
+      <ScrollView style={s.sampleOptionScroll}>
+        {availableAssets.map((asset) => (
+          <SamplePickerOptionRow
+            key={asset.id}
+            asset={asset}
+            isAttached={attachedProofs.some((p) => p.assetId === asset.id)}
+            onSelect={() => onSelectAsset(asset)}
+          />
+        ))}
+      </ScrollView>
+    </>
+  );
+}
+
+type SamplePickerModalProps = {
+  visible: boolean;
+  activeCategory: WorkProofCategory;
+  attachedProofs: readonly AttachedWorkProof[];
+  onClose: () => void;
+  onSelectAsset: (asset: WorkProofSampleAsset) => void;
+};
+
+function SampleProofPickerModal(props: SamplePickerModalProps) {
+  const c = useThemeColors();
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
+  useEscapeDismiss(props.visible, props.onClose);
+  return (
+    <Modal visible={props.visible} transparent animationType="none" onRequestClose={props.onClose}>
+      <View style={[s.modalOverlay, isLandscape ? s.overlayCenter : s.overlayBottom]}>
+        <View style={[s.modalCard, isLandscape ? s.cardLandscape : s.cardPortrait, { backgroundColor: c.card, borderColor: c.mutedText }]}>
+          {!isLandscape && <View style={[s.sheetHandle, { backgroundColor: c.mutedText }]} />}
+          <SampleProofPickerContent {...props} />
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function WorkProofDetailHeader({ category, onClose }: { category: WorkProofCategory; onClose: () => void }) {
+  const c = useThemeColors();
+  const title = `${category === 'BEFORE' ? 'Before Work' : 'After Work'} Proof`;
+  return (
+    <View style={s.modalHeaderRow}>
+      <Text accessibilityRole="header" style={[s.modalTitle, { color: c.mainText }]}>{title}</Text>
+      <Pressable accessibilityRole="button" accessibilityLabel="Close work proof details" onPress={onClose} style={s.modalCloseIconBtn}>
+        <ProofIcon name="close-circle-outline" size={24} color={c.mutedText} accessible={false} />
+      </Pressable>
+    </View>
+  );
+}
+
+function WorkProofDetailContent({ proof, onClose }: { proof: AttachedWorkProof; onClose: () => void }) {
+  const c = useThemeColors();
+  return (
+    <>
+      <WorkProofDetailHeader category={proof.category} onClose={onClose} />
+      <View style={[s.proofDetailImageMock, { backgroundColor: c.strip, borderColor: c.divider }]}>
+        <ProofIcon name="image" size={48} color={c.amber} accessible={false} />
+        <Text style={[s.proofDetailUri, { color: c.mutedText }]}>{proof.sampleUri}</Text>
+      </View>
+      <Text style={[s.proofDetailTitle, { color: c.mainText }]}>{proof.title}</Text>
+      <Text style={[s.proofDetailCaption, { color: c.mutedText }]}>{proof.caption}</Text>
+      <View style={[s.proofDetailMetaRow, { borderColor: c.divider }]}>
+        <Text style={[s.proofDetailMetaText, { color: c.mutedText }]}>Size: {proof.simulatedFileSize}</Text>
+        <Text style={[s.proofDetailMetaText, { color: c.mutedText }]}>Status: Local Preview</Text>
+      </View>
+      <Pressable accessibilityRole="button" accessibilityLabel="Close details" onPress={onClose} style={[s.modalCloseFullBtn, { backgroundColor: c.amber }]}>
+        <Text style={[s.modalActionBtnText, { color: c.mode === 'dark' ? c.canvas : c.card }]}>Close</Text>
+      </Pressable>
+    </>
+  );
+}
+
+function WorkProofDetailModal({ proof, onClose }: { proof: AttachedWorkProof | null; onClose: () => void }) {
+  const c = useThemeColors();
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
+  useEscapeDismiss(Boolean(proof), onClose);
+  if (!proof) return null;
+  return (
+    <Modal visible={Boolean(proof)} transparent animationType="none" onRequestClose={onClose}>
+      <View style={[s.modalOverlay, isLandscape ? s.overlayCenter : s.overlayBottom]}>
+        <View style={[s.modalCard, isLandscape ? s.cardLandscape : s.cardPortrait, { backgroundColor: c.card, borderColor: c.mutedText }]}>
+          {!isLandscape && <View style={[s.sheetHandle, { backgroundColor: c.mutedText }]} />}
+          <WorkProofDetailContent proof={proof} onClose={onClose} />
+        </View>
+      </View>
+    </Modal>
   );
 }
 
@@ -1720,5 +2212,217 @@ const s = StyleSheet.create({
     fontSize: 11,
     lineHeight: 16,
     fontWeight: '500',
+  },
+  workProofSection: {
+    borderRadius: 8,
+    borderWidth: 1.5,
+    padding: 14,
+    gap: 12,
+    marginTop: 10,
+  },
+  workProofHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 8,
+  },
+  workProofTitleCol: {
+    flex: 1,
+    gap: 2,
+  },
+  workProofEyebrow: {
+    fontFamily: mono,
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+  workProofHeading: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  categoryTabsRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  categoryTabBtn: {
+    flex: 1,
+    minHeight: 48,
+    borderRadius: 6,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 10,
+  },
+  categoryTabText: {
+    fontSize: 13,
+  },
+  attachProofBtn: {
+    minHeight: 48,
+    borderRadius: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingHorizontal: 14,
+  },
+  attachProofBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  workProofDisclaimerCard: {
+    borderRadius: 6,
+    borderWidth: 1,
+    padding: 10,
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'flex-start',
+  },
+  workProofDisclaimerText: {
+    fontSize: 12,
+    lineHeight: 17,
+    flex: 1,
+  },
+  proofCard: {
+    borderRadius: 6,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+    gap: 10,
+  },
+  proofCardBody: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  proofImagePlaceholder: {
+    width: 60,
+    height: 60,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 2,
+  },
+  proofDimensionsTag: {
+    fontSize: 9,
+    fontFamily: mono,
+  },
+  proofMetaCol: {
+    flex: 1,
+    gap: 2,
+  },
+  proofCardTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  proofCardCaption: {
+    fontSize: 11,
+    lineHeight: 15,
+  },
+  proofRemoveBtn: {
+    minHeight: 48,
+    minWidth: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 6,
+  },
+  proofEmptyBox: {
+    borderRadius: 6,
+    borderWidth: 1,
+    padding: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  proofEmptyText: {
+    fontSize: 12,
+    lineHeight: 17,
+    textAlign: 'center',
+  },
+  modalHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  modalCloseIconBtn: {
+    minHeight: 48,
+    minWidth: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sampleOptionScroll: {
+    maxHeight: 280,
+  },
+  sampleOptionRow: {
+    minHeight: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 12,
+    marginBottom: 8,
+    gap: 10,
+  },
+  sampleOptionBody: {
+    flex: 1,
+    gap: 2,
+  },
+  sampleOptionTrade: {
+    fontSize: 10,
+    fontFamily: mono,
+    fontWeight: '700',
+  },
+  sampleOptionTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  sampleOptionCaption: {
+    fontSize: 11,
+    lineHeight: 15,
+  },
+  proofDetailImageMock: {
+    height: 120,
+    borderRadius: 8,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 6,
+    marginVertical: 10,
+  },
+  proofDetailUri: {
+    fontSize: 11,
+    fontFamily: mono,
+  },
+  proofDetailTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  proofDetailCaption: {
+    fontSize: 12,
+    lineHeight: 17,
+    marginBottom: 10,
+  },
+  proofDetailMetaRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    paddingTop: 8,
+    marginBottom: 14,
+  },
+  proofDetailMetaText: {
+    fontSize: 11,
+    fontFamily: mono,
+  },
+  modalCloseFullBtn: {
+    minHeight: 48,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
   },
 });
