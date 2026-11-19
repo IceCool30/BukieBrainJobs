@@ -25,7 +25,7 @@ export const CreatePaymentSchema = z.object({
 
 export const PaystackWebhookSchema = z.object({
   event: z.string(),
-  data: z.record(z.any()),
+  data: z.record(z.string(), z.any()),
 })
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

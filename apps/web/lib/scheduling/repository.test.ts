@@ -1,7 +1,7 @@
 // apps/web/lib/scheduling/repository.test.ts
 // BW-007 Phase 2: Collaborative Scheduling and Dispatch Repository Contracts
 
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   getSchedulingRepository,
   resetSchedulingRepository,
@@ -27,7 +27,13 @@ describe('BW-007 Phase 2: SchedulingRepository Contracts', () => {
   };
 
   beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-10-20T08:00:00.000Z'));
     resetSchedulingRepository();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('REP-001: seedBookingSchedule initializes and getBookingSchedule retrieves record', async () => {
