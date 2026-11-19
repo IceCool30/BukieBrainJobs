@@ -1,0 +1,5 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.overrides", "pnpm.patchedDependencies". See https://pnpm.io/settings for the new home of each setting.
+
+> @bukiebrainjobs/web@1.0.0 type-check /home/ubuntu/.gemini/antigravity/scratch/BukieBrainJobs/apps/web
+> tsc --noEmit
+

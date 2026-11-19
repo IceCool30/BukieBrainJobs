@@ -8,11 +8,12 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Active Work Slice
 
-- **Product phase**: Phase 3 Full Two-Sided Marketplace Lifecycle.
-- **Current product baseline**: BW-009 Post-Job Completion & Escrow Release (Item 3.3), merged into `main` via PR #65 at `05944bb`, with the follow-up JSX quote fix at `5fc9278`.
-- **Next product milestone**: Item 3.4 Dispute Handling & Support Interface (`BW-010`). The specification and full implementation exist on `feature/bw-010-dispute-support` at `096af24`, with the branch tip at `840d443` after the skill install; PM review is accepted and owner commit approval and merge are pending. Accepted Phase 4 native work exists on `feature/mobile-accepted-slices` at `535beda`, with the branch tip at `01fa0db`, also unmerged.
-- **Recorded implementation status for BW-009**: Phases 1 to 5 verified. 42/42 contracts passed (`COMPL-001..010`, `REP-001..010`, `COMP-001..012`, `ROUTE-001..010`); 4/4 completion test suites passed; 7/7 monorepo type-check clean; `/completion/[bookingId]` compiles cleanly. These counts come from the retained feature report and were not rerun during this documentation reconciliation.
-- **Specification**: `docs/specs/BW-009-post-job-completion.md`.
+- **Product phase**: Phase 4 Mobile Application (`apps/mobile`).
+- **Current product milestone**: Phase 4.1 Native Navigation & Shared Shell (Items 4.1.1 to 4.1.3 PM REVIEW ACCEPTED) and Phase 4.2.1 Native public discovery (MOB-001 PM REVIEW ACCEPTED; 46/46 unit/integration tests verified, web/Android/iOS exports green, 10/10 Playwright steps verified with video/screenshots). Active work item: MOB-ACT-001 native customer activity hub - delegated PM scope approval on 31 Oct 2026; implementation not started; acceptance not accepted; Phase 4.2.2 IN PROGRESS. Native `/book` (`MOB-BOOK-001`) PM accepted after owner-delegated review, local preview only. Native `/post-job` (MOB-POST-001) received delegated PM implementation acceptance on 31 Oct 2026 for the native local-preview scope; native-device QA remains unverified.
+- **Current product baseline**: BW-009 Post-Job Completion & Escrow Release (Item 3.3) merged into `main` via PR #65 at `05944bb`, with the follow-up JSX quote fix at `5fc9278`. BW-010 Dispute Handling & Support Interface (Item 3.4) is PM review accepted and owner commit approval pending, committed on `feature/bw-010-dispute-support` at `096af24` (branch tip `840d443`).
+- **Next product slice**: MOB-ACT-001 native customer activity hub - delegated PM scope approval on 31 Oct 2026; implementation not started; acceptance not accepted; Phase 4.2.2 IN PROGRESS. Scoped implementation and verification of the native customer activity hub per `docs/specs/MOB-ACT-001-native-customer-activity-hub.md`.
+- **Current implementation status**: Item 4.2.1 (MOB-001: Native public discovery) has completed domain, screen, integration, and browser/device emulation QA: standalone marketing homepage in `app/index.tsx` routing to `/(tabs)/services`, 8 canonical services and 3 groups in `lib/services.ts`, category catalog in `app/(tabs)/services.tsx` with live search, text-only pills, and 48dp touch targets, shared bottom tab bar geometry in `app/(tabs)/_layout.tsx` resolved to 75x49px (>= 48x48dp), service detail in `app/services/[id].tsx` with safe areas and honest LOCAL PREVIEW copy, zero location claims, zero price/rating inventions, and untouched tab screens (`home.tsx`, `jobs.tsx`, `messages.tsx`, `profile.tsx`). Verified with 46/46 mobile unit and integration tests across 6 suites, clean type-check, and clean diff check. Real compiled Expo app output (`apps/mobile/dist-web`) verified end-to-end via Playwright mobile emulation with continuous video recording (`expo-mob001-discovery-verification.webm`) and 9 screen captures (`expo-mob001-01` to `expo-mob001-09`). Native iOS Simulator coverage is unavailable (requires macOS; zero macOS hosts exist across authorized inventory). Native Android emulator coverage is unavailable (Linux container lacks `/dev/kvm`, CPU has zero virtualization flags, software TCG fails to mount `/data` or process APEX packages in reasonable time). The accepted mobile work is committed and pushed on `feature/mobile-accepted-slices` at `535beda` (branch tip `01fa0db`). New work item: MOB-ACT-001 native customer activity hub - delegated PM scope approval on 31 Oct 2026; implementation not started; acceptance not accepted; Phase 4.2.2 IN PROGRESS.
+- **Specification**: `docs/specs/MOB-001-native-public-discovery.md` (Approved for Implementation) and `docs/specs/IA-001-navigation-information-architecture.md`. Also `docs/specs/MOB-POST-001-native-job-posting.md` (delegated PM implementation acceptance, 31 Oct 2026) and `docs/specs/MOB-ACT-001-native-customer-activity-hub.md` (delegated PM scope approval, 31 Oct 2026; implementation not started; acceptance not accepted; Phase 4.2.2 IN PROGRESS).
 
 ## Completed BW-003 Scope Record
 
@@ -178,7 +179,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `bash scripts/nine-status.sh`
 
 - [x] **1. Foundation & Repository Baseline Upgrade**
-  - **Spec**: `docs/00-governance/TECHNICAL-BASELINE.md`
+  - **Spec**: `docs/specs/FOUND-001-baseline.md`
   - **Acceptance Criteria**:
     - [x] Upgraded to Node 24 LTS, Next.js 15.5, React 19, Tailwind CSS v4, Prisma v6, Zustand v5
     - [x] Established Turborepo monorepo with 7 shared packages
@@ -186,7 +187,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm type-check && pnpm test`
 
 - [x] **2. ARCH-002 Production-First Mock Data Contracts**
-  - **Spec**: `docs/03-architecture/ARCH-002-CONTRACT-DECISIONS.md`
+  - **Spec**: `docs/specs/ARCH-002-contracts.md`
   - **Acceptance Criteria**:
     - [x] Canonical separation of JobStatus (open, in_progress, completed, cancelled) and BookingStatus
     - [x] Strict UserRole enum across web, mobile, and db layers
@@ -194,7 +195,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test lib/jobs/arch002-alignment.test.ts`
 
 - [x] **3. WEB-001 Public Homepage**
-  - **Spec**: `docs/04-public-website/WEB-001-HOMEPAGE.md`
+  - **Spec**: `docs/specs/WEB-001-homepage.md`
   - **Acceptance Criteria**:
     - [x] Customer-first entry paths and category exploration
     - [x] Featured BrainWorkers display without premature booking claims
@@ -202,7 +203,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test`
 
 - [x] **4. WEB-004 Service Detail**
-  - **Spec**: `docs/04-public-website/WEB-004-SERVICE-DETAIL.md`
+  - **Spec**: `docs/specs/WEB-004-service-detail.md`
   - **Acceptance Criteria**:
     - [x] Deterministic service detail route at /services/[serviceId]
     - [x] Starting rates and service deliverables displayed honestly
@@ -210,7 +211,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test lib/services/services.test.ts`
 
 - [x] **5. WEB-005 Public BrainWorker Profile**
-  - **Spec**: `docs/04-public-website/WEB-005-PUBLIC-BRAINWORKER-PROFILE.md`
+  - **Spec**: `docs/specs/WEB-005-public-brainworker-profile.md`
   - **Acceptance Criteria**:
     - [x] Guest-accessible route at /brainworkers/[brainworkerId]
     - [x] PublicBrainWorker projection with zero sensitive verification data exposed
@@ -218,7 +219,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test`
 
 - [x] **6. WEB-006 Services Discovery Catalog**
-  - **Spec**: `docs/04-public-website/WEB-006-SERVICES-DISCOVERY.md`
+  - **Spec**: `docs/specs/WEB-006-services-discovery.md`
   - **Acceptance Criteria**:
     - [x] Bidirectional URL query synchronization for search, category, and city
     - [x] Active city validation with graceful nationwide fallback notices
@@ -226,7 +227,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test app/services/ServicesDirectory.test.tsx`
 
 - [x] **7. WEB-007 Public Booking Preparation**
-  - **Spec**: `docs/04-public-website/WEB-007-PUBLIC-BOOKING-PREPARATION.md`
+  - **Spec**: `docs/specs/WEB-007-booking-preparation.md`
   - **Acceptance Criteria**:
     - [x] Booking preparation form with address and notes validation
     - [x] Pricing summary without fake discount claims
@@ -234,7 +235,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test app/book/BookingScreen.test.tsx`
 
 - [x] **8. WEB-008 Authentication & Account Verification**
-  - **Spec**: `docs/04-public-website/WEB-008A-AUTHENTICATION-DESIGN-BRIEF.md`
+  - **Spec**: `docs/specs/WEB-008-authentication.md`
   - **Acceptance Criteria**:
     - [x] Nigerian phone OTP format validation and verification
     - [x] Email/password login and registration with role assignment
@@ -243,7 +244,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test app/login/LoginScreen.test.tsx lib/auth/auth.test.ts`
 
 - [x] **9. WEB-009 Customer Job Posting**
-  - **Spec**: `docs/04-public-website/WEB-009A-CUSTOMER-JOB-POSTING-DESIGN-BRIEF.md`
+  - **Spec**: `docs/specs/WEB-009-customer-job-posting.md`
   - **Acceptance Criteria**:
     - [x] Multi-step job posting with review summary synchronization
     - [x] Urgency and specific date schedule validation
@@ -251,7 +252,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm --filter @bukiebrainjobs/web test app/post-job/PostJobScreen.test.tsx`
 
 - [x] **10. WEB-010 Customer Dashboard**
-  - **Spec**: `docs/04-public-website/WEB-010A-CUSTOMER-DASHBOARD-DESIGN-BRIEF.md`
+  - **Spec**: `docs/specs/WEB-010-customer-dashboard.md`
   - **Acceptance Criteria**:
     - [x] Authenticated customer home base with operational identity
     - [x] Real-time metric cards and quick action navigation
@@ -271,7 +272,7 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
   - **Verification Command**: `pnpm test && pnpm type-check`
 
 - [x] **12. WEB-012 Customer Job Matching & Match Results**
-  - **Spec**: `docs/specs/WEB-012-matching.md`
+  - **Spec**: `docs/specs/WEB-012-customer-job-matching.md`
   - **Acceptance Criteria**:
     - [x] Durable route at /job/[referenceCode]/matches
     - [x] Ranked candidates with customer-friendly match explanations

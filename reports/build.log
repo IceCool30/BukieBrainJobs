@@ -1,0 +1,247 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.overrides", "pnpm.patchedDependencies". See https://pnpm.io/settings for the new home of each setting.
+
+> @bukiebrainjobs/web@1.0.0 prebuild /home/ubuntu/.gemini/antigravity/scratch/BukieBrainJobs/apps/web
+> prisma generate --schema=../../packages/db/prisma/schema.prisma
+
+Prisma schema loaded from ../../packages/db/prisma/schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to ./../../node_modules/.pnpm/@prisma+client@6.19.3_prisma@6.19.3_typescript@5.9.3__typescript@5.9.3/node_modules/@prisma/client in 302ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+
+
+> @bukiebrainjobs/web@1.0.0 build /home/ubuntu/.gemini/antigravity/scratch/BukieBrainJobs/apps/web
+> next build
+
+   ▲ Next.js 15.5.28
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+ ✓ (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
+ ✓ Compiled successfully in 9.3s
+   Linting and checking validity of types ...
+
+./app/brainworker/BW003Phase7ProductionVerification.test.tsx
+46:44  Warning: 'LeadPage' is defined but never used.  @typescript-eslint/no-unused-vars
+46:54  Warning: 'WorkerQuote' is defined but never used.  @typescript-eslint/no-unused-vars
+57:3  Warning: 'respondedLeadOwnedByA' is defined but never used.  @typescript-eslint/no-unused-vars
+58:3  Warning: 'leadOwnedByB' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/onsite/[bookingId]/page.tsx
+98:6  Warning: React Hook useEffect has missing dependencies: 'loadState' and 'router'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./app/page.tsx
+3:17  Warning: 'useState' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/terms/page.tsx
+3:34  Warning: 'CheckCircle2' is defined but never used.  @typescript-eslint/no-unused-vars
+3:48  Warning: 'AlertCircle' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/HowItWorks.tsx
+10:3  Warning: 'ArrowRight' is defined but never used.  @typescript-eslint/no-unused-vars
+12:3  Warning: 'BadgeCheck' is defined but never used.  @typescript-eslint/no-unused-vars
+14:3  Warning: 'Sparkles' is defined but never used.  @typescript-eslint/no-unused-vars
+16:3  Warning: 'CreditCard' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/Navbar.tsx
+132:9  Warning: 'noop' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/PartnerBar.tsx
+5:41  Warning: 'MapPin' is defined but never used.  @typescript-eslint/no-unused-vars
+75:38  Warning: 'compact' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/brainworker/bookings/BookingsUI.test.tsx
+33:3  Warning: 'FIXTURE_APPROVED_BRAINWORKER_B' is defined but never used.  @typescript-eslint/no-unused-vars
+40:3  Warning: 'ProviderBookingDetail' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/brainworker/leads/LeadsInboxView.tsx
+257:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/brainworker/profile/PortfolioGalleryManager.tsx
+6:36  Warning: 'PortfolioItem' is defined but never used.  @typescript-eslint/no-unused-vars
+145:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/brainworker/profile/ProfileEditorForm.tsx
+124:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/brainworker/profile/ReviewsCounterResponseTab.tsx
+6:15  Warning: 'CustomerReview' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/brainworker/wallet/WalletLedgerTable.tsx
+15:3  Warning: 'payoutRequests' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/completion/AutoReleaseCountdownCard.tsx
+21:16  Warning: '_submittedAt' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/completion/CompletionInspectionSummary.tsx
+100:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/completion/MutualBlindReviewForm.tsx
+32:9  Warning: '_role' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/jobs/JobsNavigation.tsx
+22:23  Warning: '_onOpenNoticeDialog' is defined but never used.  @typescript-eslint/no-unused-vars
+139:23  Warning: '_onOpenNoticeDialog' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/messages/ChatComposer.tsx
+20:3  Warning: 'currentUserId' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/messages/ChatHeader.tsx
+52:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/messages/ChatScreen.tsx
+84:3  Warning: 'onRetryFailedMessage' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/messages/ConversationCard.tsx
+100:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/messages/DeliveryStatusIcon.tsx
+4:49  Warning: 'X' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/messages/ImageLightbox.tsx
+107:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/messages/MediaUploadStaging.tsx
+181:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+220:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/messages/MessageBubble.tsx
+92:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/profile/ProfileNavigation.tsx
+22:23  Warning: '_onOpenNoticeDialog' is defined but never used.  @typescript-eslint/no-unused-vars
+141:23  Warning: '_onOpenNoticeDialog' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/brainworker/bookings/cancellation.test.ts
+37:8  Warning: 'ProviderCancellationReason' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/brainworker/bookings/domain.ts
+5:34  Warning: 'canTransition' is defined but never used.  @typescript-eslint/no-unused-vars
+10:3  Warning: 'DispatchStatus' is defined but never used.  @typescript-eslint/no-unused-vars
+15:3  Warning: 'ScopeAdjustmentDraft' is defined but never used.  @typescript-eslint/no-unused-vars
+18:7  Warning: 'PROVIDER_CANCELLATION_REASONS' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+46:7  Warning: 'FULFILMENT_ACTIONS' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+220:70  Warning: 'cancellationReason' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./lib/brainworker/bookings/repository.ts
+243:5  Warning: '_snapshot' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/brainworker/leads/invitations.test.ts
+14:3  Warning: 'FIXTURE_APPROVED_BRAINWORKER_B' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/brainworker/leads/quotation.test.ts
+14:3  Warning: 'FIXTURE_APPROVED_BRAINWORKER_B' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/brainworker/leads/repository.test.ts
+15:3  Warning: 'FIXTURE_UNAPPROVED_BRAINWORKER' is defined but never used.  @typescript-eslint/no-unused-vars
+17:3  Warning: 'FIXTURE_CUSTOMER_USER_ID' is defined but never used.  @typescript-eslint/no-unused-vars
+20:3  Warning: 'mockUnapprovedWorker' is defined but never used.  @typescript-eslint/no-unused-vars
+22:3  Warning: 'mockCustomerUser' is defined but never used.  @typescript-eslint/no-unused-vars
+26:3  Warning: 'completeProviderContextA' is defined but never used.  @typescript-eslint/no-unused-vars
+27:3  Warning: 'incompleteProviderContext' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/brainworker/leads/types.ts
+5:38  Warning: 'LeadPricingMode' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/messaging/queue.test.ts
+13:3  Warning: 'OfflineQueuedMessage' is defined but never used.  @typescript-eslint/no-unused-vars
+14:3  Warning: 'LocationPayload' is defined but never used.  @typescript-eslint/no-unused-vars
+29:3  Warning: 'FIXTURE_BOOKING_COMPLETED' is defined but never used.  @typescript-eslint/no-unused-vars
+30:3  Warning: 'FIXTURE_BOOKING_CANCELLED' is defined but never used.  @typescript-eslint/no-unused-vars
+32:3  Warning: 'FIXTURE_OFFLINE_MESSAGE_A' is defined but never used.  @typescript-eslint/no-unused-vars
+33:3  Warning: 'FIXTURE_OFFLINE_MESSAGE_B' is defined but never used.  @typescript-eslint/no-unused-vars
+34:3  Warning: 'FIXTURE_OFFLINE_MESSAGE_C' is defined but never used.  @typescript-eslint/no-unused-vars
+35:3  Warning: 'FIXTURE_LOCATION_PAYLOAD' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/messaging/repository.test.ts
+28:3  Warning: 'FIXTURE_CUSTOMER_ID_B' is defined but never used.  @typescript-eslint/no-unused-vars
+30:3  Warning: 'FIXTURE_BRAINWORKER_ID_B' is defined but never used.  @typescript-eslint/no-unused-vars
+45:3  Warning: 'FIXTURE_LOCATION_PAYLOAD' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/messaging/testing/fixtures.ts
+8:3  Warning: 'ConversationSummary' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/messaging/testing/harness.ts
+19:3  Warning: 'LocationPayload' is defined but never used.  @typescript-eslint/no-unused-vars
+36:3  Warning: 'validateImageAttachment' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/scheduling/domain.ts
+139:3  Warning: '_now' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/scheduling/types.test.ts
+13:3  Warning: 'DispatchStatus' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/44) ...
+   Generating static pages (11/44) 
+   Generating static pages (22/44) 
+   Generating static pages (33/44) 
+ ✓ Generating static pages (44/44)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                      15 kB         139 kB
+├ ○ /_not-found                            131 B         104 kB
+├ ○ /book                                11.8 kB         148 kB
+├ ○ /brainworker/availability            5.11 kB         131 kB
+├ ○ /brainworker/bookings                4.84 kB         133 kB
+├ ƒ /brainworker/bookings/[bookingId]    9.54 kB         142 kB
+├ ○ /brainworker/dashboard               5.39 kB         137 kB
+├ ○ /brainworker/leads                    5.2 kB         132 kB
+├ ○ /brainworker/onboarding              19.5 kB         133 kB
+├ ○ /brainworker/profile                 8.24 kB         125 kB
+├ ○ /brainworker/register                2.99 kB         116 kB
+├ ○ /brainworker/services                4.52 kB         131 kB
+├ ○ /brainworker/verification-status     7.26 kB         120 kB
+├ ○ /brainworker/wallet                  8.18 kB         125 kB
+├ ● /brainworkers/[brainworkerId]        5.27 kB         134 kB
+├   ├ /brainworkers/bw-1
+├   ├ /brainworkers/bw-2
+├   ├ /brainworkers/bw-3
+├   └ /brainworkers/bw-4
+├ ƒ /completion/[bookingId]              7.11 kB         111 kB
+├ ○ /dashboard                           12.5 kB         126 kB
+├ ƒ /disputes/[bookingId]                13.3 kB         130 kB
+├ ○ /enterprise                            204 B         118 kB
+├ ○ /forgot-password                       137 B         140 kB
+├ ○ /guarantee                             204 B         118 kB
+├ ƒ /job/[referenceCode]/matches         10.2 kB         118 kB
+├ ○ /jobs                                23.7 kB         174 kB
+├ ○ /login                                 138 B         140 kB
+├ ○ /messages                            3.58 kB         115 kB
+├ ƒ /messages/[jobId]                    5.54 kB         117 kB
+├ ○ /notifications                       8.42 kB         112 kB
+├ ○ /offline                             2.71 kB         116 kB
+├ ƒ /onsite/[bookingId]                  7.71 kB         112 kB
+├ ○ /post-job                            13.7 kB         150 kB
+├ ○ /privacy                               204 B         118 kB
+├ ○ /profile                             16.2 kB         129 kB
+├ ƒ /receipt/[bookingId]                 4.07 kB         121 kB
+├ ○ /register                              138 B         140 kB
+├ ○ /reset-password                        137 B         140 kB
+├ ƒ /scheduling/[bookingId]              7.54 kB         111 kB
+├ ○ /services                            5.62 kB         124 kB
+├ ● /services/[serviceId]                  204 B         118 kB
+├   ├ /services/generator
+├   ├ /services/ac
+├   ├ /services/plumbing
+├   └ [+5 more paths]
+├ ○ /terms                                 204 B         118 kB
+└ ○ /verify                                138 B         140 kB
++ First Load JS shared by all             104 kB
+  ├ chunks/4ee8b327-5c974778bfd64666.js  54.2 kB
+  ├ chunks/915-9736bf7fd7d7ed7f.js       47.7 kB
+  └ other shared chunks (total)          1.93 kB
+
+
+ƒ Middleware                             34.2 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

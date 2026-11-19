@@ -11,6 +11,7 @@ import type { CompletionEscrowStatus } from '../../lib/completion/types';
 export interface EscrowReleaseActionsProps {
   jobStatus: JobStatus;
   escrowStatus: CompletionEscrowStatus;
+  isDisputed?: boolean | undefined;
   onConfirmSatisfaction: () => void | Promise<void>;
   onRaiseDispute?: (() => void) | undefined;
   isSubmitting?: boolean | undefined;
@@ -19,12 +20,15 @@ export interface EscrowReleaseActionsProps {
 export function EscrowReleaseActions({
   jobStatus,
   escrowStatus,
+  isDisputed = false,
   onConfirmSatisfaction,
   onRaiseDispute,
   isSubmitting = false,
 }: EscrowReleaseActionsProps): React.ReactElement {
   const isEligible =
-    jobStatus === 'PENDING_COMPLETION' && escrowStatus === 'ESCROW_HELD';
+    !isDisputed &&
+    jobStatus === 'PENDING_COMPLETION' &&
+    escrowStatus === 'ESCROW_HELD';
 
   return (
     <div
@@ -44,10 +48,10 @@ export function EscrowReleaseActions({
         <button
           type="button"
           onClick={onRaiseDispute}
-          disabled={isSubmitting}
+          disabled={isDisputed || isSubmitting}
           className="flex min-h-[48px] items-center justify-center rounded-full border border-red-500/30 bg-red-500/10 px-5 text-sm font-semibold text-red-400 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Raise Dispute
+          {isDisputed ? 'Dispute Active' : 'Raise Dispute'}
         </button>
 
         <button

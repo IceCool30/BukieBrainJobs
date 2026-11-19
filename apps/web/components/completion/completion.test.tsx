@@ -72,6 +72,30 @@ describe('BW-009 Phase 3 RED: Completion UI Component Contracts (COMP-001 to COM
     ).toBeInTheDocument();
   });
 
+  it('COMP-003b: EscrowReleaseActions disables "Inspect & Release Escrow" and disables dispute action when isDisputed is true even with ESCROW_HELD', () => {
+    const handleConfirm = vi.fn();
+    const handleDispute = vi.fn();
+    render(
+      <EscrowReleaseActions
+        jobStatus="PENDING_COMPLETION"
+        escrowStatus="ESCROW_HELD"
+        isDisputed={true}
+        onConfirmSatisfaction={handleConfirm}
+        onRaiseDispute={handleDispute}
+      />
+    );
+
+    const releaseButton = screen.getByRole('button', {
+      name: /inspect & release escrow/i,
+    });
+    expect(releaseButton).toBeDisabled();
+
+    const disputeButton = screen.getByRole('button', {
+      name: /dispute active/i,
+    });
+    expect(disputeButton).toBeDisabled();
+  });
+
   it('COMP-004: EscrowReleaseActions disables release button and shows loading state during confirmation submission', () => {
     const handleConfirm = vi.fn();
     render(
@@ -148,6 +172,31 @@ describe('BW-009 Phase 3 RED: Completion UI Component Contracts (COMP-001 to COM
 
     expect(
       screen.getByText(/dispute active|escrow frozen|auto-release suspended/i)
+    ).toBeInTheDocument();
+  });
+
+  it('COMP-008b: AutoReleaseCountdownCard displays truthful local preview copy and pauses auto-release when isDisputed is true', () => {
+    render(
+      <AutoReleaseCountdownCard
+        submittedAt="2026-10-18T10:00:00.000Z"
+        autoReleaseDeadline="2026-10-21T10:00:00.000Z"
+        isDisputed={true}
+        escrowStatus="ESCROW_HELD"
+      />
+    );
+
+    expect(
+      screen.getByText('Dispute Active: Auto-Release Paused')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Simulated completion countdown is paused while dispute is active.'
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'This local preview workspace does not hold, move, or release real funds. Release actions remain paused until the dispute record is resolved.'
+      )
     ).toBeInTheDocument();
   });
 

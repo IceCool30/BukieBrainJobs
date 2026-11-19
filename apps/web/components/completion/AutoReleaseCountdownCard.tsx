@@ -45,7 +45,7 @@ export function AutoReleaseCountdownCard({
         </h3>
         {isFrozen ? (
           <span className="rounded-full border border-red-800 bg-red-950/80 px-3 py-1 text-xs font-semibold text-red-400">
-            Dispute Active: Escrow Frozen
+            Dispute Active: Auto-Release Paused
           </span>
         ) : isEligible ? (
           <span className="rounded-full border border-emerald-800 bg-emerald-950/80 px-3 py-1 text-xs font-semibold text-emerald-400">
@@ -62,10 +62,10 @@ export function AutoReleaseCountdownCard({
         {isFrozen ? (
           <div className="rounded-xl border border-red-900/50 bg-red-950/30 p-4 text-sm text-red-300">
             <p className="font-medium">
-              Escrow hold engaged during dispute review.
+              Simulated completion countdown is paused while dispute is active.
             </p>
             <p className="mt-1 text-xs text-red-400">
-              Funds remain held until customer satisfaction is resolved or dispute mediation concludes.
+              This local preview workspace does not hold, move, or release real funds. Release actions remain paused until the dispute record is resolved.
             </p>
           </div>
         ) : isEligible ? (
