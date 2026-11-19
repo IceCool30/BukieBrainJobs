@@ -251,7 +251,7 @@ Phase 7: Launch Readiness
 
 - [ ] Push notifications setup via Expo Notifications / FCM.
 - [x] Camera and photo gallery access for work proofs and attachments: Implemented as MOB-MEDIA-001 local UI preview at eabb562 (work proof photo attachment preview in /brainworker/workspace-preview, 329 passing mobile tests across 22 test files, type-check clean, Android Expo export clean; real native camera capture and cloud upload remain open).
-- [ ] Device biometric authentication (Face ID / Fingerprint) for quick wallet access.
+- [x] Device biometric authentication (Face ID / Fingerprint) for quick wallet access: Implemented as MOB-BIO-001 local UI preview at 24696fb (biometric quick-lock toggle, scan simulation modal, and wallet protection card in /brainworker/workspace-preview, 354 passing mobile tests across 24 test files, type-check clean, Android Expo export clean; real native biometric hardware sensors and device keychain remain open).
 - [ ] SQLite local database synchronization for offline browsing.
 
 #### 4.5 Mobile Platform Maintenance & Upgrades
