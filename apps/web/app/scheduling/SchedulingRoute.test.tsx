@@ -65,8 +65,14 @@ describe('BW-007 Collaborative Scheduling & Dispatch Route Contracts (ROUTE-001 
   const defaultParams = Promise.resolve({ bookingId: 'bk-101' });
 
   beforeEach(() => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    vi.setSystemTime(new Date('2026-10-20T08:00:00.000Z'));
     vi.clearAllMocks();
     resetSchedulingRepository();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('ROUTE-001: unauthenticated visitor accessing /scheduling/bk-101 redirects to /login?redirect=/scheduling/bk-101 without querying repository', async () => {
