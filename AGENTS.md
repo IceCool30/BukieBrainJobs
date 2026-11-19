@@ -86,10 +86,10 @@ This file defines the standards and operational map every contributor must follo
 
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
-- **Active Phase**: Phase 4.4 Device Capabilities & Push Alerts (`apps/mobile`), Item 2 Camera and photo gallery access for work proofs and attachments (IN PROGRESS).
-- **Active Slice**: `MOB-MEDIA-001` Native BrainWorker Work Proof & Photo Attachment Picker Preview (UI-only preview in progress).
-- **Current Product Baseline**: BW-010 Dispute Handling & Support Interface (Item 3.4, PR #67) merged at `abeb9a4`, completing Phase 3 of the marketplace lifecycle (100% complete); prior baseline BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65) merged at `05944bb` with quote fix at `5fc9278`; mobile accepted baseline on this branch at `d1c86a8` with concentric outer focus ring remediation committed at `866bdbf`.
-- **Next Product Slice**: Implementation and verification of MOB-MEDIA-001 Native BrainWorker Work Proof & Photo Attachment Picker Preview (UI-only), with backend, database, authentication, network APIs, cloud storage, native camera hardware permissions, and production persistence kept out of scope.
+- **Active Phase**: Phase 4.4 Device Capabilities & Push Alerts (`apps/mobile`), Item 3 Device biometric authentication (Face ID / Fingerprint) for quick wallet access (IN PROGRESS).
+- **Active Slice**: `MOB-BIO-001` Native Biometric Authentication & Quick Wallet Lock Preview (UI-only preview in progress).
+- **Current Product Baseline**: BW-010 Dispute Handling & Support Interface (Item 3.4, PR #67) merged at `abeb9a4`, completing Phase 3 of the marketplace lifecycle (100% complete); prior baseline BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65) merged at `05944bb` with quote fix at `5fc9278`; mobile accepted baseline on this branch at `d1c86a8` with concentric outer focus ring remediation committed at `866bdbf`, and `MOB-MEDIA-001` native work proof photo picker preview committed at `eabb562`.
+- **Next Product Slice**: Implementation and verification of MOB-BIO-001 Native BrainWorker Biometric Authentication & Quick Wallet Lock Preview (UI-only), with backend, database, authentication, network APIs, cloud storage, native biometric hardware drivers, device keychain/SecureStore mutations, banking/payout mutations, and production persistence kept out of scope.
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`

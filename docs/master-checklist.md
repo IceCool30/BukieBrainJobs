@@ -250,7 +250,7 @@ Phase 7: Launch Readiness
 #### 4.4 Device Capabilities & Push Alerts (Deferred / Open)
 
 - [ ] Push notifications setup via Expo Notifications / FCM.
-- [ ] Camera and photo gallery access for work proofs and attachments.
+- [x] Camera and photo gallery access for work proofs and attachments: Implemented as MOB-MEDIA-001 local UI preview at eabb562 (work proof photo attachment preview in /brainworker/workspace-preview, 329 passing mobile tests across 22 test files, type-check clean, Android Expo export clean; real native camera capture and cloud upload remain open).
 - [ ] Device biometric authentication (Face ID / Fingerprint) for quick wallet access.
 - [ ] SQLite local database synchronization for offline browsing.
 
