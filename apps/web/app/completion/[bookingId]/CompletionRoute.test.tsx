@@ -257,7 +257,7 @@ describe('BW-009 Post-Job Completion & Escrow Release Route Contracts (ROUTE-001
 
     await waitFor(() => {
       expect(
-        screen.getByText(/dispute active|escrow frozen/i)
+        screen.getByText('Dispute Active: Auto-Release Paused')
       ).toBeInTheDocument();
     });
   });
@@ -348,5 +348,42 @@ describe('BW-009 Post-Job Completion & Escrow Release Route Contracts (ROUTE-001
         screen.getByText(/Pleasant and cooperative customer/)
       ).toBeInTheDocument();
     });
+  });
+
+  it('ROUTE-011: when booking has isDisputed: true and escrowStatus: ESCROW_HELD, release button is disabled and truthful paused notice is rendered', async () => {
+    vi.spyOn(authStorage, 'getMockAuthenticatedUser').mockReturnValue(
+      mockCustomer
+    );
+    const repo = getCompletionRepository();
+    repo.seed([
+      createMockState({
+        isDisputed: true,
+        escrowStatus: 'ESCROW_HELD',
+      }),
+    ]);
+
+    render(<CompletionPage params={defaultParams} />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Dispute Active: Auto-Release Paused')
+      ).toBeInTheDocument();
+    });
+
+    const releaseButton = screen.getByRole('button', {
+      name: /inspect & release escrow/i,
+    });
+    expect(releaseButton).toBeDisabled();
+
+    const disputeButton = screen.getByRole('button', {
+      name: /dispute active/i,
+    });
+    expect(disputeButton).toBeDisabled();
+
+    expect(
+      screen.getByText(
+        'Simulated completion countdown is paused while dispute is active.'
+      )
+    ).toBeInTheDocument();
   });
 });
