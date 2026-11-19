@@ -135,16 +135,20 @@ function RegisterIntro() {
 }
 
 function RegisterSubmitButton({ onSubmit }: { onSubmit: () => void }) {
+  const [isFocused, setIsFocused] = useState(false);
   const c = useTrades();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Continue to onboarding"
       onPress={onSubmit}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       style={({ pressed }) => [s.submit, { backgroundColor: pressed ? c.ctaPressed : c.ctaFill }]}
     >
       <Text style={[s.submitLabel, { color: c.ctaText }]}>Continue to Onboarding</Text>
       <Ionicons name="arrow-forward" size={16} color={c.ctaText} accessible={false} />
+      {isFocused && <View pointerEvents="none" style={[s.outerFocusRing, { borderColor: c.amber }]} />}
     </Pressable>
   );
 }
@@ -214,6 +218,15 @@ const s = StyleSheet.create({
   input: { minHeight: 48, borderRadius: 6, borderWidth: 1, paddingHorizontal: 14, fontSize: 16 },
   error: { fontSize: 13, marginTop: 6 },
   submit: { minHeight: 48, borderRadius: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 8 },
+  outerFocusRing: {
+    position: 'absolute',
+    top: -4,
+    bottom: -4,
+    left: -4,
+    right: -4,
+    borderRadius: 12,
+    borderWidth: 2,
+  },
   submitLabel: { fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
   previewLink: { minHeight: 48, borderRadius: 8, borderWidth: 1, borderStyle: 'dashed', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingHorizontal: 16, marginTop: 4 },
   previewLinkLabel: { fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },

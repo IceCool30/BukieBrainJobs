@@ -360,6 +360,7 @@ function ActivityLifecycleDetail({ sampleIndex, onBack }: DetailProps) {
 }
 
 function ExploreServicesButton({ onPress }: { onPress: () => void }) {
+  const [isFocused, setIsFocused] = useState(false);
   const c = useThemeColors();
   const ctaFg = c.mode === 'light' ? c.card : c.canvas;
   const buttonStyle = ({ pressed }: { pressed: boolean }) => [
@@ -367,9 +368,17 @@ function ExploreServicesButton({ onPress }: { onPress: () => void }) {
     { backgroundColor: pressed ? c.amberHover : c.amber },
   ];
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel="Explore services" onPress={onPress} style={buttonStyle}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Explore services"
+      onPress={onPress}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      style={buttonStyle}
+    >
       <Ionicons name="grid-outline" size={16} color={ctaFg} />
       <Text style={[styles.actionLabel, { color: ctaFg }]}>EXPLORE SERVICES</Text>
+      {isFocused && <View pointerEvents="none" style={[styles.outerFocusRing, { borderColor: c.amber }]} />}
     </Pressable>
   );
 }
@@ -473,6 +482,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     minHeight: 48,
     minWidth: 48,
+  },
+  outerFocusRing: {
+    position: 'absolute',
+    top: -4,
+    bottom: -4,
+    left: -4,
+    right: -4,
+    borderRadius: 16,
+    borderWidth: 2,
   },
   actionLabel: {
     fontFamily: mono,

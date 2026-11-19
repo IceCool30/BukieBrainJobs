@@ -300,6 +300,7 @@ type ButtonProps = {
 };
 
 export function PrimaryButton({ label, onPress, disabled = false, accessibilityLabel }: ButtonProps) {
+  const [isFocused, setIsFocused] = useState(false);
   const c = useThemeColors();
   return (
     <Pressable
@@ -308,14 +309,15 @@ export function PrimaryButton({ label, onPress, disabled = false, accessibilityL
       accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={onPress}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       style={({ pressed }) => [
         styles.primaryButton,
-        {
-          backgroundColor: disabled ? c.rule : pressed ? c.ctaPressed : c.ctaFill,
-        },
+        { backgroundColor: disabled ? c.rule : pressed ? c.ctaPressed : c.ctaFill },
       ]}
     >
       <Text style={[styles.primaryButtonText, { color: disabled ? c.mainText : c.ctaText }]}>{label}</Text>
+      {isFocused && <View pointerEvents="none" style={[styles.outerFocusRing, { borderColor: c.amber }]} />}
     </Pressable>
   );
 }
@@ -472,6 +474,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 18,
+  },
+  outerFocusRing: {
+    position: 'absolute',
+    top: -4,
+    bottom: -4,
+    left: -4,
+    right: -4,
+    borderRadius: 9999,
+    borderWidth: 2,
   },
   primaryButtonText: {
     fontSize: 13,

@@ -254,14 +254,27 @@ describe('10. form-kit.tsx Pressable focus indicators and filled CTA boundary ve
     expect(code).toContain('isFocused ? c.amber :');
   });
 
-  it('PrimaryButton leaves filled CTA styling unchanged because amber border fails contrast against button fill', () => {
+  it('PrimaryButton source renders concentric outer focus ring onFocus with amber border and no layout shift', () => {
     const formKit = readMobileFile('components/form-kit.tsx');
     const primaryButtonMatch = formKit.match(/export function PrimaryButton[\s\S]*?\n\}/);
     expect(primaryButtonMatch).not.toBeNull();
     const code = primaryButtonMatch![0];
-    expect(code).not.toContain('showFocus ? c.amber');
-    expect(code).not.toContain('borderWidth: showFocus');
+    expect(code).toContain('const [isFocused, setIsFocused] = useState(false);');
+    expect(code).toContain('onFocus={() => setIsFocused(true)}');
+    expect(code).toContain('onBlur={() => setIsFocused(false)}');
+    expect(code).toContain('isFocused && <View pointerEvents="none" style={[styles.outerFocusRing, { borderColor: c.amber }]} />');
     expect(code).toContain('backgroundColor: disabled ? c.rule : pressed ? c.ctaPressed : c.ctaFill');
+
+    const ringMatch = formKit.match(/outerFocusRing:\s*\{([^}]*)\}/);
+    expect(ringMatch).not.toBeNull();
+    const ringStyle = ringMatch![1];
+    expect(ringStyle).toContain("position: 'absolute'");
+    expect(ringStyle).toContain('top: -4');
+    expect(ringStyle).toContain('bottom: -4');
+    expect(ringStyle).toContain('left: -4');
+    expect(ringStyle).toContain('right: -4');
+    expect(ringStyle).toContain('borderRadius: 9999');
+    expect(ringStyle).toContain('borderWidth: 2');
   });
 
   it('SecondaryButton source contains onFocus/onBlur state and amber border when focused', () => {
@@ -299,6 +312,15 @@ describe('10. form-kit.tsx Pressable focus indicators and filled CTA boundary ve
     expect(lightRatio).toBeLessThan(3.0);
   });
 
+  it('proves concentric outer focus ring achieves >= 3:1 contrast against surrounding card in both themes (7.27:1 dark, 5.41:1 light) with zero layout shift', () => {
+    const darkRatio = contrastRatio(toRgb(obsidianDarkTokens.amber), toRgb(obsidianDarkTokens.card));
+    const lightRatio = contrastRatio(toRgb(obsidianLightTokens.amber), toRgb(obsidianLightTokens.card));
+    expect(darkRatio).toBeGreaterThanOrEqual(3.0);
+    expect(lightRatio).toBeGreaterThanOrEqual(3.0);
+    expect(darkRatio).toBeGreaterThan(6.5);
+    expect(lightRatio).toBeGreaterThan(5.0);
+  });
+
   it('proves active ChoiceChip focus border achieves >= 3:1 against surrounding card in both themes', () => {
     const darkRatio = contrastRatio(toRgb(obsidianDarkTokens.mainText), toRgb(obsidianDarkTokens.card));
     const lightRatio = contrastRatio(toRgb(obsidianLightTokens.amber), toRgb(obsidianLightTokens.card));
@@ -318,13 +340,26 @@ describe('11. jobs.tsx and services.tsx Pressable focus indicators', () => {
     expect(code).toContain('borderBottomColor: c.amber');
   });
 
-  it('ExploreServicesButton preserves unchanged filled CTA styling without failing border', () => {
+  it('ExploreServicesButton source contains onFocus/onBlur state and renders outerFocusRing with c.amber', () => {
     const screen = readMobileFile('app/(tabs)/jobs.tsx');
     const match = screen.match(/function ExploreServicesButton[\s\S]*?\n\}/);
     expect(match).not.toBeNull();
     const code = match![0];
-    expect(code).not.toContain('borderColor: isFocused ? c.amber');
+    expect(code).toContain('const [isFocused, setIsFocused] = useState(false);');
+    expect(code).toContain('onFocus={() => setIsFocused(true)}');
+    expect(code).toContain('onBlur={() => setIsFocused(false)}');
+    expect(code).toContain('isFocused && <View pointerEvents="none" style={[styles.outerFocusRing, { borderColor: c.amber }]} />');
     expect(code).toContain('backgroundColor: pressed ? c.amberHover : c.amber');
+
+    const ringMatch = screen.match(/outerFocusRing:\s*\{([^}]*)\}/);
+    expect(ringMatch).not.toBeNull();
+    const ringStyle = ringMatch![1];
+    expect(ringStyle).toContain("position: 'absolute'");
+    expect(ringStyle).toContain('top: -4');
+    expect(ringStyle).toContain('bottom: -4');
+    expect(ringStyle).toContain('left: -4');
+    expect(ringStyle).toContain('right: -4');
+    expect(ringStyle).toContain('borderWidth: 2');
   });
 
   it('ActivitySampleCard and BackButton source contain onFocus/onBlur state and amber border', () => {
@@ -381,13 +416,26 @@ describe('11. jobs.tsx and services.tsx Pressable focus indicators', () => {
 });
 
 describe('12. register.tsx and workspace-preview.tsx Pressable focus indicators', () => {
-  it('RegisterSubmitButton preserves unchanged filled CTA styling without failing border', () => {
+  it('RegisterSubmitButton source contains onFocus/onBlur state and renders outerFocusRing with c.amber', () => {
     const screen = readMobileFile('app/brainworker/register.tsx');
     const match = screen.match(/function RegisterSubmitButton[\s\S]*?\n\}/);
     expect(match).not.toBeNull();
     const code = match![0];
-    expect(code).not.toContain('borderColor: c.amber');
+    expect(code).toContain('const [isFocused, setIsFocused] = useState(false);');
+    expect(code).toContain('onFocus={() => setIsFocused(true)}');
+    expect(code).toContain('onBlur={() => setIsFocused(false)}');
+    expect(code).toContain('isFocused && <View pointerEvents="none" style={[s.outerFocusRing, { borderColor: c.amber }]} />');
     expect(code).toContain('backgroundColor: pressed ? c.ctaPressed : c.ctaFill');
+
+    const ringMatch = screen.match(/outerFocusRing:\s*\{([^}]*)\}/);
+    expect(ringMatch).not.toBeNull();
+    const ringStyle = ringMatch![1];
+    expect(ringStyle).toContain("position: 'absolute'");
+    expect(ringStyle).toContain('top: -4');
+    expect(ringStyle).toContain('bottom: -4');
+    expect(ringStyle).toContain('left: -4');
+    expect(ringStyle).toContain('right: -4');
+    expect(ringStyle).toContain('borderWidth: 2');
   });
 
   it('RegisterPreviewLink source contains onFocus/onBlur state and amber border', () => {
@@ -436,21 +484,38 @@ describe('12. register.tsx and workspace-preview.tsx Pressable focus indicators'
     expect(detailBackStyle![1]).toContain('borderWidth: 1');
   });
 
-  it('CheckInEntryButton preserves unchanged filled CTA styling without failing border', () => {
+  it('CheckInEntryButton source contains onFocus/onBlur state and renders outerFocusRing with c.amber', () => {
     const screen = readMobileFile('app/brainworker/workspace-preview.tsx');
     const match = screen.match(/function CheckInEntryButton[\s\S]*?\n\}/);
     expect(match).not.toBeNull();
     const code = match![0];
-    expect(code).not.toContain('borderColor: c.amber');
+    expect(code).toContain('const [isFocused, setIsFocused] = useState(false);');
+    expect(code).toContain('onFocus={() => setIsFocused(true)}');
+    expect(code).toContain('onBlur={() => setIsFocused(false)}');
+    expect(code).toContain('isFocused && <View pointerEvents="none" style={[s.outerFocusRing, { borderColor: c.amber }]} />');
     expect(code).toContain('backgroundColor: pressed ? c.amberHover : bg');
+
+    const ringMatch = screen.match(/outerFocusRing:\s*\{([^}]*)\}/);
+    expect(ringMatch).not.toBeNull();
+    const ringStyle = ringMatch![1];
+    expect(ringStyle).toContain("position: 'absolute'");
+    expect(ringStyle).toContain('top: -4');
+    expect(ringStyle).toContain('bottom: -4');
+    expect(ringStyle).toContain('left: -4');
+    expect(ringStyle).toContain('right: -4');
+    expect(ringStyle).toContain('borderWidth: 2');
   });
 
-  it('DeclineButton source contains onFocus/onBlur state and amber border while AcceptButton preserves unchanged filled CTA styling', () => {
+  it('DeclineButton and AcceptButton source contain onFocus/onBlur state with AcceptButton rendering outerFocusRing with c.amber', () => {
     const screen = readMobileFile('app/brainworker/workspace-preview.tsx');
     const acceptMatch = screen.match(/function AcceptButton[\s\S]*?\n\}/);
     expect(acceptMatch).not.toBeNull();
-    expect(acceptMatch![0]).not.toContain('borderColor: c.amber');
-    expect(acceptMatch![0]).toContain('backgroundColor: pressed ? c.amberHover : bg');
+    const acceptCode = acceptMatch![0];
+    expect(acceptCode).toContain('const [isFocused, setIsFocused] = useState(false);');
+    expect(acceptCode).toContain('onFocus={() => setIsFocused(true)}');
+    expect(acceptCode).toContain('onBlur={() => setIsFocused(false)}');
+    expect(acceptCode).toContain('isFocused && <View pointerEvents="none" style={[s.outerFocusRing, { borderColor: c.amber }]} />');
+    expect(acceptCode).toContain('backgroundColor: pressed ? c.amberHover : bg');
 
     const declineMatch = screen.match(/function DeclineButton[\s\S]*?\n\}/);
     expect(declineMatch).not.toBeNull();
@@ -507,5 +572,24 @@ describe('14. Layout dimension preservation (zero borderWidth toggling)', () => 
 
     const jobs = readMobileFile('app/(tabs)/jobs.tsx');
     expect(jobs).toContain('borderBottomWidth: 2,\n    borderBottomColor: \'transparent\',');
+  });
+
+  it('verifies filled CTA outer focus rings use absolute positioning preventing any layout shift on the button', () => {
+    const formKit = readMobileFile('components/form-kit.tsx');
+    const jobs = readMobileFile('app/(tabs)/jobs.tsx');
+    const register = readMobileFile('app/brainworker/register.tsx');
+    const workspace = readMobileFile('app/brainworker/workspace-preview.tsx');
+
+    for (const source of [formKit, jobs, register, workspace]) {
+      const ringMatch = source.match(/outerFocusRing:\s*\{([^}]*)\}/);
+      expect(ringMatch).not.toBeNull();
+      const style = ringMatch![1];
+      expect(style).toContain("position: 'absolute'");
+      expect(style).toContain('top: -4');
+      expect(style).toContain('bottom: -4');
+      expect(style).toContain('left: -4');
+      expect(style).toContain('right: -4');
+      expect(style).toContain('borderWidth: 2');
+    }
   });
 });

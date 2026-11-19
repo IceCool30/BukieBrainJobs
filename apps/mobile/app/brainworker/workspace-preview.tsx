@@ -612,6 +612,7 @@ function InvitationActionCard({
 }
 
 function AcceptButton({ onAccept }: { onAccept: () => void }) {
+  const [isFocused, setIsFocused] = useState(false);
   const c = useThemeColors();
   const bg = c.mode === 'light' ? c.amberHover : c.amber;
   const fg = c.mode === 'dark' ? c.canvas : c.card;
@@ -620,10 +621,13 @@ function AcceptButton({ onAccept }: { onAccept: () => void }) {
       accessibilityRole="button"
       accessibilityLabel="Accept sample lead"
       onPress={onAccept}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       style={({ pressed }) => [s.actionBtn, { backgroundColor: pressed ? c.amberHover : bg }]}
     >
       <Ionicons name="checkmark-circle-outline" size={18} color={fg} accessible={false} />
       <Text style={[s.actionBtnText, { color: fg }]}>Accept sample lead</Text>
+      {isFocused && <View pointerEvents="none" style={[s.outerFocusRing, { borderColor: c.amber }]} />}
     </Pressable>
   );
 }
@@ -674,6 +678,7 @@ function InvitationOutcomeCard({ outcome, onReset, onOpenCheckIn }: InvitationOu
 }
 
 function CheckInEntryButton({ onPress }: { onPress: () => void }) {
+  const [isFocused, setIsFocused] = useState(false);
   const c = useThemeColors();
   const bg = c.mode === 'light' ? c.amberHover : c.amber;
   const fg = c.mode === 'dark' ? c.canvas : c.card;
@@ -682,6 +687,8 @@ function CheckInEntryButton({ onPress }: { onPress: () => void }) {
       accessibilityRole="button"
       accessibilityLabel="Simulate on-site check-in for sample generator repair"
       onPress={onPress}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       style={({ pressed }) => [
         s.checkInEntryBtn,
         { backgroundColor: pressed ? c.amberHover : bg },
@@ -689,6 +696,7 @@ function CheckInEntryButton({ onPress }: { onPress: () => void }) {
     >
       <Ionicons name="location-outline" size={18} color={fg} accessible={false} />
       <Text style={[s.checkInEntryBtnText, { color: fg }]}>Preview on-site check-in</Text>
+      {isFocused && <View pointerEvents="none" style={[s.outerFocusRing, { borderColor: c.amber }]} />}
     </Pressable>
   );
 }
@@ -1379,6 +1387,15 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
     paddingHorizontal: 12,
+  },
+  outerFocusRing: {
+    position: 'absolute',
+    top: -4,
+    bottom: -4,
+    left: -4,
+    right: -4,
+    borderRadius: 10,
+    borderWidth: 2,
   },
   actionBtnOutline: {
     minHeight: 48,
