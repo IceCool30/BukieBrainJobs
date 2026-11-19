@@ -86,10 +86,10 @@ This file defines the standards and operational map every contributor must follo
 
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
-- **Active Phase**: Phase 4.3 BrainWorker Native Experiences (`apps/mobile`), Item 2 Immediate job invitation accept/decline action modals (IN PROGRESS).
-- **Active Slice**: MOB-WORK-002 Native BrainWorker Workspace Immediate Job Invitation Accept/Decline Action Modals Preview (UI-only preview in progress; Phase 4.3 Item 1 accepted as MOB-WORK-001 at `2252aca`, Item 1 push delivery deferred; Item 2 backend integration deferred).
-- **Current Product Baseline**: BW-010 Dispute Handling & Support Interface (Item 3.4, PR #67) merged at `abeb9a4`, completing Phase 3 of the marketplace lifecycle (100% complete); prior baseline BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65) merged at `05944bb` with quote fix at `5fc9278`; mobile accepted baseline on this branch at `d1c86a8`.
-- **Next Product Slice**: Pending next slice authorization under Phase 4.3 BrainWorker Native Experiences (`apps/mobile`), Item 3 (GPS provider check-in and on-site verification), with backend, database, authentication, network APIs, production persistence, and live push delivery kept out of scope.
+- **Active Phase**: Phase 4.4 Device Capabilities & Push Alerts (`apps/mobile`), Item 2 Camera and photo gallery access for work proofs and attachments (IN PROGRESS).
+- **Active Slice**: `MOB-MEDIA-001` Native BrainWorker Work Proof & Photo Attachment Picker Preview (UI-only preview in progress).
+- **Current Product Baseline**: BW-010 Dispute Handling & Support Interface (Item 3.4, PR #67) merged at `abeb9a4`, completing Phase 3 of the marketplace lifecycle (100% complete); prior baseline BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65) merged at `05944bb` with quote fix at `5fc9278`; mobile accepted baseline on this branch at `d1c86a8` with concentric outer focus ring remediation committed at `866bdbf`.
+- **Next Product Slice**: Implementation and verification of MOB-MEDIA-001 Native BrainWorker Work Proof & Photo Attachment Picker Preview (UI-only), with backend, database, authentication, network APIs, cloud storage, native camera hardware permissions, and production persistence kept out of scope.
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`
