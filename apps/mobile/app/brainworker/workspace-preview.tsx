@@ -54,6 +54,19 @@ import {
   type BiometricType,
   type BiometricAuthState,
 } from '../../lib/biometric-auth-preview';
+import {
+  OFFLINE_CACHE_DISCLAIMER,
+  SAMPLE_CACHED_RECORDS,
+  createInitialOfflineCacheState,
+  toggleSimulatedNetwork,
+  startSyncSimulation,
+  completeSyncSimulation,
+  getNetworkStatusLabel,
+  getCacheSyncStatusLabel,
+  type CachedRecordItem,
+  type OfflineCacheState,
+  type CacheSyncStatus,
+} from '../../lib/offline-cache-preview';
 
 function useEscapeDismiss(visible: boolean, onDismiss: () => void) {
   useEffect(() => {
@@ -170,6 +183,18 @@ function useBiometricWalletState() {
   return { bioState, promptVisible, openPrompt, closePrompt, onSimulate, onToggle, onLock, onSelectType };
 }
 
+function useOfflineCacheState() {
+  const [offlineState, setOfflineState] = useState<OfflineCacheState>(() => createInitialOfflineCacheState());
+  const onToggleNetwork = () => setOfflineState((prev) => toggleSimulatedNetwork(prev));
+  const onTriggerSync = () => {
+    setOfflineState((prev) => startSyncSimulation(prev));
+    setTimeout(() => {
+      setOfflineState((prev) => completeSyncSimulation(prev));
+    }, 400);
+  };
+  return { offlineState, onToggleNetwork, onTriggerSync };
+}
+
 function useWorkspacePreviewState() {
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   const [previewOutcome, setPreviewOutcome] = useState<PreviewOutcome | null>(null);
@@ -177,6 +202,7 @@ function useWorkspacePreviewState() {
   const checkIn = useCheckInSimulationState();
   const workProofs = useWorkProofPreviewState();
   const bio = useBiometricWalletState();
+  const offline = useOfflineCacheState();
   const resetAll = createWorkspaceResetAll(setSelectedLeadId, setPreviewOutcome, checkIn, workProofs, modals);
 
   return {
@@ -189,6 +215,7 @@ function useWorkspacePreviewState() {
     ...checkIn,
     ...workProofs,
     ...bio,
+    ...offline,
   };
 }
 
@@ -224,20 +251,22 @@ type FeedViewProps = {
   onLock: () => void;
   onToggle: () => void;
   onSelectType: (t: BiometricType) => void;
+  offlineState: OfflineCacheState;
+  onToggleNetwork: () => void;
+  onTriggerSync: () => void;
 };
 
-function WorkspaceFeedView({
-  onSelectAlert,
-  onSelectLead,
-  bioState,
-  onOpenPrompt,
-  onLock,
-  onToggle,
-  onSelectType,
-}: FeedViewProps) {
+function WorkspaceFeedView(props: FeedViewProps) {
+  const { onSelectAlert, onSelectLead, bioState, onOpenPrompt, onLock, onToggle, onSelectType } = props;
+  const { offlineState, onToggleNetwork, onTriggerSync } = props;
   return (
     <>
       <WorkspaceHeaderBlock />
+      <OfflineCacheSection
+        offlineState={offlineState}
+        onToggleNetwork={onToggleNetwork}
+        onTriggerSync={onTriggerSync}
+      />
       <BiometricWalletSection
         bioState={bioState}
         onOpenPrompt={onOpenPrompt}
@@ -311,6 +340,9 @@ function WorkspaceMainBody({ selectedLead, onBack, state }: MainBodyProps) {
         onLock={state.onLock}
         onToggle={state.onToggle}
         onSelectType={state.onSelectType}
+        offlineState={state.offlineState}
+        onToggleNetwork={state.onToggleNetwork}
+        onTriggerSync={state.onTriggerSync}
       />
     );
   }
@@ -2076,6 +2108,176 @@ function BiometricPromptModal(props: PromptModalProps) {
   );
 }
 
+const OfflineIcon = Ionicons;
+
+function OfflineNoticeCard() {
+  const c = useThemeColors();
+  return (
+    <View style={[s.offlineNoticeCard, { backgroundColor: c.strip, borderColor: c.divider }]}>
+      <View style={s.noticeHeaderRow}>
+        <OfflineIcon name="information-circle-outline" size={16} color={c.amber} accessible={false} />
+        <Text style={[s.offlineNoticeTitle, { color: c.amber }]}>SIMULATED CACHE PREVIEW</Text>
+      </View>
+      <Text style={[s.offlineNoticeBody, { color: c.mutedText }]}>
+        {OFFLINE_CACHE_DISCLAIMER}
+      </Text>
+    </View>
+  );
+}
+
+type NetworkToggleProps = {
+  isOnline: boolean;
+  onToggle: () => void;
+};
+
+function NetworkToggleRow({ isOnline, onToggle }: NetworkToggleProps) {
+  const c = useThemeColors();
+  const label = isOnline ? 'Online (Sample Live)' : 'Simulated Offline (Sample Cache)';
+  return (
+    <View style={s.offlineToggleRow}>
+      <View style={s.offlineToggleLabelCol}>
+        <Text style={[s.offlineToggleHeading, { color: c.mainText }]}>Connection State</Text>
+        <Text style={[s.offlineToggleDesc, { color: isOnline ? c.green : c.amber }]}>{label}</Text>
+      </View>
+      <Pressable
+        accessibilityRole="switch"
+        accessibilityLabel="Toggle simulated network status"
+        accessibilityState={{ checked: isOnline }}
+        onPress={onToggle}
+        style={[s.offlineSwitchBase, { backgroundColor: isOnline ? c.green : c.strip, borderColor: c.divider }]}
+      >
+        <View style={[s.offlineSwitchKnob, isOnline ? s.knobRight : s.knobLeft, { backgroundColor: isOnline ? c.card : c.mutedText }]} />
+      </Pressable>
+    </View>
+  );
+}
+
+type SyncSummaryProps = {
+  syncStatus: CacheSyncStatus;
+  lastSyncFormatted: string;
+  itemsCount: number;
+};
+
+function CacheSyncSummaryCard({ syncStatus, lastSyncFormatted, itemsCount }: SyncSummaryProps) {
+  const c = useThemeColors();
+  const statusLabel = getCacheSyncStatusLabel(syncStatus);
+  return (
+    <View style={[s.syncSummaryCard, { backgroundColor: c.strip, borderColor: c.divider }]}>
+      <View style={s.syncSummaryHeaderRow}>
+        <Text style={[s.syncSummaryTitle, { color: c.mainText }]}>Storage & Sync Health</Text>
+        <Text style={[s.syncStatusBadge, { color: syncStatus === 'SYNCED' ? c.green : c.amber }]}>{statusLabel}</Text>
+      </View>
+      <Text style={[s.syncSummaryMeta, { color: c.mutedText }]}>
+        1.8 MB (sample) · {itemsCount} items stored · {lastSyncFormatted}
+      </Text>
+    </View>
+  );
+}
+
+type SyncButtonProps = {
+  isSyncing: boolean;
+  onTriggerSync: () => void;
+};
+
+function SyncTriggerButton({ isSyncing, onTriggerSync }: SyncButtonProps) {
+  const c = useThemeColors();
+  const [isFocused, setIsFocused] = useState(false);
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Simulate cache synchronization"
+      onPress={onTriggerSync}
+      disabled={isSyncing}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      style={({ pressed }) => [
+        s.syncTriggerBtn,
+        { backgroundColor: pressed ? c.amberHover : c.amber, opacity: isSyncing ? 0.7 : 1 },
+      ]}
+    >
+      {isFocused && <View style={[s.outerFocusRing, { borderColor: c.amber }]} />}
+      <OfflineIcon name="sync-outline" size={18} color="#001A41" accessible={false} />
+      <Text style={s.syncTriggerBtnText}>
+        {isSyncing ? 'Simulating Sync...' : 'Trigger Sample Sync'}
+      </Text>
+    </Pressable>
+  );
+}
+
+function CachedRecordRow({ record }: { record: CachedRecordItem }) {
+  const c = useThemeColors();
+  return (
+    <View style={[s.cachedRecordRow, { borderColor: c.divider, backgroundColor: c.strip }]}>
+      <View style={s.recordTopRow}>
+        <View style={[s.recordCategoryBadge, { backgroundColor: c.card, borderColor: c.divider }]}>
+          <Text style={[s.recordCategoryText, { color: c.green }]}>{record.category}</Text>
+        </View>
+        <Text style={[s.recordTimestamp, { color: c.mutedText }]}>{record.cachedTimestamp}</Text>
+      </View>
+      <Text style={[s.recordTitle, { color: c.mainText }]}>{record.title}</Text>
+      <Text style={[s.recordSubtitle, { color: c.mutedText }]}>{record.subtitle}</Text>
+    </View>
+  );
+}
+
+function CachedRecordsDrawer({ records }: { records: readonly CachedRecordItem[] }) {
+  const c = useThemeColors();
+  return (
+    <View style={s.cachedRecordsDrawer}>
+      <Text style={[s.cachedRecordsHeading, { color: c.mainText }]}>
+        Locally Cached Records ({records.length})
+      </Text>
+      <View style={s.cachedRecordsList}>
+        {records.map((record) => (
+          <CachedRecordRow key={record.id} record={record} />
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function OfflineCacheHeader() {
+  const c = useThemeColors();
+  const badgeColor = getStripAccentColor(c, c.amber);
+  return (
+    <View style={s.bioSectionHeaderRow}>
+      <View style={s.bioSectionTitleCol}>
+        <Text style={[s.bioEyebrow, { color: c.green }]}>OFFLINE BROWSING</Text>
+        <Text accessibilityRole="header" style={[s.bioSectionHeading, { color: c.mainText }]}>
+          Offline Storage & Sync
+        </Text>
+      </View>
+      <View style={[s.sampleBadge, { backgroundColor: c.strip, borderColor: c.divider }]}>
+        <Text style={[s.sampleBadgeText, { color: badgeColor }]}>SAMPLE PREVIEW</Text>
+      </View>
+    </View>
+  );
+}
+
+type OfflineCacheSectionProps = {
+  offlineState: OfflineCacheState;
+  onToggleNetwork: () => void;
+  onTriggerSync: () => void;
+};
+
+function OfflineCacheSection({ offlineState, onToggleNetwork, onTriggerSync }: OfflineCacheSectionProps) {
+  const c = useThemeColors();
+  return (
+    <View style={[s.offlineCacheContainer, { backgroundColor: c.card, borderColor: c.divider }]}>
+      <OfflineCacheHeader />
+      <OfflineNoticeCard />
+      <NetworkToggleRow isOnline={offlineState.simulatedNetwork === 'ONLINE'} onToggle={onToggleNetwork} />
+      <CacheSyncSummaryCard
+        syncStatus={offlineState.syncStatus}
+        lastSyncFormatted={offlineState.lastSyncFormatted}
+        itemsCount={offlineState.cachedRecords.length}
+      />
+      <SyncTriggerButton isSyncing={offlineState.isSyncing} onTriggerSync={onTriggerSync} />
+      <CachedRecordsDrawer records={offlineState.cachedRecords} />
+    </View>
+  );
+}
+
 function BiometricWalletHeader() {
   const c = useThemeColors();
   const badgeColor = getStripAccentColor(c, c.amber);
@@ -2854,6 +3056,157 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16,
+  },
+  offlineCacheContainer: {
+    borderRadius: 8,
+    borderWidth: 1.5,
+    padding: 14,
+    gap: 12,
+  },
+  offlineNoticeCard: {
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 6,
+    borderWidth: 1,
+    gap: 4,
+  },
+  noticeHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  offlineNoticeTitle: {
+    fontFamily: mono,
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.8,
+  },
+  offlineNoticeBody: {
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  offlineToggleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 4,
+  },
+  offlineToggleLabelCol: {
+    flex: 1,
+    gap: 2,
+  },
+  offlineToggleHeading: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  offlineToggleDesc: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  offlineSwitchBase: {
+    width: 52,
+    minHeight: 48,
+    borderRadius: 9999,
+    borderWidth: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  offlineSwitchKnob: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+  },
+  knobLeft: {
+    alignSelf: 'flex-start',
+  },
+  knobRight: {
+    alignSelf: 'flex-end',
+  },
+  syncSummaryCard: {
+    borderRadius: 6,
+    borderWidth: 1,
+    padding: 10,
+    gap: 4,
+  },
+  syncSummaryHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 8,
+  },
+  syncSummaryTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  syncStatusBadge: {
+    fontSize: 11,
+    fontFamily: mono,
+    fontWeight: '700',
+  },
+  syncSummaryMeta: {
+    fontSize: 11,
+    lineHeight: 15,
+  },
+  syncTriggerBtn: {
+    minHeight: 48,
+    borderRadius: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingHorizontal: 16,
+  },
+  syncTriggerBtnText: {
+    color: '#001A41',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  cachedRecordsDrawer: {
+    gap: 8,
+    paddingTop: 4,
+  },
+  cachedRecordsHeading: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  cachedRecordsList: {
+    gap: 8,
+  },
+  cachedRecordRow: {
+    borderRadius: 6,
+    borderWidth: 1,
+    padding: 10,
+    gap: 4,
+    minHeight: 48,
+  },
+  recordTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 8,
+  },
+  recordCategoryBadge: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+  },
+  recordCategoryText: {
+    fontSize: 9,
+    fontFamily: mono,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  recordTimestamp: {
+    fontSize: 10,
+  },
+  recordTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  recordSubtitle: {
+    fontSize: 12,
   },
   bioWalletContainer: {
     borderRadius: 8,

@@ -91,6 +91,23 @@ See [docs/master-checklist.md](./master-checklist.md) for the complete, sequenti
 
 ## Completed & Verified Slices
 
+- [x] **MOB-OFFLINE-001 Native BrainWorker Offline Caching & Local Storage Preview (Item 4.4.4)**
+  - **Status**: Implemented and verified on `feature/mobile-accepted-slices`.
+  - **Spec**: `docs/specs/MOB-OFFLINE-001-native-offline-cache-preview.md` (Approved Specification).
+  - **Accepted scope**: Pure domain models (`SimulatedNetworkMode`, `CacheSyncStatus`, `CachedRecordCategory`, `CachedRecordItem`, `OfflineCacheState`), sample records (`SAMPLE_CACHED_RECORDS`), offline cache preview components (`OfflineNoticeCard`, `NetworkToggleRow`, `CacheSyncSummaryCard`, `SyncTriggerButton`, `CachedRecordRow`, `CachedRecordsDrawer`, `OfflineCacheHeader`, `OfflineCacheSection`, and `useOfflineCacheState`) in `apps/mobile/app/brainworker/workspace-preview.tsx`.
+  - **Functional boundaries**: UI-only local preview. 48dp touch targets, concentric outer focus rings (`c.amber` with 2dp separation gap), semantic accessibility switch roles and hints, zero em dashes. Native SQLite database drivers, device filesystem persistence, and background sync daemons remain explicitly deferred to Phase 5.
+  - **Verification completed**: 10/10 pure domain tests in `lib/offline-cache-preview.test.ts`, 11/11 contract tests in `app/offline-cache.test.ts`, all 374 mobile tests passing across 26 test files, mobile type-check clean (`tsc --noEmit`), monorepo type-check clean (7/7 packages).
+
+- [x] **MOB-BIO-001 Native Biometric Authentication Preview (Item 4.4.3)**
+  - **Status**: Committed and pushed on `feature/mobile-accepted-slices` at `24696fb`.
+  - **Spec**: `docs/specs/MOB-BIO-001-native-biometric-auth-preview.md` (Approved Specification).
+  - **Accepted scope**: Local UI preview of biometric quick-lock toggle, scan simulation modal, and wallet protection card in `/brainworker/workspace-preview`. Verified with 354 passing mobile tests across 24 test files, clean type-check.
+
+- [x] **MOB-MEDIA-001 Native Work Proof Photo Picker Preview (Item 4.4.2)**
+  - **Status**: Committed and pushed on `feature/mobile-accepted-slices` at `eabb562`.
+  - **Spec**: `docs/specs/MOB-MEDIA-001-native-work-proof-preview.md` (Approved Specification).
+  - **Accepted scope**: Local UI preview of work proof photo attachments and simulated gallery picker in `/brainworker/workspace-preview`. Verified with 329 passing mobile tests across 22 test files, clean type-check.
+
 - [x] **MOB-VIS-001 Post-Contrast Alignment Patches (Item 4.5.7)**
   - **Status**: Committed and pushed on `feature/mobile-accepted-slices` at `d1c86a836df8c2de468cf2da953d2ae052b0b3b1`.
   - **Spec**: `docs/specs/MOB-VIS-001-mobile-visual-alignment-roadmap.md` (Post-Contrast Alignment Patches).

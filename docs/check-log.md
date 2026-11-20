@@ -2,6 +2,25 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-11-20: Phase 4.4 Native BrainWorker Offline Caching & Local Storage Preview (MOB-OFFLINE-001)
+
+- **Branch**: `feature/mobile-accepted-slices`
+- **Scope**: Scoped UI-only native BrainWorker offline caching, network mode simulation, and in-memory synchronization preview:
+  1. **Domain & In-Memory State**: `apps/mobile/lib/offline-cache-preview.ts` establishing `SimulatedNetworkMode` (`ONLINE` vs `SIMULATED_OFFLINE`), `CacheSyncStatus` (`SYNCED`, `SYNCING`, `OFFLINE_CACHED`), and immutable sample cached records (`SAMPLE_CACHED_RECORDS`).
+  2. **Truthful Preview Notice**: Persistent disclaimer card (`OfflineNoticeCard`) stating that network status, cache synchronization, and stored records are simulated local previews, no native SQLite database is opened, no background sync daemons run, and no device storage is allocated. Zero em dashes.
+  3. **Connection State Toggle**: Interactive toggle (`NetworkToggleRow`) switching between Online and Simulated Offline with `accessibilityRole="switch"` and 48dp minimum touch target.
+  4. **Storage & Sync Health Summary**: Dedicated card (`CacheSyncSummaryCard`) displaying storage footprint (`1.8 MB (sample)`), cached record count, and last sync timestamp.
+  5. **Sync Simulation CTA**: Interactive button (`SyncTriggerButton`) with concentric outer focus ring (2dp visual gap, `c.amber`), 48dp touch target, and simulated sync progress state.
+  6. **Cached Records Viewer**: Expandable list (`CachedRecordsDrawer`) rendering locally cached services, leads, and schedule records with status badges and timestamps (`CachedRecordRow`).
+  7. **Strict Function Economy**: Every function in `apps/mobile/lib/offline-cache-preview.ts` and offline components in `apps/mobile/app/brainworker/workspace-preview.tsx` strictly adheres to <= 25 lines.
+  8. **Safety & Zero-Driver Enforcements**: Verifies zero `expo-sqlite`, zero `expo-task-manager`, zero `expo-background-fetch`, and zero `expo-file-system` calls.
+- **Verification Gates**:
+  - Skill Gate Guard: PASS (AGENTS.md, CLAUDE.md, .clinerules).
+  - Mobile unit & contract test suite: PASS (26/26 test files, 374/374 tests green; includes 10/10 in `lib/offline-cache-preview.test.ts` and 11/11 in `app/offline-cache.test.ts`).
+  - Mobile TypeScript compiler check (`pnpm --filter @bukiebrainjobs/mobile type-check`): PASS with 0 diagnostics.
+  - Monorepo TypeScript check (`pnpm type-check`): PASS across all 7 packages (api-types, socket-server, validation, types, utils, mobile, web).
+  - Web regression test suite (`pnpm --filter @bukiebrainjobs/web test`): PASS (126/126 test files, 1,879/1,879 tests green).
+
 ## 2026-11-13: Active Branch Audit
 
 - **Trigger**: The repository became public, allowing branch enumeration after the initial reconciliation.

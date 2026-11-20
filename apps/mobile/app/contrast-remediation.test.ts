@@ -6,7 +6,7 @@ import { obsidianDarkTokens, obsidianLightTokens } from '../lib/theme';
 declare const __dirname: string;
 
 const mobileRoot = resolve(__dirname, '..');
-const readMobileFile = (path: string) => readFileSync(resolve(mobileRoot, path), 'utf8');
+const readMobileFile = (path: string) => readFileSync(resolve(mobileRoot, path), 'utf8').replace(/\r\n/g, '\n');
 
 type Rgb = { r: number; g: number; b: number };
 
