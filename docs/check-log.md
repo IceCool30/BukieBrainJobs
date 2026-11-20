@@ -2,6 +2,25 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-11-20: Phase 4.4 Native BrainWorker Offline Caching & Local Storage Preview (MOB-OFFLINE-001)
+
+- **Branch**: `feature/mobile-accepted-slices`
+- **Scope**: Scoped UI-only native BrainWorker offline caching, network mode simulation, and in-memory synchronization preview:
+  1. **Domain & In-Memory State**: `apps/mobile/lib/offline-cache-preview.ts` establishing `SimulatedNetworkMode` (`ONLINE` vs `SIMULATED_OFFLINE`), `CacheSyncStatus` (`SYNCED`, `SYNCING`, `OFFLINE_CACHED`), and immutable sample cached records (`SAMPLE_CACHED_RECORDS`).
+  2. **Truthful Preview Notice**: Persistent disclaimer card (`OfflineNoticeCard`) stating that network status, cache synchronization, and stored records are simulated local previews, no native SQLite database is opened, no background sync daemons run, and no device storage is allocated. Zero em dashes.
+  3. **Connection State Toggle**: Interactive toggle (`NetworkToggleRow`) switching between Online and Simulated Offline with `accessibilityRole="switch"` and 48dp minimum touch target.
+  4. **Storage & Sync Health Summary**: Dedicated card (`CacheSyncSummaryCard`) displaying storage footprint (`1.8 MB (sample)`), cached record count, and last sync timestamp.
+  5. **Sync Simulation CTA**: Interactive button (`SyncTriggerButton`) with concentric outer focus ring (2dp visual gap, `c.amber`), 48dp touch target, and simulated sync progress state.
+  6. **Cached Records Viewer**: Expandable list (`CachedRecordsDrawer`) rendering locally cached services, leads, and schedule records with status badges and timestamps (`CachedRecordRow`).
+  7. **Strict Function Economy**: Every function in `apps/mobile/lib/offline-cache-preview.ts` and offline components in `apps/mobile/app/brainworker/workspace-preview.tsx` strictly adheres to <= 25 lines.
+  8. **Safety & Zero-Driver Enforcements**: Verifies zero `expo-sqlite`, zero `expo-task-manager`, zero `expo-background-fetch`, and zero `expo-file-system` calls.
+- **Verification Gates**:
+  - Skill Gate Guard: PASS (AGENTS.md, CLAUDE.md, .clinerules).
+  - Mobile unit & contract test suite: PASS (26/26 test files, 374/374 tests green; includes 10/10 in `lib/offline-cache-preview.test.ts` and 11/11 in `app/offline-cache.test.ts`).
+  - Mobile TypeScript compiler check (`pnpm --filter @bukiebrainjobs/mobile type-check`): PASS with 0 diagnostics.
+  - Monorepo TypeScript check (`pnpm type-check`): PASS across all 7 packages (api-types, socket-server, validation, types, utils, mobile, web).
+  - Web regression test suite (`pnpm --filter @bukiebrainjobs/web test`): PASS (126/126 test files, 1,879/1,879 tests green).
+
 ## 2026-11-13: Active Branch Audit
 
 - **Trigger**: The repository became public, allowing branch enumeration after the initial reconciliation.
@@ -17,6 +36,154 @@ This file records verification checks executed across the codebase under `/check
 - **Gate finding and resolution**: `human-production-engineering` was required by `.clinerules`, `AGENTS.md`, `CLAUDE.md`, and `scripts/check-skill-gate.sh`, but absent from `.agents/skills/`. Commit `20a93ac` added the name to the gate without vendoring the skill. Installed it from https://github.com/IceCool30/human-production-engineering-skill at `4fba725` (MIT, copyright Solomon Bukie) with `SKILL.md`, `README.md`, `LICENSE`, `examples/`, and `rules/`. The `AGENTS.md` inventory now points to the installed path, and `.gitignore` now un-ignores it.
 - **Verification**: `bash scripts/check-skill-gate.sh`, `node --test scripts/check-skill-gate.test.mjs`, `git diff --check`, and a repository-wide stale-status scan. Results are recorded in the session report.
 - **Boundary**: Documentation only. No application code, tests, dependencies, or deployed behavior changed. Historical test counts are quoted from retained feature reports and were not rerun.
+## 2026-11-03: Phase 4.3 Native BrainWorker Workspace & Local Lead Alert Preview (Item 1, MOB-WORK-001)
+
+- **Branch**: `feature/mobile-accepted-slices`
+- **Current State**: MOB-WORK-001 accepted by PM on 2026-11-03 for the scoped UI-only local sample workspace preview, based on reviewed source, TDD evidence, and passing verification. Phase 4.3 Item 1 remains IN PROGRESS because real push notification delivery and backend integration remain deferred. Physical iOS and Android device runtime, Dynamic Type, and native screen readers remain explicitly unverified.
+- **Scope**: Scoped UI-only native BrainWorker workspace preview and in-app lead alert presentation:
+  1. **Controlled Entry Link**: Dedicated link on `/brainworker/register` (`apps/mobile/app/brainworker/register.tsx`) with label `View Sample Workspace Preview` navigating to `/brainworker/workspace-preview`. Registration submit Alert and return to `/` preserved.
+  2. **Dedicated Preview Stack Route**: Standalone stack screen at `/brainworker/workspace-preview` (`apps/mobile/app/brainworker/workspace-preview.tsx`) registered in root stack layout (`apps/mobile/app/_layout.tsx`). All five customer tabs (`home`, `services`, `jobs`, `messages`, `profile`) preserved and unmodified.
+  3. **Truthful Local Disclaimer Banner**: Prominently displayed: "Sample preview only. The leads shown here are local examples. This is not a live BrainWorker account, lead feed or push alert service."
+  4. **Workspace Header Block**: Eyebrow `BRAINWORKER WORKSPACE`, title `BrainWorker workspace preview`, subtitle `Explore sample leads and alert details.`, and mode badge `SAMPLE PREVIEW`. Zero fabricated worker identity, rating, or live availability claims.
+  5. **In-App Lead Alert Banner**: Plainly labelled sample lead alert banner with explicit `View sample details` action meeting 48dp minimum hit target.
+  6. **Static Lead Feed & Detail Inspection**: Exactly 3 immutable sample leads (`lead_gen_01`, `lead_ac_02`, `lead_plumb_03`) based on canonical service categories with strict BW-003 privacy masking and explicit sample timeframe, urgency, and budget values. Dedicated `Back to Lead Feed` action restoring the feed view.
+- **Verification Gates**:
+  - Skill Gate Guard (`bash scripts/check-skill-gate.sh && node --test scripts/check-skill-gate.test.mjs`): PASS (22/22 tests green).
+  - Mobile unit test suite (`pnpm --filter @bukiebrainjobs/mobile test`): PASS (19/19 test files, 198/198 tests green; verifies source-level decorative accessible={false} flags declared on all 5 workspace Ionicons and registration preview link icon).
+  - Mobile TypeScript check (`pnpm --filter @bukiebrainjobs/mobile type-check`): PASS with 0 diagnostics.
+  - Web static export (`expo export --platform web`): PASS (1.64 MB bundle).
+  - Android static export (`expo export --platform android`): PASS (3.25 MB Hermes `.hbc`).
+  - iOS static export (`expo export --platform ios`): PASS (3.25 MB Hermes `.hbc`).
+  - Compiled Expo Browser QA (`node scripts/verify-expo-workspace.mjs`): PASS (entry link navigation, alert detail inspection, lead card inspection, Back to Lead Feed flow, touch targets >= 48px, zero overflow at 375px portrait and landscape, verified explicit accessibilityRole="text" and accessibilityLabel on feed and detail disclaimers, verified vertical stacking and absence of collision across all 3 sample cards at 375px, verified direct /brainworker/workspace-preview navigation and 125% rendered-text scaling proxy from 24px to 30px without blowout while keeping native Dynamic Type, generated web accessibility tree, and native screen readers explicitly unverified, full-scan text contrast >= 4.5:1 across 41 feed and 16 detail nodes, full-scan icon contrast >= 3:1 across 4 feed and 3 detail icons, anti-fabrication assertions, zero console errors).
+  - Rendered WCAG AA Contrast Ratios (using nearest non-transparent computed background resolution across fully opaque token surfaces; >= 4.5:1 for normal text, >= 3:1 for controls/boundaries/icons):
+    - Full-scan text (all visible nodes >= 4.5:1): Dark feed 41 nodes (6.04:1 to 17.50:1); Dark details 16 nodes (6.04:1 to 17.50:1); Light feed 41 nodes (4.61:1 to 17.16:1); Light details 16 nodes (4.61:1 to 17.16:1).
+    - Full-scan icons (all visible icons >= 3:1): Dark feed 4 icons (6.34:1 to 7.03:1); Dark details 3 icons (6.34:1 to 7.03:1); Light feed 4 icons (4.37:1 to 12.90:1); Light details 3 icons (4.37:1 to 12.90:1).
+    - Representative elements:
+      - Dark mode Registration Link Text: `#FF6B35` on `#0B0E13` = 6.82:1 (>= 4.5:1).
+      - Dark mode Registration Link Border: `#FF6B35` on `#0B0E13` = 6.82:1 (>= 3:1).
+      - Dark mode Workspace Title: `#F0F4F9` on `#0B0E13` = 17.50:1 (>= 4.5:1).
+      - Dark mode Disclaimer Banner Text: `#8897AB` on `#07090D` = 6.70:1 (>= 4.5:1).
+      - Dark mode Badge Text: `#FF6B35` on `#07090D` = 7.03:1 (>= 4.5:1).
+      - Dark mode CTA Normal Text & Icon: `#0B0E13` on `#FF6B35` = 6.82:1 (>= 4.5:1 text, >= 3:1 icon).
+      - Dark mode CTA Pressed Text & Icon: `#0B0E13` on `#FF7D4D` = 7.63:1 (>= 4.5:1 text, >= 3:1 icon).
+      - Dark mode Clickable Card Boundary: border `#8897AB` on `#13171E` = 6.04:1 (>= 3:1).
+      - Dark mode Card Normal Title: `#F0F4F9` on `#13171E` = 16.26:1 (>= 4.5:1).
+      - Dark mode Card Pressed Title: `#F0F4F9` on `#191E27` = 15.13:1 (>= 4.5:1).
+      - Dark mode Detail Back Button Text & Icon: `#FF6B35` on `#13171E` = 6.34:1 (>= 4.5:1 text, >= 3:1 icon).
+      - Dark mode AC Detail Title: `#F0F4F9` on `#13171E` = 16.26:1 (>= 4.5:1).
+      - Light mode Registration Link Text: `#B34312` (`c.amberHover`) on `#F7F9FC` = 5.34:1 (>= 4.5:1).
+      - Light mode Registration Link Border: `#B34312` (`c.amberHover`) on `#F7F9FC` = 5.34:1 (>= 3:1).
+      - Light mode Workspace Title: `#001A41` on `#F7F9FC` = 16.27:1 (>= 4.5:1).
+      - Light mode Disclaimer Banner Text: `#D6E4F5` on `#001A41` = 13.30:1 (>= 4.5:1).
+      - Light mode Badge Text: `#ABEEC8` on `#001A41` = 12.90:1 (>= 4.5:1).
+      - Light mode CTA Normal Text & Icon: `#FFFFFF` on `#CC4A14` = 4.61:1 (>= 4.5:1 text, >= 3:1 icon).
+      - Light mode CTA Pressed Text & Icon: `#FFFFFF` on `#B34312` = 5.63:1 (>= 4.5:1 text, >= 3:1 icon).
+      - Light mode Clickable Card Boundary: border `#475569` on `#FFFFFF` = 7.58:1 (>= 3:1).
+      - Light mode Card Normal Title: `#001A41` on `#FFFFFF` = 17.16:1 (>= 4.5:1).
+      - Light mode Card Pressed Title: `#001A41` on `#F1F3F6` = 15.43:1 (>= 4.5:1).
+      - Light mode Plumbing Detail Title: `#001A41` on `#FFFFFF` = 17.16:1 (>= 4.5:1).
+      - Light mode Detail Back Button Text & Icon: `#CC4A14` on `#FFFFFF` = 4.61:1 (>= 4.5:1 text, >= 3:1 icon).
+- **Evidence Captures**:
+  - Screenshots:
+    - [`expo-mob-work-001-01-register-preview-link-dark.png`](screenshots/expo-mob-work-001-01-register-preview-link-dark.png) (375x812 Portrait Dark, registration preview link)
+    - [`expo-mob-work-001-02-workspace-feed-dark.png`](screenshots/expo-mob-work-001-02-workspace-feed-dark.png) (375x812 Portrait Dark, workspace preview feed)
+    - [`expo-mob-work-001-03-alert-detail-dark.png`](screenshots/expo-mob-work-001-03-alert-detail-dark.png) (375x812 Portrait Dark, lead alert detail view)
+    - [`expo-mob-work-001-04-lead-detail-dark.png`](screenshots/expo-mob-work-001-04-lead-detail-dark.png) (375x812 Portrait Dark, AC lead detail view)
+    - [`expo-mob-work-001-05-workspace-landscape-dark.png`](screenshots/expo-mob-work-001-05-workspace-landscape-dark.png) (844x390 Landscape Dark, zero overflow)
+    - [`expo-mob-work-001-06-workspace-feed-light.png`](screenshots/expo-mob-work-001-06-workspace-feed-light.png) (375x812 Portrait Light, light mode workspace feed)
+    - [`expo-mob-work-001-07-lead-detail-light.png`](screenshots/expo-mob-work-001-07-lead-detail-light.png) (375x812 Portrait Light, light mode detail view)
+
+## 2026-11-03: Phase 4 Mobile Customer Booking Lifecycle Presentation (Item 4.2.2, MOB-LIFE-001)
+
+- **Branch**: `feature/mobile-accepted-slices`
+- **Current State**: MOB-LIFE-001 implementation PM accepted on 2026-11-03 under owner delegation; compiled Expo QA passed; native runtime QA is unavailable; work was local and uncommitted at QA and acceptance time (prior MOB-ACT-001 baseline committed and pushed as 990ef37). Item 4.2.2 (MOB-LIFE-001) is checked [x] in docs/master-checklist.md. Phase 4.2.2 remains IN PROGRESS because full offline caching and persistence remain separate and unchecked.
+- **Scope**: Scoped UI-only native customer booking lifecycle presentation on `/jobs` tab route (`apps/mobile/app/(tabs)/jobs.tsx`):
+  1. **Single-Screen In-Place Detail Presentation**: Preserved `/jobs` tab route with screen-local component selection state (`useState<number | null>`). No new route or URL identifier.
+  2. **Dedicated Back Button**: Minimum 48px hit target, accessible role and label, dismissing detail back to activity list.
+  3. **Truthful Status Heading & Narrative**: Canonical JobStatus mapping across 6 existing sample fixtures without date, time, price, worker, or reference fabrication.
+  4. **Generic Linear Milestone Indicator**: 6 linear milestones (`Request Submitted`, `Worker Response Pending`, `Confirmed`, `In Progress`, `Awaiting Completion`, `Completed`), displaying truthful active/completed progress for active samples and cleanly omitted for cancelled requests.
+  5. **Sample Context Card**: Clear disclaimer that activity is a local preview demonstration.
+- **Verification Gates**:
+  - Skill Gate Guard (`bash scripts/check-skill-gate.sh && node --test scripts/check-skill-gate.test.mjs`): PASS (22/22 unit tests green).
+  - Mobile unit test suite (`pnpm --filter @bukiebrainjobs/mobile test`): PASS (17/17 test files, 172/172 tests green in full dirty working tree; 17/17 test files, 169/169 tests green in isolated staged lifecycle snapshot; 16/16 test files, 151/151 tests green in prerequisite commit `7040787`).
+  - Mobile TypeScript check (`pnpm --filter @bukiebrainjobs/mobile type-check`): PASS with 0 diagnostics. The 11 baseline diagnostics were independently reproduced on prior committed HEAD `990ef37` in `/tmp/bbj-head-qa-990ef37` and repaired in standalone prerequisite commit `7040787`, resolving cleanly with 0 diagnostics on the staged lifecycle snapshot without requiring any mobile type exception.
+  - Web static export (`expo export --platform web`): PASS (1.63 MB bundle).
+  - Android static export (`expo export --platform android`): PASS (3.23 MB Hermes `.hbc`).
+  - iOS static export (`expo export --platform ios`): PASS (3.23 MB Hermes `.hbc`).
+  - Compiled Expo Browser QA (`node scripts/verify-expo-lifecycle.mjs`): PASS (all 6 cards tested, explicit milestone progression assertions across all 6 samples independent of helper config, portrait overflow verified on each detail, single cancelled heading and absence of progression confirmed on cancelled sample, Back button dismissal, filter preservation across Past/All tabs, touch targets >= 48px, zero overflow in portrait/landscape, reduced motion, 200% zoom proxy, confirmed booking phrase isolation strictly to Sample 3, strengthened anti-fabrication assertions across all 6 samples).
+  - Rendered WCAG Contrast Ratios (>= 4.5:1 for normal text):
+    - Dark mode heading: `#FF6B35` on `#13171E` = 6.34:1.
+    - Dark mode Back button normal (text & icon): `#FF6B35` on `#0B0E13` = 6.82:1.
+    - Dark mode Back button pressed (text & icon): `#FF6B35` on `#07090D` = 7.03:1.
+    - Light mode heading: `#CC4A14` on `#FFFFFF` = 4.61:1.
+    - Light mode Back button normal (text & icon): `#B34312` (`c.amberHover`) on `#F7F9FC` = 5.34:1.
+    - Light mode Back button pressed (text & icon): `#B34312` (`c.amberHover`) on `#FFFFFF` = 5.63:1.
+  - Monorepo test suite (`pnpm test`):
+    - Mobile package (`apps/mobile`): 17/17 files passed, 172/172 tests green.
+    - Validation package (`packages/validation`): 2/2 files passed, 42/42 tests green.
+    - Utils package (`packages/utils`): 2/2 files passed, 7/7 tests green.
+    - Web package (`apps/web`): 118/120 files passed (120 total files), 1,754/1,764 tests passed. 10 failures across two untouched date-sensitive scheduling test files (`apps/web/lib/scheduling/repository.test.ts` 6 failures, `apps/web/app/scheduling/SchedulingRoute.test.tsx` 4 failures) due to hardcoded October 2026 test windows failing future-window validation on November 3, 2026. Narrow delegated-PM baseline exception approved for these 10 pre-existing web failures.
+- **Evidence Captures**:
+  - Continuous video: [`expo-mob-life-001-lifecycle-verification.webm`](screenshots/videos/expo-mob-life-001-lifecycle-verification.webm)
+  - Screenshots:
+    - [`expo-mob-life-001-01-detail-generator-dark.png`](screenshots/expo-mob-life-001-01-detail-generator-dark.png) (375x812 Portrait Dark, Sample 0 `OPEN` Request Received)
+    - [`expo-mob-life-001-02-detail-ac-dark.png`](screenshots/expo-mob-life-001-02-detail-ac-dark.png) (375x812 Portrait Dark, Sample 1 `PENDING_ACCEPTANCE` Awaiting BrainWorker response)
+    - [`expo-mob-life-001-03-detail-confirmed-dark.png`](screenshots/expo-mob-life-001-03-detail-confirmed-dark.png) (375x812 Portrait Dark, Sample 3 `CONFIRMED` Booking Confirmed)
+    - [`expo-mob-life-001-04-detail-cancelled-dark.png`](screenshots/expo-mob-life-001-04-detail-cancelled-dark.png) (375x812 Portrait Dark, Sample 5 `CANCELLED` Request Cancelled, terminal indicator)
+    - [`expo-mob-life-001-05-detail-landscape-dark.png`](screenshots/expo-mob-life-001-05-detail-landscape-dark.png) (844x390 Landscape Dark, responsive layout, zero overflow)
+    - [`expo-mob-life-001-06-detail-portrait-light.png`](screenshots/expo-mob-life-001-06-detail-portrait-light.png) (375x812 Portrait Light, approved THEME-001 light theme detail view with contrast compliance)
+
+## 2026-11-02: Phase 4 Mobile Customer Activity Hub: Native Customer Activity Hub (Item 4.2.2, MOB-ACT-001)
+
+- **Branch**: `feature/mobile-accepted-slices`
+- **Current State**: MOB-ACT-001 implementation PM accepted on 2026-11-02; compiled Expo QA passed; native runtime QA is unavailable; work was local and uncommitted at QA time. Item 4.2.2 (MOB-ACT-001) is checked [x] in `docs/master-checklist.md`. Phase 4.2.2 remains IN PROGRESS because full offline caching remains separate and unchecked. MOB-LIFE-001 native booking lifecycle presentation (UI-only) implementation PM accepted on 2026-11-03 under owner delegation.
+- **Scope**: Implemented and verified native customer activity hub on `/jobs` tab route (`MOB-ACT-001`, `apps/mobile/app/(tabs)/jobs.tsx`):
+  1. **Segmented Tab Control**: Exactly four tabs in spec order (`All`, `Active`, `Upcoming`, `Past`), defaulting to `All`. No tab count indicators. Enforces React Native 48 logical-unit minimum hit targets (`minHeight: 48, minWidth: 48`) with accessible roles and selection states (`accessibilityRole="tab"`, `accessibilityState={{ selected }}`, `aria-selected={selected}`).
+  2. **Preview Notice Card**: Exactly one sample notice card above list: `These sample entries are for preview only. They're not saved to your account.`
+  3. **Pure Sample Helper (`apps/mobile/lib/activity-preview.ts`)**: Sourced six static preview samples partitioned cleanly: All (6 items), Active (3 items), Upcoming (1 item), and Past (2 items). Each card renders exact service title, visible type label (`Job request`, `Booking`), status label (`Request received`, `Awaiting progress`, `In progress`, `Scheduled`, `Completed`, `Cancelled`), and `Sample` badge.
+  4. **Explore Services CTA**: Retained `EXPLORE SERVICES` action navigating to `/(tabs)/services`, with theme contrast compliance (`c.mode === 'light' ? c.card : c.canvas`) including pressed state, and React Native 48 logical-unit minimum target.
+  5. **Layout & Guardrails**: Preserved bottom tab navigation shell, "Jobs" screen header geometry, source-level SafeAreaView boundaries (`edges={['left', 'right']}`), and <= 25-line function limits across all UI components.
+  6. **Untouched Scope Boundary**: Static in-memory preview only. Contains no customer records, no identity or address data, no lifecycle mutation actions, no empty/error/retry cards, no persistence/storage, and no network/API calls.
+  7. **Native Simulator and Runtime Environment Audit**:
+     - Native iOS Simulator: UNAVAILABLE (requires macOS and Xcode; zero macOS hosts exist in authorized inventory).
+     - Native Android Emulator: UNAVAILABLE (software QEMU emulation lacks hardware virtualization `/dev/kvm`).
+     - Native Device Insets: Hardware safe-area insets, notch clearance, and physical touch points/dp remain unverified in browser emulation.
+  8. **Real Compiled Expo Mobile App QA (Browser/Device Emulation)**:
+     - Bundled compiled Expo application (`expo export --platform web --output-dir dist-web`).
+     - Driven by Playwright Chromium (`scripts/verify-expo-activity-hub.mjs`) emulating mobile viewports at 375x812 portrait and 844x390 landscape with touch enabled.
+     - Verified exactly 4 segment tabs, each measuring >= 48 CSS pixels in browser emulation (React Native 48 logical-unit style; native dp/pt unverified).
+     - Verified exactly 1 sample preview notice rendered.
+     - Verified exact title sets, type/status labels, and excluded titles across all 4 segment tabs:
+       - All: 6 titles present, mapped labels present, 0 excluded, 6 Sample badges.
+       - Active: 3 titles present, mapped labels present, 3 excluded absent, 3 Sample badges.
+       - Upcoming: 1 title present, mapped labels present, 5 excluded absent, 1 Sample badge.
+       - Past: 2 titles present, mapped labels present, 4 excluded absent, 2 Sample badges.
+     - Verified `EXPLORE SERVICES` CTA routes to `/(tabs)/services`.
+     - Verified zero horizontal overflow in portrait (375x812) and landscape (844x390) viewports (`scrollWidth <= clientWidth`).
+     - Verified reduced motion with zero running CSS animations (`document.getAnimations().filter(a => a.playState === 'running').length === 0`).
+     - Verified 200% zoom proxy with all 6 sample badges rendered and zero horizontal overflow (`scrollWidth <= clientWidth`).
+     - Verified CTA contrast against approved THEME-001 tokens (WCAG AA >= 4.5:1):
+       - Dark Normal: fg `#0B0E13` (`rgb(11, 14, 19)`), bg `#FF6B35` (`rgb(255, 107, 53)`), Contrast 6.82:1. Icon matches foreground.
+       - Dark Pressed: fg `#0B0E13` (`rgb(11, 14, 19)`), bg `#FF7D4D` (`rgb(255, 125, 77)`), Contrast 7.63:1. Icon matches foreground.
+       - Light Normal: fg `#FFFFFF` (`rgb(255, 255, 255)`), bg `#CC4A14` (`rgb(204, 74, 20)`), Contrast 4.61:1. Icon matches foreground.
+       - Light Pressed: fg `#FFFFFF` (`rgb(255, 255, 255)`), bg `#B34312` (`rgb(179, 67, 18)`), Contrast 5.63:1. Icon matches foreground.
+       - Dark theme restored following light verification.
+- **Evidence Captures**:
+  - Continuous video: [`expo-mob-act-001-activity-hub-verification.webm`](screenshots/videos/expo-mob-act-001-activity-hub-verification.webm)
+  - Screenshots:
+    - [`expo-mob-act-001-01-all-portrait-dark.png`](screenshots/expo-mob-act-001-01-all-portrait-dark.png) (375x812 Portrait Dark, top fold showing first 5 sample cards; 6th card and CTA below fold, asserted by Playwright and covered by continuous video)
+    - [`expo-mob-act-001-02-active-portrait-dark.png`](screenshots/expo-mob-act-001-02-active-portrait-dark.png) (375x812 Portrait Dark, Active segment, 3 cards)
+    - [`expo-mob-act-001-03-upcoming-portrait-dark.png`](screenshots/expo-mob-act-001-03-upcoming-portrait-dark.png) (375x812 Portrait Dark, Upcoming segment, 1 card)
+    - [`expo-mob-act-001-04-past-portrait-dark.png`](screenshots/expo-mob-act-001-04-past-portrait-dark.png) (375x812 Portrait Dark, Past segment, 2 cards)
+    - [`expo-mob-act-001-05-all-landscape-dark.png`](screenshots/expo-mob-act-001-05-all-landscape-dark.png) (844x390 Landscape Dark, retaining source-level SafeAreaView boundaries, zero overflow)
+    - [`expo-mob-act-001-06-all-portrait-light.png`](screenshots/expo-mob-act-001-06-all-portrait-light.png) (375x812 Portrait Light, approved THEME-001 light theme at top fold showing "Jobs" header, sample preview notice, 4 segment tabs with "All" selected, and first 5 sample cards, with verified CTA contrast)
+- **Verification Gates**:
+  - Full mobile unit and integration test suite: 16 test files passed, 154/154 tests passed (`activity-preview.test.ts` 8/8, `jobs.test.ts` 7/7, `content-guardrails.test.ts` 17/17).
+  - TypeScript compiler: `pnpm --filter @bukiebrainjobs/mobile type-check` passed with 0 errors (`tsc --noEmit`).
+  - Static exports: Web (1.62 MB), Android (3.22 MB Hermes bytecode), iOS (3.22 MB Hermes bytecode) all compiled cleanly.
+  - Skill gate guard: `bash scripts/check-skill-gate.sh && node --test scripts/check-skill-gate.test.mjs` passed 22/22.
+  - Punctuation hygiene: Strictly zero em dashes, en dashes, or double hyphens.
+
 ## 2026-10-30: Phase 4 Mobile Discovery: Native Public Discovery (Item 4.2.1, MOB-001)
 
 - **Branch**: `feature/bw-010-dispute-support`

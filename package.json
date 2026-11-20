@@ -1,25 +1,29 @@
 {
   "name": "bukiebrainjobs-monorepo",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "type-check": "turbo run type-check",
+    "build": "turbo run build",
     "test": "turbo run test",
-    "db:generate": "turbo run db:generate",
-    "db:migrate": "turbo run db:migrate",
-    "db:push": "turbo run db:push",
+    "test:coverage": "turbo run test:coverage",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "clean": "turbo run clean && rm -rf node_modules",
     "web:dev": "pnpm --filter @bukiebrainjobs/web dev",
+    "web:build": "pnpm --filter @bukiebrainjobs/web build",
+    "web:test": "pnpm --filter @bukiebrainjobs/web test",
+    "web:test:coverage": "pnpm --filter @bukiebrainjobs/web test:coverage",
     "mobile:start": "pnpm --filter @bukiebrainjobs/mobile start",
-    "mobile:tunnel": "pnpm --filter @bukiebrainjobs/mobile tunnel",
-    "mobile:web": "pnpm --filter @bukiebrainjobs/mobile web",
     "mobile:android": "pnpm --filter @bukiebrainjobs/mobile android",
     "mobile:ios": "pnpm --filter @bukiebrainjobs/mobile ios",
-    "loop:status": "bash scripts/nine-status.sh",
-    "check:standards": "python3 scripts/check-production-standards.py",
-    "check:gate": "bash scripts/check-skill-gate.sh",
-    "clean": "turbo run clean && rm -rf node_modules && rm -rf apps/*/node_modules && rm -rf packages/*/node_modules && rm -rf services/*/node_modules"
+    "mobile:test": "pnpm --filter @bukiebrainjobs/mobile test",
+    "type-check": "turbo run type-check",
+    "db:generate": "pnpm --filter @bukiebrainjobs/db generate",
+    "db:migrate": "pnpm --filter @bukiebrainjobs/db migrate",
+    "db:deploy": "pnpm --filter @bukiebrainjobs/db deploy",
+    "db:seed": "pnpm --filter @bukiebrainjobs/db seed",
+    "db:studio": "pnpm --filter @bukiebrainjobs/db studio"
   },
   "devDependencies": {
     "@types/react": "19.2.0",
@@ -37,6 +41,8 @@
     "node": ">=20"
   },
   "overrides": {
+    "react-native-screens": "~4.30.1",
+    "react-native-safe-area-context": "~5.11.1",
     "fast-uri": "^4.2.3",
     "@xmldom/xmldom": "^0.9.12",
     "xmldom": "^0.6.0",
@@ -63,43 +69,8 @@
     "brace-expansion@<2": "^1.1.21",
     "brace-expansion@>=2.0.0 <3": "^2.1.7",
     "brace-expansion@>=4.0.0 <6": "^5.0.12",
-    "@bukiebrainjobs/mobile>react": "18.3.1",
-    "@bukiebrainjobs/mobile>react-dom": "18.3.1"
-  },
-  "pnpm": {
-    "overrides": {
-      "fast-uri": "^4.2.3",
-      "@xmldom/xmldom": "^0.9.12",
-      "xmldom": "^0.6.0",
-      "tar": "^7.5.21",
-      "postcss": "^8.5.23",
-      "decode-uri-component": "^0.5.1",
-    "node-forge": "^1.4.3",
-    "glob@>=9.0.0 <=14.0.1": "^14.0.2",
-    "minimatch@>=7.0.0 <11.0.1": "^11.0.1",
-    "zod": "^4.6.7",
-      "deepmerge-ts": "^8.0.0",
-      "image-size": "^2.0.3",
-      "uuid": "^11.1.1",
-      "sharp": "^0.35.5",
-      "browserslist": "^4.28.7",
-      "shell-quote": "^1.12.0",
-      "compression": "^1.8.2",
-      "source-map-js": "^1.2.2",
-      "http-cache-semantics": "^4.3.0",
-      "engine.io": "^6.6.10",
-      "undici@>=6.0.0 <7": "^6.29.1",
-      "vite": "^7.3.7",
-      "@vitest/mocker": "^4.1.12",
-      "brace-expansion@<2": "^1.1.21",
-      "brace-expansion@>=2.0.0 <3": "^2.1.7",
-      "brace-expansion@>=4.0.0 <6": "^5.0.12",
-      "@bukiebrainjobs/mobile>react": "18.3.1",
-      "@bukiebrainjobs/mobile>react-dom": "18.3.1"
-    },
-    "patchedDependencies": {
-      "metro@0.81.5": "patches/metro@0.81.5.patch"
-    }
+    "@bukiebrainjobs/mobile>react": "19.3.0",
+    "@bukiebrainjobs/mobile>react-dom": "19.3.0"
   },
   "workspaces": [
     "apps/*",

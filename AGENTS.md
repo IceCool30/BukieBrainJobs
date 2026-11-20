@@ -86,10 +86,10 @@ This file defines the standards and operational map every contributor must follo
 
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
-- **Active Phase**: Phase 3 Full Two-Sided Marketplace Lifecycle.
-- **Active Slice**: Item 3.4 Dispute Handling & Support Interface (`BW-010`). The specification and full implementation exist on `feature/bw-010-dispute-support` at `096af24`, with the branch tip at `840d443` after the skill install. PM review is accepted and owner commit approval and merge are pending. `main` remains at the BW-009 baseline.
-- **Current Product Baseline**: BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65), merged at `05944bb`.
-- **Next Product Slice**: Phase 4 Mobile Application (`apps/mobile`). Accepted native work exists on `feature/mobile-accepted-slices` at `535beda`, with the branch tip at `01fa0db` after the skill install, and awaits merge to `main`.
+- **Active Phase**: Phase 4 Mobile Application (`apps/mobile`) preview baseline complete; ready for Phase 5 Backend & Database Integration (Reserved for Mr. Solomon).
+- **Active Slice**: `MOB-OFFLINE-001` Native Offline Caching & Local Storage Preview (Complete and verified at `6acd7d1`).
+- **Current Product Baseline**: BW-010 Dispute Handling & Support Interface (Item 3.4, PR #67) merged at `abeb9a4`, completing Phase 3 of the marketplace lifecycle (100% complete); prior baseline BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65) merged at `05944bb` with quote fix at `5fc9278`; mobile accepted baseline on this branch at `6acd7d1` with concentric outer focus ring remediation committed at `866bdbf`, `MOB-MEDIA-001` native work proof photo picker preview committed at `eabb562`, `MOB-BIO-001` native biometric authentication preview committed at `24696fb`, and `MOB-OFFLINE-001` native offline caching preview committed at `6acd7d1`.
+- **Next Product Slice**: Reserved for Mr. Solomon: Phase 5 Backend & Database Integration (production PostgreSQL migrations, Prisma client binding, and settlement webhooks).
 - **Loop State Files**:
   - Scope: `docs/scope.md`
   - Master Checklist: `docs/master-checklist.md`
@@ -140,7 +140,7 @@ Every developer, AI agent, and remote execution environment (Google Cloud Shell 
 | `ui-ux-pro-max` | BukieBrainJobs Skill Suite | Visual design intelligence, component hierarchy, typography, design tokens | Active in `.agents/skills/ui-ux-pro-max/` |
 | `agent-skills-test-driven-development` | [agent-skills-tdd](https://github.com/obra/superpowers) | Test-driven development for all logic changes, bug fixes, and new features | Active in `.agents/skills/agent-skills-test-driven-development/` |
 | `bukiebrainjobs-outlier-design-system` | [Local canonical adaptation](.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md); [complete upstream engine](https://github.com/IceCool30/outlier-ai-visual-skill-engine) | Web/PWA Outlier visual system and direct links to its full source files. The local adaptation, live CSS, feature specifications, and THEME-001 govern this project's implementation. | Active in `.agents/skills/bukiebrainjobs-outlier-design-system/` |
-| `human-production-engineering` | [IceCool30/human-production-engineering-skill](https://github.com/IceCool30/human-production-engineering-skill) | Senior human-grade production engineering: zero swallowed exceptions, ACID transactions, structured logging, concurrency, and bounded timeouts | Active in `.agents/skills/human-production-engineering/` (installed from the upstream repository at `4fba725`). |
+| `human-production-engineering` | [IceCool30/human-production-engineering-skill](https://github.com/IceCool30/human-production-engineering-skill) | Senior human-grade production engineering: zero swallowed exceptions, ACID transactions, structured logging, concurrency, and bounded timeouts | Active in `.agents/skills/human-production-engineering/` |
 
 
 

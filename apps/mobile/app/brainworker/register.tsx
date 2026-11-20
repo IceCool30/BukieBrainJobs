@@ -4,7 +4,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,6 +11,7 @@ import {
   View,
   type TextInputProps,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { mono, useTrades } from '../../lib/theme';
@@ -27,6 +27,12 @@ function validate(form: Form): Errors {
   return errors;
 }
 
+function notifyRegistered(name: string, onOk: () => void) {
+  Alert.alert('Registration Received', `Welcome, ${name.trim()}! Your registration has been received.`, [
+    { text: 'OK', onPress: onOk },
+  ]);
+}
+
 export default function MobileBrainWorkerRegisterScreen() {
   const router = useRouter();
   const c = useTrades();
@@ -37,54 +43,153 @@ export default function MobileBrainWorkerRegisterScreen() {
   const handleSubmit = () => {
     const next = validate(form);
     setErrors(next);
-    if (Object.keys(next).length) return;
-    Alert.alert('Registration Received', `Welcome, ${form.name.trim()}! Your registration has been received.`, [
-      { text: 'OK', onPress: () => router.replace('/') },
-    ]);
+    if (!Object.keys(next).length) notifyRegistered(form.name, () => router.replace('/'));
   };
 
   return (
-    <SafeAreaView style={[s.fill, { backgroundColor: c.bg }]}>
+    <SafeAreaView style={[s.fill, { backgroundColor: c.bg }]} edges={['top', 'left', 'right', 'bottom']}>
       <KeyboardAvoidingView style={s.fill} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ScrollView contentContainerStyle={s.page} keyboardShouldPersistTaps="handled">
-          <Pressable accessibilityRole="button" accessibilityLabel="Go back" onPress={() => router.back()} hitSlop={8} style={s.back}>
-            <Ionicons name="arrow-back" size={18} color={c.amber} />
-            <Text style={[s.backLabel, { color: c.textMain }]}>Back</Text>
-          </Pressable>
-          <View style={[s.card, { backgroundColor: c.cardBg, borderColor: c.lead }]}>
-            <Text style={[s.eyebrow, { color: c.brandGreen }]}>BRAINWORKER REGISTRATION</Text>
-            <Text accessibilityRole="header" style={[s.heading, { color: c.textMain }]}>Become a BrainWorker</Text>
-            <Text style={[s.description, { color: c.textMuted }]}>
-              Join BukieBrainJobs as a verified service provider. Complete your details to start onboarding.
-            </Text>
-            <Field label="FULL NAME" error={errors.name} value={form.name} onChangeText={set('name')} placeholder="e.g. Chidi Anozie" autoCapitalize="words" autoComplete="name" textContentType="name" />
-            <Field label="EMAIL ADDRESS" error={errors.email} value={form.email} onChangeText={set('email')} placeholder="chidi@example.com" keyboardType="email-address" autoCapitalize="none" autoComplete="email" textContentType="emailAddress" />
-            <Field label="PHONE NUMBER" error={errors.phone} value={form.phone} onChangeText={set('phone')} placeholder="+234 800 000 0000" keyboardType="phone-pad" autoComplete="tel" textContentType="telephoneNumber" />
-            <Pressable
-              accessibilityRole="button"
-              onPress={handleSubmit}
-              style={({ pressed }) => [s.submit, { backgroundColor: pressed ? c.amberHover : c.amber }]}
-            >
-              <Text style={s.submitLabel}>CONTINUE TO ONBOARDING</Text>
-              <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
-            </Pressable>
-          </View>
+          <RegisterHeader onBack={() => router.back()} />
+          <RegisterCard form={form} errors={errors} set={set} onSubmit={handleSubmit} />
+          <RegisterPreviewLink onOpen={() => router.push('/brainworker/workspace-preview')} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
+function RegisterCard({
+  form,
+  errors,
+  set,
+  onSubmit,
+}: {
+  form: Form;
+  errors: Errors;
+  set: (key: keyof Form) => (value: string) => void;
+  onSubmit: () => void;
+}) {
+  const c = useTrades();
+  return (
+    <View style={[s.card, { backgroundColor: c.cardBg, borderColor: c.lead }]}>
+      <RegisterIntro />
+      <RegisterFormFields form={form} errors={errors} set={set} />
+      <RegisterSubmitButton onSubmit={onSubmit} />
+    </View>
+  );
+}
+
+function RegisterFormFields({
+  form,
+  errors,
+  set,
+}: {
+  form: Form;
+  errors: Errors;
+  set: (key: keyof Form) => (value: string) => void;
+}) {
+  return (
+    <>
+      <Field label="FULL NAME" error={errors.name} value={form.name} onChangeText={set('name')} placeholder="e.g. Chidi Anozie" autoCapitalize="words" autoComplete="name" textContentType="name" />
+      <Field label="EMAIL ADDRESS" error={errors.email} value={form.email} onChangeText={set('email')} placeholder="chidi@example.com" keyboardType="email-address" autoCapitalize="none" autoComplete="email" textContentType="emailAddress" />
+      <Field label="PHONE NUMBER" error={errors.phone} value={form.phone} onChangeText={set('phone')} placeholder="+234 800 000 0000" keyboardType="phone-pad" autoComplete="tel" textContentType="telephoneNumber" />
+    </>
+  );
+}
+
+function RegisterHeader({ onBack }: { onBack: () => void }) {
+  const c = useTrades();
+  const [focused, setFocused] = useState(false);
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Go back"
+      onPress={onBack}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      hitSlop={8}
+      style={({ pressed }) => [
+        s.back,
+        { borderColor: focused ? c.amber : 'transparent' },
+        pressed && { opacity: 0.95 },
+      ]}
+    >
+      <Ionicons name="arrow-back" size={18} color={c.amber} accessible={false} />
+      <Text style={[s.backLabel, { color: c.textMain }]}>Back</Text>
+    </Pressable>
+  );
+}
+
+function RegisterIntro() {
+  const c = useTrades();
+  return (
+    <>
+      <Text style={[s.eyebrow, { color: c.brandGreen }]}>BRAINWORKER REGISTRATION</Text>
+      <Text accessibilityRole="header" style={[s.heading, { color: c.textMain }]}>Become a BrainWorker</Text>
+      <Text style={[s.description, { color: c.textMuted }]}>
+        Join BukieBrainJobs as a service provider. Complete your details to start onboarding.
+      </Text>
+    </>
+  );
+}
+
+function RegisterSubmitButton({ onSubmit }: { onSubmit: () => void }) {
+  const [isFocused, setIsFocused] = useState(false);
+  const c = useTrades();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Continue to onboarding"
+      onPress={onSubmit}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      style={({ pressed }) => [s.submit, { backgroundColor: pressed ? c.ctaPressed : c.ctaFill }]}
+    >
+      <Text style={[s.submitLabel, { color: c.ctaText }]}>Continue to Onboarding</Text>
+      <Ionicons name="arrow-forward" size={16} color={c.ctaText} accessible={false} />
+      {isFocused && <View pointerEvents="none" style={[s.outerFocusRing, { borderColor: c.amber }]} />}
+    </Pressable>
+  );
+}
+
+function RegisterPreviewLink({ onOpen }: { onOpen: () => void }) {
+  const c = useTrades();
+  const [focused, setFocused] = useState(false);
+  const linkColor = c.mode === 'light' ? c.amberHover : c.amber;
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="View sample workspace preview"
+      onPress={onOpen}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={({ pressed }) => [
+        s.previewLink,
+        {
+          backgroundColor: pressed ? c.cardBg : 'transparent',
+          borderColor: focused ? c.amber : linkColor,
+        },
+      ]}
+    >
+      <Ionicons name="eye-outline" size={18} color={linkColor} accessible={false} />
+      <Text style={[s.previewLinkLabel, { color: linkColor }]}>View Sample Workspace Preview</Text>
+    </Pressable>
+  );
+}
+
 function Field({ label, error, ...input }: TextInputProps & { label: string; error?: string }) {
   const c = useTrades();
   const [focused, setFocused] = useState(false);
-  const borderColor = error ? c.danger : focused ? c.amber : c.rule;
+  const borderColor = error ? c.danger : focused ? c.amber : c.textMuted;
   return (
     <View style={s.field}>
       <Text style={[s.label, { color: c.textMuted }]}>{label}</Text>
       <TextInput
         {...input}
         accessibilityLabel={label}
+        aria-invalid={!!error}
+        accessibilityHint={error}
         placeholderTextColor={c.textMuted}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
@@ -102,7 +207,7 @@ function Field({ label, error, ...input }: TextInputProps & { label: string; err
 const s = StyleSheet.create({
   fill: { flex: 1 },
   page: { flexGrow: 1, padding: 20, gap: 16 },
-  back: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', minHeight: 44 },
+  back: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', minHeight: 48, minWidth: 48, borderWidth: 1, borderColor: 'transparent', borderRadius: 6, paddingHorizontal: 4 },
   backLabel: { fontSize: 15, fontWeight: '600' },
   card: { borderRadius: 8, borderWidth: StyleSheet.hairlineWidth, padding: 20 },
   eyebrow: { fontFamily: mono, fontSize: 11, fontWeight: '700', letterSpacing: 1.3 },
@@ -113,5 +218,16 @@ const s = StyleSheet.create({
   input: { minHeight: 48, borderRadius: 6, borderWidth: 1, paddingHorizontal: 14, fontSize: 16 },
   error: { fontSize: 13, marginTop: 6 },
   submit: { minHeight: 48, borderRadius: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 8 },
-  submitLabel: { color: '#FFFFFF', fontFamily: mono, fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
+  outerFocusRing: {
+    position: 'absolute',
+    top: -4,
+    bottom: -4,
+    left: -4,
+    right: -4,
+    borderRadius: 12,
+    borderWidth: 2,
+  },
+  submitLabel: { fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
+  previewLink: { minHeight: 48, borderRadius: 8, borderWidth: 1, borderStyle: 'dashed', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingHorizontal: 16, marginTop: 4 },
+  previewLinkLabel: { fontSize: 13, fontWeight: '700', letterSpacing: 0.6 },
 });
