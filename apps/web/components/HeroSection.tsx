@@ -312,12 +312,12 @@ export default function HeroSection({
   };
 
   return (
-    <section className="relative pt-24 sm:pt-28 pb-6 px-3 sm:px-6 lg:px-8 overflow-visible">
+    <section className="relative pt-20 sm:pt-24 pb-6 px-3 sm:px-6 lg:px-8 overflow-visible">
       {/* Outlier High-Curvature Fluid Container Banner */}
-      <div className="relative max-w-[1280px] mx-auto rounded-[24px] md:rounded-[48px] bg-gradient-to-b from-[#161B24] via-[#0E1218] to-[#0B0E13] border border-white/10 p-6 sm:p-10 md:p-16 overflow-hidden shadow-2xl">
+      <div className="relative max-w-[1240px] mx-auto rounded-[24px] md:rounded-[40px] bg-gradient-to-b from-[#161B24] via-[#0E1218] to-[#0B0E13] border border-white/10 p-6 sm:p-8 md:p-10 lg:p-12 overflow-hidden shadow-2xl">
         {/* Ambient Warm Coral Radial Glow */}
         <div 
-          className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[400px] pointer-events-none opacity-25 blur-3xl rounded-full"
+          className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[350px] pointer-events-none opacity-20 blur-3xl rounded-full"
           style={{ background: 'radial-gradient(circle, #F7803C 0%, rgba(247, 128, 60, 0) 70%)' }}
         />
 
@@ -336,23 +336,23 @@ export default function HeroSection({
           <div className="absolute inset-0 bg-gradient-to-r from-[#0B0E13] via-[#0B0E13]/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-3xl text-left space-y-6">
+        <div className="relative z-10 max-w-2xl lg:max-w-[42rem] text-left space-y-4 sm:space-y-5">
 
           {/* Outlier Punchy Typography */}
-          <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.035em] text-white leading-[1.05]">
+          <h1 className="font-display text-2xl sm:text-3xl lg:text-[2.5rem] font-extrabold tracking-[-0.03em] text-white leading-[1.12]">
             Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on{' '}
             <span className="text-[#2FE896]">BukieBrainJobs.</span>
           </h1>
 
-          <p className="max-w-xl text-sm sm:text-base font-medium leading-relaxed text-slate-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)] lg:max-w-2xl">
+          <p className="max-w-lg text-sm sm:text-base font-normal leading-relaxed text-slate-200">
             Find a BrainWorker for the job, or offer your skills for work that respects your time.
           </p>
 
           {/* Outlier Pill Search Bar */}
-          <div ref={containerRef} className="relative w-full max-w-xl pt-2 lg:max-w-[46rem]">
+          <div ref={containerRef} className="relative w-full max-w-xl pt-1">
             <form
               onSubmit={handleFormSubmit}
-              className="flex flex-col sm:flex-row items-center gap-2 rounded-2xl sm:rounded-full border border-white/20 bg-[#161B22]/95 backdrop-blur-md p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all"
+              className="flex flex-col sm:flex-row items-center gap-2 rounded-2xl sm:rounded-full border border-white/20 bg-[#161B22]/95 backdrop-blur-md p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.45)] transition-all"
             >
               {/* Search query input */}
               <div className="relative flex-1 flex items-center w-full">
@@ -384,7 +384,7 @@ export default function HeroSection({
                   }}
                   onKeyDown={handleKeyDownInput}
                   placeholder="What service do you need? (e.g. AC, Generator)"
-                  className="h-12 sm:h-14 w-full rounded-full bg-transparent pl-12 pr-10 text-sm sm:text-base font-medium text-white placeholder:text-slate-400 focus:outline-none"
+                  className="h-11 sm:h-12 w-full rounded-full bg-transparent pl-12 pr-10 text-sm sm:text-base font-medium text-white placeholder:text-slate-400 focus:outline-none"
                 />
                 {serviceQuery && (
                   <button
