@@ -74,15 +74,30 @@ Work in this repository is executed sequentially to maintain platform coherence:
 - Booking management and fulfillment (`BW-004`). **(Complete & Verified)**
 
 ### Milestone 6: Booking Lifecycle & Payments
-**Status: Partially Complete (Customer Lifecycle and Phase 3 Items 3.1 to 3.3 Live on Main; Item 3.4 Open)**
+**Status: Complete (Phase 3 100% Live on Main via PR #67 at `abeb9a4`)**
 - `WEB-013`: Customer lifecycle state machine complete (awaiting response, confirmed, declined, expired, cancelled).
 - `BW-003`: Worker-side invitation accept and decline actions. **(Complete & Verified)**
 - `BW-007`: Mutual arrival window scheduling and technician dispatch tracking. **(Complete & Verified)**
 - `BW-008`: On-site check-in, on-site scope adjustments, work completion photo proof, and customer confirmation. **(Complete & Verified)**
 - `BW-009`: Post-job completion, customer satisfaction release, 72-hour auto-release, and double-blind mutual ratings. **(Complete & Verified)**
-- **Remaining Scope in Phase 3**:
-  - Dispute resolution workflow, evidence upload, and customer support center (`BW-010`). Specification and implementation exist on `feature/bw-010-dispute-support` at `096af24`; PM review is accepted and owner commit approval and merge are pending.
-  - Real escrow payment hold and release mechanisms. These stay in Phase 5 backend integration.
+- `BW-010`: Dispute resolution workflow, evidence upload, and customer support center. **(Complete & Verified, PR #67 merged at `abeb9a4`)**
+- Real escrow payment hold, ledger mutations, and bank settlement webhooks remain in Phase 5 backend integration.
+
+### Milestone 6b: Mobile Application (`apps/mobile`)
+**Status: Preview Complete (Phase 4 Native UI Preview Baseline Merged in PR #68 at `17e11d3`)**
+- `MOB-001`: Native Public Discovery & Category Catalog (`/services`, `/services/[id]`). **(Complete & Verified)**
+- `MOB-BOOK-001`: Native Booking Preparation (`/book`). **(Complete & Verified)**
+- `MOB-POST-001`: Multi-step Native Customer Job Posting (`/post-job`). **(Complete & Verified)**
+- `MOB-ACT-001`: Native Customer Activity Hub (`/(tabs)/jobs`). **(Complete & Verified)**
+- `MOB-LIFE-001`: Native Booking Lifecycle presentation UI. **(Complete & Verified)**
+- `MOB-WORK-001`: BrainWorker Workspace preview (`/brainworker/workspace-preview`). **(Complete & Verified)**
+- `MOB-WORK-002`: Invitation Action Modals preview. **(Complete & Verified)**
+- `MOB-WORK-003`: On-Site Check-in Simulation preview. **(Complete & Verified)**
+- `MOB-MEDIA-001`: Work Proof photo picker preview. **(Complete & Verified)**
+- `MOB-BIO-001`: Biometric quick-lock preview. **(Complete & Verified)**
+- `MOB-OFFLINE-001`: Native offline caching and local storage preview. **(Complete & Verified)**
+- `MOB-VIS-001`: Slices 1 to 5 visual alignment, Outlier token harmonization, contrast patch, alignment patches, and concentric focus rings across all native screens. **(Complete & Verified)**
+- Live backend persistence, real FCM push notifications, hardware GPS/biometrics, and native physical device QA are deferred to Phase 5 and Phase 6.
 
 ### Milestone 7: Corporate Portal
 **Status: Deferred (Post-Launch)**

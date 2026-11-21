@@ -28,17 +28,17 @@ Shared business rules, trust model, booking model, and design system stay one so
 
 ## Current repository status
 
-**Phase:** Phase 3 Full Two-Sided Marketplace Lifecycle is 100% complete (Items 3.1 to 3.4 merged into main). Phase 4 Mobile Application preview slices are complete and verified on `feature/mobile-accepted-slices`. Phase 5 Backend & Database Integration is deferred (Reserved for Mr. Solomon).
+**Phase:** Phase 3 Full Two-Sided Marketplace Lifecycle is 100% complete (Items 3.1 to 3.4 merged into main via PR #67 at `abeb9a4`). Phase 4 Mobile Application native preview baseline is 100% complete and merged into main (PR #68 at `17e11d3`). Phase 5 Backend & Database Integration is deferred (Reserved for Mr. Solomon).
 
-**Code status:** The core Customer Web Platform is live in production on main at `https://bukie-brain-jobs.vercel.app`. The public website, authentication, customer dashboard, job posting, matching results, activity hub with booking lifecycle, and dispute resolution workflows are verified and deployed.
+**Code status:** The core Customer Web Platform is live in production on main at `https://bukie-brain-jobs.vercel.app`. The public website, authentication, customer dashboard, job posting, matching results, activity hub with booking lifecycle, dispute resolution workflows, and native mobile preview application are verified and deployed.
 
 - `apps/web`: Next.js 15 web application with live customer marketplace and PWA support
-- `apps/mobile`: Expo mobile application (Phase 4 native preview baseline)
+- `apps/mobile`: Expo mobile application (Phase 4 native preview baseline complete and merged into main)
 - `packages/`: Shared contracts, UI design system, validation schemas, database client, store, API types, and utilities
 - `services/socket-server`: Real-time messaging service
 - `docs/`: Governance, product roadmap, design system, master checklist, and build specifications
 
-The current product baseline is BW-010 Dispute Handling & Support Interface (Item 3.4, PR #67), merged into main at `abeb9a4`. BW-005 is Profile & Portfolio Management, not the wallet feature. The mandatory skill gate includes all nine skills, with `human-production-engineering` installed from its upstream repository at `4fba725`. Accepted Phase 4 native work is verified and pushed on `feature/mobile-accepted-slices` at `6acd7d1`, covering visual alignment, work proof photo picker, biometric authentication, and offline caching previews. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
+The current product baseline includes BW-010 Dispute Handling & Support Interface (Item 3.4, PR #67 merged at `abeb9a4`) and Phase 4 Native Application Preview Baseline (PR #68 merged at `17e11d3`). BW-005 is Profile & Portfolio Management, not the wallet feature. The mandatory skill gate includes all nine skills, with `human-production-engineering` installed from its upstream repository at `4fba725`. All Phase 4 native preview slices are verified and merged into main, covering navigation, customer discovery, booking, job posting, activity hub, BrainWorker workspace, visual alignment, work proof photo picker, biometric authentication, and offline caching previews. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
 
 ## Current web/PWA visual system
 
