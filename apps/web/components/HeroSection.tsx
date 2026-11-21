@@ -312,7 +312,7 @@ export default function HeroSection({
   };
 
   return (
-    <section className="relative pt-20 sm:pt-24 pb-6 px-3 sm:px-6 lg:px-8 overflow-visible">
+    <section className="relative pt-20 sm:pt-24 pb-8 sm:pb-10 px-3 sm:px-6 lg:px-8 overflow-visible bg-[#0B0E13]">
       {/* Outlier High-Curvature Fluid Container Banner */}
       <div className="relative max-w-[1240px] mx-auto rounded-[24px] md:rounded-[40px] bg-gradient-to-b from-[#161B24] via-[#0E1218] to-[#0B0E13] border border-white/10 p-6 sm:p-8 md:p-10 lg:p-12 overflow-hidden shadow-2xl">
         {/* Ambient Warm Coral Radial Glow */}

@@ -46,4 +46,12 @@ describe('HeroSection desktop hero component', () => {
     expect(scrim).toBeInTheDocument();
     expect(scrim?.className).toContain('to-transparent');
   });
+
+  it('maintains the obsidian dark theme fill across themes for the hero section', () => {
+    const { container } = render(<HeroSection />);
+
+    const section = container.querySelector('section');
+    expect(section).toBeInTheDocument();
+    expect(section?.className).toContain('bg-[#0B0E13]');
+  });
 });
