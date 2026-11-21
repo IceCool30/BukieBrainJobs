@@ -26,6 +26,11 @@ describe('HeroSection desktop hero component', () => {
     expect(heroImg).toBeInTheDocument();
     expect(heroImg).toHaveAttribute('src', '/images/hero-portrait-1920.png');
 
+    // Verify original alignment is preserved
+    expect(heroImg).toHaveClass('object-cover');
+    expect(heroImg).toHaveClass('md:object-[70%_50%]');
+    expect(heroImg).toHaveClass('lg:object-center');
+
     // The backdrop container must NOT have opacity-30 or mix-blend-luminosity
     // which previously stripped color warmth and dimmed faces into gray ghosts
     const pictureEl = heroImg.parentElement;
@@ -36,9 +41,9 @@ describe('HeroSection desktop hero component', () => {
     expect(containerClasses).not.toContain('opacity-30');
     expect(containerClasses).not.toContain('mix-blend-luminosity');
 
-    // Desktop scrim must fade to transparent so the faces and bodies on the right remain bright
-    const desktopScrim = container.querySelector('.hidden.md\\:block.absolute.inset-0');
-    expect(desktopScrim).toBeInTheDocument();
-    expect(desktopScrim?.className).toContain('to-transparent');
+    // Scrim fades to transparent on the right so the portrait remains bright
+    const scrim = container.querySelector('.bg-gradient-to-r');
+    expect(scrim).toBeInTheDocument();
+    expect(scrim?.className).toContain('to-transparent');
   });
 });

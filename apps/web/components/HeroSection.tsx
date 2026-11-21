@@ -330,20 +330,16 @@ export default function HeroSection({
               alt="BukieBrainJobs BrainWorkers at work"
               fill
               priority
-              className="object-cover object-right md:object-[82%_25%] lg:object-[86%_20%]"
+              className="object-cover md:object-[70%_50%] lg:object-center"
             />
           </picture>
-          {/* Mobile Scrim: subtle darkening to ensure readable typography without obscuring faces */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B0E13]/75 via-[#0B0E13]/40 to-[#0B0E13]/90 md:hidden" />
-          {/* Desktop Scrim: dark backing for text on left half; completely transparent on right for bright faces & bodies */}
-          <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-[#0B0E13] via-[#0B0E13]/80 via-35% to-transparent to-70%" />
-          <div className="hidden md:block absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0B0E13]/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B0E13] via-[#0B0E13]/80 to-transparent" />
         </div>
 
         <div className="relative z-10 max-w-3xl text-left space-y-6">
 
           {/* Outlier Punchy Typography */}
-          <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.035em] text-white leading-[1.05] drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]">
+          <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.035em] text-white leading-[1.05]">
             Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on{' '}
             <span className="text-[#2FE896]">BukieBrainJobs.</span>
           </h1>
