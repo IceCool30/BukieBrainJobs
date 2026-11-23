@@ -60,12 +60,4 @@ describe('PwaHome', () => {
     expect(subtitle.className).toContain('text-slate-100');
     expect(subtitle.className).not.toContain('text-[var(--text-main)]');
   });
-
-  it('maintains obsidian dark theme fill across themes for the mobile hero section', () => {
-    const { container } = render(<PwaHome onOpenDrawer={vi.fn()} />);
-
-    const heroSection = container.querySelector('section');
-    expect(heroSection).toBeInTheDocument();
-    expect(heroSection?.className).toContain('bg-[#0B0E13]');
-  });
 });

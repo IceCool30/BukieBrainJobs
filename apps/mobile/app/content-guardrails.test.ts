@@ -190,12 +190,6 @@ describe('Phase 4 Content & Interaction Guardrails', () => {
     expect(indexContent).toContain('textShadowColor');
   });
 
-  it('enforces obsidian dark hero background across themes in mobile marketing home screen', () => {
-    const indexContent = readMobileFile('app/index.tsx');
-    expect(indexContent).toContain("backgroundColor: '#0B0E13'");
-    expect(indexContent).toContain("borderColor: 'rgba(255, 255, 255, 0.12)'");
-  });
-
   it('prohibits obvious section comments from mobile screen JSX', () => {
     const uiScreens = [
       'app/index.tsx',

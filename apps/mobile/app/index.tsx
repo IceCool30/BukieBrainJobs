@@ -118,7 +118,7 @@ function ThemeToggle({
 function Hero() {
   const c = useThemeColors();
   return (
-    <View style={[s.hero, { borderColor: 'rgba(255, 255, 255, 0.12)' }]}>
+    <View style={[s.hero, { borderColor: c.lead }]}>
       <Image source={require('../assets/images/hero-mobile-1080.jpg')} style={s.heroBackdrop} resizeMode="cover" accessibilityIgnoresInvertColors />
       <View style={s.heroOverlay} />
       <Text style={[s.heroTitle, { color: getStripTextColor(c, '#FFFFFF') }]}>
@@ -234,7 +234,7 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     padding: 6,
   },
-  hero: { borderRadius: 12, borderWidth: StyleSheet.hairlineWidth, padding: 22, gap: 16, overflow: 'hidden', position: 'relative', backgroundColor: '#0B0E13' },
+  hero: { borderRadius: 12, borderWidth: StyleSheet.hairlineWidth, padding: 22, gap: 16, overflow: 'hidden', position: 'relative', backgroundColor: '#001A41' },
   heroBackdrop: { ...StyleSheet.absoluteFill, width: '100%', height: '100%' },
   heroOverlay: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(0, 26, 65, 0.30)' },
   heroTitle: { color: '#FFFFFF', fontSize: 22, lineHeight: 28, fontWeight: '800', letterSpacing: -0.6, textShadowColor: 'rgba(0, 0, 0, 0.85)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
