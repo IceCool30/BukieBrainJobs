@@ -8,7 +8,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@bukiebrainjobs/api-types": "workspace:*"
+    "@bukiebrainjobs/api-types": "*"
   },
   "devDependencies": {
     "typescript": "^5.7.3"

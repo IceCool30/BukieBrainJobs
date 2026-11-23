@@ -5,10 +5,9 @@ This file defines the standards and operational map every contributor must follo
 ## Repository Overview
 - **Project Name**: BukieBrainJobs
 - **Architecture**: Monorepo managed with Turborepo and pnpm workspaces
-- **Primary Languages and Runtimes**: TypeScript 5.7, Node.js 24 LTS, Next.js 15.5, React 19, React Native / Expo SDK 52, Tailwind CSS v4, Prisma v6, Zustand v5, Vitest v4
+- **Primary Languages and Runtimes**: TypeScript 5.7, Node.js 24 LTS, Next.js 15.5, React 19, Tailwind CSS v4, Prisma v6, Zustand v5, Vitest v4
 - **Workspaces Layout**:
   - `apps/web`: Next.js 15 App Router web application and PWA
-  - `apps/mobile`: Expo / React Native mobile application
   - `packages/types`: Shared domain types and TypeScript contracts
   - `packages/validation`: Shared Zod validation schemas
   - `packages/ui`: Shared design tokens, UI primitives, and components
@@ -19,9 +18,8 @@ This file defines the standards and operational map every contributor must follo
   - `services/socket-server`: Real-time socket service
 
 ## Core Commands
-- **Install**: `pnpm install`
-- **Dev (Web)**: `pnpm web:dev`
-- **Dev (Mobile)**: `pnpm mobile:start`
+- **Install**: `npm install`
+- **Dev (Web)**: `npm run dev` (runs `apps/web` on port 3000)
 - **Typecheck**: `gcheck` (execute `pnpm type-check` on Google Cloud Shell)
 - **Test**: `gtest [args]` (execute Vitest on Google Cloud Shell) or `ctest` (fallback Codespace)
 - **Build**: `gbuild [args]` (execute Next.js/Turbo build on Google Cloud Shell) or `cbuild` (fallback Codespace)
@@ -86,9 +84,9 @@ This file defines the standards and operational map every contributor must follo
 
 ## Engineering Loop State (The 9 Commands)
 - **Governing Operating System**: `mr-solomon-nine-command-engineering-loop` governs every task (both large features and small fixes) via phase isolation (`/scope`, `/audit`, `/architect`, `/develop`, `/check`, `/test`, `/document`, `/sync`, `/debug`).
-- **Active Phase**: Phase 4 Mobile Application (`apps/mobile`) preview baseline complete; ready for Phase 5 Backend & Database Integration (Reserved for Mr. Solomon).
-- **Active Slice**: `MOB-OFFLINE-001` Native Offline Caching & Local Storage Preview (Complete and verified at `6acd7d1`).
-- **Current Product Baseline**: BW-010 Dispute Handling & Support Interface (Item 3.4, PR #67) merged at `abeb9a4`, completing Phase 3 of the marketplace lifecycle (100% complete); prior baseline BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65) merged at `05944bb` with quote fix at `5fc9278`; Phase 4 Mobile Application Native UI Preview Baseline complete and merged into `main` via PR #68 at `17e11d3` (including concentric outer focus ring remediation at `866bdbf`, `MOB-MEDIA-001` at `eabb562`, `MOB-BIO-001` at `24696fb`, and `MOB-OFFLINE-001` at `6acd7d1`).
+- **Active Phase**: Web and PWA focus active (native mobile app removed per CEO direction and deferred to a future build); ready for Phase 5 Backend & Database Integration (Reserved for Mr. Solomon).
+- **Active Slice**: Web and PWA focus cleanup (removed `apps/mobile`, Capacitor config, and mobile-only docs and media while retaining `apps/web` and shared `packages/*`).
+- **Current Product Baseline**: BW-010 Dispute Handling & Support Interface (Item 3.4, PR #67) merged at `abeb9a4`, completing Phase 3 of the web marketplace lifecycle (100% complete); prior baseline BW-009 Post-Job Completion & Escrow Release (Item 3.3, PR #65) merged at `05944bb` with quote fix at `5fc9278`. The repository now ships the Next.js website and PWA alongside shared workspace packages.
 - **Next Product Slice**: Reserved for Mr. Solomon: Phase 5 Backend & Database Integration (production PostgreSQL migrations, Prisma client binding, and settlement webhooks).
 - **Loop State Files**:
   - Scope: `docs/scope.md`

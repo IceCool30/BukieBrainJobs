@@ -5,7 +5,6 @@ const config: Config = {
   content: [
     './src/**/*.{ts,tsx}',
     '../../apps/web/**/*.{ts,tsx}',
-    '../../apps/mobile/**/*.{ts,tsx}',
   ],
 };
 

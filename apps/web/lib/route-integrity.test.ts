@@ -107,16 +107,6 @@ describe('Route Integrity & Navigation Verification', () => {
     expect(footerContent).toContain('Become a BrainWorker');
   });
 
-  it('verifies that mobile app defines and links the dedicated /brainworker/register route', () => {
-    const mobileRegisterPath = path.resolve(__dirname, '../../../apps/mobile/app/brainworker/register.tsx');
-    const mobileIndexPath = path.resolve(__dirname, '../../../apps/mobile/app/index.tsx');
-
-    expect(fs.existsSync(mobileRegisterPath), 'Mobile brainworker/register.tsx must exist').toBe(true);
-    const mobileIndexContent = fs.readFileSync(mobileIndexPath, 'utf-8');
-    expect(mobileIndexContent).toContain('href="/brainworker/register"');
-    expect(mobileIndexContent).toContain('Become a BrainWorker');
-  });
-
   it('verifies BecomeWorkerModal uses dual-theme semantic tokens without hardcoded white background', () => {
     const modalFilePath = path.resolve(__dirname, '../components/modals/BecomeWorkerModal.tsx');
     const modalContent = fs.readFileSync(modalFilePath, 'utf-8');

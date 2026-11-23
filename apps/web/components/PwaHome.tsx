@@ -214,7 +214,7 @@ export default function PwaHome({
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] pb-12 transition-colors duration-200">
       {/* Compact photo-governed mobile hero */}
-      <section className="relative min-h-[340px] pb-6">
+      <section className="relative min-h-[340px] pb-6 bg-[#0B0E13]">
         <Image
           src="/images/hero-portrait-1920.png"
           alt="BukieBrainJobs BrainWorkers at work"
@@ -222,17 +222,9 @@ export default function PwaHome({
           priority
           className="object-cover object-[78%_52%]"
         />
-        {/* Navy overlays */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(ellipse 115% 100% at 55% 38%, transparent 48%, rgba(0,26,65,0.32) 100%)',
-            mixBlendMode: 'multiply',
-          }}
-        />
-        <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-[#001A41]/95 via-[#001A41]/50 to-transparent" />
-        <div className="absolute inset-y-0 right-0 w-[34%] bg-gradient-to-l from-[#001A41]/65 to-[#001A41]/0" />
+        {/* Obsidian dark overlays preserving face illumination */}
+        <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#0B0E13] via-[#0B0E13]/70 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B0E13]/75 via-[#0B0E13]/30 to-transparent pointer-events-none" />
 
         <div className="relative z-10 flex items-center justify-between px-4 pt-3.5">
           <div className="flex items-center gap-2">
@@ -245,7 +237,7 @@ export default function PwaHome({
               priority
             />
             <span className="font-display font-extrabold text-sm tracking-tight text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
-              Bukie<span className="text-[#ABEEC8]">BrainJobs</span>
+              Bukie<span className="text-[#2FE896]">BrainJobs</span>
             </span>
           </div>
 
@@ -264,20 +256,16 @@ export default function PwaHome({
         <div className="relative z-10 px-4 pt-8 text-left space-y-3">
           <h1 className="font-display font-extrabold text-[19px] leading-snug tracking-tight text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.55)]">
             Book a skilled local or remote worker in minutes or find flexible work that pays what you are worth only on{' '}
-            <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#ABEEC8] to-[#5FD8A5]">
-              BukieBrainJobs
-              <span className="absolute inset-x-0 bottom-0 h-[2px] rounded-full bg-gradient-to-r from-[#ABEEC8] to-transparent" />
-            </span>
-            .
+            <span className="text-[#2FE896]">BukieBrainJobs.</span>
           </h1>
 
           <div ref={searchContainerRef} className="relative">
             <form
               onSubmit={handleSearchSubmit}
-              className="flex flex-col items-stretch gap-1.5 rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-1.5 ring-4 ring-white/10 shadow-[0_24px_50px_-15px_rgba(0,0,0,0.6)]"
+              className="flex flex-col items-stretch gap-1.5 rounded-2xl border border-white/20 bg-[#161B22]/95 backdrop-blur-md p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.45)] ring-4 ring-white/10"
             >
               <div className="relative flex items-center">
-                <Search className="absolute left-3.5 h-4 w-4 shrink-0 text-[var(--text-muted)]" />
+                <Search className="absolute left-3.5 h-4 w-4 shrink-0 text-slate-400" />
                 <input
                   ref={searchInputRef}
                   id="pwa-search-input"
@@ -305,7 +293,7 @@ export default function PwaHome({
                   }}
                   onKeyDown={handleSearchKeyDown}
                   placeholder="What service do you need?"
-                  className="h-11 w-full rounded-xl bg-transparent pl-10 pr-8 text-sm font-medium text-[var(--text-main)] placeholder:text-[var(--text-muted)] focus:outline-none"
+                  className="h-11 w-full rounded-xl bg-transparent pl-10 pr-8 text-sm font-medium text-white placeholder:text-slate-400 focus:outline-none"
                 />
                 {query && (
                   <button
@@ -317,7 +305,7 @@ export default function PwaHome({
                       setSearchOpen(true);
                       searchInputRef.current?.focus();
                     }}
-                    className="absolute right-1.5 flex h-9 w-9 items-center justify-center rounded-full text-[var(--text-muted)] hover:text-[var(--text-main)]"
+                    className="absolute right-1.5 flex h-9 w-9 items-center justify-center rounded-full text-slate-400 hover:text-white"
                     aria-label="Clear search"
                   >
                     <X className="h-3.5 w-3.5" />
@@ -335,21 +323,21 @@ export default function PwaHome({
                     }}
                     aria-expanded={locationOpen}
                     aria-controls="pwa-location-options"
-                    className="flex h-11 w-full items-center justify-between gap-1.5 rounded-xl border border-[var(--lead)] bg-[var(--tag-bg)] px-3 text-xs font-semibold text-[var(--text-main)] transition-colors hover:bg-[var(--rule)]"
+                    className="flex h-11 w-full items-center justify-between gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 text-xs font-semibold text-white transition-colors hover:bg-white/10"
                   >
-                    <MapPin className="h-3.5 w-3.5 shrink-0 text-[var(--brand-green)]" />
+                    <MapPin className="h-3.5 w-3.5 shrink-0 text-[#2FE896]" />
                     <span className="truncate">{selectedLocation.name}</span>
-                    <ChevronDown className="h-3 w-3 shrink-0 text-[var(--text-muted)]" />
+                    <ChevronDown className="h-3 w-3 shrink-0 text-slate-400" />
                   </button>
 
                   {locationOpen && (
-                      <div
-                        id="pwa-location-options"
-                        role="listbox"
-                        aria-label="Choose a location"
-                        className="absolute left-0 top-full z-[60] mt-2 w-full min-w-56 rounded-xl border border-[var(--lead)] bg-[var(--card-bg)] py-2 shadow-xl"
-                      >
-                      <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                    <div
+                      id="pwa-location-options"
+                      role="listbox"
+                      aria-label="Choose a location"
+                      className="absolute left-0 top-full z-[60] mt-2 w-full min-w-56 rounded-xl border border-white/15 bg-[#161B22] py-2 shadow-2xl text-white"
+                    >
+                      <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         Available locations
                       </div>
                       {NIGERIAN_LOCATIONS.filter((location) => location.status === 'active').map((location) => (
@@ -361,18 +349,17 @@ export default function PwaHome({
                           aria-selected={selectedLocation.id === location.id}
                           className={`flex w-full items-center justify-between px-3 py-2 text-left text-xs font-medium transition-colors ${
                             selectedLocation.id === location.id
-                              ? 'bg-[var(--tag-bg)] font-bold text-[var(--text-main)]'
-                              : 'text-[var(--text-main)] hover:bg-[var(--tag-bg)]'
+                              ? 'bg-white/10 font-bold text-white'
+                              : 'text-slate-300 hover:bg-white/5 hover:text-white'
                           }`}
                         >
                           <span className="flex items-center gap-2">
-                            <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-green)]" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#2FE896]" />
                             {location.name}
                           </span>
-                          <span className="text-[10px] text-[var(--text-muted)]">{location.popularArea}</span>
+                          <span className="text-[10px] text-slate-400">{location.popularArea}</span>
                         </button>
                       ))}
-
                     </div>
                   )}
                 </div>
@@ -392,13 +379,13 @@ export default function PwaHome({
                 id="pwa-service-suggestions"
                 role={query.trim() ? 'listbox' : undefined}
                 aria-label={query.trim() ? 'Service suggestions' : undefined}
-                className="motion-popover relative z-50 mt-2 max-h-[320px] space-y-3 overflow-y-auto rounded-2xl border border-[var(--lead)] bg-[var(--card-bg)] p-3 shadow-[0_16px_40px_-12px_rgba(0,26,65,0.3)]"
+                className="motion-popover relative z-50 mt-2 max-h-[320px] space-y-3 overflow-y-auto rounded-2xl border border-white/15 bg-[#161B22] p-3 shadow-2xl text-white"
               >
                 {!query.trim() && (
                   <div className="space-y-3">
                     {recentSearches.length > 0 && (
                       <div className="space-y-1.5">
-                        <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                        <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-400">
                           <span className="flex items-center gap-1.5">
                             <History className="h-3.5 w-3.5" />
                             Recent searches
@@ -406,7 +393,7 @@ export default function PwaHome({
                           <button
                             type="button"
                             onClick={clearRecentSearches}
-                            className="text-[10px] lowercase text-[var(--text-muted)] hover:text-[var(--text-main)] cursor-pointer"
+                            className="text-[10px] lowercase text-slate-400 hover:text-white cursor-pointer"
                           >
                             Clear
                           </button>
@@ -420,7 +407,7 @@ export default function PwaHome({
                                 setQuery(term);
                                 executeSearch(term);
                               }}
-                              className="flex items-center gap-1.5 rounded-lg bg-[var(--tag-bg)] px-2.5 py-1 text-xs font-medium text-[var(--text-main)] transition-colors hover:bg-[var(--rule)] cursor-pointer"
+                              className="flex items-center gap-1.5 rounded-lg bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-200 transition-colors hover:bg-white/10 cursor-pointer"
                             >
                               {term}
                             </button>
@@ -429,9 +416,9 @@ export default function PwaHome({
                       </div>
                     )}
 
-                    <div className="space-y-1.5 border-t border-[var(--lead)] pt-1">
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                        <TrendingUp className="h-3.5 w-3.5 text-[var(--brand-green)]" />
+                    <div className="space-y-1.5 border-t border-white/10 pt-1">
+                      <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        <TrendingUp className="h-3.5 w-3.5 text-[#2FE896]" />
                         Services to explore
                       </div>
                       <div className="grid gap-1.5">
@@ -443,10 +430,10 @@ export default function PwaHome({
                               setQuery(term);
                               executeSearch(term);
                             }}
-                            className="flex items-center justify-between rounded-xl border border-transparent p-2 text-left text-xs font-medium text-[var(--text-main)] transition-colors hover:border-[var(--lead)] hover:bg-[var(--tag-bg)] cursor-pointer"
+                            className="flex items-center justify-between rounded-xl border border-transparent p-2 text-left text-xs font-medium text-slate-200 transition-colors hover:border-white/10 hover:bg-white/5 cursor-pointer"
                           >
                             <span className="truncate">{term}</span>
-                            <ArrowRight className="h-3 w-3 shrink-0 text-[var(--text-muted)]" />
+                            <ArrowRight className="h-3 w-3 shrink-0 text-slate-400" />
                           </button>
                         ))}
                       </div>
@@ -456,11 +443,11 @@ export default function PwaHome({
 
                 {query.trim() && (
                   <div className="space-y-1">
-                    <div className="px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                    <div className="px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">
                       Matching services
                     </div>
                     {matched.length === 0 ? (
-                      <div className="px-3 py-4 text-center text-xs text-[var(--text-muted)]">
+                      <div className="px-3 py-4 text-center text-xs text-slate-400">
                         We couldn&apos;t find a close match for &quot;{query}&quot;. Search to browse the services shown here.
                       </div>
                     ) : (
@@ -478,21 +465,21 @@ export default function PwaHome({
                           aria-selected={highlightedIndex === index}
                           className={`motion-press flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${
                             highlightedIndex === index
-                              ? 'bg-[var(--tag-bg)] font-semibold text-[var(--text-main)]'
-                              : 'text-[var(--text-main)] hover:bg-[var(--tag-bg)]'
+                              ? 'bg-white/10 font-semibold text-white'
+                              : 'text-slate-200 hover:bg-white/5 hover:text-white'
                           }`}
                         >
-                          <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-[var(--lead)] bg-[var(--tag-bg)]">
+                          <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/5">
                             <Image src={category.photoUrl} alt={category.title} fill sizes="40px" className="object-cover" />
                           </span>
                           <span className="min-w-0 flex-1">
-                            <span className="block truncate text-xs font-bold text-[var(--text-main)]">{category.title}</span>
-                            <span className="block truncate text-[11px] text-[var(--text-muted)]">
+                            <span className="block truncate text-xs font-bold text-white">{category.title}</span>
+                            <span className="block truncate text-[11px] text-slate-400">
                               {category.popularServices.slice(0, 2).join(' · ')}
                             </span>
                           </span>
                           <span className="shrink-0 text-right">
-                            <span className="block text-xs font-extrabold text-[var(--brand-green)]">From {category.startingPrice}</span>
+                            <span className="block text-xs font-extrabold text-[#2FE896]">From {category.startingPrice}</span>
                           </span>
                         </button>
                       ))
