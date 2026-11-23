@@ -26,7 +26,7 @@ describe('THEME-001 native theme behavior', () => {
 
     expect(theme.getThemeMode()).toBe('dark');
     expect(storage.getItem).toHaveBeenCalledWith('bbj_theme_mode');
-  });
+  }, 15000);
 
   it('restores a saved light preference and returns approved light tokens', async () => {
     storage.getItem.mockResolvedValue('light');

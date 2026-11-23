@@ -148,8 +148,8 @@ function generateAppHtml() {
     .btn-amber {
       min-height: 48px;
       border-radius: 8px;
-      background: #FF6B35;
-      color: #FFFFFF;
+      background: #F7803C;
+      color: #001A41;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -210,7 +210,7 @@ function generateAppHtml() {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      color: #FF6B35;
+      color: #F7803C;
       font-size: 14px;
       font-weight: 600;
       min-height: 48px;
@@ -244,7 +244,7 @@ function generateAppHtml() {
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.8px;
-      color: #FF6B35;
+      color: #F7803C;
     }
     .notice-body { font-size: 12px; line-height: 18px; color: #CBD5E1; }
     .search-box {
@@ -303,8 +303,8 @@ function generateAppHtml() {
       justify-content: center;
     }
     .pill.active {
-      background: #FF6B35;
-      border-color: #FF6B35;
+      background: #F7803C;
+      border-color: #F7803C;
       color: #13171E;
     }
     .catalog-list { display: flex; flex-direction: column; gap: 10px; }
@@ -330,7 +330,7 @@ function generateAppHtml() {
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.8px;
-      color: #FF6B35;
+      color: #F7803C;
     }
     .card-title { font-size: 16px; font-weight: 700; line-height: 22px; color: #F0F4F9; }
     .card-desc {
@@ -359,7 +359,7 @@ function generateAppHtml() {
       border-radius: 8px;
       border: 1px solid #202734;
       background: #07090D;
-      color: #FF6B35;
+      color: #F7803C;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
@@ -389,7 +389,7 @@ function generateAppHtml() {
       border: none;
       background: transparent;
     }
-    .tab-item.active { color: #FF6B35; font-weight: 700; }
+    .tab-item.active { color: #F7803C; font-weight: 700; }
     .detail-header-bar {
       min-height: 48px;
       display: flex;
@@ -427,7 +427,7 @@ function generateAppHtml() {
       font-size: 14px;
       color: #F0F4F9;
     }
-    .task-bullet { color: #FF6B35; }
+    .task-bullet { color: #F7803C; }
     .not-found-view {
       display: flex;
       flex-direction: column;
@@ -446,7 +446,7 @@ function generateAppHtml() {
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #FF6B35;
+      color: #F7803C;
       font-size: 32px;
       margin-bottom: 8px;
     }
@@ -544,7 +544,7 @@ function generateAppHtml() {
     <div class="content-scroll">
       <div class="notice-card">
         <div class="notice-header">
-          <span style="color:#FF6B35;font-weight:700;">ℹ</span>
+          <span style="color:#F7803C;font-weight:700;">ℹ</span>
           <span class="notice-title mono">LOCAL PREVIEW</span>
         </div>
         <div class="notice-body">This preview does not include live service listings or booking actions.</div>
@@ -600,7 +600,7 @@ function generateAppHtml() {
       </div>
       <div class="notice-card" style="margin-top:6px;">
         <div class="notice-header">
-          <span style="color:#FF6B35;font-weight:700;">ℹ</span>
+          <span style="color:#F7803C;font-weight:700;">ℹ</span>
           <span class="notice-title mono">LOCAL PREVIEW</span>
         </div>
         <div class="notice-body">This preview does not include live service booking or worker dispatch actions.</div>

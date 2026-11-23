@@ -2,6 +2,23 @@
 
 This file records verification checks executed across the codebase under `/check` [VERIFY] of the Mr. Solomon 9-Command Engineering Loop.
 
+## 2026-11-23: Phase 4 Native Android Emulator End-to-End Verification & Outlier Token Alignment
+
+- **Branch**: `main`
+- **Scope**: Live end-to-end interactive verification of `apps/mobile` on Android emulator (`Galaxy_S26_Ultra_API_37`, Android 17 / API 37) via `agent-device` and Expo Go:
+  1. **Route Coverage**: 12/12 routes tested interactively (`/`, `/home`, `/services`, `/services/[id]`, `/services/does-not-exist`, `/book`, `/post-job`, `/jobs`, `/messages`, `/profile`, `/brainworker/register`, `/brainworker/workspace-preview`).
+  2. **Device Capability Verification**: Verified `MOB-OFFLINE-001` network mode toggle and sample sync, `MOB-BIO-001` biometric unlock simulation, `MOB-MEDIA-001` work proof gallery photo selection, and on-site check-in simulation with explicit local preview boundaries.
+  3. **Token Alignment**: Updated verification scripts (`scripts/verify-expo-mobile-qa.mjs`, `scripts/verify-expo-activity-hub.mjs`, `scripts/verify-mobile-discovery-qa.mjs`) to assert canonical Outlier coral `#F7803C` (`rgb(247, 128, 60)`) and brand navy `#001A41` (`rgb(0, 26, 65)`).
+  4. **Working Tree Cleanliness**: Added `/android/` and `/ios/` to `apps/mobile/.gitignore` and removed untracked `apps/mobile/android/` build tree.
+  5. **Vitest Multi-Suite Concurrency**: Added 15s timeout to `apps/mobile/lib/theme.test.ts` to prevent dynamic module import timeout under concurrent multi-suite execution.
+- **Verification Gates**:
+  - Skill Gate Guard: PASS (AGENTS.md, CLAUDE.md, .clinerules).
+  - Mobile unit test suite: PASS (26/26 test files, 375/375 tests green).
+  - Web unit test suite: PASS (127/127 test files, 1,883/1,883 tests green).
+  - Mobile TypeScript compiler check (`tsc --noEmit`): PASS with 0 diagnostics.
+  - Web TypeScript compiler check (`tsc --noEmit`): PASS with 0 diagnostics.
+  - QA Artifacts: Checked in `docs/reports/MOBILE-EMULATOR-E2E-QA-2026-11-23.md`.
+
 ## 2026-11-20: Phase 4.4 Native BrainWorker Offline Caching & Local Storage Preview (MOB-OFFLINE-001)
 
 - **Branch**: `feature/mobile-accepted-slices`

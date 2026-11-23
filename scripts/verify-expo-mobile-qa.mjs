@@ -56,8 +56,8 @@ async function verifyTouchTargets(page, selector, minWidth = 48, minHeight = 48,
 async function assertCtaAmber(page) {
   const cta = page.locator('a[aria-label="Find a BrainWorker"]');
   const bg = await cta.evaluate((el) => window.getComputedStyle(el).backgroundColor);
-  if (bg !== 'rgb(255, 107, 53)') {
-    throw new Error(`[Assertion Error] Primary CTA background ${bg} is not exact amber #FF6B35 (rgb(255, 107, 53))`);
+  if (bg !== 'rgb(247, 128, 60)') {
+    throw new Error(`[Assertion Error] Primary CTA background ${bg} is not canonical Outlier coral #F7803C (rgb(247, 128, 60))`);
   }
 }
 

@@ -7,3 +7,7 @@ dist-web/
 dist-android/
 dist-ios/
 # @end expo-cli
+
+# Native build directories
+/android/
+/ios/

@@ -39,9 +39,9 @@ function contrastRatio(rgb1, rgb2) {
 function getThemeTokens(mode) {
   if (mode === 'dark') {
     return {
-      fg: 'rgb(11, 14, 19)',
-      normalBg: 'rgb(255, 107, 53)',
-      pressedBg: 'rgb(255, 125, 77)',
+      fg: 'rgb(0, 26, 65)',
+      normalBg: 'rgb(247, 128, 60)',
+      pressedBg: 'rgb(255, 141, 77)',
     };
   }
   return {
