@@ -4,7 +4,7 @@ BukieBrainJobs is a **two-sided, real-time service marketplace** with five disti
 
 - A **web application** (Next.js 15 App Router, SSR + ISR for SEO, client-side for real-time features)
 - A **Progressive Web App** (PWA) served from the same Next.js build, installable on Android/iOS
-- A **React Native Expo** application targeting Android (primary) and iOS (secondary)
+- A **React Native Expo** application targeting Android (primary) and iOS (secondary), deferred to a future build under FOUND-011
 - A **shared backend API** (Next.js Route Handlers + a dedicated Socket.io server)
 - A **shared design system** (NativeWind v4 on mobile, Tailwind CSS v4 on web, unified tokens)
 - A **shared business logic layer** (TypeScript types, Zustand stores, validation schemas, utilities)
@@ -13,11 +13,11 @@ The non-negotiable architectural principle is: **write once, run everywhere, tru
 
 ## 2. Monorepo Toolchain
 
-The repository uses **pnpm workspaces** as the package manager (faster installs, strict dependency isolation, native workspace protocol) and **Turborepo** as the build orchestrator (incremental builds, remote caching, parallel task execution).
+The repository uses **npm workspaces** from the repository root. Root npm scripts own install, build, test, lint, and type-check orchestration, and no separate build orchestrator is used.
 
 ```
-Package Manager : pnpm 9.x
-Build System    : Turborepo 2.x
+Package Manager : npm 11.x workspaces
+Build System    : Root npm scripts
 Language        : TypeScript 5.7.x (strict mode, no `any`)
 Node Version    : 24 LTS (managed via .nvmrc)
 ```
@@ -181,8 +181,7 @@ bukiebrainjobs/
 │       ├── Dockerfile
 │       └── package.json
 │
-├── turbo.json
-├── pnpm-workspace.yaml
+├── package-lock.json
 ├── package.json                    # Root package.json (devDependencies only)
 ├── tsconfig.base.json              # Base TypeScript config
 └── .env.example

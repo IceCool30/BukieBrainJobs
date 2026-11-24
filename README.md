@@ -4,41 +4,39 @@ BukieBrainJobs is a Nigerian two-sided services marketplace connecting customers
 
 This repository is the engineering and documentation source of truth for the product. Product decisions, design rules, architecture, implementation guidance, and development workflow are traceable to the documentation here.
 
-## Platform policy: full product on every surface
+## Platform policy: full product on website and PWA
 
-BukieBrainJobs is one product delivered on three equal surfaces. Users choose how they access it. No surface is intentionally feature-limited.
+BukieBrainJobs is one product delivered on two live surfaces, the desktop website and the mobile web shell that doubles as the installable PWA. The native application was removed from this repository per CEO direction and is deferred to a future build.
 
 | Surface | Codebase | How users open it |
 |---|---|---|
 | Website (desktop browser) | `apps/web` | URL in a desktop browser |
 | Mobile web shell / PWA | `apps/web` | Phone browser, or home-screen install |
-| Native Android and iOS | `apps/mobile` (Expo) | App Store / Google Play |
 
 **Policy rules**
 
-1. Every core customer and BrainWorker journey must be available on website, PWA, and native.
+1. Every core customer and BrainWorker journey must be available on the website and the PWA.
 2. Desktop website is a first-class full product, not a reduced mobile site.
 3. Mobile browser and installed PWA share the compact mobile shell on the homepage. Desktop width keeps the full marketing homepage.
 4. PWA install remains a full product path for people who do not want store apps.
-5. Native is a full product path for people who prefer store apps, with stronger OS tools where useful (push, camera, biometrics).
-6. Platform enhancements may improve delivery of the same feature. They must not remove the feature from other surfaces.
+5. Native Android and iOS are deferred, not cancelled. The shared packages stay reusable so a future native build can reconnect.
+6. Platform enhancements may improve delivery of the same feature. They must not remove the feature from the website or the PWA.
 7. The homepage does not use a bottom navigation bar (live experience standard).
 
 Shared business rules, trust model, booking model, and design system stay one source of truth across all surfaces.
 
 ## Current repository status
 
-**Phase:** Phase 3 Full Two-Sided Marketplace Lifecycle is 100% complete (Items 3.1 to 3.4 merged into main via PR #67 at `abeb9a4`). Phase 4 Mobile Application native preview baseline is 100% complete and merged into main (PR #68 at `17e11d3`). Phase 5 Backend & Database Integration is deferred (Reserved for Mr. Solomon).
+**Phase:** Phase 3 Full Two-Sided Marketplace Lifecycle is 100% complete (Items 3.1 to 3.4 merged into main via PR #67 at `abeb9a4`). The Phase 4 native preview baseline was merged at `17e11d3` (PR #68) and later removed from the repository per CEO direction, so the native application is deferred to a future build. Phase 5 Backend & Database Integration is deferred (Reserved for Mr. Solomon).
 
-**Code status:** The core Customer Web Platform is live in production on main at `https://bukie-brain-jobs.vercel.app`. The public website, authentication, customer dashboard, job posting, matching results, activity hub with booking lifecycle, dispute resolution workflows, and native mobile preview application are verified and deployed.
+**Code status:** The core Customer Web Platform is live in production on main at `https://bukie-brain-jobs.vercel.app`. The public website, authentication, customer dashboard, job posting, matching results, activity hub with booking lifecycle, and dispute resolution workflows are verified and deployed. The repository ships the website and PWA, not a native application.
 
 - `apps/web`: Next.js 15 web application with live customer marketplace and PWA support
-- `apps/mobile`: Expo mobile application (Phase 4 native preview baseline complete and merged into main)
 - `packages/`: Shared contracts, UI design system, validation schemas, database client, store, API types, and utilities
 - `services/socket-server`: Real-time messaging service
 - `docs/`: Governance, product roadmap, design system, master checklist, and build specifications
 
-The current product baseline includes BW-010 Dispute Handling & Support Interface (Item 3.4, PR #67 merged at `abeb9a4`) and Phase 4 Native Application Preview Baseline (PR #68 merged at `17e11d3`). BW-005 is Profile & Portfolio Management, not the wallet feature. The mandatory skill gate includes all nine skills, with `human-production-engineering` installed from its upstream repository at `4fba725`. All Phase 4 native preview slices are verified and merged into main, covering navigation, customer discovery, booking, job posting, activity hub, BrainWorker workspace, visual alignment, work proof photo picker, biometric authentication, and offline caching previews. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
+The current product baseline includes BW-010 Dispute Handling & Support Interface (Item 3.4, PR #67 merged at `abeb9a4`). BW-005 is Profile & Portfolio Management, not the wallet feature. The mandatory skill gate includes all nine skills, with `human-production-engineering` installed from its upstream repository at `4fba725`. The Phase 4 native preview slices were verified and merged at `17e11d3`, then removed from the repository per CEO direction, so the native application is deferred to a future build. Track progress in [docs/master-checklist.md](docs/master-checklist.md) and [docs/scope.md](docs/scope.md).
 
 ## Current web/PWA visual system
 
@@ -93,8 +91,7 @@ BukieBrainJobs/
 │   └── CODEOWNERS
 │
 ├── apps/
-│   ├── web/
-│   └── mobile/
+│   └── web/
 │
 ├── packages/
 │   ├── ui/
@@ -171,7 +168,7 @@ See `CONTRIBUTING.md` and `docs/00-governance/DEVELOPMENT-WORKFLOW.md`.
 
 ## Architecture baseline
 
-The approved technical baseline uses a pnpm workspace with Turborepo, TypeScript strict mode, and Node 24+. The application architecture includes a Next.js 15 web application (website and PWA), an Expo native mobile application, and shared packages for contracts, validation, business logic and infrastructure concerns.
+The approved technical baseline uses npm workspaces with root npm scripts, TypeScript strict mode, and Node 24+. The application architecture includes a Next.js 15 web application (website and PWA) plus shared packages for contracts, validation, business logic and infrastructure concerns. The native application is deferred and the shared packages remain reusable for it.
 
 Implementation must follow the approved technical specification rather than recreating requirements from memory.
 

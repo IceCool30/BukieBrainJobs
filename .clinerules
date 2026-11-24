@@ -2,15 +2,15 @@
 
 ## 1. Local Resource Constraints (Termux on Android)
 - **Local Environment**: Termux on Android with strict RAM limits and aggressive Android Low Memory Killer (LMK).
-- **CRITICAL**: NEVER run heavy builds, type-checks, or monorepo-wide tests locally in Termux (`pnpm build`, `tsc --noEmit`, `pnpm type-check`, `pnpm test`, `turbo run test`). Doing so triggers Android LMK `SIGKILL` (exit code 137).
+- **CRITICAL**: NEVER run heavy builds, type-checks, or monorepo-wide tests locally in Termux (`npm run build`, `tsc --noEmit`, `npm run type-check`, `npm test`). Doing so triggers Android LMK `SIGKILL` (exit code 137).
 
 ## 2. Cloud Compute Hierarchy & Remote Execution
 - **PRIMARY: Google Cloud Shell VM (100% Free / $0)**:
   Always dispatch builds, tests, and heavy commands to Google Cloud Shell using the preinstalled CLI wrappers:
   - `gsync <branch>` — Syncs git branch to Google Cloud Shell (fetches and resets to `origin/<branch>`).
-  - `gcheck` — Runs TypeScript compiler checks (`pnpm type-check`) on Google Cloud Shell.
-  - `gtest [args]` — Runs `pnpm test` on Google Cloud Shell (supports test paths, e.g. `gtest app/brainworker/`).
-  - `gbuild [args]` — Runs `pnpm build` on Google Cloud Shell (e.g. `gbuild --filter @bukiebrainjobs/web`).
+  - `gcheck` — Runs TypeScript compiler checks (`npm run type-check`) on Google Cloud Shell.
+  - `gtest [args]` — Runs `npm test` on Google Cloud Shell (supports test paths, e.g. `gtest app/brainworker/`).
+  - `gbuild [args]` — Runs `npm run build` on Google Cloud Shell.
   - `gexec "<command>"` — Dispatches arbitrary shell commands inside `~/BukieBrainJobs` on Google Cloud Shell.
   - `gvibe` — Runs Mistral Vibe on Google Cloud Shell.
   - `gssh` — Interactive session on Google Cloud Shell.

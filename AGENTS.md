@@ -4,7 +4,7 @@ This file defines the standards and operational map every contributor must follo
 
 ## Repository Overview
 - **Project Name**: BukieBrainJobs
-- **Architecture**: Monorepo managed with Turborepo and pnpm workspaces
+- **Architecture**: npm workspaces from the repository root, orchestrated by root npm scripts with no build orchestrator
 - **Primary Languages and Runtimes**: TypeScript 5.7, Node.js 24 LTS, Next.js 15.5, React 19, Tailwind CSS v4, Prisma v6, Zustand v5, Vitest v4
 - **Workspaces Layout**:
   - `apps/web`: Next.js 15 App Router web application and PWA
@@ -20,16 +20,16 @@ This file defines the standards and operational map every contributor must follo
 ## Core Commands
 - **Install**: `npm install`
 - **Dev (Web)**: `npm run dev` (runs `apps/web` on port 3000)
-- **Typecheck**: `gcheck` (execute `pnpm type-check` on Google Cloud Shell)
+- **Typecheck**: `gcheck` (execute `npm run type-check` on Google Cloud Shell)
 - **Test**: `gtest [args]` (execute Vitest on Google Cloud Shell) or `ctest` (fallback Codespace)
-- **Build**: `gbuild [args]` (execute Next.js/Turbo build on Google Cloud Shell) or `cbuild` (fallback Codespace)
+- **Build**: `gbuild [args]` (execute the Next.js build on Google Cloud Shell) or `cbuild` (fallback Codespace)
 - **Remote Sync**: `gsync <branch>` (Google Cloud Shell: fetches and resets to `origin/<branch>`)
 - **Remote Exec**: `gexec "<command>"` (execute arbitrary shell command on Google Cloud Shell)
 - **Remote SSH**: `gssh` (interactive session on Google Cloud Shell) or `cssh` (fallback Codespace)
 - **Vibe on Cloud**: `gvibe` (execute Mistral Vibe on Google Cloud Shell)
 - **PR Checks / Vercel**: `gh pr checks <pr#>` and `gh pr view <pr#> --json statusCheckRollup`
-- **Database Generate**: `pnpm db:generate` (execute on Google Cloud Shell / Codespace)
-- **Loop Status**: `bash scripts/nine-status.sh` or `pnpm run loop:status`
+- **Database Generate**: `npm run db:generate` (execute on Google Cloud Shell / Codespace)
+- **Loop Status**: `bash scripts/nine-status.sh` or `npm run loop:status`
 - **Canonical Remote Guide**: `docs/19-deployment-operations/REMOTE-EXECUTION-GUIDE.md`
 
 ## Environment & Execution Constraints
@@ -41,14 +41,14 @@ This file defines the standards and operational map every contributor must follo
   - Dedicated strictly to heavy data operations: Gemini prompt stress-testing, deterministic synthetic seeding, asset/media processing, and dispatch math.
   - Full operational protocol governed by `docs/03-architecture/ARCH-003-GOOGLE-COLAB-COMPUTE-PIPELINE.md`.
 - **Execution Pipeline**:
-  - NEVER run heavy commands locally on Termux (`pnpm build`, `tsc --noEmit`, `pnpm type-check`, `pnpm test`, `turbo run test`). Doing so triggers Android LMK `SIGKILL` (exit 137).
+  - NEVER run heavy commands locally on Termux (`npm run build`, `tsc --noEmit`, `npm run type-check`, `npm test`). Doing so triggers Android LMK `SIGKILL` (exit 137).
   - **PRIMARY: Dispatch Builds and Tests to Google Cloud Shell**:
     Always use the free Google Cloud Shell compute layer as the primary execution venue:
     ```bash
     gsync   # Syncs git branch to Google Cloud Shell (resets to origin/<branch>)
-    gcheck  # Runs pnpm type-check on Google Cloud Shell
-    gtest   # Runs pnpm test on Google Cloud Shell (supports test path args)
-    gbuild  # Runs pnpm build on Google Cloud Shell (supports build args)
+    gcheck  # Runs npm run type-check on Google Cloud Shell
+    gtest   # Runs npm test on Google Cloud Shell (supports test path args)
+    gbuild  # Runs npm run build on Google Cloud Shell (supports build args)
     gexec   # Runs arbitrary command inside ~/BukieBrainJobs on Google Cloud Shell
     gvibe   # Runs vibe CLI on Google Cloud Shell
     gssh    # Opens interactive session on Google Cloud Shell
@@ -64,8 +64,8 @@ This file defines the standards and operational map every contributor must follo
   - **FALLBACK: Cloud Codespace**:
     Use GitHub Codespaces only when Cloud Shell is unreachable or during maintenance:
     ```bash
-    ctest   # Runs pnpm test on Codespace
-    cbuild  # Runs pnpm build on Codespace
+    ctest   # Runs npm test on Codespace
+    cbuild  # Runs npm run build on Codespace
     cssh    # Opens SSH session to Codespace
     ```
     Codespace Dispatch: `gh codespace ssh -c effective-fishstick-x5qwp6wrrp64fxwx -- "cd /workspaces/BukieBrainJobs && <COMMAND>"`

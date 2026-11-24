@@ -15,14 +15,14 @@
   * **Heavy Compute Sandbox**: Google Colab ephemeral GPU/TPU instances (T4, L4, A100) via universal `colab` CLI.
 
 ### Execution Rules
-* **NEVER Run Heavy Commands Locally in Termux**: DO NOT run monorepo-wide tests (`pnpm test`, `turbo run test`), Vitest across multiple suites, TypeScript compiler checks (`tsc --noEmit`, `pnpm type-check`), or Next.js production builds (`pnpm build`) locally on Termux. Doing so causes Android LMK `SIGKILL` (exit 137). When running in a full Linux VM environment, commands run directly locally.
+* **NEVER Run Heavy Commands Locally in Termux**: DO NOT run monorepo-wide tests (`npm test`), Vitest across multiple suites, TypeScript compiler checks (`tsc --noEmit`, `npm run type-check`), or Next.js production builds (`npm run build`) locally on Termux. Doing so causes Android LMK `SIGKILL` (exit 137). When running in a full Linux VM environment, commands run directly locally.
 * **PRIMARY: Dispatch Builds and Tests to Google Cloud Shell**:
   Always use the free Google Cloud Shell compute layer as the primary execution venue:
   ```bash
   gsync   # Syncs git branch to Google Cloud Shell (fetches and resets to origin/<branch>)
-  gcheck  # Runs pnpm type-check on Google Cloud Shell
-  gtest   # Runs pnpm test on Google Cloud Shell (supports test path args)
-  gbuild  # Runs pnpm build on Google Cloud Shell (supports build args)
+  gcheck  # Runs npm run type-check on Google Cloud Shell
+  gtest   # Runs npm test on Google Cloud Shell (supports test path args)
+  gbuild  # Runs npm run build on Google Cloud Shell (supports build args)
   gexec   # Runs command on Google Cloud Shell inside ~/BukieBrainJobs with correct PATH
   gvibe   # Runs vibe CLI on Google Cloud Shell
   gssh    # Opens interactive session on Google Cloud Shell

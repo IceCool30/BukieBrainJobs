@@ -82,4 +82,4 @@ BukieBrainJobs/
 
 ## Implementation baseline
 
-The technical specification defines pnpm workspaces, Turborepo, TypeScript strict mode and Node 20 LTS. The repository structure must remain consistent with that specification when application code is introduced.
+The technical specification defines npm workspaces, root npm scripts, TypeScript strict mode and Node 24 LTS. The repository structure must remain consistent with that specification when application code is introduced.

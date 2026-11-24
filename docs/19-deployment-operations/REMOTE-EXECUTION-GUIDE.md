@@ -9,9 +9,9 @@ This guide is the canonical instruction manual for all AI agents and developers 
 ### Local Environment (Termux on Android)
 - Termux operates under physical mobile memory constraints and aggressive Android Low Memory Killer (LMK) termination.
 - **NEVER run heavy tasks locally in Termux**:
-  - Do NOT run `pnpm build` or `turbo run build`.
-  - Do NOT run `tsc --noEmit` or `pnpm type-check`.
-  - Do NOT run full test suites (`pnpm test` or `turbo run test`).
+  - Do NOT run `npm run build`.
+  - Do NOT run `tsc --noEmit` or `npm run type-check`.
+  - Do NOT run full test suites (`npm test`).
   - Running these locally will result in abrupt process termination (`SIGKILL`, code 137, or silent exit). This is an OS memory kill, not a code defect.
 
 ### Primary Remote Compute (Google Cloud Shell VM)
@@ -28,10 +28,10 @@ The following wrapper binaries are installed in PATH (`/data/data/com.termux/fil
 | Command | Action | Example |
 |---|---|---|
 | `gsync [branch]` | Fetches origin and resets Cloud Shell working tree to `origin/[branch]`. | `gsync feature/bw-003-leads-inbox` |
-| `gtest [args]` | Runs `pnpm test` on Cloud Shell with optional test arguments. | `gtest` or `gtest apps/web/app/brainworker/` |
-| `gbuild [args]` | Runs Next.js/Turbo build on Cloud Shell. | `gbuild` or `gbuild --filter @bukiebrainjobs/web` |
-| `gcheck [args]` | Runs TypeScript compiler checks (`pnpm type-check`) on Cloud Shell. | `gcheck` |
-| `gexec "<command>"` | Runs any arbitrary command on Cloud Shell inside `~/BukieBrainJobs` with correct PATH. | `gexec "git status"` or `gexec "pnpm lint"` |
+| `gtest [args]` | Runs `npm test` on Cloud Shell with optional test arguments. | `gtest` or `gtest apps/web/app/brainworker/` |
+| `gbuild [args]` | Runs the Next.js build on Cloud Shell. | `gbuild` |
+| `gcheck [args]` | Runs TypeScript compiler checks (`npm run type-check`) on Cloud Shell. | `gcheck` |
+| `gexec "<command>"` | Runs any arbitrary command on Cloud Shell inside `~/BukieBrainJobs` with correct PATH. | `gexec "git status"` or `gexec "npm run lint"` |
 | `gvercel [args]` | Runs Vercel CLI on Cloud Shell with automatic token passthrough if `$VERCEL_TOKEN` is set. | `gvercel ls` |
 | `gvibe [args]` | Launches Mistral Vibe CLI on Cloud Shell. | `gvibe` |
 | `gssh` | Opens an interactive SSH session to Cloud Shell. | `gssh` |
@@ -132,11 +132,11 @@ GitHub CLI is authenticated on both Termux and Cloud Shell under `IceCool30`.
 - **Why it happens**: When `gcloud cloud-shell ssh` connects, it prints port-forwarding and tunnel teardown info to standard error.
 - **Resolution**: This is completely normal and indicates a healthy connection. Wait 2 to 5 seconds for the remote command output to print. Do NOT cancel the command.
 
-### Pitfall 2: Running `pnpm build` or `pnpm test` locally causes exit code 137 / SIGKILL
+### Pitfall 2: Running `npm run build` or `npm test` locally causes exit code 137 / SIGKILL
 - **Why it happens**: Termux hit the Android Low Memory Killer limit.
 - **Resolution**: Never run heavy builds locally. Always run `gbuild` or `gtest`.
 
-### Pitfall 3: "pnpm: command not found" or "node: command not found" on Cloud Shell
+### Pitfall 3: "npm: command not found" or "node: command not found" on Cloud Shell
 - **Why it happens**: A raw SSH command was run without exporting the Node.js PATH.
 - **Resolution**: Use `gexec "<command>"`, or if running raw SSH, include:
   ```bash

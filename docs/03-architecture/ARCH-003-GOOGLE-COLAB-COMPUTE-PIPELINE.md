@@ -14,7 +14,7 @@ Google Colab provides on-demand, accelerated cloud computing (NVIDIA GPUs such a
 Colab is strictly an **isolated, ephemeral heavy-compute sandbox**. It does not host web servers, databases, or client-side runtimes.
 
 * **What Colab Is NOT**:
-  * Not a development server for `pnpm web:dev` or Next.js App Router.
+  * Not a development server for `npm run web:dev` or Next.js App Router.
   * Not a persistent database or socket server host.
   * Not a replacement for the Cloud Codespace or local Termux code editing.
 * **What Colab IS**:
@@ -86,7 +86,7 @@ Colab integrates directly into the Mr. Solomon 9-Command Engineering Loop:
 | **/audit** | Inspect existing TypeScript contracts in `packages/types` and Prisma schema in `packages/db`. |
 | **/architect** | Define prompt inputs, output JSON schema, and mock dataset shape. |
 | **/develop** | Write the Python runner in `scripts/colab/` and execute via `colab run`. Save output artifacts directly to repository packages. |
-| **/check** | Verify database migrations and TypeScript compilation on the cloud build VM (`pnpm db:generate`, `pnpm type-check`). |
-| **/test** | Run Vitest test suites against the newly seeded data or prompt handlers on the build VM (`pnpm test`). |
+| **/check** | Verify database migrations and TypeScript compilation on the cloud build VM (`npm run db:generate`, `npm run type-check`). |
+| **/test** | Run Vitest test suites against the newly seeded data or prompt handlers on the build VM (`npm test`). |
 | **/document** | Record prompt benchmarks, test scores, or seed generation parameters in specs. |
 | **/sync** | Commit clean code and generated artifacts to Git. |

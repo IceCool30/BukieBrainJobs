@@ -1,8 +1,8 @@
 # Technical Architecture Baseline
 
 **Document ID:** TECH-000
-**Version:** 2.1
-**Status:** Approved baseline (updated by FOUNDATION-002 and PLAT-001)
+**Version:** 2.2
+**Status:** Approved baseline (updated by FOUNDATION-002, PLAT-001 and FOUND-011)
 **Canonical detailed reference:** `BukieBrainJobs — Full-Stack Technical Specification.md`
 
 ## Non-negotiable principle
@@ -13,27 +13,26 @@ API contracts, database models, shared state shapes and validation rules must be
 
 ## Platform surfaces
 
-BukieBrainJobs is one product on three clients:
+BukieBrainJobs is one product on two live clients:
 
 | Surface | App | Detection / distribution |
 |---|---|---|
 | Website | `apps/web` | Browser session (any viewport) |
 | PWA | `apps/web` | Installed standalone only (`display-mode: standalone` or iOS `navigator.standalone`) |
-| Native Android / iOS | `apps/mobile` | Expo store builds |
 
-Viewport width is a responsive concern, not a PWA signal. Core product journeys must be available on all three surfaces. Native may use stronger OS APIs for the same outcomes.
+Viewport width is a responsive concern, not a PWA signal. Core product journeys must be available on both surfaces. Native Android and iOS are deferred: the Expo application was removed per CEO direction under FOUND-011, and the shared packages remain reusable for a future native build.
 
 ## Toolchain baseline
 
 | Area | Approved baseline |
 |---|---|
-| Package manager | pnpm 9.x |
-| Build orchestration | Turborepo 2.x |
+| Package manager | npm 11.x workspaces |
+| Build orchestration | Root npm scripts (no build orchestrator) |
 | Language | TypeScript 5.7.x strict mode |
 | Node | 24 LTS |
 | Web | Next.js 15 App Router |
-| Mobile | React Native + Expo SDK 52 |
-| Mobile routing | Expo Router v4 |
+| Mobile | Deferred (Expo application removed under FOUND-011) |
+| Mobile routing | Deferred with the native application |
 | Database | PostgreSQL 16.x |
 | ORM | Prisma 6.x |
 | Cache / queues | Redis 7.x |
@@ -47,7 +46,7 @@ Viewport width is a responsive concern, not a PWA signal. Core product journeys 
 | Storage | Cloudinary |
 | Email | Resend |
 | SMS / OTP | Termii |
-| Push | Expo Notifications + FCM |
+| Push | Deferred with the native application |
 | Payments | Paystack |
 | Identity | Smile Identity |
 | Background jobs | BullMQ |
@@ -61,7 +60,7 @@ Viewport width is a responsive concern, not a PWA signal. Core product journeys 
 The approved architecture includes:
 
 - `apps/web` for the Next.js website and PWA experience.
-- `apps/mobile` for the Expo native Android and iOS application.
+- `apps/mobile` for the Expo native Android and iOS application, removed per FOUND-011 and deferred to a future build.
 - Shared packages for UI, design tokens, types, validation, database, auth, configuration and utilities as the implementation matures.
 - A persistent Socket.io service for real-time messaging and job events.
 - PostgreSQL with PostGIS for transactional and geographic data.

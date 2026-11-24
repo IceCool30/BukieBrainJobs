@@ -16,8 +16,8 @@ Incorporate the Mr. Solomon 9-Command Engineering Loop as the primary engineerin
 
 ## Acceptance Criteria
 1. `bash scripts/nine-status.sh` passes and reports valid scope, context, and specs.
-2. `pnpm type-check` passes with zero errors on cloud Codespace.
-3. `pnpm test` passes with all tests green on cloud Codespace.
+2. `npm run type-check` passes with zero errors on cloud Codespace.
+3. `npm test` passes with all tests green on cloud Codespace.
 4. Git working tree remains clean and properly tracked.
 
 ## Build Plan

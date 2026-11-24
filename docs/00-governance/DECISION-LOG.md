@@ -1,7 +1,7 @@
 # Decision Log
 
 **Document ID:** GOV-004
-**Version:** 1.4
+**Version:** 1.5
 **Status:** Approved foundation
 
 This file is the index for material product, design and engineering decisions. Detailed decisions may later be split into individual ADR files under `docs/21-decision-log/`.
@@ -375,3 +375,30 @@ Project runtime baseline standardized on Node.js 24 LTS to align local, CI, depl
 **Affected areas:** `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.clinerules`, the skill gate, design-system documentation, affected feature and screen specifications, `apps/web`, `packages/ui` shared accent token, and future web/PWA reviews.
 
 **Source references:** `.agents/skills/bukiebrainjobs-outlier-design-system/SKILL.md`, `apps/web/app/globals.css`, `docs/specs/THEME-001-light-dark-toggle.md`, `docs/00-governance/SOURCE-OF-TRUTH.md`, and `docs/00-governance/LEGACY-SOURCE-BOUNDARY.md`.
+
+---
+
+## Toolchain and surface update (2026-11-24)
+
+### FOUND-011: npm workspaces replace pnpm and Turborepo, and the native application is deferred
+
+**Date:** 2026-11-24
+**Status:** Approved
+
+**Context:** Commit `5494c28` removed the native application and replaced the pnpm and Turborepo toolchain with plain npm workspaces. It left the CI workflows on pnpm, left both stale lockfiles in place, and left the governing documents describing Turborepo, pnpm, and a live `apps/mobile`. CI failed on every run and the repository contradicted its own baseline.
+
+**Decision:**
+
+1. npm workspaces at the repository root are the package manager and the only install path. `package-lock.json` is the single lockfile. `packageManager` is pinned to `npm@11.16.0` and `engines.node` to `>=24.0.0`, matching `.nvmrc`.
+2. Root npm scripts own build, test, lint, type-check, database, and loop status commands. Turborepo is not used and `turbo` is not a dependency.
+3. `services/socket-server` returns to the npm workspace list so it is installed and type-checked with everything else.
+4. CI and Deploy workflows use `npm ci` and npm scripts. pnpm setup actions and Turborepo filters are gone.
+5. `apps/mobile`, the Capacitor configuration, and mobile-only docs and media stay removed. The native application is deferred to a future build, and the shared packages remain reusable for it.
+6. `next` moves to `15.5.29` with npm `overrides` for `deepmerge-ts`, `effect`, and `postcss`, clearing every open advisory.
+7. Historical records stay as written. `docs/check-log.md`, completed records in `docs/scope.md`, `CHANGELOG.md`, and the original source capture in `TECH-SPEC-02` keep the commands that were actually run at the time. `docs/19-deployment-operations/REMOTE-EXECUTION-GUIDE.md` is a live guide and was updated.
+
+**Consequences:** The repository installs, type-checks, and builds with npm only. Agents reading `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, or `.clinerules` see npm commands that exist. The native surface has no code in this repository, and the documentation says so.
+
+**Affected areas:** `package.json`, `package-lock.json`, `.nvmrc`, `apps/web`, `services/socket-server`, `.github/workflows/`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.clinerules`, `README.md`, `docs/00-governance/TECHNICAL-BASELINE.md`, `docs/00-governance/REPOSITORY-STRUCTURE.md`, `docs/03-architecture/reference/TECH-SPEC-01-ARCHITECTURE-AND-TOOLCHAIN.md`, `docs/03-architecture/ARCH-003-GOOGLE-COLAB-COMPUTE-PIPELINE.md`, `docs/19-deployment-operations/REMOTE-EXECUTION-GUIDE.md`, and `docs/specs/00-engineering-loop.md`.
+
+**Source references:** `.nvmrc`, `package.json`, `.github/workflows/ci.yml`, `.github/workflows/deploy-web.yml`, and `docs/19-deployment-operations/REMOTE-EXECUTION-GUIDE.md`.
