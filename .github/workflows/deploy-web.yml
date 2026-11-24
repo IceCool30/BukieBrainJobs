@@ -13,26 +13,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.9
-
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: pnpm
+          cache: npm
 
-      - run: pnpm install --frozen-lockfile
+      - run: npm ci
 
       - name: Run database migrations
         if: ${{ vars.RUN_DATABASE_MIGRATIONS == 'true' }}
-        run: pnpm --filter @bukiebrainjobs/db exec prisma migrate deploy
+        run: npm exec --workspace=packages/db -- prisma migrate deploy
         env:
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
 
       - name: Deploy to Vercel
         if: ${{ vars.RUN_CLI_VERCEL_DEPLOY == 'true' }}
-        run: pnpm dlx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes
+        run: npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --yes
         env:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}

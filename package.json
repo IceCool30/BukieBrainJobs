@@ -12,7 +12,12 @@
     "web:dev": "npm run dev --workspace=apps/web",
     "web:build": "npm run build --workspace=apps/web",
     "web:test": "npm run test --workspace=apps/web",
-    "db:generate": "npm run db:generate --workspace=packages/db"
+    "db:generate": "npm run db:generate --workspace=packages/db",
+    "db:migrate": "npm run db:migrate --workspace=packages/db",
+    "db:push": "npm run db:push --workspace=packages/db",
+    "db:studio": "npm run db:studio --workspace=packages/db",
+    "db:seed": "npm run db:seed --workspace=packages/db",
+    "loop:status": "bash scripts/nine-status.sh"
   },
   "devDependencies": {
     "@types/react": "19.2.0",
@@ -20,16 +25,22 @@
     "playwright": "^1.64.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "turbo": "^2.10.9",
     "typescript": "^5.7.3",
     "vite": "^7.3.7",
     "vitest": "^4.1.12"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=24.0.0"
+  },
+  "packageManager": "npm@11.16.0",
+  "overrides": {
+    "deepmerge-ts": "^8.0.2",
+    "effect": "^3.22.5",
+    "postcss": "^8.5.23"
   },
   "workspaces": [
     "apps/web",
-    "packages/*"
+    "packages/*",
+    "services/*"
   ]
 }

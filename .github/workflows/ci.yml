@@ -6,10 +6,6 @@ on:
   push:
     branches: [main, develop]
 
-env:
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-
 jobs:
   skill-gate:
     name: Mandatory Skill Gate
@@ -20,8 +16,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Read-only check. It never mutates files or repairs documentation.
-      # It fails the PR when the repository skill-gate contract is violated.
       - name: Verify skill gate intact
         run: bash scripts/check-skill-gate.sh
 
@@ -36,31 +30,26 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.9
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: pnpm
+          cache: npm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Generate Prisma client
-        run: pnpm turbo db:generate
+        run: npm run db:generate --workspace=packages/db
 
       - name: Type check
-        run: pnpm turbo type-check
+        run: npm run type-check
 
       - name: Lint
-        run: pnpm turbo lint
+        run: npm run lint
 
       - name: Run tests
-        run: pnpm turbo test
+        run: npm test
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
           REDIS_URL: redis://localhost:6379
@@ -78,10 +67,3 @@ jobs:
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
-
-      redis:
-        image: redis:7-alpine
-        ports: ['6379:6379']
-        options: >-
-          --health-cmd redis-cli
